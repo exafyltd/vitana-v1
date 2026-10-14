@@ -235,7 +235,7 @@ function CampaignDetail() {
             <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.published')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">
+            <div className="text-3xl font-bold text-status-success">
               {campaignPosts.filter(p => p.status === 'published').length}
             </div>
           </CardContent>
@@ -245,7 +245,7 @@ function CampaignDetail() {
             <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.scheduled')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-yellow-600">
+            <div className="text-3xl font-bold text-status-warning">
               {campaignPosts.filter(p => p.status === 'scheduled').length}
             </div>
           </CardContent>
@@ -255,7 +255,7 @@ function CampaignDetail() {
             <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.drafts')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-gray-600">
+            <div className="text-3xl font-bold text-muted-foreground">
               {campaignPosts.filter(p => p.status === 'draft').length}
             </div>
           </CardContent>

@@ -120,7 +120,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         {/* Top Opportunities */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Zap className="h-4 w-4 text-amber-500" />
+            <Zap className="h-4 w-4 text-status-warning" />
             {t('screens.wallet.nextBestActions')}
           </h4>
           

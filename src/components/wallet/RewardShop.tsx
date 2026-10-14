@@ -271,7 +271,7 @@ export function RewardShop({ shippingReturn }: { shippingReturn?: 'paid' | 'canc
             {t('wallet.rewardShop.balance', { amount: fmtNumber(data.earned_balance) })}
           </p>
           {shippingReturn === 'paid' && (
-            <p className="text-sm text-emerald-700 text-start" data-testid="reward-shop-return-paid">{t('wallet.rewardShop.returnPaid')}</p>
+            <p className="text-sm text-status-success text-start" data-testid="reward-shop-return-paid">{t('wallet.rewardShop.returnPaid')}</p>
           )}
           {shippingReturn === 'cancelled' && (
             <p className="text-sm text-muted-foreground text-start">{t('wallet.rewardShop.returnCancelled')}</p>

@@ -58,7 +58,7 @@ export function ListingStrength({
         <span className="text-sm font-medium text-foreground">
           {t('screens.commerceportal.productForm.strengthTitle')}
         </span>
-        <span className="text-sm font-semibold text-amber-700">{pct}%</span>
+        <span className="text-sm font-semibold text-status-warning">{pct}%</span>
       </div>
       <Progress value={pct} className="mt-2 h-1.5" />
       {nextUp.length > 0 ? (

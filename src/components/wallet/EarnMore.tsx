@@ -93,7 +93,7 @@ function ActionRow({ rule }: { rule: RewardOverviewRule }) {
           <p className="font-medium break-words">{t(`wallet.rewardRules.rules.${rule.id}`)}</p>
           {cap && <p className="text-xs text-muted-foreground">{cap}</p>}
         </div>
-        <span className="shrink-0 font-semibold text-emerald-700">
+        <span className="shrink-0 font-semibold text-status-success">
           {t('wallet.rewardRules.amount', { amount: fmtNumber(rule.amount) })}
         </span>
       </div>

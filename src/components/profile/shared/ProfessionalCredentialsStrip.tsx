@@ -61,30 +61,30 @@ export function ProfessionalCredentialsStrip({
 
             {/* Overall Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="text-center p-3 bg-white/50 rounded-lg">
+              <div className="text-center p-3 bg-card/50 rounded-lg">
                 <div className="flex items-center justify-center mb-1">
                   <Trophy className="h-4 w-4 text-primary me-1" />
                   <span className="text-lg font-bold">{credentials.totalSessions}</span>
                 </div>
                 <div className="text-xs text-muted-foreground">{t('screens.profile.totalSessions')}</div>
               </div>
-              <div className="text-center p-3 bg-white/50 rounded-lg">
+              <div className="text-center p-3 bg-card/50 rounded-lg">
                 <div className="flex items-center justify-center mb-1">
                   <Users className="h-4 w-4 text-primary me-1" />
                   <span className="text-lg font-bold">{credentials.totalParticipants}</span>
                 </div>
                 <div className="text-xs text-muted-foreground">{t('screens.profile.peopleHelped')}</div>
               </div>
-              <div className="text-center p-3 bg-white/50 rounded-lg">
+              <div className="text-center p-3 bg-card/50 rounded-lg">
                 <div className="flex items-center justify-center mb-1">
-                  <Star className="h-4 w-4 text-yellow-500 me-1 fill-current" />
+                  <Star className="h-4 w-4 text-status-warning me-1 fill-current" />
                   <span className="text-lg font-bold">{credentials.overallRating.toFixed(1)}</span>
                 </div>
                 <div className="text-xs text-muted-foreground">{t('screens.profile.overallRating')}</div>
               </div>
-              <div className="text-center p-3 bg-white/50 rounded-lg">
+              <div className="text-center p-3 bg-card/50 rounded-lg">
                 <div className="flex items-center justify-center mb-1">
-                  <Users className="h-4 w-4 text-green-600 me-1" />
+                  <Users className="h-4 w-4 text-status-success me-1" />
                   <span className="text-lg font-bold">{credentials.totalSubscribers}</span>
                 </div>
                 <div className="text-xs text-muted-foreground">{t('screens.profile.subscribers')}</div>

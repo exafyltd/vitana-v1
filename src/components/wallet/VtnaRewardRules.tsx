@@ -27,7 +27,7 @@ function RuleRow({ rule }: { rule: RewardOverviewRule }) {
     >
       <div className="flex items-center gap-3 min-w-0">
         {done ? (
-          <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
+          <CheckCircle2 className="h-5 w-5 shrink-0 text-status-success" aria-hidden />
         ) : (
           <Circle className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
         )}
@@ -136,7 +136,7 @@ export function VtnaRewardRules() {
                     </p>
                     <p className="text-xs text-muted-foreground">{fmtDate(new Date(r.created_at))}</p>
                   </div>
-                  <span className="shrink-0 font-semibold text-emerald-700">
+                  <span className="shrink-0 font-semibold text-status-success">
                     {t('wallet.rewardRules.amount', { amount: fmtNumber(r.amount) })}
                   </span>
                 </li>

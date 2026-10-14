@@ -118,10 +118,10 @@ export function OAuthBouncePendingOverlay() {
 
       {status === "success" && (
         <div className="flex items-start gap-3 pe-6">
-          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
+          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-status-success" />
           <div className="space-y-1">
-            <p className="font-medium leading-tight text-green-700">{t('screens.settings.labelConnected', { label })}</p>
-            <p className="text-sm text-green-700/80">{t('screens.settings.youReAllSet')}</p>
+            <p className="font-medium leading-tight text-status-success">{t('screens.settings.labelConnected', { label })}</p>
+            <p className="text-sm text-status-success/80">{t('screens.settings.youReAllSet')}</p>
           </div>
         </div>
       )}
@@ -129,10 +129,10 @@ export function OAuthBouncePendingOverlay() {
       {status === "timed_out" && (
         <div className="flex flex-col gap-3 pe-6">
           <div className="flex items-start gap-3">
-            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-status-warning" />
             <div className="space-y-1">
-              <p className="font-medium leading-tight text-amber-700">{t('screens.settings.weDidnTSeeLabelConfirm', { label })}</p>
-              <p className="text-sm text-amber-700/80">
+              <p className="font-medium leading-tight text-status-warning">{t('screens.settings.weDidnTSeeLabelConfirm', { label })}</p>
+              <p className="text-sm text-status-warning/80">
                 {t('screens.settings.ifYouCompletedSigninTapCheck')}
               </p>
             </div>

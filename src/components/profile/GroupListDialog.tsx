@@ -35,9 +35,9 @@ export function GroupListDialog({
   const getRoleIcon = (role: string) => {
     switch (role) {
       case "admin":
-        return <Crown className="h-3 w-3 text-yellow-500" />;
+        return <Crown className="h-3 w-3 text-status-warning" />;
       case "moderator":
-        return <Shield className="h-3 w-3 text-blue-500" />;
+        return <Shield className="h-3 w-3 text-status-info" />;
       default:
         return null;
     }

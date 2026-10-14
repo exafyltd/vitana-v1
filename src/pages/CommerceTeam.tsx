@@ -41,7 +41,7 @@ export default function CommerceTeam() {
           </div>
         ) : org.role !== 'org_admin' ? (
           <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-center">
-            <Users className="mx-auto h-8 w-8 text-amber-500" />
+            <Users className="mx-auto h-8 w-8 text-status-warning" />
             <p className="mt-3 font-medium text-foreground">{t('screens.commerceportal.orgOnboarding.teamAdminOnlyTitle')}</p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
               {t('screens.commerceportal.orgOnboarding.teamAdminOnlyBody', { org: org.display_name })}

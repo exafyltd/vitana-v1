@@ -27,7 +27,7 @@ function MotivationCardBase({
       <p className="text-xs text-muted-foreground">— {author}</p>
       
       {hasVideo && (
-        <div className="flex items-center justify-center gap-1 text-xs text-blue-600">
+        <div className="flex items-center justify-center gap-1 text-xs text-status-info">
           <Play className="w-3 h-3" />
           <span>{t('screens.crossover.videoAvailable')}</span>
         </div>

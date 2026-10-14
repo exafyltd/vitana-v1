@@ -151,7 +151,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
                 {rows.map(r => (
                   <li key={r.key} className="flex items-start gap-3 rounded-md border p-3">
                     {r.status === "ok"
-                      ? <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      ? <CheckCircle2 className="h-4 w-4 text-status-success shrink-0 mt-0.5" />
                       : <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />}
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium">{r.name}</div>

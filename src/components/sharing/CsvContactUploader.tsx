@@ -157,7 +157,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
         <Card className="p-4">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              <CheckCircle2 className="h-5 w-5 text-status-success" />
               <div>
                 <h3 className="font-semibold">{t('screens.sharing.csvImported')}</h3>
                 <p className="text-sm text-muted-foreground">{t('screens.sharing.lengthContactsReadySend', { length: currentContacts.length })}

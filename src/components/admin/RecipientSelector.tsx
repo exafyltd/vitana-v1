@@ -177,7 +177,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
                         <span className="font-medium">{user.display_name || "No name"}</span>
                         <span className="ms-2 text-muted-foreground">{user.email}</span>
                       </div>
-                      {isSelected && <UserCheck className="h-4 w-4 text-green-500" />}
+                      {isSelected && <UserCheck className="h-4 w-4 text-status-success" />}
                     </button>
                   );
                 })

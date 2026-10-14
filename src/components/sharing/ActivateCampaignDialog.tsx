@@ -91,11 +91,11 @@ export function ActivateCampaignDialog({
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">{t('screens.sharing.draftPosts')}</span>
-                    <span className="font-semibold text-yellow-600">{draftCount}</span>
+                    <span className="font-semibold text-status-warning">{draftCount}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">{t('screens.sharing.readyPublish')}</span>
-                    <span className="font-semibold text-green-600">{draftCount}</span>
+                    <span className="font-semibold text-status-success">{draftCount}</span>
                   </div>
                 </>
               ) : (

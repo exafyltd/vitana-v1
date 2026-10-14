@@ -99,7 +99,7 @@ export function MessageContextMenu({
         
         {onStar && (
           <ContextMenuItem onClick={onStar} className="flex items-center gap-2 px-3 py-2">
-            <Star className={cn("w-4 h-4", isStarred && "fill-current text-yellow-500")} />
+            <Star className={cn("w-4 h-4", isStarred && "fill-current text-status-warning")} />
             <span>{isStarred ? 'Unstar' : 'Star'}</span>
           </ContextMenuItem>
         )}

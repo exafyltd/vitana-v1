@@ -49,8 +49,8 @@ const PresenceDebugPanelInner: React.FC = () => {
         <div className="flex justify-between">
           <span>{t('screens.debug.status')}</span>
           <span className={
-            debugInfo.connectionStatus === 'connected' ? 'text-emerald-500' :
-            debugInfo.connectionStatus === 'connecting' ? 'text-amber-500' : 'text-red-500'
+            debugInfo.connectionStatus === 'connected' ? 'text-status-success' :
+            debugInfo.connectionStatus === 'connecting' ? 'text-status-warning' : 'text-status-error'
           }>
             {debugInfo.connectionStatus}
           </span>

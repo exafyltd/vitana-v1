@@ -95,7 +95,7 @@ export default function WalletIntegratedSendFunds({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Send className="w-5 h-5 text-green-600" />
+            <Send className="w-5 h-5 text-status-success" />
             {t('screens.payment.sendFunds')}
           </DialogTitle>
         </DialogHeader>

@@ -19,7 +19,7 @@ export function OverlapWarning({ conflicts }: { conflicts: CalendarConflict[] })
   return (
     <div
       role="status"
-      className="rounded-2xl bg-amber-50 p-3 text-sm text-amber-900"
+      className="rounded-2xl bg-status-warning-subtle p-3 text-sm text-status-warning"
       data-testid="vcal-overlap"
     >
       <p className="m-0 font-semibold">{t("vcal.overlap.title")}</p>

@@ -387,7 +387,7 @@ export function NotificationCategoriesTab() {
                         }
                       />
                       <span className="flex-1">{localized(c.label, locale)}</span>
-                      <span className={c.enabled ? "text-xs text-green-600" : "text-xs text-muted-foreground"}>
+                      <span className={c.enabled ? "text-xs text-status-success" : "text-xs text-muted-foreground"}>
                         {c.enabled ? t("notificationControls.on") : t("notificationControls.off")}
                       </span>
                     </label>

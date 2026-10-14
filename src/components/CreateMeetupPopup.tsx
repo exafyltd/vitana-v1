@@ -292,7 +292,7 @@ const generateImageUrl = (title: string, description: string) => {
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <Users className="w-6 h-6 text-orange-600" />
+            <Users className="w-6 h-6 text-status-warning" />
             {t('screens.common.createNewMeetup')}
           </DialogTitle>
         </DialogHeader>

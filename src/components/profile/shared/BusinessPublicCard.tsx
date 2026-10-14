@@ -60,7 +60,7 @@ export function BusinessPublicCard({ vitanaId, className }: BusinessPublicCardPr
                 <img
                   src={item.product_thumbnail_url}
                   alt={item.product_title ?? ""}
-                  className="h-14 w-14 rounded-lg object-cover shrink-0 bg-white"
+                  className="h-14 w-14 rounded-lg object-cover shrink-0 bg-card"
                 />
               ) : (
                 <div className="h-14 w-14 rounded-lg bg-muted shrink-0 flex items-center justify-center">

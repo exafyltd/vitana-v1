@@ -281,7 +281,7 @@ export function InstagramShareModal({
             >
               {linkCopied ? (
                 <>
-                  <Check className="h-4 w-4 text-green-500" />{t('screens.sharing.linkCopied')}
+                  <Check className="h-4 w-4 text-status-success" />{t('screens.sharing.linkCopied')}
                 </>
               ) : (
                 <>

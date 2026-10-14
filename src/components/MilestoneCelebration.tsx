@@ -95,11 +95,11 @@ export default function MilestoneCelebration() {
         </DialogHeader>
 
         {mapping.rewardKind === "vtn" && mapping.reward > 0 && (
-          <p className="text-2xl font-bold text-green-600 dark:text-green-400 my-4">{t('screens.common.rewardVtn', { reward: mapping.reward })}
+          <p className="text-2xl font-bold text-status-success dark:text-status-success my-4">{t('screens.common.rewardVtn', { reward: mapping.reward })}
           </p>
         )}
         {mapping.rewardKind === "index-tier" && detail.rewardValue && (
-          <p className="text-2xl font-bold text-green-600 dark:text-green-400 my-4">
+          <p className="text-2xl font-bold text-status-success dark:text-status-success my-4">
             {detail.rewardValue}
           </p>
         )}

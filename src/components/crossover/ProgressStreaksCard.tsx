@@ -35,8 +35,8 @@ function ProgressStreaksCardBase({
   const content = (
     <div className="space-y-3 text-center">
       <div className="flex items-center justify-center gap-2">
-        <Flame className="w-5 h-5 text-orange-500" />
-        <span className="text-lg font-bold text-orange-600">{topStreak.count}</span>
+        <Flame className="w-5 h-5 text-status-warning" />
+        <span className="text-lg font-bold text-status-warning">{topStreak.count}</span>
         <span className="text-sm text-muted-foreground">{t('screens.crossover.dayStreak')}</span>
       </div>
       

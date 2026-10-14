@@ -72,7 +72,7 @@ export function FilteredView() {
   return (
     <div className="space-y-6">
       {/* Header with Create Button */}
-      <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
+      <Card className="p-4 bg-card/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-semibold mb-1">{t('screens.dev.savedFilters')}</h3>
@@ -101,7 +101,7 @@ export function FilteredView() {
           <Card
             key={filter.id}
             className={cn(
-              "cursor-pointer transition-all duration-200 bg-white/50 dark:bg-card/50 backdrop-blur-sm hover:shadow-lg hover:scale-[1.02]",
+              "cursor-pointer transition-all duration-200 bg-card/50 dark:bg-card/50 backdrop-blur-sm hover:shadow-lg hover:scale-[1.02]",
               selectedFilter === filter.id &&
                 "ring-2 ring-primary shadow-lg scale-[1.02]"
             )}
@@ -146,7 +146,7 @@ export function FilteredView() {
 
       {/* Results Panel */}
       {selectedFilter && (
-        <Card className="bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50 animate-fade-in">
+        <Card className="bg-card/50 dark:bg-card/50 backdrop-blur-sm border-border/50 animate-fade-in">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">

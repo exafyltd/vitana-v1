@@ -30,13 +30,13 @@ export default function SystemMessage({ message, className }: SystemMessageProps
   const getSystemIcon = () => {
     switch (systemType) {
       case 'group_created':
-        return <Crown className="w-4 h-4 text-amber-500" />;
+        return <Crown className="w-4 h-4 text-status-warning" />;
       case 'member_added':
-        return <UserPlus className="w-4 h-4 text-green-500" />;
+        return <UserPlus className="w-4 h-4 text-status-success" />;
       case 'member_removed':
-        return <UserMinus className="w-4 h-4 text-red-500" />;
+        return <UserMinus className="w-4 h-4 text-status-error" />;
       case 'member_left':
-        return <UserX className="w-4 h-4 text-orange-500" />;
+        return <UserX className="w-4 h-4 text-status-warning" />;
       default:
         return <Users className="w-4 h-4 text-muted-foreground" />;
     }

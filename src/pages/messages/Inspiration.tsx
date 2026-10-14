@@ -173,7 +173,7 @@ export default function Inspiration() {
                   <Card key={categoryIdx}>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Lightbulb className="w-5 h-5 text-yellow-500" />
+                        <Lightbulb className="w-5 h-5 text-status-warning" />
                         {t(category.categoryKey)}
                       </CardTitle>
                     </CardHeader>
@@ -217,7 +217,7 @@ export default function Inspiration() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-red-500" />
+                    <Heart className="w-5 h-5 text-status-error" />
                     {t('screens.messages.myFavoriteTemplates')}
                     <Badge variant="secondary">0</Badge>
                   </CardTitle>
@@ -232,7 +232,7 @@ export default function Inspiration() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-blue-500" />
+                    <Clock className="w-5 h-5 text-status-info" />
                     {t('screens.messages.recentlyUsedTemplates')}
                     <Badge variant="secondary">0</Badge>
                   </CardTitle>
@@ -247,7 +247,7 @@ export default function Inspiration() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Edit className="w-5 h-5 text-green-500" />
+                    <Edit className="w-5 h-5 text-status-success" />
                     {t('screens.messages.customMessages2')}
                     <Badge variant="secondary">0</Badge>
                   </CardTitle>
