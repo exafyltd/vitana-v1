@@ -39,7 +39,7 @@ type Row = { key: string; web_path: string; scope: string; source: string };
  * keeps this list equal to the files on disk. `/native-ui-catalogue` is N2's
  * dev-only kit catalogue (VTID-05176, ledger `native_only`).
  */
-export const NATIVE_ROUTES: readonly string[] = ['/', '/alkalma', '/logout', '/maxina', '/native-ui-catalogue', '/oauth/complete', '/reset-password'];
+export const NATIVE_ROUTES: readonly string[] = ['/', '/alkalma', '/dev/orb-bench', '/logout', '/maxina', '/native-ui-catalogue', '/oauth/complete', '/reset-password'];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 

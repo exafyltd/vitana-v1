@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitana 需要使用你的麦克风，这样你才能和她对话。麦克风只在对话进行时开启。",
+    "status": {
+      "connecting": "正在连接 Vitana …",
+      "thinking": "Vitana 正在思考 …",
+      "reconnecting": "正在重新连接 …",
+      "ended": "对话已结束",
+      "muted": "你的麦克风已静音",
+      "unavailable": "此版本的应用暂时还不能使用 Vitana。"
+    },
+    "rationale": {
+      "title": "和 Vitana 对话",
+      "body": "为了让 Vitana 听到你，应用需要访问你的麦克风。麦克风只在对话打开时开启。",
+      "continue": "继续",
+      "notNow": "以后再说"
+    },
+    "denied": {
+      "body": "请在设置中允许访问麦克风，这样你就可以和 Vitana 对话。",
+      "openSettings": "打开设置"
+    },
+    "a11y": {
+      "close": "关闭与 Vitana 的对话",
+      "micMute": "将麦克风静音",
+      "micUnmute": "打开麦克风",
+      "restart": "开始与 Vitana 的新对话"
+    },
+    "bench": {
+      "title": "语音回声测试",
+      "intro": "在没有网络、没有对话的情况下检查回声消除。把手机放下，调到正常音量，回声测试期间不要说话。",
+      "modeEcho": "回声测试",
+      "modeSpeech": "语音测试",
+      "rate": "速度 {rate}×",
+      "start": "开始测试",
+      "stop": "取消测试",
+      "phaseIdle": "就绪",
+      "phaseNoiseFloor": "正在测量环境噪音 …",
+      "phasePlaying": "正在播放测试音 …",
+      "pass": "通过",
+      "fail": "未通过",
+      "openings": "语音门开启次数：{count}",
+      "barges": "检测到的打断：{count}",
+      "peak": "测试音期间的最高电平：{value}",
+      "noiseFloor": "环境中的最高电平：{value}",
+      "noisyRoom": "环境比关闭阈值更吵，所以结果比实际需要的更严格。",
+      "stopLatency": "播放在 {value} 毫秒后停止",
+      "device": "设备：{value}",
+      "os": "系统：{value}",
+      "route": "输出：{value}",
+      "aecPath": "回声消除：{value}",
+      "voiceProcessing": "语音处理：{value}",
+      "on": "开",
+      "off": "关",
+      "share": "分享结果",
+      "unavailable": "回声测试仅在应用的开发版和测试版中提供。"
+    }
+  }
+}
