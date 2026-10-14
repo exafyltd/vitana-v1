@@ -4,7 +4,8 @@
       "overviewTitle": "记忆",
       "overviewDescription": "Vitana 对你的了解——以及你这周的 Vitana 指数表现。",
       "permissionsTitle": "Vitana 可以学习什么",
-      "permissionsDescription": "由你决定 Vitana 从哪些内容中学习。其他人看不到这些数据。"
+      "permissionsDescription": "由你决定 Vitana 从哪些内容中学习。其他人看不到这些数据。",
+      "_pending_review": {}
     },
     "week": {
       "title": "你这周的 Vitana 指数",
@@ -15,14 +16,16 @@
       "steady": "五大支柱都很稳定。",
       "openTimeline": "打开你的时间线",
       "empty": "还没有 Vitana 指数。先完成起始评估——之后这张卡片每周告诉你有哪些变化。",
-      "start": "开始起始评估"
+      "start": "开始起始评估",
+      "_pending_review": {}
     },
     "routines": {
       "title": "Vitana 注意到的习惯",
       "description": "Vitana 就是这样了解你的日常。不对的内容可以让它忘掉。",
       "empty": "Vitana 还没有注意到任何习惯。使用几天后就会出现。",
       "forget": "忘记",
-      "manage": "管理 Vitana 学习的内容"
+      "manage": "管理 Vitana 学习的内容",
+      "_pending_review": {}
     },
     "routine": {
       "screen_habit": "28 天中有 {days} 天你会打开 {screen}",
@@ -32,14 +35,16 @@
       "time_of_day_preference": "你的日程活动多在{bucket}完成",
       "day_of_week_rhythm": "{day}是你最活跃的日子之一",
       "category_affinity": "你经常做“{tag}”",
-      "generic": "你日常中的一种节奏"
+      "generic": "你日常中的一种节奏",
+      "_pending_review": {}
     },
     "bucket": {
       "morning": "早上",
       "midday": "中午",
       "afternoon": "下午",
       "evening": "晚上",
-      "night": "深夜"
+      "night": "深夜",
+      "_pending_review": {}
     },
     "switches": {
       "title": "Vitana 可以从哪些内容中学习",
@@ -50,7 +55,8 @@
       "appUsageDescription": "你何时打开哪些区域。从不显示——Vitana 只用它来识别你的习惯。",
       "appUsageOff": "关闭后，Vitana 由此学到的习惯也会被删除。",
       "healthNote": "健康数据同时受到你的同意设置保护。",
-      "unavailable": "这些开关即将可用。"
+      "unavailable": "这些开关即将可用。",
+      "_pending_review": {}
     },
     "usage": {
       "title": "你的使用数据",
@@ -62,12 +68,16 @@
       "deleteTitle": "删除所有使用数据？",
       "deleteDescription": "页面访问和技术痕迹将被删除，Vitana 从中学到的习惯也会一并删除。你的时间线会保留。",
       "cancel": "取消",
-      "confirm": "删除"
+      "confirm": "删除",
+      "_pending_review": {}
     },
     "toast": {
       "saveFailed": "没有成功，请再试一次。",
       "forgotten": "Vitana 已经忘记了。",
-      "deleted": "你的使用数据已删除。"
-    }
-  }
+      "deleted": "你的使用数据已删除。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

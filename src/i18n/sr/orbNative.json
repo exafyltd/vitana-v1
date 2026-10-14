@@ -7,23 +7,27 @@
       "reconnecting": "Veza se ponovo uspostavlja …",
       "ended": "Razgovor je završen",
       "muted": "Tvoj mikrofon je isključen",
-      "unavailable": "Vitana još nije dostupna u ovoj verziji aplikacije."
+      "unavailable": "Vitana još nije dostupna u ovoj verziji aplikacije.",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "Razgovaraj sa Vitanom",
       "body": "Da bi te Vitana čula, aplikaciji je potreban pristup tvom mikrofonu. Mikrofon je uključen samo dok je razgovor otvoren.",
       "continue": "Nastavi",
-      "notNow": "Ne sada"
+      "notNow": "Ne sada",
+      "_pending_review": {}
     },
     "denied": {
       "body": "Dozvoli pristup mikrofonu u Podešavanjima da bi mogao da razgovaraš sa Vitanom.",
-      "openSettings": "Otvori Podešavanja"
+      "openSettings": "Otvori Podešavanja",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "Zatvori razgovor sa Vitanom",
       "micMute": "Isključi mikrofon",
       "micUnmute": "Uključi mikrofon",
-      "restart": "Započni novi razgovor sa Vitanom"
+      "restart": "Započni novi razgovor sa Vitanom",
+      "_pending_review": {}
     },
     "bench": {
       "title": "Test eha za glas",
@@ -52,7 +56,10 @@
       "on": "uključeno",
       "off": "isključeno",
       "share": "Podeli rezultat",
-      "unavailable": "Test eha postoji samo u razvojnim i test verzijama aplikacije."
-    }
-  }
+      "unavailable": "Test eha postoji samo u razvojnim i test verzijama aplikacije.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
