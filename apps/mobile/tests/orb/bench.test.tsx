@@ -51,7 +51,7 @@ const mockVoice = {
 jest.mock('../../modules/vitana-voice/src/VitanaVoice', () => ({ getVitanaVoice: () => mockVoice }));
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const OrbBench = (require('../../app/dev/orb-bench') as { default: () => JSX.Element }).default;
+const OrbBench = (require('../../app/dev/orb-bench') as { default: () => import('react').ReactElement }).default;
 
 describe('EchoBench (same gate as a live session)', () => {
   const T0 = 10_000;
