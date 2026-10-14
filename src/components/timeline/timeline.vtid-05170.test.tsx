@@ -40,7 +40,7 @@ vi.mock('@/lib/timeline-api', async (orig) => ({
   deleteTimelineItem: (...a: unknown[]) => api.deleteTimelineItem(...a),
 }));
 
-import { TimelineBody } from './TimelineBody';
+import { TimelineBody, localDayEndIso } from './TimelineBody';
 
 const now = new Date();
 const iso = (h: number) => new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, 0, 0).toISOString();
@@ -78,12 +78,12 @@ const group = {
 };
 const indexDay = { kind: 'index_day', id: `index-day:${today}`, date: today, delta_total: 6, score_total_after: 306, delta_pillars: { hydration: 6 }, top_pillar: 'hydration', movements: 1, daily_update: false };
 
-function renderBody() {
+function renderBody(props: { searchTerm?: string; onClearSearch?: () => void } = {}) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
     <QueryClientProvider client={qc}>
       <MemoryRouter>
-        <TimelineBody />
+        <TimelineBody {...props} />
       </MemoryRouter>
     </QueryClientProvider>,
   );
@@ -155,6 +155,32 @@ describe('VTID-05170 timeline body', () => {
     api.fetchTimelineSpotlight.mockResolvedValue(null);
     renderBody();
     expect(await screen.findByTestId('timeline-no-index')).toBeTruthy();
+  });
+
+  it('a failed spotlight read shows an error with retry, never the "no Index yet" prompt', async () => {
+    api.fetchTimelineSpotlight.mockRejectedValueOnce(new Error('boom'));
+    renderBody();
+    const err = await screen.findByTestId('timeline-spotlight-error');
+    expect(screen.queryByTestId('timeline-no-index')).toBeNull();
+    await act(async () => { fireEvent.click(within(err).getByRole('button')); });
+    expect(await screen.findByTestId('timeline-index-spotlight')).toBeTruthy();
+  });
+
+  it('jump-to-date sends the end of the member\'s local day, not UTC midnight', async () => {
+    renderBody();
+    await screen.findAllByTestId('timeline-moment');
+    fireEvent.change(screen.getByTestId('timeline-jump'), { target: { value: '2026-10-14' } });
+    const expected = new Date(2026, 9, 14, 23, 59, 59, 999).toISOString();
+    expect(localDayEndIso('2026-10-14')).toBe(expected);
+    await waitFor(() => expect(api.fetchTimelinePage).toHaveBeenLastCalledWith(expect.objectContaining({ to: expected }), null));
+  });
+
+  it('Clear also clears a search owned by the page (Spotlight header search)', async () => {
+    const onClearSearch = vi.fn();
+    renderBody({ searchTerm: 'water', onClearSearch });
+    await waitFor(() => expect(api.fetchTimelinePage).toHaveBeenLastCalledWith(expect.objectContaining({ q: 'water' }), null));
+    fireEvent.click(await screen.findByRole('button', { name: /timeline\.filters\.clear/ }));
+    expect(onClearSearch).toHaveBeenCalledTimes(1);
   });
 });
 

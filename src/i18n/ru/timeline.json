@@ -28,6 +28,7 @@
       "improve": "Укрепить: {pillar}",
       "empty": "У тебя пока нет Vitana Index.",
       "start": "Начать",
+      "error": "Не удалось загрузить твой Vitana Index прямо сейчас.",
       "_pending_review": {}
     },
     "balance": {

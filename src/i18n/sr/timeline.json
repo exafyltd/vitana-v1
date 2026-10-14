@@ -28,6 +28,7 @@
       "improve": "Ojačaj {pillar}",
       "empty": "Još nemaš Vitana Index.",
       "start": "Počni sada",
+      "error": "Tvoj Vitana Index trenutno nije moguće učitati.",
       "_pending_review": {}
     },
     "balance": {

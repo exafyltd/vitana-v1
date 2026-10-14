@@ -24,7 +24,8 @@
       "pillarsLabel": "Deine fünf Säulen",
       "improve": "{pillar} stärken",
       "empty": "Du hast noch keinen Vitana Index.",
-      "start": "Jetzt starten"
+      "start": "Jetzt starten",
+      "error": "Dein Vitana Index konnte gerade nicht geladen werden."
     },
     "balance": {
       "full": "Deine Säulen sind im Gleichgewicht – volle Punktzahl.",

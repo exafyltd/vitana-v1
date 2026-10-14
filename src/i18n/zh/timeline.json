@@ -28,6 +28,7 @@
       "improve": "加强{pillar}",
       "empty": "你还没有 Vitana 指数。",
       "start": "现在开始",
+      "error": "暂时无法加载你的 Vitana Index。",
       "_pending_review": {}
     },
     "balance": {

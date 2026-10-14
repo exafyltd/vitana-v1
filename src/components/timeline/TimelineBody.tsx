@@ -39,7 +39,12 @@ function dayHeading(day: string): string {
   return fmtDate(`${day}T12:00:00`, { weekday: "long", day: "numeric", month: "long" });
 }
 
-export function TimelineBody({ searchTerm }: { searchTerm?: string }) {
+/** End of the member's chosen local day, as the UTC instant the API filters on. */
+export function localDayEndIso(day: string): string {
+  return new Date(`${day}T23:59:59.999`).toISOString();
+}
+
+export function TimelineBody({ searchTerm, onClearSearch }: { searchTerm?: string; onClearSearch?: () => void }) {
   const [pillar, setPillar] = useState<PillarKey | null>(null);
   const [category, setCategory] = useState<string | null>(null);
   const [showMore, setShowMore] = useState(false);
@@ -53,7 +58,7 @@ export function TimelineBody({ searchTerm }: { searchTerm?: string }) {
       pillar,
       category,
       q: q.length >= 2 ? q : null,
-      to: jumpTo ? `${jumpTo}T23:59:59Z` : null,
+      to: jumpTo ? localDayEndIso(jumpTo) : null,
     }),
     [pillar, category, q, jumpTo],
   );
@@ -87,6 +92,14 @@ export function TimelineBody({ searchTerm }: { searchTerm?: string }) {
     <div className="flex min-w-0 flex-col gap-4" data-testid="timeline-body">
       {spotlight.isLoading ? (
         <VCardSkeleton size="standard" />
+      ) : spotlight.isError ? (
+        <div className="flex flex-col items-start gap-2 rounded-vcard border border-dashed p-4" data-testid="timeline-spotlight-error">
+          <p className="text-sm text-muted-foreground">{t("timeline.spotlight.error")}</p>
+          <Button variant="outline" size="sm" onClick={() => void spotlight.refetch()}>
+            <RefreshCw className="me-1.5 h-4 w-4" aria-hidden />
+            {t("timeline.retry")}
+          </Button>
+        </div>
       ) : spotlight.data ? (
         <IndexSpotlightCard spotlight={spotlight.data} />
       ) : (
@@ -154,7 +167,7 @@ export function TimelineBody({ searchTerm }: { searchTerm?: string }) {
             />
           </label>
           {filtered && (
-            <Button variant="ghost" size="sm" onClick={() => { setPillar(null); setCategory(null); setQuery(""); setJumpTo(""); }}>
+            <Button variant="ghost" size="sm" onClick={() => { setPillar(null); setCategory(null); setQuery(""); setJumpTo(""); onClearSearch?.(); }}>
               <X className="me-1 h-4 w-4" aria-hidden />
               {t("timeline.filters.clear")}
             </Button>

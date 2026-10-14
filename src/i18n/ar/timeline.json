@@ -28,6 +28,7 @@
       "improve": "قوِّ {pillar}",
       "empty": "ليس لديك مؤشر Vitana بعد.",
       "start": "ابدأ الآن",
+      "error": "تعذّر تحميل مؤشر Vitana الخاص بك الآن.",
       "_pending_review": {}
     },
     "balance": {

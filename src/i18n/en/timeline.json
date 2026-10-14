@@ -28,6 +28,7 @@
       "improve": "Strengthen {pillar}",
       "empty": "You don't have a Vitana Index yet.",
       "start": "Start now",
+      "error": "Your Vitana Index couldn't be loaded right now.",
       "_pending_review": {}
     },
     "balance": {

@@ -28,6 +28,7 @@
       "improve": "{pillar} sütununu güçlendir",
       "empty": "Henüz bir Vitana Index'in yok.",
       "start": "Şimdi başla",
+      "error": "Vitana Index'in şu anda yüklenemedi.",
       "_pending_review": {}
     },
     "balance": {

@@ -28,6 +28,7 @@
       "improve": "Wzmocnij: {pillar}",
       "empty": "Nie masz jeszcze Vitana Index.",
       "start": "Zacznij teraz",
+      "error": "Nie udało się teraz wczytać Twojego Vitana Index.",
       "_pending_review": {}
     },
     "balance": {
