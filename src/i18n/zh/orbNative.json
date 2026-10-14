@@ -7,23 +7,27 @@
       "reconnecting": "正在重新连接 …",
       "ended": "对话已结束",
       "muted": "你的麦克风已静音",
-      "unavailable": "此版本的应用暂时还不能使用 Vitana。"
+      "unavailable": "此版本的应用暂时还不能使用 Vitana。",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "和 Vitana 对话",
       "body": "为了让 Vitana 听到你，应用需要访问你的麦克风。麦克风只在对话打开时开启。",
       "continue": "继续",
-      "notNow": "以后再说"
+      "notNow": "以后再说",
+      "_pending_review": {}
     },
     "denied": {
       "body": "请在设置中允许访问麦克风，这样你就可以和 Vitana 对话。",
-      "openSettings": "打开设置"
+      "openSettings": "打开设置",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "关闭与 Vitana 的对话",
       "micMute": "将麦克风静音",
       "micUnmute": "打开麦克风",
-      "restart": "开始与 Vitana 的新对话"
+      "restart": "开始与 Vitana 的新对话",
+      "_pending_review": {}
     },
     "bench": {
       "title": "语音回声测试",
@@ -52,7 +56,10 @@
       "on": "开",
       "off": "关",
       "share": "分享结果",
-      "unavailable": "回声测试仅在应用的开发版和测试版中提供。"
-    }
-  }
+      "unavailable": "回声测试仅在应用的开发版和测试版中提供。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

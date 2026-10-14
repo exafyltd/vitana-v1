@@ -5949,60 +5949,32 @@
             "insight": "Growing your knowledge base"
           },
           "financeAssets": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Finance & Assets",
-            "insight": "Building financial clarity"
+            "title": "Finanças e Ativos",
+            "insight": "Construindo clareza financeira"
           },
           "locationEnvironment": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Location & Environment",
-            "insight": "Mapping your physical world"
+            "title": "Localização e Ambiente",
+            "insight": "Mapeando seu mundo físico"
           },
           "digitalFootprint": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Digital Footprint",
-            "insight": "Managing your digital presence"
+            "title": "Pegada Digital",
+            "insight": "Gerenciando sua presença digital"
           },
           "valuesAspirations": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Values & Aspirations",
-            "insight": "Defining your compass"
+            "title": "Valores e Aspirações",
+            "insight": "Definindo sua bússola"
           },
           "autopilotSettings": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Autopilot & Context",
-            "insight": "Configuring your AI companion"
+            "title": "Piloto Automático e Contexto",
+            "insight": "Configurando seu companheiro de IA"
           },
           "futurePlans": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Future Plans",
-            "insight": "Designing your evolution"
+            "title": "Planos Futuros",
+            "insight": "Projetando sua evolução"
           },
           "general": {
-            "_pending_review": {
-              "title": true,
-              "insight": true
-            },
-            "title": "Uncategorized",
-            "insight": "Memories awaiting categorization"
+            "title": "Não Categorizado",
+            "insight": "Memórias aguardando categorização"
           }
         },
         "lastUpdated": "Last updated {date}",
@@ -6239,10 +6211,7 @@
       "imageShareFailed": "Não foi possível partilhar",
       "imageLoading": "A carregar imagem",
       "unknownSize": "Tamanho desconhecido",
-      "_pending_review": {
-        "talkToVitana": true
-      },
-      "talkToVitana": "Talk to Vitana"
+      "talkToVitana": "Fale com a Vitana"
     },
     "mobile": {
       "searching": "A pesquisar…",
@@ -6294,16 +6263,10 @@
       "delete": "Excluir",
       "close": "Fechar",
       "closeNotifications": "Fechar notificações",
-      "turnOnTitle": "As notificações estão desativadas",
-      "turnOnBody": "Este app não consegue enviar notificações para você agora. Abra as configurações do seu celular, encontre o app Vitana e ative as notificações. Depois toque em \"Tentar novamente\".",
+      "turnOnTitle": "Notificações desativadas",
+      "turnOnBody": "Este aplicativo não pode enviar notificações para você agora. Abra as configurações do seu telefone, encontre o aplicativo Vitana e ative as notificações lá. Em seguida, toque em \"Tentar novamente\".",
       "turnOnTryAgain": "Tentar novamente",
-      "turnOnDismiss": "Ocultar",
-      "_pending_review": {
-        "turnOnTitle": true,
-        "turnOnBody": true,
-        "turnOnTryAgain": true,
-        "turnOnDismiss": true
-      }
+      "turnOnDismiss": "Descartar"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Escolha a parte do nome do seu ID Vitana",
@@ -6916,10 +6879,7 @@
       "noMissed": "Nenhum lembrete perdido — você está com tudo em dia.",
       "creating": "A criar…",
       "createReminder": "Criar lembrete",
-      "vitana": "Vitana",
-      "_pending_review": {
-        "vitana": true
-      }
+      "vitana": "Vitana"
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no seu inventário",
@@ -7739,29 +7699,19 @@
       },
       "vitanaMessages": {
         "_pending_review": {
-          "title": true,
-          "desc": true,
-          "enabled": true,
-          "enabledDesc": true,
-          "topics": true,
-          "health": true,
-          "healthDesc": true,
-          "community": true,
-          "communityDesc": true,
-          "business": true,
           "businessDesc": true,
           "loadError": true
         },
-        "title": "Messages from Vitana",
-        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
-        "enabled": "Receive messages from Vitana",
-        "enabledDesc": "At most one message a day. You can turn them off at any time.",
-        "topics": "Topics",
-        "health": "Health",
-        "healthDesc": "Tips for your health and your Vitana Index.",
-        "community": "Community",
-        "communityDesc": "People, groups and events that suit you.",
-        "business": "Business & income",
+        "title": "Mensagens da Vitana",
+        "desc": "De vez em quando, a Vitana envia uma mensagem pessoal no Messenger, com uma dica que combina com você agora.",
+        "enabled": "Receber mensagens da Vitana",
+        "enabledDesc": "No máximo uma mensagem por dia. Você pode desativá-las a qualquer momento.",
+        "topics": "Tópicos",
+        "health": "Saúde",
+        "healthDesc": "Dicas para sua saúde e seu Índice Vitana.",
+        "community": "Comunidade",
+        "communityDesc": "Pessoas, grupos e eventos que combinam com você.",
+        "business": "Negócios e renda",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded."
       }
