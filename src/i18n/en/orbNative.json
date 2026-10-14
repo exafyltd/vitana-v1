@@ -7,23 +7,27 @@
       "reconnecting": "Reconnecting …",
       "ended": "Conversation ended",
       "muted": "Your microphone is muted",
-      "unavailable": "Vitana isn't available in this app version yet."
+      "unavailable": "Vitana isn't available in this app version yet.",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "Talk to Vitana",
       "body": "So Vitana can hear you, the app needs access to your microphone. The microphone is only on while the conversation is open.",
       "continue": "Continue",
-      "notNow": "Not now"
+      "notNow": "Not now",
+      "_pending_review": {}
     },
     "denied": {
       "body": "Allow microphone access in Settings so you can talk to Vitana.",
-      "openSettings": "Open Settings"
+      "openSettings": "Open Settings",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "Close the conversation with Vitana",
       "micMute": "Mute microphone",
       "micUnmute": "Unmute microphone",
-      "restart": "Start a new conversation with Vitana"
+      "restart": "Start a new conversation with Vitana",
+      "_pending_review": {}
     },
     "bench": {
       "title": "Voice echo test",
@@ -52,7 +56,10 @@
       "on": "on",
       "off": "off",
       "share": "Share result",
-      "unavailable": "The echo test is only available in development and test versions of the app."
-    }
-  }
+      "unavailable": "The echo test is only available in development and test versions of the app.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

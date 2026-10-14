@@ -1,0 +1,73 @@
+{
+  "memoryLearning": {
+    "header": {
+      "overviewTitle": "Memorija",
+      "overviewDescription": "Šta Vitana zna o tebi – i kako ti je prošla nedelja u Vitana Indexu.",
+      "permissionsTitle": "Šta Vitana sme da uči",
+      "permissionsDescription": "Ti odlučuješ iz čega Vitana uči. Niko drugi ne vidi ove podatke."
+    },
+    "week": {
+      "title": "Tvoja nedelja u Vitana Indexu",
+      "change": "{delta} za 7 dana",
+      "noChange": "Bez promene za 7 dana",
+      "rising": "Raste: {pillars}",
+      "slipping": "Opada: {pillars}",
+      "steady": "Svih pet stubova je stabilno.",
+      "openTimeline": "Otvori svoju vremensku liniju",
+      "empty": "Još nemaš Vitana Index. Uradi početnu proveru – onda ti ova kartica svake nedelje kaže šta se promenilo.",
+      "start": "Uradi početnu proveru"
+    },
+    "routines": {
+      "title": "Rutine koje je Vitana primetila",
+      "description": "Ovako Vitana uči tvoju svakodnevicu. Neka zaboravi ono što nije tačno.",
+      "empty": "Vitana još nije primetila nijednu rutinu. To dolazi kad koristiš aplikaciju nekoliko dana.",
+      "forget": "Zaboravi",
+      "manage": "Upravljaj time šta Vitana uči"
+    },
+    "routine": {
+      "screen_habit": "Otvaraš {screen} {days} od 28 dana",
+      "active_hours": "Najaktivniji si {bucket}",
+      "feature_affinity": "Najviše koristiš {area}",
+      "pillar_rhythm": "{pillar}: uglavnom {bucket}, oko {n} dana nedeljno",
+      "time_of_day_preference": "Aktivnosti iz kalendara uglavnom radiš {bucket}",
+      "day_of_week_rhythm": "{day} ti je jedan od najaktivnijih dana",
+      "category_affinity": "Često radiš „{tag}“",
+      "generic": "Ritam u tvojoj svakodnevici"
+    },
+    "bucket": {
+      "morning": "ujutru",
+      "midday": "oko podneva",
+      "afternoon": "popodne",
+      "evening": "uveče",
+      "night": "noću"
+    },
+    "switches": {
+      "title": "Iz čega Vitana sme da uči",
+      "description": "Isključeno znači: Vitana više ne koristi ovu oblast za razgovore, rutine i preporuke. Tvoji unosi ostaju na vremenskoj liniji.",
+      "pillarsTitle": "Tvojih pet stubova",
+      "lifeTitle": "Tvoj život u Vitanalandu",
+      "appUsageTitle": "Tvoje korišćenje aplikacije",
+      "appUsageDescription": "Koje oblasti otvaraš i kada. Nikad se ne prikazuje – Vitana iz toga samo prepoznaje tvoje rutine.",
+      "appUsageOff": "Isključivanje briše i rutine koje je Vitana iz toga naučila.",
+      "healthNote": "Zdravstveni podaci ostaju zaštićeni i tvojim saglasnostima.",
+      "unavailable": "Ovi prekidači uskoro će biti dostupni."
+    },
+    "usage": {
+      "title": "Tvoji podaci o korišćenju",
+      "description": "Posete ekranima i tehnički tragovi. Nikad se ne pojavljuju na tvojoj vremenskoj liniji.",
+      "count": "{n} sačuvanih unosa",
+      "countUnavailable": "Pregled će uskoro biti dostupan.",
+      "export": "Izvezi",
+      "delete": "Obriši sve",
+      "deleteTitle": "Obrisati sve podatke o korišćenju?",
+      "deleteDescription": "Brišu se posete ekranima i tehnički tragovi, zajedno sa rutinama koje je Vitana iz njih naučila. Tvoja vremenska linija ostaje.",
+      "cancel": "Otkaži",
+      "confirm": "Obriši"
+    },
+    "toast": {
+      "saveFailed": "Nije uspelo. Pokušaj ponovo.",
+      "forgotten": "Vitana je to zaboravila.",
+      "deleted": "Tvoji podaci o korišćenju su obrisani."
+    }
+  }
+}

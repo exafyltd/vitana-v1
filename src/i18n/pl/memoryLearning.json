@@ -1,0 +1,73 @@
+{
+  "memoryLearning": {
+    "header": {
+      "overviewTitle": "Pamięć",
+      "overviewDescription": "Co Vitana o tobie wie – i jak minął ci tydzień w Vitana Index.",
+      "permissionsTitle": "Czego Vitana może się uczyć",
+      "permissionsDescription": "Ty decydujesz, z czego Vitana się uczy. Nikt inny nie widzi tych danych."
+    },
+    "week": {
+      "title": "Twój tydzień w Vitana Index",
+      "change": "{delta} w 7 dni",
+      "noChange": "Bez zmian w ciągu 7 dni",
+      "rising": "Rośnie: {pillars}",
+      "slipping": "Spada: {pillars}",
+      "steady": "Wszystkie pięć filarów jest stabilnych.",
+      "openTimeline": "Otwórz swoją oś czasu",
+      "empty": "Nie masz jeszcze Vitana Index. Zrób test startowy – wtedy ta karta co tydzień pokaże, co się zmieniło.",
+      "start": "Zrób test startowy"
+    },
+    "routines": {
+      "title": "Rutyny, które zauważyła Vitana",
+      "description": "Tak Vitana poznaje twoją codzienność. Każ jej zapomnieć to, co się nie zgadza.",
+      "empty": "Vitana nie zauważyła jeszcze żadnej rutyny. Pojawi się po kilku dniach korzystania z aplikacji.",
+      "forget": "Zapomnij",
+      "manage": "Decyduj, czego uczy się Vitana"
+    },
+    "routine": {
+      "screen_habit": "Otwierasz {screen} przez {days} z 28 dni",
+      "active_hours": "Najczęściej jesteś aktywny {bucket}",
+      "feature_affinity": "Najczęściej korzystasz z: {area}",
+      "pillar_rhythm": "{pillar}: zwykle {bucket}, ok. {n} dni w tygodniu",
+      "time_of_day_preference": "Zadania z kalendarza robisz zwykle {bucket}",
+      "day_of_week_rhythm": "{day} to jeden z twoich najaktywniejszych dni",
+      "category_affinity": "Często robisz „{tag}”",
+      "generic": "Rytm w twojej codzienności"
+    },
+    "bucket": {
+      "morning": "rano",
+      "midday": "w południe",
+      "afternoon": "po południu",
+      "evening": "wieczorem",
+      "night": "w nocy"
+    },
+    "switches": {
+      "title": "Z czego Vitana może się uczyć",
+      "description": "Wyłączone oznacza: Vitana nie używa już tego obszaru w rozmowach, rutynach i rekomendacjach. Twoje wpisy zostają na osi czasu.",
+      "pillarsTitle": "Twoje pięć filarów",
+      "lifeTitle": "Twoje życie w Vitanaland",
+      "appUsageTitle": "Twoje korzystanie z aplikacji",
+      "appUsageDescription": "Które obszary otwierasz i kiedy. Nigdy nie jest pokazywane – Vitana rozpoznaje z tego tylko twoje rutyny.",
+      "appUsageOff": "Wyłączenie usuwa też rutyny, których Vitana się z tego nauczyła.",
+      "healthNote": "Dane zdrowotne są dodatkowo chronione twoimi zgodami.",
+      "unavailable": "Te przełączniki będą wkrótce dostępne."
+    },
+    "usage": {
+      "title": "Twoje dane o korzystaniu",
+      "description": "Odwiedziny ekranów i ślady techniczne. Nigdy nie pojawiają się na twojej osi czasu.",
+      "count": "Zapisane wpisy: {n}",
+      "countUnavailable": "Podsumowanie będzie wkrótce dostępne.",
+      "export": "Eksportuj",
+      "delete": "Usuń wszystko",
+      "deleteTitle": "Usunąć wszystkie dane o korzystaniu?",
+      "deleteDescription": "Odwiedziny ekranów i ślady techniczne zostaną usunięte razem z rutynami, których Vitana się z nich nauczyła. Twoja oś czasu zostaje.",
+      "cancel": "Anuluj",
+      "confirm": "Usuń"
+    },
+    "toast": {
+      "saveFailed": "Nie udało się. Spróbuj ponownie.",
+      "forgotten": "Vitana o tym zapomniała.",
+      "deleted": "Twoje dane o korzystaniu zostały usunięte."
+    }
+  }
+}

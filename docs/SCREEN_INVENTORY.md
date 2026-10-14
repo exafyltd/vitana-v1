@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 390
-- **Distinct i18n keys consumed:** 4726
+- **Distinct i18n keys consumed:** 4702
 - **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -2716,11 +2716,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/memory/Permissions.tsx
 
-**Status:** ✅ clean — keys consumed: 25, namespaces: 1
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 11780
+- `screens` — used: 1, total in shard: 11780
 
 ### src/pages/memory/Recall.tsx
 

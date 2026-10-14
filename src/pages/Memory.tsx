@@ -1,3 +1,10 @@
+/**
+ * Memory overview. VTID-05172 (Life Timeline P6): leads with this week's
+ * Vitana Index story and the routines Vitana noticed (each forgettable), then
+ * what Vitana knows and the memory categories. No mock data, no made-up
+ * "last synced" time. Desktop Spotlight → ScreenFrame "collection"; phones
+ * keep the app layout with the same content.
+ */
 import { useUrlTab } from "@/hooks/useUrlTab";
 import { useState } from "react";
 import { Plus } from "lucide-react";
@@ -5,233 +12,112 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { ScreenFrame } from "@/components/layout/spotlight";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { AddMemoryDialog } from "@/components/memory/AddMemoryDialog";
 import { MemoryCategoryGrid } from "@/components/memory/MemoryCategoryGrid";
 import { WhatVitanaKnows } from "@/components/memory/WhatVitanaKnows";
 import { MemoryTimelineTab } from "@/components/memory/MemoryTimelineTab";
 import { MemoryEducationTab } from "@/components/memory/MemoryEducationTab";
+import { IndexWeekStory } from "@/components/memory/learning/IndexWeekStory";
+import { RoutinesCard } from "@/components/memory/learning/RoutinesCard";
 import { memoryNavigation } from "@/config/navigation";
-import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
-import { t } from '@/lib/i18n-toast';
-
-import { formatDistanceToNow } from '@/lib/locale-format';
-import { ScreenFrame } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
-// Mock data for Memory Overview - Recent Memories
-const recentMemories = [
-  {
-    title: "Morning Wellness Reflection 🌅",
-    description: "Captured the perfect sunrise yoga session and meditation insights",
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
-    category: "wellness" as const,
-    pillar: "Mental",
-    author: { name: "You", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Home Studio",
-    timestamp: "This morning"
-  },
-  {
-    title: "Hydration Milestone Achievement 💧",
-    description: "Successfully completed 30-day water tracking challenge",
-    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
-    category: "achievement" as const,
-    pillar: "Hydration",
-    author: { name: "Health Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Progress Hub",
-    timestamp: "Yesterday"
-  },
-  {
-    title: "Nutrition Discovery Voice Note 🎤",
-    description: "Recorded insights about Mediterranean diet effects on energy levels",
-    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
-    category: "media" as const,
-    pillar: "Nutrition",
-    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Kitchen",
-    timestamp: "2 days ago"
-  }
-];
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { t } from "@/lib/i18n-toast";
 
-// Health Timeline Events
-const timelineEvents = [
-  {
-    title: "Sleep Pattern Breakthrough 😴",
-    description: "Discovered optimal bedtime routine leading to 95% sleep quality score",
-    imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
-    category: "wellness" as const,
-    pillar: "Sleep",
-    author: { name: "Sleep Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Bedroom",
-    timestamp: "3 days ago"
-  },
-  {
-    title: "Exercise Milestone Celebration 🏃‍♀️",
-    description: "Completed first 10K run after 3 months of training progression",
-    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-    category: "achievement" as const,
-    pillar: "Exercise",
-    author: { name: "Fitness Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "City Park",
-    timestamp: "1 week ago"
-  },
-  {
-    title: "Mindfulness Photo Collection 📸",
-    description: "Weekly gratitude photo series showcasing daily wellness moments",
-    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    category: "media" as const,
-    pillar: "Mental",
-    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Various",
-    timestamp: "This week"
-  }
-];
+const TABS = ["categories", "timeline", "education"] as const;
 
-// Diary Entries
-const diaryEntries = [
-  {
-    title: "Voice Reflection: Energy Levels 🎙️",
-    description: "Detailed analysis of how morning routines impact daily energy patterns",
-    imageUrl: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop",
-    category: "media" as const,
-    pillar: "Mental",
-    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Morning Routine",
-    timestamp: "Today"
-  },
-  {
-    title: "Wellness Photo Journey 📱",
-    description: "Visual diary of healthy meal prep and mindful eating practices",
-    imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
-    category: "media" as const,
-    pillar: "Nutrition",
-    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Kitchen Studio",
-    timestamp: "Yesterday"
-  },
-  {
-    title: "Community Connection Memory 👥",
-    description: "Memorable yoga class experience and new friendships formed",
-    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
-    category: "community" as const,
-    pillar: "Mental",
-    author: { name: "Community", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    location: "Wellness Center",
-    timestamp: "2 days ago"
-  }
-];
+function Panes() {
+  return (
+    <>
+      <SplitBarContent value="categories">
+        <div className="mt-4 space-y-4" data-testid="memory-overview">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <IndexWeekStory />
+            <RoutinesCard />
+          </div>
+          <WhatVitanaKnows />
+          <MemoryCategoryGrid />
+        </div>
+      </SplitBarContent>
+      <SplitBarContent value="timeline">
+        <MemoryTimelineTab />
+      </SplitBarContent>
+      <SplitBarContent value="education">
+        <MemoryEducationTab />
+      </SplitBarContent>
+    </>
+  );
+}
+
+function tabLabel(v: (typeof TABS)[number]): string {
+  return v === "categories" ? t("screens.memory.categories") : v === "timeline" ? t("screens.memory.timeline") : t("screens.memory.education");
+}
 
 export default withScreenId(function Memory() {
+  const spotlight = useSpotlightEnabled();
   const [activeTab, setActiveTab] = useUrlTab("tab", "categories");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
-  // VTID-05117 — Spotlight (desktop + flag): collection frame; phones and flag-off keep the screen below.
-  const spotlight = useSpotlightEnabled();
+
+  const addButton = (
+    <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+      <Plus className="me-2 h-4 w-4" aria-hidden />
+      {t("screens.memory.addMemory")}
+    </Button>
+  );
+  const seo = <SEO title={t("screens.memory.memoryHubVitana")} description={t("memoryLearning.header.overviewDescription")} />;
+  const dialog = <AddMemoryDialog open={actionPopupOpen} onOpenChange={setActionPopupOpen} />;
 
   if (spotlight) {
     return (
       <AppLayout>
-        <SEO title={t('screens.memory.memoryHubVitana')} description={t('spotlightMember.memory.overview.desc')} />
+        {seo}
         <ScreenFrame
           archetype="collection"
           subNav={{ items: memoryNavigation }}
-          header={{ title: t('screens.memory.memoryHub'), description: t('spotlightMember.memory.overview.desc'), emoji: "🧠" }}
+          header={{ title: t("screens.memory.memoryHub"), description: t("memoryLearning.header.overviewDescription"), emoji: "🧠" }}
           utility={{
             children: (
-              <>
-                <UniversalCalendarButton />
-                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
-                  <Plus className="size-4" />
-                  {t('screens.memory.addMemory')}
-                </Button>
-              </>
+              <div className="flex min-w-max items-center gap-2.5">
+                <ExpandableSearchButton placeholder={t("screens.memory.searchMemoriesInsightsTimeline")} />
+                {addButton}
+              </div>
             ),
           }}
-          tabs={{
-            value: activeTab,
-            onValueChange: setActiveTab,
-            items: [
-              { value: "categories", label: t('screens.memory.categories') },
-              { value: "timeline", label: t('screens.memory.timeline') },
-              { value: "education", label: t('screens.memory.education') },
-            ],
-          }}
+          tabs={{ value: activeTab, onValueChange: setActiveTab, items: TABS.map((v) => ({ value: v, label: tabLabel(v) })) }}
         >
-          <SplitBarContent value="categories">
-            <div className="flex flex-col gap-4">
-              <WhatVitanaKnows />
-              <MemoryCategoryGrid />
-            </div>
-          </SplitBarContent>
-          <SplitBarContent value="timeline">
-            <MemoryTimelineTab />
-          </SplitBarContent>
-          <SplitBarContent value="education">
-            <MemoryEducationTab />
-          </SplitBarContent>
+          <Panes />
         </ScreenFrame>
-        <AddMemoryDialog open={actionPopupOpen} onOpenChange={setActionPopupOpen} />
+        {dialog}
       </AppLayout>
     );
   }
 
-  // Mock sync timestamp - will be replaced with real data
-  const mockSyncTimestamp = formatDistanceToNow(new Date(Date.now() - 2 * 60 * 60 * 1000), { addSuffix: true });
-
   return (
     <AppLayout>
-      <SEO title={t('screens.memory.memoryHubVitana')} description="Track and review your wellness journey through AI-driven insights and memory tracking." />
+      {seo}
       <SubNavigation items={memoryNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
-        <StandardHeader 
-          title={t('screens.memory.memoryHub')}
-          description="Track and review your wellness journey through AI-driven insights."
-          emoji="🧠"
-          syncTimestamp={`Last synced ${mockSyncTimestamp}`}
-        />
-
+      <div className="mx-auto w-full max-w-wide space-y-4 px-4 py-4 sm:px-6">
+        <StandardHeader title={t("screens.memory.memoryHub")} description={t("memoryLearning.header.overviewDescription")} emoji="🧠" />
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder={t('screens.memory.searchMemoriesInsightsTimeline')} />
+          <ExpandableSearchButton placeholder={t("screens.memory.searchMemoriesInsightsTimeline")} />
           <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 me-2" />
-            {t('screens.memory.addMemory')}
-          </Button>
+          {addButton}
         </UtilityActionButton>
-
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="categories">{t('screens.memory.categories')}</SplitBarTrigger>
-            <SplitBarTrigger value="timeline">{t('screens.memory.timeline')}</SplitBarTrigger>
-            <SplitBarTrigger value="education">{t('screens.memory.education')}</SplitBarTrigger>
+            {TABS.map((v) => (
+              <SplitBarTrigger key={v} value={v}>{tabLabel(v)}</SplitBarTrigger>
+            ))}
           </SplitBarList>
-
-          <SplitBarContent value="categories">
-            <div className="mt-6 space-y-4">
-              <WhatVitanaKnows />
-              <MemoryCategoryGrid />
-            </div>
-          </SplitBarContent>
-
-          <SplitBarContent value="timeline">
-            <MemoryTimelineTab />
-          </SplitBarContent>
-
-          <SplitBarContent value="education">
-            <MemoryEducationTab />
-          </SplitBarContent>
+          <Panes />
         </SplitBar>
-
-        <AddMemoryDialog
-          open={actionPopupOpen}
-          onOpenChange={setActionPopupOpen}
-        />
-        </div>
+        {dialog}
       </div>
     </AppLayout>
   );
