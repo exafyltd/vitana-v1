@@ -211,7 +211,7 @@ export default function WalletIntegratedPaymentRequest({
               className="flex-1"
               disabled={!effectiveRecipient}
             >
-              <Send className="w-4 h-4 mr-2" />
+              <Send className="w-4 h-4 me-2" />
               {t('screens.payment.sendRequest')}
             </Button>
           </div>

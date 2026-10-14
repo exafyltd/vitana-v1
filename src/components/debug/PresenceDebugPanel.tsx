@@ -33,7 +33,7 @@ const PresenceDebugPanelInner: React.FC = () => {
   if (!showDebug || isDismissed) return null;
 
   return (
-    <Card className="fixed bottom-4 right-4 w-64 z-50 opacity-75 hover:opacity-100 transition-opacity">
+    <Card className="fixed bottom-4 end-4 w-64 z-50 opacity-75 hover:opacity-100 transition-opacity">
       <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm">{t('screens.debug.presenceDebug')}</CardTitle>
         <Button 

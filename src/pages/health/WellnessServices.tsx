@@ -91,12 +91,12 @@ export default function WellnessServices() {
                   </CardDescription>
                 </div>
                 {service.vitanaImpact && (
-                  <Badge variant="secondary" className="ml-2 text-xs bg-emerald-100 text-emerald-700">
+                  <Badge variant="secondary" className="ms-2 text-xs bg-emerald-100 text-emerald-700">
                     {service.vitanaImpact}
                   </Badge>
                 )}
                 {service.countKey && (
-                  <Badge variant="outline" className="ml-2 text-xs">
+                  <Badge variant="outline" className="ms-2 text-xs">
                     {t(service.countKey)}
                   </Badge>
                 )}
@@ -209,7 +209,7 @@ export default function WellnessServices() {
               size="sm"
               onClick={() => setServicesActionsOpen(true)}
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.health.serviceActions')}
             </Button>
           </UtilityActionButton>

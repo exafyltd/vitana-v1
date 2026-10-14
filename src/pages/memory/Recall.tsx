@@ -17,6 +17,11 @@ import { RecallMasterActionPopup } from "@/components/memory/RecallMasterActionP
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { t } from '@/lib/i18n-toast';
+import { useNavigate } from "react-router-dom";
+import { Brain } from "lucide-react";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { SpotlightEmpty } from "@/components/spotlight/member/MemberSpotlight";
 
 // Mock search results data
 const searchResults = [
@@ -106,6 +111,43 @@ function Recall() {
   const [activeTab, setActiveTab] = useState("search");
   const [searchQuery, setSearchQuery] = useState("");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const navigate = useNavigate();
+  // VTID-05117 — Spotlight (desktop + flag): the legacy tabs show sample results only, so the
+  // collection frame shows an honest empty state instead (SR-24). Phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.memory.aiMemoryRecallVitanaMemory')} description={t('spotlightMember.memory.recall.desc')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: memoryNavigation }}
+          header={{ title: t('screens.memory.aiMemoryRecall'), description: t('spotlightMember.memory.recall.desc'), emoji: "🤖" }}
+          utility={{
+            children: (
+              <>
+                <UniversalCalendarButton />
+                <Button size="sm" className="gap-2" onClick={() => setActionPopupOpen(true)}>
+                  <Plus className="size-4" />
+                  {t('screens.memory.memoryActions')}
+                </Button>
+              </>
+            ),
+          }}
+        >
+          <SpotlightEmpty
+            Icon={Brain}
+            titleKey="spotlightMember.memory.recall.emptyTitle"
+            descriptionKey="spotlightMember.memory.recall.emptyDesc"
+            actionKey="spotlightMember.memory.recall.emptyAction"
+            onAction={() => navigate('/memory')}
+          />
+        </ScreenFrame>
+        <RecallMasterActionPopup open={actionPopupOpen} onOpenChange={setActionPopupOpen} />
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -123,7 +165,7 @@ function Recall() {
           <ExpandableSearchButton placeholder={t('screens.memory.askAiAboutYourWellnessJourney')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.memoryActions')}
           </Button>
         </UtilityActionButton>
@@ -144,7 +186,7 @@ function Recall() {
               className="flex-1"
             />
             <Button>
-              <Search className="h-4 w-4 mr-2" />
+              <Search className="h-4 w-4 me-2" />
               {t('screens.memory.searchMemories')}
             </Button>
           </CardContent>

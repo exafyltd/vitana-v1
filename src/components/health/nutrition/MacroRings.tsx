@@ -113,7 +113,7 @@ export function MacroRings({ macros, calories }: MacroRingsProps) {
       </div>
       
       {/* AI Microtip */}
-      <div className="flex-1 ml-6">
+      <div className="flex-1 ms-6">
         <p className="text-sm text-muted-foreground italic">
           {t('screens.health.balancedForRecoveryFocus')}
         </p>

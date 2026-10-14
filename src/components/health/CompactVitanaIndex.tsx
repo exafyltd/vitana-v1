@@ -82,7 +82,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
                     style={{ width: `${value}%` }}
                   />
                 </div>
-                <span className="text-xs font-medium w-8 text-right">{value}%</span>
+                <span className="text-xs font-medium w-8 text-end">{value}%</span>
               </div>
             </div>
           ))}

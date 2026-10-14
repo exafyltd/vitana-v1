@@ -1,0 +1,42 @@
+// VTID-05181 — `vitana-voice` local Expo module, Android (plan N6c, Change 12/14).
+// Linked by Expo autolinking from apps/mobile/modules/vitana-voice (Gradle project
+// `:vitana-voice`). Unit tests: `./gradlew :vitana-voice:testDebugUnitTest` after
+// `APP_PROFILE=development npx expo prebuild --platform android --no-install`
+// (NATIVE-CI job `android-module`). Every version is an exact pin.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.vitanavoice'
+version = '0.0.0'
+
+android {
+  namespace "expo.modules.vitanavoice"
+  defaultConfig {
+    versionCode 1
+    versionName "0.0.0"
+  }
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+      all {
+        // Written by scripts/native/orb-parity.mjs (N6a); read for RMS inputs only.
+        systemProperty 'vitana.duplexGateVectors', file('../fixtures/duplex-gate-vectors.json').absolutePath
+        testLogging {
+          events 'failed'
+          exceptionFormat 'full'
+        }
+      }
+    }
+  }
+}
+
+dependencies {
+  implementation "androidx.core:core-ktx:1.17.0"
+  implementation "androidx.lifecycle:lifecycle-process:2.8.7"
+
+  testImplementation "junit:junit:4.13.2"
+  testImplementation "org.robolectric:robolectric:4.14.1"
+  testImplementation "androidx.test:core:1.6.1"
+}

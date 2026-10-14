@@ -12795,6 +12795,12 @@
       "social": "التواصل الاجتماعي",
       "travel": "السفر",
       "career": "المسيرة المهنية"
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "تقرأ Vitana نشاطك ونومك وبيانات قلبك وقياسات جسمك من Apple Health – للقراءة فقط، وفقط للمجالات التي وافقت عليها في التطبيق. لا تكتب Vitana أي شيء في Apple Health أبدًا.",
+        "privacyPolicyTitle": "سياسة الخصوصية"
+      }
     }
   }
 }

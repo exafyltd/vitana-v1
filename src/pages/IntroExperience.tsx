@@ -1,6 +1,9 @@
 import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2, LogIn, UserPlus } from 'lucide-react';
+import { LogIn, UserPlus } from 'lucide-react';
+import { ArchetypeSkeleton } from '@/components/layout/spotlight';
+import { FrameWhen } from '@/components/layout/spotlight/FrameWhen';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -14,6 +17,7 @@ import { lookup } from '@/lib/i18n-toast';
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
 
   // Add body classes for Maxina-specific orb positioning. `maxina-intro-page`
   // is more specific than `maxina-signin-page` (also carried by the sign-in
@@ -244,15 +248,16 @@ export default function IntroExperience() {
 
   if (!videoSrc) {
     return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-white animate-spin" />
+      // VTID-05117: the dark-theme tokens in a `dark` scope keep the pre-video screen dark in both themes.
+      <div className="dark fixed inset-0 bg-background">
+        <ArchetypeSkeleton archetype="immersive" />
       </div>
     );
   }
 
   return (
     <div 
-      className={`fixed inset-0 bg-black overflow-hidden transition-opacity duration-[800ms] ${
+      className={`fixed inset-0 bg-foreground dark:bg-background overflow-hidden transition-opacity duration-[800ms] ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -270,11 +275,14 @@ export default function IntroExperience() {
       />
       
       {/* Premium multi-layer gradient overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/60" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      <div className="dark absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-background/60" />
+      <div className="dark absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
       {/* Subtle vignette effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
+      {/* VTID-05117: Spotlight on → the full-bleed `immersive` frame (no in-screen chrome, no padding), so the
+          measured Orb slot and the clipping-sensitive column below keep exactly today's geometry. */}
+      <FrameWhen on={spotlight} archetype="immersive">
       {/* Content - a single centered column with a reserved spacer between
           the two text blocks for the separately-positioned Orb (see the
           orbSpacerRef effect above). Two earlier layouts both failed: a
@@ -303,7 +311,7 @@ export default function IntroExperience() {
         <div className="flex flex-col items-center">
           {/* Eyebrow - Small, uppercase, tracking-wide */}
           <p
-            className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
+            className="dark text-xs md:text-sm font-medium text-foreground/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
             style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
           >
             {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
@@ -321,7 +329,7 @@ export default function IntroExperience() {
 
             {/* Signature Subtitle */}
             <p
-              className="relative text-base md:text-lg font-light text-white/80 text-center mb-2 animate-fade-in italic tracking-wide"
+              className="dark relative text-base md:text-lg font-light text-foreground/80 text-center mb-2 animate-fade-in italic tracking-wide"
               style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
             >
               {t.intro?.experience || 'Experience'}
@@ -334,28 +342,28 @@ export default function IntroExperience() {
             >
               {/* Ambient warm bloom - soft, wide, distinct from the sharp center point */}
               <div
-                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
+                className="pointer-events-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
                 style={{
                   background:
                     'radial-gradient(circle, rgba(250,230,180,0.6) 0%, rgba(224,170,82,0.28) 50%, transparent 75%)',
                 }}
               />
               {/* Thin champagne-gold streak, strongest at center fading to transparent at both ends */}
-              <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 start-0 end-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
               {/* Small bright luminous point */}
-              <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
+              <div className="pointer-events-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
             </div>
           </div>
 
           {/* Purpose statement - dominant headline + smaller supporting line */}
           <p
-            className="text-4xl md:text-5xl font-bold text-white text-center leading-tight tracking-tight text-balance max-w-xs md:max-w-sm mb-1 animate-fade-in"
+            className="dark text-4xl md:text-5xl font-bold text-foreground text-center leading-tight tracking-tight text-balance max-w-xs md:max-w-sm mb-1 animate-fade-in"
             style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
           >
             {t.intro?.taglineMain || 'Start your Longevity Journey'}
           </p>
           <p
-            className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide animate-fade-in"
+            className="dark text-lg md:text-xl font-light text-foreground/70 text-center italic tracking-wide animate-fade-in"
             style={{ animationDelay: '2100ms', animationFillMode: 'both' }}
           >
             {t.intro?.taglineSub || 'together with us!'}
@@ -427,7 +435,7 @@ export default function IntroExperience() {
 
             <button
               onClick={handleRegister}
-              className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/25 text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-white/20 transition-colors duration-200"
+              className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 dark bg-foreground/10 backdrop-blur-xl border border-foreground/25 text-foreground shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-foreground/20 transition-colors duration-200"
             >
               <UserPlus className="w-5 h-5 shrink-0" aria-hidden="true" />
               <span className="text-sm font-bold">{t.intro?.register || 'Register'}</span>
@@ -435,11 +443,12 @@ export default function IntroExperience() {
           </div>
         </div>
       </div>
+      </FrameWhen>
 
       {/* Keyboard Hints - Desktop only */}
-      <div className="absolute bottom-6 left-0 right-0 text-center hidden md:block">
-        <p className="text-white/40 text-xs">
-          {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
+      <div className="absolute bottom-6 start-0 end-0 text-center hidden md:block">
+        <p className="dark text-foreground/40 text-xs">
+          {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-foreground/10 rounded text-foreground/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
 
@@ -485,7 +494,7 @@ export default function IntroExperience() {
         }}
       >
         <span
-          className="inline-block text-sm md:text-base font-medium text-white/70 animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
+          className="dark inline-block text-sm md:text-base font-medium text-foreground/70 animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {t.intro?.tapOrbHint || 'Click the Orb - talk to Vitana'}
@@ -510,6 +519,7 @@ export default function IntroExperience() {
           }}
           aria-hidden="true"
         >
+          {/* design-allow-next-line: placeholder ring at the external Orb widget's measured spot until orb-widget.js mounts (see comment above) — not a page loader; light over the intro video by design */}
           <div className="h-10 w-10 rounded-full border-2 border-white/30 border-t-white/80 animate-spin" />
         </div>
       )}

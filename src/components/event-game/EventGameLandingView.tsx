@@ -26,7 +26,7 @@ export function EventGameLandingView({ game, phase, playerCount, joining, onJoin
         className="min-h-[60vh] flex items-center justify-center relative overflow-hidden"
         style={{ background: GRADIENT_BG }}
       >
-        <DecorativeWave className="pointer-events-none absolute bottom-0 left-0 w-full h-16 text-white/40" />
+        <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-16 text-white/40" />
         <div className="relative flex flex-col items-center px-6 text-center gap-3 max-w-md w-full mx-auto">
           <div className="rounded-2xl bg-white/70 backdrop-blur px-6 py-6 shadow-[0_8px_24px_rgba(31,143,199,0.25)] w-full">
             <h1 className="text-2xl font-bold text-[#0B4F70]">{t('eventGame.landing.notLiveEndedTitle')}</h1>
@@ -50,8 +50,8 @@ export function EventGameLandingView({ game, phase, playerCount, joining, onJoin
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
       style={{ background: GRADIENT_BG }}
     >
-      <div className="pointer-events-none absolute -top-10 -left-10 w-64 h-64 rounded-full bg-white/25 blur-2xl" />
-      <DecorativeWave className="pointer-events-none absolute bottom-0 left-0 w-full h-20 text-white/40" />
+      <div className="pointer-events-none absolute -top-10 -start-10 w-64 h-64 rounded-full bg-white/25 blur-2xl" />
+      <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-20 text-white/40" />
 
       <div className="relative flex flex-col items-center px-6 py-10 gap-4 max-w-md w-full mx-auto text-center">
         {game.hero_image_url && (

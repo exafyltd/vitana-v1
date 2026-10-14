@@ -55,7 +55,7 @@ export function OrderManagementTable({
       case "completed":
         return (
           <Badge variant="default" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-            <Check className="w-3 h-3 mr-1" />
+            <Check className="w-3 h-3 me-1" />
             {t('screens.business.paid')}
           </Badge>
         );
@@ -66,7 +66,7 @@ export function OrderManagementTable({
       case "refunded":
         return (
           <Badge variant="destructive">
-            <X className="w-3 h-3 mr-1" />
+            <X className="w-3 h-3 me-1" />
             {t('screens.business.refunded')}
           </Badge>
         );
@@ -79,12 +79,12 @@ export function OrderManagementTable({
     <div className="space-y-4">
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
           placeholder={t('screens.business.searchByOrderNameEmail')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
+          className="ps-10"
         />
       </div>
 
@@ -102,7 +102,7 @@ export function OrderManagementTable({
                 <TableHead className="font-semibold">{t('screens.business.buyer')}</TableHead>
                 <TableHead className="font-semibold">{t('screens.business.ticketType')}</TableHead>
                 <TableHead className="font-semibold">{t('screens.business.date')}</TableHead>
-                <TableHead className="font-semibold text-right">{t('screens.business.total')}</TableHead>
+                <TableHead className="font-semibold text-end">{t('screens.business.total')}</TableHead>
                 <TableHead className="font-semibold">{t('screens.business.status')}</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
@@ -130,7 +130,7 @@ export function OrderManagementTable({
                       {order.ticket_type_name}
                     </Badge>
                     {order.quantity > 1 && (
-                      <span className="ml-1 text-muted-foreground">
+                      <span className="ms-1 text-muted-foreground">
                         ×{order.quantity}
                       </span>
                     )}
@@ -138,7 +138,7 @@ export function OrderManagementTable({
                   <TableCell className="text-sm text-muted-foreground">
                     {formatDate(new Date(order.created_at), "MMM d, h:mm a")}
                   </TableCell>
-                  <TableCell className="text-right font-semibold">
+                  <TableCell className="text-end font-semibold">
                     ${order.total_amount.toFixed(2)}
                   </TableCell>
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
@@ -151,7 +151,7 @@ export function OrderManagementTable({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => onSelectOrder(order)}>
-                          <Eye className="w-4 h-4 mr-2" />
+                          <Eye className="w-4 h-4 me-2" />
                           {t('screens.business.viewDetails')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>

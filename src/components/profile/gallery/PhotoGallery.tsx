@@ -51,7 +51,7 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
             className="rounded-full"
             onClick={() => setUploadOpen(true)}
           >
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 me-1" />
             {translate('gallery.upload', 'Upload')}
           </Button>
         )}
@@ -65,7 +65,7 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
           </p>
           {isOwner && (
             <Button variant="ghost" size="sm" className="mt-3" onClick={() => setUploadOpen(true)}>
-              <Plus className="h-4 w-4 mr-1" />
+              <Plus className="h-4 w-4 me-1" />
               {translate('gallery.uploadFirst', 'Add your first photo')}
             </Button>
           )}
@@ -88,7 +88,7 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
                 loading="lazy"
               />
               {photo.caption && (
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute bottom-0 start-0 end-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                   <p className="text-xs text-white line-clamp-2">{photo.caption}</p>
                 </div>
               )}
@@ -96,7 +96,7 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
                 <Button
                   variant="destructive"
                   size="icon"
-                  className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 end-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={(e) => { e.stopPropagation(); setDeleteId(photo.id); }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />

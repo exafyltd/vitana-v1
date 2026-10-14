@@ -90,7 +90,7 @@ export function CookModeFullScreen({
             disabled={currentStep === 0}
             onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
           >
-            <ChevronLeft className="w-5 h-5 mr-2" />
+            <ChevronLeft className="w-5 h-5 me-2" />
             {t('screens.health.previous')}
           </Button>
           
@@ -108,7 +108,7 @@ export function CookModeFullScreen({
               className="flex-1 bg-white text-black hover:bg-white/90 border-0"
               onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
             >{t('screens.health.next')}
-              <ChevronRight className="w-5 h-5 ml-2" />
+              <ChevronRight className="w-5 h-5 ms-2" />
             </Button>
           )}
         </div>

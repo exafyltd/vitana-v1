@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -25,6 +27,7 @@ import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 export default function InviteFriends() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   const navigate = useNavigate();
   const [link, setLink] = useState<string | null>(null);
   const [linkError, setLinkError] = useState(false);
@@ -66,17 +69,8 @@ export default function InviteFriends() {
     window.location.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
   }, [message]);
 
-  return (
-    <AppLayout>
-      <SEO title={t('screens.invitefriends.inviteFriends')} />
-      <div className={`min-h-screen bg-gradient-subtle ${isMobile ? "p-4 pb-24" : "p-6"}`}>
-        <div className={isMobile ? "" : "max-w-3xl mx-auto"}>
-          <StandardHeader
-            title={t('screens.invitefriends.inviteFriends')}
-            description={t('mailhub.findFriends.page.description')}
-            emoji="🎯"
-          />
-
+  const body = (
+        <>
           <Card className="mb-6" data-testid="invite-link-card">
             <CardContent className="p-4 space-y-3">
               <p className="text-xs text-muted-foreground">{t('screens.common.yourInviteLink')}</p>
@@ -87,6 +81,7 @@ export default function InviteFriends() {
                   <p className="text-sm text-destructive">{t('mailhub.findFriends.invite.linkFailed')}</p>
                 ) : (
                   <span className="text-sm text-muted-foreground inline-flex items-center gap-2">
+                    {/* design-allow-next-line: inline progress inside the link field, next to its status text — not a page loader */}
                     <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
                     {t('screens.common.generatingYourInviteLink')}
                   </span>
@@ -105,12 +100,46 @@ export default function InviteFriends() {
             </CardContent>
           </Card>
 
-          <div className="flex flex-col min-h-[40vh]">
+          {/* design-allow-next-line: legacy (flag-off) contacts area keeps its viewport-relative minimum height; Spotlight uses min-h-96 */}
+          <div className={spotlight ? "flex flex-col min-h-96" : "flex flex-col min-h-[40vh]"}>
             <ContactsTabContent
               messageContext="global"
               onStartConversation={(userId) => navigate(`/inbox/u/${userId}`)}
             />
           </div>
+        </>
+  );
+
+  // VTID-05117: Spotlight on → the `form` archetype (one column, header through ScreenFrame).
+  if (spotlight) {
+    return (
+      <AppLayout>
+        <SEO title={t('screens.invitefriends.inviteFriends')} />
+        <ScreenFrame
+          archetype="form"
+          header={{
+            title: t('screens.invitefriends.inviteFriends'),
+            description: t('mailhub.findFriends.page.description'),
+            emoji: "🎯",
+          }}
+        >
+          {body}
+        </ScreenFrame>
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <SEO title={t('screens.invitefriends.inviteFriends')} />
+      <div className={`min-h-screen bg-gradient-subtle ${isMobile ? "p-4 pb-24" : "p-6"}`}>
+        <div className={isMobile ? "" : "max-w-3xl mx-auto"}>
+          <StandardHeader
+            title={t('screens.invitefriends.inviteFriends')}
+            description={t('mailhub.findFriends.page.description')}
+            emoji="🎯"
+          />
+          {body}
         </div>
       </div>
     </AppLayout>

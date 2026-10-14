@@ -32,6 +32,11 @@ import {
   type IntentKind,
 } from "@/lib/intentApi";
 import { t } from '@/lib/i18n-toast';
+import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { discoverNavigation } from "@/config/navigation";
+import { SpotlightEmpty, SpotlightError, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
 
 type View = "open" | "mine";
 
@@ -98,6 +103,66 @@ export default function Marketplace() {
 
   const active = viewMeta(view);
   const filterLabel = `${active.icon} ${t(active.labelKey)}`;
+  // VTID-05117 — Spotlight (desktop + flag): the screen gets the Vitanaland frame as a collection,
+  // the two views move to the tabs at the end of the utility row; phones and flag-off keep the screen below.
+  const spotlight = useSpotlightEnabled();
+
+  if (spotlight) {
+    const items = view === "open" ? openItems : myItems;
+    return (
+      <AppLayout>
+        <SEO title={t('screens.discover.marketplaceVitana')} description={t('spotlightMember.discover.marketplaceDesc')} />
+        <ScreenFrame
+          archetype="collection"
+          subNav={{ items: discoverNavigation }}
+          header={{ title: t('screens.discover.marketplace'), description: t('spotlightMember.discover.marketplaceDesc'), emoji: "🛒" }}
+          utility={{
+            children: (
+              <Button size="sm" className="gap-2" onClick={() => setComposerOpen(true)}>
+                <Plus className="size-4" />
+                {t('screens.discover.post')}
+              </Button>
+            ),
+          }}
+          tabs={{
+            value: view,
+            onValueChange: (v) => setView(v as View),
+            items: VIEW_OPTIONS.map((o) => ({ value: o.value, label: t(o.labelKey) })),
+          }}
+        >
+          {loading ? (
+            <SpotlightRowsSkeleton />
+          ) : error ? (
+            <SpotlightError onRetry={() => void refresh()} />
+          ) : items.length === 0 ? (
+            <SpotlightEmpty
+              Icon={ShoppingBag}
+              titleKey={view === "open" ? "screens.discover.marketplaceQuiet" : "screens.discover.noListingsYet"}
+              descriptionKey={view === "open" ? "screens.discover.marketplaceEmpty_body" : "spotlightMember.discover.marketplaceMineEmpty"}
+              actionKey="screens.discover.marketplaceEmpty_cta"
+              onAction={() => setComposerOpen(true)}
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              {items.map((it) =>
+                view === "open" ? (
+                  <IntentCard key={it.intent_id} intent={it} />
+                ) : (
+                  <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} />
+                ),
+              )}
+            </div>
+          )}
+        </ScreenFrame>
+        <IntentComposer
+          open={composerOpen}
+          onOpenChange={setComposerOpen}
+          onPosted={() => { setComposerOpen(false); void refresh(); }}
+          defaultKind="commercial_sell"
+        />
+      </AppLayout>
+    );
+  }
 
   return (
     <>
@@ -195,7 +260,7 @@ export default function Marketplace() {
                 key={o.value}
                 type="button"
                 onClick={() => { setView(o.value); setPickerOpen(false); }}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${
+                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-start ${
                   view === o.value ? "border-primary bg-primary/10" : "border-border hover:bg-muted"
                 }`}
               >

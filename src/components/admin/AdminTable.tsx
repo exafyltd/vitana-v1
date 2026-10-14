@@ -120,12 +120,12 @@ export function AdminTable<T extends Record<string, any>>({
     <div className="space-y-4">
       {searchable && (
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder={searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
+            className="ps-9"
           />
         </div>
       )}
@@ -211,7 +211,7 @@ export function AdminTable<T extends Record<string, any>>({
               onClick={handlePrevious}
               disabled={currentPage === 0}
             >
-              <ChevronLeft className="mr-1 h-4 w-4" />
+              <ChevronLeft className="me-1 h-4 w-4" />
               {t('screens.admin.previous')}
             </Button>
             <span className="text-sm text-muted-foreground">{t('screens.admin.pageValue0Totalpages', { value0: currentPage + 1, totalPages })}</span>
@@ -222,7 +222,7 @@ export function AdminTable<T extends Record<string, any>>({
               disabled={currentPage >= totalPages - 1}
             >
               {t('screens.admin.next')}
-              <ChevronRight className="ml-1 h-4 w-4" />
+              <ChevronRight className="ms-1 h-4 w-4" />
             </Button>
           </div>
         </div>

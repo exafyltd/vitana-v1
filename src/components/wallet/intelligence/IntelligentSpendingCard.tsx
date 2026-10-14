@@ -145,7 +145,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
                 
                 <div className="flex items-center justify-between">
                   <Badge variant="outline" className={config.color}>
-                    <IconComponent className="h-3 w-3 mr-1" />
+                    <IconComponent className="h-3 w-3 me-1" />
                     {config.label}
                   </Badge>
                   {insight.savings && (
@@ -175,7 +175,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
 
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
-          <Brain className="h-4 w-4 mr-2" />
+          <Brain className="h-4 w-4 me-2" />
           {t('screens.wallet.viewDetailedAnalysis')}
         </Button>
       </CardContent>

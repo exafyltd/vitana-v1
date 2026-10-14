@@ -118,13 +118,13 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
           <Label htmlFor="recipient">{t('screens.wallet.send')}</Label>
           <div className="space-y-2">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="recipient"
                 placeholder={t('screens.wallet.searchCommunityMembers')}
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="pl-9"
+                className="ps-9"
               />
             </div>
             
@@ -174,13 +174,13 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
                       onClick={() => handleRecipientSelect(member)}
                       className="justify-start h-auto py-2 px-2"
                     >
-                      <Avatar className="h-6 w-6 mr-2">
+                      <Avatar className="h-6 w-6 me-2">
                         <AvatarImage src={member.avatar_url || ''} />
                         <AvatarFallback className="text-xs">
                           {getInitials(member)}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="text-left flex-1">
+                      <div className="text-start flex-1">
                         <div className="text-sm font-medium">{getDisplayName(member)}</div>
                         {member.email && (
                           <div className="text-xs text-muted-foreground">{member.email}</div>
@@ -269,7 +269,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.wallet.sending')}
+                <Loader2 className="me-2 h-4 w-4 animate-spin" />{t('screens.wallet.sending')}
               </>
             ) : (
               'Send Funds'

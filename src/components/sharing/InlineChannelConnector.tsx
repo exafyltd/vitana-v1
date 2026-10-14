@@ -248,7 +248,7 @@ export function InlineChannelConnector({
                   size="sm"
                   onClick={() => window.open('https://resend.com/domains', '_blank')}
                 >
-                  <ExternalLink className="w-3 h-3 mr-1" />
+                  <ExternalLink className="w-3 h-3 me-1" />
                   {t('screens.sharing.verify')}
                 </Button>
               </div>
@@ -260,7 +260,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testEmailConfiguration')}
+                {testing && <Loader2 className="w-4 h-4 me-2 animate-spin" />}{t('screens.sharing.testEmailConfiguration')}
               </Button>
             </div>
           )}
@@ -319,7 +319,7 @@ export function InlineChannelConnector({
                   size="sm"
                   onClick={() => window.open('https://console.twilio.com', '_blank')}
                 >
-                  <ExternalLink className="w-3 h-3 mr-1" />
+                  <ExternalLink className="w-3 h-3 me-1" />
                   {t('screens.sharing.open')}
                 </Button>
               </div>
@@ -331,7 +331,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testSmsConnection')}
+                {testing && <Loader2 className="w-4 h-4 me-2 animate-spin" />}{t('screens.sharing.testSmsConnection')}
               </Button>
             </div>
           )}
@@ -382,7 +382,7 @@ export function InlineChannelConnector({
                   size="sm"
                   onClick={() => window.open('https://business.facebook.com', '_blank')}
                 >
-                  <ExternalLink className="w-3 h-3 mr-1" />
+                  <ExternalLink className="w-3 h-3 me-1" />
                   {t('screens.sharing.open')}
                 </Button>
               </div>
@@ -394,7 +394,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testWhatsappConnection')}
+                {testing && <Loader2 className="w-4 h-4 me-2 animate-spin" />}{t('screens.sharing.testWhatsappConnection')}
               </Button>
             </div>
           )}
@@ -413,7 +413,7 @@ export function InlineChannelConnector({
               disabled={loading}
               className="flex-1"
             >
-              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.connect')}
+              {loading && <Loader2 className="w-4 h-4 me-2 animate-spin" />}{t('screens.sharing.connect')}
             </Button>
           </div>
 
@@ -428,7 +428,7 @@ export function InlineChannelConnector({
                   window.open(`https://${channelKey}.com`, '_blank');
                 }}
               >
-                <ExternalLink className="w-3 h-3 mr-1" />{t('screens.sharing.visitName', { name: channelInfo.name })}</Button>
+                <ExternalLink className="w-3 h-3 me-1" />{t('screens.sharing.visitName', { name: channelInfo.name })}</Button>
             </div>
           )}
         </form>

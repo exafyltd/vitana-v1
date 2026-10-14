@@ -42,7 +42,7 @@ export function DesktopVitanaIndexChip() {
             </Button>
             {score !== null && !showStreak && (
               <span
-                className="absolute -top-1.5 -right-1.5 min-w-[20px] h-4 px-1 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
+                className="absolute -top-1.5 -end-1.5 min-w-5 h-4 px-1 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
                 aria-hidden="true"
               >
                 {score}
@@ -50,7 +50,7 @@ export function DesktopVitanaIndexChip() {
             )}
             {showStreak && (
               <span
-                className="absolute -top-1 -right-1 h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
+                className="absolute -top-1 -end-1 h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
                 aria-hidden="true"
               >
                 🔥{streakDays}

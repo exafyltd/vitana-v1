@@ -361,7 +361,7 @@ export default function LiveConsole() {
                   onClick={handleForceReconnect}
                   disabled={streaming && !useFallback}
                 >
-                  <RefreshCw className="w-4 h-4 mr-2" />
+                  <RefreshCw className="w-4 h-4 me-2" />
                   {streaming ? "Connected" : "Reconnect"}
                 </Button>
               </TooltipTrigger>
@@ -398,7 +398,7 @@ export default function LiveConsole() {
               className="cursor-pointer"
             />{t('screens.dev.pause')}
             {paused && bufferedEvents.length > 0 && (
-              <Badge variant="secondary" className="ml-1">{t('screens.dev.lengthNew', { length: bufferedEvents.length })}
+              <Badge variant="secondary" className="ms-1">{t('screens.dev.lengthNew', { length: bufferedEvents.length })}
               </Badge>
             )}
           </label>
@@ -490,7 +490,7 @@ export default function LiveConsole() {
             {filteredEvents.map(ev => (
             <button 
               key={ev.id} 
-              className="w-full text-left py-2 px-2 border-b hover:bg-accent/50 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full text-start py-2 px-2 border-b hover:bg-accent/50 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary"
               onClick={() => handleEventClick(ev)}
               tabIndex={0}
               onKeyDown={(e) => {
@@ -512,7 +512,7 @@ export default function LiveConsole() {
                     {ev.vtid}
                   </span>
                 )}
-                <span className="text-xs text-muted-foreground ml-auto">
+                <span className="text-xs text-muted-foreground ms-auto">
                   {fmtDateTime(new Date(ev.ts))}
                 </span>
               </div>

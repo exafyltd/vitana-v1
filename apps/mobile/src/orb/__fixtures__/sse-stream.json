@@ -1,0 +1,11 @@
+{
+  "_comment": "VTID-05179 — an SSE body as GET /api/v1/orb/live/stream serves it (routes/orb-live.ts:16404; widget reads it with EventSource, orb-widget.js:2761-2775). Mixed line endings, a BOM, a comment heartbeat and a multi-line data field exercise the parser. Hand-written, never captured from a live gateway.",
+  "stream": "﻿: connected\n\ndata: {\"type\":\"ready\"}\n\nevent: message\r\ndata: {\"type\":\"live_api_ready\",\"full_duplex\":false}\r\n\r\n: keep-alive\n\nid: 7\ndata: {\"type\":\"audio\",\ndata: \"data_b64\":\"AAABAA==\",\"mime\":\"audio/pcm;rate=16000\"}\n\rdata: {\"type\":\"turn_complete\"}\r\rdata:{\"type\":\"heartbeat\"}\n\n",
+  "expected": [
+    { "event": "message", "data": "{\"type\":\"ready\"}" },
+    { "event": "message", "data": "{\"type\":\"live_api_ready\",\"full_duplex\":false}" },
+    { "event": "message", "data": "{\"type\":\"audio\",\n\"data_b64\":\"AAABAA==\",\"mime\":\"audio/pcm;rate=16000\"}", "id": "7" },
+    { "event": "message", "data": "{\"type\":\"turn_complete\"}", "id": "7" },
+    { "event": "message", "data": "{\"type\":\"heartbeat\"}", "id": "7" }
+  ]
+}

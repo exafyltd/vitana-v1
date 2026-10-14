@@ -25,7 +25,7 @@ export function EnhancedStepIndicator({ currentStep, totalSteps, onStepClick }: 
   return (
     <div className="relative py-6">
       {/* Vitana gradient progress bar */}
-      <div className="absolute top-1/2 left-0 right-0 h-1 bg-muted rounded-full">
+      <div className="absolute top-1/2 start-0 end-0 h-1 bg-muted rounded-full">
         <div 
           className="h-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] rounded-full transition-all duration-500"
           style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}

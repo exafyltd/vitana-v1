@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import {
   CheckCircle,
   Package,
   ArrowRight,
-  Loader2,
   XCircle,
   Wallet,
 } from "lucide-react";
@@ -21,6 +24,7 @@ import { formatMoneyMinor } from "@/lib/format-money";
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   // Phase 0: the gateway marks cart items completed server-side on checkout, so
   // we only refresh the one canonical cart here (no legacy clearCart).
@@ -59,14 +63,13 @@ export default function CheckoutSuccess() {
           description="Wallet deposit"
           canonical={window.location.href}
         />
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-          <div className="max-w-3xl mx-auto space-y-6 pt-12">
-            <Card className="bg-white/80 backdrop-blur-sm text-center">
+        <SuccessShell spotlight={spotlight}>
+            <Card className="bg-card/80 backdrop-blur-sm text-center">
               <CardContent className="p-12">
                 {!depositTerminal ? (
                   <>
                     <div className="mb-6">
-                      <Loader2 className="h-20 w-20 mx-auto text-purple-500 animate-spin" />
+                      <Skeleton className="h-20 w-20 mx-auto rounded-full" aria-hidden="true" />
                     </div>
                     <StandardHeader
                       title={t('marketplaceCheckout.deposit.checkingTitle')}
@@ -82,7 +85,7 @@ export default function CheckoutSuccess() {
                 ) : depositSucceeded ? (
                   <>
                     <div className="mb-6">
-                      <Wallet className="h-20 w-20 mx-auto text-green-500" />
+                      <Wallet className="h-20 w-20 mx-auto text-status-success" />
                     </div>
                     <StandardHeader
                       title={t('marketplaceCheckout.deposit.succeededTitle')}
@@ -102,7 +105,7 @@ export default function CheckoutSuccess() {
                 ) : (
                   <>
                     <div className="mb-6">
-                      <XCircle className="h-20 w-20 mx-auto text-red-500" />
+                      <XCircle className="h-20 w-20 mx-auto text-status-error" />
                     </div>
                     <StandardHeader
                       title={t('marketplaceCheckout.deposit.failedTitle')}
@@ -116,14 +119,13 @@ export default function CheckoutSuccess() {
                   <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                     <Button size="lg" onClick={() => navigate('/universal-cart')}>
                       {t('marketplaceCheckout.deposit.backToCart')}
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                      <ArrowRight className="h-4 w-4 ms-2" />
                     </Button>
                   </div>
                 )}
               </CardContent>
             </Card>
-          </div>
-        </div>
+        </SuccessShell>
       </AppLayout>
     );
   }
@@ -136,12 +138,11 @@ export default function CheckoutSuccess() {
         canonical={window.location.href}
       />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-3xl mx-auto space-y-6 pt-12">
-          <Card className="bg-white/80 backdrop-blur-sm text-center">
+      <SuccessShell spotlight={spotlight}>
+          <Card className="bg-card/80 backdrop-blur-sm text-center">
             <CardContent className="p-12">
               <div className="mb-6">
-                <CheckCircle className="h-20 w-20 mx-auto text-green-500" />
+                <CheckCircle className="h-20 w-20 mx-auto text-status-success" />
               </div>
               
               <StandardHeader
@@ -159,12 +160,12 @@ export default function CheckoutSuccess() {
                 </p>
               </div>
 
-              <div className="bg-purple-50 rounded-lg p-6 mb-8">
+              <div className="bg-category-2/10 rounded-lg p-6 mb-8">
                 <div className="flex items-center justify-center gap-3 mb-4">
-                  <Package className="h-6 w-6 text-purple-600" />
+                  <Package className="h-6 w-6 text-category-2" />
                   <h3 className="font-semibold text-lg">{t('screens.checkoutsuccess.whatSNext')}</h3>
                 </div>
-                <ul className="text-sm text-left space-y-2 max-w-md mx-auto">
+                <ul className="text-sm text-start space-y-2 max-w-md mx-auto">
                   <li>{t('screens.checkoutsuccess.orderConfirmationSentYourEmail')}</li>
                   <li>{t('screens.checkoutsuccess.yourItemsWillPreparedForShipment')}</li>
                   <li>{t('screens.checkoutsuccess.youLlReceiveTrackingInformationWithin')}</li>
@@ -178,7 +179,7 @@ export default function CheckoutSuccess() {
                   onClick={() => navigate('/discover/orders')}
                 >
                   {t('screens.checkoutsuccess.viewMyOrders')}
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  <ArrowRight className="h-4 w-4 ms-2" />
                 </Button>
                 <Button 
                   variant="outline"
@@ -191,7 +192,7 @@ export default function CheckoutSuccess() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-card/80 backdrop-blur-sm">
             <CardContent className="p-6">
               <h3 className="font-semibold mb-4">{t('screens.checkoutsuccess.needHelp')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
@@ -202,8 +203,26 @@ export default function CheckoutSuccess() {
               </Button>
             </CardContent>
           </Card>
-        </div>
-      </div>
+      </SuccessShell>
     </AppLayout>
+  );
+}
+
+/**
+ * VTID-05117: Spotlight on → the manifest's `collection` frame; off → today's
+ * centred column on the page gradient.
+ */
+function SuccessShell({ spotlight, children }: { spotlight: boolean; children: ReactNode }) {
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="collection" className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
+        <div className="mx-auto max-w-stage space-y-6">{children}</div>
+      </ScreenFrame>
+    );
+  }
+  return (
+    <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
+      <div className="max-w-3xl mx-auto space-y-6 pt-12">{children}</div>
+    </div>
   );
 }

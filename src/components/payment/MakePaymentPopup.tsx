@@ -181,13 +181,13 @@ export default function MakePaymentPopup({
             ) : (
               <>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
                     id="recipient"
                     placeholder={t('screens.payment.searchForCommunityMember')}
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
-                    className="pl-10"
+                    className="ps-10"
                   />
                 </div>
                 
@@ -325,11 +325,11 @@ export default function MakePaymentPopup({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>{t('screens.payment.processing')}
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>
-                  <Send className="w-4 h-4 mr-2" />
+                  <Send className="w-4 h-4 me-2" />
                   {t('screens.payment.sendPayment')}
                 </>
               )}

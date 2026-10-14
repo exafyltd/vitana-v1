@@ -1,0 +1,12 @@
+{
+  "spotlightPublic": {
+    "event": {
+      "_pending_review": {
+        "free": true,
+        "fromPrice": true
+      },
+      "free": "Free",
+      "fromPrice": "From {price}"
+    }
+  }
+}

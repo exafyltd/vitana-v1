@@ -235,7 +235,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
                             <h4 className="font-medium text-sm mb-1">{translate(suggestion.titleKey)}</h4>
                             {isComingSoon && (
                               <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
-                                <Clock className="h-2.5 w-2.5 mr-0.5" />
+                                <Clock className="h-2.5 w-2.5 me-0.5" />
                                 {translate('autopilot.profilePopup.comingSoon')}
                               </Badge>
                             )}
@@ -256,7 +256,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
                   onClick={handleRunAutopilot}
                   disabled={selectedSuggestions.length === 0}
                 >
-                  <Zap className="h-4 w-4 mr-2" />
+                  <Zap className="h-4 w-4 me-2" />
                   {translate('autopilot.profilePopup.runAutopilot')}
                 </Button>
               </div>
@@ -312,13 +312,13 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
                 </Button>
                 {(suggestions.bio || suggestions.archetype) && !allAccepted && (
                   <Button onClick={handleAcceptAll}>
-                    <Check className="h-4 w-4 mr-2" />
+                    <Check className="h-4 w-4 me-2" />
                     {translate('autopilot.profilePopup.acceptAll')}
                   </Button>
                 )}
                 {allAccepted && (
                   <Button onClick={() => { toast({ title: translate("autopilot.profilePopup.applied") }); handleClose(false); }}>
-                    <Check className="h-4 w-4 mr-2" />
+                    <Check className="h-4 w-4 me-2" />
                     {translate('autopilot.profilePopup.applied')}
                   </Button>
                 )}
@@ -372,11 +372,11 @@ function SuggestionCard({
       {!accepted ? (
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={onReject}>
-            <X className="h-3 w-3 mr-1" />
+            <X className="h-3 w-3 me-1" />
             {translate("autopilot.profilePopup.reject")}
           </Button>
           <Button size="sm" onClick={onAccept}>
-            <Check className="h-3 w-3 mr-1" />
+            <Check className="h-3 w-3 me-1" />
             {translate("autopilot.profilePopup.accept")}
           </Button>
         </div>

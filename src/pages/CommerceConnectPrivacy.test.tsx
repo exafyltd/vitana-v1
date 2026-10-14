@@ -10,6 +10,8 @@ import { describe, expect, it, vi } from 'vitest';
 let selected = 'fr-FR';
 vi.mock('@/contexts/LanguageContext', () => ({ useLanguage: () => ({ selectedLanguage: selected }) }));
 vi.mock('@/components/SEO', () => ({ default: () => null }));
+// VTID-05117: this harness has no TenantProvider / QueryClient — pin Spotlight off (today's layout).
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
 
 import CommerceConnectPrivacy from './CommerceConnectPrivacy';
 import { privacyLang } from '@/lib/commerce-connect-lang';

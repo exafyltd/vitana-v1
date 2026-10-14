@@ -67,7 +67,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
             <h3 className="text-lg font-semibold">{translate('editProfile.about', 'About')}</h3>
             {editMode && onEditAbout && (
               <Button variant="soft" size="xs" onClick={onEditAbout}>
-                <Edit3 className="h-3.5 w-3.5 mr-1.5" />
+                <Edit3 className="h-3.5 w-3.5 me-1.5" />
                 {translate('editProfile.about', 'Edit About')}
               </Button>
             )}
@@ -83,7 +83,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
             <div className="flex flex-wrap gap-2 mb-2">
               {profile.links.map((link, index) => (
                 <Button key={index} variant="link" size="sm" className="h-auto p-0">
-                  <ExternalLink className="h-3 w-3 mr-1" />
+                  <ExternalLink className="h-3 w-3 me-1" />
                   {link.label}
                 </Button>
               ))}
@@ -105,7 +105,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
       {isOwner && onCreatePost && (
         <button
           onClick={onCreatePost}
-          className="w-full p-4 rounded-2xl border border-primary/40 bg-primary/10 hover:bg-primary/15 shadow-[0_2px_10px_rgba(124,58,237,0.10)] hover:shadow-[0_6px_18px_rgba(124,58,237,0.18)] transition-all flex items-center gap-3 text-left"
+          className="w-full p-4 rounded-2xl border border-primary/40 bg-primary/10 hover:bg-primary/15 shadow-[0_2px_10px_rgba(124,58,237,0.10)] hover:shadow-[0_6px_18px_rgba(124,58,237,0.18)] transition-all flex items-center gap-3 text-start"
         >
           <div className="h-11 w-11 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
             <PenSquare className="h-5 w-5 text-primary" />
@@ -113,7 +113,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
           <span className="text-sm font-medium text-foreground/90">
             {translate('profilePosts.shareCta', 'Share something with the community')}
           </span>
-          <span className="ml-auto shrink-0 rounded-full bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-sm">
+          <span className="ms-auto shrink-0 rounded-full bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-sm">
             {translate('profilePosts.post', 'Post')}
           </span>
         </button>
@@ -204,7 +204,7 @@ function PostCardWithInteractions({
       className="rounded-2xl bg-white/70 dark:bg-black/30 backdrop-blur-xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:translate-y-[-2px] transition-all duration-300 ease-out animate-fade-in-up overflow-hidden motion-reduce:hover:translate-y-0"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-200/10 via-violet-300/20 to-transparent" />
+      <div className="absolute top-0 start-0 end-0 h-0.5 bg-gradient-to-r from-violet-200/10 via-violet-300/20 to-transparent" />
       <div className="space-y-4 relative px-5 py-4 md:px-6 md:py-5">
         <div className="flex items-start gap-3">
           <Tooltip>
@@ -225,7 +225,7 @@ function PostCardWithInteractions({
               {isOwner && (
                 <button
                   onClick={() => onDelete(post.id)}
-                  className="ml-auto text-muted-foreground/50 hover:text-destructive transition-colors"
+                  className="ms-auto text-muted-foreground/50 hover:text-destructive transition-colors"
                   aria-label={t('screens.profile.deletePost')}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -234,7 +234,7 @@ function PostCardWithInteractions({
             </div>
             {post.content &&
               (background ? (
-                <div className={cn("mt-2.5 flex min-h-[160px] items-center justify-center rounded-xl px-5 py-8 text-center", background.fillClass)}>
+                <div className={cn("mt-2.5 flex min-h-40 items-center justify-center rounded-xl px-5 py-8 text-center", background.fillClass)}>
                   <p className={cn("whitespace-pre-wrap break-words text-lg font-semibold leading-snug", background.textClass)}>
                     {renderMentions(post.content, post.mentions)}
                   </p>

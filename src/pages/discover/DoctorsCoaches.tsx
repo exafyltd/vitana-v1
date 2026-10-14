@@ -289,7 +289,7 @@ function DoctorsCoachesLegacy() {
               size="sm"
               onClick={() => setMasterActionOpen(true)}
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
@@ -392,7 +392,7 @@ function DoctorsCoachesLegacy() {
                         className="w-12 h-12 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full object-cover"
                       />
                       {provider.badges.includes("Verified") && (
-                        <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
+                        <div className="absolute -bottom-1 -end-1 bg-blue-500 rounded-full p-1">
                           <Verified className="h-2 w-2 md:h-3 md:w-3 text-white" />
                         </div>
                       )}
@@ -424,8 +424,8 @@ function DoctorsCoachesLegacy() {
                           "bg-gray-100 text-gray-700"
                         }`}
                       >
-                        {badge === "Trending" && <TrendingUp className="h-3 w-3 mr-1" />}
-                        {badge === "Top Rated" && <Award className="h-3 w-3 mr-1" />}
+                        {badge === "Trending" && <TrendingUp className="h-3 w-3 me-1" />}
+                        {badge === "Top Rated" && <Award className="h-3 w-3 me-1" />}
                         {badge}
                       </Badge>
                     ))}
@@ -495,7 +495,7 @@ function DoctorsCoachesLegacy() {
                                 className="w-12 h-12 rounded-full object-cover"
                               />
                               {provider.badges.includes("Verified") && (
-                                <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
+                                <div className="absolute -bottom-1 -end-1 bg-blue-500 rounded-full p-1">
                                   <Verified className="h-2 w-2 text-white" />
                                 </div>
                               )}

@@ -100,7 +100,7 @@ export default function MobileSubscriptions() {
                     className="w-full h-12 rounded-xl"
                     onClick={() => navigate("/settings?mode=billing")}
                   >
-                    <SettingsIcon className="w-4 h-4 mr-2" />
+                    <SettingsIcon className="w-4 h-4 me-2" />
                     {t("billing.state.manage")}
                   </Button>
                 </div>

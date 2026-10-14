@@ -13754,6 +13754,12 @@
       "social": "社交",
       "travel": "旅行",
       "career": "职业"
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana 会从 Apple Health 读取你的活动、睡眠、心脏数据和身体测量数据——仅读取，且仅限你在应用中同意的范围。Vitana 绝不会向 Apple Health 写入任何内容。",
+        "privacyPolicyTitle": "隐私政策"
+      }
     }
   }
 }

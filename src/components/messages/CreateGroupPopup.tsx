@@ -239,7 +239,7 @@ export default function CreateGroupPopup({
               <Button
                 size="sm"
                 variant="outline"
-                className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
+                className="absolute -bottom-2 -end-2 w-8 h-8 rounded-full p-0"
                 onClick={() => {
                   toast({
                     title: translate('inbox.createGroup.avatarSoon'),
@@ -272,7 +272,7 @@ export default function CreateGroupPopup({
                   <Badge
                     key={member.user_id}
                     variant="secondary"
-                    className="flex items-center gap-1 pr-1"
+                    className="flex items-center gap-1 pe-1"
                   >
                     <Avatar className="w-4 h-4">
                       <AvatarImage src={getDisplayAvatarUrl(member)} />
@@ -301,13 +301,13 @@ export default function CreateGroupPopup({
           <div>
             <Label htmlFor="search">{translate('inbox.createGroup.addMembers')}</Label>
             <div className="relative mt-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 id="search"
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder={translate('inbox.createGroup.searchPlaceholder')}
-                className="pl-10"
+                className="ps-10"
               />
             </div>
             

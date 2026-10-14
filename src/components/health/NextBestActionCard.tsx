@@ -67,7 +67,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
 
   if (isLoading && !focus) {
     return (
-      <Card className="h-full bg-gradient-to-br from-orange-50 to-yellow-50 border-l-4 border-orange-400">
+      <Card className="h-full bg-gradient-to-br from-orange-50 to-yellow-50 border-s-4 border-orange-400">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Target className="w-5 h-5 text-orange-500" />
@@ -84,7 +84,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
   if (!focus) return null;
 
   return (
-    <Card className="h-full bg-gradient-to-br from-orange-50 to-yellow-50 border-l-4 border-orange-400">
+    <Card className="h-full bg-gradient-to-br from-orange-50 to-yellow-50 border-s-4 border-orange-400">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg flex items-center gap-2">
@@ -105,7 +105,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
               <div className="text-sm font-medium text-muted-foreground">{t('screens.health.weakestPillar')}</div>
               <div className="text-lg font-bold text-foreground">{focus.name}</div>
             </div>
-            <div className="text-right">
+            <div className="text-end">
               <div className="text-2xl font-bold text-orange-600">{focus.score}</div>
               <div className="text-xs text-muted-foreground">/ 200</div>
             </div>
@@ -114,7 +114,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
 
         <div className="space-y-2">
           <div className="text-sm font-medium text-muted-foreground mb-2">
-            <Zap className="w-4 h-4 inline mr-1 text-orange-500" />
+            <Zap className="w-4 h-4 inline me-1 text-orange-500" />
             {t('screens.health.recommendedAction')}
           </div>
 

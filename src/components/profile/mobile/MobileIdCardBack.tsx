@@ -214,7 +214,7 @@ export function MobileIdCardBack({
                             {platform.icon}
                           </div>
                           <div
-                            className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
+                            className="absolute -top-1 -end-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
                             style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
                           >
                             <Check className="h-2 w-2 text-white" strokeWidth={3} />
@@ -301,7 +301,7 @@ export function MobileIdCardBack({
                           {platform.icon}
                         </div>
                         <div
-                          className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
+                          className="absolute -top-1 -end-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
                           style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
                         >
                           <Check className="h-2 w-2 text-white" strokeWidth={3} />

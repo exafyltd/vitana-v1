@@ -96,14 +96,14 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
       <div className="flex gap-2 pt-2">
         {editMode && onEditServices && (
           <Button variant="outline" onClick={onEditServices}>
-            <Edit3 className="h-4 w-4 mr-2" />
+            <Edit3 className="h-4 w-4 me-2" />
             {t('screens.profile.manageServices')}
           </Button>
         )}
         {!editMode && (
           <>
             <Button className="flex-1">
-              <Calendar className="h-4 w-4 mr-2" />{t('screens.profile.bookSession')}
+              <Calendar className="h-4 w-4 me-2" />{t('screens.profile.bookSession')}
             </Button>
             <Button variant="outline">
               {t('screens.profile.learnMore')}
@@ -135,7 +135,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
               </div>
               {editMode && onEditCompliance && (
                 <Button variant="outline" size="sm" onClick={onEditCompliance}>
-                  <Edit3 className="h-4 w-4 mr-2" />
+                  <Edit3 className="h-4 w-4 me-2" />
                   {t('screens.profile.manageCredentials')}
                 </Button>
               )}

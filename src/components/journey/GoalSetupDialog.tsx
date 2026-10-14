@@ -79,7 +79,7 @@ export function GoalSetupDialog({
         {/* Standard unframed X close, top-right. Wrapped in a span so it isn't
             a direct <button> child of DialogContent — that's what the framework's
             [&>button]:sr-only selector hides. */}
-        <span className="absolute right-3 top-3 z-10">
+        <span className="absolute end-3 top-3 z-10">
           <DialogClose
             aria-label={t("screens.common.close")}
             style={{ boxShadow: "none" }}
@@ -89,7 +89,7 @@ export function GoalSetupDialog({
           </DialogClose>
         </span>
 
-        <DialogHeader className="pr-8">
+        <DialogHeader className="pe-8">
           <DialogTitle>{t("screens.autopilotdashboard.goalDialogTitle")}</DialogTitle>
           <DialogDescription>{t("screens.autopilotdashboard.goalDialogSubtitle")}</DialogDescription>
         </DialogHeader>

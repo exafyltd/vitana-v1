@@ -452,7 +452,7 @@ export function VitanaIndexSheet() {
                   onClick={handleOpenAutopilot}
                   className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                 >
-                  <Zap className="w-4 h-4 mr-2" />{t('screens.health.openAutopilot')}
+                  <Zap className="w-4 h-4 me-2" />{t('screens.health.openAutopilot')}
                 </Button>
               </div>
             )}
@@ -481,7 +481,7 @@ export function VitanaIndexSheet() {
           <button
             type="button"
             onClick={handleCompassClick}
-            className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline w-full text-left"
+            className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline w-full text-start"
           >
             {compass?.primary_goal
               ? `Compass: ${compass.primary_goal} →`

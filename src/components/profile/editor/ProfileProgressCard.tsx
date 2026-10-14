@@ -33,7 +33,7 @@ export function ProfileProgressCard({
           {t('screens.profile.profileCompletion')}
           <Badge 
             variant={isComplete ? "default" : "secondary"}
-            className="ml-auto"
+            className="ms-auto"
           >
             {completionPercentage}%
           </Badge>
@@ -68,7 +68,7 @@ export function ProfileProgressCard({
                 className="shrink-0"
               >
                 {t('screens.profile.complete')}
-                <ArrowRight className="h-3 w-3 ml-1" />
+                <ArrowRight className="h-3 w-3 ms-1" />
               </Button>
             </div>
           </div>

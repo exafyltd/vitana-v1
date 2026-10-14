@@ -2145,7 +2145,7 @@ function ConnectedApps() {
               <ExpandableSearchButton placeholder={t('screens.settings.searchAppsIntegrationsFitnessTrackers')} />
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 me-2" />
                 {t('screens.settings.connectApp')}
               </Button>
             </div>

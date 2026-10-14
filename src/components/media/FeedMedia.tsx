@@ -497,7 +497,7 @@ export function FeedMedia({
       )}
 
       {showControls && (
-        <div className="absolute bottom-2 right-2 z-10 flex items-center gap-2">
+        <div className="absolute bottom-2 end-2 z-10 flex items-center gap-2">
           {videoUrl && (
             <button
               type="button"
@@ -555,7 +555,7 @@ export function FeedMedia({
                 closeExpanded();
               }}
               aria-label={t("screens.home.exitFullscreen")}
-              className="absolute right-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              className="absolute end-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               style={{ top: "calc(env(safe-area-inset-top, 0px) + 1rem)" }}
             >
               <X className="h-5 w-5" />

@@ -84,7 +84,7 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
               placeholder={translate('groupFeed.placeholder', 'Share something with the group...')}
               value={newPostContent}
               onChange={e => setNewPostContent(e.target.value)}
-              className="min-h-[80px] resize-none border-0 bg-muted/50 focus-visible:ring-1"
+              className="min-h-20 resize-none border-0 bg-muted/50 focus-visible:ring-1"
             />
             <div className="flex justify-end mt-2">
               <Button
@@ -92,7 +92,7 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
                 onClick={handleCreatePost}
                 disabled={!newPostContent.trim() || isSubmitting}
               >
-                <Send className="h-4 w-4 mr-1" />
+                <Send className="h-4 w-4 me-1" />
                 {translate('groupFeed.post', 'Post')}
               </Button>
             </div>

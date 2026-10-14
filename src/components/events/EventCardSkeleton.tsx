@@ -76,7 +76,7 @@ export function EventCardSkeleton({ count = 4, className }: EventCardSkeletonPro
             </div>
             
             {/* Action button skeleton - bottom right */}
-            <div className="absolute bottom-6 right-6">
+            <div className="absolute bottom-6 end-6">
               <Skeleton className="h-9 w-24 rounded-full bg-white/15" />
             </div>
           </div>

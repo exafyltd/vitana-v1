@@ -150,7 +150,7 @@ export function ExecutionLogsList() {
               <TableHead>{t('screens.dev.duration')}</TableHead>
               <TableHead>{t('screens.dev.date')}</TableHead>
               <TableHead>{t('screens.dev.initiator')}</TableHead>
-              <TableHead className="text-right">{t('screens.dev.actions')}</TableHead>
+              <TableHead className="text-end">{t('screens.dev.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -191,7 +191,7 @@ export function ExecutionLogsList() {
                   <TableCell className="font-mono text-sm text-muted-foreground">
                     {log.initiator}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-end">
                     <div className="flex gap-2 justify-end">
                       <Button
                         size="sm"
@@ -231,15 +231,15 @@ export function ExecutionLogsList() {
 
                         <div className="flex gap-2 pt-2">
                           <Button size="sm" variant="outline">
-                            <Download className="w-3 h-3 mr-2" />
+                            <Download className="w-3 h-3 me-2" />
                             {t('screens.dev.exportLog')}
                           </Button>
                           <Button size="sm" variant="outline">
-                            <Play className="w-3 h-3 mr-2" />
+                            <Play className="w-3 h-3 me-2" />
                             {t('screens.dev.rerunCommand')}
                           </Button>
                           <Button size="sm" variant="outline">
-                            <ExternalLink className="w-3 h-3 mr-2" />
+                            <ExternalLink className="w-3 h-3 me-2" />
                             {t('screens.dev.viewDetails')}
                           </Button>
                         </div>

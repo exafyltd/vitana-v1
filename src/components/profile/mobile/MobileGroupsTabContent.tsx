@@ -82,7 +82,7 @@ export function MobileGroupsTabContent({
             className="mt-2"
             size="sm"
           >
-            <Compass className="h-4 w-4 mr-2" />
+            <Compass className="h-4 w-4 me-2" />
             {translate('profileGroups.discoverCta', 'Discover Groups')}
           </Button>
         </div>
@@ -98,7 +98,7 @@ export function MobileGroupsTabContent({
           <button
             key={group.id}
             onClick={() => handleGroupClick(group.id)}
-            className="w-full flex items-center gap-3 p-3 rounded-xl bg-card/50 hover:bg-card/80 border border-border/50 transition-colors text-left focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="w-full flex items-center gap-3 p-3 rounded-xl bg-card/50 hover:bg-card/80 border border-border/50 transition-colors text-start focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             <Avatar className="h-12 w-12 rounded-xl shrink-0">
               <AvatarImage src={group.avatar_url || undefined} alt={group.name} />

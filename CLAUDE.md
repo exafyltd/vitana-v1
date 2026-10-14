@@ -348,6 +348,12 @@ and, if `--check` reports a `pending` scope, decide it in `scripts/native/parity
 this (program `docs/programs/native-app/NATIVE-APP-PLAN.md` §7: a mobile-visible change ships native too or records
 an exception). The native app itself lives in `apps/mobile/` (own lockfile, not a root workspace) — see its README.
 
+**Native core and tokens (VTID-05183).** `packages/tokens` and `packages/core/src/extracted/` are generated from web
+sources (`src/index.css`, `tailwind.config.ts`, the files in `packages/core/extract.json`). After
+changing one, run `node scripts/native/gen-tokens.mjs` / `node scripts/native/gen-core-extract.mjs` (then
+`node scripts/native/core-closure.mjs --write`). NATIVE-CI fails on drift. Native code reaches web code only through
+`@vitana/core` (`packages/core/manifest.json`).
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper

@@ -1,0 +1,86 @@
+{
+  "_doc": "VTID-05183 — inputs of scripts/native/gen-core-extract.mjs, the single extraction generator of the native program. Each entry becomes packages/core/src/extracted/<entry>.generated.ts with the named declarations copied verbatim from the web source. A take is a top-level name or Function#local (a pure-literal const in a named top-level function); {\"name\", \"as\"} exports it under another name. iconFields: icon identifiers become their name as a string, the field type becomes IconName. stubs: identifier -> expression, each with a reason. When a module later moves physically (program step 3), its entry is deleted and core re-exports the moved module instead.",
+  "entries": {
+    "roles": {
+      "sources": [
+        { "file": "src/hooks/useRole.tsx", "take": ["UserRole"] },
+        {
+          "file": "src/hooks/useRoleSwitch.ts",
+          "take": ["ROLE_LADDER", "ALL_ROLES_SUPER_ADMIN", "MOBILE_EXCLUDED_ROLES", "isUserRole", "computeAvailableRoles", "BusinessSwitchEntry", "computeBusinessEntries"]
+        },
+        {
+          "file": "src/lib/role-switch-destination.ts",
+          "take": ["getRoleSwitchDestination", "isExternalRoleSwitchDestination"],
+          "stubs": {
+            "getCommandHubUrl": {
+              "expression": "() => null",
+              "reason": "Only the developer/infra branches read the Command Hub URL (devHub config, import.meta.env). Both are MOBILE_EXCLUDED_ROLES, so computeAvailableRoles never offers them on mobile (apps/mobile/tests/core/roles.test.ts proves the branch unreachable)."
+            }
+          }
+        }
+      ]
+    },
+    "role-navigation": {
+      "iconFields": ["icon"],
+      "sources": [
+        { "file": "src/config/role-navigation.ts", "take": ["NavigationItem", "patientNavigation", "professionalNavigation", "staffNavigation"] }
+      ]
+    },
+    "business-mode": {
+      "iconFields": ["icon"],
+      "sources": [
+        {
+          "file": "src/lib/business-mode.ts",
+          "take": [
+            "BusinessRole", "BusinessOrgLike", "BusinessNavItem", "BUSINESS_ROUTES", "NON_MODE_COMMERCE_PREFIXES",
+            "isBusinessRoute", "isBusinessRole", "businessHomeFor", "businessRoleLabelKey",
+            "OVERVIEW", "TEAM", "ORDERS", "RESULTS_INBOX", "MESSAGES", "SETTINGS",
+            "resolveBusinessBottomNav", "businessDrawerItems", "ACTIVE_ORG_STORAGE_KEY", "pickActiveOrg"
+          ]
+        }
+      ]
+    },
+    "drawer-nav": {
+      "iconFields": ["icon"],
+      "sources": [
+        { "file": "src/config/drawer-nav.config.ts", "take": ["DrawerNavItem", "DrawerIconTone", "drawerNavIconTones", "drawerNavItems"] },
+        { "file": "src/components/mobile/SideDrawerNav.tsx", "take": ["CROSS_MODE_IDS", "BUSINESS_DRAWER_KEYS"] }
+      ]
+    },
+    "bottom-nav": {
+      "iconFields": ["icon"],
+      "sources": [
+        {
+          "file": "src/components/mobile/MobileBottomNav.tsx",
+          "take": [
+            { "name": "navItems", "as": "communityBottomNav" },
+            "BottomNavItem", "ROLE_NAV_ITEMS", "resolveRoleBottomNav",
+            "MobileBottomNav#hideNavRoutes", "MobileBottomNav#roleSectionRoutes"
+          ]
+        }
+      ]
+    },
+    "tenants": {
+      "sources": [
+        {
+          "file": "src/lib/tenant-registry.ts",
+          "take": [
+            "TenantSlug", { "name": "TenantBrand", "as": "TenantRegistryBrand" }, "TenantLanding", "TenantEntry", "RegistrySource", "TenantRegistry",
+            "SLUG_RE", "COMPILED_MAXINA_FALLBACK", "FALLBACK_REGISTRY", "ResolvedTenant",
+            "safeHex", "safeInternalPath",
+            { "name": "normalizeLanding", "export": false }, { "name": "normalizeBrand", "export": false }, "normalizeEntry",
+            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant"
+          ]
+        },
+        { "file": "src/lib/retired-tenants.ts", "take": ["RETIRED_TENANT_SLUGS", "canonicalTenantSlug"] }
+      ]
+    },
+    "language": {
+      "sources": [
+        { "file": "src/contexts/LanguageContext.tsx", "take": ["languageOptions"] },
+        { "file": "src/components/language/locale-presentation.ts", "take": ["LocalePresentation", "LOCALE_PRESENTATION"] },
+        { "file": "src/components/RTLProvider.tsx", "take": ["RTL_BASE_LANGUAGES", "isRtlLanguage"] }
+      ]
+    }
+  }
+}

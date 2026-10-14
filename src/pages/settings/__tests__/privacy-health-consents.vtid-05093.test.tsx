@@ -38,6 +38,8 @@ vi.mock("@/components/MotivationalBanner", () => ({ MotivationalBanner: nothing 
 vi.mock("@/components/PrivacyAuditPopup", () => ({ PrivacyAuditPopup: nothing }));
 vi.mock("@/components/ai/AIDataConsentDialog", () => ({ AIDataConsentDialog: nothing }));
 vi.mock("@/components/settings/SpotlightConsentToggle", () => ({ SpotlightConsentToggle: nothing }));
+// VTID-05117 (from main): Privacy renders a Spotlight frame behind a tenant flag; this suite covers the legacy screen.
+vi.mock("@/hooks/useSpotlightEnabled", () => ({ useSpotlightEnabled: () => false }));
 vi.mock("@/hooks/useAIConsent", () => ({
   useAIConsent: () => ({ hasConsent: false, dialogOpen: false, setDialogOpen: vi.fn(), grantConsent: vi.fn(), revokeConsent: vi.fn() }),
 }));

@@ -103,18 +103,18 @@ export function MemoryTimelineTab() {
         // Otherwise, the expandOnPrimaryClick will handle expansion
       },
       variant: 'outline' as const,
-      icon: <Maximize2 className="w-4 h-4 mr-1" />
+      icon: <Maximize2 className="w-4 h-4 me-1" />
     },
     secondaryActions: [
       ...(item.source === 'ai' ? [{
         label: 'Save as Knowledge',
         onClick: () => handlePromoteToKnowledge(item.id),
-        icon: <Sparkles className="w-3 h-3 mr-1" />
+        icon: <Sparkles className="w-3 h-3 me-1" />
       }] : []),
       { 
         label: 'Delete', 
         onClick: () => handleDeleteActivity(item.id), 
-        icon: <Trash2 className="w-3 h-3 mr-1" /> 
+        icon: <Trash2 className="w-3 h-3 me-1" /> 
       }
     ],
     expandedContent: item.source === 'ai' ? (
@@ -227,7 +227,7 @@ export function MemoryTimelineTab() {
                       {item.memoryType && (
                         <Badge variant="outline">{item.memoryType}</Badge>
                       )}
-                      <span className="text-xs text-muted-foreground ml-auto">
+                      <span className="text-xs text-muted-foreground ms-auto">
                         {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
                       </span>
                     </div>

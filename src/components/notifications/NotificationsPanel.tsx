@@ -237,9 +237,9 @@ export function NotificationsPanel({
             {grouped.map(({ category, display, items }) => (
               <div key={category}>
                 <div className="sticky top-0 z-[1] bg-muted/80 backdrop-blur-sm px-3 py-1.5 border-b text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  <span className="mr-1.5" aria-hidden="true">{display.icon}</span>
+                  <span className="me-1.5" aria-hidden="true">{display.icon}</span>
                   {display.label}
-                  <span className="ml-1.5 text-muted-foreground/60 normal-case font-normal">
+                  <span className="ms-1.5 text-muted-foreground/60 normal-case font-normal">
                     ({items.length})
                   </span>
                 </div>
@@ -276,7 +276,7 @@ export function NotificationsPanel({
             className="w-full min-w-0 text-xs text-muted-foreground hover:text-foreground"
             onClick={handleSettingsClick}
           >
-            <Settings className="h-3.5 w-3.5 mr-1.5 shrink-0" />
+            <Settings className="h-3.5 w-3.5 me-1.5 shrink-0" />
             <span className="truncate">{t('screens.notifications.manageYourNotifications')}</span>
           </Button>
         </div>
@@ -324,7 +324,7 @@ function NotificationRow({
         transition-all duration-150
         ${
           !notification.read_at
-            ? 'bg-accent/10 border-l-2 border-l-primary hover:bg-accent/20'
+            ? 'bg-accent/10 border-s-2 border-s-primary hover:bg-accent/20'
             : 'hover:bg-muted/50'
         }
       `}

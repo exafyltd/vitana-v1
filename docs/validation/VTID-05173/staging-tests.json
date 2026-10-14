@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05173",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "mobile privacy data: signed in at 390x844, /settings?mode=privacy.data shows the three data-sharing switches (Health Data Analytics, Community Insights, Third-party Integrations) unchecked and disabled and Request Data Export disabled, no horizontal overflow, screenshot; the desktop deep link /settings/privacy?section=data redirects to the same mobile mode with the same state. Clicks nothing, saves nothing; read-only",
+      "spec": "tests/e2e/staging/vtid-05173-mobile-privacy-data.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "MobileSettings privacy.data: switches role=switch, aria-checked=false, disabled, t() aria-labels; AI-provider switch untouched; export disabled; AI consent note from the catalogue; source scan finds no defaultChecked or hardcoded English in the case; VTID-05096 phone card test stays green",
+      "ref": "npx vitest run src/pages/__tests__/mobile-settings-privacy-data.vtid-05173.test.tsx src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx",
+      "cwd": ".",
+      "reason": "The staging spec proves the rendered state for the test user; the Vitest pins the labels through the catalogue, the untouched AI-consent switch and the absence of hardcoded English and defaultChecked in the source, which a browser run cannot see."
+    }
+  ]
+}

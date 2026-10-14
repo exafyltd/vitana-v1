@@ -74,11 +74,11 @@ export function BulkActionsDialog({ open, onOpenChange, onEnableBulkMode }: Bulk
 
           <div className="flex justify-between pt-4 border-t">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              <X className="w-4 h-4 mr-2" />
+              <X className="w-4 h-4 me-2" />
               {translate('buttons.cancel', 'Cancel')}
             </Button>
             <Button onClick={handleEnableBulkMode}>
-              <CheckSquare className="w-4 h-4 mr-2" />
+              <CheckSquare className="w-4 h-4 me-2" />
               {translate('buttons.enable', 'Enable Bulk Selection')}
             </Button>
           </div>

@@ -9,6 +9,7 @@
  */
 import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
 import { readStoredTenantSlug } from "@/lib/retired-tenants";
+import { currentRegistrySync, tenantLoginRoute } from "@/lib/tenant-registry";
 
 /**
  * Resolve the tenant sign-in/portal route for the current visitor.
@@ -18,10 +19,11 @@ import { readStoredTenantSlug } from "@/lib/retired-tenants";
 export function resolveLoginRoute(): string {
   // readStoredTenantSlug never throws (storage unavailable → null, fall back
   // to hostname) and maps a retired slug (VTID-04836: earthlinks) to maxina.
+  // VTID-05151: any tenant in the registry gets its own portal; anything else
+  // keeps the Maxina default.
   const slug = readStoredTenantSlug("tenant_slug")
     || DOMAIN_TENANT_MAP[window.location.hostname] || "maxina";
-  if (slug === "alkalma") return "/alkalma";
-  return "/maxina";
+  return tenantLoginRoute(slug, currentRegistrySync(), "/maxina");
 }
 
 /**

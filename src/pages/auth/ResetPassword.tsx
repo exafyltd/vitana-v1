@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader, PanelTitle as CardTitle, PanelDescription as CardDescription } from "@/components/layout/spotlight/Panel";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -24,11 +26,22 @@ export default function ResetPassword() {
   }, []);
 
   const showUpdateView = isRecovery || hashRecovery;
+  const spotlight = useSpotlightEnabled();
+  const view = showUpdateView ? <UpdatePasswordView /> : <RequestResetView />;
+
+  // VTID-05117: Spotlight on → the `form` archetype (single form column, no rail).
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
+        {view}
+      </ScreenFrame>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-pink-50 via-white to-rose-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
       <div className="w-full max-w-md">
-        {showUpdateView ? <UpdatePasswordView /> : <RequestResetView />}
+        {view}
       </div>
     </div>
   );
@@ -59,10 +72,10 @@ function RequestResetView() {
 
   if (sent) {
     return (
-      <Card className="border-pink-100 dark:border-pink-900/30 shadow-lg">
+      <Card className="border-ruby/15 shadow-lg">
         <CardContent className="pt-8 pb-8 text-center space-y-4">
-          <div className="mx-auto w-14 h-14 rounded-full bg-pink-50 dark:bg-pink-950/40 flex items-center justify-center">
-            <MailCheck className="h-7 w-7 text-pink-500" />
+          <div className="mx-auto w-14 h-14 rounded-full bg-ruby/10 flex items-center justify-center">
+            <MailCheck className="h-7 w-7 text-ruby" />
           </div>
           <h3 className="text-xl font-semibold text-foreground">{t('screens.auth.checkYourEmail')}</h3>
           <p className="text-sm text-muted-foreground">
@@ -75,7 +88,7 @@ function RequestResetView() {
           <div className="pt-2">
             <Link
               to="/maxina"
-              className="inline-flex items-center gap-1.5 text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-ruby hover:text-ruby/80 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               {t('screens.auth.backMaxina')}
@@ -87,10 +100,10 @@ function RequestResetView() {
   }
 
   return (
-    <Card className="border-pink-100 dark:border-pink-900/30 shadow-lg">
+    <Card className="border-ruby/15 shadow-lg">
       <CardHeader className="text-center space-y-2">
-        <div className="mx-auto w-14 h-14 rounded-full bg-pink-50 dark:bg-pink-950/40 flex items-center justify-center mb-2">
-          <Lock className="h-7 w-7 text-pink-500" />
+        <div className="mx-auto w-14 h-14 rounded-full bg-ruby/10 flex items-center justify-center mb-2">
+          <Lock className="h-7 w-7 text-ruby" />
         </div>
         <CardTitle className="text-xl">{t('screens.auth.resetYourPassword')}</CardTitle>
         <CardDescription>{t('screens.auth.enterYourEmailWeLlSend')}</CardDescription>
@@ -107,13 +120,13 @@ function RequestResetView() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoFocus
-              className="border-pink-200 focus-visible:ring-pink-400 dark:border-pink-900/40"
+              className="border-ruby/25 focus-visible:ring-ruby/60"
             />
           </div>
           <Button
             type="submit"
             disabled={loading || !email.trim()}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+            className="w-full bg-ruby hover:bg-ruby/90 text-primary-foreground"
           >
             {loading ? (
               <>
@@ -166,10 +179,10 @@ function UpdatePasswordView() {
 
   if (success) {
     return (
-      <Card className="border-pink-100 dark:border-pink-900/30 shadow-lg">
+      <Card className="border-ruby/15 shadow-lg">
         <CardContent className="pt-8 pb-8 text-center space-y-4">
-          <div className="mx-auto w-14 h-14 rounded-full bg-green-50 dark:bg-green-950/40 flex items-center justify-center">
-            <CheckCircle2 className="h-7 w-7 text-green-500" />
+          <div className="mx-auto w-14 h-14 rounded-full bg-status-success-subtle flex items-center justify-center">
+            <CheckCircle2 className="h-7 w-7 text-status-success" />
           </div>
           <h3 className="text-xl font-semibold text-foreground">{t('screens.auth.passwordUpdated')}</h3>
           <p className="text-sm text-muted-foreground">
@@ -177,7 +190,7 @@ function UpdatePasswordView() {
           </p>
           <div className="pt-2">
             <Link to="/maxina">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+              <Button className="bg-ruby hover:bg-ruby/90 text-primary-foreground">
                 {t('screens.auth.continueMaxina')}
               </Button>
             </Link>
@@ -188,10 +201,10 @@ function UpdatePasswordView() {
   }
 
   return (
-    <Card className="border-pink-100 dark:border-pink-900/30 shadow-lg">
+    <Card className="border-ruby/15 shadow-lg">
       <CardHeader className="text-center space-y-2">
-        <div className="mx-auto w-14 h-14 rounded-full bg-pink-50 dark:bg-pink-950/40 flex items-center justify-center mb-2">
-          <Lock className="h-7 w-7 text-pink-500" />
+        <div className="mx-auto w-14 h-14 rounded-full bg-ruby/10 flex items-center justify-center mb-2">
+          <Lock className="h-7 w-7 text-ruby" />
         </div>
         <CardTitle className="text-xl">{t('screens.auth.setNewPassword')}</CardTitle>
         <CardDescription>{t('screens.auth.chooseStrongPasswordForYourAccount')}</CardDescription>
@@ -210,12 +223,12 @@ function UpdatePasswordView() {
                 required
                 minLength={6}
                 autoFocus
-                className="border-pink-200 focus-visible:ring-pink-400 dark:border-pink-900/40 pr-10"
+                className="border-ruby/25 focus-visible:ring-ruby/60 pe-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -231,7 +244,7 @@ function UpdatePasswordView() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className={`border-pink-200 focus-visible:ring-pink-400 dark:border-pink-900/40 ${
+              className={`border-ruby/25 focus-visible:ring-ruby/60 ${
                 confirmPassword && !passwordsMatch ? "border-destructive" : ""
               }`}
             />
@@ -242,7 +255,7 @@ function UpdatePasswordView() {
           <Button
             type="submit"
             disabled={loading || !isValid}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+            className="w-full bg-ruby hover:bg-ruby/90 text-primary-foreground"
           >
             {loading ? (
               <>

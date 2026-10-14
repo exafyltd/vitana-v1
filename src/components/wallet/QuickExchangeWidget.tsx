@@ -161,7 +161,7 @@ export function QuickExchangeWidget({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                  className="absolute end-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
                   onClick={handleSwapCurrencies}
                 >
                   <ArrowUpDown className="w-3 h-3" />
@@ -229,7 +229,7 @@ export function QuickExchangeWidget({
             disabled={!calculation || parseFloat(fromAmount) <= 0 || isProcessing}
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
           >
-            <Zap className="w-4 h-4 mr-1" />
+            <Zap className="w-4 h-4 me-1" />
             {t('screens.wallet.exchangeSend')}
           </Button>
         </div>

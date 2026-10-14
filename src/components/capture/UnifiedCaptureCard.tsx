@@ -671,7 +671,7 @@ export function UnifiedCaptureCard({
                   <img src={url} alt={`Attachment ${i + 1}`} className="w-full h-full object-cover" />
                   <button
                     onClick={() => removeAttachment(i)}
-                    className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
+                    className="absolute top-0 end-0 p-0.5 bg-destructive text-destructive-foreground rounded-es-lg"
                   >
                     <X className="h-3 w-3" />
                   </button>

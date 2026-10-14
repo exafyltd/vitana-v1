@@ -23,12 +23,15 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { isAppilixWebView } from "@/lib/webview";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 type Status = "processing" | "success" | "error";
 
 export default function OAuthComplete() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const spotlight = useSpotlightEnabled();
   const [status, setStatus] = useState<Status>("processing");
   const [message, setMessage] = useState<string>("");
 
@@ -184,11 +187,11 @@ export default function OAuthComplete() {
     };
   }, [deepLinkHref, gatewayError, gatewayErrorDetail, inWebView, navigate, nextPath, provider, searchParams]);
 
-  return (
-    <div className="min-h-dvh flex flex-col items-center justify-center px-6 bg-gradient-to-b from-primary/5 to-background text-center">
+  const body = (
       <div className="max-w-md w-full space-y-4">
         {status === "processing" && (
           <>
+            {/* design-allow-next-line: action progress indicator (the sign-in hand-off is in flight), not a data-loading placeholder */}
             <Loader2 className="h-12 w-12 mx-auto animate-spin text-primary" />
             <h1 className="text-xl font-semibold">{t('screens.auth.finishingSignin')}</h1>
             <p className="text-muted-foreground">{t('screens.auth.pleaseWaitMoment')}</p>
@@ -197,7 +200,7 @@ export default function OAuthComplete() {
 
         {status === "success" && (
           <>
-            <CheckCircle2 className="h-12 w-12 mx-auto text-green-500" />
+            <CheckCircle2 className="h-12 w-12 mx-auto text-status-success" />
             <h1 className="text-xl font-semibold">{message}</h1>
             <p className="text-muted-foreground">{t('screens.auth.ifYouArenTSentBack')}
             </p>
@@ -223,6 +226,20 @@ export default function OAuthComplete() {
           </>
         )}
       </div>
+  );
+
+  // VTID-05117: Spotlight on → the `form` archetype (single column, no rail).
+  if (spotlight) {
+    return (
+      <ScreenFrame archetype="form" className="min-h-dvh bg-gradient-to-b from-primary/5 to-background text-center">
+        <div className="flex justify-center">{body}</div>
+      </ScreenFrame>
+    );
+  }
+
+  return (
+    <div className="min-h-dvh flex flex-col items-center justify-center px-6 bg-gradient-to-b from-primary/5 to-background text-center">
+      {body}
     </div>
   );
 }

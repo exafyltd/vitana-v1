@@ -94,7 +94,7 @@ export function PhotoUploadDialog({ open, onOpenChange, onUpload, isUploading }:
                       {!isWorking && (
                         <button
                           type="button"
-                          className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5 hover:bg-black/80"
+                          className="absolute top-1 end-1 bg-black/60 text-white rounded-full p-0.5 hover:bg-black/80"
                           onClick={(e) => { e.stopPropagation(); removeFile(i); }}
                         >
                           <X className="h-3 w-3" />
@@ -160,7 +160,7 @@ export function PhotoUploadDialog({ open, onOpenChange, onUpload, isUploading }:
             {translate('common.cancel', 'Cancel')}
           </Button>
           <Button onClick={handleSubmit} disabled={files.length === 0 || isWorking || isUploading}>
-            <Upload className="h-4 w-4 mr-1" />
+            <Upload className="h-4 w-4 me-1" />
             {isWorking
               ? `${uploadProgress!.current}/${uploadProgress!.total}...`
               : files.length > 1

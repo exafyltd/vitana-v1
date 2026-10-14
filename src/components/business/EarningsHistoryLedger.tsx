@@ -149,7 +149,7 @@ export function EarningsHistoryLedger({
             }}
             className="text-xs h-auto p-0"
           >
-            <Wallet className="h-3 w-3 mr-1" />
+            <Wallet className="h-3 w-3 me-1" />
             {translate('business.history.viewInWallet')}
           </Button>
         </div>
@@ -234,11 +234,11 @@ export function EarningsHistoryLedger({
       {/* Active date range chip */}
       {dateRange && (
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
+          <Badge variant="secondary" className="ps-3 pe-2 py-1.5 flex items-center gap-2">
             <span>{getDateRangeLabel(dateRange)}</span>
             <button 
               onClick={clearDateRange}
-              className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
+              className="ms-1 p-0.5 rounded-full hover:bg-muted transition-colors"
             >
               <X className="h-3.5 w-3.5" />
             </button>
