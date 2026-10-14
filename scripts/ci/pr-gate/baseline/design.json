@@ -542,7 +542,6 @@
     "src/pages/memory/Diary.tsx": 9,
     "src/pages/memory/Permissions.tsx": 3,
     "src/pages/memory/Recall.tsx": 3,
-    "src/pages/memory/Timeline.tsx": 16,
     "src/pages/Messages.tsx": 12,
     "src/pages/messages/Archived.tsx": 3,
     "src/pages/messages/GroupChat.tsx": 12,
