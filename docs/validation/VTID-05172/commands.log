@@ -7,3 +7,8 @@ npx eslint <changed files>   -> outputs/eslint.txt (0 errors)
 npx vitest run src/components/memory/learning src/components/timeline src/design src/navigation   -> outputs/vitest.txt
 node outputs/local-visual-check.cjs outputs   # temporary harness on 127.0.0.1 (removed), fixtures, every other host aborted -> outputs/visual-check.txt + screenshots
 # No production or staging write.
+# 2026-10-14 rebuild on the merged P4 (vitana-v1 #1384, 5c089ef0) and main's Spotlight 7.5
+git cherry-pick <P6 commits> onto origin/main   # Memory.tsx/Permissions.tsx: P6 version; baselines: main minus the two pages; stamps: re-stamped
+npx vitest run src/components/memory src/components/timeline src/pages src/design src/navigation   -> outputs/vitest.txt (incl. VTID-05117 /memory/permissions Spotlight test)
+node scripts/i18n-register-check.mjs --locale=<pt|fr|sr|es|de|ru|pl|tr>   -> outputs/register-check.txt (0 violations)
+node scripts/native/parity-ledger.mjs --check   -> OK
