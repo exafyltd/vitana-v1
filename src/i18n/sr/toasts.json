@@ -1389,12 +1389,20 @@
       "revokeFailed": "Ovlašćenje nije moglo biti opozvano"
     },
     "vitanaCards": {
-      "dismissFailed": "Kartica nije mogla da se sakrije",
-      "connectFailed": "Povezivanje nije moglo da počne",
-      "interestsSaved": "Interesovanja sačuvana",
-      "interestsSaveFailed": "Interesovanja nisu mogla da se sačuvaju",
-      "notificationsEnabled": "Obaveštenja su uključena",
-      "notificationsFailed": "Obaveštenja nisu mogla da se uključe"
+      "_pending_review": {
+        "dismissFailed": true,
+        "connectFailed": true,
+        "interestsSaved": true,
+        "interestsSaveFailed": true,
+        "notificationsEnabled": true,
+        "notificationsFailed": true
+      },
+      "dismissFailed": "Couldn't hide the card",
+      "connectFailed": "Couldn't start connecting",
+      "interestsSaved": "Interests saved",
+      "interestsSaveFailed": "Couldn't save your interests",
+      "notificationsEnabled": "Notifications are on",
+      "notificationsFailed": "Couldn't turn on notifications"
     }
   }
 }

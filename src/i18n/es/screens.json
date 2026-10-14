@@ -12641,6 +12641,13 @@
         "description": "Productos, servicios y ofertas para tu bienestar.",
         "action": "Explorar"
       },
+      "G1": {
+        "eyebrow": "Tu perfil",
+        "title": "Completa tu perfil",
+        "description": "Un perfil completo te trae matches más afines.",
+        "action": "Seguir configurando",
+        "metric": "{value} completado · {message}"
+      },
       "G2": {
         "eyebrow": "Matches",
         "title": "Tienes nuevos matches",
@@ -12650,13 +12657,6 @@
         "_pending_review": {
           "eyebrow": true
         }
-      },
-      "G1": {
-        "eyebrow": "Tu perfil",
-        "title": "Completa tu perfil",
-        "description": "Un perfil completo te trae matches más afines.",
-        "action": "Seguir configurando",
-        "metric": "{value} completado · {message}"
       },
       "G3": {
         "eyebrow": "Diario",
