@@ -94,7 +94,10 @@ describe('Health Sync consent wording — draft until counsel (VTID-05166)', () 
       expect(typeof cats.self_logged_health === 'string' && cats.self_logged_health.length > 0, loc).toBe(true);
       expect(placeholders(cats.self_logged_health), loc).toEqual([]);
       for (const h of ['healthSyncHeading', 'selfLoggedHeading']) expect(String(u[h] ?? '').trim().length, `${h} ${loc}`).toBeGreaterThan(0);
-      expect(u.phoneStores, loc).toEqual({ apple_health: 'Apple Health', health_connect: 'Health Connect' });
+      // Brand names are the same in every locale; the i18n propagation bot marks
+      // them `_pending_review` because they match English — that marker is metadata.
+      const { _pending_review: _review, ...stores } = (u.phoneStores ?? {}) as Record<string, unknown>;
+      expect(stores, loc).toEqual({ apple_health: 'Apple Health', health_connect: 'Health Connect' });
     }
   });
 
