@@ -9,6 +9,8 @@
 import { cssVars, resolved } from './tokens.generated';
 
 export * from './tokens.generated';
+// The UI kit's contract (VTID-05176): `tokens`, `TOKENS_VERSION` and their types, built from the generated tokens.
+export * from './contract';
 
 export type ColorScheme = 'light' | 'dark';
 

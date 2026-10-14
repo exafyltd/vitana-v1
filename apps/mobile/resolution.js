@@ -6,6 +6,8 @@
  *
  *   @vitana/core/*  → packages/core/src/*
  *   @vitana/tokens  → packages/tokens/src/index.ts
+ *   @vitana/ui, @vitana/ui/*  → apps/mobile/src/ui/index.ts, apps/mobile/src/ui/*
+ *                              (the UI kit, VTID-05176)
  *   @/*             → src/*   (the web src/; only core's re-export files use it —
  *                              ESLint bans it in app code)
  *
@@ -35,6 +37,8 @@ const CLOSURE_FILE = path.join(REPO_DIR, 'packages/core/closure.generated.json')
 const ALIASES = {
   '@vitana/core/*': 'packages/core/src/*',
   '@vitana/tokens': 'packages/tokens/src/index.ts',
+  '@vitana/ui': 'apps/mobile/src/ui/index.ts',
+  '@vitana/ui/*': 'apps/mobile/src/ui/*',
   '@/*': 'src/*',
 };
 

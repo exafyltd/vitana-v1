@@ -6,6 +6,8 @@
     "paths": {
       "@vitana/core/*": ["../../packages/core/src/*"],
       "@vitana/tokens": ["../../packages/tokens/src/index.ts"],
+      "@vitana/ui": ["../../apps/mobile/src/ui/index.ts"],
+      "@vitana/ui/*": ["../../apps/mobile/src/ui/*"],
       "@/*": ["../../src/*"],
       "@supabase/supabase-js": ["./node_modules/@supabase/supabase-js"]
     }

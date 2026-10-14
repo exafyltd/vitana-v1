@@ -1,5 +1,5 @@
 /** VTID-05183 — @vitana/tokens: generated from src/index.css + tailwind.config.ts. */
-import { themeVars, color, resolved, cssVars, colors, runtimeVars, radius, screens, shadows, gradients } from '@vitana/tokens';
+import { themeVars, color, resolved, cssVars, colors, runtimeVars, radius, screens, shadows, gradients, tokens } from '@vitana/tokens';
 import { tenantBrand } from '@vitana/core/tenants';
 
 describe('tokens', () => {
@@ -34,5 +34,16 @@ describe('tokens', () => {
     expect(screens.md).toBe(1024);
     expect(shadows.vcard.light.opacity).toBeCloseTo(0.06);
     expect(gradients.maxinaTopbar.stops).toHaveLength(2);
+  });
+
+  it('the UI kit contract (VTID-05176) is derived from the generated tokens', () => {
+    expect(cssVars.light['--primary']).toBe('222.2 47.4% 11.2%');
+    expect(tokens.color.light.primary).toBe('hsl(222.2, 47.4%, 11.2%)');
+    expect(tokens.color.dark.statusSuccessSubtle).toBe(`hsl(${cssVars.dark['--status-success-subtle'].split(' ').join(', ')})`);
+    expect(tokens.radius.lg).toBe(radius.lg.px);
+    expect(tokens.radius.vcardSm).toBe(radius['vcard-sm'].px);
+    expect(tokens.elevation.light.e1.shadowOpacity).toBe(shadows.vcard.light.opacity);
+    expect(tokens.elevation.light.e1.shadowColor).toBe('hsl(222, 47%, 11%)');
+    expect(tokens.elevation.dark.e2.shadowRadius).toBe(shadows['vcard-raised'].dark.blur / 2);
   });
 });

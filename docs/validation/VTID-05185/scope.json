@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05185",
+  "kind": "feature",
+  "paths": [
+    "src/i18n/*/screens.json",
+    "src/i18n/native-health-sync-keys.vtid-05185.test.ts",
+    "tests/e2e/staging/vtid-05185-health-sync-permission-keys.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05185/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05185/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
