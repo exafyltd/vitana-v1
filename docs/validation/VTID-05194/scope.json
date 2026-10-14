@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05194",
+  "kind": "infra",
+  "paths": [
+    "docs/validation/VTID-05194/**",
+    ".kiro/steering/vitana-load-project-rules.md",
+    ".claude/rules/collaboration.md"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
