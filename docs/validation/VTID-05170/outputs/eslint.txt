@@ -1,0 +1,7 @@
+
+/home/user/vitana-v1/src/pages/memory/Timeline.tsx
+  26:10  warning  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
+  64:16  warning  Fast refresh can't handle anonymous components. Add a name to your export                               react-refresh/only-export-components
+
+✖ 2 problems (0 errors, 2 warnings)
+

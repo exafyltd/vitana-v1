@@ -1,14 +1,159 @@
 {
-  "_comment": "VTID-05157 — native parity ledger, one row per web destination (program §4). Rows are added by `node scripts/native/parity-ledger.mjs --sync`; scope/lane come from scripts/native/parity-scope.json. Edit only status, exception, owner and last_parity_check by hand. NATIVE-CI runs --check.",
-  "version": 1,
+  "_comment": "VTID-05157 — native parity ledger, one row per web destination (program §4). Rows are added by `node scripts/native/parity-ledger.mjs --sync`; scope/lane come from scripts/native/parity-scope.json. Edit only status, exception, owner and last_parity_check by hand. NATIVE-CI runs --check. VTID-05186: version 2 adds `shell` (one entry per shell component/mode; status/exception/owner/last_parity_check by hand).",
+  "version": 2,
   "native_only": [
     {
       "path": "/",
-      "reason": "Wave 0 placeholder (app/index.tsx, VTID-05157); it is not a port of PUBLIC.LANDING, whose row stays not_started."
+      "reason": "Landing redirect (app/index.tsx, VTID-05186): signed in → /home, signed out → /maxina (useSmartRouting.tsx:102-110). Not a port of PUBLIC.LANDING, whose row stays not_started (public-auth lane)."
+    },
+    {
+      "path": "/dev/orb-bench",
+      "reason": "dev echo bench (app/dev/orb-bench.tsx, VTID-05182, plan N6 Change 11): the native ORB Voice Bench tab 2 — no network, no session; development and test-g1 builds only."
+    },
+    {
+      "path": "/*",
+      "reason": "Resolver route (app/(app)/[...path].tsx, VTID-05186): registry destinations not yet native render Unported, unknown paths render not-found; internal builds only — program decision 4."
     },
     {
       "path": "/native-ui-catalogue",
       "reason": "dev-only UI kit catalogue (N2 VTID-05176); not a member screen"
+    }
+  ],
+  "shell": [
+    {
+      "key": "MobileAppShell",
+      "web_source": "src/components/mobile/MobileAppShell.tsx",
+      "native_source": "apps/mobile/src/shell/components/MobileAppShell.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "TopAppBar",
+      "web_source": "src/components/mobile/TopAppBar.tsx",
+      "native_source": "apps/mobile/src/shell/components/TopAppBar.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "BottomNav:community",
+      "web_source": "src/components/mobile/MobileBottomNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/BottomNav.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "BottomNav:patient",
+      "web_source": "src/components/mobile/MobileBottomNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/BottomNav.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "BottomNav:professional",
+      "web_source": "src/components/mobile/MobileBottomNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/BottomNav.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "BottomNav:business-org_admin",
+      "web_source": "src/components/mobile/MobileBottomNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/BottomNav.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "BottomNav:business-staff",
+      "web_source": "src/components/mobile/MobileBottomNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/BottomNav.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "BottomNav:business-professional",
+      "web_source": "src/components/mobile/MobileBottomNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/BottomNav.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "SideDrawer:community",
+      "web_source": "src/components/mobile/SideDrawerNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/SideDrawer.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "SideDrawer:role",
+      "web_source": "src/components/mobile/SideDrawerNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/SideDrawer.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "SideDrawer:business",
+      "web_source": "src/components/mobile/SideDrawerNav.tsx",
+      "native_source": "apps/mobile/src/shell/components/SideDrawer.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "RoleSwitcherSheet",
+      "web_source": "src/components/mobile/RoleSwitcherSheet.tsx",
+      "native_source": "apps/mobile/src/shell/components/RoleSwitcherSheet.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "MobileModePill",
+      "web_source": "src/components/ui/MobileModePill.tsx",
+      "native_source": "apps/mobile/src/shell/components/MobileModePill.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "PublicShell",
+      "web_source": "src/components/PublicAppShell.tsx",
+      "native_source": "apps/mobile/src/shell/components/PublicShell.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
+    },
+    {
+      "key": "LanguageSheet",
+      "web_source": "src/components/language/LanguageOptionsList.tsx",
+      "native_source": "apps/mobile/src/shell/components/LanguageSheet.tsx",
+      "status": "in_progress",
+      "exception": null,
+      "owner": "N3 VTID-05186",
+      "last_parity_check": null
     }
   ],
   "rows": [
@@ -151,9 +296,9 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "in_progress",
       "exception": null,
-      "owner": null,
+      "owner": "N3 VTID-05186",
       "last_parity_check": null
     },
     {
@@ -163,9 +308,9 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "in_progress",
       "exception": null,
-      "owner": null,
+      "owner": "N3 VTID-05186",
       "last_parity_check": null
     },
     {
@@ -2539,9 +2684,9 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "in_progress",
       "exception": null,
-      "owner": null,
+      "owner": "N3 VTID-05186",
       "last_parity_check": null
     },
     {
@@ -2587,9 +2732,9 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "in_progress",
       "exception": null,
-      "owner": null,
+      "owner": "N3 VTID-05186",
       "last_parity_check": null
     },
     {
@@ -2719,9 +2864,9 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "in_progress",
       "exception": null,
-      "owner": null,
+      "owner": "N3 VTID-05186",
       "last_parity_check": null
     },
     {

@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "A Vitana precisa do seu microfone para que você possa falar com ela. Ele só fica ativo enquanto uma conversa estiver aberta.",
+    "status": {
+      "connecting": "Conectando com a Vitana …",
+      "thinking": "A Vitana está pensando …",
+      "reconnecting": "Reconectando …",
+      "ended": "Conversa encerrada",
+      "muted": "Seu microfone está sem som",
+      "unavailable": "A Vitana ainda não está disponível nesta versão do app."
+    },
+    "rationale": {
+      "title": "Fale com a Vitana",
+      "body": "Para que a Vitana possa ouvir você, o app precisa de acesso ao seu microfone. O microfone só fica ativo enquanto a conversa estiver aberta.",
+      "continue": "Continuar",
+      "notNow": "Agora não"
+    },
+    "denied": {
+      "body": "Permita o acesso ao microfone nos Ajustes para poder falar com a Vitana.",
+      "openSettings": "Abrir Ajustes"
+    },
+    "a11y": {
+      "close": "Fechar a conversa com a Vitana",
+      "micMute": "Silenciar o microfone",
+      "micUnmute": "Ativar o microfone",
+      "restart": "Começar uma nova conversa com a Vitana"
+    },
+    "bench": {
+      "title": "Teste de eco da voz",
+      "intro": "Verifica o cancelamento de eco sem rede e sem conversa. Deixe o telefone apoiado, coloque um volume normal e não fale durante o teste de eco.",
+      "modeEcho": "Teste de eco",
+      "modeSpeech": "Teste de fala",
+      "rate": "Velocidade {rate}×",
+      "start": "Iniciar teste",
+      "stop": "Cancelar teste",
+      "phaseIdle": "Pronto",
+      "phaseNoiseFloor": "Medindo o ruído do ambiente …",
+      "phasePlaying": "Tom de teste tocando …",
+      "pass": "Aprovado",
+      "fail": "Reprovado",
+      "openings": "Aberturas do limiar de voz: {count}",
+      "barges": "Interrupções detectadas: {count}",
+      "peak": "Nível máximo durante o tom: {value}",
+      "noiseFloor": "Nível máximo no ambiente: {value}",
+      "noisyRoom": "O ambiente está mais barulhento que o limiar de fechamento, então o resultado fica mais rigoroso que o necessário.",
+      "stopLatency": "Reprodução parada após {value} ms",
+      "device": "Dispositivo: {value}",
+      "os": "Sistema: {value}",
+      "route": "Saída: {value}",
+      "aecPath": "Cancelamento de eco: {value}",
+      "voiceProcessing": "Processamento de voz: {value}",
+      "on": "ligado",
+      "off": "desligado",
+      "share": "Compartilhar resultado",
+      "unavailable": "O teste de eco só existe nas versões de desenvolvimento e de teste do app."
+    }
+  }
+}

@@ -42,6 +42,38 @@ export function resolveProfile(value: string | undefined): Profile {
   return value as Profile;
 }
 
+/**
+ * VTID-05186 (N3, plan change 6) — the Google Sign-In iOS URL scheme is the
+ * reversed iOS client id. No client id → no plugin, so `development` builds
+ * without any Google config.
+ */
+export function googleIosUrlScheme(iosClientId: string | undefined): string | null {
+  const id = iosClientId?.trim();
+  if (!id) return null;
+  const suffix = '.apps.googleusercontent.com';
+  const prefix = id.endsWith(suffix) ? id.slice(0, -suffix.length) : id;
+  return `com.googleusercontent.apps.${prefix}`;
+}
+
+type PluginEntry = string | [string, Record<string, unknown>];
+
+export function buildPlugins(env: Record<string, string | undefined>, profile: Profile): PluginEntry[] {
+  const plugins: PluginEntry[] = [
+    'expo-router',
+    'expo-localization',
+    // VTID-05180: the native ORB voice module. Its microphone usage string comes
+    // from the i18n catalog at prebuild (fails closed without the keys); dev-only
+    // local networking for the fake gateway.
+    ['./modules/vitana-voice/plugin/withVitanaVoice', { profile }],
+    'expo-secure-store',
+    'expo-apple-authentication',
+  ];
+  const scheme = googleIosUrlScheme(env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID);
+  if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
+  return plugins;
+}
+
+
 /** The four link paths the app handles from a universal link / App Link. */
 export const LINK_PATHS = {
   exact: ['/auth/confirmed', '/reset-password', '/oauth/complete'],
@@ -69,10 +101,15 @@ export function resolveLinkHosts(profile: Profile, value: string | undefined): s
   return [...new Set(hosts)];
 }
 
-export function buildConfig(profileValue: string | undefined, linkHostsValue?: string): ExpoConfig {
+export function buildConfig(
+  profileValue: string | undefined,
+  linkHostsValue?: string,
+  env: Record<string, string | undefined> = process.env,
+): ExpoConfig {
   const profile = resolveProfile(profileValue);
   const linkHosts = resolveLinkHosts(profile, linkHostsValue);
-  const ios: ExpoConfig['ios'] = { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false };
+  // usesAppleSignIn: Sign in with Apple (VTID-05186); the App ID capability waits for G3.
+  const ios: ExpoConfig['ios'] = { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false, usesAppleSignIn: true };
   const android: ExpoConfig['android'] = { package: IDENTIFIERS.android };
   if (linkHosts.length > 0) {
     ios.associatedDomains = linkHosts.map((host) => `applinks:${host}`);
@@ -98,10 +135,7 @@ export function buildConfig(profileValue: string | undefined, linkHostsValue?: s
     userInterfaceStyle: 'automatic',
     ios,
     android,
-    // VTID-05180: the native ORB voice module. Its microphone usage string comes
-    // from the i18n catalog at prebuild (fails closed without the keys); dev-only
-    // local networking for the fake gateway.
-    plugins: ['expo-router', 'expo-localization', ['./modules/vitana-voice/plugin/withVitanaVoice', { profile }]],
+    plugins: buildPlugins(env, profile),
     experiments: { typedRoutes: false },
     extra: { profile, linkHosts },
   };

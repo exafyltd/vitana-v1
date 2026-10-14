@@ -1,0 +1,22 @@
+{
+  "vtid": "VTID-05172",
+  "kind": "feature",
+  "sparring_record": "docs/validation/VTID-05172/plan-sparring.md",
+  "paths": [
+    "src/pages/Memory.tsx",
+    "src/pages/memory/Permissions.tsx",
+    "src/components/memory/learning/**",
+    "src/components/timeline/timeline-meta.tsx",
+    "src/hooks/useMemoryLearning.ts",
+    "src/lib/memory-learning-api.ts",
+    "src/i18n/*/memoryLearning.json",
+    "src/i18n/*/timeline.json",
+    "i18n-source-stamps/*.json",
+    "src/design/screen-manifest.json",
+    "scripts/ci/pr-gate/baseline/design.json",
+    "scripts/ci/pr-gate/baseline/eslint.json",
+    "docs/SCREEN_INVENTORY.md",
+    "tests/e2e/staging/vtid-05172-memory-refresh.staging.spec.ts",
+    "docs/validation/VTID-05172/**"
+  ]
+}

@@ -1,0 +1,16 @@
+[register] pt (Portuguese) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] fr (French) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] sr (Serbian) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] es (Spanish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] de (German) — 0 violation(s), 8 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] ru (Russian) — 0 violation(s), 1 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] pl (Polish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+[register] tr (Turkish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.

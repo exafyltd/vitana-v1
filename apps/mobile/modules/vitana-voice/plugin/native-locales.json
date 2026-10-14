@@ -1,0 +1,17 @@
+{
+  "_comment": "VTID-05180 — web locale (src/i18n/<locale>/) → iOS .lproj name. sr is Latin script; zh is Simplified. Read by scripts/native/gen-native-locales.mjs and withVitanaVoiceIos.js.",
+  "ios": {
+    "de": "de",
+    "en": "en",
+    "es": "es",
+    "sr": "sr-Latn",
+    "fr": "fr",
+    "pl": "pl",
+    "pt": "pt",
+    "ru": "ru",
+    "tr": "tr",
+    "zh": "zh-Hans",
+    "ar": "ar"
+  },
+  "baseLocale": "en"
+}

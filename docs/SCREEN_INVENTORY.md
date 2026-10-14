@@ -6,8 +6,8 @@
 ## Summary
 
 - **Pages scanned:** 391
-- **Distinct i18n keys consumed:** 4746
-- **Namespaces in use:** 48
+- **Distinct i18n keys consumed:** 4706
+- **Namespaces in use:** 47
 - **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -2716,11 +2716,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/memory/Permissions.tsx
 
-**Status:** ✅ clean — keys consumed: 25, namespaces: 1
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 25, total in shard: 11846
+- `screens` — used: 1, total in shard: 11846
 
 ### src/pages/memory/Recall.tsx
 
@@ -2732,12 +2732,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/memory/Timeline.tsx
 
-**Status:** ✅ clean — keys consumed: 16, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 15, total in shard: 11846
-- `timeline` — used: 1, total in shard: 1
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## messages/
 
@@ -3089,7 +3084,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 257 |
+| `screens` | 256 |
 | `toasts` | 57 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
@@ -3132,7 +3127,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `orders` | 1 |
 | `wellnessServices` | 1 |
 | `support` | 1 |
-| `timeline` | 1 |
 | `archives` | 1 |
 | `discount` | 1 |
 | `portals` | 1 |

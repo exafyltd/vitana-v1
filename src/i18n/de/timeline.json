@@ -1,5 +1,204 @@
 {
   "timeline": {
-    "searchPlaceholder": "Aktivität suchen..."
+    "searchPlaceholder": "Zeitleiste durchsuchen …",
+    "jumpToDate": "Zu Datum springen",
+    "header": {
+      "seoTitle": "Zeitleiste – Vitana",
+      "title": "Deine Zeitleiste",
+      "description": "Dein Vitana Index und alles, was ihn bewegt – Tag für Tag."
+    },
+    "filters": {
+      "all": "Alle",
+      "more": "Mehr",
+      "pillarsLabel": "Nach Säule filtern",
+      "categoriesLabel": "Nach Bereich filtern",
+      "clear": "Filter zurücksetzen"
+    },
+    "day": {
+      "today": "Heute",
+      "yesterday": "Gestern"
+    },
+    "spotlight": {
+      "eyebrow": "Vitana Index",
+      "today": "heute {delta}",
+      "pillarsLabel": "Deine fünf Säulen",
+      "improve": "{pillar} stärken",
+      "empty": "Du hast noch keinen Vitana Index.",
+      "start": "Jetzt starten",
+      "error": "Dein Vitana Index konnte gerade nicht geladen werden."
+    },
+    "balance": {
+      "full": "Deine Säulen sind im Gleichgewicht – volle Punktzahl.",
+      "held_back": "{pillar} bremst deine Balance (−{pct} %)."
+    },
+    "momentum": {
+      "rising": "steigend",
+      "steady": "stabil",
+      "slipping": "fallend"
+    },
+    "influence": {
+      "measured": "{delta} {pillar}",
+      "counted": "Zählt für {pillar}"
+    },
+    "unit": {
+      "ml": "{n} ml",
+      "hours": "{n} Std.",
+      "minutes": "{n} Min.",
+      "days": "{n} Tage",
+      "score": "Index {n}"
+    },
+    "via": {
+      "voice": "per Sprache",
+      "manual": "manuell",
+      "diary": "aus dem Tagebuch"
+    },
+    "indexDay": {
+      "rose": "Dein Vitana Index ist auf {score} gestiegen ({delta})",
+      "fell": "Dein Vitana Index ist auf {score} gesunken ({delta})",
+      "changed": "Dein Vitana Index hat sich verändert ({delta})",
+      "dailyUpdate": "Tägliche Aktualisierung"
+    },
+    "digest": {
+      "title": "Dein Tag: {n} kleine Dinge"
+    },
+    "detail": {
+      "loading": "Wird geladen …",
+      "error": "Das konnten wir gerade nicht laden.",
+      "indexTitle": "Wirkung auf deinen Vitana Index",
+      "beforeAfter": "{before} → {after} ({delta})",
+      "counted": "Das zählt für deine Säule {pillar}. Diesmal hat sich dein Index dadurch nicht verändert.",
+      "noInfluence": "Das hat deinen Vitana Index nicht verändert.",
+      "sensitive": "Das ist eine sensible Gesundheitsangabe. Nur du siehst sie, und Vitana nutzt sie nur nach deinen Gesundheits-Einstellungen.",
+      "learnTitle": "Vitana darf daraus lernen",
+      "learnOn": "Vitana nutzt diesen Eintrag für bessere Vorschläge.",
+      "learnOff": "Vor Vitana verborgen – du siehst ihn trotzdem hier.",
+      "open": "Öffnen",
+      "delete": "Löschen"
+    },
+    "delete": {
+      "title": "Eintrag löschen?",
+      "description": "Der Eintrag verschwindet aus deiner Zeitleiste und Vitana nutzt ihn nicht mehr. Das lässt sich nicht rückgängig machen.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen"
+    },
+    "toast": {
+      "deleted": "Eintrag gelöscht",
+      "deleteFailed": "Löschen hat nicht geklappt",
+      "hideFailed": "Das hat nicht geklappt. Versuch es noch einmal."
+    },
+    "transparency": "Vitana lernt aus deinen Einträgen, um dich besser zu begleiten.",
+    "transparencyLink": "Einstellungen verwalten",
+    "error": "Deine Zeitleiste konnte nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "empty": "Hier erscheint alles, was du mit Vitana erlebst – deine Säulen, dein Tagebuch, deine Community.",
+    "emptyFiltered": "Keine Einträge für diesen Filter.",
+    "topic": {
+      "index_changed": "Dein Vitana Index hat sich verändert",
+      "tier_reached": "Du hast eine neue Index-Stufe erreicht",
+      "balance_changed": "Die Balance deiner Säulen hat sich verändert",
+      "pillar_streak": "Du bist in einer Säulen-Serie",
+      "pillar_slipping": "Eine Säule lässt gerade nach",
+      "pillar_recovered": "Eine Säule hat sich erholt",
+      "baseline_completed": "Du hast deinen Gesundheitscheck abgeschlossen",
+      "plan_created": "Du hast mit Vitana einen Index-Plan erstellt",
+      "vitana_noticed": "Vitana ist etwas aufgefallen",
+      "meal_logged": "Du hast eine Mahlzeit erfasst",
+      "water_logged": "Du hast Wasser getrunken",
+      "workout_logged": "Du hast ein Training erfasst",
+      "sleep_logged": "Du hast deinen Schlaf erfasst",
+      "meditation_logged": "Du hast meditiert",
+      "mood_checkin": "Du hast deine Stimmung erfasst",
+      "stress_logged": "Du hast dein Stresslevel erfasst",
+      "wearable_sync": "Deine Wearable-Daten wurden synchronisiert",
+      "lab_result_uploaded": "Du hast einen Laborbefund hochgeladen",
+      "device_connected": "Du hast ein Gerät verbunden",
+      "lab_test_ordered": "Du hast einen Labortest bestellt",
+      "lab_result_shared": "Du hast einen Laborbefund geteilt",
+      "supplement_logged": "Du hast ein Supplement erfasst",
+      "diary_entry": "Du hast ins Tagebuch geschrieben",
+      "vitana_remembered": "Vitana hat sich etwas Neues über dich gemerkt",
+      "saved_to_knowledge": "Du hast etwas im Wissen gespeichert",
+      "forget": "Du hast Vitana gebeten, etwas zu vergessen",
+      "life_compass_set": "Du hast deinen Lebenskompass festgelegt",
+      "goal_created": "Du hast ein Ziel erstellt",
+      "subgoal_done": "Du hast ein Teilziel erreicht",
+      "milestone": "Du hast einen Meilenstein erreicht",
+      "journey_step": "Du hast einen Schritt deiner Journey abgeschlossen",
+      "journey_session": "Du hast eine geführte Session gehört (+2 Index)",
+      "audiobook_finished": "Du hast eine Hörbuch-Episode beendet",
+      "journey_other": "Fortschritt in deiner Journey",
+      "conversation": "Gespräch mit Vitana",
+      "recommendation_accepted": "Du hast eine Empfehlung angenommen",
+      "recommendation_dismissed": "Du hast eine Empfehlung zurückgestellt",
+      "recommendation_other": "Empfehlung",
+      "reminder_created": "Erinnerung erstellt",
+      "task_created": "Du hast eine Aufgabe erstellt",
+      "task_done": "Du hast eine Aufgabe erledigt",
+      "task_other": "Aufgabe aktualisiert",
+      "calendar_added": "Du hast einen Kalendereintrag hinzugefügt",
+      "event_rsvp": "Du hast für ein Event zugesagt",
+      "calendar_other": "Kalender aktualisiert",
+      "event_attended": "Du warst bei einem Event",
+      "event_created": "Du hast ein Event erstellt",
+      "event_left": "Du hast ein Event verlassen",
+      "event_shared": "Du hast ein Event geteilt",
+      "group_created": "Du hast eine Gruppe gegründet",
+      "group_joined": "Du bist einer Gruppe beigetreten",
+      "group_left": "Du hast eine Gruppe verlassen",
+      "group_other": "Gruppe aktualisiert",
+      "live_hosted": "Du hast einen Live-Raum gehostet",
+      "live_joined": "Du bist einem Live-Raum beigetreten",
+      "live_other": "Live-Aktivität",
+      "connection": "Neue Verbindung",
+      "chat_started": "Du hast ein Gespräch begonnen",
+      "message_sent": "Nachrichten gesendet",
+      "post_published": "Du hast einen Beitrag veröffentlicht",
+      "comment_written": "Kommentare geschrieben",
+      "reaction_given": "Reaktionen gegeben",
+      "item_saved": "Gespeichert",
+      "item_shared": "Geteilt",
+      "provider_contacted": "Du hast einen Anbieter kontaktiert",
+      "order_placed": "Du hast eine Bestellung aufgegeben",
+      "service_booked": "Du hast einen Termin gebucht",
+      "music_played": "Musik gehört",
+      "media_other": "Medien angesehen",
+      "payment": "Zahlung",
+      "reward_earned": "Du hast VTNA verdient",
+      "reward_redeemed": "Du hast eine Belohnung eingelöst",
+      "joined": "Du bist der Community beigetreten",
+      "new_device": "Anmeldung auf einem neuen Gerät",
+      "profile_updated": "Du hast dein Profil aktualisiert",
+      "language_changed": "Du hast deine Sprache geändert",
+      "consent_changed": "Du hast eine Einwilligung geändert",
+      "data_export": "Du hast einen Datenexport angefordert",
+      "settings_other": "Einstellungen geändert",
+      "notification_opened": "Benachrichtigungen geöffnet"
+    },
+    "category": {
+      "index": "Vitana Index",
+      "nutrition": "Ernährung",
+      "hydration": "Hydration",
+      "exercise": "Bewegung",
+      "sleep": "Schlaf",
+      "mental": "Mentale Gesundheit",
+      "cross_pillar": "Alle Säulen",
+      "diary": "Tagebuch",
+      "goals": "Ziele",
+      "journey": "Journey",
+      "vitana": "Vitana",
+      "community": "Community",
+      "events": "Events & Kalender",
+      "live_media": "Live & Medien",
+      "shop": "Entdecken & Shop",
+      "wallet": "Wallet",
+      "account": "Konto & Datenschutz",
+      "app_usage": "App-Nutzung",
+      "system": "System"
+    },
+    "insight": {
+      "weakest_pillar_streak": "{pillar} ist seit Tagen deine schwächste Säule und bremst deine Balance.",
+      "pillar_slipping": "{pillar} ist diese Woche deutlich gesunken.",
+      "pillar_rising": "{pillar} ist diese Woche deutlich gestiegen."
+    }
   }
 }
