@@ -213,6 +213,10 @@ Decisions taken (for Gate 2):
     the guard aborts it; nothing is written).
 
 ## Phase 6 — Card consolidation · VTID-05112 (last)
+  Fix-forward (VTID-05117): VTID-05151 (#1382) replaced the migrated AlkalmaPortal with TenantPortal, which framed
+  unconditionally (also on phones / flag off, against the contract) — TenantPortal now frames only while Spotlight is on
+  (plain column + in-content SplitBar otherwise; 3 Vitest cases, red on the old page). Staging spec: `/e/game/:slug` is a
+  public guest landing without the app shell, so it asserts *no* sidebar instead of the member chrome.
 - [x] 6.1 Retire only cards on the Phase 5 list with zero static and zero dynamic references; split into sub-phases if > 20.
   Status: implemented (VTID-05112). Inventory of 150 card-like components (`docs/validation/VTID-05112/card-inventory.md`):
   6 have zero static and zero dynamic references and are retired — `templates/EventCard`, `templates/StatCard`,

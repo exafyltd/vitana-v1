@@ -18,7 +18,11 @@ const state = vi.hoisted(() => ({
   rpcCalls: [] as Array<[string, unknown]>,
   switchCalls: [] as string[],
   signUps: [] as unknown[],
+  spotlight: false,
 }));
+
+// VTID-05117: the `form` frame only while desktop Spotlight is on.
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => state.spotlight }));
 
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: state.user, loading: false }) }));
 vi.mock('@/hooks/useTenant', () => ({
@@ -120,6 +124,7 @@ beforeEach(() => {
   state.rpcCalls = [];
   state.switchCalls = [];
   state.signUps = [];
+  state.spotlight = false;
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
@@ -292,5 +297,33 @@ describe('portalLandingTarget', () => {
     expect(portalLandingTarget({ ...OPEN, landing: { post_login_path: '/self-co/x' } }, reg)).toBe('/home');
     expect(portalLandingTarget({ ...OPEN, landing: { post_login_path: '//evil.com' } }, reg)).toBe('/home');
     expect(portalLandingTarget({ ...OPEN, landing: {} }, reg)).toBe('/onboarding/welcome');
+  });
+});
+
+describe('Spotlight frame (VTID-05117 contract)', () => {
+  it('Spotlight on: the portal renders inside the form archetype with the sign-in/sign-up tabs', async () => {
+    state.spotlight = true;
+    const { container } = renderAt('/acme');
+    await screen.findByText('Acme Health');
+    expect(container.querySelector('[data-archetype="form"]')).toBeTruthy();
+    expect(screen.getAllByRole('tab').length).toBe(2);
+  });
+
+  it('Spotlight off (phones, flag off): no frame, the same panes under in-content tabs', async () => {
+    const { container } = renderAt('/acme');
+    await screen.findByText('Acme Health');
+    expect(container.querySelector('[data-archetype]')).toBeNull();
+    expect(container.querySelector('[data-tenant-auth="signin"]')).toBeTruthy();
+    const tabs = screen.getAllByRole('tab');
+    expect(tabs.length).toBe(2);
+  });
+
+  it('Spotlight off: the loading and signed-in states are not framed either', async () => {
+    state.user = { id: 'u-1' };
+    state.member = false;
+    const { container } = renderAt('/closed-co');
+    await screen.findByText('Closed Co');
+    expect(container.querySelector('[data-archetype]')).toBeNull();
+    expect(container.querySelector('[data-screen="tenant-portal"]')).toBeTruthy();
   });
 });

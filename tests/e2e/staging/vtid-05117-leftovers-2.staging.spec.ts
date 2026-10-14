@@ -25,13 +25,15 @@ const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const SINGLE = new Set(['focus-feed', 'storefront', 'detail', 'dashboard']);
 const MISSING = '00000000-0000-4000-8000-000000005117';
 
-const ROUTES: { path: string; archetype: string }[] = [
+// `shell: false` — a public guest landing (AuthGuard allowGuest) that has never had the
+// app shell; it must stay that way, so the sidebar is asserted absent there.
+const ROUTES: { path: string; archetype: string; shell?: false }[] = [
   { path: '/home/notif', archetype: 'focus-feed' },
   { path: '/me/matches', archetype: 'collection' },
   { path: '/profile/me/privacy', archetype: 'form' },
   { path: '/discover/deals-offers', archetype: 'storefront' },
   { path: `/post/post/${MISSING}`, archetype: 'detail' },
-  { path: '/e/game/vtid-05117-no-such-game', archetype: 'detail' },
+  { path: '/e/game/vtid-05117-no-such-game', archetype: 'detail', shell: false },
 ];
 
 async function signIn(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext) {
@@ -85,10 +87,14 @@ for (const route of ROUTES) {
       await expect(frame).toHaveAttribute('data-archetype', route.archetype);
 
       const sidebar = page.locator('[data-sidebar="sidebar"]').first();
-      await expect(sidebar).toBeVisible();
-      await expect(sidebar.locator('[data-sidebar="header"] input').first()).toBeVisible();
-      expect(await sidebar.locator('[data-sidebar="content"] a[href]').count()).toBeGreaterThanOrEqual(10);
-      await expect(sidebar.locator('[data-sidebar="footer"]')).toBeVisible();
+      if (route.shell === false) {
+        await expect(page.locator('[data-sidebar="sidebar"]')).toHaveCount(0);
+      } else {
+        await expect(sidebar).toBeVisible();
+        await expect(sidebar.locator('[data-sidebar="header"] input').first()).toBeVisible();
+        expect(await sidebar.locator('[data-sidebar="content"] a[href]').count()).toBeGreaterThanOrEqual(10);
+        await expect(sidebar.locator('[data-sidebar="footer"]')).toBeVisible();
+      }
 
       await expect(page.getByTestId('delayed-loader')).toHaveCount(0, { timeout: 15_000 });
       await expect(page.locator('[data-archetype-skeleton], [data-member-skeleton]')).toHaveCount(0, { timeout: 20_000 });
