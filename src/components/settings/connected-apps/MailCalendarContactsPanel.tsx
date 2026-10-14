@@ -274,7 +274,7 @@ export function MailCalendarContactsPanel({ className = "" }: { className?: stri
                     <div className="truncate font-medium">{t(`mailhub.apps.${id}.name`)}</div>
                     <div
                       className={`truncate text-xs ${
-                        line.tone === "warn" ? "text-status-warning dark:text-status-warning" : line.tone === "ok" ? "text-status-success dark:text-status-success" : "text-muted-foreground"
+                        line.tone === "warn" ? "text-status-warning" : line.tone === "ok" ? "text-status-success" : "text-muted-foreground"
                       }`}
                     >
                       {loading ? t("mailhub.status.loading") : line.text}

@@ -75,7 +75,7 @@ export function MobileBusinessCard() {
                     <ShoppingBag className="h-3 w-3" /> {t("profile.business.conversions", { count: item.conversion_count })}
                   </span>
                 </div>
-                <div className="text-sm font-semibold text-status-success dark:text-status-success mt-1">
+                <div className="text-sm font-semibold text-status-success mt-1">
                   {formatPrice(item.commission_earned_minor, item.currency)}
                 </div>
               </div>

@@ -11,7 +11,7 @@ export function AutopilotRunsView() {
 
   return (
     <SplitBar value={activeSubTab} onValueChange={setActiveSubTab}>
-      <SplitBarList className="w-full mb-6 bg-card/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+      <SplitBarList className="w-full mb-6 bg-card/50 backdrop-blur-sm rounded-lg p-1">
         <SplitBarTrigger value="run-history">{t('screens.dev.runHistory')}</SplitBarTrigger>
         <SplitBarTrigger value="active-runs">{t('screens.dev.activeRuns')}</SplitBarTrigger>
         <SplitBarTrigger value="templates">{t('screens.dev.templatesRecipes')}</SplitBarTrigger>

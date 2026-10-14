@@ -57,8 +57,8 @@ export function AdminStatsCard({
                     className={cn(
                       "font-medium",
                       trend.isPositive
-                        ? "text-status-success dark:text-status-success"
-                        : "text-status-error dark:text-status-error"
+                        ? "text-status-success"
+                        : "text-status-error"
                     )}
                   >
                     {trend.isPositive ? "↑" : "↓"} {Math.abs(trend.value)}%

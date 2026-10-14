@@ -1,13 +1,13 @@
 ---
 lane: phase-6-2-colours
-state: in-review
+state: executing
 next_actor: claude
 vtid: VTID-05112
 depends_on: []
-claimed_by: kiro-202610141113-9826
+claimed_by: kiro-202610141505-bc01
 branch: kiro/desktop-spotlight/phase-6-2-colours
 pr: https://github.com/exafyltd/vitana-v1/pull/1411
-updated: 2026-10-14T11:40Z
+updated: 2026-10-14T15:10Z
 ---
 # Card consolidation 6.2 — raw palette → tokens (option A) — VTID-05112
 
@@ -68,3 +68,6 @@ as coordinator, decide the split — suggested cut, each its own lane for Kiro:
   4. **arbitrary hex / `style` colour literals** (`text-[#…]`, `style={{ color: '#…' }}` → `hsl(var(--token))`);
   5. a final **sweep** for whatever single-token stragglers remain, then flip "System-wide done".
 Next: Claude Code reviews PR #1411 against the acceptance list and merges, then allocates the split lanes above.
+
+### 2026-10-14T15:10Z · kiro-202610141505-bc01 · in-review → executing (address coordinator review)
+Fixed the lane transition (`ready → executing`, legal from base `origin/main`) and removed the 21 redundant `dark:X` duplicates the coordinator flagged (identical light/dark token, e.g. `text-status-success dark:text-status-success`, `bg-card/50 dark:bg-card/50`) across 9 files. `queue.mjs validate`, design/eslint ratchet, Vitest and build re-run green. Pushed to the same branch; `next_actor: claude` for review + merge (Kiro does not merge, §7a).
