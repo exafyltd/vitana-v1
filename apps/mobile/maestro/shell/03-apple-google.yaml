@@ -1,0 +1,14 @@
+# VTID-05186 — Sign in with Apple (iOS device, needs G3 capability) and Google (both platforms). G1 only.
+appId: com.exafy.maxina.dev
+---
+- launchApp: { clearState: true }
+- tapOn: { id: portal-apple }
+- waitForAnimationToEnd
+- takeScreenshot: apple-sheet
+# Complete the provider sheet by hand on the device, then:
+- extendedWaitUntil: { visible: { id: top-app-bar }, timeout: 60000 }
+- tapOn: { id: top-bar-menu }
+- tapOn: { id: drawer-row-logout }
+- tapOn: { id: portal-google }
+- extendedWaitUntil: { visible: { id: top-app-bar }, timeout: 60000 }
+- takeScreenshot: google-signed-in

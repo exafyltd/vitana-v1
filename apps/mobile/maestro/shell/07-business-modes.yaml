@@ -1,0 +1,13 @@
+# VTID-05186 — business modes for org_admin / staff / professional (G1 org fixtures). Run once per fixture account.
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- tapOn: { id: top-bar-menu }
+- tapOn: { id: drawer-mode-pill }
+- tapOn: { id: role-switcher-businesses }
+- tapOn: { id: "radio-${G1_ORG_ID}" }
+- extendedWaitUntil: { visible: { id: bottom-nav-business-overview }, timeout: 20000 }
+- takeScreenshot: business-mode
+- tapOn: { id: top-bar-menu }
+- assertNotVisible: { id: drawer-row-commerce }
+- tapOn: { id: drawer-row-switch-community }

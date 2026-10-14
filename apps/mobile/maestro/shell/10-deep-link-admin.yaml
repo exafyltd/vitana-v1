@@ -1,0 +1,10 @@
+# VTID-05186 — push-free deep link to an unported destination; staff → admin console sheet. G1 only.
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- openLink: maxina://inbox
+- assertVisible: { id: unported }
+- takeScreenshot: unported-inbox
+- openLink: maxina://admin/users
+- assertVisible: { id: admin-in-browser }
+- takeScreenshot: admin-in-browser

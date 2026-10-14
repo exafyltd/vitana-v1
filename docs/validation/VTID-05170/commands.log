@@ -1,0 +1,11 @@
+# VTID-05170 commands (vitana-v1, branch claude/activity-timeline-rebuild-vrtcv4)
+npm ci
+python3 <scratchpad>/gen_timeline_i18n.py /home/user/vitana-v1   # 11 locales × (80 topics, 19 categories, UI)
+for l in en es sr fr pt ru pl ar zh tr; do node scripts/i18n-stamp-source.mjs --locale=$l; done   # 161 timeline stamps added per locale, 0 lost
+npm run -s i18n:gate   -> 17 failing checks, identical to origin/main (outputs/i18n-gate.txt)
+npx eslint src/pages/memory/Timeline.tsx src/components/timeline src/lib/timeline-api.ts src/hooks/useTimeline.ts tests/e2e/staging/vtid-05170-life-timeline.staging.spec.ts   -> 0 errors (outputs/eslint.txt)
+npx vitest run src/components/timeline   -> outputs/vitest-timeline.txt
+npm run -s test:design-contract; npx vitest run src/pages/spotlight-tier-b.vtid-05111.test.tsx src/navigation   -> outputs/vitest-related.txt
+npm run -s i18n:inventory   -> docs/SCREEN_INVENTORY.md
+npm run build   -> outputs/build.txt
+# No production read or write.

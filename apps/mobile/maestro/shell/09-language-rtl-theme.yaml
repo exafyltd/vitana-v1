@@ -1,0 +1,16 @@
+# VTID-05186 — language → ar (RTL screenshots) → de; light by default even when the OS is dark. Writes stt_language on G1.
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- tapOn: { id: top-bar-menu }
+- scrollUntilVisible: { element: { id: drawer-language } }
+- tapOn: { id: drawer-language }
+- tapOn: { id: radio-ar-XA }
+- takeScreenshot: rtl-home
+- tapOn: { id: top-bar-menu }
+- takeScreenshot: rtl-drawer
+- scrollUntilVisible: { element: { id: drawer-language } }
+- tapOn: { id: drawer-language }
+- tapOn: { id: radio-de-DE }
+- setOrientation: PORTRAIT
+- takeScreenshot: de-light
