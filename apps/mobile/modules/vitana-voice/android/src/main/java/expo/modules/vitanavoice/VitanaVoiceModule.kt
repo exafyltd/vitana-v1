@@ -3,6 +3,9 @@
 // VoiceEngine and turns engine callbacks into JS events.
 package expo.modules.vitanavoice
 
+import android.Manifest
+import expo.modules.interfaces.permissions.Permissions
+import expo.modules.kotlin.Promise
 import expo.modules.kotlin.exception.CodedException
 import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
@@ -92,6 +95,17 @@ class VitanaVoiceModule : Module() {
 
     AsyncFunction("getCapabilities") {
       engine().capabilities().toMap()
+    }
+
+    // VTID-05182 (N6d, plan Change 16): RECORD_AUDIO is asked only after the
+    // app's in-app rationale. Expo's permission manager answers
+    // { status, granted, canAskAgain, expires }, the same shape as iOS.
+    AsyncFunction("getMicrophonePermission") { promise: Promise ->
+      Permissions.getPermissionsWithPermissionsManager(appContext.permissions, promise, Manifest.permission.RECORD_AUDIO)
+    }
+
+    AsyncFunction("requestMicrophonePermission") { promise: Promise ->
+      Permissions.askForPermissionsWithPermissionsManager(appContext.permissions, promise, Manifest.permission.RECORD_AUDIO)
     }
 
     OnDestroy {

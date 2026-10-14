@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitani je potreban tvoj mikrofon da bi mogao da razgovaraš sa njom. Uključen je samo dok je razgovor otvoren.",
+    "status": {
+      "connecting": "Povezivanje sa Vitanom …",
+      "thinking": "Vitana razmišlja …",
+      "reconnecting": "Veza se ponovo uspostavlja …",
+      "ended": "Razgovor je završen",
+      "muted": "Tvoj mikrofon je isključen",
+      "unavailable": "Vitana još nije dostupna u ovoj verziji aplikacije."
+    },
+    "rationale": {
+      "title": "Razgovaraj sa Vitanom",
+      "body": "Da bi te Vitana čula, aplikaciji je potreban pristup tvom mikrofonu. Mikrofon je uključen samo dok je razgovor otvoren.",
+      "continue": "Nastavi",
+      "notNow": "Ne sada"
+    },
+    "denied": {
+      "body": "Dozvoli pristup mikrofonu u Podešavanjima da bi mogao da razgovaraš sa Vitanom.",
+      "openSettings": "Otvori Podešavanja"
+    },
+    "a11y": {
+      "close": "Zatvori razgovor sa Vitanom",
+      "micMute": "Isključi mikrofon",
+      "micUnmute": "Uključi mikrofon",
+      "restart": "Započni novi razgovor sa Vitanom"
+    },
+    "bench": {
+      "title": "Test eha za glas",
+      "intro": "Proverava poništavanje eha bez mreže i bez razgovora. Spusti telefon, podesi normalnu jačinu zvuka i ne pričaj tokom testa eha.",
+      "modeEcho": "Test eha",
+      "modeSpeech": "Test govora",
+      "rate": "Brzina {rate}×",
+      "start": "Pokreni test",
+      "stop": "Prekini test",
+      "phaseIdle": "Spremno",
+      "phaseNoiseFloor": "Meri se buka u prostoriji …",
+      "phasePlaying": "Pušta se probni ton …",
+      "pass": "Prošao",
+      "fail": "Nije prošao",
+      "openings": "Otvaranja glasovnog praga: {count}",
+      "barges": "Prepoznati prekidi: {count}",
+      "peak": "Najviši nivo tokom tona: {value}",
+      "noiseFloor": "Najviši nivo u prostoriji: {value}",
+      "noisyRoom": "Prostorija je glasnija od praga zatvaranja, pa je rezultat strožiji nego što treba.",
+      "stopLatency": "Reprodukcija zaustavljena posle {value} ms",
+      "device": "Uređaj: {value}",
+      "os": "Sistem: {value}",
+      "route": "Izlaz: {value}",
+      "aecPath": "Poništavanje eha: {value}",
+      "voiceProcessing": "Obrada glasa: {value}",
+      "on": "uključeno",
+      "off": "isključeno",
+      "share": "Podeli rezultat",
+      "unavailable": "Test eha postoji samo u razvojnim i test verzijama aplikacije."
+    }
+  }
+}
