@@ -33,7 +33,13 @@ const importsOf = (file: string) => [...readFileSync(file, 'utf8').matchAll(/(?:
 const rel = (f: string) => relative(APP, f).split('\\').join('/');
 
 const SHELL_DIRS = ['src/shell', 'src/auth', 'src/identity', 'src/screens', 'src/navigation', 'src/theme', 'src/i18n', 'src/config', 'app'];
-const shellFiles = SHELL_DIRS.flatMap((d) => files(join(APP, d)));
+/**
+ * Files a lane owns inside those dirs: they ARE the lane, not shell code using
+ * it. Only N2's dev-only kit catalogue (VTID-05176), which renders every kit
+ * export by design.
+ */
+const LANE_OWNED = ['app/native-ui-catalogue.tsx'];
+const shellFiles = SHELL_DIRS.flatMap((d) => files(join(APP, d))).filter((f) => !LANE_OWNED.includes(rel(f)));
 const portFiles = files(join(APP, 'src/ports'));
 const stubs = portFiles.filter((f) => /\.stub\.tsx?$/.test(f));
 
@@ -66,9 +72,21 @@ describe('stubs', () => {
     }
   });
 
-  it.each(stubs.map(rel))('%s carries a STUB(N1|N2) header naming its replacement', (file) => {
-    const first = readFileSync(join(APP, file), 'utf8').split('\n')[0];
-    expect(first).toMatch(/^\/\/ STUB\((N1|N2)\): replace with .+ — awaits /);
+  // After the swap (N1 and N2 merged) no stub exists; jest rejects an empty `it.each` table.
+  if (stubs.length > 0) {
+    it.each(stubs.map(rel))('%s carries a STUB(N1|N2) header naming its replacement', (file) => {
+      const first = readFileSync(join(APP, file), 'utf8').split('\n')[0];
+      expect(first).toMatch(/^\/\/ STUB\((N1|N2)\): replace with .+ — awaits /);
+    });
+  }
+
+  it('the stub swap is done: N1 and N2 are on the branch and no *.stub.ts(x) file remains in src/ports', () => {
+    expect(Object.values(AWAITS).flat().filter((p) => !existsSync(join(REPO, p)))).toEqual([]);
+    expect(stubs.map(rel)).toEqual([]);
+  });
+
+  it('the lane-owned exemption lists only existing files', () => {
+    for (const f of LANE_OWNED) expect(existsSync(join(APP, f))).toBe(true);
   });
 
   it('stub removal: no stub remains once the lane it waits for is on the branch', () => {
@@ -76,5 +94,59 @@ describe('stubs', () => {
       .map((f) => ({ file: rel(f), lane: /STUB\((N\d)\)/.exec(readFileSync(f, 'utf8'))?.[1] ?? '?' }))
       .filter(({ lane }) => (AWAITS[lane] ?? []).some((p) => existsSync(join(REPO, p))));
     expect(lingering).toEqual([]);
+  });
+});
+
+/**
+ * VTID-05186 — the port's I-N1.1 wrapper: N1's factory plus the PKCE flow
+ * (the Android Apple sign-in needs it). Proven by the OAuth URL supabase-js
+ * builds locally (no network): PKCE adds a code challenge, implicit does not.
+ */
+describe('createSupabaseClient through the core port (I-N1.1)', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const core = require('../src/ports/core') as typeof import('../src/ports/core');
+  const opts = () => ({
+    url: 'https://g1-test.example.org',
+    publishableKey: 'sb_publishable_g1testkey',
+    storage: core.createMemoryStorage(),
+    fetchImpl: jest.fn(async () => new Response('{}', { status: 500 })) as unknown as typeof fetch,
+  });
+  const oauthUrl = async (client: import('../src/ports/core').VitanaSupabaseClient) => {
+    const { data, error } = await client.auth.signInWithOAuth({ provider: 'apple', options: { redirectTo: 'maxina://oauth/complete', skipBrowserRedirect: true } });
+    await client.auth.stopAutoRefresh();
+    expect(error).toBeNull();
+    return new URL(data.url as string);
+  };
+
+  it('auth.flowType pkce: the OAuth URL carries an S256 code challenge and the verifier is stored', async () => {
+    const o = opts();
+    const client = core.createSupabaseClient({ ...o, auth: { flowType: 'pkce' } });
+    const url = await oauthUrl(client);
+    expect(url.searchParams.get('code_challenge')).toBeTruthy();
+    expect(url.searchParams.get('code_challenge_method')?.toLowerCase()).toBe('s256');
+    expect([...(o.storage as unknown as { data: Map<string, string> }).data.keys()].some((k) => k.endsWith('-code-verifier'))).toBe(true);
+    expect(o.fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it("without the option it is N1's client unchanged (implicit flow, no code challenge)", async () => {
+    const url = await oauthUrl(core.createSupabaseClient(opts()));
+    expect(url.searchParams.get('code_challenge')).toBeNull();
+  });
+
+  it('keeps N1’s checks (no default project)', () => {
+    expect(() => core.createSupabaseClient({ ...opts(), url: '', auth: { flowType: 'pkce' } })).toThrow(/needs url/);
+  });
+});
+
+/** VTID-05186 — every icon the nav data names is one the UI port draws. */
+describe('icons through the ui port', () => {
+  it('ICON_NAMES (and the community bar) are all drawable', () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const core = require('../src/ports/core') as typeof import('../src/ports/core');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const ui = require('../src/ports/ui') as typeof import('../src/ports/ui');
+    const names = [...core.ICON_NAMES, ...core.communityBottomNav.map((i) => i.icon)];
+    expect(names.filter((n) => !ui.ICON_KEYS.includes(n))).toEqual([]);
+    expect(core.communityBottomNav.every((i) => (core.ICON_NAMES as readonly string[]).includes(i.icon))).toBe(true);
   });
 });

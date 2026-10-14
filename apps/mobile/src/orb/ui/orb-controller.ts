@@ -20,7 +20,7 @@
  * checks it again. With no URL (every `development` build without a G1
  * gateway) the overlay says Vitana is not reachable and nothing connects.
  */
-import { orbViewProfile } from '@web/lib/orb-view-profile';
+import { orbViewProfile } from '@vitana/core/orb-view-profile';
 import type { MicPermission } from '../../../modules/vitana-voice/src/VitanaVoice';
 import type { TransportKind } from '../transport';
 import type { NavCtx, NavResult, OrbSession, OrbSessionDeps, OrbSnapshot } from '../session';

@@ -5,6 +5,8 @@ import { AlertCircle } from 'lucide-react';
 import NotFound from '@/pages/NotFound';
 import SEO from '@/components/SEO';
 import { ScreenFrame, ArchetypeSkeleton } from '@/components/layout/spotlight';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
+import { SplitBar, SplitBarList, SplitBarTrigger } from '@/components/ui/split-bar';
 import { VCard } from '@/components/ui/vcard';
 import { Button } from '@/components/ui/button';
 import { TenantAuthCard, type TenantAuthMode } from '@/components/portal/TenantAuthCard';
@@ -73,14 +75,20 @@ export default function TenantPortal({ slug: fixedSlug }: TenantPortalProps) {
   return <ResolvedTenantPortal slug={slug} />;
 }
 
+/** The page column without Spotlight (phones, flag off): no frame, same content. */
+const PLAIN_COLUMN = 'mx-auto flex min-h-screen w-full max-w-md flex-col gap-5 px-4 py-8';
+
+// VTID-05117 contract: the `form` frame only while Spotlight is on; phones and
+// flag-off desktops keep a plain column (no [data-archetype]).
 function PortalShell({ children }: { children: React.ReactNode }) {
-  return (
-    <ScreenFrame archetype="form">
-      <div data-screen="tenant-portal" className="flex flex-col gap-5">
-        {children}
-      </div>
-    </ScreenFrame>
+  const spotlight = useSpotlightEnabled();
+  const body = (
+    <div data-screen="tenant-portal" className="flex flex-col gap-5">
+      {children}
+    </div>
   );
+  if (!spotlight) return <main className={PLAIN_COLUMN}>{body}</main>;
+  return <ScreenFrame archetype="form">{body}</ScreenFrame>;
 }
 
 function PortalError({ onRetry }: { onRetry: () => void }) {
@@ -125,6 +133,7 @@ function ResolvedTenantPortal({ slug }: { slug: string }) {
 type MemberState = 'unknown' | 'member' | 'non-member' | 'error';
 
 function TenantPortalPage({ entry }: { entry: TenantEntry }) {
+  const spotlight = useSpotlightEnabled();
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
   const registry = useTenantRegistry();
@@ -225,31 +234,49 @@ function TenantPortalPage({ entry }: { entry: TenantEntry }) {
         </PortalShell>
       );
     }
+    const tabItems = [
+      { value: 'signin', label: t('tenantPortal.signInTab') },
+      { value: 'signup', label: t('tenantPortal.signUpTab') },
+    ];
+    const onModeChange = (v: string) => setMode(v as TenantAuthMode);
+    const anonymousBody = (
+      <div data-screen="tenant-portal" data-tenant-slug={entry.slug} className="flex flex-col gap-5">
+        {hero}
+        {confirmed && (
+          <p role="status" aria-live="polite" className="rounded-vcard-sm border bg-card px-4 py-3 text-sm" data-tenant-confirmed="">
+            {t('tenantPortal.confirmed')}
+          </p>
+        )}
+        <div className="rounded-vcard border bg-card p-5">
+          <TenantAuthCard entry={entry} brand={brand} onSignedIn={() => setJustSignedIn(true)} />
+        </div>
+      </div>
+    );
+    if (!spotlight) {
+      // Phones / flag off: the same panes under an in-content SplitBar, no frame.
+      return (
+        <main className={PLAIN_COLUMN}>
+          {seo}
+          <SplitBar value={mode} onValueChange={onModeChange}>
+            <SplitBarList aria-label={t('tenantPortal.tabsAria')}>
+              {tabItems.map((item) => (
+                <SplitBarTrigger key={item.value} value={item.value}>
+                  {item.label}
+                </SplitBarTrigger>
+              ))}
+            </SplitBarList>
+            {anonymousBody}
+          </SplitBar>
+        </main>
+      );
+    }
     return (
       <ScreenFrame
         archetype="form"
-        tabs={{
-          value: mode,
-          onValueChange: (v) => setMode(v as TenantAuthMode),
-          ariaLabel: t('tenantPortal.tabsAria'),
-          items: [
-            { value: 'signin', label: t('tenantPortal.signInTab') },
-            { value: 'signup', label: t('tenantPortal.signUpTab') },
-          ],
-        }}
+        tabs={{ value: mode, onValueChange: onModeChange, ariaLabel: t('tenantPortal.tabsAria'), items: tabItems }}
       >
         {seo}
-        <div data-screen="tenant-portal" data-tenant-slug={entry.slug} className="flex flex-col gap-5">
-          {hero}
-          {confirmed && (
-            <p role="status" aria-live="polite" className="rounded-vcard-sm border bg-card px-4 py-3 text-sm" data-tenant-confirmed="">
-              {t('tenantPortal.confirmed')}
-            </p>
-          )}
-          <div className="rounded-vcard border bg-card p-5">
-            <TenantAuthCard entry={entry} brand={brand} onSignedIn={() => setJustSignedIn(true)} />
-          </div>
-        </div>
+        {anonymousBody}
       </ScreenFrame>
     );
   }

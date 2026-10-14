@@ -1,0 +1,6 @@
+{
+  "name": "@vitana/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "VTID-05183 — design tokens generated from src/index.css + tailwind.config.ts. Not a workspace: reached through the apps/mobile aliases (apps/mobile/resolution.js)."
+}

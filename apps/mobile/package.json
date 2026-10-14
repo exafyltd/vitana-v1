@@ -2,7 +2,7 @@
   "name": "@vitana/mobile",
   "version": "0.0.0",
   "private": true,
-  "description": "Vitana native app (Expo SDK 57). Wave 0 skeleton, VTID-05157 — see README.md.",
+  "description": "Vitana native app (Expo SDK 57). Wave 0 skeleton (VTID-05157) + Wave 1 core/tokens wiring (VTID-05183) — see README.md.",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
@@ -13,7 +13,10 @@
     "test": "jest",
     "prebundle": "npm run gen:i18n",
     "bundle": "expo export --platform ios --platform android --output-dir dist",
-    "deps:check": "expo install --check"
+    "bundle:core-probe": "mkdir -p probe-dist && expo export:embed --entry-file probe/core-probe.ts --platform ios --dev false --minify false --bundle-output probe-dist/ios.js --sourcemap-output probe-dist/ios.js.map --assets-dest probe-dist/ios-assets && expo export:embed --entry-file probe/core-probe.ts --platform android --dev false --minify false --bundle-output probe-dist/android.js --sourcemap-output probe-dist/android.js.map --assets-dest probe-dist/android-assets && node probe/check-probe.js probe-dist/ios.js probe-dist/android.js",
+    "deps:check": "expo install --check",
+    "gen:core": "node ../../scripts/native/gen-core-extract.mjs && node ../../scripts/native/core-closure.mjs --write",
+    "gen:tokens": "node ../../scripts/native/gen-tokens.mjs"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -30,6 +33,7 @@
     "expo-secure-store": "57.0.4",
     "expo-status-bar": "57.0.1",
     "expo-web-browser": "57.0.3",
+    "lucide-react-native": "1.48.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
@@ -37,6 +41,7 @@
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "5.7.0",
     "react-native-screens": "4.26.2",
+    "react-native-svg": "15.15.4",
     "react-native-url-polyfill": "4.0.0",
     "react-native-worklets": "0.10.1"
   },

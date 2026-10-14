@@ -16,11 +16,14 @@ import {
 
 export type BarItem = BottomNavItem;
 
+/** N1's extract keeps the web's untyped literal (icon: string); every name is in ICON_NAMES (tests/shell-logic.test.ts). */
+const COMMUNITY_ITEMS = communityBottomNav as BarItem[];
+
 /** business → role → community (MobileBottomNav.tsx `items`). */
 export function resolveBottomNav(dbRole: UserRole, business: { role: string } | null): { items: BarItem[]; businessItems: BarItem[] | null; roleItems: BarItem[] | null } {
   const roleItems = resolveRoleBottomNav(dbRole);
   const businessItems = business ? resolveBusinessBottomNav(business.role).map((i) => ({ ...i, label: i.id })) : null;
-  return { items: businessItems ?? roleItems ?? communityBottomNav, businessItems, roleItems };
+  return { items: businessItems ?? roleItems ?? COMMUNITY_ITEMS, businessItems, roleItems };
 }
 
 export function matchesRoute(pathname: string, route: string): boolean {

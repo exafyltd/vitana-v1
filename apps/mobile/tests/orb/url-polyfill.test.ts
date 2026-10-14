@@ -11,7 +11,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { setupURLPolyfill } from 'react-native-url-polyfill';
-import { eventForMarker, planOrbNavigation } from '@web/navigation/orb-navigation';
+import { eventForMarker, planOrbNavigation } from '@vitana/core/orb-navigation';
 
 const NodeURL = globalThis.URL;
 const NodeURLSearchParams = globalThis.URLSearchParams;

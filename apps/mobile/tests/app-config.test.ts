@@ -137,9 +137,9 @@ describe('auth plugins', () => {
     expect(names({})).toEqual([
       'expo-router',
       'expo-localization',
+      './modules/vitana-voice/plugin/withVitanaVoice',
       'expo-secure-store',
       'expo-apple-authentication',
-      './modules/vitana-voice/plugin/withVitanaVoice',
     ]);
     expect(cfg.ios?.usesAppleSignIn).toBe(true);
     expect(cfg.ios?.bundleIdentifier).toBe(IDENTIFIERS.ios);

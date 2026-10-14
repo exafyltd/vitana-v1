@@ -13,6 +13,10 @@
     {
       "path": "/*",
       "reason": "Resolver route (app/(app)/[...path].tsx, VTID-05186): registry destinations not yet native render Unported, unknown paths render not-found; internal builds only — program decision 4."
+    },
+    {
+      "path": "/native-ui-catalogue",
+      "reason": "dev-only UI kit catalogue (N2 VTID-05176); not a member screen"
     }
   ],
   "shell": [

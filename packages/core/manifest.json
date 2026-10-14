@@ -1,0 +1,203 @@
+{
+  "_doc": "VTID-05183 — every web module @vitana/core re-exports, with its reason and consumer lanes. A lane that needs another transitively class-A module adds a line here and a re-export in its own PR; scripts/native/core-closure.mjs --check is the gate (it fails on a re-export missing here, a line nothing re-exports, or a module that is not class A).",
+  "reexports": {
+    "src/navigation/registry/index.ts": {
+      "entry": "registry.ts",
+      "lanes": [
+        "N3",
+        "N4",
+        "N6"
+      ],
+      "reason": "The screen registry (titles, voice targets, locale titles): route titles, deep link → screen, ORB navigation. Imports only screens.json and locale files."
+    },
+    "src/navigation/orb-navigation.ts": {
+      "entry": "orb-navigation.ts",
+      "lanes": [
+        "N6"
+      ],
+      "reason": "ORB navigation directives (planOrbNavigation, eventForMarker). Imports only the registry."
+    },
+    "src/lib/orb-view-profile.ts": {
+      "entry": "orb-view-profile.ts",
+      "lanes": [
+        "N6"
+      ],
+      "reason": "ORB view profile (orbViewProfile: surface + view role the ORB declares at session start). Imports nothing; pure."
+    },
+    "src/lib/permissions.ts": {
+      "entry": "permissions.ts",
+      "lanes": [
+        "N3"
+      ],
+      "reason": "Role/tenant switch permissions from the session; pure."
+    },
+    "src/integrations/supabase/types.ts": {
+      "entry": "database.ts",
+      "lanes": [
+        "N3"
+      ],
+      "reason": "The generated Database type for the injected Supabase client (type only, erased from the bundle)."
+    },
+    "src/integrations/supabase/data-routing.ts": {
+      "entry": "data-routing.ts",
+      "lanes": [
+        "N3"
+      ],
+      "reason": "createDataFetch: routes PostgREST to the data API when configured, the same as the web client; pure."
+    },
+    "src/types/audience.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/autopilot.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/bookmarks.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/command-hub.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/community.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/exercise.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/hydration.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/mental.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/profile.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/recipe.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/releases.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/sharing.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/sleep.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/types/task.ts": {
+      "entry": "types.ts",
+      "lanes": [
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6"
+      ],
+      "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    }
+  }
+}

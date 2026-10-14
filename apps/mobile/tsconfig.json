@@ -4,10 +4,14 @@
     "strict": true,
     "types": ["jest", "node"],
     "paths": {
-      "@web/navigation/orb-navigation": ["../../src/navigation/orb-navigation.ts"],
-      "@web/lib/orb-view-profile": ["../../src/lib/orb-view-profile.ts"]
+      "@vitana/core/*": ["../../packages/core/src/*"],
+      "@vitana/tokens": ["../../packages/tokens/src/index.ts"],
+      "@vitana/ui": ["../../apps/mobile/src/ui/index.ts"],
+      "@vitana/ui/*": ["../../apps/mobile/src/ui/*"],
+      "@/*": ["../../src/*"],
+      "@supabase/supabase-js": ["./node_modules/@supabase/supabase-js"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", ".expo", "android", "ios"]
+  "include": ["**/*.ts", "**/*.tsx", "../../packages/*/src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "probe-dist", ".expo", "android", "ios"]
 }

@@ -1,0 +1,56 @@
+{
+  "tenantPortal": {
+    "_pending_review": {
+      "tagline": true,
+      "logoAlt": true,
+      "tabsAria": true,
+      "signInTab": true,
+      "signUpTab": true,
+      "signInTitle": true,
+      "signUpTitle": true,
+      "signInButton": true,
+      "signUpButton": true,
+      "checkEmail": true,
+      "confirmed": true,
+      "joinIntro": true,
+      "join": true,
+      "inviteOnly": true,
+      "retry": true
+    },
+    "tagline": "Welcome to {brand} – your community on Vitanaland.",
+    "logoAlt": "{brand} logo",
+    "tabsAria": "Sign in or join",
+    "signInTab": "Sign in",
+    "signUpTab": "Join",
+    "signInTitle": "Sign in to {brand}",
+    "signUpTitle": "Join {brand}",
+    "signInButton": "Sign in",
+    "signUpButton": "Create account",
+    "checkEmail": "We sent a confirmation link to {email}. Open it to activate your account.",
+    "confirmed": "Your email address is confirmed. Sign in now.",
+    "joinIntro": "You are signed in but not yet a member of {brand}.",
+    "join": "Join {brand}",
+    "inviteOnly": "{brand} is invite-only. Use the invitation link you received.",
+    "retry": "Try again",
+    "loadError": {
+      "_pending_review": {
+        "title": true,
+        "description": true
+      },
+      "title": "This community could not be loaded",
+      "description": "Check your connection and try again."
+    },
+    "errors": {
+      "_pending_review": {
+        "generic": true,
+        "signInFailed": true,
+        "alreadyRegistered": true,
+        "notJoinable": true
+      },
+      "generic": "Something went wrong. Please try again.",
+      "signInFailed": "Sign-in failed. Check your email address and password.",
+      "alreadyRegistered": "This email address is already registered. Sign in instead.",
+      "notJoinable": "You cannot join {brand} right now."
+    }
+  }
+}

@@ -1,7 +1,6 @@
 /** VTID-05186 (N3, plan changes 12–13) — the shell in all 11 locales, Arabic RTL, no physical left/right. */
 import './helpers/no-network';
 import './helpers/mocks';
-import './fixtures/native-keys';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
@@ -25,6 +24,8 @@ jest.mock('expo-router', () => ({
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
   SafeAreaProvider: ({ children }: { children: unknown }) => children,
+  // The N2 kit reads insets from the context (src/ui/foundation/insets.ts); null = zero insets.
+  SafeAreaInsetsContext: jest.requireActual('react').createContext(null),
 }));
 
 afterAll(() => __setSupabaseForTests(null));

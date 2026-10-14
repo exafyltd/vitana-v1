@@ -22,7 +22,7 @@
  * The gateway learns the truth instead of assuming an open screen (plan open
  * question 6: no web fallback inside the ORB path).
  */
-import { planOrbNavigation } from '@web/navigation/orb-navigation';
+import { planOrbNavigation } from '@vitana/core/orb-navigation';
 import type { Resolution } from '../navigation/resolve';
 import type { NavCtx, NavResult } from './session';
 

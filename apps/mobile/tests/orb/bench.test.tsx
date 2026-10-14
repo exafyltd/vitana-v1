@@ -116,7 +116,7 @@ describe('EchoBench (same gate as a live session)', () => {
 function Screen() {
   return (
     <I18nProvider initialLocale="de">
-      <UIProvider colorScheme="light" direction="ltr" t={(k) => k}>
+      <UIProvider colorScheme="light" direction="ltr">
         <OrbBench />
       </UIProvider>
     </I18nProvider>

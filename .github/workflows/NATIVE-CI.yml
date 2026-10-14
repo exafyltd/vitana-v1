@@ -11,6 +11,15 @@
 # job stays secret-free.
 #
 # Not a required status check yet (branch protection is an admin setting).
+#
+# VTID-05183 (Wave 1 N1): @vitana/core / @vitana/tokens are generated from and
+# re-export web sources, so every src/** and tailwind.config.ts change runs
+# the cheap script job (ledger, generator drift, closure gate, node tests).
+# The full mobile job runs only when the `changes` job finds a path that can
+# change the native build: apps/mobile/**, packages/**, this workflow, the
+# i18n map generator, or an exact path in
+# scripts/native/mobile-ci-paths.generated.json (the src/ files and assets
+# core reads, the extract sources and the token sources).
 
 name: NATIVE-CI
 
@@ -20,23 +29,12 @@ on:
   pull_request:
     paths:
       - 'apps/mobile/**'
+      - 'packages/**'
       - 'scripts/native/**'
       - 'scripts/nav/spa-routes.mjs'
-      - 'src/navigation/registry/**'
-      - 'src/App.tsx'
-      - 'src/i18n/**'
-      # VTID-05186: web shell files mirrored by apps/mobile/src/shell (source pins, check-shell-pins.mjs).
-      - 'src/components/mobile/MobileBottomNav.tsx'
-      - 'src/components/mobile/SideDrawerNav.tsx'
-      - 'src/components/mobile/TopAppBar.tsx'
-      - 'src/components/mobile/MobileAppShell.tsx'
-      - 'src/components/mobile/RoleSwitcherSheet.tsx'
-      - 'src/components/ui/MobileModePill.tsx'
-      - 'src/hooks/useSmartRouting.tsx'
-      - 'src/lib/tenant-display.ts'
-      - 'src/context/AuthProvider.tsx'
-      - 'src/lib/role-labels.ts'
-      - 'src/lib/tenant-registry.ts'
+      # src/** also covers the web shell files mirrored by apps/mobile/src/shell (VTID-05186, check-shell-pins.mjs).
+      - 'src/**'
+      - 'tailwind.config.ts'
       - 'eslint-rules/**'
       - 'eslint.config.js'
       - '.github/workflows/NATIVE-CI.yml'
@@ -44,23 +42,12 @@ on:
     branches: [main]
     paths:
       - 'apps/mobile/**'
+      - 'packages/**'
       - 'scripts/native/**'
       - 'scripts/nav/spa-routes.mjs'
-      - 'src/navigation/registry/**'
-      - 'src/App.tsx'
-      - 'src/i18n/**'
-      # VTID-05186: web shell files mirrored by apps/mobile/src/shell (source pins, check-shell-pins.mjs).
-      - 'src/components/mobile/MobileBottomNav.tsx'
-      - 'src/components/mobile/SideDrawerNav.tsx'
-      - 'src/components/mobile/TopAppBar.tsx'
-      - 'src/components/mobile/MobileAppShell.tsx'
-      - 'src/components/mobile/RoleSwitcherSheet.tsx'
-      - 'src/components/ui/MobileModePill.tsx'
-      - 'src/hooks/useSmartRouting.tsx'
-      - 'src/lib/tenant-display.ts'
-      - 'src/context/AuthProvider.tsx'
-      - 'src/lib/role-labels.ts'
-      - 'src/lib/tenant-registry.ts'
+      # src/** also covers the web shell files mirrored by apps/mobile/src/shell (VTID-05186, check-shell-pins.mjs).
+      - 'src/**'
+      - 'tailwind.config.ts'
       - 'eslint-rules/**'
       - 'eslint.config.js'
       - '.github/workflows/NATIVE-CI.yml'
@@ -83,9 +70,44 @@ env:
   CI: '1'
 
 jobs:
+  # VTID-05183 — decides whether the full mobile job runs (seconds, no install).
+  changes:
+    name: Which native jobs run
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      mobile: ${{ steps.decide.outputs.mobile }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Changed paths → mobile?
+        id: decide
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -u
+          decide() { echo "mobile=$1" >> "$GITHUB_OUTPUT"; echo "mobile=$1 ($2)"; echo "**mobile job:** $1 — $2" >> "$GITHUB_STEP_SUMMARY"; }
+          if [ "$EVENT" = "workflow_dispatch" ]; then decide true "workflow_dispatch always runs it"; exit 0; fi
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then decide true "no base commit"; exit 0; fi
+          if ! git fetch --no-tags --depth=1 origin "$BASE" "$HEAD" 2>/dev/null; then decide true "could not fetch $BASE/$HEAD"; exit 0; fi
+          git diff --name-only "$BASE" "$HEAD" > "$RUNNER_TEMP/changed.txt" || { decide true "diff failed"; exit 0; }
+          HIT=$(node -e '
+            const fs = require("fs");
+            const exact = new Set(JSON.parse(fs.readFileSync("scripts/native/mobile-ci-paths.generated.json", "utf8")).paths);
+            exact.add(".github/workflows/NATIVE-CI.yml");
+            exact.add("scripts/native/gen-i18n-map.mjs");
+            const changed = fs.readFileSync(process.argv[1], "utf8").split("\n").filter(Boolean);
+            const hit = changed.find((p) => p.startsWith("apps/mobile/") || p.startsWith("packages/") || exact.has(p));
+            process.stdout.write(hit || "");
+          ' "$RUNNER_TEMP/changed.txt")
+          if [ -n "$HIT" ]; then decide true "$HIT changed"; else decide false "$(wc -l < "$RUNNER_TEMP/changed.txt") changed path(s), none read by the native build"; fi
+
   mobile:
     name: apps/mobile — typecheck, test, bundle (iOS + Android JS)
-    if: github.event_name != 'schedule'
+    needs: changes
+    if: github.event_name != 'schedule' && needs.changes.outputs.mobile == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     defaults:
@@ -128,6 +150,11 @@ jobs:
               echo "| $(basename "$(dirname "$f")") | $(basename "$f") | $(stat -c %s "$f") |"
             done
           } >> "$GITHUB_STEP_SUMMARY"
+      # VTID-05183 — every @vitana/core entry and @vitana/tokens bundled for iOS
+      # and Android (unminified, with sourcemaps), then asserted: no production
+      # host string, nothing from the repo-root node_modules, exactly one react.
+      - name: Core probe bundle (iOS + Android) + assertions
+        run: npm run bundle:core-probe
 
   # VTID-05181 (native Wave 1b N6c) — the vitana-voice Android module's JVM and
   # Robolectric unit tests. Linux only, no signing, no secrets, no device. The
@@ -174,7 +201,7 @@ jobs:
           if-no-files-found: ignore
 
   parity-ledger:
-    name: Parity ledger + native script tests
+    name: Parity ledger, core/tokens generators + native script tests
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -183,26 +210,36 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # Only the TypeScript compiler (for scripts/nav/spa-routes.mjs and the
-      # extraction analysis), at the root lockfile's version, outside the
-      # root project so no root `npm ci` runs.
-      - name: Install the TypeScript compiler (root lockfile version)
+      # Only the TypeScript compiler (scripts/nav/spa-routes.mjs, the
+      # extraction analysis, gen-core-extract, gen-tokens) and postcss with its
+      # three pure-JS dependencies (gen-tokens), all at the root lockfile's
+      # versions, outside the root project so no root `npm ci` runs.
+      - name: Install the TypeScript compiler + postcss (root lockfile versions)
         run: |
-          TS_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/typescript'].version")
+          v() { node -p "require('./package-lock.json').packages['node_modules/$1'].version"; }
           mkdir -p "$RUNNER_TEMP/ts"
-          npm install --prefix "$RUNNER_TEMP/ts" --no-save --no-audit --no-fund "typescript@$TS_VERSION"
+          npm install --prefix "$RUNNER_TEMP/ts" --no-save --no-audit --no-fund \
+            "typescript@$(v typescript)" "postcss@$(v postcss)" "nanoid@$(v nanoid)" "picocolors@$(v picocolors)" "source-map-js@$(v source-map-js)"
           ln -s "$RUNNER_TEMP/ts/node_modules" node_modules
-          node -p "'typescript ' + require('typescript').version"
+          node -p "'typescript ' + require('typescript').version + ', postcss ' + require('postcss/package.json').version"
       - name: Script tests (node --test)
         run: node --test scripts/native/__tests__/*.test.mjs
       - name: Parity ledger check
         run: node scripts/native/parity-ledger.mjs --check
+      - name: '@vitana/tokens are current (gen-tokens --check)'
+        run: node scripts/native/gen-tokens.mjs --check
+      - name: '@vitana/core extracts are current (gen-core-extract --check)'
+        run: node scripts/native/gen-core-extract.mjs --check
+      - name: '@vitana/core closure gate + CI path list (core-closure --check)'
+        run: node scripts/native/core-closure.mjs --check
+      - name: 'Native shell source pins (check-shell-pins, VTID-05186)'
+        run: node scripts/native/check-shell-pins.mjs
       - name: Parity ledger report
         if: always()
         run: node scripts/native/parity-ledger.mjs --report
 
   lint-rules:
-    name: ESLint native override + i18n rule tests
+    name: ESLint native override (apps/mobile, packages) + i18n rule tests
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -216,8 +253,8 @@ jobs:
         run: npm ci
       - name: ESLint tests (node --test, repo eslint.config.js)
         run: node --test scripts/native/__tests__/eslint/*.test.mjs
-      - name: Lint apps/mobile
-        run: npx eslint apps/mobile
+      - name: Lint apps/mobile and packages
+        run: npx eslint apps/mobile packages
 
   # VTID-05179 (native Wave 1b N6a, plan Change 6): the native ORB mirrors
   # vitana-platform code it cannot import — DUPLEX_GATE / evaluateDuplexGateFrame,

@@ -1,7 +1,6 @@
 /** VTID-05186 (N3, plan changes 17–18) — the shell: bars per mode, hide rules, drawer, top bar, mode pill. */
 import './helpers/no-network';
 import './helpers/mocks';
-import './fixtures/native-keys';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { router } from 'expo-router';
@@ -14,6 +13,7 @@ import { MobileModePill } from '../src/shell/components/MobileModePill';
 import { __setSupabaseForTests } from '../src/auth/client';
 import { registerBadgeSource, __clearBadgeSourcesForTests } from '../src/ports/badges';
 import { translate } from '../src/i18n';
+import { I18nProvider } from '../src/i18n/I18nProvider';
 
 let mockPath = '/home';
 jest.mock('expo-router', () => ({
@@ -24,6 +24,8 @@ jest.mock('expo-router', () => ({
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 20, bottom: 10, left: 0, right: 0 }),
   SafeAreaProvider: ({ children }: { children: unknown }) => children,
+  // The N2 kit reads insets from the context (src/ui/foundation/insets.ts); null = zero insets.
+  SafeAreaInsetsContext: jest.requireActual('react').createContext(null),
 }));
 
 afterAll(() => __setSupabaseForTests(null));
@@ -175,6 +177,8 @@ it('mode pill selects a nested value; the active group starts expanded', () => {
         { value: 'services', label: 'Services', children: [{ value: 'services.events', label: 'Events' }, { value: 'services.classes', label: 'Classes' }] },
       ]}
     />,
+    // The N2 sheet's close button reads its label from the catalog.
+    { wrapper: ({ children }) => <I18nProvider initialLocale="de">{children}</I18nProvider> },
   );
   expect(screen.getByTestId('mode-pill').props.accessibilityLabel).toBe('Events');
   fireEvent.press(screen.getByTestId('mode-pill'));

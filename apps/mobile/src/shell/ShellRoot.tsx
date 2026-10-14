@@ -16,13 +16,13 @@ import { OverlayHost } from './OverlayHost';
 import { useAuthLinkBridge } from '../auth/link-bridge';
 
 export function ShellRoot({ children }: { children: ReactNode }) {
-  const { rtl, t } = useI18n();
+  const { rtl } = useI18n();
   const { scheme } = useThemeMode();
   const { configMissing } = useAuth();
   useAuthLinkBridge();
   const direction = rtl ? 'rtl' : 'ltr';
   return (
-    <UIProvider colorScheme={scheme} direction={direction} t={t}>
+    <UIProvider colorScheme={scheme} direction={direction}>
       <View testID="shell-root" style={[styles.root, { direction, backgroundColor: shellColors(scheme).background }]}>
         {configMissing ? <ConfigMissing keys={configMissing} /> : children}
         <OverlayHost />
