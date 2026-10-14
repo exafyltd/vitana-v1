@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Arabic is right-to-left the overlay root carries direction rtl (snapshot of what a screen reader gets) 1`] = `
+{
+  "direction": "rtl",
+  "listening": [
+    "اضغط هنا للتحدث مع Vitana",
+    "إغلاق المحادثة مع Vitana",
+    "أستمع...",
+    "كتم الميكروفون",
+  ],
+  "rationale": [
+    "اضغط هنا للتحدث مع Vitana",
+    "إغلاق المحادثة مع Vitana",
+    "التحدث مع Vitana",
+    "لكي تسمعك Vitana، يحتاج التطبيق إلى الوصول إلى الميكروفون. يعمل الميكروفون فقط ما دامت المحادثة مفتوحة.",
+    "متابعة",
+    "ليس الآن",
+  ],
+}
+`;

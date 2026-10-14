@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitana a besoin de ton micro pour que tu puisses lui parler. Il n'est actif que pendant une conversation.",
+    "status": {
+      "connecting": "Connexion à Vitana …",
+      "thinking": "Vitana réfléchit …",
+      "reconnecting": "Reconnexion en cours …",
+      "ended": "Conversation terminée",
+      "muted": "Ton micro est coupé",
+      "unavailable": "Vitana n'est pas encore disponible dans cette version de l'app."
+    },
+    "rationale": {
+      "title": "Parler à Vitana",
+      "body": "Pour que Vitana puisse t'entendre, l'app a besoin d'accéder à ton micro. Le micro n'est actif que tant que la conversation est ouverte.",
+      "continue": "Continuer",
+      "notNow": "Pas maintenant"
+    },
+    "denied": {
+      "body": "Autorise l'accès au micro dans les Réglages pour pouvoir parler à Vitana.",
+      "openSettings": "Ouvrir les Réglages"
+    },
+    "a11y": {
+      "close": "Fermer la conversation avec Vitana",
+      "micMute": "Couper le micro",
+      "micUnmute": "Réactiver le micro",
+      "restart": "Démarrer une nouvelle conversation avec Vitana"
+    },
+    "bench": {
+      "title": "Test d'écho de la voix",
+      "intro": "Vérifie l'annulation d'écho sans réseau et sans conversation. Pose ton téléphone, règle un volume normal et ne parle pas pendant le test d'écho.",
+      "modeEcho": "Test d'écho",
+      "modeSpeech": "Test de parole",
+      "rate": "Vitesse {rate}×",
+      "start": "Lancer le test",
+      "stop": "Annuler le test",
+      "phaseIdle": "Prêt",
+      "phaseNoiseFloor": "Mesure du bruit ambiant …",
+      "phasePlaying": "Tonalité de test en cours …",
+      "pass": "Réussi",
+      "fail": "Échoué",
+      "openings": "Ouvertures du seuil vocal : {count}",
+      "barges": "Interruptions détectées : {count}",
+      "peak": "Niveau max pendant la tonalité : {value}",
+      "noiseFloor": "Niveau max dans la pièce : {value}",
+      "noisyRoom": "La pièce est plus bruyante que le seuil de fermeture : le résultat est donc plus strict que nécessaire.",
+      "stopLatency": "Lecture arrêtée après {value} ms",
+      "device": "Appareil : {value}",
+      "os": "Système : {value}",
+      "route": "Sortie : {value}",
+      "aecPath": "Annulation d'écho : {value}",
+      "voiceProcessing": "Traitement de la voix : {value}",
+      "on": "activé",
+      "off": "désactivé",
+      "share": "Partager le résultat",
+      "unavailable": "Le test d'écho n'existe que dans les versions de développement et de test de l'app."
+    }
+  }
+}

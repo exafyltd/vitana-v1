@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitana needs your microphone so you can talk to her. It's only on while a conversation is open.",
+    "status": {
+      "connecting": "Connecting to Vitana …",
+      "thinking": "Vitana is thinking …",
+      "reconnecting": "Reconnecting …",
+      "ended": "Conversation ended",
+      "muted": "Your microphone is muted",
+      "unavailable": "Vitana isn't available in this app version yet."
+    },
+    "rationale": {
+      "title": "Talk to Vitana",
+      "body": "So Vitana can hear you, the app needs access to your microphone. The microphone is only on while the conversation is open.",
+      "continue": "Continue",
+      "notNow": "Not now"
+    },
+    "denied": {
+      "body": "Allow microphone access in Settings so you can talk to Vitana.",
+      "openSettings": "Open Settings"
+    },
+    "a11y": {
+      "close": "Close the conversation with Vitana",
+      "micMute": "Mute microphone",
+      "micUnmute": "Unmute microphone",
+      "restart": "Start a new conversation with Vitana"
+    },
+    "bench": {
+      "title": "Voice echo test",
+      "intro": "Checks echo cancellation with no network and no conversation. Put your phone down, set a normal volume and stay quiet during the echo test.",
+      "modeEcho": "Echo test",
+      "modeSpeech": "Speech test",
+      "rate": "Speed {rate}×",
+      "start": "Start test",
+      "stop": "Cancel test",
+      "phaseIdle": "Ready",
+      "phaseNoiseFloor": "Measuring room noise …",
+      "phasePlaying": "Test tone playing …",
+      "pass": "Passed",
+      "fail": "Failed",
+      "openings": "Voice gate openings: {count}",
+      "barges": "Detected interruptions: {count}",
+      "peak": "Peak level during the tone: {value}",
+      "noiseFloor": "Peak level in the room: {value}",
+      "noisyRoom": "The room is louder than the close threshold, so the result is stricter than needed.",
+      "stopLatency": "Playback stopped after {value} ms",
+      "device": "Device: {value}",
+      "os": "System: {value}",
+      "route": "Output: {value}",
+      "aecPath": "Echo cancellation: {value}",
+      "voiceProcessing": "Voice processing: {value}",
+      "on": "on",
+      "off": "off",
+      "share": "Share result",
+      "unavailable": "The echo test is only available in development and test versions of the app."
+    }
+  }
+}
