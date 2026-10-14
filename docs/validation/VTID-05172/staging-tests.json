@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05172",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, phone 390x844 and desktop 1440x900 (?spotlight=0 and ?spotlight=1): /memory leads with this week's Vitana Index story (or the honest no-Index prompt), no mock content; /memory/permissions shows the learning switches (five pillars, life areas, app usage) and the usage-data card, none of the old stock cards; no sideways scroll in LTR or RTL; ?spotlight=1 is framed by ScreenFrame. Read-only: never flips a switch, exports, deletes or forgets.",
+      "spec": "tests/e2e/staging/vtid-05172-memory-refresh.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "week story, routines (sentence per kind, forget), learning switches (saved, disabled until available), usage data (count, delete behind confirm), insight sentence, source contract, manifest, DE/EN parity + du-form",
+      "ref": "npx vitest run src/components/memory/learning src/components/timeline src/design",
+      "cwd": ".",
+      "reason": "Switching, forgetting, exporting and deleting are writes or personal-data reads on the shared production database, so staging never exercises them; these suites prove the wiring with the gateway client mocked."
+    }
+  ]
+}

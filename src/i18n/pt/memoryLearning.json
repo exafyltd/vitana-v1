@@ -1,0 +1,73 @@
+{
+  "memoryLearning": {
+    "header": {
+      "overviewTitle": "Memória",
+      "overviewDescription": "O que a Vitana sabe sobre você – e como foi sua semana no Vitana Index.",
+      "permissionsTitle": "O que a Vitana pode aprender",
+      "permissionsDescription": "Você decide com o que a Vitana aprende. Ninguém mais vê esses dados."
+    },
+    "week": {
+      "title": "Sua semana no Vitana Index",
+      "change": "{delta} em 7 dias",
+      "noChange": "Sem mudança em 7 dias",
+      "rising": "Subindo: {pillars}",
+      "slipping": "Caindo: {pillars}",
+      "steady": "Os cinco pilares estão estáveis.",
+      "openTimeline": "Abrir sua linha do tempo",
+      "empty": "Ainda sem Vitana Index. Faça a avaliação inicial – depois este cartão mostra toda semana o que mudou.",
+      "start": "Fazer a avaliação inicial"
+    },
+    "routines": {
+      "title": "Rotinas que a Vitana notou",
+      "description": "É assim que a Vitana aprende seu dia a dia. Peça para esquecer o que não estiver certo.",
+      "empty": "A Vitana ainda não notou nenhuma rotina. Isso vem depois de alguns dias de uso.",
+      "forget": "Esquecer",
+      "manage": "Controlar o que a Vitana aprende"
+    },
+    "routine": {
+      "screen_habit": "Você abre {screen} em {days} de 28 dias",
+      "active_hours": "Você costuma ficar ativo {bucket}",
+      "feature_affinity": "Você usa mais {area}",
+      "pillar_rhythm": "{pillar}: geralmente {bucket}, cerca de {n} dias por semana",
+      "time_of_day_preference": "Você costuma fazer as atividades do calendário {bucket}",
+      "day_of_week_rhythm": "{day} é um dos seus dias mais ativos",
+      "category_affinity": "Você faz \"{tag}\" com frequência",
+      "generic": "Um ritmo no seu dia a dia"
+    },
+    "bucket": {
+      "morning": "de manhã",
+      "midday": "por volta do meio-dia",
+      "afternoon": "à tarde",
+      "evening": "à noite",
+      "night": "de madrugada"
+    },
+    "switches": {
+      "title": "Com o que a Vitana pode aprender",
+      "description": "Desligado significa: a Vitana deixa de usar esta área em conversas, rotinas e recomendações. Seus registros continuam na sua linha do tempo.",
+      "pillarsTitle": "Seus cinco pilares",
+      "lifeTitle": "Sua vida no Vitanaland",
+      "appUsageTitle": "Seu uso do app",
+      "appUsageDescription": "Quais áreas você abre e quando. Nunca é mostrado – a Vitana só usa para reconhecer suas rotinas.",
+      "appUsageOff": "Desligar também apaga as rotinas que a Vitana aprendeu com isso.",
+      "healthNote": "Os dados de saúde continuam protegidos também pelos seus consentimentos.",
+      "unavailable": "Estes botões estarão disponíveis em breve."
+    },
+    "usage": {
+      "title": "Seus dados de uso",
+      "description": "Visitas a telas e rastros técnicos. Nunca aparecem na sua linha do tempo.",
+      "count": "{n} registros guardados",
+      "countUnavailable": "O resumo estará disponível em breve.",
+      "export": "Exportar",
+      "delete": "Apagar tudo",
+      "deleteTitle": "Apagar todos os dados de uso?",
+      "deleteDescription": "Visitas a telas e rastros técnicos são apagados, junto com as rotinas que a Vitana aprendeu com eles. Sua linha do tempo continua.",
+      "cancel": "Cancelar",
+      "confirm": "Apagar"
+    },
+    "toast": {
+      "saveFailed": "Não deu certo. Tente de novo.",
+      "forgotten": "A Vitana esqueceu.",
+      "deleted": "Seus dados de uso foram apagados."
+    }
+  }
+}

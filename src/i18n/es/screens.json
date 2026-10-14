@@ -5339,13 +5339,11 @@
       "vitanaIndexUpSubtext": "¡Buen trabajo!",
       "vitanaIndexDownSubtext": "Los pequeños pasos cuentan.",
       "vitanaIndexStableSubtext": "Mantén la constancia.",
-      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
       "longevityJourneyEyebrow": "TU AUDIOLIBRO DE LONGEVIDAD",
       "longevityJourneyContinue": "Continúa con el episodio {session}: {topic}",
       "longevityJourneyAllDone": "Has escuchado todos los episodios. ¡Muy bien!",
       "longevityJourneyNextStepHeadline": "Tu siguiente paso:",
       "longevityJourneySubtext": "El episodio {session} te espera.",
-      "longevityJourneyProgressSubtext": "El episodio {session} te espera · {done} completados · hoy {today}/{goal}",
       "longevityJourneyStartSession": "Reproducir episodio {session}",
       "longevityJourneyDoneLabel": "Hecho",
       "longevityJourneyNowLabel": "Ahora",
@@ -5451,7 +5449,9 @@
       "cancelReply": "Cancelar respuesta",
       "likeComment": "Me gusta el comentario",
       "feedItemError": "Esta publicación no se pudo mostrar.",
-      "playTodaysEpisode": "Reproducir episodio {session}"
+      "playTodaysEpisode": "Reproducir episodio {session}",
+      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
+      "longevityJourneyProgressSubtext": "El episodio {session} te espera · {done} completados · hoy {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (antes Twitter)"
@@ -12636,47 +12636,29 @@
         "description": "Productos, servicios y ofertas para tu bienestar.",
         "action": "Explorar"
       },
-      "G1": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true,
-          "metric": true
-        },
-        "eyebrow": "Your profile",
-        "title": "Complete your profile",
-        "description": "A complete profile brings you better matches.",
-        "action": "Continue setup",
-        "metric": "{value} done · {message}"
-      },
       "G2": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true,
-          "metric": true
-        },
         "eyebrow": "Matches",
-        "title": "You have new matches",
-        "description": "See who is a good fit for you.",
-        "action": "See who matched",
-        "metric": "New matches: {count} · {message}"
+        "title": "Tienes nuevos matches",
+        "description": "Mira quién encaja contigo.",
+        "action": "Ver quién hizo match",
+        "metric": "Matches nuevos: {count} · {message}",
+        "_pending_review": {
+          "eyebrow": true
+        }
+      },
+      "G1": {
+        "eyebrow": "Tu perfil",
+        "title": "Completa tu perfil",
+        "description": "Un perfil completo te trae matches más afines.",
+        "action": "Seguir configurando",
+        "metric": "{value} completado · {message}"
       },
       "G3": {
-        "_pending_review": {
-          "eyebrow": true,
-          "title": true,
-          "description": true,
-          "action": true,
-          "metric": true
-        },
-        "eyebrow": "Diary",
-        "title": "Your streak is at risk",
-        "description": "You missed yesterday – keep your streak alive today.",
-        "action": "Log today",
-        "metric": "Streak: {count} days · {message}"
+        "eyebrow": "Diario",
+        "title": "Tu racha está en riesgo",
+        "description": "Ayer no registraste nada: mantén viva tu racha hoy.",
+        "action": "Registrar hoy",
+        "metric": "Racha: {count} días · {message}"
       }
     },
     "interests": {

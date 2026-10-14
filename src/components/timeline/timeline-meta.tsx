@@ -60,6 +60,8 @@ export function momentTitle(item: Pick<TimelineMoment, "topic" | "category">): s
 }
 
 /** Short facts after the sentence: "500 ml · by voice". Only known params are shown. */
+const INSIGHT_KINDS = new Set(["weakest_pillar_streak", "pillar_slipping", "pillar_rising"]);
+
 export function momentFacts(item: Pick<TimelineMoment, "summary">): string[] {
   const p = item.summary?.params ?? {};
   const out: string[] = [];
@@ -68,7 +70,10 @@ export function momentFacts(item: Pick<TimelineMoment, "summary">): string[] {
   if (typeof p.minutes === "number") out.push(t("timeline.unit.minutes", { n: fmtNumber(p.minutes) }));
   if (typeof p.streak_days === "number") out.push(t("timeline.unit.days", { n: fmtNumber(p.streak_days) }));
   if (typeof p.score_total === "number") out.push(t("timeline.unit.score", { n: fmtNumber(p.score_total) }));
-  if (typeof p.pillar === "string" && isPillar(p.pillar)) out.push(pillarLabel(p.pillar));
+  // VTID-05172: a "Vitana noticed" insight reads as one sentence about its pillar.
+  if (typeof p.insight_kind === "string" && INSIGHT_KINDS.has(p.insight_kind) && typeof p.pillar === "string" && isPillar(p.pillar)) {
+    out.push(t(`timeline.insight.${p.insight_kind}`, { pillar: pillarLabel(p.pillar) }));
+  } else if (typeof p.pillar === "string" && isPillar(p.pillar)) out.push(pillarLabel(p.pillar));
   if (p.via === "voice" || p.via === "manual" || p.via === "diary") out.push(t(`timeline.via.${p.via}`));
   return out;
 }

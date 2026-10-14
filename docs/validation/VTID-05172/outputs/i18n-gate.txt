@@ -1,0 +1,142 @@
+[i18n-audit] 15706 error(s):
+  ERR  [ar] admin: key "admin.rewardsShop.form.editTitle" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.titleDe" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.titleEn" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.descriptionDe" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.descriptionEn" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.slug" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.slugHint" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.slugLocked" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photo" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photoAdd" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photoReplace" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photoRemove" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photoUploading" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photoHint" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.photoAlt" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.extraImages" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.price" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.priceApprox" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.type" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.ageLimit" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.minAge" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.countries" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.countriesHint" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.countryInput" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.countryAdd" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.stock" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.stockUnlimited" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.sortOrder" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.activeLabel" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.activeHint" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.save" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.saving" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.cancel" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.form.saved" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.titleDe" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.slug" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.price" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.minAge" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.countries" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.country" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.stock" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.sortOrder" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.validation.fee" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.INVALID_ITEM" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.ITEM_REJECTED" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.IMAGE_TOO_LARGE" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.IMAGE_TYPE_NOT_ALLOWED" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.IMAGE_UPLOAD_FAILED" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.IMAGE_PROCESSING_FAILED" is _pending_review but locale is GA
+  ERR  [ar] admin: key "admin.rewardsShop.errors.INVALID_FEE" is _pending_review but locale is GA
+  ...and 15656 more
+[i18n-audit] --report-only: exiting 0 despite errors.
+
+=== i18n parity gate — six surfaces ===
+
+FAIL     en (ga)
+         ✓ catalog
+         FAIL review-queue 11
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         ✓ my-journey (reference locale)
+FAIL     es (ga)
+         FAIL catalog 99.5%
+         FAIL review-queue 989
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     sr (ga)
+         FAIL catalog 99.6%
+         FAIL review-queue 1291
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     fr (ga)
+         FAIL catalog 99.6%
+         FAIL review-queue 1922
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     pt (ga)
+         FAIL catalog 99.5%
+         FAIL review-queue 1805
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     ru (ga)
+         FAIL catalog 99.6%
+         FAIL review-queue 2116
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     pl (ga)
+         FAIL catalog 99.6%
+         FAIL review-queue 1987
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     ar (ga)
+         FAIL catalog 99.6%
+         FAIL review-queue 1129
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     zh (ga)
+         ✓ catalog
+         FAIL review-queue 2226
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+FAIL     tr (ga)
+         ✓ catalog
+         FAIL review-queue 2223
+         ✓ placeholders
+         ✓ freshness
+         ✓ register
+         ✓ navigation
+         UNKNOWN my-journey
+
+[gate] My Journey (DB) surface NOT CHECKED — SUPABASE_SERVICE_ROLE not set.
+       Locales above are reported UNKNOWN, not PASS: a locale can pass every file-based
+       check while its curriculum still reads German. Supply SUPABASE_SERVICE_ROLE to close it.
+
+[gate] 17 failing check(s).
