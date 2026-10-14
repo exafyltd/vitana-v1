@@ -1,0 +1,7 @@
+# VTID-05186 — Apple on Android: browser PKCE round trip back to /oauth/complete. G1 only.
+appId: com.vitanaland.app.dev
+---
+- launchApp: { clearState: true }
+- tapOn: { id: portal-apple }
+- takeScreenshot: android-apple-browser
+- extendedWaitUntil: { visible: { id: top-app-bar }, timeout: 90000 }

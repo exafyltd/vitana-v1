@@ -32,6 +32,7 @@ on:
       - 'packages/**'
       - 'scripts/native/**'
       - 'scripts/nav/spa-routes.mjs'
+      # src/** also covers the web shell files mirrored by apps/mobile/src/shell (VTID-05186, check-shell-pins.mjs).
       - 'src/**'
       - 'tailwind.config.ts'
       - 'eslint-rules/**'
@@ -44,6 +45,7 @@ on:
       - 'packages/**'
       - 'scripts/native/**'
       - 'scripts/nav/spa-routes.mjs'
+      # src/** also covers the web shell files mirrored by apps/mobile/src/shell (VTID-05186, check-shell-pins.mjs).
       - 'src/**'
       - 'tailwind.config.ts'
       - 'eslint-rules/**'
@@ -230,6 +232,8 @@ jobs:
         run: node scripts/native/gen-core-extract.mjs --check
       - name: '@vitana/core closure gate + CI path list (core-closure --check)'
         run: node scripts/native/core-closure.mjs --check
+      - name: 'Native shell source pins (check-shell-pins, VTID-05186)'
+        run: node scripts/native/check-shell-pins.mjs
       - name: Parity ledger report
         if: always()
         run: node scripts/native/parity-ledger.mjs --report

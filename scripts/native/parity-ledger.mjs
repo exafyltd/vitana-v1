@@ -34,6 +34,9 @@ export const PATHS = {
 };
 
 export const STATUSES = ['not_started', 'in_progress', 'native', 'web_fallback', 'exception'];
+/** Ledger format versions this script reads (VTID-05186: 2 adds the `shell` section). */
+export const LEDGER_VERSIONS = [1, 2];
+const SHELL_FIELDS = ['key', 'web_source', 'native_source', 'status', 'exception', 'owner', 'last_parity_check'];
 export const SCOPES = ['in', 'out:system-browser', 'out:excluded', 'out:retired', 'pending'];
 const SOURCE_ORDER = { registry: 0, exclusion: 1, 'role-route': 2 };
 const CATCH_ALL = new Set(['*', '/*']);
@@ -163,7 +166,7 @@ export function load(root = REPO) {
   const inputs = { screens: readJson(p('screens')), exclusions: readJson(p('exclusions')), routes };
   const rules = readJson(p('scope'));
   const ledger = existsSync(p('ledger')) ? readJson(p('ledger')) : null;
-  return { expected: expectedEntries(inputs), rules, ledger, native: nativeRoutes(p('nativeApp')) };
+  return { expected: expectedEntries(inputs), rules, ledger, native: nativeRoutes(p('nativeApp')), root };
 }
 
 function sortRows(rows) {
@@ -204,10 +207,11 @@ export function sync({ expected, rules, ledger }) {
   return { ledger: { ...base, rows: sortRows(rows) }, changes };
 }
 
-export function check({ expected, rules, ledger, native }) {
+export function check({ expected, rules, ledger, native, root = REPO }) {
   const failures = [];
   const fail = (code, msg) => failures.push(`(${code}) ${msg}`);
   if (!ledger) return [`(a) no ledger at ${PATHS.ledger} — ${SYNC_HINT}`];
+  if (!LEDGER_VERSIONS.includes(ledger.version)) return [`(v) ledger version ${JSON.stringify(ledger.version)} is not supported (allowed: ${LEDGER_VERSIONS.join(', ')})`];
   const rows = ledger.rows || [];
   const byKey = new Map();
   for (const r of rows) {
@@ -250,6 +254,40 @@ export function check({ expected, rules, ledger, native }) {
     const s = shapeOf(n.route);
     if (!rowShapes.has(s) && !nativeOnly.has(s)) fail('d', `native route ${n.route} (app/${n.file}) has no ledger row — add it to a row's web destination or to "native_only" with a reason`);
   }
+  failures.push(...checkShell({ ledger, root }));
+  return failures;
+}
+
+/**
+ * VTID-05186 — the `shell` section (version 2): the shell components are not
+ * web destinations, so they cannot be `rows`. One entry per component/mode:
+ * { key, web_source, native_source, status, exception, owner, last_parity_check }.
+ *   (g) a web_source file that no longer exists
+ *   (h) native | in_progress without an existing native_source
+ *   (e) exception / web_fallback without a reason; unknown status
+ */
+export function checkShell({ ledger, root = REPO }) {
+  const failures = [];
+  const fail = (code, msg) => failures.push(`(${code}) ${msg}`);
+  const shell = ledger?.shell;
+  if (shell === undefined) return failures;
+  if (ledger.version < 2) return [`(v) a "shell" section needs ledger version 2 (found ${ledger.version})`];
+  if (!Array.isArray(shell)) return ['(v) "shell" must be an array'];
+  const seen = new Set();
+  for (const s of shell) {
+    const missing = SHELL_FIELDS.filter((f) => !(f in s));
+    if (missing.length) fail('b', `shell "${s.key}" lacks ${missing.join(', ')}`);
+    if (seen.has(s.key)) fail('b', `duplicate shell entry "${s.key}"`);
+    seen.add(s.key);
+    if (!STATUSES.includes(s.status)) fail('e', `shell "${s.key}" has unknown status ${JSON.stringify(s.status)}`);
+    if (!s.web_source || !existsSync(join(root, s.web_source))) fail('g', `shell "${s.key}": web_source ${s.web_source} does not exist — update the entry`);
+    if ((s.status === 'native' || s.status === 'in_progress') && !(s.native_source && existsSync(join(root, s.native_source)))) {
+      fail('h', `shell "${s.key}" is "${s.status}" but native_source ${s.native_source} does not exist`);
+    }
+    if ((s.status === 'exception' || s.status === 'web_fallback') && !(typeof s.exception === 'string' && s.exception.trim())) {
+      fail('e', `shell "${s.key}" is "${s.status}" without a reason in "exception"`);
+    }
+  }
   return failures;
 }
 
@@ -269,6 +307,10 @@ export function report({ ledger }) {
     lines.push(`| ${lane} | ${STATUSES.map((s) => c[s] || 0).join(' | ')} | ${Object.values(c).reduce((a, b) => a + b, 0)} |`);
   }
   lines.push('', `native_only: ${(ledger?.native_only || []).map((n) => n.path).join(', ') || '—'}`);
+  if (Array.isArray(ledger?.shell)) {
+    lines.push('', `### Shell — ${ledger.shell.length} entries`, '', '| key | status | native | owner |', '|---|---|---|---|');
+    for (const s of ledger.shell) lines.push(`| ${s.key} | ${s.status} | ${s.native_source ?? '—'} | ${s.owner ?? '—'} |`);
+  }
   return lines.join('\n');
 }
 
