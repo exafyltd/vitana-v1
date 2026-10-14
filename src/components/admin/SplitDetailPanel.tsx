@@ -30,8 +30,8 @@ export function SplitDetailPanel({
 
       {/* Detail panel */}
       <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden border-l bg-card ${
-          isOpen ? "w-[40%] opacity-100" : "w-0 opacity-0 border-l-0"
+        className={`transition-all duration-300 ease-in-out overflow-hidden border-s bg-card ${
+          isOpen ? "w-[40%] opacity-100" : "w-0 opacity-0 border-s-0"
         }`}
       >
         {isOpen && (

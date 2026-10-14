@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05181",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/modules/vitana-voice/**",
+    "apps/mobile/tests/vitana-voice/**",
+    "apps/mobile/app.config.ts",
+    "apps/mobile/.gitignore",
+    ".github/workflows/NATIVE-CI.yml",
+    "docs/validation/VTID-05181/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05181/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

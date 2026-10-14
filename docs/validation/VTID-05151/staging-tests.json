@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05151",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed out: /maxina still renders MaxinaPortal with no generic portal and no tenant switch, /_intro/maxina loads; an unknown slug is NotFound after one resolve_tenant GET and a malformed slug is NotFound with none; /alkalma is the generic portal named AlKalma with the sign-up tab; list_public_tenants / resolve_tenant answer the anon key over GET with whitelisted keys only; no live slug is in /reserved-tenant-slugs.json. GET page loads and GET RPCs only; nothing is submitted; read-only",
+      "spec": "tests/e2e/staging/vtid-05151-tenant-registry.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/tenant-registry.test.ts src/lib/tenant-registry.maxina-golden.test.tsx src/hooks/useTenant.registry.test.tsx src/hooks/useTenant.error-logging.test.ts src/lib/tenant-display.test.ts src/lib/retired-tenants.test.tsx src/lib/tenant-slug-reserved.test.ts src/pages/portals/TenantPortal.test.tsx",
+      "reason": "joining a tenant, signing in and signing up write (user_tenants, auth), so they are proven in CI with Supabase mocked: unknown/reserved/retired slugs, the error state without Maxina, open vs closed sign-up, the member switch and post_login_path with the portal cycle guard, the explicit join and the 42501 refusal, RTL classes and axe, the registry fallback only on error, and the Maxina golden under both the live-shaped registry and a failed registry call"
+    }
+  ]
+}

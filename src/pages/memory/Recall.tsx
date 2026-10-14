@@ -165,7 +165,7 @@ function Recall() {
           <ExpandableSearchButton placeholder={t('screens.memory.askAiAboutYourWellnessJourney')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.memory.memoryActions')}
           </Button>
         </UtilityActionButton>
@@ -186,7 +186,7 @@ function Recall() {
               className="flex-1"
             />
             <Button>
-              <Search className="h-4 w-4 mr-2" />
+              <Search className="h-4 w-4 me-2" />
               {t('screens.memory.searchMemories')}
             </Button>
           </CardContent>

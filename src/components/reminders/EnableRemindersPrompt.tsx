@@ -128,7 +128,7 @@ export const EnableRemindersPrompt: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <ExternalLink className="h-3 w-3 mr-1" />
+                <ExternalLink className="h-3 w-3 me-1" />
                 {t('screens.reminders.openChrome')}
               </a>
             </Button>

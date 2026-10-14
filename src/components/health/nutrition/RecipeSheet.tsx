@@ -105,7 +105,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent 
           side="right" 
-          className="w-full sm:max-w-2xl p-0 backdrop-blur-xl bg-background/95 border-l border-border/50 shadow-2xl"
+          className="w-full sm:max-w-2xl p-0 backdrop-blur-xl bg-background/95 border-s border-border/50 shadow-2xl"
         >
           <div data-recipe-scroll className="h-full overflow-y-auto">
             {/* Sticky mini header (shows on scroll) */}

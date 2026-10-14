@@ -496,12 +496,12 @@ export default function Wallet() {
               <div className="space-y-3">
                 {filterType && (
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
+                    <Badge variant="secondary" className="ps-3 pe-2 py-1.5 flex items-center gap-2">
                       <Sparkles className="h-3.5 w-3.5 text-accent" />
                       <span className="text-xs">{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
                       <button 
                         onClick={clearFilter}
-                        className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
+                        className="ms-1 p-0.5 rounded-full hover:bg-muted transition-colors"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -700,7 +700,7 @@ export default function Wallet() {
           />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 me-2" />
             {t('screens.wallet.walletActions')}
           </Button>
         </UtilityActionButton>
@@ -828,12 +828,12 @@ export default function Wallet() {
               {/* Filter Chip */}
               {filterType && (
                 <div className="flex items-center gap-2 mb-4">
-                  <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
+                  <Badge variant="secondary" className="ps-3 pe-2 py-1.5 flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-accent" />
                     <span>{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
                     <button 
                       onClick={clearFilter}
-                      className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
+                      className="ms-1 p-0.5 rounded-full hover:bg-muted transition-colors"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>

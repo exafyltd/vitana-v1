@@ -566,11 +566,11 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   >
                     {isGeneratingImage ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.common.generatingWithAi')}
+                        <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.common.generatingWithAi')}
                       </>
                     ) : (
                       <>
-                        <Sparkles className="w-4 h-4 mr-2" />
+                        <Sparkles className="w-4 h-4 me-2" />
                         {t('screens.common.generateImageWithAi')}
                       </>
                     )}
@@ -603,7 +603,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                       onClick={() => document.getElementById('image-upload')?.click()}
                       className="w-full"
                     >
-                      <Plus className="w-4 h-4 mr-2" />{t('screens.common.uploadNewImageManually')}
+                      <Plus className="w-4 h-4 me-2" />{t('screens.common.uploadNewImageManually')}
                     </Button>
                   </div>
 
@@ -633,7 +633,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                           disabled={isGeneratingImage}
                           className="w-full"
                         >
-                          <RefreshCw className="w-3 h-3 mr-2" />{t('screens.common.regenerate')}
+                          <RefreshCw className="w-3 h-3 me-2" />{t('screens.common.regenerate')}
                         </Button>
                       )}
                     </div>

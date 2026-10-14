@@ -155,7 +155,7 @@ export function MobileOrdersView({
   const OrderCard = ({ order }: { order: UnifiedMobileOrder }) => (
     <button
       onClick={() => setSelectedOrder(order)}
-      className="w-full text-left bg-card/70 backdrop-blur-sm border border-border/30 rounded-xl p-4 hover:bg-accent/5 active:scale-[0.99] transition-all"
+      className="w-full text-start bg-card/70 backdrop-blur-sm border border-border/30 rounded-xl p-4 hover:bg-accent/5 active:scale-[0.99] transition-all"
     >
       <div className="flex gap-3">
         {/* Order Image/Icon */}

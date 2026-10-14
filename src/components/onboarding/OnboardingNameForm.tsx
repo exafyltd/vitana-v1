@@ -207,17 +207,17 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
             {translate('onboarding.nameForm.handleLabel', 'Choose your Vitanaland username')}
           </Label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
+            <span className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
             <Input
               id="onb-handle"
               placeholder={translate('onboarding.nameForm.handlePlaceholder', 'your_username')}
               value={handle}
               onChange={e => handleHandleChange(e.target.value)}
               maxLength={HANDLE_MAX}
-              className="pl-8 rounded-xl border-gray-200 focus:border-[#FF7BAC] focus:ring-[#FF7BAC]/20"
+              className="ps-8 rounded-xl border-gray-200 focus:border-[#FF7BAC] focus:ring-[#FF7BAC]/20"
             />
             {/* Status icon */}
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="absolute end-3 top-1/2 -translate-y-1/2">
               {handleStatus === 'checking' && (
                 <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
               )}
@@ -265,7 +265,7 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
         >
           {saving ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              <Loader2 className="w-4 h-4 animate-spin me-2" />
               {translate('onboarding.nameForm.saving', 'Setting up...')}
             </>
           ) : (

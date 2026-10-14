@@ -217,7 +217,7 @@ export function IntentShareSheet({
             />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>{t('screens.intents.lengthValidValue1', { length: recipients.length, value1: recipients.length === 1 ? "recipient" : "recipients" })}{recipientsExceeded && (
-                  <span className="text-destructive ml-2">{t('screens.intents.overMaxrecipientsCap', { maxRecipients })}</span>
+                  <span className="text-destructive ms-2">{t('screens.intents.overMaxrecipientsCap', { maxRecipients })}</span>
                 )}
               </span>
               <Button
@@ -225,7 +225,7 @@ export function IntentShareSheet({
                 onClick={handleSendInApp}
                 disabled={submitting || recipients.length === 0 || recipientsExceeded}
               >
-                {submitting ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}{t('screens.intents.send')}
+                {submitting ? <Loader2 className="h-3 w-3 animate-spin me-1" /> : null}{t('screens.intents.send')}
               </Button>
             </div>
           </div>

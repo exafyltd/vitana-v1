@@ -200,7 +200,7 @@ export default function PushDiagnostics() {
       <CardContent className="p-4">
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full flex items-center justify-between text-left"
+          className="w-full flex items-center justify-between text-start"
         >
           <span className="text-xs font-medium text-muted-foreground">{t('screens.common.pushNotificationDiagnostics')}</span>
           {expanded ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
@@ -237,7 +237,7 @@ export default function PushDiagnostics() {
                     disabled={refreshing}
                     className="text-xs flex-1"
                   >
-                    {refreshing ? <RefreshCw className="w-3 h-3 animate-spin mr-1" /> : <RefreshCw className="w-3 h-3 mr-1" />}{t('screens.common.forceReregister')}
+                    {refreshing ? <RefreshCw className="w-3 h-3 animate-spin me-1" /> : <RefreshCw className="w-3 h-3 me-1" />}{t('screens.common.forceReregister')}
                   </Button>
                 </div>
               </>

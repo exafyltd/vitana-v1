@@ -588,7 +588,7 @@ export default function Messages() {
                   <p className="text-sm text-muted-foreground">{translate('inbox.loading')}</p>
                 </div>
                 <div className="flex flex-1 min-h-0 overflow-hidden">
-                  <div className="w-80 border-r overflow-hidden">
+                  <div className="w-80 border-e overflow-hidden">
                     <ConversationListSkeleton />
                   </div>
                   <div className="flex-1 flex items-center justify-center">
@@ -693,9 +693,9 @@ export default function Messages() {
                   return (
                     <Card
                       key={thread.id}
-                      className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                      className={`${cardHeight} me-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                         isActive 
-                          ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                          ? 'bg-domain-messages-tint border-s-4 border-s-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
                       onClick={() => {
@@ -714,7 +714,7 @@ export default function Messages() {
                             disabled={thread.type === 'group'}
                             loading="lazy"
                           />
-                          <div className="absolute -bottom-0.5 -right-0.5">
+                          <div className="absolute -bottom-0.5 -end-0.5">
                             <PresenceIndicator 
                               userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
                               context={context}
@@ -745,12 +745,12 @@ export default function Messages() {
                               
                               {densityMode === 'comfortable' && (
                                 <div className="flex items-center text-xs text-muted-foreground mt-1">
-                                  <Users className="w-3 h-3 mr-1" />{t('screens.messages.value0Participants', { value0: thread.participants?.length || 0 })}
+                                  <Users className="w-3 h-3 me-1" />{t('screens.messages.value0Participants', { value0: thread.participants?.length || 0 })}
                                 </div>
                               )}
                             </div>
                             
-                            <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
+                            <div className="flex flex-col items-end gap-1 ps-1.5 ms-2 flex-shrink-0">
                               <span className={`text-muted-foreground whitespace-nowrap ${
                                 densityMode === 'compact' ? 'text-xs' : 'text-xs'
                               }`}>
@@ -782,13 +782,13 @@ export default function Messages() {
         <TabsContent value="groups" className="mt-0">
           {/* Create Group Header - only show when groups exist */}
           {filteredThreads.length > 0 && (
-            <div className="mb-4 mr-3">
+            <div className="mb-4 me-3">
               <Button 
                 onClick={() => setShowCreateGroup(true)}
                 variant="outline"
                 className="w-full justify-start"
               >
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-4 h-4 me-2" />
                 {t('screens.messages.createNewGroup')}
               </Button>
             </div>
@@ -803,7 +803,7 @@ export default function Messages() {
                   {t('screens.messages.groupsHelpYouCollaborateWithMultiple')}
                 </p>
                 <Button onClick={() => setShowCreateGroup(true)}>
-                  <Users className="w-4 h-4 mr-2" />
+                  <Users className="w-4 h-4 me-2" />
                   {t('screens.messages.createYourFirstGroup2')}
                 </Button>
               </div>
@@ -831,9 +831,9 @@ export default function Messages() {
                   return (
                     <Card
                       key={thread.id}
-                      className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                      className={`${cardHeight} me-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                         isActive 
-                          ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                          ? 'bg-domain-messages-tint border-s-4 border-s-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
                       onClick={() => handleThreadOpen(thread)}
@@ -888,7 +888,7 @@ export default function Messages() {
                               </div>
                             </div>
                             
-                            <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
+                            <div className="flex flex-col items-end gap-1 ps-1.5 ms-2 flex-shrink-0">
                               <span className="text-xs text-muted-foreground whitespace-nowrap">
                                 {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
@@ -923,7 +923,7 @@ export default function Messages() {
                 <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noDirectMessages')}</h3>
                 <p className="text-muted-foreground mb-4">{t('screens.messages.startConversationWithSomeone')}</p>
                 <Button onClick={() => setShowNewConversation(true)}>
-                  <MessageSquareText className="w-4 h-4 mr-2" />
+                  <MessageSquareText className="w-4 h-4 me-2" />
                   {t('screens.messages.newMessage')}
                 </Button>
               </div>
@@ -949,9 +949,9 @@ export default function Messages() {
                   return (
                     <Card
                       key={thread.id}
-                      className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                      className={`${cardHeight} me-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                         isActive 
-                          ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                          ? 'bg-domain-messages-tint border-s-4 border-s-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
                       onClick={() => handleThreadOpen(thread)}
@@ -971,7 +971,7 @@ export default function Messages() {
                               {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="absolute -bottom-0.5 -right-0.5">
+                          <div className="absolute -bottom-0.5 -end-0.5">
                             <PresenceIndicator 
                               userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
                               context={context}
@@ -996,7 +996,7 @@ export default function Messages() {
                               )}
                             </div>
                             
-                            <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
+                            <div className="flex flex-col items-end gap-1 ps-1.5 ms-2 flex-shrink-0">
                               <span className="text-xs text-muted-foreground whitespace-nowrap">
                                 {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
@@ -1042,7 +1042,7 @@ export default function Messages() {
             // Show conversation list on mobile
             <div className="h-full min-h-0 flex flex-col bg-card/50 backdrop-blur-sm">
               <ScrollArea className="h-full flex-1 min-h-0">
-                <div className="p-4 pr-12">
+                <div className="p-4 pe-12">
                   {renderConversationList(displayThreads)}
                 </div>
               </ScrollArea>
@@ -1082,9 +1082,9 @@ export default function Messages() {
             maxSize={50}
             className="transition-all duration-300 min-w-0 flex flex-col min-h-0 overflow-hidden"
           >
-            <div className="h-full min-h-0 flex flex-col border-r bg-card/50 backdrop-blur-sm">
+            <div className="h-full min-h-0 flex flex-col border-e bg-card/50 backdrop-blur-sm">
               <ScrollArea className="h-full min-h-0">
-                <div className="p-4 pr-12">
+                <div className="p-4 pe-12">
                   {renderConversationList(displayThreads)}
                 </div>
               </ScrollArea>
@@ -1330,7 +1330,7 @@ export default function Messages() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem disabled={totalUnread === 0} onClick={handleMarkAllAsRead}>
-                        <CheckCheck className="w-4 h-4 mr-2" />
+                        <CheckCheck className="w-4 h-4 me-2" />
                         {translate('inbox.actions.markAllRead')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -1493,17 +1493,17 @@ export default function Messages() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4 me-2" />
                   {t('screens.messages.new')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setShowNewConversation(true)}>
-                  <MessageSquareText className="w-4 h-4 mr-2" />
+                  <MessageSquareText className="w-4 h-4 me-2" />
                   {t('screens.messages.newMessage')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
-                  <Users className="w-4 h-4 mr-2" />
+                  <Users className="w-4 h-4 me-2" />
                   {t('screens.messages.createGroup')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -1516,7 +1516,7 @@ export default function Messages() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem disabled={totalUnread === 0} onClick={handleMarkAllAsRead}>
-                  <CheckCheck className="w-4 h-4 mr-2" />
+                  <CheckCheck className="w-4 h-4 me-2" />
                   {translate('inbox.actions.markAllRead')}
                 </DropdownMenuItem>
               </DropdownMenuContent>

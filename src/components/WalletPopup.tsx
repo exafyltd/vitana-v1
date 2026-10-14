@@ -144,7 +144,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
               <Wallet className="w-4 h-4 text-green-500" />
             </div>
             <span>{t('screens.common.digitalWallet')}</span>
-            <Badge variant="outline" className="ml-auto text-green-600 border-green-200">{t('screens.common.value0Vtna', { value0: loading ? '...' : fmtNumber(currentBalance) })}
+            <Badge variant="outline" className="ms-auto text-green-600 border-green-200">{t('screens.common.value0Vtna', { value0: loading ? '...' : fmtNumber(currentBalance) })}
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -153,7 +153,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
         </DialogHeader>
 
         <ScrollArea className="flex-1 max-h-[400px]">
-          <div className="space-y-4 pr-4">
+          <div className="space-y-4 pe-4">
             {/* Exchange Rates */}
             <ExchangeRateDisplay compact={true} />
             
@@ -264,7 +264,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                     {t('screens.common.shareHealthDataForRewards')}
                   </p>
                   <Button variant="outline" size="sm">
-                    <Plus className="h-3 w-3 mr-1" />
+                    <Plus className="h-3 w-3 me-1" />
                     {t('screens.common.browsePackages')}
                   </Button>
                 </CardContent>
@@ -276,20 +276,20 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
         <DialogFooter className="flex-col sm:flex-row gap-2">
           <div className="flex gap-2 w-full">
             <Button variant="outline" size="sm" onClick={() => setShowPaymentRequest(true)}>
-              <Gift className="h-4 w-4 mr-2" />
+              <Gift className="h-4 w-4 me-2" />
               {t('screens.common.request')}
             </Button>
             <Button variant="outline" size="sm" onClick={() => setShowMakePayment(true)}>
-              <Send className="h-4 w-4 mr-2" />
+              <Send className="h-4 w-4 me-2" />
               {t('screens.common.pay')}
             </Button>
             <Button variant="outline" size="sm" onClick={() => setShowCreditTransfer(true)}>
-              <Download className="h-4 w-4 mr-2" />
+              <Download className="h-4 w-4 me-2" />
               {t('screens.common.transfer')}
             </Button>
           </div>
           <Button onClick={handleViewFullWallet} className="w-full sm:w-auto">
-            <ExternalLink className="h-4 w-4 mr-2" />
+            <ExternalLink className="h-4 w-4 me-2" />
             {t('screens.common.openFullWallet')}
           </Button>
         </DialogFooter>

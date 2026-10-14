@@ -134,7 +134,7 @@ export function TimelineView() {
           <Card
             key={event.id}
             className={cn(
-              "bg-white/50 dark:bg-card/50 backdrop-blur-sm border-l-4 transition-all duration-200",
+              "bg-white/50 dark:bg-card/50 backdrop-blur-sm border-s-4 transition-all duration-200",
               getStatusColor(event.status),
               expandedEvent === event.id && "ring-2 ring-primary/20"
             )}
@@ -179,7 +179,7 @@ export function TimelineView() {
               </div>
 
               {expandedEvent === event.id && event.details && (
-                <div className="mt-4 pl-9 animate-fade-in">
+                <div className="mt-4 ps-9 animate-fade-in">
                   <div className="bg-muted/30 rounded-lg p-3 text-sm text-muted-foreground border border-border/50">
                     {event.details}
                   </div>

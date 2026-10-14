@@ -734,7 +734,7 @@ export default function MediaHub() {
                       {pendingCount > 0 && (
                         <Badge 
                           variant="destructive" 
-                          className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                          className="absolute -top-1 -end-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                         >
                           {pendingCount}
                         </Badge>
@@ -790,7 +790,7 @@ export default function MediaHub() {
                 
                 {/* Autopilot Card with Live Badge Counter */}
                 <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
-                  {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
+                  {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -end-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
                       {pendingCount}
                     </Badge>}
                   <div className="flex flex-col items-center justify-center h-full space-y-3">
@@ -801,7 +801,7 @@ export default function MediaHub() {
                   </div>
                   
                   {/* Hover Preview */}
-                  {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                  {showPreview && pendingCount > 0 && <div className="absolute top-full start-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
                       <div className="text-xs font-medium text-muted-foreground mb-2">{translate('mediaHub.latestActions')}</div>
                       {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                           <span>{action.icon}</span>
@@ -833,14 +833,14 @@ export default function MediaHub() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button size="sm">
-                      <Plus className="w-4 h-4 mr-2" />
+                      <Plus className="w-4 h-4 me-2" />
                       {translate('mediaHub.actions.upload')}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>
-                        <Video className="w-4 h-4 mr-2" />
+                        <Video className="w-4 h-4 me-2" />
                         {translate('mediaHub.menu.video')}
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
@@ -859,14 +859,14 @@ export default function MediaHub() {
                       setInitialMediaType('music');
                       setIsUnifiedUploadOpen(true);
                     }}>
-                      <Music className="w-4 h-4 mr-2" />
+                      <Music className="w-4 h-4 me-2" />
                       {translate('mediaHub.menu.music')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => {
                       setInitialMediaType('podcast');
                       setIsUnifiedUploadOpen(true);
                     }}>
-                      <Mic className="w-4 h-4 mr-2" />
+                      <Mic className="w-4 h-4 me-2" />
                       {translate('mediaHub.menu.podcast')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -1070,7 +1070,7 @@ export default function MediaHub() {
                             >
                               {/* Now Playing Accent Bar */}
                               {isCurrentlyPlaying && (
-                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 animate-pulse"></div>
+                                <div className="absolute start-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 animate-pulse"></div>
                               )}
 
                               {/* Square Album Cover */}
@@ -1093,7 +1093,7 @@ export default function MediaHub() {
                                     {track.title}
                                   </h3>
                                   {isCurrentlyPlaying && (
-                                    <div className="flex gap-0.5 items-end h-4 ml-1">
+                                    <div className="flex gap-0.5 items-end h-4 ms-1">
                                       {[1, 2, 3].map((i) => (
                                         <div
                                           key={i}
@@ -1264,7 +1264,7 @@ export default function MediaHub() {
                                   {isCurrentlyPlaying ? (
                                     <Pause className="w-6 h-6 text-white relative z-10" />
                                   ) : (
-                                    <Play className="w-6 h-6 text-purple-600 ml-0.5 relative z-10" />
+                                    <Play className="w-6 h-6 text-purple-600 ms-0.5 relative z-10" />
                                   )}
                                 </Button>
                               </div>
@@ -1297,7 +1297,7 @@ export default function MediaHub() {
                           <Button
                             size="icon"
                             variant="ghost"
-                            className="absolute top-3 right-3 h-8 w-8 rounded-full hover:bg-purple-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-3 end-3 h-8 w-8 rounded-full hover:bg-purple-50 opacity-0 group-hover:opacity-100 transition-opacity"
                           >
                             <Heart className="h-4 w-4 text-muted-foreground/60 hover:text-pink-500 hover:fill-pink-500" />
                           </Button>
@@ -1307,16 +1307,16 @@ export default function MediaHub() {
                             <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
                               {/* Gradient collage effect */}
                               <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 bg-white/20 p-0.5">
-                                <div className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-tl-lg flex items-center justify-center">
+                                <div className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-ss-lg flex items-center justify-center">
                                   <Music className="w-6 h-6 text-white/80" />
                                 </div>
-                                <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-tr-lg flex items-center justify-center">
+                                <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-se-lg flex items-center justify-center">
                                   <Music className="w-5 h-5 text-white/70" />
                                 </div>
-                                <div className="bg-gradient-to-br from-purple-500 to-blue-400 rounded-bl-lg flex items-center justify-center">
+                                <div className="bg-gradient-to-br from-purple-500 to-blue-400 rounded-es-lg flex items-center justify-center">
                                   <Music className="w-5 h-5 text-white/70" />
                                 </div>
-                                <div className="bg-gradient-to-br from-blue-400 to-purple-400 rounded-br-lg flex items-center justify-center">
+                                <div className="bg-gradient-to-br from-blue-400 to-purple-400 rounded-ee-lg flex items-center justify-center">
                                   <Music className="w-6 h-6 text-white/80" />
                                 </div>
                               </div>

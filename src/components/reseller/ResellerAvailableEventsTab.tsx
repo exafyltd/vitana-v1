@@ -216,7 +216,7 @@ export function ResellerAvailableEventsTab() {
         <p className="text-sm text-muted-foreground max-w-md mb-6">{t('screens.reseller.onceYouAddEventsYourInventory')}
         </p>
         <Button onClick={() => setIsCreateEventOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4 me-2" />
           {t('screens.reseller.addFirstEvent')}
         </Button>
         <CreateEventPopup

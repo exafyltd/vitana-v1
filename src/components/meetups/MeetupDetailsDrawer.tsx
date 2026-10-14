@@ -858,7 +858,7 @@ export function MeetupDetailsDrawer({
       {isMobile && (
         <>
           <div
-            className="fixed top-4 left-4 z-[60]"
+            className="fixed top-4 start-4 z-[60]"
             style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
           >
             <EventKebabMenu
@@ -873,7 +873,7 @@ export function MeetupDetailsDrawer({
           <Button
             variant="outline"
             size="icon"
-            className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
+            className="fixed top-4 end-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
             onClick={() => onOpenChange(false)}
             aria-label={t('screens.meetups.closeEventDetails')}
             style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
@@ -883,7 +883,7 @@ export function MeetupDetailsDrawer({
         </>
       )}
       {!isMobile && (
-        <div className="absolute top-4 right-4 z-[60]">
+        <div className="absolute top-4 end-4 z-[60]">
           <EventKebabMenu
             event={event}
             currentUserId={user?.id}
@@ -935,7 +935,7 @@ export function MeetupDetailsDrawer({
             {/* Title Overlay */}
             <div 
               className={cn(
-                "absolute left-0 right-0 p-6",
+                "absolute start-0 end-0 p-6",
                 "bottom-0"
               )}
               style={isMobile ? { paddingTop: 'calc(env(safe-area-inset-top, 0px) + 18px)' } : undefined}
@@ -971,7 +971,7 @@ export function MeetupDetailsDrawer({
                     className="h-7 w-7 ring-1 ring-white/50"
                     disabled
                   />
-                  <div className="flex items-center gap-1.5 pr-2">
+                  <div className="flex items-center gap-1.5 pe-2">
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
                       {event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}
                     </span>
@@ -1147,16 +1147,16 @@ export function MeetupDetailsDrawer({
               <div className="space-y-2">
                 <Button variant="outline" size="sm" className="w-full justify-start gap-2 h-auto py-2.5">
                   <Target className="h-4 w-4 shrink-0" />
-                  <span className="text-left">{translate('eventDrawer.fitIntoWeek', 'Fit into my week')}</span>
+                  <span className="text-start">{translate('eventDrawer.fitIntoWeek', 'Fit into my week')}</span>
                 </Button>
                 <Button variant="outline" size="sm" className="w-full justify-start gap-2 h-auto py-2.5">
                   <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span className="text-left">{translate('eventDrawer.resolveConflict', 'Resolve schedule conflict')}</span>
+                  <span className="text-start">{translate('eventDrawer.resolveConflict', 'Resolve schedule conflict')}</span>
                 </Button>
                 {!event.virtual_link && event.location && (
                   <Button variant="outline" size="sm" className="w-full justify-start gap-2 h-auto py-2.5">
                     <Car className="h-4 w-4 shrink-0" />
-                    <span className="text-left">{translate('eventDrawer.planCommute', 'Plan commute')}</span>
+                    <span className="text-start">{translate('eventDrawer.planCommute', 'Plan commute')}</span>
                   </Button>
                 )}
               </div>
@@ -1252,7 +1252,7 @@ export function MeetupDetailsDrawer({
                     <Ticket className="h-4 w-4 text-muted-foreground" />
                     <h3 className="font-semibold text-[17px]">{translate('eventDrawer.tickets', 'Tickets')}</h3>
                     {isSoldOut && (
-                      <Badge variant="secondary" className="ml-2">{translate('eventCta.soldOut', 'Sold Out')}</Badge>
+                      <Badge variant="secondary" className="ms-2">{translate('eventCta.soldOut', 'Sold Out')}</Badge>
                     )}
                   </div>
                   {isOrganizer && (
@@ -1324,7 +1324,7 @@ export function MeetupDetailsDrawer({
       {/* Sticky Action Bar - Premium Glassy Design */}
       <div 
         className={cn(
-          "absolute bottom-0 left-0 right-0 flex items-center",
+          "absolute bottom-0 start-0 end-0 flex items-center",
           isMobile 
             ? "backdrop-blur-xl" 
             : "bg-background/95 backdrop-blur-sm border-t shadow-lg"
@@ -1394,10 +1394,10 @@ export function MeetupDetailsDrawer({
 
             const getCtaIcon = () => {
               switch (ctaConfig.icon) {
-                case 'ticket': return <Ticket className="h-4 w-4 mr-2" />;
-                case 'eye': return <Eye className="h-4 w-4 mr-2" />;
-                case 'user-plus': return <UserPlus className="h-4 w-4 mr-2" />;
-                case 'user-minus': return <UserMinus className="h-4 w-4 mr-2" />;
+                case 'ticket': return <Ticket className="h-4 w-4 me-2" />;
+                case 'eye': return <Eye className="h-4 w-4 me-2" />;
+                case 'user-plus': return <UserPlus className="h-4 w-4 me-2" />;
+                case 'user-minus': return <UserMinus className="h-4 w-4 me-2" />;
                 default: return null;
               }
             };
@@ -1479,7 +1479,7 @@ export function MeetupDetailsDrawer({
               >
                 {isJoining ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="h-4 w-4 me-2 animate-spin" />
                     {ctaConfig.action === 'join' || ctaConfig.action === 'reserve' 
                       ? translate('eventCta.joining', 'Joining...') 
                       : translate('eventCta.processing', 'Processing...')}
@@ -1574,7 +1574,7 @@ export function MeetupDetailsDrawer({
               {/* Primary action - VITANA Smart Calendar */}
               {/* VTID-04915: joining already puts it in the calendar (database trigger). */}
               <DropdownMenuItem onSelect={handleAddToVitanaCalendar} disabled={isJoined}>
-                <CalendarPlus className="h-4 w-4 mr-2" />
+                <CalendarPlus className="h-4 w-4 me-2" />
                 {isJoined ? t('vcal.alreadyInCalendar') : translate('calendar.addToVitana', 'Add to VITANA Calendar')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -1590,7 +1590,7 @@ export function MeetupDetailsDrawer({
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => handleExportToCalendar('ics')}>
-                <Download className="h-4 w-4 mr-2" />
+                <Download className="h-4 w-4 me-2" />
                 {translate('eventDrawer.downloadIcs', 'Download ICS')}
               </DropdownMenuItem>
             </DropdownMenuContent>

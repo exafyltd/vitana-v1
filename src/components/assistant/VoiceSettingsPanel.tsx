@@ -421,7 +421,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             disabled={isTesting || isUpdating}
             className="w-full"
           >
-            <Volume2 className="mr-2 h-4 w-4" />
+            <Volume2 className="me-2 h-4 w-4" />
             {isTesting ? "Playing..." : "Preview Voice"}
           </Button>
         </div>

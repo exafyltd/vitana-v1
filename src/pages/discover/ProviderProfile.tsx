@@ -183,7 +183,7 @@ export default function ProviderProfile() {
           onClick={() => navigate(-1)}
           className="mb-4"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 me-2" />
           {t('screens.discover.back')}
         </Button>
         
@@ -199,7 +199,7 @@ export default function ProviderProfile() {
                   className="w-32 h-32 rounded-full object-cover border-4 border-border shadow-lg"
                 />
                 {provider.badges.includes("Verified") && (
-                  <div className="absolute -bottom-2 -right-2 bg-primary rounded-full p-2">
+                  <div className="absolute -bottom-2 -end-2 bg-primary rounded-full p-2">
                     <Verified className="h-6 w-6 text-primary-foreground" />
                   </div>
                 )}
@@ -215,7 +215,7 @@ export default function ProviderProfile() {
                       location: provider.location
                     }
                   }}
-                  className="absolute top-0 right-0"
+                  className="absolute top-0 end-0"
                 />
               </div>
               
@@ -231,8 +231,8 @@ export default function ProviderProfile() {
                       variant={badge === "Top Rated" ? "default" : "secondary"}
                       className="px-3 py-1"
                     >
-                      {badge === "Top Rated" && <Award className="h-4 w-4 mr-1" />}
-                      {badge === "Verified" && <Verified className="h-4 w-4 mr-1" />}
+                      {badge === "Top Rated" && <Award className="h-4 w-4 me-1" />}
+                      {badge === "Verified" && <Verified className="h-4 w-4 me-1" />}
                       {badge}
                     </Badge>
                   ))}
@@ -256,11 +256,11 @@ export default function ProviderProfile() {
                     className="flex-1"
                     onClick={() => setBookingOpen(true)}
                   >
-                    <Calendar className="h-4 w-4 mr-2" />
+                    <Calendar className="h-4 w-4 me-2" />
                     {t('screens.discover.bookAppointment')}
                   </Button>
                   <Button size="lg" variant="outline">
-                    <MessageCircle className="h-4 w-4 mr-2" />
+                    <MessageCircle className="h-4 w-4 me-2" />
                     {t('screens.discover.message')}
                   </Button>
                   <Button

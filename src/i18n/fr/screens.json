@@ -13669,6 +13669,12 @@
         "yoga": true,
         "nature": true
       }
+    },
+    "nativeHealthSync": {
+      "osPermission": {
+        "iosShareUsage": "Vitana lit ton activité, ton sommeil, tes données cardiaques et tes mensurations dans Apple Health – en lecture seule et uniquement pour les domaines que tu as acceptés dans l’app. Vitana n’écrit jamais rien dans Apple Health.",
+        "privacyPolicyTitle": "Politique de confidentialité"
+      }
     }
   }
 }

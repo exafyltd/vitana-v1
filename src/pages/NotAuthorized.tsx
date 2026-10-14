@@ -34,7 +34,7 @@ export default function NotAuthorized() {
               <div className="space-y-2">
                 <Button asChild className="w-full">
                   <Link to="/">
-                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    <ArrowLeft className="h-4 w-4 me-2" />
                     {t('screens.notauthorized.returnDashboard')}
                   </Link>
                 </Button>

@@ -89,13 +89,13 @@ export function OAuthBouncePendingOverlay() {
         type="button"
         onClick={reset}
         aria-label={t('screens.settings.dismiss')}
-        className="absolute right-2 top-2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        className="absolute end-2 top-2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <X className="h-4 w-4" />
       </button>
 
       {status === "pending" && (
-        <div className="flex flex-col gap-3 pr-6">
+        <div className="flex flex-col gap-3 pe-6">
           <div className="flex items-start gap-3">
             <Loader2 className="mt-0.5 h-5 w-5 shrink-0 animate-spin text-primary" />
             <div className="space-y-1">
@@ -117,7 +117,7 @@ export function OAuthBouncePendingOverlay() {
       )}
 
       {status === "success" && (
-        <div className="flex items-start gap-3 pr-6">
+        <div className="flex items-start gap-3 pe-6">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
           <div className="space-y-1">
             <p className="font-medium leading-tight text-green-700">{t('screens.settings.labelConnected', { label })}</p>
@@ -127,7 +127,7 @@ export function OAuthBouncePendingOverlay() {
       )}
 
       {status === "timed_out" && (
-        <div className="flex flex-col gap-3 pr-6">
+        <div className="flex flex-col gap-3 pe-6">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
             <div className="space-y-1">

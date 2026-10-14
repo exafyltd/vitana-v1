@@ -244,7 +244,7 @@ function Privacy() {
             <ExpandableSearchButton placeholder={t('screens.settings.searchPrivacyControlsDataSettingsSecurity')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.settings.privacyAudit')}
             </Button>
           </UtilityActionButton>
@@ -464,7 +464,7 @@ function Privacy() {
                             }}
                           />
                         </div>
-                        <div className="text-xs text-muted-foreground space-y-1 border-l-2 border-muted pl-3">
+                        <div className="text-xs text-muted-foreground space-y-1 border-s-2 border-muted ps-3">
                           <p><strong>{t('screens.settings.dataShared')}</strong> {t('screens.settings.voiceRecordingsTranscriptsTypedPromptsChat')}</p>
                           <p><strong>{t('screens.settings.recipients')}</strong> {t('screens.settings.googleGeminiAiCloudAi')}</p>
                           <p><strong>{t('screens.settings.purpose')}</strong> {t('screens.settings.aiResponsesVoiceSynthesisProactiveGreetings')}</p>
