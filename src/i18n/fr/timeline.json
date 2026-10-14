@@ -5,21 +5,18 @@
     "header": {
       "seoTitle": "Chronologie – Vitana",
       "title": "Ta chronologie",
-      "description": "Ton Vitana Index et tout ce qui le fait bouger, jour après jour.",
-      "_pending_review": {}
+      "description": "Ton Vitana Index et tout ce qui le fait bouger, jour après jour."
     },
     "filters": {
       "all": "Tout",
       "more": "Plus",
       "pillarsLabel": "Filtrer par pilier",
       "categoriesLabel": "Filtrer par domaine",
-      "clear": "Effacer les filtres",
-      "_pending_review": {}
+      "clear": "Effacer les filtres"
     },
     "day": {
       "today": "Aujourd'hui",
-      "yesterday": "Hier",
-      "_pending_review": {}
+      "yesterday": "Hier"
     },
     "spotlight": {
       "eyebrow": "Vitana Index",
@@ -28,48 +25,44 @@
       "improve": "Renforcer : {pillar}",
       "empty": "Tu n'as pas encore de Vitana Index.",
       "start": "Commencer",
-      "_pending_review": {}
+      "_pending_review": {
+        "error": true
+      },
+      "error": "Your Vitana Index couldn't be loaded right now."
     },
     "balance": {
       "full": "Tes piliers sont équilibrés : score complet.",
-      "held_back": "{pillar} freine ton équilibre (−{pct} %).",
-      "_pending_review": {}
+      "held_back": "{pillar} freine ton équilibre (−{pct} %)."
     },
     "momentum": {
       "rising": "en hausse",
       "steady": "stable",
-      "slipping": "en baisse",
-      "_pending_review": {}
+      "slipping": "en baisse"
     },
     "influence": {
       "measured": "{delta} {pillar}",
-      "counted": "Compte pour {pillar}",
-      "_pending_review": {}
+      "counted": "Compte pour {pillar}"
     },
     "unit": {
       "ml": "{n} ml",
       "hours": "{n} h",
       "minutes": "{n} min",
       "days": "{n} jours",
-      "score": "Index {n}",
-      "_pending_review": {}
+      "score": "Index {n}"
     },
     "via": {
       "voice": "à la voix",
       "manual": "manuellement",
-      "diary": "depuis ton journal",
-      "_pending_review": {}
+      "diary": "depuis ton journal"
     },
     "indexDay": {
       "rose": "Ton Vitana Index est monté à {score} ({delta})",
       "fell": "Ton Vitana Index est descendu à {score} ({delta})",
       "changed": "Ton Vitana Index a changé ({delta})",
-      "dailyUpdate": "Mise à jour quotidienne",
-      "_pending_review": {}
+      "dailyUpdate": "Mise à jour quotidienne"
     },
     "digest": {
-      "title": "Ta journée : {n} petites choses",
-      "_pending_review": {}
+      "title": "Ta journée : {n} petites choses"
     },
     "detail": {
       "loading": "Chargement …",
@@ -83,21 +76,18 @@
       "learnOn": "Vitana utilise cette entrée pour de meilleures suggestions.",
       "learnOff": "Masqué pour Vitana : tu le vois toujours ici.",
       "open": "Ouvrir",
-      "delete": "Supprimer",
-      "_pending_review": {}
+      "delete": "Supprimer"
     },
     "delete": {
       "title": "Supprimer l'entrée ?",
       "description": "L'entrée disparaît de ta chronologie et Vitana ne l'utilise plus. C'est irréversible.",
       "cancel": "Annuler",
-      "confirm": "Supprimer",
-      "_pending_review": {}
+      "confirm": "Supprimer"
     },
     "toast": {
       "deleted": "Entrée supprimée",
       "deleteFailed": "Échec de la suppression",
-      "hideFailed": "Ça n'a pas marché. Réessaie.",
-      "_pending_review": {}
+      "hideFailed": "Ça n'a pas marché. Réessaie."
     },
     "transparency": "Vitana apprend de tes entrées pour mieux t'accompagner.",
     "transparencyLink": "Gérer les réglages",
@@ -185,8 +175,7 @@
       "consent_changed": "Tu as modifié un consentement",
       "data_export": "Tu as demandé un export de tes données",
       "settings_other": "Réglages modifiés",
-      "notification_opened": "Notifications ouvertes",
-      "_pending_review": {}
+      "notification_opened": "Notifications ouvertes"
     },
     "category": {
       "index": "Vitana Index",
@@ -207,10 +196,17 @@
       "wallet": "Portefeuille",
       "account": "Compte & confidentialité",
       "app_usage": "Utilisation de l'app",
-      "system": "Système",
-      "_pending_review": {}
+      "system": "Système"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "insight": {
+      "_pending_review": {
+        "weakest_pillar_streak": true,
+        "pillar_slipping": true,
+        "pillar_rising": true
+      },
+      "weakest_pillar_streak": "{pillar} has been your weakest pillar for days and is holding back your balance.",
+      "pillar_slipping": "{pillar} dropped noticeably this week.",
+      "pillar_rising": "{pillar} rose noticeably this week."
+    }
+  }
 }

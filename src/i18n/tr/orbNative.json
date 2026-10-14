@@ -7,23 +7,27 @@
       "reconnecting": "Bağlantı yeniden kuruluyor …",
       "ended": "Konuşma sona erdi",
       "muted": "Mikrofonun sessizde",
-      "unavailable": "Vitana bu uygulama sürümünde henüz kullanılamıyor."
+      "unavailable": "Vitana bu uygulama sürümünde henüz kullanılamıyor.",
+      "_pending_review": {}
     },
     "rationale": {
       "title": "Vitana ile konuş",
       "body": "Vitana'nın seni duyabilmesi için uygulamanın mikrofonuna erişmesi gerekiyor. Mikrofon yalnızca konuşma açıkken etkindir.",
       "continue": "Devam et",
-      "notNow": "Şimdi değil"
+      "notNow": "Şimdi değil",
+      "_pending_review": {}
     },
     "denied": {
       "body": "Vitana ile konuşabilmek için Ayarlar'da mikrofon erişimine izin ver.",
-      "openSettings": "Ayarlar'ı aç"
+      "openSettings": "Ayarlar'ı aç",
+      "_pending_review": {}
     },
     "a11y": {
       "close": "Vitana ile konuşmayı kapat",
       "micMute": "Mikrofonu sessize al",
       "micUnmute": "Mikrofonu aç",
-      "restart": "Vitana ile yeni bir konuşma başlat"
+      "restart": "Vitana ile yeni bir konuşma başlat",
+      "_pending_review": {}
     },
     "bench": {
       "title": "Ses yankı testi",
@@ -52,7 +56,10 @@
       "on": "açık",
       "off": "kapalı",
       "share": "Sonucu paylaş",
-      "unavailable": "Yankı testi yalnızca uygulamanın geliştirme ve test sürümlerinde var."
-    }
-  }
+      "unavailable": "Yankı testi yalnızca uygulamanın geliştirme ve test sürümlerinde var.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
