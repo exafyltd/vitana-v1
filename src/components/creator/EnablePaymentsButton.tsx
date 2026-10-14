@@ -15,7 +15,7 @@ export function EnablePaymentsButton() {
   if (isLoading) {
     return (
       <Button disabled variant="outline">
-        <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.creator.checkingStatus')}
+        <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.creator.checkingStatus')}
       </Button>
     );
   }
@@ -39,7 +39,7 @@ export function EnablePaymentsButton() {
         variant="outline"
         className="border-yellow-500 text-yellow-700"
       >
-        <CreditCard className="w-4 h-4 mr-2" />
+        <CreditCard className="w-4 h-4 me-2" />
         {isPending ? 'Redirecting...' : 'Complete Setup'}
       </Button>
     );
@@ -52,7 +52,7 @@ export function EnablePaymentsButton() {
       disabled={isPending}
       variant="default"
     >
-      <CreditCard className="w-4 h-4 mr-2" />
+      <CreditCard className="w-4 h-4 me-2" />
       {isPending ? 'Redirecting...' : 'Enable Payments'}
     </Button>
   );

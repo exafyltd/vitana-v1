@@ -3,8 +3,8 @@
  * VTID-05184 — iOS InfoPlist.strings sources for the HealthKit purpose string
  * (N5a plan change 4).
  *
- * Writes apps/mobile/.generated/ios-locales/<locale>.json
- * ({ "NSHealthShareUsageDescription": "…" }) for the 11 GA locales from the web
+ * Writes apps/mobile/.generated/ios-locales/<lproj>.json
+ * ({ "ios": { "NSHealthShareUsageDescription": "…" } }) for the 11 GA locales from the web
  * catalogue key `screens.nativeHealthSync.osPermission.iosShareUsage` (N5b,
  * VTID-05185). Gitignored, the same pattern as gen-i18n-map.mjs. The config
  * plugin (apps/mobile/plugins/with-ios-health-locales.js) runs the same code
@@ -35,7 +35,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   };
   try {
     const files = generate({ i18nDir: opt('i18n-dir') ?? DEFAULT_I18N_DIR, projectRoot: opt('project-root') });
-    console.log(`gen-ios-locales: ${files.length} locale files written`);
+    console.log(`gen-ios-locales: ${Object.keys(files).length} locale files written`);
   } catch (err) {
     console.error(err.message);
     process.exit(1);

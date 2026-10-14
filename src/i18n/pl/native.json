@@ -1,0 +1,21 @@
+{
+  "native": {
+    "unported": {
+      "title": "Jeszcze nie w aplikacji",
+      "body": "Ta sekcja nie jest jeszcze dostępna w aplikacji. Pracujemy nad tym – do tego czasu możesz korzystać z niej w wersji webowej."
+    },
+    "adminInBrowser": {
+      "title": "Administracja w przeglądarce",
+      "body": "Z tej sekcji korzystasz w przeglądarce, a nie w aplikacji. W tej wersji nie ustawiono jeszcze dla niej adresu internetowego."
+    },
+    "configMissing": {
+      "title": "Brak konfiguracji",
+      "body": "W tej wersji aplikacji brakuje ustawień potrzebnych do uruchomienia. Brakujące wartości są wymienione poniżej."
+    },
+    "a11y": {
+      "unread": "Nieprzeczytane wiadomości: {count}",
+      "openNotifications": "Otwórz powiadomienia, nieprzeczytane: {count}",
+      "openCart": "Otwórz koszyk, produkty: {count}"
+    }
+  }
+}

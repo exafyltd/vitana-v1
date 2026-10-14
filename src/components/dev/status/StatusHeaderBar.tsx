@@ -108,7 +108,7 @@ export function StatusHeaderBar({
         </div>
 
         {activeVTID && (
-          <div className="flex items-center gap-1.5 ml-auto">
+          <div className="flex items-center gap-1.5 ms-auto">
             <User className="w-3 h-3" />
             <span className="text-muted-foreground">{t('screens.dev.vtid')}</span>
             <Badge 

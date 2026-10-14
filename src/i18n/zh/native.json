@@ -1,0 +1,27 @@
+{
+  "native": {
+    "unported": {
+      "title": "应用中暂不可用",
+      "body": "此区域暂未在应用中提供。我们正在开发中，在此之前你可以在网页版中使用。",
+      "_pending_review": {}
+    },
+    "adminInBrowser": {
+      "title": "在浏览器中管理",
+      "body": "这个区域需要在浏览器中使用，而不是在应用中。此版本尚未为其配置网址。",
+      "_pending_review": {}
+    },
+    "configMissing": {
+      "title": "缺少配置",
+      "body": "此应用版本缺少启动所需的设置。缺少的项目列在下方。",
+      "_pending_review": {}
+    },
+    "a11y": {
+      "unread": "{count} 条未读消息",
+      "openNotifications": "打开通知，{count} 条未读",
+      "openCart": "打开购物车，{count} 件商品",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

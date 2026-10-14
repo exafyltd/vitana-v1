@@ -77,7 +77,7 @@ export function SoundscapeResumeBanner() {
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
         onClick={handleTap}
-        className="fixed top-safe-area left-4 right-4 z-50 flex items-center justify-center gap-2 px-4 py-3 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-lg shadow-lg active:scale-98 transition-transform"
+        className="fixed top-safe-area start-4 end-4 z-50 flex items-center justify-center gap-2 px-4 py-3 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-lg shadow-lg active:scale-98 transition-transform"
         style={{ top: 'max(env(safe-area-inset-top, 12px), 12px)' }}
       >
         <Volume2 className="w-5 h-5" />

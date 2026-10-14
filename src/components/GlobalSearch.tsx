@@ -227,7 +227,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       <div ref={wrapperRef} className="relative w-full">
         {open ? (
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
             <Input
               ref={inputRef}
               type="text"
@@ -239,7 +239,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
               }}
               onKeyDown={handleKeyDown}
               className={cn(
-                "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
+                "w-full ps-10 pe-4 py-2 text-sm rounded-lg",
                 "bg-sidebar-accent/50 border border-sidebar-border/50",
                 "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
                 "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
@@ -254,7 +254,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
                   e.preventDefault();
                   handleSearch();
                 }}
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                className="absolute end-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
               >
                 <Search className="h-3 w-3" />
               </Button>
@@ -308,7 +308,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
                         </div>
                       )}
                     </div>
-                    <div className="flex-1 text-left">
+                    <div className="flex-1 text-start">
                       <div className="font-medium text-foreground text-sm">
                         {suggestion.title}
                       </div>

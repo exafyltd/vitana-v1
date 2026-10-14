@@ -122,11 +122,11 @@ export function InviteSheet() {
           <Button onClick={handleCopy} disabled={!link?.url || loading} className="w-full">
             {copied ? (
               <>
-                <Check className="w-4 h-4 mr-2" />{t('screens.common.copied')}
+                <Check className="w-4 h-4 me-2" />{t('screens.common.copied')}
               </>
             ) : (
               <>
-                <Copy className="w-4 h-4 mr-2" />
+                <Copy className="w-4 h-4 me-2" />
                 {t('screens.common.copyInviteLink')}
               </>
             )}
@@ -138,7 +138,7 @@ export function InviteSheet() {
             disabled={!link?.whatsapp_url || loading}
             className="w-full"
           >
-            <MessageCircle className="w-4 h-4 mr-2" />
+            <MessageCircle className="w-4 h-4 me-2" />
             {t('screens.common.shareWhatsapp')}
           </Button>
 

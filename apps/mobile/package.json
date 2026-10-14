@@ -2,7 +2,7 @@
   "name": "@vitana/mobile",
   "version": "0.0.0",
   "private": true,
-  "description": "Vitana native app (Expo SDK 57). Wave 0 skeleton, VTID-05157 — see README.md.",
+  "description": "Vitana native app (Expo SDK 57). Wave 0 skeleton (VTID-05157) + Wave 1 core/tokens wiring (VTID-05183) — see README.md.",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
@@ -13,11 +13,19 @@
     "test": "jest",
     "prebundle": "npm run gen:i18n",
     "bundle": "expo export --platform ios --platform android --output-dir dist",
-    "deps:check": "expo install --check"
+    "bundle:core-probe": "mkdir -p probe-dist && expo export:embed --entry-file probe/core-probe.ts --platform ios --dev false --minify false --bundle-output probe-dist/ios.js --sourcemap-output probe-dist/ios.js.map --assets-dest probe-dist/ios-assets && expo export:embed --entry-file probe/core-probe.ts --platform android --dev false --minify false --bundle-output probe-dist/android.js --sourcemap-output probe-dist/android.js.map --assets-dest probe-dist/android-assets && node probe/check-probe.js probe-dist/ios.js probe-dist/android.js",
+    "deps:check": "expo install --check",
+    "gen:core": "node ../../scripts/native/gen-core-extract.mjs && node ../../scripts/native/core-closure.mjs --write",
+    "gen:tokens": "node ../../scripts/native/gen-tokens.mjs"
   },
   "dependencies": {
     "@kingstinct/react-native-healthkit": "16.0.0",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-google-signin/google-signin": "16.1.5",
+    "@supabase/supabase-js": "2.56.0",
+    "@tanstack/react-query": "5.90.21",
     "expo": "57.0.25",
+    "expo-apple-authentication": "57.0.2",
     "expo-background-task": "57.0.20",
     "expo-build-properties": "57.0.22",
     "expo-constants": "57.0.19",
@@ -30,6 +38,8 @@
     "expo-sqlite": "57.0.3",
     "expo-status-bar": "57.0.1",
     "expo-task-manager": "57.0.20",
+    "expo-web-browser": "57.0.3",
+    "lucide-react-native": "1.48.0",
     "pako": "2.1.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -40,6 +50,8 @@
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "5.7.0",
     "react-native-screens": "4.26.2",
+    "react-native-svg": "15.15.4",
+    "react-native-url-polyfill": "4.0.0",
     "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
@@ -52,6 +64,10 @@
     "jest": "29.7.0",
     "jest-expo": "57.0.5",
     "react-test-renderer": "19.2.3",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "ws": "8.22.0"
+  },
+  "overrides": {
+    "@supabase/storage-js": "2.11.0"
   }
 }

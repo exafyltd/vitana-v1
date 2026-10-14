@@ -80,7 +80,7 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
               </label>
             </div>
 
-            <div className="ml-6 space-y-4">
+            <div className="ms-6 space-y-4">
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
@@ -173,7 +173,7 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
               className="flex-1"
               disabled={!hasSelections}
             >
-              <RotateCcw className="w-4 h-4 mr-2" />
+              <RotateCcw className="w-4 h-4 me-2" />
               {t('screens.common.resetSelected')}
             </Button>
           </div>

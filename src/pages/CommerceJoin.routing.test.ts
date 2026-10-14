@@ -34,7 +34,10 @@ describe('the shareable supplier link', () => {
   });
 
   it('decides commerce before the tenant fallback, or the branch never runs', () => {
-    expect(guard.indexOf("return '/commerce/join'")).toBeLessThan(guard.indexOf("if (slug === 'maxina')"));
+    // VTID-05151: the tenant fallback is the registry lookup (tenantLoginRoute), no longer `if (slug === 'maxina')`.
+    const tenantFallback = guard.indexOf("return tenantLoginRoute(slug, currentRegistrySync(), '/');");
+    expect(tenantFallback).toBeGreaterThan(-1);
+    expect(guard.indexOf("return '/commerce/join'")).toBeLessThan(tenantFallback);
   });
 });
 

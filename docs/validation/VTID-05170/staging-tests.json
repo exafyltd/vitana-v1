@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05170",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, phone 390x844 and desktop 1440x900 (?spotlight=0 and ?spotlight=1): /memory/timeline renders the new body, the Vitana Index leads with five pillar rows (or the honest no-Index prompt), the timeline API answered (list or empty, never the error state), no 'View Details' / raw JSON / next_action telemetry on screen, no sideways scroll in LTR or RTL, a pillar chip filters, the first moment's detail opens; desktop ?spotlight=1 is framed by ScreenFrame. Read-only: never toggles the learning switch, never deletes.",
+      "spec": "tests/e2e/staging/vtid-05170-life-timeline.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "timeline body, rows, Index spotlight, detail sheet, filters, empty/error, source contract, manifest, DE/EN topic coverage",
+      "ref": "npx vitest run src/components/timeline src/design",
+      "cwd": ".",
+      "reason": "Hiding an entry from Vitana and deleting it are writes to the shared production database, so staging never exercises them; these suites prove the wiring (mutation called with the entry id) with the gateway client mocked, and that measured influence is shown only when the gateway measured it."
+    }
+  ]
+}

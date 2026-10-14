@@ -1,0 +1,27 @@
+{
+  "native": {
+    "unported": {
+      "title": "Henüz uygulamada yok",
+      "body": "Bu bölüm henüz uygulamada kullanılamıyor. Üzerinde çalışıyoruz; o zamana kadar web sürümünde kullanabilirsin.",
+      "_pending_review": {}
+    },
+    "adminInBrowser": {
+      "title": "Yönetim tarayıcıda",
+      "body": "Bu bölümü uygulamada değil, tarayıcıda kullanırsın. Bu sürümde bunun için henüz bir web adresi ayarlanmadı.",
+      "_pending_review": {}
+    },
+    "configMissing": {
+      "title": "Yapılandırma eksik",
+      "body": "Bu uygulama sürümünde başlatmak için gereken ayarlar eksik. Eksik değerler aşağıda listeleniyor.",
+      "_pending_review": {}
+    },
+    "a11y": {
+      "unread": "{count} okunmamış mesaj",
+      "openNotifications": "Bildirimleri aç, {count} okunmamış",
+      "openCart": "Sepeti aç, {count} ürün",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

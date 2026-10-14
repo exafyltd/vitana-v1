@@ -64,7 +64,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
           {pendingCount > 0 && (
             <Badge 
               variant="destructive" 
-              className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+              className="absolute -top-2 -end-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
             >
               {pendingCount}
             </Badge>
@@ -78,7 +78,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
 
           {/* Hover Preview */}
           {showPreview && pendingCount > 0 && (
-            <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 dark:bg-card/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+            <div className="absolute top-full start-0 mt-2 w-64 bg-white/95 dark:bg-card/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
               <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.dev.latestActions')}</div>
               {latestActions.map((action) => (
                 <div key={action.id} className="flex items-center space-x-2 text-xs py-1">

@@ -146,7 +146,7 @@ export default function Inspiration() {
             />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setInspirationActionOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               {t('screens.messages.templateActions')}
             </Button>
           </UtilityActionButton>
@@ -192,7 +192,7 @@ export default function Inspiration() {
                               size="sm"
                               onClick={() => navigator.clipboard.writeText(text)}
                             >
-                              <Copy className="w-3 h-3 mr-1" />
+                              <Copy className="w-3 h-3 me-1" />
                               {t('screens.messages.copy')}
                             </Button>
                             <Button
@@ -200,7 +200,7 @@ export default function Inspiration() {
                               size="sm"
                               onClick={() => console.log(`Forwarding: ${text}`)}
                             >
-                              <Send className="w-3 h-3 mr-1" />
+                              <Send className="w-3 h-3 me-1" />
                               {t('screens.messages.send')}
                             </Button>
                           </div>

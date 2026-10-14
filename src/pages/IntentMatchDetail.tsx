@@ -174,7 +174,7 @@ export default function IntentMatchDetail() {
       {intent.status === "open" && (
         <div className="flex justify-end">
           <Button variant="outline" size="sm" onClick={handleClose}>
-            <X className="h-4 w-4 mr-1" /> {t('screens.intentmatchdetail.closeIntent')}
+            <X className="h-4 w-4 me-1" /> {t('screens.intentmatchdetail.closeIntent')}
           </Button>
         </div>
       )}

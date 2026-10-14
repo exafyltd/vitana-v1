@@ -59,7 +59,7 @@ export default function SubNavigation({ items, className, rightActions }: SubNav
             ))}
           </div>
           {rightActions && (
-            <div className="flex items-center gap-3 ml-4">
+            <div className="flex items-center gap-3 ms-4">
               {rightActions}
             </div>
           )}

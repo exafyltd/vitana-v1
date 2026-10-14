@@ -448,7 +448,7 @@ function DealsOffersInner() {
               size="sm"
               onClick={() => setMasterActionOpen(true)}
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 me-2" />
               {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
@@ -500,10 +500,10 @@ function DealsOffersInner() {
                         sizeClass="w-full h-48"
                         className="rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.discountOff', { discount: deal.discount })}
+                      <div className="absolute top-2 end-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.discountOff', { discount: deal.discount })}
                       </div>
                       {deal.timeLeft && (
-                        <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                        <div className="absolute bottom-2 start-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {deal.timeLeft}
                         </div>
@@ -556,7 +556,7 @@ function DealsOffersInner() {
                         <span className="text-muted-foreground line-through text-sm">
                           ${deal.originalPrice}
                         </span>
-                        <span className="text-green-600 font-semibold text-sm ml-auto">{t('screens.discover.saveValue0', { value0: deal.originalPrice - deal.price })}</span>
+                        <span className="text-green-600 font-semibold text-sm ms-auto">{t('screens.discover.saveValue0', { value0: deal.originalPrice - deal.price })}</span>
                       </div>
                       
                       <div className="flex gap-2 mt-auto pt-2" onClick={(e) => e.stopPropagation()}>
@@ -613,7 +613,7 @@ function DealsOffersInner() {
                         alt={service.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-orange-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
+                      <div className="absolute top-2 end-12 bg-orange-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                         <TrendingUp className="h-3 w-3" />
                         {service.trend}
                       </div>
@@ -648,7 +648,7 @@ function DealsOffersInner() {
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <MapPin className="h-4 w-4" />
                         <span>{service.location}</span>
-                        <span className="ml-auto">{t('screens.discover.bookingsBookings', { bookings: service.bookings })}</span>
+                        <span className="ms-auto">{t('screens.discover.bookingsBookings', { bookings: service.bookings })}</span>
                       </div>
 
                       <div className="flex gap-1 flex-wrap">
@@ -715,7 +715,7 @@ function DealsOffersInner() {
                         alt={match.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.matchMatch', { match: match.match })}
+                      <div className="absolute top-2 end-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.matchMatch', { match: match.match })}
                       </div>
                     </div>
                     
@@ -811,7 +811,7 @@ function DealsOffersInner() {
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
                       {product.priceChange < 0 && (
-                        <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
+                        <div className="absolute top-2 start-2 bg-green-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                           <TrendingDown className="h-3 w-3" />
                           {t('screens.discover.priceDrop')}
                         </div>

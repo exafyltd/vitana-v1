@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05173",
+  "kind": "fix",
+  "paths": [
+    "src/pages/MobileSettings.tsx",
+    "src/pages/__tests__/mobile-settings-privacy-data.vtid-05173.test.tsx",
+    "tests/e2e/staging/vtid-05173-mobile-privacy-data.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05173/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05173/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

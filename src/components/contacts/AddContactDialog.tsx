@@ -250,16 +250,16 @@ export default function AddContactDialog({
                 <div className="space-y-2">
                   <Label>{t('screens.contacts.searchVitanaUsers')}</Label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                    <Search className="absolute start-3 top-3 w-4 h-4 text-muted-foreground" />
                     <Input
                       placeholder={t('screens.contacts.typeNameEmailPhone')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-9"
+                      className="ps-9"
                       disabled={!!selectedUser}
                     />
                     {isSearching && (
-                      <Loader2 className="absolute right-3 top-3 w-4 h-4 animate-spin" />
+                      <Loader2 className="absolute end-3 top-3 w-4 h-4 animate-spin" />
                     )}
                   </div>
                   
@@ -274,11 +274,11 @@ export default function AddContactDialog({
                           type="button"
                           onClick={() => handleSelectUser(result)}
                         >
-                          <Avatar className="w-8 h-8 mr-3">
+                          <Avatar className="w-8 h-8 me-3">
                             <AvatarImage src={result.avatar_url} />
                             <AvatarFallback>{result.display_name?.[0] || result.full_name?.[0]}</AvatarFallback>
                           </Avatar>
-                          <div className="text-left">
+                          <div className="text-start">
                             <p className="font-medium">{result.display_name || result.full_name}</p>
                             {result.email && (
                               <p className="text-xs text-muted-foreground">{result.email}</p>
@@ -396,7 +396,7 @@ export default function AddContactDialog({
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.contacts.adding')}
+                  <Loader2 className="w-4 h-4 me-2 animate-spin" />{t('screens.contacts.adding')}
                 </>
               ) : (
                 "Add Contact"

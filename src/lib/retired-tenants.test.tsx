@@ -2,7 +2,8 @@
  * VTID-04836 — the earthlinks tenant is retired (merged into maxina by
  * platform migration 20260427120000_vtid_01985_earthlinks_to_maxina_cleanup).
  *
- *  1. TenantType no longer includes earthlinks.
+ *  1. No compiled tenant includes earthlinks (VTID-05151 removed the
+ *     TenantType union entirely; the registry fallback is Maxina only).
  *  2. Old /earthlinks URLs redirect to the Maxina equivalent, keeping the
  *     rest of the path, the query and the hash.
  *  3. A persisted 'earthlinks' slug resolves to maxina (and is rewritten).
@@ -14,7 +15,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { extractSpaRoutes } from '../../scripts/nav/spa-routes.mjs';
-import type { TenantType } from '@/hooks/useTenant';
+import { COMPILED_MAXINA_FALLBACK, FALLBACK_REGISTRY, findBySlug } from '@/lib/tenant-registry';
 import { RetiredTenantRedirect } from '@/components/RetiredTenantRedirect';
 import { resolveTicketTenant } from '@/components/tickets/ticket-tenant';
 import { resolveLoginRoute } from '@/lib/guest-auth';
@@ -29,19 +30,20 @@ import {
 const SRC = path.resolve(__dirname, '..');
 const read = (rel: string) => fs.readFileSync(path.join(SRC, rel), 'utf8');
 
-describe('VTID-04836 — TenantType', () => {
-  it('no longer includes earthlinks', () => {
-    // Compile-time: tsc fails if 'earthlinks' becomes assignable again.
-    // @ts-expect-error — earthlinks is not a TenantType
-    const retired: TenantType = 'earthlinks';
-    const live: TenantType[] = ['maxina', 'alkalma'];
-    expect(live).not.toContain(retired);
-
-    // Source-level: the union and the config map carry no earthlinks entry.
+describe('VTID-04836 — no compiled earthlinks tenant (VTID-05151: no compiled tenant list at all)', () => {
+  it('useTenant has no TenantType union and no compiled tenant configs', () => {
     const useTenant = read('hooks/useTenant.tsx');
-    const union = /export type TenantType = ([^;]+);/.exec(useTenant)?.[1] ?? '';
-    expect(union).toBe('"maxina" | "alkalma"');
+    expect(useTenant).not.toMatch(/export type TenantType\b/);
+    expect(useTenant).not.toMatch(/TENANT_CONFIGS/);
     expect(useTenant).not.toMatch(/^\s*earthlinks:\s*\{/m);
+    expect(useTenant).not.toMatch(/['"]earthlinks['"]/);
+  });
+
+  it('the compiled registry fallback is Maxina only — never earthlinks', () => {
+    expect(FALLBACK_REGISTRY.tenants.map((t) => t.slug)).toEqual(['maxina']);
+    expect(COMPILED_MAXINA_FALLBACK.slug).toBe('maxina');
+    // A retired slug resolves to its successor, never to its own entry.
+    expect(findBySlug(FALLBACK_REGISTRY, 'earthlinks')?.slug).toBe('maxina');
   });
 });
 

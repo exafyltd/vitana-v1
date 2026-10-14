@@ -118,7 +118,7 @@ export default function BusinessListings() {
           <p className="text-sm text-muted-foreground">{t('screens.businesslistings.servicesProductsYouReOfferingMatches')}</p>
         </div>
         <Button size="sm" onClick={() => setComposerOpen(true)}>
-          <Plus className="h-4 w-4 mr-1" /> {t('screens.businesslistings.newListing')}
+          <Plus className="h-4 w-4 me-1" /> {t('screens.businesslistings.newListing')}
         </Button>
       </div>
 

@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { load, sync, check, writeLedger, fileToRoute, PATHS } from '../parity-ledger.mjs';
+import { load, sync, check, report, writeLedger, fileToRoute, PATHS } from '../parity-ledger.mjs';
 import { tree } from './fixture.mjs';
 
 const APP = `
@@ -254,4 +254,66 @@ test('Expo Router file names map to web paths', () => {
   assert.equal(fileToRoute('+not-found.tsx'), null);
   assert.equal(fileToRoute('+html.tsx'), null);
   assert.equal(fileToRoute('README.md'), null);
+});
+
+// ── VTID-05186: the `shell` section (ledger version 2) ─────────────────────
+const shellEntry = (over = {}) => ({
+  key: 'TopAppBar',
+  web_source: 'src/components/mobile/TopAppBar.tsx',
+  native_source: 'apps/mobile/src/shell/components/TopAppBar.tsx',
+  status: 'in_progress',
+  exception: null,
+  owner: 'N3 VTID-05186',
+  last_parity_check: null,
+  ...over,
+});
+
+test('shell section: a valid version-2 entry passes; --report prints the shell table', () => {
+  const fx = synced({ rules: DECIDED });
+  try {
+    mkdirSync(join(fx.root, 'src/components/mobile'), { recursive: true });
+    mkdirSync(join(fx.root, 'apps/mobile/src/shell/components'), { recursive: true });
+    writeFileSync(join(fx.root, 'src/components/mobile/TopAppBar.tsx'), 'export {};\n');
+    writeFileSync(join(fx.root, 'apps/mobile/src/shell/components/TopAppBar.tsx'), 'export {};\n');
+    editLedger(fx.root, (l) => {
+      l.version = 2;
+      l.shell = [shellEntry()];
+    });
+    assert.deepEqual(check(load(fx.root)), []);
+    assert.match(report(load(fx.root)), /### Shell — 1 entries[\s\S]*\| TopAppBar \| in_progress \|/);
+  } finally { fx.cleanup(); }
+});
+
+test('shell section: (g) missing web_source, (h) in_progress without native_source, (e) exception without reason', () => {
+  const fx = synced({ rules: DECIDED });
+  try {
+    editLedger(fx.root, (l) => {
+      l.version = 2;
+      l.shell = [
+        shellEntry({ key: 'A', web_source: 'src/gone.tsx', native_source: 'apps/mobile/src/missing.tsx' }),
+        shellEntry({ key: 'B', web_source: 'src/App.tsx', status: 'exception', exception: ' ' }),
+      ];
+    });
+    const f = check(load(fx.root));
+    assert.ok(f.some((x) => /^\(g\) shell "A": web_source src\/gone\.tsx does not exist/.test(x)), f.join('\n'));
+    assert.ok(f.some((x) => /^\(h\) shell "A" is "in_progress" but native_source/.test(x)), f.join('\n'));
+    assert.ok(f.some((x) => /^\(e\) shell "B" is "exception" without a reason/.test(x)), f.join('\n'));
+  } finally { fx.cleanup(); }
+});
+
+test('ledger versions: 1 without a shell section passes, a shell section needs 2, version 3 is rejected', () => {
+  const fx = synced({ rules: DECIDED });
+  try {
+    assert.equal(ledgerOf(fx.root).version, 1);
+    assert.deepEqual(check(load(fx.root)), []);
+    editLedger(fx.root, (l) => {
+      l.shell = [];
+    });
+    assert.match(check(load(fx.root))[0], /^\(v\) a "shell" section needs ledger version 2/);
+    editLedger(fx.root, (l) => {
+      l.version = 3;
+      delete l.shell;
+    });
+    assert.match(check(load(fx.root))[0], /^\(v\) ledger version 3 is not supported/);
+  } finally { fx.cleanup(); }
 });

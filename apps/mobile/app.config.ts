@@ -11,6 +11,13 @@
  * the store apps (com.exafy.maxina / com.vitanaland.app, added only after G3).
  * No googleServicesFile and no plugin that needs native credentials (G2).
  *
+ * VTID-05178 (N4-APP Change 13) — associated domains per build profile.
+ * APP_LINK_HOSTS (comma-separated hostnames) is read for `test-g1` only and is
+ * meant for the G1 test web host once G1 has one; that host serves its own
+ * AASA / assetlinks.json for the .dev identifiers. `development` never
+ * associates. A production or staging host (`isBlockedHost`, shared with env.ts) fails
+ * the build. Production `public/.well-known/*` is not touched (Change 14).
+ *
  * VTID-05184 (N5a) — Health Sync config plugins, both profiles: HealthKit
  * read-only (no update string, background delivery on, no clinical-records
  * access) with the purpose string from the catalogue in all 11 locales;
@@ -19,6 +26,7 @@
  * Gate 2); SQLCipher for the encrypted queue; background task.
  */
 import type { ExpoConfig } from 'expo/config';
+import { isBlockedHost } from './src/config/blocked-hosts';
 
 export const PROFILES = ['development', 'test-g1'] as const;
 export type Profile = (typeof PROFILES)[number];
@@ -41,10 +49,28 @@ export function resolveProfile(value: string | undefined): Profile {
   return value as Profile;
 }
 
-const BASE_PLUGINS: NonNullable<ExpoConfig['plugins']> = ['expo-router', 'expo-localization'];
+/**
+ * VTID-05186 (N3, plan change 6) — the Google Sign-In iOS URL scheme is the
+ * reversed iOS client id. No client id → no plugin, so `development` builds
+ * without any Google config.
+ */
+export function googleIosUrlScheme(iosClientId: string | undefined): string | null {
+  const id = iosClientId?.trim();
+  if (!id) return null;
+  const suffix = '.apps.googleusercontent.com';
+  const prefix = id.endsWith(suffix) ? id.slice(0, -suffix.length) : id;
+  return `com.googleusercontent.apps.${prefix}`;
+}
 
-/** VTID-05184 — Health Sync (N5a plan change 4). The module itself stays dark behind the N4 flag. */
-export const HEALTH_SYNC_PLUGINS: NonNullable<ExpoConfig['plugins']> = [
+type PluginEntry = string | [string, Record<string, unknown>];
+
+/**
+ * VTID-05184 — Health Sync (N5a plan change 4). The module itself stays dark behind the N4 flag.
+ * Listed BEFORE the VitanaVoice plugin: both add iOS `locales`, and the health
+ * locales mod merges into the voice one's entries, so it has to run after it
+ * (a later plugin's mod runs first).
+ */
+export const HEALTH_SYNC_PLUGINS: PluginEntry[] = [
   ['@kingstinct/react-native-healthkit', { NSHealthShareUsageDescription: true, NSHealthUpdateUsageDescription: false, background: true }],
   './plugins/with-ios-health-locales.js',
   'react-native-health-connect',
@@ -54,22 +80,89 @@ export const HEALTH_SYNC_PLUGINS: NonNullable<ExpoConfig['plugins']> = [
   'expo-background-task',
 ];
 
-export function buildConfig(profileValue: string | undefined): ExpoConfig {
+export function buildPlugins(env: Record<string, string | undefined>, profile: Profile): PluginEntry[] {
+  const plugins: PluginEntry[] = [
+    'expo-router',
+    'expo-localization',
+    ...HEALTH_SYNC_PLUGINS,
+    // VTID-05180: the native ORB voice module. Its microphone usage string comes
+    // from the i18n catalog at prebuild (fails closed without the keys); dev-only
+    // local networking for the fake gateway.
+    ['./modules/vitana-voice/plugin/withVitanaVoice', { profile }],
+    'expo-secure-store',
+    'expo-apple-authentication',
+  ];
+  const scheme = googleIosUrlScheme(env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID);
+  if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
+  return plugins;
+}
+
+
+/** The four link paths the app handles from a universal link / App Link. */
+export const LINK_PATHS = {
+  exact: ['/auth/confirmed', '/reset-password', '/oauth/complete'],
+  prefix: ['/i/'],
+} as const;
+
+const HOSTNAME = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$/;
+
+/** Parses APP_LINK_HOSTS for a profile. Throws on a bad, production or staging host. */
+export function resolveLinkHosts(profile: Profile, value: string | undefined): string[] {
+  const hosts = (value ?? '')
+    .split(',')
+    .map((h) => h.trim().toLowerCase())
+    .filter(Boolean);
+  if (hosts.length === 0) return [];
+  if (profile !== 'test-g1') {
+    throw new Error(`APP_LINK_HOSTS is only for the test-g1 profile (the G1 test web host), not "${profile}" (VTID-05178).`);
+  }
+  for (const host of hosts) {
+    if (!HOSTNAME.test(host)) throw new Error(`APP_LINK_HOSTS: "${host}" is not a bare hostname.`);
+    if (isBlockedHost(`https://${host}`)) {
+      throw new Error(`APP_LINK_HOSTS: refusing ${host} — native dev/test builds never associate with a production or staging host (VTID-05178).`);
+    }
+  }
+  return [...new Set(hosts)];
+}
+
+export function buildConfig(
+  profileValue: string | undefined,
+  linkHostsValue?: string,
+  env: Record<string, string | undefined> = process.env,
+): ExpoConfig {
   const profile = resolveProfile(profileValue);
+  const linkHosts = resolveLinkHosts(profile, linkHostsValue);
+  // usesAppleSignIn: Sign in with Apple (VTID-05186); the App ID capability waits for G3.
+  const ios: ExpoConfig['ios'] = { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false, usesAppleSignIn: true };
+  const android: ExpoConfig['android'] = { package: IDENTIFIERS.android };
+  if (linkHosts.length > 0) {
+    ios.associatedDomains = linkHosts.map((host) => `applinks:${host}`);
+    android.intentFilters = [
+      {
+        action: 'VIEW',
+        autoVerify: true,
+        data: linkHosts.flatMap((host) => [
+          ...LINK_PATHS.exact.map((path) => ({ scheme: 'https', host, path })),
+          ...LINK_PATHS.prefix.map((pathPrefix) => ({ scheme: 'https', host, pathPrefix })),
+        ]),
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
+    ];
+  }
   return {
     name: profile === 'development' ? 'Vitana Dev' : 'Vitana Test',
     slug: 'vitana-mobile',
     version: '0.0.0',
-    // Placeholder; universal links / App Links come in Wave 1.
+    // Custom scheme: the route for `xcrun simctl openurl` / `adb shell am start` link tests (VTID-05178).
     scheme: 'maxina',
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
-    ios: { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false },
-    android: { package: IDENTIFIERS.android },
-    plugins: [...BASE_PLUGINS, ...HEALTH_SYNC_PLUGINS],
+    ios,
+    android,
+    plugins: buildPlugins(env, profile),
     experiments: { typedRoutes: false },
-    extra: { profile },
+    extra: { profile, linkHosts },
   };
 }
 
-export default (): ExpoConfig => buildConfig(process.env.APP_PROFILE);
+export default (): ExpoConfig => buildConfig(process.env.APP_PROFILE, process.env.APP_LINK_HOSTS);

@@ -1,0 +1,73 @@
+{
+  "memoryLearning": {
+    "header": {
+      "overviewTitle": "记忆",
+      "overviewDescription": "Vitana 对你的了解——以及你这周的 Vitana 指数表现。",
+      "permissionsTitle": "Vitana 可以学习什么",
+      "permissionsDescription": "由你决定 Vitana 从哪些内容中学习。其他人看不到这些数据。"
+    },
+    "week": {
+      "title": "你这周的 Vitana 指数",
+      "change": "7 天内 {delta}",
+      "noChange": "7 天内无变化",
+      "rising": "上升：{pillars}",
+      "slipping": "下降：{pillars}",
+      "steady": "五大支柱都很稳定。",
+      "openTimeline": "打开你的时间线",
+      "empty": "还没有 Vitana 指数。先完成起始评估——之后这张卡片每周告诉你有哪些变化。",
+      "start": "开始起始评估"
+    },
+    "routines": {
+      "title": "Vitana 注意到的习惯",
+      "description": "Vitana 就是这样了解你的日常。不对的内容可以让它忘掉。",
+      "empty": "Vitana 还没有注意到任何习惯。使用几天后就会出现。",
+      "forget": "忘记",
+      "manage": "管理 Vitana 学习的内容"
+    },
+    "routine": {
+      "screen_habit": "28 天中有 {days} 天你会打开 {screen}",
+      "active_hours": "你通常在{bucket}最活跃",
+      "feature_affinity": "你最常使用{area}",
+      "pillar_rhythm": "{pillar}：多在{bucket}，每周约 {n} 天",
+      "time_of_day_preference": "你的日程活动多在{bucket}完成",
+      "day_of_week_rhythm": "{day}是你最活跃的日子之一",
+      "category_affinity": "你经常做“{tag}”",
+      "generic": "你日常中的一种节奏"
+    },
+    "bucket": {
+      "morning": "早上",
+      "midday": "中午",
+      "afternoon": "下午",
+      "evening": "晚上",
+      "night": "深夜"
+    },
+    "switches": {
+      "title": "Vitana 可以从哪些内容中学习",
+      "description": "关闭表示：Vitana 不再在对话、习惯和推荐中使用这个领域。你的记录仍保留在时间线上。",
+      "pillarsTitle": "你的五大支柱",
+      "lifeTitle": "你在 Vitanaland 的生活",
+      "appUsageTitle": "你的应用使用情况",
+      "appUsageDescription": "你何时打开哪些区域。从不显示——Vitana 只用它来识别你的习惯。",
+      "appUsageOff": "关闭后，Vitana 由此学到的习惯也会被删除。",
+      "healthNote": "健康数据同时受到你的同意设置保护。",
+      "unavailable": "这些开关即将可用。"
+    },
+    "usage": {
+      "title": "你的使用数据",
+      "description": "页面访问和技术痕迹。它们从不出现在你的时间线上。",
+      "count": "已存储 {n} 条记录",
+      "countUnavailable": "概览即将可用。",
+      "export": "导出",
+      "delete": "全部删除",
+      "deleteTitle": "删除所有使用数据？",
+      "deleteDescription": "页面访问和技术痕迹将被删除，Vitana 从中学到的习惯也会一并删除。你的时间线会保留。",
+      "cancel": "取消",
+      "confirm": "删除"
+    },
+    "toast": {
+      "saveFailed": "没有成功，请再试一次。",
+      "forgotten": "Vitana 已经忘记了。",
+      "deleted": "你的使用数据已删除。"
+    }
+  }
+}

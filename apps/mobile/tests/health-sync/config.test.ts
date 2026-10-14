@@ -18,6 +18,7 @@ import { rationaleTarget } from '../../modules/health-connect-rationale';
 const strings = require('../../plugins/health-strings.js');
 const iosLocales = require('../../plugins/with-ios-health-locales.js');
 const hcPerms = require('../../plugins/with-health-connect-permissions.js');
+const voiceIos = require('../../modules/vitana-voice/plugin/withVitanaVoiceIos.js');
 const { compileModsAsync } = require('expo/config-plugins');
 const { withConfigPlugins } = require('@expo/config/build/plugins/withConfigPlugins');
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -41,9 +42,10 @@ describe.each(['development', 'test-g1'])('profile %s', (profile) => {
   const plugins = cfg.plugins as unknown[];
   const entry = (name: string) => plugins.find((p) => (Array.isArray(p) ? p[0] : p) === name);
 
-  it('keeps the Wave 0 plugins and adds the Health Sync plugins', () => {
+  it('keeps the Wave 0 plugins and adds the Health Sync plugins before the VitanaVoice plugin (shared iOS locales)', () => {
     expect(plugins.slice(0, 2)).toEqual(['expo-router', 'expo-localization']);
-    expect(plugins.slice(2)).toEqual(HEALTH_SYNC_PLUGINS);
+    expect(plugins.slice(2, 2 + HEALTH_SYNC_PLUGINS.length)).toEqual(HEALTH_SYNC_PLUGINS);
+    expect(plugins[2 + HEALTH_SYNC_PLUGINS.length]).toEqual(['./modules/vitana-voice/plugin/withVitanaVoice', { profile }]);
   });
   it('HealthKit: read-only (no update string), background delivery on, no clinical-records access', () => {
     expect(entry('@kingstinct/react-native-healthkit')).toEqual(['@kingstinct/react-native-healthkit', { NSHealthShareUsageDescription: true, NSHealthUpdateUsageDescription: false, background: true }]);
@@ -103,10 +105,13 @@ describe('HealthKit purpose string from the catalogue (N5b keys)', () => {
   it('InfoPlist.strings values are escaped and written for every locale', () => {
     const root = mkdtempSync(join(tmpdir(), 'n5a-root-'));
     const files = iosLocales.writeLocaleFiles(root, strings.resolveHealthStrings({ i18nDir: fixtureI18n() }));
-    expect(files).toHaveLength(11);
+    expect(Object.keys(files)).toHaveLength(11);
     const de = JSON.parse(readFileSync(join(root, '.generated/ios-locales/de.json'), 'utf8'));
-    expect(de).toEqual({ NSHealthShareUsageDescription: 'de: Vitana liest \\"Health\\" nur nach deiner Zustimmung.' });
-    expect(iosLocales.withLocaleEntries({}).locales.sr).toBe('.generated/ios-locales/sr.json');
+    expect(de).toEqual({ ios: { NSHealthShareUsageDescription: 'de: Vitana liest \\"Health\\" nur nach deiner Zustimmung.' } });
+    // Same .lproj names as the VitanaVoice plugin (native-locales.json): sr is sr-Latn, zh is zh-Hans.
+    expect(files['sr-Latn']).toBe('./.generated/ios-locales/sr-Latn.json');
+    expect(files['zh-Hans']).toBe('./.generated/ios-locales/zh-Hans.json');
+    expect(iosLocales.withLocaleEntries({ locales: { x: 'y' } }, files).locales).toEqual({ x: 'y', ...files });
   });
 });
 
@@ -117,9 +122,48 @@ describe('the iOS locales mod', () => {
     const cfg = iosLocales(base, { i18nDir: fixtureI18n() });
     expect(cfg.locales).toBeUndefined();
     const out = await cfg.mods.ios.dangerous({ ...cfg, modResults: null, modRequest: { projectRoot: root, platformProjectRoot: join(root, 'ios'), platform: 'ios', modName: 'dangerous', introspect: false } });
-    expect(Object.keys(out.locales)).toEqual(LOCALES);
-    for (const l of LOCALES) expect(JSON.parse(readFileSync(join(root, out.locales[l]), 'utf8')).NSHealthShareUsageDescription).toContain(`${l}:`);
+    expect(Object.keys(out.locales).sort()).toEqual(LOCALES.map((l) => iosLocales.lprojOf(l)).sort());
+    for (const l of LOCALES) {
+      expect(JSON.parse(readFileSync(join(root, out.locales[iosLocales.lprojOf(l)]), 'utf8')).ios.NSHealthShareUsageDescription).toContain(`${l}:`);
+    }
   });
+
+  it('merges with the VitanaVoice locale files instead of replacing them (one file per .lproj)', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'n5a-merge-'));
+    mkdirSync(join(root, '.generated/native-locales'), { recursive: true });
+    const voice: Record<string, string> = {};
+    for (const l of LOCALES) {
+      const lproj = iosLocales.lprojOf(l);
+      writeFileSync(join(root, `.generated/native-locales/${lproj}.json`), JSON.stringify({ ios: { NSMicrophoneUsageDescription: `mic ${l}` } }));
+      voice[lproj] = `./.generated/native-locales/${lproj}.json`;
+    }
+    const cfg = iosLocales({ name: 'x', slug: 'x', locales: voice }, { i18nDir: fixtureI18n() });
+    const out = await cfg.mods.ios.dangerous({ ...cfg, modResults: null, modRequest: { projectRoot: root, platformProjectRoot: join(root, 'ios'), platform: 'ios', modName: 'dangerous', introspect: false } });
+    expect(Object.keys(out.locales).sort()).toEqual(Object.keys(voice).sort());
+    for (const l of LOCALES) {
+      const merged = JSON.parse(readFileSync(join(root, out.locales[iosLocales.lprojOf(l)]), 'utf8'));
+      expect(merged.ios.NSMicrophoneUsageDescription).toBe(`mic ${l}`);
+      expect(merged.ios.NSHealthShareUsageDescription).toContain(`${l}:`);
+    }
+  });
+});
+
+describe('iOS locales with the VitanaVoice plugin, in app.config order', () => {
+  it('both permission strings end up in every .lproj (Health Sync runs after VitanaVoice and merges)', async () => {
+    const i18nDir = fixtureI18n();
+    for (const l of LOCALES) writeFileSync(join(i18nDir, l, 'orbNative.json'), JSON.stringify({ orbNative: { micUsageDescription: `mic ${l}` } }));
+    const root = mkdtempSync(join(tmpdir(), 'n5a-order-'));
+    // buildPlugins lists HEALTH_SYNC_PLUGINS before withVitanaVoice: health is applied first.
+    const cfg = voiceIos(iosLocales({ name: 'x', slug: 'x' }, { i18nDir }), { profile: 'development', i18nDir });
+    cfg.mods = { ios: { dangerous: cfg.mods.ios.dangerous } };
+    const out = await compileModsAsync(cfg, { projectRoot: root, platforms: ['ios'], assertMissingModProviders: false });
+    expect(Object.keys(out.locales)).toHaveLength(11);
+    for (const l of LOCALES) {
+      const file = JSON.parse(readFileSync(join(root, out.locales[iosLocales.lprojOf(l)]), 'utf8'));
+      expect(file.ios.NSMicrophoneUsageDescription).toBe(`mic ${l}`);
+      expect(file.ios.NSHealthShareUsageDescription).toContain(`${l}:`);
+    }
+  }, 60_000);
 });
 
 describe('prebuild introspection (no native project written)', () => {

@@ -585,7 +585,7 @@ export default function FindPartner() {
                 key={o.value}
                 type="button"
                 onClick={() => { setView(o.value); setPickerOpen(false); }}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${
+                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-start ${
                   view === o.value ? 'border-primary bg-primary/10' : 'border-border hover:bg-muted'
                 }`}
               >
@@ -721,7 +721,7 @@ function MemberListRow({
     <button
       type="button"
       onClick={() => onOpen(member.vitana_id)}
-      className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
+      className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-start"
     >
       <Avatar className="h-12 w-12 flex-shrink-0">
         <AvatarImage src={getDisplayAvatarUrl(member)} alt={member.display_name ?? ''} />

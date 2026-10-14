@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitana potrzebuje twojego mikrofonu, żebyś mógł z nią rozmawiać. Jest włączony tylko podczas rozmowy.",
+    "status": {
+      "connecting": "Łączenie z Vitaną …",
+      "thinking": "Vitana myśli …",
+      "reconnecting": "Przywracanie połączenia …",
+      "ended": "Rozmowa zakończona",
+      "muted": "Twój mikrofon jest wyciszony",
+      "unavailable": "Vitana nie jest jeszcze dostępna w tej wersji aplikacji."
+    },
+    "rationale": {
+      "title": "Porozmawiaj z Vitaną",
+      "body": "Żeby Vitana mogła cię słyszeć, aplikacja potrzebuje dostępu do twojego mikrofonu. Mikrofon jest włączony tylko wtedy, gdy rozmowa jest otwarta.",
+      "continue": "Dalej",
+      "notNow": "Nie teraz"
+    },
+    "denied": {
+      "body": "Zezwól na dostęp do mikrofonu w Ustawieniach, żeby porozmawiać z Vitaną.",
+      "openSettings": "Otwórz Ustawienia"
+    },
+    "a11y": {
+      "close": "Zamknij rozmowę z Vitaną",
+      "micMute": "Wycisz mikrofon",
+      "micUnmute": "Włącz mikrofon",
+      "restart": "Rozpocznij nową rozmowę z Vitaną"
+    },
+    "bench": {
+      "title": "Test echa głosu",
+      "intro": "Sprawdza tłumienie echa bez sieci i bez rozmowy. Odłóż telefon, ustaw normalną głośność i nie mów podczas testu echa.",
+      "modeEcho": "Test echa",
+      "modeSpeech": "Test mowy",
+      "rate": "Tempo {rate}×",
+      "start": "Rozpocznij test",
+      "stop": "Przerwij test",
+      "phaseIdle": "Gotowe",
+      "phaseNoiseFloor": "Pomiar hałasu w pomieszczeniu …",
+      "phasePlaying": "Odtwarzanie tonu testowego …",
+      "pass": "Zaliczony",
+      "fail": "Niezaliczony",
+      "openings": "Otwarcia bramki głosu: {count}",
+      "barges": "Wykryte przerwania: {count}",
+      "peak": "Najwyższy poziom podczas tonu: {value}",
+      "noiseFloor": "Najwyższy poziom w pomieszczeniu: {value}",
+      "noisyRoom": "W pomieszczeniu jest głośniej niż próg zamknięcia, więc wynik jest surowszy niż trzeba.",
+      "stopLatency": "Odtwarzanie zatrzymane po {value} ms",
+      "device": "Urządzenie: {value}",
+      "os": "System: {value}",
+      "route": "Wyjście: {value}",
+      "aecPath": "Tłumienie echa: {value}",
+      "voiceProcessing": "Przetwarzanie głosu: {value}",
+      "on": "wł.",
+      "off": "wył.",
+      "share": "Udostępnij wynik",
+      "unavailable": "Test echa jest dostępny tylko w wersjach deweloperskich i testowych aplikacji."
+    }
+  }
+}

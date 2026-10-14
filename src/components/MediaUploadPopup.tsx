@@ -157,7 +157,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   placeholder={t('screens.common.enterMediaTitle')}
                   maxLength={25}
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                <span className="absolute end-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                   {title.length}/25
                 </span>
               </div>
@@ -175,7 +175,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   rows={3}
                   maxLength={250}
                 />
-                <span className="absolute right-3 bottom-2 text-xs text-muted-foreground">
+                <span className="absolute end-3 bottom-2 text-xs text-muted-foreground">
                   {description.length}/250
                 </span>
               </div>
@@ -232,7 +232,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   </>
                 ) : (
                   <div className="flex items-center justify-between">
-                    <div className="text-left flex-1">
+                    <div className="text-start flex-1">
                       <p className="text-sm font-medium truncate">{selectedFile.name}</p>
                       <p className="text-xs text-muted-foreground">{t('screens.common.value0Mb', { value0: (selectedFile.size / 1024 / 1024).toFixed(2) })}
                       </p>
@@ -283,11 +283,11 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start text-start font-normal",
                         !releaseDate && "text-muted-foreground"
                       )}
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="me-2 h-4 w-4" />
                       {releaseDate ? formatDate(releaseDate, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
