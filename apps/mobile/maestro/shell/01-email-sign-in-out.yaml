@@ -1,0 +1,16 @@
+# VTID-05186 — email sign-in and sign-out (synthetic G1 member). G1 only.
+appId: com.exafy.maxina.dev
+---
+- launchApp: { clearState: true }
+- assertVisible: { id: portal-maxina }
+- tapOn: { id: portal-email }
+- inputText: ${G1_EMAIL}
+- tapOn: { id: portal-password }
+- inputText: ${G1_PASSWORD}
+- tapOn: { id: portal-submit }
+- extendedWaitUntil: { visible: { id: top-app-bar }, timeout: 20000 }
+- takeScreenshot: shell-signed-in
+- tapOn: { id: top-bar-menu }
+- scrollUntilVisible: { element: { id: drawer-row-logout } }
+- tapOn: { id: drawer-row-logout }
+- assertVisible: { id: portal-maxina }

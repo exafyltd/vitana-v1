@@ -15,14 +15,46 @@
  * This file stays the single production gate; packages/core has no defaults.
  */
 
-import type { CoreEndpoints } from '@vitana/core/config';
+// VTID-05186: through the core port (tests/ports.test.ts — app code reaches lane packages only via src/ports).
+import type { CoreEndpoints } from '../ports/core';
 
-export type ConfigKey = 'gatewayUrl' | 'supabaseUrl' | 'dataApiUrl';
+export type ConfigKey = 'gatewayUrl' | 'supabaseUrl' | 'dataApiUrl' | 'authRedirectUrl' | 'webBaseUrl';
 
-/** VTID-05183 — config values that are not URLs (the Supabase publishable key). */
-export type ValueKey = 'supabasePublishableKey';
+/**
+ * Non-URL values; no defaults. `supabasePublishableKey` is N1's (VTID-05183,
+ * checked by assertNotProductionKey); the Google client ids are N3's
+ * (VTID-05186, plan change 5), plain values read with `requireValue`.
+ */
+export type ValueKey = 'supabasePublishableKey' | 'googleWebClientId' | 'googleIosClientId';
 
 export type AppConfig = Partial<Record<ConfigKey | ValueKey, string>>;
+
+/**
+ * Every URL key goes through `assertNotProduction`.
+ *   authRedirectUrl — base for e-mail confirm / password-reset links (VTID-05186)
+ *   webBaseUrl      — where admin consoles open in the system browser (VTID-05186)
+ * Both are unset in `development` and `test-g1` until G1 names them.
+ */
+export const URL_KEYS: readonly ConfigKey[] = ['gatewayUrl', 'supabaseUrl', 'dataApiUrl', 'authRedirectUrl', 'webBaseUrl'];
+export const VALUE_KEYS: readonly ValueKey[] = ['supabasePublishableKey', 'googleWebClientId', 'googleIosClientId'];
+
+/**
+ * A required value is unset. The app renders the ConfigMissing screen for it
+ * (plan change 15), tests see the throw; nothing ever falls back to a default.
+ */
+export class ConfigMissingError extends Error {
+  readonly keys: readonly string[];
+  constructor(keys: readonly string[]) {
+    super(`Native config ${keys.map((k) => `"${k}"`).join(', ')} is not set. There is no default (VTID-05157); set it for the G1 test environment.`);
+    this.name = 'ConfigMissingError';
+    this.keys = keys;
+  }
+}
+
+/** The keys among `keys` that `config` does not set. Names only, never values. */
+export function missingKeys(config: AppConfig, keys: readonly (ConfigKey | ValueKey | string)[]): string[] {
+  return keys.filter((k) => !(config as Record<string, string | undefined>)[k]);
+}
 
 // The host list and check live in blocked-hosts.js so app.config.ts can share
 // them (VTID-05178); the exports below are unchanged.
@@ -90,39 +122,45 @@ export function assertNotProductionKey(key: string): string {
 /** Builds the config from a source of raw values; every set value is checked. */
 export function loadConfig(source: AppConfig): AppConfig {
   const out: AppConfig = {};
-  for (const key of ['gatewayUrl', 'supabaseUrl', 'dataApiUrl'] as const) {
+  for (const key of URL_KEYS) {
     const value = source[key]?.trim();
     if (value) out[key] = assertNotProduction(value);
   }
-  const key = source.supabasePublishableKey?.trim();
-  if (key) out.supabasePublishableKey = assertNotProductionKey(key);
+  for (const key of VALUE_KEYS) {
+    const value = source[key]?.trim();
+    if (value) out[key] = key === 'supabasePublishableKey' ? assertNotProductionKey(value) : value;
+  }
   return out;
 }
 
 /** The value for `key`, or an error. Never a default. */
 export function requireUrl(config: AppConfig, key: ConfigKey): string {
   const value = config[key];
-  if (!value) {
-    throw new Error(`Native config "${key}" is not set. There is no default URL (VTID-05157); set it for the G1 test environment.`);
-  }
+  if (!value) throw new ConfigMissingError([key]);
   return assertNotProduction(value);
 }
 
-/** VTID-05183 — a non-URL value (the publishable key), or an error. Never a default. */
+/**
+ * A non-URL value, or ConfigMissingError. Never a default. The publishable key
+ * (VTID-05183) passes assertNotProductionKey; the Google client ids
+ * (VTID-05186) are plain values.
+ */
 export function requireValue(config: AppConfig, key: ValueKey): string {
   const value = config[key]?.trim();
-  if (!value) {
-    throw new Error(`Native config "${key}" is not set. There is no default (VTID-05183); set it for the G1 test environment.`);
-  }
-  return assertNotProductionKey(value);
+  if (!value) throw new ConfigMissingError([key]);
+  return key === 'supabasePublishableKey' ? assertNotProductionKey(value) : value;
 }
 
 /**
  * VTID-05183 — the endpoints every @vitana/core client is built from. Each
  * value passes requireUrl / requireValue, so a client built from these has
- * passed the host and key checks. `dataApiUrl` is optional.
+ * passed the host and key checks. `dataApiUrl` is optional. VTID-05186: the
+ * missing required values are reported together (the ConfigMissing screen
+ * names them all).
  */
 export function endpoints(cfg: AppConfig): CoreEndpoints {
+  const missing = missingKeys(cfg, ['gatewayUrl', 'supabaseUrl', 'supabasePublishableKey']);
+  if (missing.length > 0) throw new ConfigMissingError(missing);
   const out: CoreEndpoints = {
     gatewayOrigin: requireUrl(cfg, 'gatewayUrl'),
     supabaseUrl: requireUrl(cfg, 'supabaseUrl'),
@@ -134,11 +172,15 @@ export function endpoints(cfg: AppConfig): CoreEndpoints {
 
 /**
  * The build's configuration. Expo inlines EXPO_PUBLIC_* at bundle time; in
- * Wave 0 none of them is set, so this is `{}`.
+ * `development` none of them is set, so this is `{}`.
  */
 export const config: AppConfig = loadConfig({
   gatewayUrl: process.env.EXPO_PUBLIC_GATEWAY_URL,
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
   dataApiUrl: process.env.EXPO_PUBLIC_DATA_API_URL,
+  authRedirectUrl: process.env.EXPO_PUBLIC_AUTH_REDIRECT_URL,
+  webBaseUrl: process.env.EXPO_PUBLIC_WEB_BASE_URL,
+  googleWebClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
   supabasePublishableKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
 });

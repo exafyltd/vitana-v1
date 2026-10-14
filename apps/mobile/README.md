@@ -1,4 +1,4 @@
-# apps/mobile — Vitana native app (Wave 0 skeleton)
+# apps/mobile — Vitana native app
 
 VTID-05157, program VTID-05021 (`docs/programs/native-app/NATIVE-APP-PLAN.md`). Expo + TypeScript + Expo Router.
 Wave 0 proves the JavaScript side builds for iOS and Android on a Linux runner. It mirrors no screen yet and makes
@@ -72,12 +72,36 @@ repo's i18n rule: no hardcoded user-visible text (`accessibilityLabel` / `access
 `native` row without a route in `app/`, a route in `app/` without a row, an exception without a reason, or an undecided
 (`pending`) scope. Scope and lane rules: `scripts/native/parity-scope.json`.
 
+## Wave 1 / N3 — shell, auth, identity, i18n + RTL, theming (VTID-05186)
+
+| Area | Where | Notes |
+|---|---|---|
+| Config | `src/config/env.ts`, `src/ports/env.ts` | adds `authRedirectUrl`, `webBaseUrl` (both through `assertNotProduction`) and the Google client ids. Unset → `ConfigMissing` screen, never a default. N1 owns `requireValue`, `endpoints`, the key check. |
+| Auth | `src/auth/` | supabase-js session in SecureStore (1,800-byte chunks, mutex + versioned reads), `AuthProvider` (same `useAuth()` shape), password / Apple / Google sign-in, PKCE for Apple on Android. |
+| Identity | `src/identity/` | tenant, role preference, memberships, patient access, partner orgs, business mode, role switch, guided mode, language (`stt_language` + `tts_voice` rule). Admin consoles open in the system browser at `webBaseUrl`, else the `native.adminInBrowser` sheet. |
+| Shell | `src/shell/` | `MobileAppShell`, `TopAppBar`, `BottomNav` (ORB slot in the centre), `SideDrawer`, `RoleSwitcherSheet`, `MobileModePill`, `PublicShell`, `LanguageSheet`. Rules that live inside web component bodies are mirrored in `src/shell/logic/` and pinned (below). |
+| Routes | `app/` | `/` landing redirect, `(public)` auth screens, `(app)` AuthGate + shell + the resolver route `[...path]` (every ledger destination: Unported / web console / not found). Paths equal web paths. |
+| Theme | `src/theme/` | `light` default (like the web), `dark`, `system`; tenant brand from `tenantBrand(slug)`. RTL: the shell root's `direction` follows the language; styles use start/end only (a test scans for left/right). |
+
+**Ports.** Shell code imports lane code only through `src/ports/*` (`core`, `env`, `tokens` → N1; `ui` → N2; `links` → N4;
+`orb-slot` → N6; `badges`, `soundscape` for screen lanes). `core`/`tokens` re-export `@vitana/core` / `@vitana/tokens`,
+`env` re-exports `src/config/env.ts`, and `ui` adapts `@vitana/ui` to the shell's names. The one non-re-export is
+`createSupabaseClient` (I-N1.1): N1's factory plus `auth.flowType` set on the built client, until N1 takes the option.
+The branch-only stubs are gone; `tests/ports.test.ts` fails if a `*.stub.ts(x)` file comes back.
+
+**Source pins.** `node scripts/native/check-shell-pins.mjs` compares each mirrored web range (token stream, comments and
+whitespace ignored) with `scripts/native/shell-pins.json`, and `src/navigation/guest-paths.ts` with the App.tsx
+`<AuthGuard allowGuest>` routes. On "web shell rule changed": update the native file, then the hash (`--print`).
+It runs in NATIVE-CI through `node --test scripts/native/__tests__/`.
+
+**Device journeys.** `maestro/shell/*.yaml` are run only on G1 with native builds (STATUS row 8b), never in CI.
+
 ## What waits for which gate
 
 | Work | Waits for |
 |---|---|
 | Native builds (`expo prebuild`, Gradle/Xcode), simulators, Maestro, screenshot parity | STATUS row 8b: macOS minutes (iOS), G1 for signed-in screens |
-| Supabase / gateway clients, auth, any network call | G1 (isolated test environment), Wave 1 |
+| Running sign-in, tenant/role RPCs, any network call on a device | G1 (isolated test environment); Apple on a device also G3 |
 | Push, React Native Firebase, `google-services` files | G2 |
 | Store identifiers, signing, store listings | G3 |
 | npm workspaces, NativeWind | Wave 1, each with its own sparred plan (`packages/core` + `packages/tokens`: N1; UI kit core primitives: N2 — both below) |

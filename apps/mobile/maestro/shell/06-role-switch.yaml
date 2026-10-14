@@ -1,0 +1,15 @@
+# VTID-05186 — community → patient → community (G1 member with a patient grant). Writes role_preferences on G1.
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- tapOn: { id: top-bar-menu }
+- tapOn: { id: drawer-mode-pill }
+- assertVisible: { id: role-switcher }
+- assertNotVisible: { id: bottom-nav }
+- tapOn: { id: radio-patient }
+- extendedWaitUntil: { visible: { id: bottom-nav-patient-dashboard }, timeout: 20000 }
+- takeScreenshot: patient-mode
+- tapOn: { id: top-bar-menu }
+- tapOn: { id: drawer-mode-pill }
+- tapOn: { id: radio-community }
+- extendedWaitUntil: { visible: { id: bottom-nav-news }, timeout: 20000 }
