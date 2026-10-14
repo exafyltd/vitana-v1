@@ -5257,12 +5257,13 @@
       "_pending_review": {
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
-        "reportsLoadFailedRetry": true
+        "reportsLoadFailedRetry": true,
+        "coachReplyFailed": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
       "reportsLoadFailedRetry": "Try again",
-      "coachReplyFailed": "Le coach n'a pas pu répondre pour l'instant. Merci de réessayer dans un instant."
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5480,7 +5481,10 @@
       "replyingTo": "Répondre à {name}",
       "cancelReply": "Annuler la réponse",
       "likeComment": "Aimer le commentaire",
-      "feedItemError": "Ce post n'a pas pu être affiché.",
+      "_pending_review": {
+        "feedItemError": true
+      },
+      "feedItemError": "This post couldn't be shown.",
       "playTodaysEpisode": "Écouter l'épisode {session}"
     },
     "icons": {
@@ -5668,10 +5672,17 @@
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
       "durationHourMin": "{value0} h {value1} min",
-      "liveRoomTag": "Salle en direct",
-      "interestedTitle": "Qui participe ?",
-      "interestedAria": "Afficher qui veut participer",
-      "interestedEmpty": "Personne ne s'est encore inscrit – sois le premier !",
+      "_pending_review": {
+        "liveRoomTag": true,
+        "interestedTitle": true,
+        "interestedAria": true,
+        "interestedEmpty": true,
+        "dateTimeChip": true
+      },
+      "liveRoomTag": "Live Room",
+      "interestedTitle": "Who's going",
+      "interestedAria": "Show who wants to join",
+      "interestedEmpty": "Nobody has signed up yet – be the first!",
       "dateTimeChip": "{date} · {time}",
       "openHostProfile": "Ouvrir le profil de {name}"
     },
@@ -5910,6 +5921,7 @@
       "wellnessDiaryMultimediaDescription": "Enregistre et revois ton parcours bien-être avec des entrées multimédias.",
       "garden": {
         "_pending_review": {
+          "lastUpdated": true,
           "cardCountOne": true,
           "cardCountOther": true,
           "loading": true,
@@ -6023,7 +6035,7 @@
             "insight": "Memories awaiting categorization"
           }
         },
-        "lastUpdated": "Dernière mise à jour le {date}",
+        "lastUpdated": "Last updated {date}",
         "cardCountOne": "1 memory · {progress}%",
         "cardCountOther": "{count} memories · {progress}%",
         "loading": "Loading your memories…",
