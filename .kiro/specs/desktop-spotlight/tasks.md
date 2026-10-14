@@ -246,6 +246,10 @@ Decisions taken (for Gate 2):
   **Blocked on an owner decision:** no raw palette colour has a token with the same value in both light and dark mode, so
   "baseline = 0" and "mobile screenshots unchanged" cannot both hold. Options: accept small colour shifts to existing
   status/category/surface tokens, or add exact-match tokens (a design-contract change → sparring).
+  **Owner decision 2026-10-14 (option A):** accept small colour shifts. Every remaining raw palette colour maps to the
+  nearest existing token per SPOTLIGHT_RULES §E (Palette → token mapping); no new tokens, no design-contract change.
+  "Mobile screenshots unchanged" no longer applies to the colour part of 6.2 — the shifts are reviewed on staging and
+  approved at Gate 2. Work it as lane `phase-6-2-colours` (executor: Kiro).
 
 ## System-wide done
 - [ ] Manifest 100 % `migrated`; `baseline/design.json` all zero; STAGING-VERIFY design-lint green for every screen.
