@@ -25,6 +25,7 @@
     "src/integrations/supabase/data-routing.ts",
     "src/integrations/supabase/types.ts",
     "src/lib/business-mode.ts",
+    "src/lib/orb-view-profile.ts",
     "src/lib/permissions.ts",
     "src/lib/retired-tenants.ts",
     "src/lib/role-switch-destination.ts",

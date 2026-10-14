@@ -17,6 +17,13 @@
       ],
       "reason": "ORB navigation directives (planOrbNavigation, eventForMarker). Imports only the registry."
     },
+    "src/lib/orb-view-profile.ts": {
+      "entry": "orb-view-profile.ts",
+      "lanes": [
+        "N6"
+      ],
+      "reason": "ORB view profile (orbViewProfile: surface + view role the ORB declares at session start). Imports nothing; pure."
+    },
     "src/lib/permissions.ts": {
       "entry": "permissions.ts",
       "lanes": [

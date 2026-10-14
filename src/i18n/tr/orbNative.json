@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitana ile konuşabilmen için mikrofonuna ihtiyacı var. Mikrofon yalnızca bir konuşma açıkken etkindir.",
+    "status": {
+      "connecting": "Vitana'ya bağlanılıyor …",
+      "thinking": "Vitana düşünüyor …",
+      "reconnecting": "Bağlantı yeniden kuruluyor …",
+      "ended": "Konuşma sona erdi",
+      "muted": "Mikrofonun sessizde",
+      "unavailable": "Vitana bu uygulama sürümünde henüz kullanılamıyor."
+    },
+    "rationale": {
+      "title": "Vitana ile konuş",
+      "body": "Vitana'nın seni duyabilmesi için uygulamanın mikrofonuna erişmesi gerekiyor. Mikrofon yalnızca konuşma açıkken etkindir.",
+      "continue": "Devam et",
+      "notNow": "Şimdi değil"
+    },
+    "denied": {
+      "body": "Vitana ile konuşabilmek için Ayarlar'da mikrofon erişimine izin ver.",
+      "openSettings": "Ayarlar'ı aç"
+    },
+    "a11y": {
+      "close": "Vitana ile konuşmayı kapat",
+      "micMute": "Mikrofonu sessize al",
+      "micUnmute": "Mikrofonu aç",
+      "restart": "Vitana ile yeni bir konuşma başlat"
+    },
+    "bench": {
+      "title": "Ses yankı testi",
+      "intro": "Yankı engellemeyi ağ ve konuşma olmadan kontrol eder. Telefonunu bırak, normal bir ses seviyesi ayarla ve yankı testi sırasında konuşma.",
+      "modeEcho": "Yankı testi",
+      "modeSpeech": "Konuşma testi",
+      "rate": "Hız {rate}×",
+      "start": "Testi başlat",
+      "stop": "Testi iptal et",
+      "phaseIdle": "Hazır",
+      "phaseNoiseFloor": "Ortam gürültüsü ölçülüyor …",
+      "phasePlaying": "Test tonu çalıyor …",
+      "pass": "Başarılı",
+      "fail": "Başarısız",
+      "openings": "Ses kapısı açılmaları: {count}",
+      "barges": "Algılanan kesmeler: {count}",
+      "peak": "Ton sırasında en yüksek seviye: {value}",
+      "noiseFloor": "Ortamdaki en yüksek seviye: {value}",
+      "noisyRoom": "Ortam, kapanma eşiğinden daha gürültülü; bu yüzden sonuç gerekenden daha katı.",
+      "stopLatency": "Oynatma {value} ms sonra durdu",
+      "device": "Cihaz: {value}",
+      "os": "Sistem: {value}",
+      "route": "Çıkış: {value}",
+      "aecPath": "Yankı engelleme: {value}",
+      "voiceProcessing": "Ses işleme: {value}",
+      "on": "açık",
+      "off": "kapalı",
+      "share": "Sonucu paylaş",
+      "unavailable": "Yankı testi yalnızca uygulamanın geliştirme ve test sürümlerinde var."
+    }
+  }
+}

@@ -14,7 +14,7 @@ workspace: `apps/mobile/resolution.js` maps `@vitana/core/*` to `packages/core/s
 | **Config-only clients** | `src/config.ts`, `src/gateway.ts`, `src/supabase.ts`, `src/storage.ts`, `src/active-org.ts` | every endpoint and the storage are injected; **no default anywhere** |
 
 Subpath imports only (no barrel: Metro does not tree-shake):
-`config`, `gateway`, `supabase`, `storage`, `database`, `data-routing`, `registry`, `orb-navigation`, `permissions`,
+`config`, `gateway`, `supabase`, `storage`, `database`, `data-routing`, `registry`, `orb-navigation`, `orb-view-profile`, `permissions`,
 `roles`, `business-mode`, `nav`, `tenants`, `language`, `types`.
 
 The clients take their endpoints from `endpoints(config)` in `apps/mobile/src/config/env.ts`, the single place that
@@ -65,6 +65,7 @@ the analysis' `implicit-storage` signal).
 |---|---|---|---|
 | `src/integrations/supabase/data-routing.ts` | `@vitana/core/data-routing` | N3 | createDataFetch: routes PostgREST to the data API when configured, the same as the web client; pure. |
 | `src/integrations/supabase/types.ts` | `@vitana/core/database` | N3 | The generated Database type for the injected Supabase client (type only, erased from the bundle). |
+| `src/lib/orb-view-profile.ts` | `@vitana/core/orb-view-profile` | N6 | ORB view profile (orbViewProfile: surface + view role the ORB declares at session start). Imports nothing; pure. |
 | `src/lib/permissions.ts` | `@vitana/core/permissions` | N3 | Role/tenant switch permissions from the session; pure. |
 | `src/navigation/orb-navigation.ts` | `@vitana/core/orb-navigation` | N6 | ORB navigation directives (planOrbNavigation, eventForMarker). Imports only the registry. |
 | `src/navigation/registry/index.ts` | `@vitana/core/registry` | N3, N4, N6 | The screen registry (titles, voice targets, locale titles): route titles, deep link → screen, ORB navigation. Imports only screens.json and locale files. |
@@ -101,7 +102,7 @@ the analysis' `implicit-storage` signal).
 | `language` | `src/components/language/locale-presentation.ts` | LocalePresentation, LOCALE_PRESENTATION |
 | `language` | `src/components/RTLProvider.tsx` | RTL_BASE_LANGUAGES, isRtlLanguage |
 
-Runtime closure: **29** `src/` files and **11** assets (`closure.generated.json`).
+Runtime closure: **30** `src/` files and **11** assets (`closure.generated.json`).
 
 ### Program §3 candidates not in core
 

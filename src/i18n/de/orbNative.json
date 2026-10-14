@@ -1,0 +1,58 @@
+{
+  "orbNative": {
+    "micUsageDescription": "Vitana braucht dein Mikrofon, damit du mit ihr sprechen kannst. Es ist nur aktiv, solange ein Gespräch läuft.",
+    "status": {
+      "connecting": "Verbindung zu Vitana wird hergestellt …",
+      "thinking": "Vitana denkt nach …",
+      "reconnecting": "Verbindung wird wiederhergestellt …",
+      "ended": "Gespräch beendet",
+      "muted": "Dein Mikrofon ist stumm",
+      "unavailable": "Vitana ist in dieser App-Version noch nicht erreichbar."
+    },
+    "rationale": {
+      "title": "Mit Vitana sprechen",
+      "body": "Damit Vitana dich hören kann, braucht die App Zugriff auf dein Mikrofon. Das Mikrofon ist nur aktiv, solange das Gespräch offen ist.",
+      "continue": "Weiter",
+      "notNow": "Nicht jetzt"
+    },
+    "denied": {
+      "body": "Erlaube den Mikrofonzugriff in den Einstellungen, damit du mit Vitana sprechen kannst.",
+      "openSettings": "Einstellungen öffnen"
+    },
+    "a11y": {
+      "close": "Gespräch mit Vitana schließen",
+      "micMute": "Mikrofon stummschalten",
+      "micUnmute": "Mikrofon einschalten",
+      "restart": "Neues Gespräch mit Vitana starten"
+    },
+    "bench": {
+      "title": "Echo-Test der Sprachfunktion",
+      "intro": "Prüft die Echounterdrückung ohne Netzwerk und ohne Gespräch. Leg dein Telefon ab, stell eine normale Lautstärke ein und sprich während des Echo-Tests nicht.",
+      "modeEcho": "Echo-Test",
+      "modeSpeech": "Sprach-Test",
+      "rate": "Tempo {rate}×",
+      "start": "Test starten",
+      "stop": "Test abbrechen",
+      "phaseIdle": "Bereit",
+      "phaseNoiseFloor": "Raumgeräusch wird gemessen …",
+      "phasePlaying": "Testton läuft …",
+      "pass": "Bestanden",
+      "fail": "Nicht bestanden",
+      "openings": "Öffnungen des Sprach-Gates: {count}",
+      "barges": "Erkannte Unterbrechungen: {count}",
+      "peak": "Höchster Pegel während des Tons: {value}",
+      "noiseFloor": "Höchster Pegel im Raum: {value}",
+      "noisyRoom": "Der Raum ist lauter als die Schließschwelle. Das Ergebnis ist deshalb strenger als nötig.",
+      "stopLatency": "Wiedergabe gestoppt nach {value} ms",
+      "device": "Gerät: {value}",
+      "os": "System: {value}",
+      "route": "Ausgabe: {value}",
+      "aecPath": "Echounterdrückung: {value}",
+      "voiceProcessing": "Sprachverarbeitung: {value}",
+      "on": "an",
+      "off": "aus",
+      "share": "Ergebnis teilen",
+      "unavailable": "Den Echo-Test gibt es nur in Entwicklungs- und Test-Versionen der App."
+    }
+  }
+}
