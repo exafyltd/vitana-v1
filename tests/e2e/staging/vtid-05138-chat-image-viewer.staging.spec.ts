@@ -135,7 +135,7 @@ test('a chat picture renders inline and opens the full-screen viewer', async ({ 
     if (r.url().includes('/chat/groups')) trace.push(`${r.request().method()} ${new URL(r.url()).pathname} -> ${r.status()}`);
   });
   page.on('requestfailed', (r) => {
-    if (r.url().includes('/chat/groups')) trace.push(`FAILED ${r.request().method()} ${new URL(r.url()).pathname}: ${r.failure()?.errorText}`);
+    if (r.url().includes('/chat/groups')) trace.push(`FAILED ${r.method()} ${new URL(r.url()).pathname}: ${r.failure()?.errorText}`);
   });
 
   await page.setViewportSize({ width: 390, height: 844 });
