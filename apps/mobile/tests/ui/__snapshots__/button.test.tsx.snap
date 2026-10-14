@@ -1,0 +1,2776 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button dark snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(210, 40%, 98%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 47.4%, 11.2%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(0, 62.8%, 30.6%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 84%, 4.9%)",
+          "borderColor": "hsl(217.2, 32.6%, 17.5%)",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(217.2, 32.6%, 17.5%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="link"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#111827",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "#ffffff",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "rgba(46, 16, 101, 0.5)",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "#c4b5fd",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="More"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 2,
+        "right": 2,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(210, 40%, 98%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 0,
+          "width": 40,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(210, 40%, 98%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 0.5,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(210, 40%, 98%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 47.4%, 11.2%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Off
+    </Text>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Button ltr snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(0, 84.2%, 60.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(0, 0%, 100%)",
+          "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 84%, 4.9%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(210, 40%, 96.1%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 47.4%, 11.2%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 84%, 4.9%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="link"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 47.4%, 11.2%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#111827",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "#ffffff",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#f5f3ff",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "#6d28d9",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(222.2, 84%, 4.9%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="More"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 2,
+        "right": 2,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 0,
+          "width": 40,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 0.5,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "ltr",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Off
+    </Text>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
+
+exports[`Button rtl snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="vitana-ui-gesture-root"
+>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(0, 84.2%, 60.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(0, 0%, 100%)",
+          "borderColor": "hsl(214.3, 31.8%, 91.4%)",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(222.2, 84%, 4.9%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(210, 40%, 96.1%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(222.2, 47.4%, 11.2%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(222.2, 84%, 4.9%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="link"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(222.2, 47.4%, 11.2%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#111827",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "#ffffff",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#f5f3ff",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "#6d28d9",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderRadius": 9999,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(222.2, 84%, 4.9%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Save
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="More"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 2,
+        "right": 2,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "paddingHorizontal": 0,
+          "width": 40,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 2,
+        "left": 0,
+        "right": 0,
+        "top": 2,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "hsl(222.2, 47.4%, 11.2%)",
+          "borderRadius": 6,
+          "flexDirection": "row",
+          "gap": 8,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 0.5,
+          "paddingHorizontal": 16,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      numberOfLines={1}
+      style={
+        [
+          {
+            "color": "hsl(222.2, 84%, 4.9%)",
+            "fontFamily": undefined,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "writingDirection": "rtl",
+          },
+          [
+            {
+              "color": "hsl(210, 40%, 98%)",
+              "fontSize": 14,
+              "fontWeight": "500",
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      Off
+    </Text>
+  </View>
+  <View
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    testID="vitana-ui-overlay-root"
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "center",
+            "end": 16,
+            "gap": 8,
+            "position": "absolute",
+            "start": 16,
+            "zIndex": 100,
+          },
+          {
+            "top": 8,
+          },
+        ]
+      }
+      testID="vitana-ui-toast-host"
+    />
+  </View>
+</View>
+`;
