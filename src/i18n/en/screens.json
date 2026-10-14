@@ -6162,8 +6162,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "In MAXINA",
       "forwardShareOther": "Share via other apps",
-      "forwardShareLinkHint": "If your device can't share the picture directly, a link that works for {hours} hours is shared instead.",
-      "forwardLinkCopied": "Link copied — paste it into any app. It works for {hours} hours.",
+      "forwardShareLinkHint": "If your device can't share the picture directly, a link that works for {days} days is shared instead.",
+      "forwardLinkCopied": "Link copied — paste it into any app. It works for {days} days.",
       "forwardTextCopied": "Text copied — paste it into any app."
     },
     "mobile": {
@@ -7599,7 +7599,12 @@
           "partner_results": "Lab results from {name}",
           "ai_health_analysis": "AI analysis of your health data",
           "health_data_analytics": "Health data analytics",
-          "community_insights": "Community insights"
+          "community_insights": "Community insights",
+          "sync_activity": "Activity data from {name}",
+          "sync_sleep": "Sleep data from {name}",
+          "sync_heart": "Heart data from {name}",
+          "sync_body": "Body data from {name}",
+          "self_logged_health": "Self-logged health data"
         },
         "errors": {
           "generic": "That didn't work. Please try again.",
@@ -7611,6 +7616,16 @@
           "storePending": "Consents can't be saved yet. Please try again later.",
           "unavailable": "The service can't be reached right now. Please try again later.",
           "writeFailed": "Your consent couldn't be saved. Please try again."
+        },
+        "healthSyncHeading": "Health apps on your phone",
+        "selfLoggedHeading": "Logged by you",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect",
+          "_pending_review": {
+            "apple_health": true,
+            "health_connect": true
+          }
         }
       },
       "healthConsent": {
@@ -7647,6 +7662,41 @@
             "title": "[DRAFT] Community insights",
             "body": "DRAFT – not yet approved.\nIf you agree, your progress may be included in community statistics in aggregated, anonymised form.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on your data is no longer included.",
             "checkbox": "I explicitly consent to my health data being used in anonymised form for this purpose."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Send activity data from {name} to Vitana",
+            "body": "DRAFT – not yet approved.\nIf you agree, the Vitana app sends your activity data from {name} (for example steps, active calories, exercise minutes, distance and workouts) to Vitana. Vitana stores it in your account so you can see it in Vitana.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new activity data from {name} is taken over.",
+            "checkbox": "I explicitly consent to Vitana receiving and storing my activity data from {name} as described."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Send sleep data from {name} to Vitana",
+            "body": "DRAFT – not yet approved.\nIf you agree, the Vitana app sends your sleep data from {name} (for example sleep duration and sleep stages) to Vitana. Vitana stores it in your account so you can see it in Vitana.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new sleep data from {name} is taken over.",
+            "checkbox": "I explicitly consent to Vitana receiving and storing my sleep data from {name} as described."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Send heart data from {name} to Vitana",
+            "body": "DRAFT – not yet approved.\nIf you agree, the Vitana app sends your heart data from {name} (for example heart rate, resting heart rate and heart rate variability) to Vitana. Vitana stores it in your account so you can see it in Vitana.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new heart data from {name} is taken over.",
+            "checkbox": "I explicitly consent to Vitana receiving and storing my heart data from {name} as described."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Send body data from {name} to Vitana",
+            "body": "DRAFT – not yet approved.\nIf you agree, the Vitana app sends your body data from {name} (for example weight and body fat percentage) to Vitana. Vitana stores it in your account so you can see it in Vitana.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new body data from {name} is taken over.",
+            "checkbox": "I explicitly consent to Vitana receiving and storing my body data from {name} as described."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Store health data you log yourself",
+            "body": "DRAFT – not yet approved.\nIf you agree, Vitana stores the health information you log yourself – in your diary, by voice or by hand – in your account so you can see it in Vitana.\nThis consent is voluntary. You can withdraw it at any time in Settings; from then on no new self-logged health information is stored.",
+            "checkbox": "I explicitly consent to Vitana storing the health information I log myself as described."
           }
         }
       },

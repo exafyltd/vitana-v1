@@ -108,3 +108,6 @@ F1 (24 h link trade-off) closed — recorded, expiry stated in the sheet, file s
 ### A1 implementation notes
 - The viewer's Esc handler is suspended while the sheet is open (`keyboardSuspended`), so Esc closes the sheet and returns to the picture instead of closing the viewer underneath it.
 - File share is used only when every attachment is a picture; a message that also carries a non-picture file shares links, so nothing is silently dropped.
+
+### A1 owner decision on the link lifetime (2026-10-14, after A1 CONVERGED)
+A1 round 1 F1 left the link lifetime as the owner's call (one constant, listed for the owner). The owner decided: **longer than 24 h**. Chosen: **7 days** (`FORWARD_SHARE_LINK_TTL_DAYS`), the usual share-link maximum, since the owner gave no figure. Same trade-off as recorded in F1 (a bearer link to one picture for its lifetime; bucket stays private; nothing public; nothing written; link created only on tap and only when the file cannot be shared) — only the length changed, no design change, so no further sparring round. The member-facing strings now say days, in all 11 locales.

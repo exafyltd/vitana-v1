@@ -6278,8 +6278,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "В MAXINA",
       "forwardShareOther": "Поделиться через другие приложения",
-      "forwardShareLinkHint": "Если твоё устройство не может поделиться изображением напрямую, вместо него отправится ссылка, действующая {hours} ч.",
-      "forwardLinkCopied": "Ссылка скопирована — вставь её в любое приложение. Она действует {hours} ч.",
+      "forwardShareLinkHint": "Если твоё устройство не может поделиться изображением напрямую, вместо него отправится ссылка, действующая {days} дней.",
+      "forwardLinkCopied": "Ссылка скопирована — вставь её в любое приложение. Она действует {days} дней.",
       "forwardTextCopied": "Текст скопирован — вставь его в любое приложение."
     },
     "mobile": {
@@ -7750,7 +7750,12 @@
           "partner_results": "Результаты анализов от {name}",
           "ai_health_analysis": "Анализ твоих данных о здоровье с помощью ИИ",
           "health_data_analytics": "Аналитика данных о здоровье",
-          "community_insights": "Статистика сообщества"
+          "community_insights": "Статистика сообщества",
+          "sync_activity": "Данные об активности из {name}",
+          "sync_sleep": "Данные о сне из {name}",
+          "sync_heart": "Данные о работе сердца из {name}",
+          "sync_body": "Данные о параметрах тела из {name}",
+          "self_logged_health": "Данные о здоровье, введённые тобой"
         },
         "errors": {
           "generic": "Не получилось. Попробуй ещё раз.",
@@ -7762,6 +7767,16 @@
           "storePending": "Согласия пока нельзя сохранить. Попробуй позже.",
           "unavailable": "Сервис сейчас недоступен. Попробуй позже.",
           "writeFailed": "Не удалось сохранить твоё согласие. Попробуй ещё раз."
+        },
+        "healthSyncHeading": "Приложения здоровья на твоём телефоне",
+        "selfLoggedHeading": "Введено тобой",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect",
+          "_pending_review": {
+            "apple_health": true,
+            "health_connect": true
+          }
         }
       },
       "healthConsent": {
@@ -7798,6 +7813,41 @@
             "title": "[DRAFT] Статистика сообщества",
             "body": "ЧЕРНОВИК – ещё не утверждён.\nЕсли ты согласишься, твой прогресс может учитываться в статистике сообщества в обобщённом и обезличенном виде.\nЭто согласие добровольное. Ты можешь отозвать его в любой момент в настройках; после этого твои данные больше не учитываются.",
             "checkbox": "Я прямо соглашаюсь с тем, что мои данные о здоровье используются в обезличенном виде для этой цели."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Передача данных об активности из {name} в Vitana",
+            "body": "ЧЕРНОВИК – ещё не утверждён.\nЕсли ты согласишься, приложение Vitana будет передавать твои данные об активности из {name} (например, шаги, активные калории, минуты упражнений, расстояние и тренировки) в Vitana. Vitana сохраняет их в твоём аккаунте, чтобы ты мог видеть их в Vitana.\nЭто согласие добровольное. Ты можешь отозвать его в любой момент в настройках; после этого новые данные об активности из {name} больше не принимаются.",
+            "checkbox": "Я прямо соглашаюсь с тем, что Vitana получает и сохраняет мои данные об активности из {name}, как описано."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Передача данных о сне из {name} в Vitana",
+            "body": "ЧЕРНОВИК – ещё не утверждён.\nЕсли ты согласишься, приложение Vitana будет передавать твои данные о сне из {name} (например, продолжительность и фазы сна) в Vitana. Vitana сохраняет их в твоём аккаунте, чтобы ты мог видеть их в Vitana.\nЭто согласие добровольное. Ты можешь отозвать его в любой момент в настройках; после этого новые данные о сне из {name} больше не принимаются.",
+            "checkbox": "Я прямо соглашаюсь с тем, что Vitana получает и сохраняет мои данные о сне из {name}, как описано."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Передача данных о работе сердца из {name} в Vitana",
+            "body": "ЧЕРНОВИК – ещё не утверждён.\nЕсли ты согласишься, приложение Vitana будет передавать твои данные о работе сердца из {name} (например, пульс, пульс в покое и вариабельность сердечного ритма) в Vitana. Vitana сохраняет их в твоём аккаунте, чтобы ты мог видеть их в Vitana.\nЭто согласие добровольное. Ты можешь отозвать его в любой момент в настройках; после этого новые данные о работе сердца из {name} больше не принимаются.",
+            "checkbox": "Я прямо соглашаюсь с тем, что Vitana получает и сохраняет мои данные о работе сердца из {name}, как описано."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Передача данных о параметрах тела из {name} в Vitana",
+            "body": "ЧЕРНОВИК – ещё не утверждён.\nЕсли ты согласишься, приложение Vitana будет передавать твои данные о параметрах тела из {name} (например, вес и процент жира в организме) в Vitana. Vitana сохраняет их в твоём аккаунте, чтобы ты мог видеть их в Vitana.\nЭто согласие добровольное. Ты можешь отозвать его в любой момент в настройках; после этого новые данные о параметрах тела из {name} больше не принимаются.",
+            "checkbox": "Я прямо соглашаюсь с тем, что Vitana получает и сохраняет мои данные о параметрах тела из {name}, как описано."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Сохранение данных о здоровье, которые ты вводишь сам",
+            "body": "ЧЕРНОВИК – ещё не утверждён.\nЕсли ты согласишься, Vitana будет сохранять в твоём аккаунте сведения о здоровье, которые ты вводишь сам – в дневнике, голосом или вручную, – чтобы ты мог видеть их в Vitana.\nЭто согласие добровольное. Ты можешь отозвать его в любой момент в настройках; после этого новые сведения о здоровье, введённые тобой, больше не сохраняются.",
+            "checkbox": "Я прямо соглашаюсь с тем, что Vitana сохраняет сведения о здоровье, которые я ввожу сам, как описано."
           }
         }
       },
@@ -12386,72 +12436,40 @@
       },
       "finance": {
         "payments": {
-          "title": "Payments",
-          "description": "Money in and out of the ERP – what is entered, posted, and already allocated to invoices.",
-          "receivedYtd": "Received (year)",
-          "receivedYtdHint": "Posted receipts since {from}",
-          "paidYtd": "Paid (year)",
-          "paidYtdHint": "Posted payments in the same window",
-          "unallocated": "Unallocated",
-          "unallocatedHint": "Posted but not yet allocated to an invoice",
-          "searchPlaceholder": "Search by party, reference or status …",
-          "type": "Type",
-          "receive": "Receipt",
-          "pay": "Payment",
-          "party": "Party",
-          "amount": "Amount",
-          "unallocatedCol": "Unallocated",
-          "empty": "No payments yet",
-          "allocations": "Allocations",
-          "bankReference": "Bank reference",
-          "referenceDate": "Reference date",
-          "fromAccount": "From account",
-          "toAccount": "To account",
-          "currency": "Currency · rate",
-          "_pending_review": {
-            "title": true,
-            "description": true,
-            "receivedYtd": true,
-            "receivedYtdHint": true,
-            "paidYtd": true,
-            "paidYtdHint": true,
-            "unallocated": true,
-            "unallocatedHint": true,
-            "searchPlaceholder": true,
-            "type": true,
-            "receive": true,
-            "pay": true,
-            "party": true,
-            "amount": true,
-            "unallocatedCol": true,
-            "empty": true,
-            "allocations": true,
-            "bankReference": true,
-            "referenceDate": true,
-            "fromAccount": true,
-            "toAccount": true,
-            "currency": true
-          }
+          "title": "Платежи",
+          "description": "Денежные поступления и выплаты в ERP — что введено, учтено и уже распределено по счетам.",
+          "receivedYtd": "Получено (год)",
+          "receivedYtdHint": "Учтённые поступления с {from}",
+          "paidYtd": "Оплачено (год)",
+          "paidYtdHint": "Учтённые платежи в том же окне",
+          "unallocated": "Нераспределённые",
+          "unallocatedHint": "Учтено, но ещё не распределено по счёту",
+          "searchPlaceholder": "Искать по контрагенту, ссылке или статусу …",
+          "type": "Тип",
+          "receive": "Поступление",
+          "pay": "Платёж",
+          "party": "Контрагент",
+          "amount": "Сумма",
+          "unallocatedCol": "Нераспределённые",
+          "empty": "Платежей пока нет",
+          "allocations": "Распределения",
+          "bankReference": "Банковская ссылка",
+          "referenceDate": "Дата ссылки",
+          "fromAccount": "Со счёта",
+          "toAccount": "На счёт",
+          "currency": "Валюта · курс"
         },
         "fx": {
-          "currencies": "Currencies",
-          "currenciesHint": "Currencies marked active are enabled in the ERP.",
-          "noCurrencies": "No currencies",
-          "rates": "Exchange rates",
-          "noRates": "No exchange rates recorded yet",
-          "pair": "Pair",
-          "rate": "Rate",
-          "effective": "Effective",
+          "currencies": "Валюты",
+          "currenciesHint": "Валюты, отмеченные как активные, включены в ERP.",
+          "noCurrencies": "Валют пока нет",
+          "rates": "Обменные курсы",
+          "noRates": "Обменных курсов пока не записано",
+          "pair": "Пара",
+          "rate": "Курс",
+          "effective": "Дата действия",
           "source": "Source",
           "_pending_review": {
-            "currencies": true,
-            "currenciesHint": true,
-            "noCurrencies": true,
-            "rates": true,
-            "noRates": true,
-            "pair": true,
-            "rate": true,
-            "effective": true,
             "source": true
           }
         },

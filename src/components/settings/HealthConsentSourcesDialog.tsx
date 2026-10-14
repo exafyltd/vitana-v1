@@ -8,6 +8,11 @@
  * partner or connector the member still has an active consent for is listed
  * even if the gateway no longer offers it, so it can always be withdrawn.
  *
+ * VTID-05166 (Health Hub Phase 1 / C3): also the Health Sync consents
+ * (`sync_*` per phone store) and `self_logged_health`, once the gateway's
+ * catalogue carries them, so consents granted in the native app can be
+ * withdrawn here.
+ *
  * RTL-safe: logical alignment/spacing only.
  */
 import { useState } from 'react';
@@ -28,6 +33,7 @@ import {
   type ConsentGrantedVia,
   type ConsentSource,
 } from '@/hooks/useHealthConsents';
+import { HEALTH_SYNC_CONSENT_KEYS } from '@/lib/health-consent-wording';
 import { t, useI18nLocale } from '@/lib/i18n-toast';
 
 const UI = 'screens.settings.healthConsentUi';
@@ -42,7 +48,7 @@ export function HealthConsentSourcesDialog({ open, onOpenChange, grantedVia = 's
   const appLocale = useI18nLocale();
   const consents = useHealthConsents();
   const [selected, setSelected] = useState<{ source: ConsentSource; revoke: boolean } | null>(null);
-  const sources = listConsentSources(consents.data);
+  const sources = listConsentSources(consents.data, (store) => t(`${UI}.phoneStores.${store}`));
   const rows = sources.map((source) => ({
     source,
     availability: consentAvailability(consents.data, consents, source.category, source.id, appLocale),
@@ -54,11 +60,18 @@ export function HealthConsentSourcesDialog({ open, onOpenChange, grantedVia = 's
   else if (consents.data.store_pending) note = 'storePending';
   else if (rows.some((r) => r.availability === 'draft' || r.availability === 'unknown_category')) note = 'draftPending';
 
-  const section = (category: ConsentSource['category'], headingKey: string) => {
-    const list = rows.filter((r) => r.source.category === category);
+  // VTID-05166: Health Sync (`sync_*`) and self-logged rows are labelled by their category
+  // ("Sleep data from Apple Health"); partner and wearable rows keep the source name.
+  const rowLabel = (source: ConsentSource) =>
+    source.category === 'partner_results' || source.category === 'wearables'
+      ? source.name
+      : t(`${UI}.categories.${source.category}`, { name: source.name });
+
+  const section = (categories: readonly ConsentSource['category'][], headingKey: string, testId: string) => {
+    const list = rows.filter((r) => categories.includes(r.source.category));
     if (list.length === 0) return null;
     return (
-      <section className="space-y-2" data-testid={`health-consent-sources-${category}`}>
+      <section className="space-y-2" data-testid={`health-consent-sources-${testId}`}>
         <h3 className="text-sm font-semibold text-start">{t(`${UI}.${headingKey}`)}</h3>
         <ul className="space-y-2">
           {list.map(({ source, availability }) => {
@@ -70,7 +83,7 @@ export function HealthConsentSourcesDialog({ open, onOpenChange, grantedVia = 's
                 className="flex items-center justify-between gap-3 rounded-lg border border-border p-3"
               >
                 <div className="min-w-0 text-start">
-                  <p className="font-medium break-words">{source.name}</p>
+                  <p className="font-medium break-words">{rowLabel(source)}</p>
                   <p className="text-xs text-muted-foreground">
                     {active ? t(`${UI}.statusActive`) : t(`${UI}.statusNotGranted`)}
                   </p>
@@ -108,8 +121,10 @@ export function HealthConsentSourcesDialog({ open, onOpenChange, grantedVia = 's
                   {t(`${UI}.${note}`)}
                 </p>
               )}
-              {section('partner_results', 'partnersHeading')}
-              {section('wearables', 'devicesHeading')}
+              {section(['partner_results'], 'partnersHeading', 'partner_results')}
+              {section(['wearables'], 'devicesHeading', 'wearables')}
+              {section(HEALTH_SYNC_CONSENT_KEYS, 'healthSyncHeading', 'health_sync')}
+              {section(['self_logged_health'], 'selfLoggedHeading', 'self_logged_health')}
               {consents.data && sources.length === 0 && (
                 <p className="text-sm text-muted-foreground text-start">{t(`${UI}.noSources`)}</p>
               )}
@@ -122,7 +137,7 @@ export function HealthConsentSourcesDialog({ open, onOpenChange, grantedVia = 's
         onOpenChange={(o) => !o && setSelected(null)}
         category={selected?.source.category ?? 'partner_results'}
         resourceId={selected?.source.id}
-        resourceName={selected?.source.name}
+        resourceName={selected?.source.name || undefined}
         grantedVia={grantedVia}
         startWithRevoke={selected?.revoke ?? false}
       />

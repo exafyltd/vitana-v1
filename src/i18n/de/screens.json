@@ -6162,8 +6162,8 @@
       "talkToVitana": "Mit Vitana sprechen",
       "forwardInMaxina": "In MAXINA",
       "forwardShareOther": "Über andere Apps teilen",
-      "forwardShareLinkHint": "Wenn dein Gerät das Bild nicht direkt teilen kann, wird stattdessen ein Link geteilt, der {hours} Stunden gültig ist.",
-      "forwardLinkCopied": "Link kopiert – füge ihn in einer beliebigen App ein. Er ist {hours} Stunden gültig.",
+      "forwardShareLinkHint": "Wenn dein Gerät das Bild nicht direkt teilen kann, wird stattdessen ein Link geteilt, der {days} Tage gültig ist.",
+      "forwardLinkCopied": "Link kopiert – füge ihn in einer beliebigen App ein. Er ist {days} Tage gültig.",
       "forwardTextCopied": "Text kopiert – füge ihn in einer beliebigen App ein."
     },
     "mobile": {
@@ -7599,7 +7599,12 @@
           "partner_results": "Laborergebnisse von {name}",
           "ai_health_analysis": "KI-Analyse deiner Gesundheitsdaten",
           "health_data_analytics": "Gesundheitsdaten-Analyse",
-          "community_insights": "Community-Einblicke"
+          "community_insights": "Community-Einblicke",
+          "sync_activity": "Aktivitätsdaten aus {name}",
+          "sync_sleep": "Schlafdaten aus {name}",
+          "sync_heart": "Herzdaten aus {name}",
+          "sync_body": "Körperdaten aus {name}",
+          "self_logged_health": "Selbst erfasste Gesundheitsdaten"
         },
         "errors": {
           "generic": "Das hat nicht geklappt. Bitte versuche es erneut.",
@@ -7611,6 +7616,12 @@
           "storePending": "Einwilligungen können gerade noch nicht gespeichert werden. Bitte versuche es später erneut.",
           "unavailable": "Der Dienst ist gerade nicht erreichbar. Bitte versuche es später erneut.",
           "writeFailed": "Deine Einwilligung konnte nicht gespeichert werden. Bitte versuche es erneut."
+        },
+        "healthSyncHeading": "Gesundheits-Apps auf deinem Handy",
+        "selfLoggedHeading": "Von dir selbst erfasst",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect"
         }
       },
       "healthConsent": {
@@ -7647,6 +7658,41 @@
             "title": "[DRAFT] Community-Einblicke",
             "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, darf dein Fortschritt in zusammengefasster, anonymisierter Form in Statistiken für die Community einfließen.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann fließen deine Daten nicht mehr ein.",
             "checkbox": "Ich willige ausdrücklich ein, dass meine Gesundheitsdaten zu diesem Zweck anonymisiert verwendet werden."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Aktivitätsdaten aus {name} an Vitana übermitteln",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, überträgt die Vitana-App deine Aktivitätsdaten aus {name} (zum Beispiel Schritte, aktive Kalorien, Trainingsminuten, Strecke und Trainings) an Vitana. Vitana speichert sie in deinem Konto, damit du sie in Vitana sehen kannst.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen Aktivitätsdaten aus {name} mehr übernommen.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitana meine Aktivitätsdaten aus {name} wie beschrieben empfängt und speichert."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Schlafdaten aus {name} an Vitana übermitteln",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, überträgt die Vitana-App deine Schlafdaten aus {name} (zum Beispiel Schlafdauer und Schlafphasen) an Vitana. Vitana speichert sie in deinem Konto, damit du sie in Vitana sehen kannst.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen Schlafdaten aus {name} mehr übernommen.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitana meine Schlafdaten aus {name} wie beschrieben empfängt und speichert."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Herzdaten aus {name} an Vitana übermitteln",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, überträgt die Vitana-App deine Herzdaten aus {name} (zum Beispiel Herzfrequenz, Ruhepuls und Herzfrequenz-Variabilität) an Vitana. Vitana speichert sie in deinem Konto, damit du sie in Vitana sehen kannst.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen Herzdaten aus {name} mehr übernommen.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitana meine Herzdaten aus {name} wie beschrieben empfängt und speichert."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Körperdaten aus {name} an Vitana übermitteln",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, überträgt die Vitana-App deine Körperdaten aus {name} (zum Beispiel Gewicht und Körperfettanteil) an Vitana. Vitana speichert sie in deinem Konto, damit du sie in Vitana sehen kannst.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen Körperdaten aus {name} mehr übernommen.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitana meine Körperdaten aus {name} wie beschrieben empfängt und speichert."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Selbst erfasste Gesundheitsdaten speichern",
+            "body": "ENTWURF – noch nicht freigegeben.\nWenn du zustimmst, speichert Vitana die Gesundheitsangaben, die du selbst erfasst – im Tagebuch, per Sprache oder von Hand –, in deinem Konto, damit du sie in Vitana sehen kannst.\nDiese Einwilligung ist freiwillig. Du kannst sie jederzeit in den Einstellungen widerrufen; ab dann werden keine neuen selbst erfassten Gesundheitsangaben mehr gespeichert.",
+            "checkbox": "Ich willige ausdrücklich ein, dass Vitana meine selbst erfassten Gesundheitsangaben wie beschrieben speichert."
           }
         }
       },

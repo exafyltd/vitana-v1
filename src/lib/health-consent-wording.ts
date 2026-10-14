@@ -29,11 +29,31 @@ export const HEALTH_CONSENT_CATEGORIES = [
   'ai_health_analysis',
   'health_data_analytics',
   'community_insights',
+  // VTID-05166 (Health Hub Phase 1 / C3): the Health Sync consents the
+  // gateway's catalogue gains with VTID-05164 (C1) — one per data category x
+  // source — and the self-logged consent (diary, voice, manual).
+  'sync_activity',
+  'sync_sleep',
+  'sync_heart',
+  'sync_body',
+  'self_logged_health',
 ] as const;
 export type HealthConsentCategoryKey = (typeof HEALTH_CONSENT_CATEGORIES)[number];
 
+/** VTID-05166: the per-source Health Sync consents (gateway HEALTH_SYNC_CONSENT_KEYS). */
+export const HEALTH_SYNC_CONSENT_KEYS = ['sync_activity', 'sync_sleep', 'sync_heart', 'sync_body'] as const;
+export type HealthSyncConsentKey = (typeof HEALTH_SYNC_CONSENT_KEYS)[number];
+
+/** VTID-05166: the phone health stores a `sync_*` consent names (gateway HEALTH_SYNC_SOURCE_KINDS). */
+export const PHONE_HEALTH_STORES = ['apple_health', 'health_connect'] as const;
+export type PhoneHealthStore = (typeof PHONE_HEALTH_STORES)[number];
+
 /** Categories with one consent per partner / connector (resource_id required). */
-export const PER_RESOURCE_CATEGORIES: ReadonlySet<HealthConsentCategoryKey> = new Set(['wearables', 'partner_results']);
+export const PER_RESOURCE_CATEGORIES: ReadonlySet<HealthConsentCategoryKey> = new Set<HealthConsentCategoryKey>([
+  'wearables',
+  'partner_results',
+  ...HEALTH_SYNC_CONSENT_KEYS,
+]);
 
 /** The gateway's accepted locales (routes/health-consent.ts CONSENT_LOCALES). */
 export const CONSENT_LOCALES = ['ar', 'de', 'en', 'es', 'fr', 'pl', 'pt', 'ru', 'sr', 'tr', 'zh'] as const;

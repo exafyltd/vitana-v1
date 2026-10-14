@@ -5249,11 +5249,13 @@
       "vitanaIndexUpSubtext": "Ótimo trabalho!",
       "vitanaIndexDownSubtext": "Pequenos passos contam.",
       "vitanaIndexStableSubtext": "Mantém a consistência.",
+      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
       "longevityJourneyEyebrow": "SEU AUDIOLIVRO DE LONGEVIDADE",
       "longevityJourneyContinue": "Continue com o episódio {session}: {topic}",
       "longevityJourneyAllDone": "Você ouviu todos os episódios. Muito bem!",
       "longevityJourneyNextStepHeadline": "Seu próximo passo:",
       "longevityJourneySubtext": "O episódio {session} está esperando por você.",
+      "longevityJourneyProgressSubtext": "O episódio {session} te espera · {done} concluídos · hoje {today}/{goal}",
       "longevityJourneyStartSession": "Ouvir episódio {session}",
       "longevityJourneyDoneLabel": "Feito",
       "longevityJourneyNowLabel": "Agora",
@@ -5453,9 +5455,7 @@
       "cancelReply": "Cancelar resposta",
       "likeComment": "Curtir comentário",
       "feedItemError": "Esta publicação não pôde ser exibida.",
-      "playTodaysEpisode": "Ouvir episódio {session}",
-      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
-      "longevityJourneyProgressSubtext": "O episódio {session} te espera · {done} concluídos · hoje {today}/{goal}"
+      "playTodaysEpisode": "Ouvir episódio {session}"
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"
@@ -6245,8 +6245,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "No MAXINA",
       "forwardShareOther": "Compartilhar em outros apps",
-      "forwardShareLinkHint": "Se o seu dispositivo não puder compartilhar a imagem diretamente, será compartilhado um link válido por {hours} horas.",
-      "forwardLinkCopied": "Link copiado — cole em qualquer app. Ele é válido por {hours} horas.",
+      "forwardShareLinkHint": "Se o seu dispositivo não puder compartilhar a imagem diretamente, será compartilhado um link válido por {days} dias.",
+      "forwardLinkCopied": "Link copiado — cole em qualquer app. Ele é válido por {days} dias.",
       "forwardTextCopied": "Texto copiado — cole em qualquer app."
     },
     "mobile": {
@@ -7691,7 +7691,12 @@
           "partner_results": "Resultados de laboratório de {name}",
           "ai_health_analysis": "Análise por IA dos seus dados de saúde",
           "health_data_analytics": "Análise de dados de saúde",
-          "community_insights": "Insights da comunidade"
+          "community_insights": "Insights da comunidade",
+          "sync_activity": "Dados de atividade de {name}",
+          "sync_sleep": "Dados de sono de {name}",
+          "sync_heart": "Dados cardíacos de {name}",
+          "sync_body": "Dados corporais de {name}",
+          "self_logged_health": "Dados de saúde registrados por você"
         },
         "errors": {
           "generic": "Não deu certo. Tente novamente.",
@@ -7703,6 +7708,16 @@
           "storePending": "Ainda não é possível salvar consentimentos. Tente novamente mais tarde.",
           "unavailable": "O serviço não está acessível no momento. Tente novamente mais tarde.",
           "writeFailed": "Não foi possível salvar seu consentimento. Tente novamente."
+        },
+        "healthSyncHeading": "Apps de saúde no seu celular",
+        "selfLoggedHeading": "Registrado por você",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect",
+          "_pending_review": {
+            "apple_health": true,
+            "health_connect": true
+          }
         }
       },
       "healthConsent": {
@@ -7739,6 +7754,41 @@
             "title": "[DRAFT] Insights da comunidade",
             "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, seu progresso pode entrar nas estatísticas da comunidade de forma agregada e anonimizada.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, seus dados deixam de ser incluídos.",
             "checkbox": "Eu consinto expressamente que meus dados de saúde sejam usados de forma anonimizada para esta finalidade."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Enviar à Vitana seus dados de atividade de {name}",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, o app Vitana envia seus dados de atividade de {name} (por exemplo passos, calorias ativas, minutos de exercício, distância e treinos) para a Vitana. A Vitana os salva na sua conta para que você possa vê-los na Vitana.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhum novo dado desse tipo de {name} é incorporado.",
+            "checkbox": "Eu consinto expressamente que a Vitana receba e salve meus dados de atividade de {name}, conforme descrito."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Enviar à Vitana seus dados de sono de {name}",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, o app Vitana envia seus dados de sono de {name} (por exemplo duração e fases do sono) para a Vitana. A Vitana os salva na sua conta para que você possa vê-los na Vitana.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhum novo dado desse tipo de {name} é incorporado.",
+            "checkbox": "Eu consinto expressamente que a Vitana receba e salve meus dados de sono de {name}, conforme descrito."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Enviar à Vitana seus dados cardíacos de {name}",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, o app Vitana envia seus dados cardíacos de {name} (por exemplo frequência cardíaca, frequência cardíaca em repouso e variabilidade da frequência cardíaca) para a Vitana. A Vitana os salva na sua conta para que você possa vê-los na Vitana.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhum novo dado desse tipo de {name} é incorporado.",
+            "checkbox": "Eu consinto expressamente que a Vitana receba e salve meus dados cardíacos de {name}, conforme descrito."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Enviar à Vitana seus dados corporais de {name}",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, o app Vitana envia seus dados corporais de {name} (por exemplo peso e percentual de gordura corporal) para a Vitana. A Vitana os salva na sua conta para que você possa vê-los na Vitana.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhum novo dado desse tipo de {name} é incorporado.",
+            "checkbox": "Eu consinto expressamente que a Vitana receba e salve meus dados corporais de {name}, conforme descrito."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Salvar os dados de saúde que você mesmo registra",
+            "body": "RASCUNHO – ainda não aprovado.\nSe você concordar, a Vitana salva na sua conta as informações de saúde que você mesmo registra – no diário, por voz ou manualmente – para que você possa vê-las na Vitana.\nEste consentimento é voluntário. Você pode revogá-lo a qualquer momento nas Configurações; a partir daí, nenhuma nova informação de saúde registrada por você é salva.",
+            "checkbox": "Eu consinto expressamente que a Vitana salve as informações de saúde que eu mesmo registro, conforme descrito."
           }
         }
       },

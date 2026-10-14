@@ -6275,8 +6275,8 @@
       "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "Dans MAXINA",
       "forwardShareOther": "Partager via d'autres apps",
-      "forwardShareLinkHint": "Si ton appareil ne peut pas partager l'image directement, un lien valable {hours} heures est partagé à la place.",
-      "forwardLinkCopied": "Lien copié — colle-le dans n'importe quelle app. Il est valable {hours} heures.",
+      "forwardShareLinkHint": "Si ton appareil ne peut pas partager l'image directement, un lien valable {days} jours est partagé à la place.",
+      "forwardLinkCopied": "Lien copié — colle-le dans n'importe quelle app. Il est valable {days} jours.",
       "forwardTextCopied": "Texte copié — colle-le dans n'importe quelle app."
     },
     "mobile": {
@@ -7747,7 +7747,12 @@
           "partner_results": "Résultats de laboratoire de {name}",
           "ai_health_analysis": "Analyse IA de tes données de santé",
           "health_data_analytics": "Analyse des données de santé",
-          "community_insights": "Aperçus de la communauté"
+          "community_insights": "Aperçus de la communauté",
+          "sync_activity": "Données d’activité de {name}",
+          "sync_sleep": "Données de sommeil de {name}",
+          "sync_heart": "Données cardiaques de {name}",
+          "sync_body": "Données corporelles de {name}",
+          "self_logged_health": "Données de santé saisies par toi"
         },
         "errors": {
           "generic": "Ça n’a pas marché. Réessaie.",
@@ -7759,6 +7764,16 @@
           "storePending": "Les consentements ne peuvent pas encore être enregistrés. Réessaie plus tard.",
           "unavailable": "Le service est injoignable pour le moment. Réessaie plus tard.",
           "writeFailed": "Ton consentement n’a pas pu être enregistré. Réessaie."
+        },
+        "healthSyncHeading": "Applis santé de ton téléphone",
+        "selfLoggedHeading": "Saisi par toi",
+        "phoneStores": {
+          "apple_health": "Apple Health",
+          "health_connect": "Health Connect",
+          "_pending_review": {
+            "apple_health": true,
+            "health_connect": true
+          }
         }
       },
       "healthConsent": {
@@ -7795,6 +7810,41 @@
             "title": "[DRAFT] Aperçus de la communauté",
             "body": "BROUILLON – pas encore validé.\nSi tu acceptes, tes progrès peuvent être intégrés aux statistiques de la communauté sous forme agrégée et anonymisée.\nCe consentement est facultatif. Tu peux le retirer à tout moment dans les Réglages ; à partir de là, tes données ne sont plus intégrées.",
             "checkbox": "Je consens expressément à ce que mes données de santé soient utilisées sous forme anonymisée dans ce but."
+          }
+        },
+        "sync_activity": {
+          "v1": {
+            "title": "[DRAFT] Transmettre à Vitana tes données d’activité de {name}",
+            "body": "BROUILLON – pas encore validé.\nSi tu acceptes, l’appli Vitana transmet tes données d’activité de {name} (par exemple pas, calories actives, minutes d’exercice, distance et entraînements) à Vitana. Vitana les enregistre dans ton compte pour que tu puisses les voir dans Vitana.\nCe consentement est facultatif. Tu peux le retirer à tout moment dans les Réglages ; à partir de là, plus aucune nouvelle de tes données d’activité de {name} n’est reprise.",
+            "checkbox": "Je consens expressément à ce que Vitana reçoive et enregistre mes données d’activité provenant de {name}, comme décrit."
+          }
+        },
+        "sync_sleep": {
+          "v1": {
+            "title": "[DRAFT] Transmettre à Vitana tes données de sommeil de {name}",
+            "body": "BROUILLON – pas encore validé.\nSi tu acceptes, l’appli Vitana transmet tes données de sommeil de {name} (par exemple durée et phases du sommeil) à Vitana. Vitana les enregistre dans ton compte pour que tu puisses les voir dans Vitana.\nCe consentement est facultatif. Tu peux le retirer à tout moment dans les Réglages ; à partir de là, plus aucune nouvelle de tes données de sommeil de {name} n’est reprise.",
+            "checkbox": "Je consens expressément à ce que Vitana reçoive et enregistre mes données de sommeil provenant de {name}, comme décrit."
+          }
+        },
+        "sync_heart": {
+          "v1": {
+            "title": "[DRAFT] Transmettre à Vitana tes données cardiaques de {name}",
+            "body": "BROUILLON – pas encore validé.\nSi tu acceptes, l’appli Vitana transmet tes données cardiaques de {name} (par exemple fréquence cardiaque, fréquence cardiaque au repos et variabilité de la fréquence cardiaque) à Vitana. Vitana les enregistre dans ton compte pour que tu puisses les voir dans Vitana.\nCe consentement est facultatif. Tu peux le retirer à tout moment dans les Réglages ; à partir de là, plus aucune nouvelle de tes données cardiaques de {name} n’est reprise.",
+            "checkbox": "Je consens expressément à ce que Vitana reçoive et enregistre mes données cardiaques provenant de {name}, comme décrit."
+          }
+        },
+        "sync_body": {
+          "v1": {
+            "title": "[DRAFT] Transmettre à Vitana tes données corporelles de {name}",
+            "body": "BROUILLON – pas encore validé.\nSi tu acceptes, l’appli Vitana transmet tes données corporelles de {name} (par exemple poids et taux de masse grasse) à Vitana. Vitana les enregistre dans ton compte pour que tu puisses les voir dans Vitana.\nCe consentement est facultatif. Tu peux le retirer à tout moment dans les Réglages ; à partir de là, plus aucune nouvelle de tes données corporelles de {name} n’est reprise.",
+            "checkbox": "Je consens expressément à ce que Vitana reçoive et enregistre mes données corporelles provenant de {name}, comme décrit."
+          }
+        },
+        "self_logged_health": {
+          "v1": {
+            "title": "[DRAFT] Enregistrer les données de santé que tu saisis toi-même",
+            "body": "BROUILLON – pas encore validé.\nSi tu acceptes, Vitana enregistre dans ton compte les informations de santé que tu saisis toi-même – dans ton journal, à la voix ou à la main – pour que tu puisses les voir dans Vitana.\nCe consentement est facultatif. Tu peux le retirer à tout moment dans les Réglages ; à partir de là, plus aucune nouvelle information de santé saisie par toi n’est enregistrée.",
+            "checkbox": "Je consens expressément à ce que Vitana enregistre les informations de santé que je saisis moi-même, comme décrit."
           }
         }
       },

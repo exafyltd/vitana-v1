@@ -5,6 +5,11 @@
     "partner_results": { "v1": { "status": "draft" } },
     "ai_health_analysis": { "v1": { "status": "draft" } },
     "health_data_analytics": { "v1": { "status": "draft" } },
-    "community_insights": { "v1": { "status": "draft" } }
+    "community_insights": { "v1": { "status": "draft" } },
+    "sync_activity": { "v1": { "status": "draft" } },
+    "sync_sleep": { "v1": { "status": "draft" } },
+    "sync_heart": { "v1": { "status": "draft" } },
+    "sync_body": { "v1": { "status": "draft" } },
+    "self_logged_health": { "v1": { "status": "draft" } }
   }
 }

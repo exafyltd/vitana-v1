@@ -19,10 +19,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { adminFetch } from '@/lib/admin-api';
 import {
+  HEALTH_SYNC_CONSENT_KEYS,
   PER_RESOURCE_CATEGORIES,
+  PHONE_HEALTH_STORES,
   resolveConsentWording,
   type ConsentLocale,
   type HealthConsentCategoryKey,
+  type HealthSyncConsentKey,
+  type PhoneHealthStore,
 } from '@/lib/health-consent-wording';
 
 export const HEALTH_CONSENTS_API = '/api/v1/health/consents';
@@ -146,22 +150,53 @@ export function consentAvailability(
 }
 
 export interface ConsentSource {
-  category: Extract<HealthConsentCategoryKey, 'partner_results' | 'wearables'>;
+  category: Extract<HealthConsentCategoryKey, 'partner_results' | 'wearables' | HealthSyncConsentKey | 'self_logged_health'>;
   id: string;
+  /** Partner / connector / phone-store display name; '' for the whole-category self-logged consent. */
   name: string;
 }
 
-/** Every partner + connector the gateway lists, plus any active consent for one it no longer lists. */
-export function listConsentSources(data: HealthConsentsState | undefined): ConsentSource[] {
+const isListedCategory = (category: string): category is ConsentSource['category'] =>
+  category === 'partner_results' ||
+  category === 'wearables' ||
+  category === 'self_logged_health' ||
+  (HEALTH_SYNC_CONSENT_KEYS as readonly string[]).includes(category);
+
+/**
+ * Every partner + connector the gateway lists, plus any active consent for one it no longer lists.
+ *
+ * VTID-05166 (Health Hub Phase 1 / C3): the Health Sync consents are listed only once the
+ * gateway's catalogue carries them (VTID-05164) — one row per `sync_*` category and phone
+ * store, one row for `self_logged_health` — so a member can withdraw on the web what they
+ * granted in the native app. An active consent is always listed, catalogue or not.
+ * `phoneStoreName` turns a phone-store id into its display name (the UI passes an i18n lookup).
+ */
+export function listConsentSources(
+  data: HealthConsentsState | undefined,
+  phoneStoreName: (store: PhoneHealthStore) => string = (store) => store,
+): ConsentSource[] {
   if (!data) return [];
+  const inCatalogue = new Set(data.categories.map((c) => c.key));
+  const connectorName = (id: string) =>
+    (PHONE_HEALTH_STORES as readonly string[]).includes(id)
+      ? phoneStoreName(id as PhoneHealthStore)
+      : data.connectors.find((c) => c.id === id)?.display_name || id;
   const out: ConsentSource[] = [
     ...data.partners.map((p) => ({ category: 'partner_results' as const, id: p.partner_key, name: p.display_name || p.partner_key })),
     ...data.connectors.map((c) => ({ category: 'wearables' as const, id: c.id, name: c.display_name || c.id })),
   ];
+  for (const key of HEALTH_SYNC_CONSENT_KEYS) {
+    if (!inCatalogue.has(key)) continue;
+    for (const store of PHONE_HEALTH_STORES) out.push({ category: key, id: store, name: phoneStoreName(store) });
+  }
+  if (inCatalogue.has('self_logged_health')) out.push({ category: 'self_logged_health', id: 'self_logged_health', name: '' });
   for (const c of data.consents) {
-    if (!c.active || (c.category !== 'partner_results' && c.category !== 'wearables')) continue;
+    if (!c.active || !isListedCategory(c.category)) continue;
     if (!out.some((s) => s.category === c.category && s.id === c.resource_id)) {
-      out.push({ category: c.category, id: c.resource_id, name: c.resource_id });
+      let name = c.resource_id;
+      if (c.category === 'self_logged_health') name = '';
+      else if (c.category !== 'partner_results' && c.category !== 'wearables') name = connectorName(c.resource_id);
+      out.push({ category: c.category, id: c.resource_id, name });
     }
   }
   return out;
