@@ -102,7 +102,10 @@ test('a chat picture renders inline and opens the full-screen viewer', async ({ 
       ],
     },
   };
-  await page.route(`${GATEWAY}/api/v1/chat/groups**`, async (route) => {
+  // A URL predicate, not a glob: `groups**` does not match across the `/` of
+  // `/groups/<id>/messages`, so the real gateway answered 403 not_a_member.
+  const gatewayOrigin = new URL(GATEWAY).origin;
+  await page.route((url) => url.origin === gatewayOrigin && url.pathname.startsWith('/api/v1/chat/groups'), async (route) => {
     if (route.request().method() !== 'GET') return route.fallback();
     const path = new URL(route.request().url()).pathname.replace(/\/+$/, '');
     // Every answer is built on the real staging GET (read-only) so it keeps the
