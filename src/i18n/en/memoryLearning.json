@@ -4,7 +4,8 @@
       "overviewTitle": "Memory",
       "overviewDescription": "What Vitana knows about you – and how your week in the Vitana Index went.",
       "permissionsTitle": "What Vitana may learn",
-      "permissionsDescription": "You decide what Vitana learns from. Nobody else sees this data."
+      "permissionsDescription": "You decide what Vitana learns from. Nobody else sees this data.",
+      "_pending_review": {}
     },
     "week": {
       "title": "Your week in the Vitana Index",
@@ -15,14 +16,16 @@
       "steady": "All five pillars are steady.",
       "openTimeline": "Open your timeline",
       "empty": "No Vitana Index yet. Take the starting check – then this card tells you every week what moved.",
-      "start": "Take the starting check"
+      "start": "Take the starting check",
+      "_pending_review": {}
     },
     "routines": {
       "title": "Routines Vitana noticed",
       "description": "This is how Vitana learns your days. Let it forget anything that isn't right.",
       "empty": "Vitana hasn't noticed a routine yet. That comes once you use the app for a few days.",
       "forget": "Forget",
-      "manage": "Control what Vitana learns"
+      "manage": "Control what Vitana learns",
+      "_pending_review": {}
     },
     "routine": {
       "screen_habit": "You open {screen} on {days} of 28 days",
@@ -32,14 +35,16 @@
       "time_of_day_preference": "You mostly do your calendar activities {bucket}",
       "day_of_week_rhythm": "{day} is one of your most active days",
       "category_affinity": "You often do \"{tag}\"",
-      "generic": "A rhythm in your days"
+      "generic": "A rhythm in your days",
+      "_pending_review": {}
     },
     "bucket": {
       "morning": "in the morning",
       "midday": "around midday",
       "afternoon": "in the afternoon",
       "evening": "in the evening",
-      "night": "at night"
+      "night": "at night",
+      "_pending_review": {}
     },
     "switches": {
       "title": "What Vitana may learn from",
@@ -50,7 +55,8 @@
       "appUsageDescription": "Which areas you open and when. Never shown – Vitana only uses it to recognise your routines.",
       "appUsageOff": "Switching off also deletes the routines Vitana learned from it.",
       "healthNote": "Health data stays protected by your consents as well.",
-      "unavailable": "These switches will be available shortly."
+      "unavailable": "These switches will be available shortly.",
+      "_pending_review": {}
     },
     "usage": {
       "title": "Your usage data",
@@ -62,12 +68,16 @@
       "deleteTitle": "Delete all usage data?",
       "deleteDescription": "Screen visits and technical traces are deleted, together with the routines Vitana learned from them. Your timeline stays.",
       "cancel": "Cancel",
-      "confirm": "Delete"
+      "confirm": "Delete",
+      "_pending_review": {}
     },
     "toast": {
       "saveFailed": "That didn't work. Please try again.",
       "forgotten": "Vitana forgot it.",
-      "deleted": "Your usage data was deleted."
-    }
-  }
+      "deleted": "Your usage data was deleted.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

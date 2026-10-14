@@ -215,7 +215,8 @@
     "insight": {
       "weakest_pillar_streak": "{pillar} has been your weakest pillar for days and is holding back your balance.",
       "pillar_slipping": "{pillar} dropped noticeably this week.",
-      "pillar_rising": "{pillar} rose noticeably this week."
+      "pillar_rising": "{pillar} rose noticeably this week.",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
