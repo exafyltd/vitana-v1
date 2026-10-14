@@ -1,0 +1,13 @@
+{
+ "vtid": "VTID-05193",
+ "service": "community-app",
+ "tests": [
+  {
+   "kind": "existing",
+   "name": "Vitana chat replies render a safe Markdown subset (bold, italic, code, lists, headings) with links and @mentions intact; members' messages render literally; RTL lists use logical classes",
+   "ref": "npx vitest run src/lib/chatMarkdown.test.ts src/components/messages/MessageBubble.vitana-markdown.vtid-05193.test.tsx",
+   "cwd": ".",
+   "reason": "A staging browser spec cannot create a Vitana reply without writing a chat message to the production database staging shares. Proven with Vitest instead."
+  }
+ ]
+}
