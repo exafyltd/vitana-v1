@@ -612,9 +612,10 @@ function ProfileSheet({
     void fetchCompanySuggestions(adminFetch, { orgId }).then((s) => {
       if (!live) return;
       setSuggestions(s);
-      // Saved values always win: a suggestion only fills what is still empty.
-      if (!initialCountry && s.country) setCountry(s.country.value);
-      if (!initialWebsite && s.website) setWebsite(s.website.value);
+      // Saved values and anything typed while the request ran always win:
+      // a suggestion only fills a field that is still empty.
+      if (!initialCountry && s.country) setCountry((c) => c || s.country!.value);
+      if (!initialWebsite && s.website) setWebsite((w) => (w.trim() ? w : s.website!.value));
     });
     return () => {
       live = false;
@@ -690,7 +691,11 @@ function ProfileSheet({
                   inputMode="url"
                   dir="ltr"
                   value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
+                  onChange={(e) => {
+                    // Once the supplier types, the inputs stay: never flip to the summary mid-edit.
+                    setEditing(true);
+                    setWebsite(e.target.value);
+                  }}
                   className="h-12 text-base focus-visible:ring-amber-500"
                   data-testid="profile-website"
                 />
@@ -701,7 +706,10 @@ function ProfileSheet({
                 <select
                   id="sh-country"
                   value={country}
-                  onChange={(e) => setCountry(e.target.value)}
+                  onChange={(e) => {
+                    setEditing(true);
+                    setCountry(e.target.value);
+                  }}
                   data-testid="profile-country"
                   className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                 >

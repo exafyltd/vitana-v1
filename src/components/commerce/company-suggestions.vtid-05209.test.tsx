@@ -110,6 +110,28 @@ describe('registration step 2', () => {
     expect((screen.getByTestId('register-country-select') as HTMLSelectElement).value).toBe('AT');
   });
 
+  it('an older suggestion answer arriving late never overwrites the latest one', async () => {
+    const pending: Array<(v: unknown) => void> = [];
+    adminFetch.mockImplementation((path: string) => {
+      if (path.startsWith(SUGGEST)) return new Promise((r) => pending.push(r));
+      return Promise.reject(new Error(`unexpected ${path}`));
+    });
+    await openStep2();
+    await waitFor(() => expect(pending).toHaveLength(1)); // the opening request
+    const site = screen.getByLabelText(/Website/) as HTMLInputElement;
+    fireEvent.change(site, { target: { value: 'https://shop.example.at' } });
+    fireEvent.blur(site);
+    await waitFor(() => expect(pending).toHaveLength(2));
+    // The newer answer (for the .at website) lands first, the stale opening answer second.
+    pending[1](sugg(['AT', 'website_domain'], null));
+    await waitFor(() => expect(screen.getByTestId('register-country-confirm')).toBeTruthy());
+    pending[0](sugg(['DE', 'email_domain'], ['https://kraeuterhaus.de', 'email_domain']));
+    await new Promise((r) => setTimeout(r, 0));
+    fireEvent.click(screen.getByTestId('register-country-change'));
+    expect((screen.getByTestId('register-country-select') as HTMLSelectElement).value).toBe('AT');
+    expect(site.value).toBe('https://shop.example.at');
+  });
+
   it('no reliable suggestion → the list, as before', async () => {
     adminFetch.mockImplementation(async (path: string) => {
       if (path.startsWith(SUGGEST)) return sugg(null, null);
@@ -186,6 +208,27 @@ describe('business profile sheet', () => {
     expect(screen.queryByText(t('screens.commerceportal.orgOnboarding.fromEmail'))).toBeNull();
     fireEvent.click(screen.getByTestId('profile-change'));
     expect((screen.getByTestId('profile-website') as HTMLInputElement).value).toBe('https://mine.at');
+    expect((screen.getByTestId('profile-country') as HTMLSelectElement).value).toBe('AT');
+  });
+
+  it('a value typed while the suggestions load is never replaced', async () => {
+    let release: (v: unknown) => void = () => {};
+    adminFetch.mockImplementation(async (path: string, init?: RequestInit) => {
+      if (init?.method === 'PATCH') return { ok: true };
+      if (path === '/api/v1/partner-onboarding/org-1/company-suggestions') return new Promise((r) => (release = r));
+      if (path === '/api/v1/partner-onboarding/org-1/catalogue') return { ok: true, merchant: null, products: [] };
+      if (path === '/api/v1/partner-onboarding/org-1') return status({});
+      throw new Error(`unexpected ${path}`);
+    });
+    render(<SetupHub orgs={[ORG]} activeOrgId="org-1" onSelectOrg={() => {}} onAddProducts={() => {}} />);
+    await openProfile();
+    const website = (await screen.findByTestId('profile-website')) as HTMLInputElement;
+    fireEvent.change(website, { target: { value: 'https://typed.example.at' } });
+    fireEvent.change(screen.getByTestId('profile-country'), { target: { value: 'AT' } });
+    release(sugg(['DE', 'email_domain'], ['https://kraeuterhaus.de', 'email_domain']));
+    await new Promise((r) => setTimeout(r, 0));
+    await waitFor(() => expect(screen.queryByTestId('profile-summary')).toBeNull());
+    expect(website.value).toBe('https://typed.example.at');
     expect((screen.getByTestId('profile-country') as HTMLSelectElement).value).toBe('AT');
   });
 

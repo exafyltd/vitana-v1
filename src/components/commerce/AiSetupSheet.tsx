@@ -95,10 +95,12 @@ export function AiSetupSheet({
   const [error, setError] = useState('');
   const [outcome, setOutcome] = useState<ApplyOutcome | null>(null);
   const setupKey = useRef('');
+  const currentDraft = useRef<SetupDraft | null>(null);
   const countries = useMemo(() => (open ? countryOptions() : []), [open]);
 
   const startReview = (d: SetupDraft) => {
     const fallback = guessCountry();
+    currentDraft.current = d;
     setDraft(d);
     setReview(reviewFromDraft(d, fallback));
     setupKey.current = newSetupKey();
@@ -109,7 +111,8 @@ export function AiSetupSheet({
     if (!d.business.country && d.website) {
       void fetchCompanySuggestions(adminFetch, { website: d.website }).then((s) => {
         const c = s.country;
-        if (!c || c.source !== 'website_domain') return;
+        // A newer draft makes this answer stale.
+        if (!c || c.source !== 'website_domain' || currentDraft.current !== d) return;
         setReview((r) => (r && r.country === fallback ? { ...r, country: c.value } : r));
       });
     }

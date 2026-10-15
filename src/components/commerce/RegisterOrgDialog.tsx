@@ -107,6 +107,14 @@ export function RegisterOrgDialog({
   const [suggestions, setSuggestions] = useState<CompanySuggestions>(NO_SUGGESTIONS);
   const countryPicked = useRef(false);
   const [countryEditing, setCountryEditing] = useState(false);
+  // Only the latest suggestion request counts: an older answer arriving late is ignored.
+  const suggestionSeq = useRef(0);
+  const requestSuggestions = (website: string) => {
+    const seq = ++suggestionSeq.current;
+    void fetchCompanySuggestions(adminFetch, { website }).then((s) => {
+      if (seq === suggestionSeq.current) applySuggestions(s);
+    });
+  };
 
   /** Prefill from a suggestion: only empty fields, never a country the supplier picked. */
   const applySuggestions = (s: CompanySuggestions) => {
@@ -133,12 +141,10 @@ export function RegisterOrgDialog({
     // A resumed draft's country may be the supplier's own choice: keep it.
     countryPicked.current = !!draft?.form.country;
     setCountryEditing(false);
-    let live = true;
-    void fetchCompanySuggestions(adminFetch, { website }).then((s) => {
-      if (live) applySuggestions(s);
-    });
+    requestSuggestions(website);
     return () => {
-      live = false;
+      // Closing the sheet makes any pending answer stale.
+      suggestionSeq.current += 1;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -146,7 +152,7 @@ export function RegisterOrgDialog({
   /** A typed website can name the country (`.de`, `.co.uk`): ask again when the field is left. */
   const onWebsiteBlur = () => {
     if (!isValidWebsite(form.website)) return;
-    void fetchCompanySuggestions(adminFetch, { website: form.website }).then(applySuggestions);
+    requestSuggestions(form.website);
   };
 
   useEffect(() => {
