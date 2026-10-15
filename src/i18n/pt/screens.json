@@ -10942,9 +10942,9 @@
         "successCta": "Continuar configuração",
         "countryConfirm": "País: {name}",
         "change": "Alterar",
-        "fromEmail": "Do teu endereço de e-mail",
-        "fromWebsite": "Do endereço do teu site",
-        "fromVatId": "Do teu número de IVA"
+        "fromEmail": "Do seu endereço de e-mail",
+        "fromWebsite": "Do endereço do seu site",
+        "fromVatId": "Do seu número de IVA"
       },
       "healthOrders": {
         "_pending_review": {
