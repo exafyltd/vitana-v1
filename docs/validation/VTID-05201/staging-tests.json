@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05201",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "A deep-linked message is scrolled into view with behavior 'auto' (no glide)",
+      "ref": "npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx",
+      "cwd": ".",
+      "reason": "Needs a loaded conversation with a specific message; a staging browser spec cannot create one without writing chat messages to the production database staging shares. Proven with Vitest instead."
+    }
+  ]
+}
