@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05200",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "The unread badge is not bumped for the open, focused conversation (foreground + active thread only)",
+      "ref": "npx vitest run src/lib/chatViewingThread.test.ts",
+      "cwd": ".",
+      "reason": "A staging browser spec cannot receive a live message without writing a chat message to the production database staging shares. Proven with Vitest instead."
+    }
+  ]
+}
