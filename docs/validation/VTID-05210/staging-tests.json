@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05210",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "/me/profile on phone and desktop: the ID card comes first; only profile-enriching cards (E1–E7, E11, G1) follow below it",
+      "spec": "tests/e2e/staging/vtid-05210-profile-card-placement.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05085 Home and Profile enrichment cards (Profile expectation follows the VTID-05210 card list)",
+      "spec": "tests/e2e/staging/vtid-05085-enrichment-cards.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Profile card list, card filtering and the strip placement in EditProfilePage",
+      "ref": "npx vitest run src/components/feature/feature-cards.test.tsx src/components/vitana/EnrichmentCardStrip.profile.vtid-05210.test.tsx src/pages/EditProfilePage.card-placement.vtid-05210.test.ts",
+      "cwd": ".",
+      "reason": "Covers what the read-only staging spec cannot force: a test user with every card open, a server response that includes feature/connector cards, and the exact position of each mount in both layouts."
+    }
+  ]
+}

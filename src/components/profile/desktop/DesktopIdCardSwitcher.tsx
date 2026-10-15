@@ -73,7 +73,7 @@ export function DesktopIdCardSwitcher({
   ];
 
   return (
-    <div className={cn("relative pt-3 pb-3", className)}>
+    <div className={cn("relative pt-3 pb-3", className)} data-testid="profile-id-card">
       <div className="container mx-auto px-6">
         <ProfileIdSegmentedControl<DesktopCardSide>
           segments={segments}
