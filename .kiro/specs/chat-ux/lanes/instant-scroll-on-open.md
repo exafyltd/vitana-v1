@@ -17,3 +17,6 @@ PR #1423 by kiro-agent (session kiro-202610150833-75c8). Reviewing; Claude Code 
 
 ### 2026-10-15T11:25Z · claude-code · in-review → done
 Merged as 670c5e9 (PR #1423). Awaiting staging deploy + STAGING-VERIFY (staging builds failed on public.ecr.aws 429 rate limit; being retried).
+
+### 2026-10-15T11:57Z · claude-code · done (deployed)
+Staging-verified (STAGING-VERIFY community-app @ 670c5e9 passed) and deployed to production 2026-10-15 11:47-11:54Z via DEPLOY.yml run 38729844497 pinned to 670c5e9 after the owner's Gate 2 yes. Post-deploy verification passed; rollback step skipped.
