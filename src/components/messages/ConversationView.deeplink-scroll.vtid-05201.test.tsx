@@ -71,6 +71,15 @@ describe('ConversationView — deep-link scroll (VTID-05201)', () => {
   it('scrolls the target message into view without smooth animation', () => {
     const scrollIntoView = vi.fn();
     Element.prototype.scrollIntoView = scrollIntoView;
+    // jsdom lacks these; ConversationView uses them for pin-to-bottom behaviour.
+    class NoopObserver {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+    vi.stubGlobal('ResizeObserver', NoopObserver);
+    vi.stubGlobal('IntersectionObserver', NoopObserver);
+    Element.prototype.scrollTo = vi.fn() as unknown as typeof Element.prototype.scrollTo;
     threads = [
       {
         id: 'alice', type: 'direct', created_by: 'alice',
