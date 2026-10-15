@@ -92,7 +92,8 @@ jobs:
             echo "➖ **collab handoff** — skipped: could not fetch scripts/collab/queue.mjs from vitana-platform" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          node "$RUNNER_TEMP/queue.mjs" validate --repo . --base "$BASE" --head "$HEAD" --branch "$HEAD_REF" --summary "$GITHUB_STEP_SUMMARY"
+          node "$RUNNER_TEMP/queue.mjs" validate --repo . --base "$BASE" --head "$HEAD" --branch "$HEAD_REF" \
+            --lane-repo exafyltd/vitana-platform --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Scope guard
         id: scope
