@@ -151,18 +151,28 @@ describe('useHashScroll (VTID-05212)', () => {
         }, []);
         return shown ? <div id={MAIL_CALENDAR_CONTACTS_ANCHOR}>mail, calendar, contacts</div> : <div>loading</div>;
       }
-      render(
-        <MemoryRouter initialEntries={['/connectors?tab=productivity#calendar']}>
-          <Routes>
-            <Route path="/connectors" element={<LatePage />} />
-          </Routes>
-        </MemoryRouter>,
-      );
-      act(() => {
-        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + 5_000 + HASH_SCROLL_POLL_MS * 2);
-      });
-      expect(scrolled.length).toBeGreaterThan(0);
-      expect(HASH_SCROLL_APPEAR_MS).toBeGreaterThan(HASH_SCROLL_WATCH_MS + 5_000);
+      // jsdom lays nothing out (top 0); put the late section far below the top, as on desktop.
+      const realRect = Element.prototype.getBoundingClientRect;
+      Element.prototype.getBoundingClientRect = function (this: Element) {
+        const top = this.id === MAIL_CALENDAR_CONTACTS_ANCHOR ? 900 : 0;
+        return { top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) } as DOMRect;
+      };
+      try {
+        render(
+          <MemoryRouter initialEntries={['/connectors?tab=productivity#calendar']}>
+            <Routes>
+              <Route path="/connectors" element={<LatePage />} />
+            </Routes>
+          </MemoryRouter>,
+        );
+        act(() => {
+          vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + 5_000 + HASH_SCROLL_POLL_MS * 2);
+        });
+        expect(scrolled.length).toBeGreaterThan(0);
+        expect(HASH_SCROLL_APPEAR_MS).toBeGreaterThan(HASH_SCROLL_WATCH_MS + 5_000);
+      } finally {
+        Element.prototype.getBoundingClientRect = realRect;
+      }
     });
 
     it.each(['wheel', 'touchstart', 'keydown', 'pointerdown'])('stops once the member takes over (%s)', (name) => {
