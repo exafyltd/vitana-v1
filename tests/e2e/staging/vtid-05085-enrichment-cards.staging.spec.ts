@@ -58,6 +58,11 @@ function waitForCards(page: Page, screen: string) {
 test('Home asks for the enrichment cards and shows at most 3 new cards; Profile shows the strip or nothing', async ({ page, request }) => {
   await signIn(page, request);
 
+  // The Vitana ORB is not part of this test: after sign-in its front door can
+  // start a live session (POST /orb/live/session/start), which the guard aborts
+  // and counts. Same stub as the other read-only specs.
+  await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
+
   // ── Home ──
   const homeCards = waitForCards(page, 'home');
   await page.goto('/home', { waitUntil: 'domcontentloaded' });

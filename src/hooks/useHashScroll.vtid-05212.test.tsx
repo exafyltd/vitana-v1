@@ -9,7 +9,7 @@ import { resolve } from 'node:path';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, act } from '@testing-library/react';
 import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useHashScroll, HASH_SCROLL_RETRY_MS } from './useHashScroll';
+import { useHashScroll, HASH_SCROLL_RETRY_MS, HASH_SCROLL_SETTLE_MS } from './useHashScroll';
 import { CONNECTOR_SECTION_HASHES, MAIL_CALENDAR_CONTACTS_ANCHOR } from '@/components/settings/connected-apps/anchors';
 
 let goTo: (to: string) => void = () => {};
@@ -74,6 +74,54 @@ describe('useHashScroll (VTID-05212)', () => {
       vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
     });
     expect(scrolled.length).toBeGreaterThan(first);
+  });
+
+  describe('late content (the section drifts after the first scrolls)', () => {
+    const lastSettle = Math.max(...HASH_SCROLL_SETTLE_MS);
+    const placeSectionAt = (top: number) => {
+      const el = document.getElementById(MAIL_CALENDAR_CONTACTS_ANCHOR)!;
+      el.getBoundingClientRect = () => ({ top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) }) as DOMRect;
+    };
+
+    it('scrolls again when the section has drifted away from the top', () => {
+      renderAt('/connectors?tab=productivity#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      const afterFirst = scrolled.length;
+      placeSectionAt(900);
+      act(() => {
+        vi.advanceTimersByTime(lastSettle);
+      });
+      expect(scrolled.length).toBeGreaterThan(afterFirst);
+    });
+
+    it('does not move a section that is already at the top', () => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      const afterFirst = scrolled.length;
+      placeSectionAt(16);
+      act(() => {
+        vi.advanceTimersByTime(lastSettle);
+      });
+      expect(scrolled).toHaveLength(afterFirst);
+    });
+
+    it.each(['wheel', 'touchstart', 'keydown', 'pointerdown'])('stops once the member takes over (%s)', (name) => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      const afterFirst = scrolled.length;
+      placeSectionAt(900);
+      act(() => {
+        window.dispatchEvent(new Event(name));
+        vi.advanceTimersByTime(lastSettle);
+      });
+      expect(scrolled).toHaveLength(afterFirst);
+    });
   });
 
   it('an unknown hash or no hash does nothing and stays in the URL', () => {
