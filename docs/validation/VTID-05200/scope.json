@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05200",
+  "kind": "fix",
+  "paths": [
+    "src/hooks/useGlobalMessages.ts",
+    "src/lib/chatViewingThread.ts",
+    "src/lib/chatViewingThread.test.ts",
+    "docs/validation/VTID-05200/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05200/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
