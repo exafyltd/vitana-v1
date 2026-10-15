@@ -67,9 +67,6 @@ vi.mock('@/integrations/supabase/client', () => ({
 
 import ConversationView from './ConversationView';
 
-
-import ConversationView from './ConversationView';
-
 describe('ConversationView — deep-link scroll (VTID-05201)', () => {
   it('scrolls the target message into view without smooth animation', () => {
     const scrollIntoView = vi.fn();
