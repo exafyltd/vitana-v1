@@ -357,6 +357,26 @@ changing one, run `node scripts/native/gen-tokens.mjs` / `node scripts/native/ge
 `node scripts/native/core-closure.mjs --write`). NATIVE-CI fails on drift. Native code reaches web code only through
 `@vitana/core` (`packages/core/manifest.json`).
 
+## Commerce UX contract — supplier onboarding (VTID-05204)
+
+Owner rule 2026-10-15. Applies to every Commerce supplier screen: `src/components/commerce/**`,
+`src/pages/Commerce*.tsx`, and any other partner/supplier onboarding screen.
+
+- **AI-led, not form-led.** The primary path is: the supplier connects their AI assistant, says "Set up my
+  business on Vitanaland", and Vitanaland + the assistant do everything that can safely be automated. Manual
+  onboarding is the fallback and must never make the AI path more complex.
+- **Before adding any field, step, dialog or status**, ask: does the supplier really need to see or provide it?
+  If Vitanaland can infer it, the AI can provide it, the supplier already gave it, or it can wait — don't ask now.
+  Never ask twice for the same information.
+- **One dominant action per screen.** Plain business language; no technical or internal concepts (IDs, connector
+  names, step keys, lifecycle states) in normal supplier UX. Progressive disclosure only.
+- **A human is required only for:** legal acceptance, identity/verification, payment/bank details, destructive
+  actions and final sensitive confirmations.
+- **Every frontend Commerce PR has a "UX acceptance" section:** user steps · required fields · decisions ·
+  anything asked that Vitanaland or the AI could infer (must be "none" or justified) · can the user always tell
+  what to do next · friction up or down vs. before.
+- **A change that increases onboarding friction needs explicit owner approval** before merge.
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper
