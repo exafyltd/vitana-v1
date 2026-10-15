@@ -9,7 +9,7 @@ import { resolve } from 'node:path';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, act } from '@testing-library/react';
 import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useHashScroll, HASH_SCROLL_RETRY_MS, HASH_SCROLL_SETTLE_MS } from './useHashScroll';
+import { useHashScroll, HASH_SCROLL_RETRY_MS, HASH_SCROLL_WATCH_MS, HASH_SCROLL_POLL_MS } from './useHashScroll';
 import { CONNECTOR_SECTION_HASHES, MAIL_CALENDAR_CONTACTS_ANCHOR } from '@/components/settings/connected-apps/anchors';
 
 let goTo: (to: string) => void = () => {};
@@ -77,7 +77,6 @@ describe('useHashScroll (VTID-05212)', () => {
   });
 
   describe('late content (the section drifts after the first scrolls)', () => {
-    const lastSettle = Math.max(...HASH_SCROLL_SETTLE_MS);
     const placeSectionAt = (top: number) => {
       const el = document.getElementById(MAIL_CALENDAR_CONTACTS_ANCHOR)!;
       el.getBoundingClientRect = () => ({ top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) }) as DOMRect;
@@ -91,7 +90,7 @@ describe('useHashScroll (VTID-05212)', () => {
       const afterFirst = scrolled.length;
       placeSectionAt(900);
       act(() => {
-        vi.advanceTimersByTime(lastSettle);
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
       });
       expect(scrolled.length).toBeGreaterThan(afterFirst);
     });
@@ -104,9 +103,41 @@ describe('useHashScroll (VTID-05212)', () => {
       const afterFirst = scrolled.length;
       placeSectionAt(16);
       act(() => {
-        vi.advanceTimersByTime(lastSettle);
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
       });
       expect(scrolled).toHaveLength(afterFirst);
+    });
+
+    it('keeps catching the section while content keeps growing, up to the end of the watch', () => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      placeSectionAt(900);
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
+      });
+      const afterFirstDrift = scrolled.length;
+      placeSectionAt(1400); // more content arrived above it, many seconds in
+      act(() => {
+        vi.advanceTimersByTime(8_000);
+        placeSectionAt(1900);
+        vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
+      });
+      expect(scrolled.length).toBeGreaterThan(afterFirstDrift);
+    });
+
+    it('stops watching after HASH_SCROLL_WATCH_MS', () => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + HASH_SCROLL_POLL_MS);
+      });
+      const afterWatch = scrolled.length;
+      placeSectionAt(900);
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
+      });
+      expect(scrolled).toHaveLength(afterWatch);
     });
 
     it.each(['wheel', 'touchstart', 'keydown', 'pointerdown'])('stops once the member takes over (%s)', (name) => {
@@ -118,7 +149,7 @@ describe('useHashScroll (VTID-05212)', () => {
       placeSectionAt(900);
       act(() => {
         window.dispatchEvent(new Event(name));
-        vi.advanceTimersByTime(lastSettle);
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
       });
       expect(scrolled).toHaveLength(afterFirst);
     });
