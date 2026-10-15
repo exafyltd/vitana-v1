@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05221",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Non-exafy test user: GET /api/v1/admin/tenants answers 403 FORBIDDEN JSON; /admin/system/tenants shows no New community panel; no non-GET to the tenant provisioning API",
+      "spec": "tests/e2e/staging/vtid-05221-provisioning-ui.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Provisioning API wrappers, form validation, asset upload, readiness, panel mount (exafy_admin only) and no write on render",
+      "ref": "npx vitest run src/lib/tenant-provisioning-api.test.ts src/components/admin/tenant-provisioning/validation.test.ts src/components/admin/tenant-provisioning/ProvisionTenantForm.test.tsx src/components/admin/tenant-provisioning/BrandPackForm.test.tsx src/components/admin/tenant-provisioning/AssetUpload.test.tsx src/components/admin/tenant-provisioning/ReadinessChecklist.test.tsx src/components/admin/tenant-provisioning/NewCommunityPanel.test.tsx src/components/admin/tenant-provisioning/TenantManagement.panel.test.tsx",
+      "cwd": ".",
+      "reason": "Staging has no exafy_admin test account and staging writes reach production Supabase, so the create, brand pack, asset upload and readiness path is proven in Vitest only."
+    }
+  ]
+}
