@@ -38,7 +38,10 @@
           },
           "name": {
             "label": "Name",
-            "hint": "The community's internal name, up to 80 characters."
+            "hint": "The community's internal name, up to 80 characters.",
+            "_pending_review": {
+              "label": true
+            }
           },
           "displayName": {
             "label": "Display name",
@@ -72,6 +75,9 @@
             "label": "Monthly Jev budget (USD)",
             "hint": "Between 0 and 500 USD. Leave empty for the default."
           }
+        },
+        "_pending_review": {
+          "optional": true
         }
       },
       "brandPack": {
@@ -136,7 +142,10 @@
             "hint": "How Vitana should pronounce the name."
           },
           "anchorName": {
-            "label": "Name"
+            "label": "Name",
+            "_pending_review": {
+              "label": true
+            }
           },
           "anchorPronunciation": {
             "label": "Pronunciation"
