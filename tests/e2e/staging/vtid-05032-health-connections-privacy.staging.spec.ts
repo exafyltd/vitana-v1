@@ -7,8 +7,10 @@
 //   - Settings › Connected Apps shows a health card as connected only when the
 //     gateway lists that provider as connected, and none of the old invented
 //     sync times or history entries appear (Connected tab and Data Sync tab);
-//   - Settings › Privacy › Data Sharing shows the three data-sharing switches
-//     off and disabled, and "Request data export" disabled.
+//   - Settings › Privacy › Data Sharing shows the health data-sharing switches
+//     off and disabled, and "Request data export" disabled. (VTID-05093: the
+//     third switch, "Third-party integrations", became the per-partner
+//     "Manage connected sources" row; the test user holds no consent.)
 // GETs and navigation only — nothing is clicked that writes.
 import { test, expect } from './staging-guard';
 
@@ -131,13 +133,13 @@ test('health connections come from the gateway; privacy data sharing is off', as
   for (const name of [
     /Gesundheitsdaten-Analyse|Health Data Analytics/,
     /Community-Einblicke|Community Insights/,
-    /Drittanbieter-Integrationen|Third-party Integrations/,
   ]) {
     const sw = page.getByRole('switch', { name });
     await expect(sw).toBeVisible({ timeout: 30_000 });
     await expect(sw).toHaveAttribute('aria-checked', 'false');
     await expect(sw).toBeDisabled();
   }
+  await expect(page.getByTestId('health-consent-manage-sources')).toBeVisible();
   await expect(page.getByRole('button', { name: /Datenexport anfordern|Request Data Export/ })).toBeDisabled();
   await testInfo.attach('privacy-desktop', { body: await page.screenshot({ fullPage: false }), contentType: 'image/png' });
 

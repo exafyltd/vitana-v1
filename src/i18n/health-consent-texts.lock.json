@@ -1,0 +1,10 @@
+{
+  "_doc": "VTID-05093 (Health Hub D10, WP2). Wording lock for the health consent texts in src/i18n/<locale>/screens.json under screens.settings.healthConsent.<category>.<version>.{title,body,checkbox}. A version may be granted in the app ONLY when it is listed here with status \"released\" and a sha256 for the locale it is shown in (src/lib/health-consent-wording.ts). Released texts are owner/counsel-supplied and pasted verbatim; src/lib/health-consent-wording.vtid-05093.test.ts fails if a released text changes, so new wording needs a new version (v2) plus a catalogue current_text_version bump. sha256 = hex digest of title + \"\\n\" + body + \"\\n\" + checkbox. While a version is \"draft\" its title carries the [DRAFT] marker and the app never shows it or lets anyone grant it; withdrawing an existing consent is always possible.",
+  "texts": {
+    "wearables": { "v1": { "status": "draft" } },
+    "partner_results": { "v1": { "status": "draft" } },
+    "ai_health_analysis": { "v1": { "status": "draft" } },
+    "health_data_analytics": { "v1": { "status": "draft" } },
+    "community_insights": { "v1": { "status": "draft" } }
+  }
+}

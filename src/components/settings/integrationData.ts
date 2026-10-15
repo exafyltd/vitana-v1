@@ -46,6 +46,10 @@ export interface Integration {
   // actually means here (rewards on, checkout still on the merchant's site) so the
   // badge doesn't imply in-app checkout.
   statusLabel?: string;
+  // VTID-05093: a lab partner from partner_registry. Its connect/disconnect
+  // opens the per-partner health consent dialog, and it is shown only while
+  // the gateway lists it (see mergeLabPartners).
+  labPartner?: boolean;
   // VTID-02403: extended category list to include 'ai' for AI Assistants (ChatGPT, Claude)
   // Added 'productivity' for email/calendar/contacts and 'media' for music/video playback
   category: 'social' | 'fitness' | 'health' | 'other' | 'ai' | 'productivity' | 'media' | 'shopping';
@@ -256,9 +260,9 @@ export const healthIntegrations: Integration[] = [
   },
   {
     // VTID-03885: Partner Health Test Integration — DoctorBox is Partner #001.
-    // No longer a comingSoon mock; connect/disconnect open a real consent
-    // dialog (PartnerLabsConsentDialog) backed by the gateway's
-    // /api/v1/partner-health/consent routes.
+    // VTID-05093: catalogue entry only; connect/disconnect open the
+    // per-partner health consent dialog (PartnerLabsConsentDialog) and the
+    // connected state comes from GET /api/v1/health/consents.
     id: 'doctorbox',
     name: 'DoctorBox',
     icon: TestTube,
@@ -266,6 +270,7 @@ export const healthIntegrations: Integration[] = [
     syncData: 'Lab test results, biomarkers',
     comingSoon: false,
     category: 'health',
+    labPartner: true,
   },
 ];
 
@@ -496,3 +501,42 @@ export const getConnectionStats = (all: Integration[] = getAllIntegrations()) =>
   const syncing = all.filter(i => i.connected && i.lastSync && i.lastSync.includes('min')).length;
   return { connected, syncing, total: all.length };
 };
+
+/**
+ * VTID-05093 (Health Hub D10): lab partners come from the gateway
+ * (GET /api/v1/health/consents `partners`), not from this file. A catalogue
+ * entry marked `labPartner` stays only while the gateway lists it; every other
+ * listed partner is appended. `connected` is the member's active
+ * `partner_results` consent for that partner — never assumed.
+ */
+export function mergeLabPartners(
+  base: Integration[],
+  partners: { partner_key: string; display_name: string }[],
+  isConnected: (partnerKey: string) => boolean,
+  syncData: string,
+): Integration[] {
+  const listed = new Map(partners.map((p) => [p.partner_key, p]));
+  const out: Integration[] = [];
+  for (const i of base) {
+    if (!i.labPartner) {
+      out.push(i);
+      continue;
+    }
+    const p = listed.get(i.id);
+    if (p) out.push({ ...i, name: p.display_name || i.name, connected: isConnected(i.id), comingSoon: false });
+  }
+  for (const p of partners) {
+    if (out.some((i) => i.labPartner && i.id === p.partner_key)) continue;
+    out.push({
+      id: p.partner_key,
+      name: p.display_name || p.partner_key,
+      icon: TestTube,
+      connected: isConnected(p.partner_key),
+      syncData,
+      comingSoon: false,
+      category: 'health',
+      labPartner: true,
+    });
+  }
+  return out;
+}

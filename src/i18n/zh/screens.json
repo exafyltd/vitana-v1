@@ -7705,6 +7705,100 @@
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
       },
+      "healthConsentUi": {
+        "statusGranted": "已于 {date} 授予",
+        "statusActive": "已授予",
+        "statusNotGranted": "未授予",
+        "loading": "加载中 …",
+        "storePending": "健康数据同意功能正在设置中。很快你就可以在这里授予同意。你可以随时撤回已有的同意。",
+        "storePendingShort": "正在设置中。",
+        "draftPending": "即将推出：我们正在完善同意书文本。在此之前，此项保持关闭。",
+        "draftPendingShort": "即将推出。",
+        "unavailable": "暂时无法加载你的同意设置。请稍后再试。",
+        "unavailableShort": "暂时不可用。",
+        "dialogDescription": "由你决定。没有你的同意，此项保持关闭。",
+        "activeBody": "你已授予此同意。你可以随时撤回。",
+        "grant": "同意",
+        "revoke": "撤回",
+        "allow": "允许",
+        "cancel": "取消",
+        "close": "关闭",
+        "revokeConfirmTitle": "撤回同意？",
+        "revokeConfirmBody": "从现在起，将不再基于此同意处理任何新数据。已经分享的数据不会因此被删除。",
+        "revokeConfirmAction": "是，撤回",
+        "grantedToast": "谢谢！你的同意已保存。",
+        "revokedToast": "你的同意已撤回。",
+        "versionLabel": "文本版本 {version}",
+        "displayedInFallback": "此同意书文本暂无你的语言版本，因此以其他语言显示。",
+        "manageSources": "管理",
+        "manageSourcesTitle": "已连接的来源",
+        "manageSourcesDescription": "为每个合作实验室和每台设备分别决定是否允许将你的健康数据发送给 Vitana。",
+        "manageSourcesRowDescription": "按合作实验室和设备分别设置同意",
+        "partnersHeading": "合作实验室",
+        "devicesHeading": "设备和应用",
+        "noSources": "目前没有可用的来源。",
+        "partnerSyncData": "化验结果和生物标志物",
+        "partnerConnectDescription": "允许 {name} 将你的检测结果发送给 Vitana，以便 Vitana 和你一起解读。",
+        "linkConsentTitle": "直接接收 {partner} 今后的结果？",
+        "linkConsentBody": "可选，且与你的确认相互独立：你可以允许 {partner} 今后直接把结果发送给你。你也可以稍后在设置中进行。",
+        "linkConsentAction": "查看同意书",
+        "linkConsentSkip": "暂不",
+        "categories": {
+          "wearables": "{name} 的设备数据",
+          "partner_results": "{name} 的化验结果",
+          "ai_health_analysis": "用 AI 分析你的健康数据",
+          "health_data_analytics": "健康数据分析",
+          "community_insights": "社区洞察"
+        },
+        "errors": {
+          "generic": "操作未成功。请重试。",
+          "signIn": "请重新登录后再试一次。",
+          "invalidRequest": "请求不完整。请重试。",
+          "unknownCategory": "此同意项已不存在。请重新加载页面。",
+          "unknownResource": "此来源已不可用。",
+          "staleText": "同意书文本已更新。请重新阅读并确认。",
+          "storePending": "暂时还无法保存同意。请稍后再试。",
+          "unavailable": "服务暂时无法访问。请稍后再试。",
+          "writeFailed": "无法保存你的同意。请重试。"
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] 将 {name} 的设备数据发送给 Vitana",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 将接收 {name} 提供的关于你的健康数据（例如步数、睡眠和心率），并保存在你的账户中，方便你在 Vitana 中查看。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再接收来自 {name} 的新数据。",
+            "checkbox": "我明确同意 Vitana 按上述方式接收并保存我来自 {name} 的健康数据。"
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] 将 {name} 的化验结果发送给 Vitana",
+            "body": "草稿——尚未批准。\n如果你同意，{name} 可以将你的化验结果发送给 Vitana。Vitana 会将其保存在你的账户中，并在你的结果中显示。\n此同意是自愿的。你可以随时在设置中撤回；撤回后将不再接收来自 {name} 的新结果。",
+            "checkbox": "我明确同意 {name} 按上述方式将我的化验结果发送给 Vitana。"
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] 用 AI 分析你的健康数据",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 的 AI 可以分析你的设备数据和化验结果，为你提供个人建议并回答你的相关问题。\n此同意是自愿的。你可以随时在设置中撤回；撤回后 AI 将不再分析这些数据。",
+            "checkbox": "我明确同意 Vitana 的 AI 为此目的分析我的健康数据。"
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] 健康数据分析",
+            "body": "草稿——尚未批准。\n如果你同意，Vitana 可以以匿名形式分析你的健康数据，用于改进其功能。\n此同意是自愿的。你可以随时在设置中撤回；撤回后你的数据将不再用于此目的。",
+            "checkbox": "我明确同意为此目的以匿名形式分析我的健康数据。"
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] 社区洞察",
+            "body": "草稿——尚未批准。\n如果你同意，你的进展可以以汇总、匿名的形式纳入社区统计。\n此同意是自愿的。你可以随时在设置中撤回；撤回后你的数据将不再被纳入。",
+            "checkbox": "我明确同意为此目的以匿名形式使用我的健康数据。"
+          }
+        }
+      },
       "vitanaMessages": {
         "_pending_review": {
           "title": true,

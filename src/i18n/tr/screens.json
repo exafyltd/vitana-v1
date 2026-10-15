@@ -7705,6 +7705,100 @@
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
       },
+      "healthConsentUi": {
+        "statusGranted": "{date} tarihinde verildi",
+        "statusActive": "Verildi",
+        "statusNotGranted": "Verilmedi",
+        "loading": "Yükleniyor …",
+        "storePending": "Sağlık onayları şu anda hazırlanıyor. Yakında onları burada verebileceksin. Mevcut onaylarını istediğin zaman geri alabilirsin.",
+        "storePendingShort": "Hazırlanıyor.",
+        "draftPending": "Yakında: Onay metnini tamamlıyoruz. O zamana kadar bu seçenek kapalı kalır.",
+        "draftPendingShort": "Yakında.",
+        "unavailable": "Onayların şu anda yüklenemedi. Lütfen daha sonra tekrar dene.",
+        "unavailableShort": "Şu anda kullanılamıyor.",
+        "dialogDescription": "Karar senin. Onayın olmadan bu seçenek kapalı kalır.",
+        "activeBody": "Bu onayı verdin. İstediğin zaman geri alabilirsin.",
+        "grant": "Onay ver",
+        "revoke": "Geri al",
+        "allow": "İzin ver",
+        "cancel": "İptal",
+        "close": "Kapat",
+        "revokeConfirmTitle": "Onay geri alınsın mı?",
+        "revokeConfirmBody": "Bundan sonra bu temelde yeni veri işlenmeyecek. Daha önce paylaşılmış veriler bu nedenle silinmez.",
+        "revokeConfirmAction": "Evet, geri al",
+        "grantedToast": "Teşekkürler! Onayın kaydedildi.",
+        "revokedToast": "Onayın geri alındı.",
+        "versionLabel": "Metin sürümü {version}",
+        "displayedInFallback": "Bu onay metni henüz senin dilinde mevcut değil, bu yüzden başka bir dilde gösteriliyor.",
+        "manageSources": "Yönet",
+        "manageSourcesTitle": "Bağlı kaynaklar",
+        "manageSourcesDescription": "Her laboratuvar ortağı ve her cihaz için sağlık verilerinin Vitana’ya gönderilip gönderilemeyeceğine ayrı ayrı karar ver.",
+        "manageSourcesRowDescription": "Laboratuvar ortağı ve cihaz başına onaylar",
+        "partnersHeading": "Laboratuvar ortakları",
+        "devicesHeading": "Cihazlar ve uygulamalar",
+        "noSources": "Şu anda kullanılabilir kaynak yok.",
+        "partnerSyncData": "Laboratuvar sonuçları ve biyobelirteçler",
+        "partnerConnectDescription": "{name} için test sonuçlarını Vitana’ya gönderme izni ver, böylece Vitana onları seninle konuşabilir.",
+        "linkConsentTitle": "{partner} kaynağından gelecek sonuçlar doğrudan sana gelsin mi?",
+        "linkConsentBody": "İsteğe bağlı ve onayından bağımsız: {partner} için gelecekteki sonuçları sana doğrudan gönderme izni verebilirsin. Bunu daha sonra Ayarlar’da da yapabilirsin.",
+        "linkConsentAction": "Onayı görüntüle",
+        "linkConsentSkip": "Şimdi değil",
+        "categories": {
+          "wearables": "{name} cihaz verileri",
+          "partner_results": "{name} laboratuvar sonuçları",
+          "ai_health_analysis": "Sağlık verilerinin yapay zekâ ile analizi",
+          "health_data_analytics": "Sağlık verisi analizi",
+          "community_insights": "Topluluk içgörüleri"
+        },
+        "errors": {
+          "generic": "Olmadı. Lütfen tekrar dene.",
+          "signIn": "Lütfen yeniden giriş yap ve tekrar dene.",
+          "invalidRequest": "İstek eksikti. Lütfen tekrar dene.",
+          "unknownCategory": "Bu onay artık mevcut değil. Lütfen sayfayı yenile.",
+          "unknownResource": "Bu kaynak artık kullanılamıyor.",
+          "staleText": "Onay metni güncellendi. Lütfen tekrar oku ve onayla.",
+          "storePending": "Onaylar henüz kaydedilemiyor. Lütfen daha sonra tekrar dene.",
+          "unavailable": "Hizmete şu anda ulaşılamıyor. Lütfen daha sonra tekrar dene.",
+          "writeFailed": "Onayın kaydedilemedi. Lütfen tekrar dene."
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] {name} cihaz verilerinin Vitana’ya gönderilmesi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana, {name} tarafından senin hakkında sağlanan sağlık verilerini (örneğin adımlar, uyku ve nabız) alır ve Vitana’da görebilmen için hesabında saklar.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren {name} kaynağından yeni veri alınmaz.",
+            "checkbox": "Vitana’nın {name} kaynağından gelen sağlık verilerimi açıklandığı şekilde almasına ve saklamasına açıkça onay veriyorum."
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] {name} laboratuvar sonuçlarının Vitana’ya gönderilmesi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen {name}, laboratuvar sonuçlarını Vitana’ya gönderebilir. Vitana bunları hesabında saklar ve sonuçlarında sana gösterir.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren {name} kaynağından yeni sonuç alınmaz.",
+            "checkbox": "{name} kaynağının laboratuvar sonuçlarımı açıklandığı şekilde Vitana’ya göndermesine açıkça onay veriyorum."
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] Sağlık verilerinin yapay zekâ ile analizi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana’nın yapay zekâsı, sana kişisel öneriler sunmak ve bunlarla ilgili sorularını yanıtlamak için cihaz verilerini ve laboratuvar sonuçlarını analiz edebilir.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren yapay zekâ bu verileri analiz etmez.",
+            "checkbox": "Vitana’nın yapay zekâsının sağlık verilerimi bu amaçla analiz etmesine açıkça onay veriyorum."
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] Sağlık verisi analizi",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen Vitana, özelliklerini geliştirmek için sağlık verilerini anonimleştirilmiş biçimde analiz edebilir.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren verilerin bunun için kullanılmaz.",
+            "checkbox": "Sağlık verilerimin bu amaçla anonimleştirilmiş biçimde analiz edilmesine açıkça onay veriyorum."
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] Topluluk içgörüleri",
+            "body": "TASLAK – henüz onaylanmadı.\nKabul edersen ilerlemen, toplu ve anonimleştirilmiş biçimde topluluk istatistiklerine dahil edilebilir.\nBu onay isteğe bağlıdır. Ayarlar’da istediğin zaman geri alabilirsin; o andan itibaren verilerin dahil edilmez.",
+            "checkbox": "Sağlık verilerimin bu amaçla anonimleştirilmiş biçimde kullanılmasına açıkça onay veriyorum."
+          }
+        }
+      },
       "vitanaMessages": {
         "_pending_review": {
           "title": true,

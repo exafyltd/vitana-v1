@@ -6232,8 +6232,7 @@
       "vitanaOpenScreen": "Otwórz ekran",
       "viewFullscreen": "Pokaż na pełnym ekranie",
       "_pending_review": {
-        "conversationRowError": true,
-        "talkToVitana": true
+        "conversationRowError": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} utworzył(a) grupę",
@@ -7706,21 +7705,101 @@
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
       },
-      "vitanaMessages": {
-        "_pending_review": {
-          "title": true,
-          "desc": true,
-          "enabled": true,
-          "enabledDesc": true,
-          "topics": true,
-          "health": true,
-          "healthDesc": true,
-          "community": true,
-          "communityDesc": true,
-          "business": true,
-          "businessDesc": true,
-          "loadError": true
+      "healthConsentUi": {
+        "statusGranted": "Udzielona {date}",
+        "statusActive": "Udzielona",
+        "statusNotGranted": "Nieudzielona",
+        "loading": "Ładowanie …",
+        "storePending": "Zgody zdrowotne są właśnie konfigurowane. Wkrótce udzielisz ich tutaj. Istniejące zgody możesz w każdej chwili wycofać.",
+        "storePendingShort": "Trwa konfiguracja.",
+        "draftPending": "Wkrótce: kończymy tekst zgody. Do tego czasu ta opcja pozostaje wyłączona.",
+        "draftPendingShort": "Wkrótce.",
+        "unavailable": "Nie udało się teraz wczytać twoich zgód. Spróbuj ponownie później.",
+        "unavailableShort": "Teraz niedostępne.",
+        "dialogDescription": "To twoja decyzja. Bez twojej zgody ta opcja pozostaje wyłączona.",
+        "activeBody": "Udzieliłeś tej zgody. Możesz ją w każdej chwili wycofać.",
+        "grant": "Wyrażam zgodę",
+        "revoke": "Wycofaj",
+        "allow": "Zezwól",
+        "cancel": "Anuluj",
+        "close": "Zamknij",
+        "revokeConfirmTitle": "Wycofać zgodę?",
+        "revokeConfirmBody": "Od teraz na tej podstawie nie będą przetwarzane żadne nowe dane. Dane, które już zostały udostępnione, nie zostaną przez to usunięte.",
+        "revokeConfirmAction": "Tak, wycofaj",
+        "grantedToast": "Dzięki! Twoja zgoda została zapisana.",
+        "revokedToast": "Twoja zgoda została wycofana.",
+        "versionLabel": "Wersja tekstu {version}",
+        "displayedInFallback": "Ten tekst zgody nie jest jeszcze dostępny w twoim języku, dlatego jest wyświetlany w innym języku.",
+        "manageSources": "Zarządzaj",
+        "manageSourcesTitle": "Połączone źródła",
+        "manageSourcesDescription": "Zdecyduj osobno dla każdego laboratorium partnerskiego i każdego urządzenia, czy twoje dane zdrowotne mogą być przekazywane do Vitany.",
+        "manageSourcesRowDescription": "Zgody dla każdego laboratorium partnerskiego i urządzenia",
+        "partnersHeading": "Laboratoria partnerskie",
+        "devicesHeading": "Urządzenia i aplikacje",
+        "noSources": "Obecnie nie ma dostępnych źródeł.",
+        "partnerSyncData": "Wyniki badań laboratoryjnych i biomarkery",
+        "partnerConnectDescription": "Pozwól {name} przesyłać twoje wyniki badań do Vitany, aby Vitana mogła je z tobą omówić.",
+        "linkConsentTitle": "Otrzymywać przyszłe wyniki od {partner} bezpośrednio?",
+        "linkConsentBody": "Opcjonalnie i niezależnie od twojego potwierdzenia: możesz pozwolić {partner} przesyłać ci przyszłe wyniki bezpośrednio. Możesz to zrobić także później w Ustawieniach.",
+        "linkConsentAction": "Zobacz zgodę",
+        "linkConsentSkip": "Nie teraz",
+        "categories": {
+          "wearables": "Dane z urządzenia {name}",
+          "partner_results": "Wyniki laboratoryjne od {name}",
+          "ai_health_analysis": "Analiza twoich danych zdrowotnych przez AI",
+          "health_data_analytics": "Analiza danych zdrowotnych",
+          "community_insights": "Statystyki społeczności"
         },
+        "errors": {
+          "generic": "Nie udało się. Spróbuj ponownie.",
+          "signIn": "Zaloguj się ponownie i spróbuj jeszcze raz.",
+          "invalidRequest": "Żądanie było niekompletne. Spróbuj ponownie.",
+          "unknownCategory": "Ta zgoda już nie istnieje. Odśwież stronę.",
+          "unknownResource": "To źródło nie jest już dostępne.",
+          "staleText": "Tekst zgody został zaktualizowany. Przeczytaj go ponownie i potwierdź.",
+          "storePending": "Zgód nie można jeszcze zapisać. Spróbuj ponownie później.",
+          "unavailable": "Usługa jest teraz niedostępna. Spróbuj ponownie później.",
+          "writeFailed": "Nie udało się zapisać twojej zgody. Spróbuj ponownie."
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] Przekazywanie do Vitany danych z urządzenia {name}",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, Vitana otrzymuje dane zdrowotne, które {name} udostępnia na twój temat (na przykład kroki, sen i tętno), i zapisuje je na twoim koncie, abyś mógł je zobaczyć w Vitanie.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe dane z {name} nie będą przejmowane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby Vitana otrzymywała i zapisywała moje dane zdrowotne z {name} zgodnie z opisem."
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] Przekazywanie do Vitany wyników laboratoryjnych od {name}",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, {name} może przekazywać twoje wyniki badań laboratoryjnych do Vitany. Vitana zapisuje je na twoim koncie i pokazuje w twoich wynikach.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu żadne nowe wyniki od {name} nie będą przejmowane.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby {name} przekazywał moje wyniki badań laboratoryjnych do Vitany zgodnie z opisem."
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] Analiza twoich danych zdrowotnych przez AI",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, AI Vitany może analizować dane z twoich urządzeń i wyniki badań laboratoryjnych, aby dawać ci osobiste wskazówki i odpowiadać na twoje pytania na ich temat.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu AI nie analizuje już tych danych.",
+            "checkbox": "Wyrażam wyraźną zgodę na to, aby AI Vitany analizowała moje dane zdrowotne w tym celu."
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] Analiza danych zdrowotnych",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, Vitana może analizować twoje dane zdrowotne w formie zanonimizowanej, aby ulepszać swoje funkcje.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu twoje dane nie są już do tego używane.",
+            "checkbox": "Wyrażam wyraźną zgodę na analizę moich danych zdrowotnych w formie zanonimizowanej w tym celu."
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] Statystyki społeczności",
+            "body": "WERSJA ROBOCZA – jeszcze niezatwierdzona.\nJeśli się zgodzisz, twoje postępy mogą być uwzględniane w statystykach społeczności w formie zbiorczej i zanonimizowanej.\nTa zgoda jest dobrowolna. Możesz ją w każdej chwili wycofać w Ustawieniach; od tego momentu twoje dane nie są już uwzględniane.",
+            "checkbox": "Wyrażam wyraźną zgodę na wykorzystanie moich danych zdrowotnych w formie zanonimizowanej w tym celu."
+          }
+        }
+      },
+      "vitanaMessages": {
         "title": "Messages from Vitana",
         "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
         "enabled": "Receive messages from Vitana",

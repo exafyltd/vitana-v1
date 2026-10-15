@@ -5370,13 +5370,11 @@
       "vitanaIndexUpSubtext": "Odličan posao!",
       "vitanaIndexDownSubtext": "Mali koraci se računaju.",
       "vitanaIndexStableSubtext": "Budi dosledan.",
-      "vitanaIndexScoreSubtext": "Indeks {score} · {message}",
       "longevityJourneyEyebrow": "TVOJA AUDIO-KNJIGA O DUGOVEČNOSTI",
       "longevityJourneyContinue": "Nastavi sa epizodom {session}: {topic}",
       "longevityJourneyAllDone": "Saslušao si sve epizode. Bravo!",
       "longevityJourneyNextStepHeadline": "Tvoj sledeći korak:",
       "longevityJourneySubtext": "Epizoda {session} te čeka.",
-      "longevityJourneyProgressSubtext": "Epizoda {session} te čeka · {done} završeno · danas {today}/{goal}",
       "longevityJourneyStartSession": "Pusti epizodu {session}",
       "longevityJourneyDoneLabel": "Gotovo",
       "longevityJourneyNowLabel": "Sada",
@@ -5482,10 +5480,14 @@
       "cancelReply": "Otkaži odgovor",
       "likeComment": "Lajkuj komentar",
       "_pending_review": {
-        "feedItemError": true
+        "feedItemError": true,
+        "vitanaIndexScoreSubtext": true,
+        "longevityJourneyProgressSubtext": true
       },
       "feedItemError": "This post couldn't be shown.",
-      "playTodaysEpisode": "Pusti epizodu {session}"
+      "playTodaysEpisode": "Pusti epizodu {session}",
+      "vitanaIndexScoreSubtext": "Index {score} · {message}",
+      "longevityJourneyProgressSubtext": "Episode {session} is waiting · {done} done · today {today}/{goal}"
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)"
@@ -6231,7 +6233,8 @@
       "anonymous": "Anoniman",
       "vitanaOpenScreen": "Otvori ekran",
       "_pending_review": {
-        "conversationRowError": true
+        "conversationRowError": true,
+        "talkToVitana": true
       },
       "conversationRowError": "This item couldn't be shown.",
       "groupNoticeCreated": "{name} je napravio/la grupu",
@@ -6272,7 +6275,7 @@
       "imageShareFailed": "Deljenje nije uspelo",
       "imageLoading": "Učitavanje slike",
       "unknownSize": "Nepoznata veličina",
-      "talkToVitana": "Razgovaraj sa Vitanom",
+      "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "U MAXINA",
       "forwardShareOther": "Podeli preko drugih aplikacija",
       "forwardShareLinkHint": "Ako tvoj uređaj ne može direktno da podeli sliku, deli se link koji važi {days} dana.",
@@ -7704,19 +7707,127 @@
         "partnerLabsRevokeSuccess": true,
         "partnerLabsError": true
       },
+      "healthConsentUi": {
+        "statusGranted": "Data {date}",
+        "statusActive": "Data",
+        "statusNotGranted": "Nije data",
+        "loading": "Učitava se …",
+        "storePending": "Saglasnosti za zdravstvene podatke se upravo podešavaju. Uskoro ćeš moći da ih daš ovde. Postojeće saglasnosti možeš da povučeš u svakom trenutku.",
+        "storePendingShort": "Podešava se.",
+        "draftPending": "Uskoro: završavamo tekst saglasnosti. Do tada ova opcija ostaje isključena.",
+        "draftPendingShort": "Uskoro.",
+        "unavailable": "Tvoje saglasnosti trenutno nije moguće učitati. Pokušaj ponovo kasnije.",
+        "unavailableShort": "Trenutno nije dostupno.",
+        "dialogDescription": "Ti odlučuješ. Bez tvoje saglasnosti ova opcija ostaje isključena.",
+        "activeBody": "Dao si ovu saglasnost. Možeš da je povučeš u svakom trenutku.",
+        "grant": "Daj saglasnost",
+        "revoke": "Povuci",
+        "allow": "Dozvoli",
+        "cancel": "Otkaži",
+        "close": "Zatvori",
+        "revokeConfirmTitle": "Povući saglasnost?",
+        "revokeConfirmBody": "Od sada se na ovoj osnovi neće obrađivati novi podaci. Podaci koji su već podeljeni time se ne brišu.",
+        "revokeConfirmAction": "Da, povuci",
+        "grantedToast": "Hvala! Tvoja saglasnost je sačuvana.",
+        "revokedToast": "Tvoja saglasnost je povučena.",
+        "versionLabel": "Verzija teksta {version}",
+        "displayedInFallback": "Ovaj tekst saglasnosti još nije dostupan na tvom jeziku, pa se prikazuje na drugom jeziku.",
+        "manageSources": "Upravljaj",
+        "manageSourcesTitle": "Povezani izvori",
+        "manageSourcesDescription": "Odluči za svaku partnersku laboratoriju i svaki uređaj posebno da li tvoji zdravstveni podaci smeju da se šalju Vitani.",
+        "manageSourcesRowDescription": "Saglasnosti po partnerskoj laboratoriji i uređaju",
+        "partnersHeading": "Partnerske laboratorije",
+        "devicesHeading": "Uređaji i aplikacije",
+        "noSources": "Trenutno nema dostupnih izvora.",
+        "partnerSyncData": "Laboratorijski rezultati i biomarkeri",
+        "partnerConnectDescription": "Dozvoli da {name} šalje tvoje rezultate Vitani kako bi Vitana mogla da ih prođe s tobom.",
+        "linkConsentTitle": "Primati buduće rezultate od {partner} direktno?",
+        "linkConsentBody": "Opciono i nezavisno od tvoje potvrde: možeš da dozvoliš da ti {partner} buduće rezultate šalje direktno. To možeš da uradiš i kasnije u podešavanjima.",
+        "linkConsentAction": "Pogledaj saglasnost",
+        "linkConsentSkip": "Ne sada",
+        "categories": {
+          "wearables": "Podaci uređaja {name}",
+          "partner_results": "Laboratorijski rezultati od {name}",
+          "ai_health_analysis": "AI analiza tvojih zdravstvenih podataka",
+          "health_data_analytics": "Analitika zdravstvenih podataka",
+          "community_insights": "Uvidi zajednice"
+        },
+        "errors": {
+          "generic": "Nije uspelo. Pokušaj ponovo.",
+          "signIn": "Prijavi se ponovo, pa pokušaj još jednom.",
+          "invalidRequest": "Zahtev je bio nepotpun. Pokušaj ponovo.",
+          "unknownCategory": "Ova saglasnost više ne postoji. Ponovo učitaj stranicu.",
+          "unknownResource": "Ovaj izvor više nije dostupan.",
+          "staleText": "Tekst saglasnosti je ažuriran. Pročitaj ga ponovo i potvrdi.",
+          "storePending": "Saglasnosti još ne mogu da se sačuvaju. Pokušaj ponovo kasnije.",
+          "unavailable": "Usluga trenutno nije dostupna. Pokušaj ponovo kasnije.",
+          "writeFailed": "Tvoja saglasnost nije mogla da se sačuva. Pokušaj ponovo."
+        }
+      },
+      "healthConsent": {
+        "wearables": {
+          "v1": {
+            "title": "[DRAFT] Slanje podataka uređaja {name} Vitani",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana prima zdravstvene podatke koje {name} pruža o tebi (na primer korake, san i puls) i čuva ih na tvom nalogu da bi mogao da ih vidiš u Vitani.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi podaci od {name} više ne preuzimaju.",
+            "checkbox": "Izričito pristajem da Vitana prima i čuva moje zdravstvene podatke od {name} kao što je opisano."
+          }
+        },
+        "partner_results": {
+          "v1": {
+            "title": "[DRAFT] Slanje laboratorijskih rezultata od {name} Vitani",
+            "body": "NACRT – još nije odobren.\nAko se složiš, {name} sme da šalje tvoje laboratorijske rezultate Vitani. Vitana ih čuva na tvom nalogu i prikazuje ti ih u tvojim rezultatima.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se novi rezultati od {name} više ne preuzimaju.",
+            "checkbox": "Izričito pristajem da {name} šalje moje laboratorijske rezultate Vitani kao što je opisano."
+          }
+        },
+        "ai_health_analysis": {
+          "v1": {
+            "title": "[DRAFT] AI analiza tvojih zdravstvenih podataka",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitanin AI sme da analizira podatke tvojih uređaja i laboratorijske rezultate da bi ti dao lične savete i odgovorio na tvoja pitanja o njima.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada AI više ne analizira ove podatke.",
+            "checkbox": "Izričito pristajem da Vitanin AI analizira moje zdravstvene podatke u ovu svrhu."
+          }
+        },
+        "health_data_analytics": {
+          "v1": {
+            "title": "[DRAFT] Analitika zdravstvenih podataka",
+            "body": "NACRT – još nije odobren.\nAko se složiš, Vitana sme da analizira tvoje zdravstvene podatke u anonimizovanom obliku da bi poboljšala svoje funkcije.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se tvoji podaci više ne koriste za to.",
+            "checkbox": "Izričito pristajem da se moji zdravstveni podaci u ovu svrhu analiziraju u anonimizovanom obliku."
+          }
+        },
+        "community_insights": {
+          "v1": {
+            "title": "[DRAFT] Uvidi zajednice",
+            "body": "NACRT – još nije odobren.\nAko se složiš, tvoj napredak sme da uđe u statistiku zajednice u zbirnom, anonimizovanom obliku.\nOva saglasnost je dobrovoljna. Možeš da je povučeš u svakom trenutku u podešavanjima; od tada se tvoji podaci više ne uključuju.",
+            "checkbox": "Izričito pristajem da se moji zdravstveni podaci u ovu svrhu koriste u anonimizovanom obliku."
+          }
+        }
+      },
       "vitanaMessages": {
-        "title": "Poruke od Vitane",
-        "desc": "S vremena na vreme Vitana ti pošalje ličnu poruku u Messengeru, sa savetom koji ti trenutno odgovara.",
-        "enabled": "Primaj poruke od Vitane",
-        "enabledDesc": "Najviše jedna poruka dnevno. Možeš ih isključiti u bilo kom trenutku.",
-        "topics": "Teme",
-        "health": "Zdravlje",
-        "healthDesc": "Saveti za tvoje zdravlje i tvoj Vitana Index.",
-        "community": "Zajednica",
-        "communityDesc": "Ljudi, grupe i događaji koji ti odgovaraju.",
-        "business": "Posao i prihod",
-        "businessDesc": "Opciono: ideje kako da zaradiš od svog znanja u Vitanalandu. Podrazumevano isključeno – samo ako ga uključiš.",
-        "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke."
+        "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
+          "businessDesc": true,
+          "loadError": true
+        },
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
+        "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       }
     },
     "sharing": {
@@ -10560,20 +10671,30 @@
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
       "dismissCard": "Odbaci karticu",
-      "dailyDiary": "Dnevnik",
-      "talkToVitana": "Razgovaraj sa Vitanom",
-      "autopilot": "Autopilot",
-      "calendar": "Kalendar",
-      "uploadMedia": "Mediji",
-      "discover": "Otkrij",
-      "profilePhoto": "Profilna fotografija",
-      "profileSetup": "Profil",
-      "socialConnect": "Poveži",
-      "importContacts": "Kontakti",
-      "completeProfile": "Dovrši profil",
       "_pending_review": {
-        "autopilot": true
-      }
+        "dailyDiary": true,
+        "talkToVitana": true,
+        "autopilot": true,
+        "calendar": true,
+        "uploadMedia": true,
+        "discover": true,
+        "profilePhoto": true,
+        "profileSetup": true,
+        "socialConnect": true,
+        "importContacts": true,
+        "completeProfile": true
+      },
+      "dailyDiary": "Diary",
+      "talkToVitana": "Talk to Vitana",
+      "autopilot": "Autopilot",
+      "calendar": "Calendar",
+      "uploadMedia": "Media",
+      "discover": "Discover",
+      "profilePhoto": "Profile photo",
+      "profileSetup": "Profile",
+      "socialConnect": "Connect",
+      "importContacts": "Contacts",
+      "completeProfile": "Complete profile"
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -12587,110 +12708,211 @@
       "eventsSectionTitle": "Sobe uživo"
     },
     "vitanaCards": {
-      "stripLabel": "Predlozi od Vitane",
-      "eyebrowProfile": "Tvoj profil",
-      "eyebrowConnect": "Poveži",
-      "eyebrowCommunity": "Zajednica",
-      "eyebrowNotifications": "Obaveštenja",
+      "_pending_review": {
+        "stripLabel": true,
+        "eyebrowProfile": true,
+        "eyebrowConnect": true,
+        "eyebrowCommunity": true,
+        "eyebrowNotifications": true
+      },
+      "stripLabel": "Suggestions from Vitana",
+      "eyebrowProfile": "Your profile",
+      "eyebrowConnect": "Connect",
+      "eyebrowCommunity": "Community",
+      "eyebrowNotifications": "Notifications",
       "E1": {
-        "title": "Pokaži svoje lice",
-        "description": "Postavi profilnu fotografiju da te drugi odmah prepoznaju.",
-        "action": "Otpremi"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Show your face",
+        "description": "Upload a profile photo so others recognise you right away.",
+        "action": "Upload"
       },
       "E2": {
-        "title": "Ispričaj nešto o sebi",
-        "description": "Nekoliko rečenica o tebi pomaže drugima da započnu razgovor.",
-        "action": "Napiši biografiju"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Tell others about you",
+        "description": "A few sentences about you help others start a conversation.",
+        "action": "Write bio"
       },
       "E3": {
-        "title": "Podeli svoju prvu objavu",
-        "description": "Pozdravi zajednicu – dovoljna je kratka misao.",
-        "action": "Objavi sada"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Share your first post",
+        "description": "Say hello to the community – a short thought is enough.",
+        "action": "Post now"
       },
       "E4": {
-        "title": "Šta te oduševljava?",
-        "description": "Izaberi svoja interesovanja da bi Vitana pronašla ljude i sadržaje za tebe.",
-        "action": "Izaberi interesovanja"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "What are you into?",
+        "description": "Pick your interests so Vitana can find people and content that fit you.",
+        "action": "Pick interests"
       },
       "E5": {
-        "title": "Gde živiš?",
-        "description": "Dodaj svoju lokaciju i otkrij ljude i događaje u blizini.",
-        "action": "Dodaj lokaciju"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Where are you based?",
+        "description": "Add your location to discover people and events near you.",
+        "action": "Add location"
       },
       "E6": {
-        "title": "Poveži Instagram",
-        "description": "Deli svoje trenutke iz Vitane direktno na Instagramu.",
-        "action": "Poveži Instagram"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Connect Instagram",
+        "description": "Share your moments from Vitana straight to Instagram.",
+        "action": "Connect Instagram"
       },
       "E7": {
-        "title": "Poveži Facebook",
-        "description": "Ostani blizu prijatelja i deli jednim dodirom.",
-        "action": "Poveži Facebook"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Connect Facebook",
+        "description": "Stay close to your friends and share in one tap.",
+        "action": "Connect Facebook"
       },
       "E8": {
-        "title": "Poveži svoj kalendar",
-        "description": "Vidi svoje obaveze i Vitana događaje na jednom mestu.",
-        "action": "Poveži"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Connect your calendar",
+        "description": "See your appointments and Vitana events in one place.",
+        "action": "Connect"
       },
       "E9": {
-        "title": "Uvezi svoje kontakte",
-        "description": "Pronađi prijatelje koji su već na Vitani.",
-        "action": "Uvezi"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Import your contacts",
+        "description": "Find friends who are already on Vitana.",
+        "action": "Import"
       },
       "E10": {
-        "title": "Ne propusti ništa",
-        "description": "Uključi obaveštenja za poruke, poklapanja i podsetnike.",
-        "action": "Uključi"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Don't miss a thing",
+        "description": "Turn on notifications for messages, matches and reminders.",
+        "action": "Turn on"
       },
       "E11": {
-        "title": "Dodaj naslovnu fotografiju",
-        "description": "Naslovna fotografija čini tvoj profil ličnijim.",
-        "action": "Otpremi"
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "title": "Add a cover photo",
+        "description": "A cover photo makes your profile feel like you.",
+        "action": "Upload"
       },
       "F3": {
-        "eyebrow": "Dnevnik",
-        "title": "Kako si danas?",
-        "description": "Izgovori nekoliko rečenica u svoj dnevnik – Vitana sluša.",
-        "action": "Snimi"
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Diary",
+        "title": "How are you today?",
+        "description": "Speak a few sentences into your diary – Vitana is listening.",
+        "action": "Record"
       },
       "F4": {
-        "eyebrow": "Pitaj Vitanu",
-        "title": "Imaš li pitanje?",
-        "description": "Vitana ti pomaže oko zdravlja, zajednice i još mnogo toga.",
-        "action": "Pitaj Vitanu"
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Ask Vitana",
+        "title": "Got a question?",
+        "description": "Vitana helps you with health, community and more.",
+        "action": "Ask Vitana"
       },
       "F5": {
-        "eyebrow": "Poklapanja",
-        "title": "Ljudi koji ti odgovaraju",
-        "description": "Otkrij današnja poklapanja.",
-        "action": "Pogledaj poklapanja"
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Matches",
+        "title": "People who match you",
+        "description": "Discover today’s matches.",
+        "action": "See matches"
       },
       "F6": {
-        "eyebrow": "Autopilot",
-        "title": "Tvoj autopilot je spreman",
-        "description": "Pusti Vitanu da isplanira tvoje sledeće korake.",
-        "action": "Otvori",
         "_pending_review": {
-          "eyebrow": true
-        }
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Autopilot",
+        "title": "Your Autopilot is ready",
+        "description": "Let Vitana plan your next steps.",
+        "action": "Open"
       },
       "F9": {
-        "eyebrow": "Kalendar",
-        "title": "Tvoj dan na prvi pogled",
-        "description": "Obaveze, događaji i podsetnici na jednom mestu.",
-        "action": "Otvori kalendar"
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Calendar",
+        "title": "Your day at a glance",
+        "description": "Appointments, events and reminders in one place.",
+        "action": "Open calendar"
       },
       "F10": {
-        "eyebrow": "Mediji",
-        "title": "Podeli video ili muziku",
-        "description": "Otpremi svoje medije i inspiriši zajednicu.",
-        "action": "Napravi"
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Media",
+        "title": "Share a video or music",
+        "description": "Upload your media and inspire the community.",
+        "action": "Create"
       },
       "F11": {
-        "eyebrow": "Otkrij",
-        "title": "Otkrij nešto novo",
-        "description": "Proizvodi, usluge i ponude za tvoje blagostanje.",
-        "action": "Pregledaj"
+        "_pending_review": {
+          "eyebrow": true,
+          "title": true,
+          "description": true,
+          "action": true
+        },
+        "eyebrow": "Discover",
+        "title": "Discover something new",
+        "description": "Products, services and offers for your well-being.",
+        "action": "Browse"
       },
       "G1": {
         "eyebrow": "Tvoj profil",
@@ -12715,26 +12937,48 @@
       }
     },
     "interests": {
-      "title": "Tvoja interesovanja",
-      "description": "Izaberi do {max} tema koje voliš.",
-      "selectedCount": "Izabrano {count} od {max}",
-      "save": "Sačuvaj",
-      "cancel": "Otkaži",
-      "fitness": "Fitnes",
-      "nutrition": "Ishrana",
-      "sleep": "San",
-      "mindfulness": "Svesnost",
-      "longevity": "Dugovečnost",
-      "biohacking": "Biohaking",
-      "yoga": "Joga",
-      "running": "Trčanje",
-      "strength": "Trening snage",
-      "dance": "Ples",
-      "nature": "Priroda",
-      "cooking": "Kuvanje",
-      "social": "Zajedništvo",
-      "travel": "Putovanja",
-      "career": "Karijera"
+      "_pending_review": {
+        "title": true,
+        "description": true,
+        "selectedCount": true,
+        "save": true,
+        "cancel": true,
+        "fitness": true,
+        "nutrition": true,
+        "sleep": true,
+        "mindfulness": true,
+        "longevity": true,
+        "biohacking": true,
+        "yoga": true,
+        "running": true,
+        "strength": true,
+        "dance": true,
+        "nature": true,
+        "cooking": true,
+        "social": true,
+        "travel": true,
+        "career": true
+      },
+      "title": "Your interests",
+      "description": "Pick up to {max} topics you love.",
+      "selectedCount": "{count} of {max} selected",
+      "save": "Save",
+      "cancel": "Cancel",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "sleep": "Sleep",
+      "mindfulness": "Mindfulness",
+      "longevity": "Longevity",
+      "biohacking": "Biohacking",
+      "yoga": "Yoga",
+      "running": "Running",
+      "strength": "Strength training",
+      "dance": "Dance",
+      "nature": "Nature",
+      "cooking": "Cooking",
+      "social": "Community",
+      "travel": "Travel",
+      "career": "Career"
     },
     "nativeHealthSync": {
       "osPermission": {

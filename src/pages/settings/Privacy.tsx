@@ -21,6 +21,8 @@ import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { SpotlightConsentToggle } from "@/components/settings/SpotlightConsentToggle";
 import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
 import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
+import { HealthConsentSwitch } from "@/components/settings/HealthConsentSwitch";
+import { HealthConsentSourcesDialog } from "@/components/settings/HealthConsentSourcesDialog";
 import { t } from '@/lib/i18n-toast';
 import { useNavigate } from "react-router-dom";
 import { KeyRound, Trash2 } from "lucide-react";
@@ -32,6 +34,7 @@ import { SettingRow } from "@/components/spotlight/member/SettingRow";
 function Privacy() {
   const [activeTab, setActiveTab] = useUrlTab("section", "profile");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
   const navigate = useNavigate();
   // VTID-05117 — Spotlight (desktop + flag): form frame with the controls that are really saved
@@ -409,29 +412,30 @@ function Privacy() {
                     icon={Users}
                     content={
                       <div className="space-y-4">
-                        {/* VTID-05032 (Health Hub D4): no consent record exists yet, so these
-                            data-sharing switches are off and disabled until they are wired to
-                            real consents (D10). Never default health-data sharing to on. */}
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium">{t('screens.settings.healthDataAnalytics')}</h4>
-                            <p className="text-sm text-muted-foreground">{t('screens.settings.shareAnonymizedHealthDataImproveAi')}</p>
+                        {/* VTID-05093 (Health Hub D10): these switches are bound to the member's
+                            real consent records (GET /api/v1/health/consents) — off unless an
+                            active consent exists, never defaulted on. While the consent store is
+                            pending or the consent wording is still a draft they stay off and
+                            disabled (as in VTID-05032); an active consent can always be withdrawn.
+                            "Third-party integrations" became a per-partner / per-device list. */}
+                        <HealthConsentSwitch
+                          category="health_data_analytics"
+                          labelKey="screens.settings.healthDataAnalytics"
+                          descriptionKey="screens.settings.shareAnonymizedHealthDataImproveAi"
+                        />
+                        <HealthConsentSwitch
+                          category="community_insights"
+                          labelKey="screens.settings.communityInsights"
+                          descriptionKey="screens.settings.allowYourProgressContributeCommunityStatistics"
+                        />
+                        <div className="flex items-center justify-between gap-4" data-testid="health-consent-manage-sources">
+                          <div className="min-w-0 text-start">
+                            <h4 className="font-medium">{t('screens.settings.healthConsentUi.manageSourcesTitle')}</h4>
+                            <p className="text-sm text-muted-foreground">{t('screens.settings.healthConsentUi.manageSourcesRowDescription')}</p>
                           </div>
-                          <Switch checked={false} disabled aria-label={t('screens.settings.healthDataAnalytics')} />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium">{t('screens.settings.communityInsights')}</h4>
-                            <p className="text-sm text-muted-foreground">{t('screens.settings.allowYourProgressContributeCommunityStatistics')}</p>
-                          </div>
-                          <Switch checked={false} disabled aria-label={t('screens.settings.communityInsights')} />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium">{t('screens.settings.thirdpartyIntegrations')}</h4>
-                            <p className="text-sm text-muted-foreground">{t('screens.settings.shareDataWithConnectedAppsServices')}</p>
-                          </div>
-                          <Switch checked={false} disabled aria-label={t('screens.settings.thirdpartyIntegrations')} />
+                          <Button type="button" variant="outline" size="sm" onClick={() => setSourcesOpen(true)}>
+                            {t('screens.settings.healthConsentUi.manageSources')}
+                          </Button>
                         </div>
                       </div>
                     }
@@ -662,6 +666,7 @@ function Privacy() {
         </div>
       </div>
       <PrivacyAuditPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
+      <HealthConsentSourcesDialog open={sourcesOpen} onOpenChange={setSourcesOpen} />
       <AIDataConsentDialog
         open={consentDialogOpen}
         onOpenChange={setConsentDialogOpen}
