@@ -9,7 +9,8 @@
 
 import { create } from "zustand";
 
-export type OAuthBounceProvider = "google" | "youtube";
+/** VTID-05212: Instagram and Facebook (the E6/E7 cards) bounce through the system browser too. */
+export type OAuthBounceProvider = "google" | "youtube" | "instagram" | "facebook";
 export type OAuthBounceStatus = "idle" | "pending" | "success" | "timed_out";
 
 interface OAuthBounceState {

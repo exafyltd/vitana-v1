@@ -86,6 +86,8 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
 // VTID-04406: Mail, Calendar & Contacts come from the gateway hub now.
 import { MailCalendarContactsPanel } from '@/components/settings/connected-apps/MailCalendarContactsPanel';
+import { CONNECTOR_SECTION_HASHES, MAIL_CALENDAR_CONTACTS_ANCHOR } from '@/components/settings/connected-apps/anchors';
+import { useHashScroll } from '@/hooks/useHashScroll';
 import { APP_ORDER } from '@/lib/connected-apps-client';
 // VTID-05032 (Health Hub D3): real wearable connection state from the gateway, never hard-coded.
 import { useWearableProviders, connectedProvider } from '@/hooks/useWearableProviders';
@@ -195,6 +197,10 @@ function ConnectedApps() {
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     }
   }, [toast, startGoogle, startYouTube]);
+
+  // VTID-05212: the Connect Calendar (E8) / Import Contacts (E9) cards land on
+  // the Mail, Calendar & Contacts section, on desktop and on mobile.
+  useHashScroll(CONNECTOR_SECTION_HASHES);
 
   // Mobile view - simplified, native-feeling experience
   if (isMobile) {
@@ -1708,8 +1714,9 @@ function ConnectedApps() {
               />
             </div>
 
-            {/* Mail, Calendar & Contacts */}
-            <div>
+            {/* Mail, Calendar & Contacts — the VTID-05212 card deep links
+                (#calendar, #contacts) scroll here. */}
+            <div id={MAIL_CALENDAR_CONTACTS_ANCHOR} className="scroll-mt-4">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Mail className="w-5 h-5" />
                 {t('screens.settings.mailCalendarContacts')}

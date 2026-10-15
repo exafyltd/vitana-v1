@@ -371,6 +371,8 @@ function startConnectionsPoller(
       if (match) {
         queryClient.invalidateQueries({ queryKey: ["social-connections"] });
         queryClient.invalidateQueries({ queryKey: ["social-accounts", "google", "verify"] });
+        // VTID-05212: a completed Instagram/Facebook connect also completes its card (E6/E7).
+        queryClient.invalidateQueries({ queryKey: ["enrichment-cards"] });
         useOAuthBounceStore.getState().succeed();
         window.clearInterval(intervalId);
       }
@@ -382,9 +384,10 @@ function startConnectionsPoller(
 
 /**
  * VTID-05143: Instagram / Facebook through the same gateway OAuth start
- * (GET /api/v1/social-accounts/connect/:provider). They have no Appilix
- * bounce poller (that store knows Google and YouTube only); the callback
- * lands the member back in the app as for every provider.
+ * (GET /api/v1/social-accounts/connect/:provider). VTID-05212: inside the
+ * Appilix app they ask for the in-app return (`?return=mobile` →
+ * /oauth/complete) and get the bounce overlay + connections poller, as
+ * Google and YouTube do.
  */
 export function useStartInstagramConnect() {
   return useStartSocialOAuth("instagram");
@@ -394,12 +397,17 @@ export function useStartFacebookConnect() {
   return useStartSocialOAuth("facebook");
 }
 
-function useStartSocialOAuth(provider: OAuthBounceProvider | "instagram" | "facebook") {
+function useStartSocialOAuth(provider: OAuthBounceProvider) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connect/${provider}`, {
+      // VTID-05212: inside the Appilix app ask the gateway for the in-app
+      // return (/oauth/complete), as launchIncrementalConsent does — for every
+      // provider, so Instagram/Facebook do not finish in the system browser.
+      const inAppilix = isAppilixWebView();
+      const query = inAppilix ? "?return=mobile" : "";
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connect/${provider}${query}`, {
         method: "GET",
         headers,
       });
@@ -411,7 +419,8 @@ function useStartSocialOAuth(provider: OAuthBounceProvider | "instagram" | "face
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
-      if (isAppilixWebView() && (provider === "google" || provider === "youtube")) {
+      // VTID-05212: Instagram and Facebook get the same in-app return as Google/YouTube.
+      if (inAppilix) {
         useOAuthBounceStore.getState().start(provider);
         startConnectionsPoller(queryClient, provider);
       }

@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05212",
+  "kind": "fix",
+  "paths": [
+    "src/components/enrichment/CompleteProfileCard.tsx",
+    "src/components/feature/TalkToVitanaCard.tsx",
+    "src/components/proactive/DidYouKnowCard.tsx",
+    "src/components/vitana/vitana-card-catalog.ts",
+    "src/hooks/useHashScroll.ts",
+    "src/components/settings/connected-apps/anchors.ts",
+    "src/pages/settings/ConnectedApps.tsx",
+    "src/components/settings/MobileConnectedAppsView.tsx",
+    "src/hooks/useGoogleConnect.ts",
+    "src/hooks/useOAuthBounceStore.ts",
+    "src/components/settings/OAuthBouncePendingOverlay.tsx",
+    "src/components/enrichment/boost-cards.test.tsx",
+    "src/components/enrichment/enrichment-cards.test.tsx",
+    "src/components/vitana/card-actions.vtid-05212.test.tsx",
+    "src/hooks/useHashScroll.vtid-05212.test.tsx",
+    "src/hooks/useGoogleConnect.social-appilix.vtid-05212.test.tsx",
+    "tests/e2e/staging/vtid-05212-card-actions.staging.spec.ts",
+    "docs/validation/VTID-05212/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05212/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -39,6 +39,8 @@ import { t } from '@/lib/i18n-toast';
 const PROVIDER_LABEL: Record<OAuthBounceProvider, string> = {
   google: "Google",
   youtube: "YouTube",
+  instagram: "Instagram",
+  facebook: "Facebook",
 };
 
 export function OAuthBouncePendingOverlay() {
