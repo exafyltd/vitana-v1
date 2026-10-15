@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05221",
+  "kind": "feature",
+  "paths": [
+    "src/lib/tenant-provisioning-api.ts",
+    "src/lib/tenant-provisioning-api.test.ts",
+    "src/components/admin/tenant-provisioning/**",
+    "src/pages/admin/TenantManagement.tsx",
+    "src/i18n/de/tenantProvisioning.json",
+    "src/i18n/en/tenantProvisioning.json",
+    "tests/e2e/staging/vtid-05221-*.staging.spec.ts",
+    "docs/validation/VTID-05221/**",
+    "docs/SCREEN_INVENTORY.md",
+    "i18n-source-stamps/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05221/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
