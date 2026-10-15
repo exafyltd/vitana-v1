@@ -67,15 +67,6 @@ vi.mock('@/integrations/supabase/client', () => ({
 
 import ConversationView from './ConversationView';
 
-function directThread(peer: string) {
-  return {
-    id: peer,
-    type: 'direct',
-    created_by: peer,
-    created_at: '2026-10-13T00:00:00Z',
-    updated_at: '2026-10-13T00:00:00Z',
-    unread_count: 0,
-    participants: [
 
 import ConversationView from './ConversationView';
 
