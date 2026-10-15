@@ -166,7 +166,12 @@ describe('useHashScroll (VTID-05212)', () => {
           </MemoryRouter>,
         );
         act(() => {
-          vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + 5_000 + HASH_SCROLL_POLL_MS * 2);
+          vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + 5_000);
+        });
+        expect(document.getElementById(MAIL_CALENDAR_CONTACTS_ANCHOR)).not.toBeNull(); // React commits the late section when act ends
+        expect(scrolled).toHaveLength(0);
+        act(() => {
+          vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
         });
         expect(scrolled.length).toBeGreaterThan(0);
         expect(HASH_SCROLL_APPEAR_MS).toBeGreaterThan(HASH_SCROLL_WATCH_MS + 5_000);
