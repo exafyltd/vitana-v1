@@ -1042,7 +1042,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-2 sm:px-3 py-1 overscroll-contain" 
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
@@ -1132,7 +1132,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   <div
                     id={`msg-${message.id}`}
                     className={cn(
-                      shouldUseSmallSpacing ? "mb-0.5" : "mb-2",
+                      shouldUseSmallSpacing ? "mb-0.5" : "mb-1.5",
                       "transition-colors duration-500"
                     )}
                   >
