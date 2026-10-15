@@ -10939,7 +10939,12 @@
         "successTitle": "Você está cadastrado 🎉",
         "successBusinessId": "ID do negócio",
         "successBody": "Agora vamos preparar o seu negócio para a Vitanaland.",
-        "successCta": "Continuar configuração"
+        "successCta": "Continuar configuração",
+        "countryConfirm": "País: {name}",
+        "change": "Alterar",
+        "fromEmail": "Do teu endereço de e-mail",
+        "fromWebsite": "Do endereço do teu site",
+        "fromVatId": "Do teu número de IVA"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11073,6 +11078,7 @@
         "businessLabel": "Negócio:",
         "readiness": "{percent}% pronto para publicar",
         "profileTitle": "Perfil do negócio",
+        "profileConfirmTitle": "Está tudo certo?",
         "profileBody": "Seu país e seu site.",
         "profileCta": "Completar",
         "profileSave": "Salvar",

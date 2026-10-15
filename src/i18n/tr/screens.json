@@ -11079,7 +11079,12 @@
         "successTitle": "Kaydın tamam 🎉",
         "successBusinessId": "İşletme kimliği",
         "successBody": "Şimdi işletmeni Vitanaland için hazırlayalım.",
-        "successCta": "Kuruluma devam et"
+        "successCta": "Kuruluma devam et",
+        "countryConfirm": "Ülke: {name}",
+        "change": "Değiştir",
+        "fromEmail": "E-posta adresinden",
+        "fromWebsite": "Web sitesi adresinden",
+        "fromVatId": "KDV numarandan"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11213,6 +11218,7 @@
         "businessLabel": "İşletme:",
         "readiness": "Yayına {percent}% hazır",
         "profileTitle": "İşletme profili",
+        "profileConfirmTitle": "Bu doğru mu?",
         "profileBody": "Ülken ve web siten.",
         "profileCta": "Tamamla",
         "profileSave": "Kaydet",

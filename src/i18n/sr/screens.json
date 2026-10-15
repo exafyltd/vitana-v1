@@ -11071,7 +11071,12 @@
         "successTitle": "Registracija je uspela 🎉",
         "successBusinessId": "ID posla",
         "successBody": "Sada da pripremimo tvoj posao za Vitanaland.",
-        "successCta": "Nastavi podešavanje"
+        "successCta": "Nastavi podešavanje",
+        "countryConfirm": "Država: {name}",
+        "change": "Promeni",
+        "fromEmail": "Iz tvoje imejl adrese",
+        "fromWebsite": "Iz adrese tvog sajta",
+        "fromVatId": "Iz tvog PDV broja"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11205,6 +11210,7 @@
         "businessLabel": "Posao:",
         "readiness": "{percent}% spremno za objavu",
         "profileTitle": "Profil posla",
+        "profileConfirmTitle": "Da li je ovo tačno?",
         "profileBody": "Tvoja država i veb-sajt.",
         "profileCta": "Dopuni",
         "profileSave": "Sačuvaj",

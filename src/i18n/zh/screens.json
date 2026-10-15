@@ -11072,7 +11072,12 @@
         "successTitle": "注册成功 🎉",
         "successBusinessId": "业务 ID",
         "successBody": "现在来为 Vitanaland 准备你的业务。",
-        "successCta": "继续设置"
+        "successCta": "继续设置",
+        "countryConfirm": "国家/地区：{name}",
+        "change": "更改",
+        "fromEmail": "来自你的电子邮件地址",
+        "fromWebsite": "来自你的网站地址",
+        "fromVatId": "来自你的增值税号"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11206,6 +11211,7 @@
         "businessLabel": "业务：",
         "readiness": "已完成 {percent}%，即将上线",
         "profileTitle": "业务资料",
+        "profileConfirmTitle": "这些信息正确吗？",
         "profileBody": "你的国家/地区和网站。",
         "profileCta": "完善",
         "profileSave": "保存",
