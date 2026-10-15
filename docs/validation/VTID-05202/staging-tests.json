@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05202",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Recent emojis are MRU, de-duplicated, capped, seeded to two rows and survive unavailable storage",
+      "ref": "npx vitest run src/components/ui/emoji-picker.vtid-05202.test.tsx",
+      "cwd": ".",
+      "reason": "Pure client-side state in localStorage; no staging data involved. Proven with Vitest."
+    }
+  ]
+}
