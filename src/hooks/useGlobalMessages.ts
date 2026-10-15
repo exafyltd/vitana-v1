@@ -7,6 +7,7 @@ import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/
 
 import { isVitanaBot, VITANA_BOT_USER_ID, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { notifyNewMessage } from '@/lib/pushNotifications';
+import { isAppilix } from '@/lib/appilix';
 import {
   persistThreads,
   getCachedThreads,
@@ -1559,6 +1560,20 @@ export function useGlobalMessages(
           const raw = payload.new as ChatMessage;
           const peerId = raw.sender_id;
 
+          // VTID-TBD (chat-ux): is the user currently looking at THIS
+          // conversation? When the thread the message belongs to is already
+          // open and the app is focused, the message is effectively read on
+          // arrival — so we must NOT raise a notification for it and must NOT
+          // bump the unread badge. `activeThreadIdRef` mirrors the open
+          // thread; the focus check mirrors notifyNewMessage's own foreground
+          // test (document.hidden only inside the Appilix WebView, where
+          // document.hasFocus() is unreliable).
+          const isForeground = isAppilix()
+            ? !document.hidden
+            : (!document.hidden && document.hasFocus());
+          const isViewingThisThread =
+            isForeground && activeThreadIdRef.current === peerId;
+
           // LATENCY FIX: render the incoming message IMMEDIATELY. Previously this
           // callback `await`ed enrichProfiles() (a network round-trip) BEFORE
           // touching the cache, adding 0.5–2s of delay per message on mobile.
@@ -1598,7 +1613,11 @@ export function useGlobalMessages(
                       ...existing,
                       updated_at: raw.created_at,
                       last_message: msg,
-                      unread_count: existing.unread_count + 1,
+                      // Don't raise the unread count for a thread the user is
+                      // actively viewing — the message is read on arrival.
+                      unread_count: isViewingThisThread
+                        ? existing.unread_count
+                        : existing.unread_count + 1,
                     },
                     ...prev.filter((t) => t.id !== peerId),
                   ];
@@ -1616,9 +1635,16 @@ export function useGlobalMessages(
           const instantMsg = toGlobalMessage(raw, peerId, cachedProfiles);
           applyToCaches(instantMsg, false);
 
-          // Show local browser notification when app is backgrounded.
-          const senderName = instantMsg.sender?.display_name || 'Someone';
-          notifyNewMessage(senderName, raw.content || '', peerId);
+          // Show local browser notification when app is backgrounded — but
+          // never for the conversation the user is already reading. (Even
+          // backgrounded, notifyNewMessage would fire; the open-thread guard
+          // here means re-focusing the tab won't surface a card for a message
+          // that is already on screen.) notifyNewMessage still applies its own
+          // foreground + muted-thread guards.
+          if (!isViewingThisThread) {
+            const senderName = instantMsg.sender?.display_name || 'Someone';
+            notifyNewMessage(senderName, raw.content || '', peerId);
+          }
 
           // 2) Enrich the sender profile in the background and patch the bubble.
           enrichProfiles([raw.sender_id])
