@@ -101,7 +101,7 @@ export function MobileIdCardSwitcher({
   });
 
   return (
-    <div className={cn("", className)}>
+    <div className={cn("", className)} data-testid="profile-id-card">
       {/* Segmented Control — full width, compact (VTID-04470): it sits
           directly under the Appilix app bar, so vertical space is spent on
           the Vitana Index card instead of padding. */}

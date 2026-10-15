@@ -227,7 +227,13 @@ describe('restyled existing cards keep their behaviour', () => {
 describe('per-screen card lists (plan §4)', () => {
   it('match the plan, and Home gets no new feature cards', () => {
     expect(CARD_SCREENS.home.features).toEqual([]);
-    expect(CARD_SCREENS.profile.features).toEqual(['F2', 'F4', 'F7']);
+    // VTID-05210: Profile shows only profile-enriching cards — no feature cards.
+    expect(CARD_SCREENS.profile).toEqual({
+      server: 'profile',
+      allow: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E11', 'G1'],
+      boost: ['G1'],
+      features: [],
+    });
     expect(CARD_SCREENS['vitana-index'].features).toEqual(['F3', 'F4', 'F6']);
     expect(CARD_SCREENS.autopilot.features).toEqual(['F1', 'F2', 'F3', 'F9']);
     expect(CARD_SCREENS.community.features).toEqual(['F5', 'F7', 'F10']);
