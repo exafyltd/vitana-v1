@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05209",
+  "kind": "feature",
+  "paths": [
+    "src/lib/commerce-suggestions.ts",
+    "src/components/commerce/RegisterOrgDialog.tsx",
+    "src/components/commerce/SetupHub.tsx",
+    "src/components/commerce/AiSetupSheet.tsx",
+    "src/components/commerce/company-suggestions.vtid-05209.test.tsx",
+    "tests/e2e/staging/vtid-05209-company-suggestions.staging.spec.ts",
+    "src/i18n/*/screens.json",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05209/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": [],
+  "sparring_record": "docs/validation/VTID-05209/plan-sparring.md"
+}

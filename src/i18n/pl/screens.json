@@ -11083,7 +11083,12 @@
         "successTitle": "Rejestracja zakończona 🎉",
         "successBusinessId": "ID firmy",
         "successBody": "Teraz przygotujmy twoją firmę do Vitanaland.",
-        "successCta": "Kontynuuj konfigurację"
+        "successCta": "Kontynuuj konfigurację",
+        "countryConfirm": "Kraj: {name}",
+        "change": "Zmień",
+        "fromEmail": "Z twojego adresu e-mail",
+        "fromWebsite": "Z adresu twojej strony internetowej",
+        "fromVatId": "Z twojego numeru VAT"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11217,6 +11222,7 @@
         "businessLabel": "Firma:",
         "readiness": "{percent}% gotowości do publikacji",
         "profileTitle": "Profil firmy",
+        "profileConfirmTitle": "Czy wszystko się zgadza?",
         "profileBody": "Twój kraj i strona internetowa.",
         "profileCta": "Uzupełnij",
         "profileSave": "Zapisz",

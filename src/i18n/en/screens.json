@@ -10743,7 +10743,12 @@
         "successTitle": "You're registered 🎉",
         "successBusinessId": "Business ID",
         "successBody": "Now let's get your business ready for Vitanaland.",
-        "successCta": "Continue setup"
+        "successCta": "Continue setup",
+        "countryConfirm": "Country: {name}",
+        "change": "Change",
+        "fromEmail": "From your email address",
+        "fromWebsite": "From your website address",
+        "fromVatId": "From your VAT ID"
       },
       "healthOrders": {
         "sectionTitle": "Health-test orders",
@@ -10812,6 +10817,7 @@
         "businessLabel": "Business:",
         "readiness": "{percent}% ready to go live",
         "profileTitle": "Business profile",
+        "profileConfirmTitle": "Does this look right?",
         "profileBody": "Your country and website.",
         "profileCta": "Complete",
         "profileSave": "Save",

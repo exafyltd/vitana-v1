@@ -11079,7 +11079,12 @@
         "successTitle": "تم تسجيلك 🎉",
         "successBusinessId": "معرّف النشاط التجاري",
         "successBody": "لنجهّز الآن نشاطك التجاري لـ Vitanaland.",
-        "successCta": "متابعة الإعداد"
+        "successCta": "متابعة الإعداد",
+        "countryConfirm": "الدولة: {name}",
+        "change": "تغيير",
+        "fromEmail": "من عنوان بريدك الإلكتروني",
+        "fromWebsite": "من عنوان موقعك الإلكتروني",
+        "fromVatId": "من رقم ضريبة القيمة المضافة الخاص بك"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11213,6 +11218,7 @@
         "businessLabel": "النشاط التجاري:",
         "readiness": "جاهز للنشر بنسبة {percent}%",
         "profileTitle": "ملف النشاط التجاري",
+        "profileConfirmTitle": "هل هذه المعلومات صحيحة؟",
         "profileBody": "دولتك وموقعك الإلكتروني.",
         "profileCta": "إكمال",
         "profileSave": "حفظ",

@@ -7,6 +7,11 @@
  *   1. What does your business offer? (category → `org_type`, and
  *      `commerce_vertical` derived from it, `src/lib/commerce-categories.ts`)
  *   2. Tell us about your business — name, website (optional), country.
+ *      VTID-05209: the website is prefilled from a confirmed business email and
+ *      the country, when Vitanaland can tell it reliably, is one confirm line
+ *      ("Country: Germany · Change") instead of a list of ~200. Nothing is
+ *      saved until the supplier taps Create; a country they picked themselves
+ *      is never replaced.
  *      The short name (`org_key`) is no longer asked for: it is derived from
  *      the name and a clash is retried automatically (`commerce-register.ts`).
  *   → "You're registered", then "Continue setup" into the setup hub.
@@ -23,7 +28,7 @@
  * What was typed is kept when going back, and survives closing the sheet or
  * reloading (per-browser draft, cleared once the business exists).
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ResponsiveDialog,
   ResponsiveDialogBody,
@@ -41,6 +46,7 @@ import { PARTNER_ORGS_API } from '@/lib/commerce-host';
 import { COMMERCE_CATEGORIES, commerceVerticalForCategory } from '@/lib/commerce-categories';
 import { countryOptions, guessCountry } from '@/lib/commerce-countries';
 import { isValidWebsite, registerBusiness } from '@/lib/commerce-register';
+import { NO_SUGGESTIONS, fetchCompanySuggestions, suggestionSourceKey, type CompanySuggestions } from '@/lib/commerce-suggestions';
 import { useCommerceSkin } from '@/components/commerce/CommerceShell';
 import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { t, notifyError } from '@/lib/i18n-toast';
@@ -97,19 +103,51 @@ export function RegisterOrgDialog({
   const [form, setForm] = useState<Form>(EMPTY_FORM);
   const [created, setCreated] = useState<MyOrgRow | null>(null);
   const countries = useMemo(() => (open ? countryOptions() : []), [open]);
+  // VTID-05209: what Vitanaland can suggest, and whether the supplier chose the country themselves.
+  const [suggestions, setSuggestions] = useState<CompanySuggestions>(NO_SUGGESTIONS);
+  const countryPicked = useRef(false);
+  const [countryEditing, setCountryEditing] = useState(false);
+
+  /** Prefill from a suggestion: only empty fields, never a country the supplier picked. */
+  const applySuggestions = (s: CompanySuggestions) => {
+    setSuggestions(s);
+    setForm((f) => ({
+      ...f,
+      website: f.website.trim() ? f.website : s.website?.value ?? f.website,
+      country: countryPicked.current || !s.country ? f.country : s.country.value,
+    }));
+  };
 
   // Resume a draft (or preselect the country) each time the sheet opens.
   useEffect(() => {
     if (!open || created) return;
     const draft = readDraft();
+    let website = '';
     if (draft) {
       setStep(draft.step);
       setForm(draft.form);
+      website = draft.form.website;
     } else {
       setForm((f) => (f.country ? f : { ...f, country: guessCountry() }));
     }
+    // A resumed draft's country may be the supplier's own choice: keep it.
+    countryPicked.current = !!draft?.form.country;
+    setCountryEditing(false);
+    let live = true;
+    void fetchCompanySuggestions(adminFetch, { website }).then((s) => {
+      if (live) applySuggestions(s);
+    });
+    return () => {
+      live = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  /** A typed website can name the country (`.de`, `.co.uk`): ask again when the field is left. */
+  const onWebsiteBlur = () => {
+    if (!isValidWebsite(form.website)) return;
+    void fetchCompanySuggestions(adminFetch, { website: form.website }).then(applySuggestions);
+  };
 
   useEffect(() => {
     if (open && !created) writeDraft(step, form);
@@ -154,6 +192,11 @@ export function RegisterOrgDialog({
   };
 
   const websiteOk = isValidWebsite(form.website);
+  const suggestedCountry = suggestions.country;
+  // One confirm line instead of the list, while the country is the reliable suggestion.
+  const countryConfirmLine = !countryEditing && !!suggestedCountry && form.country === suggestedCountry.value;
+  const countryName = countries.find((c) => c.code === form.country)?.name ?? form.country;
+  const websiteFromEmail = !!suggestions.website && form.website === suggestions.website.value;
   const stepValid = [!!form.category, !!form.display_name.trim() && !!form.country && websiteOk][step];
 
   const stepTitleKey = [
@@ -256,6 +299,7 @@ export function RegisterOrgDialog({
                       dir="ltr"
                       value={form.website}
                       onChange={(e) => update({ website: e.target.value })}
+                      onBlur={onWebsiteBlur}
                       autoComplete="url"
                       autoCapitalize="none"
                       autoCorrect="off"
@@ -263,19 +307,46 @@ export function RegisterOrgDialog({
                       aria-invalid={!websiteOk}
                       className={fieldClass}
                     />
-                    <p className={`text-xs ${websiteOk ? 'text-muted-foreground' : 'text-destructive'}`}>
-                      {websiteOk
-                        ? t('screens.commerceportal.orgOnboarding.websiteHint')
-                        : t('screens.commerceportal.orgOnboarding.websiteInvalid')}
+                    <p className={`text-xs ${websiteOk ? 'text-muted-foreground' : 'text-destructive'}`} data-testid="register-website-hint">
+                      {!websiteOk
+                        ? t('screens.commerceportal.orgOnboarding.websiteInvalid')
+                        : websiteFromEmail
+                          ? t('screens.commerceportal.orgOnboarding.fromEmail')
+                          : t('screens.commerceportal.orgOnboarding.websiteHint')}
                     </p>
                   </div>
+                  {countryConfirmLine && suggestedCountry ? (
+                    <div className="flex items-center justify-between gap-3 rounded-xl border border-border p-3" data-testid="register-country-confirm">
+                      <div className="min-w-0">
+                        <p className="text-base font-medium text-foreground">
+                          {t('screens.commerceportal.orgOnboarding.countryConfirm', { name: countryName })}
+                        </p>
+                        {suggestionSourceKey(suggestedCountry.source) && (
+                          <p className="text-xs text-muted-foreground">{t(suggestionSourceKey(suggestedCountry.source) as string)}</p>
+                        )}
+                      </div>
+                      <Button
+                        type="button"
+                        variant="link"
+                        className="h-auto shrink-0 p-0 text-base"
+                        onClick={() => setCountryEditing(true)}
+                        data-testid="register-country-change"
+                      >
+                        {t('screens.commerceportal.orgOnboarding.change')}
+                      </Button>
+                    </div>
+                  ) : (
                   <div className="space-y-1.5">
                     <Label htmlFor="ro-country">{t('screens.commerceportal.orgOnboarding.country')}</Label>
                     <select
                       id="ro-country"
                       value={form.country}
-                      onChange={(e) => update({ country: e.target.value })}
+                      onChange={(e) => {
+                        countryPicked.current = true;
+                        update({ country: e.target.value });
+                      }}
                       autoComplete="country"
+                      data-testid="register-country-select"
                       className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                     >
                       <option value="" disabled>
@@ -288,6 +359,7 @@ export function RegisterOrgDialog({
                       ))}
                     </select>
                   </div>
+                  )}
                 </>
               )}
             </ResponsiveDialogBody>
