@@ -18,6 +18,8 @@ AC-5: AI setup review: country = what the AI read, else the website's country do
   TEST: src/components/commerce/AiSetupSheet.tsx review fallback (code) + src/lib/commerce-ai-setup.test.ts (existing reviewFromDraft rules)
 AC-6: All new copy in 11 locales (DE first, du-form); no raw strings; RTL-safe (logical classes only).
   TEST: i18n checks in CI (PR-GATE / i18n-check) + docs/SCREEN_INVENTORY.md regenerated
+AC-7 (fix-forward, Codex review of #1429): a value typed while suggestions load is never replaced, the profile sheet never flips to the summary mid-edit, and an older suggestion answer arriving late never overwrites the latest one (registration and AI setup review).
+  TEST: src/components/commerce/company-suggestions.vtid-05209.test.tsx ("a value typed while the suggestions load", "an older suggestion answer arriving late")
 
 ## UX acceptance (Commerce UX contract)
 - User steps: unchanged (registration 2 steps; profile 1 sheet).
