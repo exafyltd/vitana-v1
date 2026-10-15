@@ -288,3 +288,35 @@ jobs:
           echo "❌ **preview-e2e** — failed (see job log)" >> "$GITHUB_STEP_SUMMARY"
           if [ "$ENFORCE" = "true" ]; then exit 1; fi
           echo "::warning::preview-e2e report-only — would fail"
+
+  # VTID-05213: Lane scope — a lane PR changes only its lane's declared `paths`; governance paths need an
+  # `executor: claude` lane; a kiro/ branch names its lane in trailers. The script and, for lanes whose spec lives
+  # in vitana-platform, the lane file come from vitana-platform main. Its own job and check run (not part of the
+  # report-only Verdict) because the Project Manager merges only when this check is green.
+  lane-scope:
+    name: Lane scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BASE: ${{ github.event.pull_request.base.sha }}
+      HEAD: ${{ github.event.pull_request.head.sha }}
+      HEAD_REF: ${{ github.head_ref }}
+      GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Lane scope
+        run: |
+          if ! gh api -H 'Accept: application/vnd.github.raw' \
+              "repos/exafyltd/vitana-platform/contents/scripts/collab/queue.mjs?ref=main" > "$RUNNER_TEMP/queue.mjs" \
+              || ! grep -q "'scope-check'" "$RUNNER_TEMP/queue.mjs"; then
+            echo "➖ **lane scope** — skipped: queue.mjs with scope-check not available from vitana-platform main" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node "$RUNNER_TEMP/queue.mjs" scope-check --repo . --base "$BASE" --head "$HEAD" --branch "$HEAD_REF" \
+            --lane-repo exafyltd/vitana-platform --summary "$GITHUB_STEP_SUMMARY"
