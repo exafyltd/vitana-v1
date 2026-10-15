@@ -4,12 +4,13 @@
  * & Contacts section on desktop and mobile (source checks for the page, which
  * needs dozens of providers to render).
  */
+import React from 'react';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, act } from '@testing-library/react';
 import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useHashScroll, HASH_SCROLL_RETRY_MS, HASH_SCROLL_WATCH_MS, HASH_SCROLL_POLL_MS } from './useHashScroll';
+import { useHashScroll, HASH_SCROLL_RETRY_MS, HASH_SCROLL_WATCH_MS, HASH_SCROLL_POLL_MS, HASH_SCROLL_APPEAR_MS } from './useHashScroll';
 import { CONNECTOR_SECTION_HASHES, MAIL_CALENDAR_CONTACTS_ANCHOR } from '@/components/settings/connected-apps/anchors';
 
 let goTo: (to: string) => void = () => {};
@@ -138,6 +139,45 @@ describe('useHashScroll (VTID-05212)', () => {
         vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
       });
       expect(scrolled).toHaveLength(afterWatch);
+    });
+
+    it('catches a section that only appears after the watch time has passed (cold load)', () => {
+      function LatePage() {
+        useHashScroll(CONNECTOR_SECTION_HASHES);
+        const [shown, setShown] = React.useState(false);
+        React.useEffect(() => {
+          const t = setTimeout(() => setShown(true), HASH_SCROLL_WATCH_MS + 5_000);
+          return () => clearTimeout(t);
+        }, []);
+        return shown ? <div id={MAIL_CALENDAR_CONTACTS_ANCHOR}>mail, calendar, contacts</div> : <div>loading</div>;
+      }
+      // jsdom lays nothing out (top 0); put the late section far below the top, as on desktop.
+      const realRect = Element.prototype.getBoundingClientRect;
+      Element.prototype.getBoundingClientRect = function (this: Element) {
+        const top = this.id === MAIL_CALENDAR_CONTACTS_ANCHOR ? 900 : 0;
+        return { top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) } as DOMRect;
+      };
+      try {
+        render(
+          <MemoryRouter initialEntries={['/connectors?tab=productivity#calendar']}>
+            <Routes>
+              <Route path="/connectors" element={<LatePage />} />
+            </Routes>
+          </MemoryRouter>,
+        );
+        act(() => {
+          vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + 5_000);
+        });
+        expect(document.getElementById(MAIL_CALENDAR_CONTACTS_ANCHOR)).not.toBeNull(); // React commits the late section when act ends
+        expect(scrolled).toHaveLength(0);
+        act(() => {
+          vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
+        });
+        expect(scrolled.length).toBeGreaterThan(0);
+        expect(HASH_SCROLL_APPEAR_MS).toBeGreaterThan(HASH_SCROLL_WATCH_MS + 5_000);
+      } finally {
+        Element.prototype.getBoundingClientRect = realRect;
+      }
     });
 
     it.each(['wheel', 'touchstart', 'keydown', 'pointerdown'])('stops once the member takes over (%s)', (name) => {
