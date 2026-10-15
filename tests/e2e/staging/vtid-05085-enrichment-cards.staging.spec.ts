@@ -83,8 +83,8 @@ test('Home asks for the enrichment cards and shows at most 3 new cards; Profile 
   const strip = page.getByTestId('vitana-card-strip-profile-server').first();
   // VTID-05210: the profile carousel shows only the profile-enriching cards
   // (PROFILE_ENRICHMENT_CARDS); G1 sits in the stacked half, E8–E10 are not shown.
-  const profileCards = new Set(['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E11']);
-  const onCarousel = profileBody.cards.filter((c: { card_type: string; category: string }) => c.category === 'enrichment' && profileCards.has(c.card_type));
+  const profileEnrichmentTypes = new Set(['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E11']);
+  const onCarousel = profileBody.cards.filter((c: { card_type: string; category: string }) => c.category === 'enrichment' && profileEnrichmentTypes.has(c.card_type));
   if (onCarousel.length > 0) {
     await expect(strip).toBeVisible({ timeout: 30_000 });
     await expect(strip.locator('[data-vitana-card]').first()).toBeVisible();
