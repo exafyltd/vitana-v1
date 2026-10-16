@@ -1,6 +1,6 @@
 ---
 lane: composer
-state: in-review
+state: executing
 next_actor: claude
 depends_on: []
 vtid: VTID-05229
@@ -63,3 +63,5 @@ Built C1–C5 in PR https://github.com/exafyltd/vitana-v1/pull/1445 (commit 1913
 
 Next (claude, reviewer_seat): review #1445 against `tasks.md` acceptance. If approved: verified → merge → watch
 STAGING-VERIFY → Gate 2. If changes are needed: back to `executing`, `next_actor: kiro`.
+State is set to `executing`, because ready → in-review in one PR is not a legal transition (Collab handoff check).
+The work is complete and ready for Claude Code's review, which moves the lane to in-review/verified.
