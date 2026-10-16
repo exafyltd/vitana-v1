@@ -6,7 +6,8 @@
 //
 // The test user is normally neither a professional nor staff. Then the spec proves
 // the role routes still gate exactly as before (ProtectedRoute renders
-// NotAuthorized in place: no workspace frame, no role content) and skips the
+// NotAuthorized in place, or useRoleRouteEnforcement redirects to /home: no
+// workspace frame, no role content) and skips the
 // role-only assertions with that reason. When the account does hold the roles, it
 // checks each screen with Spotlight on (<ScreenFrame archetype="workspace">, full
 // width, no rail, no horizontal scroll) and off (legacy tree, no [data-archetype]).
@@ -50,30 +51,43 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
   }, session);
 }
 
-/** Waits until the route has settled into either the workspace frame or the not-authorized page. */
-async function settle(page: import('@playwright/test').Page) {
+/**
+ * Waits until the route has settled into the workspace frame or a gate. Two gates exist for a member without
+ * the role: ProtectedRoute renders NotAuthorized in place, or — when ProtectedRoute lets the account through
+ * (an Exafy admin passes every role check) but its dbRole is community — useRoleRouteEnforcement redirects to
+ * /home. The role query retries before it settles (the guard aborts get_role_preference), so the frame can
+ * show for one render before that redirect: it only counts once it is still on the requested path after the
+ * retries.
+ */
+async function settle(page: import('@playwright/test').Page, path: string): Promise<'frame' | 'gated'> {
   const workspace = page.locator('[data-archetype="workspace"]');
   const denied = page.locator('main a[href="/"]');
-  await expect(workspace.or(denied).first()).toBeVisible({ timeout: 45_000 });
-  return (await workspace.count()) > 0;
+  const onPath = () => new URL(page.url()).pathname.startsWith(path);
+  const state = async () =>
+    !onPath() || (await denied.count()) > 0 ? 'gated' : (await workspace.count()) > 0 ? 'frame?' : 'pending';
+  await expect.poll(state, { timeout: 45_000, intervals: [500] }).not.toBe('pending');
+  if ((await state()) === 'gated') return 'gated';
+  await page.waitForTimeout(10_000); // past React Query's default retry backoff
+  return (await state()) === 'frame?' ? 'frame' : 'gated';
 }
 
 test('VTID-05116: Professional + Staff screens render the workspace archetype — or still gate a member without the role', async ({ page, request }) => {
-  test.setTimeout(180_000);
+  test.setTimeout(300_000);
   await signIn(page, request);
   await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
 
   await page.goto(`${SCREENS[0]}?spotlight=1`, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('[data-sidebar="sidebar"]').first()).toBeVisible({ timeout: 45_000 });
-  const hasRole = await settle(page);
+  const hasRole = (await settle(page, SCREENS[0])) === 'frame';
 
   if (!hasRole) {
-    // Gate unchanged: every role route renders NotAuthorized in place for this account.
+    // Gate unchanged: every role route renders NotAuthorized in place, or redirects to /home, for this account.
     for (const p of SCREENS) {
       await page.goto(`${p}?spotlight=1`, { waitUntil: 'domcontentloaded' });
-      expect(await settle(page), `${p} must stay gated for a member without the role`).toBe(false);
-      await expect(page).toHaveURL(new RegExp(`${p.replace(/\//g, '\\/')}(\\?|$)`));
-      await expect(page.locator('[data-archetype]')).toHaveCount(0);
+      expect(await settle(page, p), `${p} must stay gated for a member without the role`).toBe('gated');
+      const landed = new URL(page.url()).pathname;
+      expect(landed === p || landed === '/home', `${p}: NotAuthorized in place or redirected to /home (landed on ${landed})`).toBe(true);
+      await expect(page.locator('[data-archetype="workspace"]')).toHaveCount(0);
     }
     test.skip(true, 'The staging test user has neither the professional nor the staff role: gating verified; the workspace layout itself is covered by src/pages/staff/vtid-05116-role-workspace.test.tsx');
     return;
@@ -82,7 +96,7 @@ test('VTID-05116: Professional + Staff screens render the workspace archetype �
   for (const p of SCREENS) {
     // Spotlight on: the page body is inside the workspace frame.
     await page.goto(`${p}?spotlight=1`, { waitUntil: 'domcontentloaded' });
-    expect(await settle(page), `${p} workspace frame`).toBe(true);
+    expect(await settle(page, p), `${p} workspace frame`).toBe('frame');
     const frame = page.locator('[data-archetype="workspace"]');
     await expect(frame).toHaveCount(1);
     await expect(frame.locator('[data-spotlight-layout]')).toHaveAttribute('data-width', 'full');
