@@ -24,7 +24,9 @@
       "handleMinLength": "Co najmniej 3 znaki",
       "saving": "Konfiguruję...",
       "submit": "Zaczynajmy!",
-      "_pending_review": {}
+      "_pending_review": {},
+      "communityIntroLabel": "Przedstaw mnie społeczności",
+      "communityIntroHint": "W pierwszym tygodniu inni członkowie widzą krótką kartę powitalną o Tobie i mogą się przywitać. Możesz to zmienić w dowolnym momencie w Ustawieniach."
     },
     "_pending_review": {}
   },

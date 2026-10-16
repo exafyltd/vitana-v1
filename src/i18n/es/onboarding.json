@@ -24,7 +24,9 @@
       "handleMinLength": "Al menos 3 caracteres",
       "saving": "Configurando...",
       "submit": "¡Empecemos!",
-      "_pending_review": {}
+      "_pending_review": {},
+      "communityIntroLabel": "Presentarme a la comunidad",
+      "communityIntroHint": "Durante tu primera semana, otros miembros ven una breve tarjeta de bienvenida sobre ti y pueden saludarte. Puedes cambiarlo cuando quieras en Ajustes."
     },
     "_pending_review": {}
   },

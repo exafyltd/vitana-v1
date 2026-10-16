@@ -7672,7 +7672,10 @@
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded."
-      }
+      },
+      "communityIntroTitle": "Presentarme a la comunidad",
+      "communityIntroBody": "Durante tu primera semana, otros miembros ven una breve tarjeta de bienvenida sobre ti y pueden saludarte.",
+      "communityIntroSaveFailed": "No se pudo guardar tu ajuste. Inténtalo de nuevo."
     },
     "sharing": {
       "activateCampaign": "Activar campaña",

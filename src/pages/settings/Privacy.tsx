@@ -20,6 +20,7 @@ import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { SpotlightConsentToggle } from "@/components/settings/SpotlightConsentToggle";
 import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
+import { CommunityIntroToggle } from "@/components/settings/CommunityIntroToggle";
 import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
 import { t } from '@/lib/i18n-toast';
 import { useNavigate } from "react-router-dom";
@@ -72,6 +73,7 @@ function Privacy() {
             <SpotlightPanel Icon={Eye} title={t('screens.settings.profileVisibilityControls')}>
               <div className="flex flex-col gap-4">
                 <SpotlightConsentToggle />
+                <CommunityIntroToggle />
                 <PhoneNumberCard />
                 <PhoneDiscoverabilityToggle />
               </div>
@@ -288,6 +290,7 @@ function Privacy() {
                           <Switch />
                         </div>
                         <SpotlightConsentToggle />
+                        <CommunityIntroToggle />
                         <PhoneNumberCard />
                         <PhoneDiscoverabilityToggle />
                       </div>

@@ -13,6 +13,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n-toast";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
 import { fetchGreetedMemberIds } from "@/lib/new-member-greeted";
+import { COMMUNITY_INTRO_COLUMN } from "@/lib/community-intro";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -197,6 +198,8 @@ export async function fetchCommunityNews(
         .from("global_community_profiles")
         .select("id, user_id, display_name, avatar_url, bio, created_at")
         .eq("is_visible", true)
+        // VTID-05206: only members who agreed to be introduced (same filter in useAllNewsFeed.ts).
+        .eq(COMMUNITY_INTRO_COLUMN, true)
         .gte("created_at", weekAgo)
         .order("created_at", { ascending: false })
         .limit(5);

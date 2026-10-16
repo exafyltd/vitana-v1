@@ -44,6 +44,10 @@ vi.mock("@/components/settings/PhoneNumberCard", () => ({ PhoneNumberCard: () =>
 vi.mock("@/components/settings/PhoneDiscoverabilityToggle", () => ({
   PhoneDiscoverabilityToggle: () => <div data-testid="stub-phone-discoverability" />,
 }));
+// VTID-05206: the "Introduce me to the community" switch sits in the same section.
+vi.mock("@/components/settings/CommunityIntroToggle", () => ({
+  CommunityIntroToggle: () => <div data-testid="stub-community-intro" />,
+}));
 
 import MobileSettings from "../MobileSettings";
 
@@ -57,6 +61,8 @@ describe("MobileSettings privacy (VTID-05096)", () => {
     const block = screen.getByTestId("mobile-privacy-phone");
     expect(block.querySelector('[data-testid="stub-phone-number-card"]')).toBeTruthy();
     expect(block.querySelector('[data-testid="stub-phone-discoverability"]')).toBeTruthy();
+    // VTID-05206
+    expect(screen.getByTestId("mobile-privacy-community-intro").querySelector('[data-testid="stub-community-intro"]')).toBeTruthy();
   });
 
   it("the other privacy sections do not carry it", () => {

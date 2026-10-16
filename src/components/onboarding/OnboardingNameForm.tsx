@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { useTranslation } from '@/hooks/useTranslation';
 import { markOnboardingComplete } from '@/hooks/useOnboardingStatus';
+import { setCommunityIntroOptIn } from '@/lib/community-intro';
 
 interface OnboardingNameFormProps {
   onComplete: () => void;
@@ -37,6 +39,9 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
   const [handleStatus, setHandleStatus] = useState<HandleStatus>('idle');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  // VTID-05206: "Introduce me to the community" — on by default (owner D1);
+  // the member's new global_community_profiles row already defaults to true.
+  const [introduceMe, setIntroduceMe] = useState(true);
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-suggest handle from display name (only if user hasn't typed a handle)
@@ -155,6 +160,16 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
           if (error) console.warn('[Onboarding] app_users update failed:', error.message);
         });
 
+      // VTID-05206: only an explicit "no" is written. Leaving the switch on keeps
+      // the row's default, so this step can never opt in a member who existed
+      // before the rollout (their row is false). Non-fatal like app_users above;
+      // the member can change it any time in Settings → Privacy.
+      if (!introduceMe) {
+        await setCommunityIntroOptIn(user.id, false).catch((err: unknown) => {
+          console.warn('[Onboarding] community intro opt-out failed:', err instanceof Error ? err.message : err);
+        });
+      }
+
       markOnboardingComplete(user.id);
       onComplete();
     } catch (err: any) {
@@ -250,6 +265,27 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
               {translate('onboarding.nameForm.handleMinLength', 'At least 3 characters')}
             </p>
           )}
+        </div>
+
+        {/* VTID-05206: Introduce me to the community */}
+        {/* design-allow-next-line: same palette as the rest of this always-white card (bg-white/95); theme tokens would turn light-on-white in dark mode */}
+        <div className="flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3" data-testid="onb-community-intro">
+          <div className="space-y-1">
+            {/* design-allow-next-line: label colour of the other fields on this always-white card */}
+            <Label htmlFor="onb-community-intro" className="text-sm font-medium text-gray-700">
+              {translate('onboarding.nameForm.communityIntroLabel', 'Introduce me to the community')}
+            </Label>
+            {/* design-allow-next-line: hint colour of the subtitle on this always-white card */}
+            <p className="text-xs text-gray-500">
+              {translate('onboarding.nameForm.communityIntroHint', 'During your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.')}
+            </p>
+          </div>
+          <Switch
+            id="onb-community-intro"
+            data-testid="onb-community-intro-switch"
+            checked={introduceMe}
+            onCheckedChange={setIntroduceMe}
+          />
         </div>
 
         {/* Error */}

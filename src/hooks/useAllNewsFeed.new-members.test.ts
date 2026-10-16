@@ -35,8 +35,9 @@ describe('All feed — new members (VTID-04584)', () => {
     for (const k of Object.keys(resultsByTable)) delete resultsByTable[k];
     resultsByTable.global_community_profiles = {
       data: [
-        { user_id: 'amy', display_name: 'Amy', avatar_url: null, bio: null, created_at: '2026-09-25T08:37:00Z' },
-        { user_id: 'viewer-1', display_name: 'Me', avatar_url: null, bio: null, created_at: '2026-09-24T08:00:00Z' },
+        // Rows as the server returns them after the VTID-05206 opt-in filter.
+        { user_id: 'amy', display_name: 'Amy', avatar_url: null, bio: null, created_at: '2026-09-25T08:37:00Z', community_intro_opt_in: true },
+        { user_id: 'viewer-1', display_name: 'Me', avatar_url: null, bio: null, created_at: '2026-09-24T08:00:00Z', community_intro_opt_in: true },
       ],
       error: null,
     };
