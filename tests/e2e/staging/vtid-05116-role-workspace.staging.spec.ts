@@ -87,7 +87,9 @@ test('VTID-05116: Professional + Staff screens render the workspace archetype â€
       expect(await settle(page, p), `${p} must stay gated for a member without the role`).toBe('gated');
       const landed = new URL(page.url()).pathname;
       expect(landed === p || landed === '/home', `${p}: NotAuthorized in place or redirected to /home (landed on ${landed})`).toBe(true);
-      await expect(page.locator('[data-archetype="workspace"]')).toHaveCount(0);
+      // NotAuthorized in place is a legacy, unframed page: no Spotlight frame at all. Only after the
+      // redirect does a frame belong there (the /home focus-feed), and it must not be the workspace one.
+      await expect(page.locator(landed === '/home' ? '[data-archetype="workspace"]' : '[data-archetype]')).toHaveCount(0);
     }
     test.skip(true, 'The staging test user has neither the professional nor the staff role: gating verified; the workspace layout itself is covered by src/pages/staff/vtid-05116-role-workspace.test.tsx');
     return;
