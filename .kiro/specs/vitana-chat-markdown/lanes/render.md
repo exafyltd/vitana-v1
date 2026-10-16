@@ -7,7 +7,7 @@ seat: exafyltd
 reviewer_seat: claude
 claimed_by: kiro-202610151913-51bd
 branch: kiro/vitana-chat-markdown/render
-pr: <url to backfill>
+pr: https://github.com/exafyltd/vitana-v1/pull/1439
 vtid: VTID-05193
 depends_on: []
 paths:
@@ -40,4 +40,4 @@ Implementation commit `c4e340bed` (safe-subset Markdown parser `src/lib/chatMark
 targeted Vitest 16 files / 118 tests green; new bubble test 9/9 (red on origin/main, 5 of 9 fail); ESLint clean on
 new files, no new errors in `MessageBubble.tsx`; `tsc` no errors in changed files; `npm run build` exit 0. Full
 `npm test` not run locally (Vitest worker-start timeouts on this machine) — CI runs it. No i18n keys, no
-`docs/validation/VTID-05193/` files, no dependency changes. PR: <url to backfill>. Claude Code: review + merge.
+`docs/validation/VTID-05193/` files, no dependency changes. PR: https://github.com/exafyltd/vitana-v1/pull/1439. Claude Code: review + merge.
