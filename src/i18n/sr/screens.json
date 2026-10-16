@@ -7717,7 +7717,10 @@
         "business": "Posao i prihod",
         "businessDesc": "Opciono: ideje kako da zaradiš od svog znanja u Vitanalandu. Podrazumevano isključeno – samo ako ga uključiš.",
         "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke."
-      }
+      },
+      "communityIntroTitle": "Predstavi me zajednici",
+      "communityIntroBody": "Tokom tvoje prve nedelje drugi članovi vide kratku karticu dobrodošlice o tebi i mogu da te pozdrave.",
+      "communityIntroSaveFailed": "Podešavanje nije sačuvano. Pokušaj ponovo."
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",

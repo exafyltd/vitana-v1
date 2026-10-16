@@ -1,0 +1,18 @@
+PASS migration applies over existing rows
+PASS migration is re-runnable
+PASS a member from before the migration is false (200 days ago)
+PASS a member from before the migration is false (joined yesterday)
+PASS a member registering afterwards is true (handle_new_user insert shape)
+PASS column is NOT NULL DEFAULT true — {"is_nullable":"NO","column_default":"true"}
+PASS a re-run keeps a member who switched off
+PASS a re-run keeps a member who switched on
+PASS NULL is rejected
+PASS REPLICA IDENTITY stays FULL
+PASS table stays in the supabase_realtime publication
+PASS both RLS policies unchanged — ["Authenticated users can view minimal global profiles","Users can manage their own global profile"]
+PASS a member can switch their own setting off
+PASS a member cannot change another member's setting
+PASS self-check rejects a table that is not REPLICA IDENTITY FULL — VTID-05206 self-check: global_community_profiles is no longer REPLICA IDENTITY FULL
+PASS a failed self-check rolls the whole migration back
+
+ALL CHECKS PASSED

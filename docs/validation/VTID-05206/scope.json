@@ -1,0 +1,30 @@
+{
+  "vtid": "VTID-05206",
+  "kind": "feature",
+  "paths": [
+    "supabase/migrations/20261016110000_vtid_05206_community_intro_opt_in.sql",
+    ".github/workflows/apply-vtid-05206-community-intro-opt-in-migration.yml",
+    "src/lib/community-intro.ts",
+    "src/lib/community-intro.vtid-05206.test.ts",
+    "src/components/settings/CommunityIntroToggle.tsx",
+    "src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx",
+    "src/components/onboarding/OnboardingNameForm.tsx",
+    "src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx",
+    "src/hooks/useAllNewsFeed.ts",
+    "src/hooks/useAllNewsFeed.new-members.test.ts",
+    "src/hooks/useNewsFeed.ts",
+    "src/hooks/community-intro-feed.vtid-05206.test.ts",
+    "src/pages/settings/Privacy.tsx",
+    "src/pages/settings/__tests__/privacy-community-intro.vtid-05206.test.tsx",
+    "src/pages/MobileSettings.tsx",
+    "src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx",
+    "src/integrations/supabase/types.ts",
+    "src/i18n/*/screens.json",
+    "src/i18n/*/onboarding.json",
+    "tests/e2e/staging/vtid-05206-community-intro.staging.spec.ts",
+    "docs/validation/VTID-05206/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05206/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

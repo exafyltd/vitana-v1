@@ -7572,7 +7572,10 @@
         "_pending_review": {
           "community": true
         }
-      }
+      },
+      "communityIntroTitle": "Introduce me to the community",
+      "communityIntroBody": "During your first week, other members see a short welcome card about you and can say hello.",
+      "communityIntroSaveFailed": "Your setting couldn't be saved. Please try again."
     },
     "sharing": {
       "activateCampaign": "Activate Campaign",

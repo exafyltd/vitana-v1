@@ -7732,7 +7732,10 @@
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded."
-      }
+      },
+      "communityIntroTitle": "向社区介绍我",
+      "communityIntroBody": "在你加入的第一周，其他成员会看到一张关于你的简短欢迎卡片，并可以向你打招呼。",
+      "communityIntroSaveFailed": "无法保存你的设置，请重试。"
     },
     "sharing": {
       "activateCampaign": "激活营销活动",
