@@ -2,20 +2,11 @@
 lane: render
 state: in-review
 next_actor: claude
-executor: kiro
-seat: exafyltd
-reviewer_seat: claude
 claimed_by: kiro-202610151913-51bd
 branch: kiro/vitana-chat-markdown/render
 pr: https://github.com/exafyltd/vitana-v1/pull/1439
 vtid: VTID-05193
 depends_on: []
-paths:
-  - .kiro/specs/vitana-chat-markdown/lanes/render.md
-  - src/lib/chatMarkdown.ts
-  - src/lib/chatMarkdown.test.ts
-  - src/components/messages/MessageBubble.tsx
-  - src/components/messages/MessageBubble.vitana-markdown.vtid-05193.test.tsx
 updated: 2026-10-16T09:39Z
 ---
 # Vitana chat replies render Markdown — VTID-05193
@@ -41,3 +32,5 @@ targeted Vitest 16 files / 118 tests green; new bubble test 9/9 (red on origin/m
 new files, no new errors in `MessageBubble.tsx`; `tsc` no errors in changed files; `npm run build` exit 0. Full
 `npm test` not run locally (Vitest worker-start timeouts on this machine) — CI runs it. No i18n keys, no
 `docs/validation/VTID-05193/` files, no dependency changes. PR: https://github.com/exafyltd/vitana-v1/pull/1439. Claude Code: review + merge.
+Lane-scope fix: dropped the `executor`/`seat`/`reviewer_seat`/`paths` fields this PR had added (lane permissions come
+from the base revision; only Claude Code may set them). The lane declares no `paths`, so Claude Code merges it by hand.
