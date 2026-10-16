@@ -2,8 +2,9 @@
 slug: messenger-paste-enter
 author: kiro
 executor: kiro
-next_actor: claude
-state: sparred
+next_actor: kiro
+state: approved
+vtids: [VTID-05229]
 sparring_record: docs/validation/VTID-05229/plan-sparring.md
 author_seat: exafyltd
 updated: 2026-10-16T13:00Z
@@ -36,5 +37,7 @@ Claude Code must do one of these:
 
 Then set `vtid:` in `lanes/composer.md`, and seat `exafyltd` builds the lane.
 
-### 2026-10-16T12:50Z · session_015sc5wWvYz6sSRJgZVJ732d · drafted → sparred
-Took the `_plan` claim at the owner's request. Local sparring, 2 rounds, CONVERGED (`docs/validation/VTID-05229/plan-sparring.md`).
+### 2026-10-16T13:00Z · session_015sc5wWvYz6sSRJgZVJ732d · drafted → approved
+Took the `_plan` claim at the owner's request. Local sparring (2 rounds) CONVERGED; owner Gate 1 "yes" 2026-10-16.
+VTID-05229 allocated for lane `composer`. Lane handed to Kiro seat `exafyltd` (`next_actor: kiro`); Claude Code reviews
+(`reviewer_seat: claude`), merges and sends Gate 2.
