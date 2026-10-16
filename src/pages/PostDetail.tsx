@@ -9,7 +9,7 @@
  */
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -17,7 +17,7 @@ import { t } from "@/lib/i18n-toast";
 import type { PostFeedItem } from "@/lib/news-feed-ranker";
 import { attachedRefOf } from "@/lib/post-attachment";
 import AppLayout from "@/components/AppLayout";
-import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { VCard } from "@/components/ui/vcard";
 import { FocusPostCard } from "@/components/home/desktop/FocusStageCard";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
@@ -105,7 +105,7 @@ export default function PostDetail() {
           header={{ title: t("screens.postDetail.title"), description: t("spotlightMember.post.desc") }}
         >
           {isLoading ? (
-            <ArchetypeSkeleton archetype="detail" />
+            <SpotlightLoading archetype="detail" />
           ) : isError || !item ? (
             <VCard
               size="spotlight"
@@ -152,9 +152,7 @@ export default function PostDetail() {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
-        </div>
+        <SpotlightLoading archetype="detail" />
       ) : isError || !item ? (
         <p className="py-20 text-center text-muted-foreground">{t("screens.postDetail.notFound")}</p>
       ) : (

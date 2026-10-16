@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isPast } from 'date-fns';
-import { Ticket, Calendar, MapPin, ChevronRight, Loader2 } from "lucide-react";
+import { Ticket, Calendar, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -12,12 +12,13 @@ import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { SplitBarContent } from "@/components/ui/split-bar";
 import { VCard } from "@/components/ui/vcard";
 import { Badge } from "@/components/ui/badge";
-import { MEMBER_ROWS, SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
+import { MEMBER_ROWS, SpotlightEmpty } from "@/components/spotlight/member/MemberSpotlight";
 export default function MyTickets() {
   const navigate = useNavigate();
   const { tickets, loading } = useMyTickets();
@@ -94,7 +95,7 @@ export default function MyTickets() {
           }
         >
           {loading ? (
-            <SpotlightRowsSkeleton />
+            <SpotlightLoading rows={6} />
           ) : tickets.length === 0 ? (
             <SpotlightEmpty
               Icon={Ticket}
@@ -134,14 +135,6 @@ export default function MyTickets() {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -153,8 +146,12 @@ export default function MyTickets() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">{t('screens.mytickets.myTickets')}</h1>
-              <p className="text-muted-foreground">{t('screens.mytickets.lengthTicketValue1Purchased', { length: tickets.length, value1: tickets.length !== 1 ? "s" : "" })}
-              </p>
+              {loading ? (
+                <Skeleton className="h-6 w-40" />
+              ) : (
+                <p className="text-muted-foreground">{t('screens.mytickets.lengthTicketValue1Purchased', { length: tickets.length, value1: tickets.length !== 1 ? "s" : "" })}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -162,7 +159,9 @@ export default function MyTickets() {
 
       {/* Content */}
       <div className="max-w-2xl mx-auto px-4 py-6">
-        {tickets.length === 0 ? (
+        {loading ? (
+          <SpotlightLoading archetype="collection" rows={3} />
+        ) : tickets.length === 0 ? (
           <div className="text-center py-16 space-y-4">
             <Ticket className="h-16 w-16 text-muted-foreground/30 mx-auto" />
             <h2 className="text-xl font-semibold text-foreground">{t('screens.mytickets.noTicketsYet')}</h2>
@@ -306,7 +305,7 @@ function TicketCard({ ticket, onClick, isPast }: TicketCardProps) {
               </span>
             )}
             {ticket.checked_in_at && (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-status-success/10 text-status-success text-xs font-medium">
                 {t('screens.mytickets.checked')}
               </span>
             )}

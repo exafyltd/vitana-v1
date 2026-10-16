@@ -5,5 +5,8 @@ export type { SpotlightLayoutProps } from './SpotlightLayout';
 export { StageCrossFade } from './StageCrossFade';
 export { useFocusedCard, nextIndexForKey } from './useFocusedCard';
 export { ArchetypeSkeleton } from './skeletons/ArchetypeSkeleton';
+export { SpotlightLoading } from './skeletons/SpotlightLoading';
+export type { SpotlightLoadingProps } from './skeletons/SpotlightLoading';
+export { VCardSkeleton } from '@/components/ui/vcard';
 export { ARCHETYPES, ARCHETYPE_WIDTH, SINGLE_SPOTLIGHT_ARCHETYPES, isArchetype } from './archetypes';
 export type { Archetype, SpotlightWidth } from './archetypes';

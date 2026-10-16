@@ -16,14 +16,14 @@ import { StandardHorizontalCardProps } from '@/components/ui/standard-horizontal
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlertTriangle, FlaskConical, Loader2 } from 'lucide-react';
+import { AlertTriangle, FlaskConical } from 'lucide-react';
 import { usePatientHealthResults, type PatientHealthResult } from '@/hooks/usePatientHealthResults';
 import { PartnerLinkRequestsCard } from '@/components/patient/PartnerLinkRequestsCard';
 import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
-import { SpotlightEmpty, SpotlightError, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
+import { SpotlightEmpty, SpotlightError } from "@/components/spotlight/member/MemberSpotlight";
 
 function orgLabel(result: PatientHealthResult): string {
   if (!result.org) return t('screens.patient.results.selfReported');
@@ -68,7 +68,7 @@ export default function PatientResults() {
       <div className="flex flex-col gap-6">
         <PartnerLinkRequestsCard />
         {isLoading ? (
-          <SpotlightRowsSkeleton />
+          <SpotlightLoading rows={6} />
         ) : isError ? (
           <SpotlightError onRetry={() => refetch()} />
         ) : (
@@ -98,9 +98,7 @@ export default function PatientResults() {
         <PartnerLinkRequestsCard />
 
         {isLoading ? (
-          <div className="flex justify-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-          </div>
+          <SpotlightLoading archetype="collection" rows={4} />
         ) : isError ? (
           <div className="text-center py-16">
             <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />

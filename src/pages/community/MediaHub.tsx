@@ -8,7 +8,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel, PanelContent } from "@/components/layout/spotlight/Panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
@@ -71,7 +71,7 @@ import {
 } from "@/components/ui/responsive-confirm-dialog";
 import { t } from '@/lib/i18n-toast';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
-import { ScreenFrame } from '@/components/layout/spotlight';
+import { ScreenFrame, SpotlightLoading } from '@/components/layout/spotlight';
 import { MediaHubSpotlight, type MediaHubShort, type MediaListStatus } from '@/components/media/spotlight/MediaHubSpotlight';
 import { musicArtist, musicMetadata } from '@/components/ui/vcard/adapters/media';
 // SubscribeButton component
@@ -91,10 +91,10 @@ import { musicArtist, musicMetadata } from '@/components/ui/vcard/adapters/media
           group/sub relative w-full py-2.5 px-5 rounded-2xl font-semibold text-sm
           transition-all duration-200
           disabled:opacity-50 disabled:cursor-not-allowed
-          focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2
+          focus:outline-none focus:ring-2 focus:ring-category-2 focus:ring-offset-2
           ${isSubscribed 
-            ? 'bg-emerald-100/30 border-2 border-emerald-500 text-emerald-600 hover:animate-[pulse_2s_ease-in-out_infinite]' 
-            : 'bg-transparent border-2 border-violet-500 text-violet-500 hover:bg-gradient-to-r hover:from-violet-500 hover:to-fuchsia-400 hover:text-white hover:shadow-md hover:scale-[1.02]'
+            ? 'bg-status-success-subtle/30 border-2 border-status-success text-status-success hover:animate-[pulse_2s_ease-in-out_infinite]' 
+            : 'bg-transparent border-2 border-category-2 text-category-2 hover:bg-gradient-to-r hover:from-category-2 hover:to-category-4/80 hover:text-primary-foreground hover:shadow-md hover:scale-[1.02]'
           }
         `}
       >
@@ -105,8 +105,8 @@ import { musicArtist, musicMetadata } from '@/components/ui/vcard/adapters/media
             <>
               <Heart className={`w-4 h-4 transition-all ${
                 isSubscribed 
-                  ? 'fill-current text-emerald-600' 
-                  : 'fill-none group-hover/sub:fill-current group-hover/sub:text-white'
+                  ? 'fill-current text-status-success' 
+                  : 'fill-none group-hover/sub:fill-current group-hover/sub:text-primary-foreground'
               }`} />
               {isSubscribed ? translate('mediaHub.subscribed') : translate('mediaHub.subscribe')}
             </>
@@ -152,11 +152,7 @@ function PopularShowsList() {
   const displayShows = popularShows.length > 0 ? popularShows : fallbackShows;
   
   if (isLoadingShows) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
-      </div>
-    );
+    return <SpotlightLoading rows={3} />;
   }
   
   return (
@@ -167,12 +163,12 @@ function PopularShowsList() {
           style={{
             animation: `fadeSlideIn 0.4s ease-out ${index * 0.15}s backwards`
           }}
-          className="group relative p-5 rounded-2xl border-2 border-white/40 bg-white/70 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60 transition-all duration-300 backdrop-blur-sm"
+          className="group relative p-5 rounded-2xl border-2 border-border/40 bg-card/70 shadow-md hover:shadow-xl hover:shadow-category-2/5 hover:-translate-y-1 hover:border-category-2/15 transition-all duration-300 backdrop-blur-sm"
         >
           {/* Avatar with Gradient */}
           <div className="flex items-start gap-4 mb-4">
-            <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 shadow-md flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-lg">
+            <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-category-2/80 via-category-4/80 to-category-2 shadow-md flex items-center justify-center flex-shrink-0">
+              <span className="text-primary-foreground font-bold text-lg">
                 {show.host_name.split(' ').map(n => n[0]).join('')}
               </span>
             </div>
@@ -195,7 +191,7 @@ function PopularShowsList() {
             <div className="mb-4">
               <Badge 
                 variant="outline" 
-                className="text-xs border-purple-300/60 bg-purple-50/80 text-purple-700 font-medium"
+                className="text-xs border-category-2/25 bg-category-2/10 text-category-2 font-medium"
               >
                 {show.category}
               </Badge>
@@ -695,7 +691,7 @@ export default function MediaHub() {
       ) : (
         !isMobile && <SubNavigation items={communityNavigation} />
       )}
-      {!spotlight && <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen")}>
+      {!spotlight && <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen")}>
         <div className="max-w-7xl mx-auto">
           
           {/* Mobile Header */}
@@ -781,7 +777,7 @@ export default function MediaHub() {
               {/* Desktop Header Section with Perfect Symmetry - Three Cards Layout */}
               <div className="flex flex-col lg:flex-row gap-4 mb-8">
                 {/* Shortened Header Bar - Welcome Message */}
-                <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+                <div className="flex-1 bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/20">
                   <div>
                     <h1 className="text-3xl font-bold text-foreground mb-2">{translate('mediaHub.title')} ✨</h1>
                     <p className="text-muted-foreground">{translate('mediaHub.discoverContent')}</p>
@@ -789,19 +785,19 @@ export default function MediaHub() {
                 </div>
                 
                 {/* Autopilot Card with Live Badge Counter */}
-                <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
+                <div className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-border/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
                   {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -end-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
                       {pendingCount}
                     </Badge>}
                   <div className="flex flex-col items-center justify-center h-full space-y-3">
                     <div>
-                      <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                      <Plane className="w-10 h-10 text-sys-autopilot-accent transform rotate-0" />
                     </div>
-                    <span className="text-sm font-medium text-red-400">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                    <span className="text-sm font-medium text-sys-autopilot-accent">{translate('actionBar.autopilot', 'Autopilot')}</span>
                   </div>
                   
                   {/* Hover Preview */}
-                  {showPreview && pendingCount > 0 && <div className="absolute top-full start-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                  {showPreview && pendingCount > 0 && <div className="absolute top-full start-0 mt-2 w-64 bg-popover/95 backdrop-blur-sm border border-border/20 rounded-lg shadow-xl p-3 z-10">
                       <div className="text-xs font-medium text-muted-foreground mb-2">{translate('mediaHub.latestActions')}</div>
                       {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                           <span>{action.icon}</span>
@@ -814,10 +810,10 @@ export default function MediaHub() {
                 </div>
                 
                 {/* Vitana Index Card - Circle with 742 */}
-                <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
+                <div className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-border/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
                   <div className="flex items-center justify-center h-full">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                      <span className="text-xl font-bold text-green-600"><VitanaIndexValue /></span>
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg shadow-status-success/20 group-hover:shadow-status-success/40 transition-all duration-300">
+                      <span className="text-xl font-bold text-status-success"><VitanaIndexValue /></span>
                     </div>
                   </div>
                 </div>
@@ -922,14 +918,14 @@ export default function MediaHub() {
               /* Desktop Grid Layout */
               <div className="space-y-6">
                 {/* Trending Shorts Section */}
-                <div className="bg-gradient-to-b from-white/0 to-white/5 rounded-t-3xl p-6 -mx-6 -mt-6">
+                <div className="bg-gradient-to-b from-card/0 to-card/5 rounded-t-3xl p-6 -mx-6 -mt-6">
                   <div className="mb-6 flex items-start justify-between gap-4">
                     <div>
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
-                        <Video className="w-6 h-6 text-violet-600" />
+                        <Video className="w-6 h-6 text-category-2" />
                         {translate('mediaHub.sections.trendingShorts')}
                       </h2>
-                      <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-violet-500 to-transparent rounded-full mt-2"></div>
+                      <div className="h-0.5 w-32 bg-gradient-to-r from-category-4 via-category-2 to-transparent rounded-full mt-2"></div>
                     </div>
                     
                     {/* Density Control - Hidden on mobile */}
@@ -1029,14 +1025,14 @@ export default function MediaHub() {
               ) : (
               <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
                 {/* Trending Music - Left Column (~62%) */}
-                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
-                  <CardContent className="p-8">
+                <Panel className="rounded-2xl shadow-lg border-border/20 bg-card/60 backdrop-blur-md overflow-hidden">
+                  <PanelContent className="p-8">
                     <div className="mb-6">
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
-                        <Music className="w-6 h-6 text-purple-600" />
+                        <Music className="w-6 h-6 text-category-2" />
                         {translate('mediaHub.sections.trendingMusic')}
                       </h2>
-                      <div className="h-0.5 w-32 bg-gradient-to-r from-purple-500 via-pink-500 to-transparent rounded-full mt-2"></div>
+                      <div className="h-0.5 w-32 bg-gradient-to-r from-category-2 via-category-4 to-transparent rounded-full mt-2"></div>
                     </div>
                     
                     <div className="space-y-4">
@@ -1064,24 +1060,24 @@ export default function MediaHub() {
                               }}
                               className={`group relative flex items-start gap-4 p-5 rounded-2xl border-2 transition-all duration-300 ease-out ${
                                 isCurrentlyPlaying
-                                  ? 'bg-gradient-to-br from-purple-50/95 via-pink-50/80 to-white/90 border-purple-300/70 shadow-xl shadow-purple-200/50'
-                                  : 'bg-white/70 border-white/40 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:border-purple-200/60'
+                                  ? 'bg-gradient-to-br from-category-2/10 via-category-4/10 to-card/90 border-category-2/30 shadow-xl shadow-category-2/15'
+                                  : 'bg-card/70 border-border/40 shadow-md hover:shadow-xl hover:shadow-category-2/5 hover:border-category-2/15'
                               } hover:-translate-y-1 backdrop-blur-sm overflow-hidden`}
                             >
                               {/* Now Playing Accent Bar */}
                               {isCurrentlyPlaying && (
-                                <div className="absolute start-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 animate-pulse"></div>
+                                <div className="absolute start-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-category-2 via-category-4 to-category-2 animate-pulse"></div>
                               )}
 
                               {/* Square Album Cover */}
                               <div className={`relative w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300 ${
                                 isCurrentlyPlaying
-                                  ? 'bg-gradient-to-br from-purple-400/40 via-pink-400/35 to-blue-400/40 shadow-lg shadow-purple-400/50 ring-2 ring-purple-300/60'
-                                  : 'bg-gradient-to-br from-purple-400/25 via-pink-400/20 to-blue-400/25 shadow-md shadow-purple-300/20 group-hover:shadow-lg group-hover:shadow-purple-300/40'
+                                  ? 'bg-gradient-to-br from-category-2/30 via-category-4/30 to-category-3/30 shadow-lg shadow-category-2/40 ring-2 ring-category-2/25'
+                                  : 'bg-gradient-to-br from-category-2/20 via-category-4/15 to-category-3/20 shadow-md shadow-category-2/10 group-hover:shadow-lg group-hover:shadow-category-2/15'
                               }`}>
-                                <Music className="w-7 h-7 text-purple-600/90 relative z-10" />
+                                <Music className="w-7 h-7 text-category-2/90 relative z-10" />
                                 {isCurrentlyPlaying && (
-                                  <div className="absolute inset-0 bg-gradient-to-br from-purple-300/20 to-transparent animate-pulse"></div>
+                                  <div className="absolute inset-0 bg-gradient-to-br from-category-2/10 to-transparent animate-pulse"></div>
                                 )}
                               </div>
 
@@ -1097,7 +1093,7 @@ export default function MediaHub() {
                                       {[1, 2, 3].map((i) => (
                                         <div
                                           key={i}
-                                          className="w-0.5 bg-purple-600 rounded-full"
+                                          className="w-0.5 bg-category-2 rounded-full"
                                           style={{
                                             height: `${40 + Math.sin(Date.now() / 200 + i) * 30}%`,
                                             animation: `equalizer 0.8s ease-in-out ${i * 0.15}s infinite`,
@@ -1125,7 +1121,7 @@ export default function MediaHub() {
                                   {track.music_metadata?.[0]?.genre && (
                                     <Badge 
                                       variant="secondary" 
-                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100/70 text-purple-700 border-0 font-medium hover:bg-purple-100 transition-colors"
+                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-category-2/10 text-category-2 border-0 font-medium hover:bg-category-2/15 transition-colors"
                                     >
                                       🎹 {track.music_metadata[0].genre}
                                     </Badge>
@@ -1146,7 +1142,7 @@ export default function MediaHub() {
                                       <Badge 
                                         key={tag} 
                                         variant="outline" 
-                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/80 border-purple-200/60 text-purple-600/90 font-medium hover:bg-white hover:border-purple-300 transition-colors"
+                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-card/80 border-category-2/15 text-category-2/90 font-medium hover:bg-card hover:border-category-2/40 transition-colors"
                                       >
                                         {getTagIcon(tag)} {tag}
                                       </Badge>
@@ -1178,13 +1174,13 @@ export default function MediaHub() {
                                         }
                                       });
                                     }}
-                                    className="h-9 w-9 rounded-full hover:bg-purple-50"
+                                    className="h-9 w-9 rounded-full hover:bg-category-2/10"
                                   >
                                     <Heart
                                       className={`h-4 w-4 transition-all ${
                                         isBookmarked('music', track.id)
-                                          ? "fill-purple-500 text-purple-500"
-                                          : "text-muted-foreground/60 hover:text-purple-500"
+                                          ? "fill-category-2 text-category-2"
+                                          : "text-muted-foreground/60 hover:text-category-2"
                                       }`}
                                     />
                                   </Button>
@@ -1216,20 +1212,20 @@ export default function MediaHub() {
                                         });
                                       }
                                     }}
-                                    className="h-9 w-9 rounded-full hover:bg-purple-50"
+                                    className="h-9 w-9 rounded-full hover:bg-category-2/10"
                                   >
-                                    <Share2 className="h-4 w-4 text-muted-foreground/60 hover:text-purple-500" />
+                                    <Share2 className="h-4 w-4 text-muted-foreground/60 hover:text-category-2" />
                                   </Button>
 
                                   {/* More Options */}
-                                  <KebabMenu className="h-9 w-9 rounded-full hover:bg-purple-50">
+                                  <KebabMenu className="h-9 w-9 rounded-full hover:bg-category-2/10">
                                     <KebabDropdownMenuItem>{translate('mediaHub.menu.addToPlaylist')}</KebabDropdownMenuItem>
                                     <KebabDropdownMenuItem>{translate('mediaHub.menu.viewArtist')}</KebabDropdownMenuItem>
                                   </KebabMenu>
                                 </div>
 
                                 {/* Vertical Divider */}
-                                <div className="h-10 w-px bg-gradient-to-b from-transparent via-purple-200/50 to-transparent"></div>
+                                <div className="h-10 w-px bg-gradient-to-b from-transparent via-category-2/15 to-transparent"></div>
 
                                 {/* Circular Play Button with Ripple Effect */}
                                 <Button 
@@ -1257,14 +1253,14 @@ export default function MediaHub() {
                                   }}
                                   className={`relative shrink-0 w-14 h-14 rounded-full transition-all duration-300 ease-out overflow-hidden ${
                                     isCurrentlyPlaying
-                                      ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-400/60 hover:shadow-xl hover:shadow-purple-400/70 hover:scale-105'
-                                      : 'bg-gradient-to-br from-white to-purple-50 shadow-lg hover:shadow-xl hover:shadow-purple-300/60 border-2 border-purple-200/60 hover:border-purple-300 hover:scale-110'
+                                      ? 'bg-gradient-to-br from-category-2 to-category-4 shadow-lg shadow-category-2/50 hover:shadow-xl hover:shadow-category-2/60 hover:scale-105'
+                                      : 'bg-gradient-to-br from-card to-category-2/10 shadow-lg hover:shadow-xl hover:shadow-category-2/25 border-2 border-category-2/15 hover:border-category-2/40 hover:scale-110'
                                   } group-hover:animate-pulse-subtle`}
                                 >
                                   {isCurrentlyPlaying ? (
-                                    <Pause className="w-6 h-6 text-white relative z-10" />
+                                    <Pause className="w-6 h-6 text-primary-foreground relative z-10" />
                                   ) : (
-                                    <Play className="w-6 h-6 text-purple-600 ms-0.5 relative z-10" />
+                                    <Play className="w-6 h-6 text-category-2 ms-0.5 relative z-10" />
                                   )}
                                 </Button>
                               </div>
@@ -1273,15 +1269,15 @@ export default function MediaHub() {
                         })
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
 
                 {/* Music Playlists - Right Column (~38%) */}
-                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
-                  <CardContent className="p-8">
+                <Panel className="rounded-2xl shadow-lg border-border/20 bg-card/60 backdrop-blur-md overflow-hidden">
+                  <PanelContent className="p-8">
                     <div className="mb-6">
                       <h3 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.musicPlaylists')}</h3>
-                      <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
+                      <div className="h-0.5 w-28 bg-gradient-to-r from-category-4 via-category-2 to-transparent rounded-full mt-2"></div>
                     </div>
                     
                     <div className="space-y-4">
@@ -1291,33 +1287,33 @@ export default function MediaHub() {
                           style={{
                             animation: `fadeSlideIn 0.4s ease-out ${index * 0.15}s backwards`
                           }}
-                          className="group relative p-5 rounded-2xl border-2 border-white/40 bg-white/70 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60 transition-all duration-300 backdrop-blur-sm overflow-hidden"
+                          className="group relative p-5 rounded-2xl border-2 border-border/40 bg-card/70 shadow-md hover:shadow-xl hover:shadow-category-2/5 hover:-translate-y-1 hover:border-category-2/15 transition-all duration-300 backdrop-blur-sm overflow-hidden"
                         >
                           {/* Heart Icon - Top Right */}
                           <Button
                             size="icon"
                             variant="ghost"
-                            className="absolute top-3 end-3 h-8 w-8 rounded-full hover:bg-purple-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-3 end-3 h-8 w-8 rounded-full hover:bg-category-2/10 opacity-0 group-hover:opacity-100 transition-opacity"
                           >
-                            <Heart className="h-4 w-4 text-muted-foreground/60 hover:text-pink-500 hover:fill-pink-500" />
+                            <Heart className="h-4 w-4 text-muted-foreground/60 hover:text-category-4 hover:fill-category-4" />
                           </Button>
 
                           {/* Cover Collage / Gradient Swatch */}
                           <div className="mb-4">
                             <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
                               {/* Gradient collage effect */}
-                              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 bg-white/20 p-0.5">
-                                <div className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-ss-lg flex items-center justify-center">
-                                  <Music className="w-6 h-6 text-white/80" />
+                              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 bg-card/20 p-0.5">
+                                <div className="bg-gradient-to-br from-category-2/80 to-category-4/80 rounded-ss-lg flex items-center justify-center">
+                                  <Music className="w-6 h-6 text-primary-foreground/80" />
                                 </div>
-                                <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-se-lg flex items-center justify-center">
-                                  <Music className="w-5 h-5 text-white/70" />
+                                <div className="bg-gradient-to-br from-category-4/80 to-category-2 rounded-se-lg flex items-center justify-center">
+                                  <Music className="w-5 h-5 text-primary-foreground/70" />
                                 </div>
-                                <div className="bg-gradient-to-br from-purple-500 to-blue-400 rounded-es-lg flex items-center justify-center">
-                                  <Music className="w-5 h-5 text-white/70" />
+                                <div className="bg-gradient-to-br from-category-2 to-category-3/80 rounded-es-lg flex items-center justify-center">
+                                  <Music className="w-5 h-5 text-primary-foreground/70" />
                                 </div>
-                                <div className="bg-gradient-to-br from-blue-400 to-purple-400 rounded-ee-lg flex items-center justify-center">
-                                  <Music className="w-6 h-6 text-white/80" />
+                                <div className="bg-gradient-to-br from-category-3/80 to-category-2/80 rounded-ee-lg flex items-center justify-center">
+                                  <Music className="w-6 h-6 text-primary-foreground/80" />
                                 </div>
                               </div>
                             </div>
@@ -1333,7 +1329,7 @@ export default function MediaHub() {
 
                           {/* Full-width Elevated Play Bar */}
                           <button 
-                            className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:shadow-purple-400/50 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group/play"
+                            className="w-full py-3 rounded-xl bg-gradient-to-r from-category-2 to-category-4 text-primary-foreground font-semibold text-sm shadow-md hover:shadow-lg hover:shadow-category-2/40 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group/play"
                           >
                             <Play className="w-4 h-4 group-hover/play:scale-110 transition-transform" />
                             {translate('mediaHub.actions.playPlaylist')}
@@ -1341,8 +1337,8 @@ export default function MediaHub() {
                         </div>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               </div>
               )}
 
@@ -1381,11 +1377,11 @@ export default function MediaHub() {
               ) : (
               <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
                 {/* Latest Episodes - Left Column (~60%) */}
-                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
-                  <CardContent className="p-8">
+                <Panel className="rounded-2xl shadow-lg border-border/20 bg-card/60 backdrop-blur-md overflow-hidden">
+                  <PanelContent className="p-8">
                     <div className="mb-6">
                       <h2 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.latestEpisodes')}</h2>
-                      <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
+                      <div className="h-0.5 w-32 bg-gradient-to-r from-category-4 via-category-2 to-transparent rounded-full mt-2"></div>
                     </div>
                     <div className="flex flex-col gap-4">
                       {approvedPodcasts.length === 0 ? (
@@ -1428,19 +1424,19 @@ export default function MediaHub() {
                         })
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
 
                 {/* Popular Shows - Right Column (~40%) */}
-                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
-                  <CardContent className="p-8">
+                <Panel className="rounded-2xl shadow-lg border-border/20 bg-card/60 backdrop-blur-md overflow-hidden">
+                  <PanelContent className="p-8">
                     <div className="mb-6">
                       <h3 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.popularShows')}</h3>
-                      <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
+                      <div className="h-0.5 w-28 bg-gradient-to-r from-category-4 via-category-2 to-transparent rounded-full mt-2"></div>
                     </div>
                     <PopularShowsList />
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               </div>
               )}
             </SplitBarContent>
