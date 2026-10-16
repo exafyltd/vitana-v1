@@ -25,8 +25,15 @@ Shift+Enter new line (the convention of WhatsApp Web, Slack, Teams); touch-first
    path as the picker (extracted `uploadFiles`), same validation and toasts, generic `image.png` renamed to
    `screenshot-<timestamp>.<ext>`. Plain text in the clipboard → normal text paste.
 2. Enter: `matchMedia('(hover: hover) and (pointer: fine)')`; on such devices Enter (no modifier, no IME composition,
-   no mention list consuming it) calls the existing `handleSend` (existing double-send lock), and does nothing when
-   there is nothing to send; Shift+Enter is a new line. `enterKeyHint` `send` on desktop, `enter` on touch.
+   no mention list consuming it) calls the existing `handleSend` unconditionally (its own guards and double-send lock make it a no-op when there is
+   nothing to send, no open conversation, an upload running or a send in flight); desktop Enter ALWAYS `preventDefault`s,
+   so it never adds a blank line (R2.5); Shift+Enter is a new line. `enterKeyHint` `send` on desktop, `enter` on touch.
+
+3. `handleKeyPress`/`onKeyPress` stay (VTID-04926 mention flag, pinned by its tests); IME guard gets a comment that it
+   reads the DOM event, not the typing-indicator state `isComposing`.
+4. `docs/validation/VTID-04966/staging-tests.json` is repointed to the new staging spec in the same PR (the old spec
+   file is removed). Paste: text on the clipboard wins over an image (copy-image-from-browser pastes the URL/alt text);
+   the PR states this edge case.
 
 ## Tests
 Vitest for every requirement clause (desktop and touch via mocked `matchMedia`, IME, mention, empty, paste
