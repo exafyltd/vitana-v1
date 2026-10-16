@@ -3,6 +3,10 @@
  * Beisammen" group chat did nothing. The composer now offers the group's
  * members, Enter picks a suggestion instead of sending, and the tagged member
  * travels with the message as contentData.mentions.
+ *
+ * VTID-05229: pinned to a touch-first device, where Enter is a new line. The
+ * desktop case (Enter on the list still only picks) is in
+ * MessageInput.paste-enter.vtid-05229.test.tsx.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
@@ -53,6 +57,11 @@ function setup(props: Partial<React.ComponentProps<typeof MessageInput>> = {}) {
 describe("group chat @mentions (VTID-04926)", () => {
   beforeEach(() => {
     rpc.mockReset();
+    // A touch-first device: no `(hover: hover) and (pointer: fine)` (VTID-05229).
+    vi.spyOn(window, "matchMedia").mockImplementation((query: string) => ({
+      matches: false, media: query, onchange: null, addListener: vi.fn(), removeListener: vi.fn(),
+      addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
+    }) as unknown as MediaQueryList);
     vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
       cb(0);
       return 0;
