@@ -2,16 +2,16 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelHeader, PanelTitle } from "@/components/layout/spotlight/Panel";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2, Lock, ShieldCheck } from "lucide-react";
+import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Lock, ShieldCheck } from "lucide-react";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { notify, notifyError, t, useI18nLocale } from '@/lib/i18n-toast';
 import { settingsNavigation } from "@/config/navigation";
 import { VitanaMessagesSettings } from "@/components/settings/VitanaMessagesSettings";
-import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 const TYPE_CONFIG = {
@@ -67,7 +67,7 @@ export default function SettingsNotifications() {
             subNav={{ items: settingsNavigation }}
             header={{ title: t('screens.settings.customizeYourAlerts'), description: t('screens.settings.configureYourNotificationPreferences'), emoji: '🔕' }}
           >
-            <ArchetypeSkeleton archetype="form" />
+            <SpotlightLoading archetype="form" />
             {/* VTID-05100: own query and loading state — never waits for the other preferences. */}
             <VitanaMessagesSettings />
           </ScreenFrame>
@@ -78,11 +78,14 @@ export default function SettingsNotifications() {
       <AppLayout>
         <SEO title={t('screens.settings.notificationsSettings')} description={t('screens.settings.configureYourNotificationPreferences')} canonical={window.location.href} />
         <SubNavigation items={settingsNavigation} />
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <div className="flex items-center justify-center min-h-[400px]">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            </div>
+            <StandardHeader
+              title={t('screens.settings.customizeYourAlerts')}
+              description={t('screens.settings.configureYourNotificationPreferences')}
+              emoji="🔕"
+            />
+            <SpotlightLoading archetype="form" />
             {/* VTID-05100: own query and loading state — never waits for the other preferences. */}
             <VitanaMessagesSettings />
           </div>
@@ -94,14 +97,14 @@ export default function SettingsNotifications() {
   const notificationSettings = (
     <>
       {/* Push Notifications (Global) */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
             <Smartphone className="w-5 h-5" />
             {t('screens.settings.pushNotifications')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </PanelTitle>
+        </PanelHeader>
+        <PanelContent>
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">{t('screens.settings.enablePushNotifications')}</h4>
@@ -113,8 +116,8 @@ export default function SettingsNotifications() {
               onCheckedChange={(checked) => handleToggle('push_enabled', checked)}
             />
           </div>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       {/* Dynamic Category Sections (Chat, Calendar, Community) */}
       {(Object.keys(TYPE_CONFIG) as Array<keyof typeof TYPE_CONFIG>).map((type) => {
@@ -125,14 +128,14 @@ export default function SettingsNotifications() {
         if (items.length === 0) return null;
 
         return (
-          <Card key={type}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+          <Panel key={type}>
+            <PanelHeader>
+              <PanelTitle className="flex items-center gap-2">
                 <Icon className="w-5 h-5" />
                 {t(config.labelKey)}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
+              </PanelTitle>
+            </PanelHeader>
+            <PanelContent className="space-y-6">
               {items.map((cat) => (
                 <div key={cat.id} className="flex items-center justify-between gap-4" data-testid={`member-category-${cat.slug}`}>
                   <div>
@@ -155,8 +158,8 @@ export default function SettingsNotifications() {
                   />
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
         );
       })}
 
@@ -165,34 +168,34 @@ export default function SettingsNotifications() {
 
       {/* VTID-04676: notifications the caller's role receives (admin / developer / staff) */}
       {role && roleNotifications.length > 0 && (
-        <Card data-testid="role-notifications">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+        <Panel data-testid="role-notifications">
+          <PanelHeader>
+            <PanelTitle className="flex items-center gap-2">
               <ShieldCheck className="w-5 h-5" />
               {t(`notificationControls.member.roleTitle.${role}`)}
-            </CardTitle>
+            </PanelTitle>
             <p className="text-sm text-muted-foreground">{t('notificationControls.member.roleHint')}</p>
-          </CardHeader>
-          <CardContent className="space-y-4">
+          </PanelHeader>
+          <PanelContent className="space-y-4">
             {roleNotifications.map((n) => (
               <div key={n.type}>
                 <h4 className="font-medium">{locale.toLowerCase().startsWith('de') ? n.label.de : n.label.en}</h4>
                 <p className="text-sm text-muted-foreground">{locale.toLowerCase().startsWith('de') ? n.description.de : n.description.en}</p>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       )}
 
       {/* Quiet Hours */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
             <Moon className="w-5 h-5" />
             {t('screens.settings.quietHours')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
+          </PanelTitle>
+        </PanelHeader>
+        <PanelContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">{t('screens.settings.enableQuietHours')}</h4>
@@ -245,8 +248,8 @@ export default function SettingsNotifications() {
               </Select>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
     </>
   );
 
@@ -270,7 +273,7 @@ export default function SettingsNotifications() {
     <AppLayout>
       <SEO title={t('screens.settings.notificationsSettings')} description={t('screens.settings.configureYourNotificationPreferences')} canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader
           title={t('screens.settings.customizeYourAlerts')}
@@ -278,7 +281,9 @@ export default function SettingsNotifications() {
           emoji="🔕"
         />
 
-        {notificationSettings}
+        <SpotlightLoading loading={false}>
+          <div className="space-y-6">{notificationSettings}</div>
+        </SpotlightLoading>
         </div>
       </div>
     </AppLayout>

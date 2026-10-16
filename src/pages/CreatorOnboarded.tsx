@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
+import { Panel, PanelContent } from '@/components/layout/spotlight/Panel';
 import { Button } from '@/components/ui/button';
 import { useCreatorStatus } from '@/hooks/useCreator';
 import { CheckCircle, DollarSign, Sparkles, ArrowRight, ExternalLink } from 'lucide-react';
@@ -110,20 +110,21 @@ export default function CreatorOnboarded() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to flex items-center justify-center p-6">
       <SEO
         title={t('screens.creatoronboarded.paymentSetupCompleteVitana')}
         description="Your creator payment setup is complete"
         canonical={window.location.href}
       />
 
-      <Card className="max-w-2xl w-full">
-        <CardContent className="pt-12 pb-8 px-8">
+      <Panel className="max-w-2xl w-full">
+        <PanelContent className="pt-12 pb-8 px-8">
           {/* Loading State */}
           {(isLoading || isRefetching) && (
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                {/* design-allow-next-line: action in progress, not a data load */}
+                <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold">{t('screens.creatoronboarded.checkingYourPaymentStatus')}</h1>
@@ -140,30 +141,30 @@ export default function CreatorOnboarded() {
               {/* Success Icon */}
               <div className="flex justify-center">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-green-400 rounded-full blur-xl opacity-30 animate-pulse" />
-                  <div className="relative bg-green-100 rounded-full p-6">
-                    <CheckCircle className="w-16 h-16 text-green-600" />
+                  <div className="absolute inset-0 bg-status-success rounded-full blur-xl opacity-30 animate-pulse" />
+                  <div className="relative bg-status-success-subtle rounded-full p-6">
+                    <CheckCircle className="w-16 h-16 text-status-success" />
                   </div>
                 </div>
               </div>
 
               {/* Success Message */}
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
-                  <Sparkles className="w-8 h-8 inline-block text-yellow-500 mb-1" />{t('screens.creatoronboarded.value0PaymentSetupComplete', { value0: ' ' })}
+                <h1 className="text-3xl font-bold text-foreground">
+                  <Sparkles className="w-8 h-8 inline-block text-status-warning mb-1" />{t('screens.creatoronboarded.value0PaymentSetupComplete', { value0: ' ' })}
                 </h1>
                 <p className="text-lg text-muted-foreground mt-2">{t('screens.creatoronboarded.youReAllSetStartEarning')}
                 </p>
               </div>
 
               {/* Benefits */}
-              <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 space-y-4">
+              <div className="bg-gradient-to-r from-status-success-subtle to-status-info-subtle rounded-lg p-6 space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="bg-green-100 rounded-full p-2 mt-0.5">
-                    <DollarSign className="w-5 h-5 text-green-600" />
+                  <div className="bg-status-success-subtle rounded-full p-2 mt-0.5">
+                    <DollarSign className="w-5 h-5 text-status-success" />
                   </div>
                   <div className="text-start flex-1">
-                    <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.youKeep90')}</h3>
+                    <h3 className="font-semibold text-foreground">{t('screens.creatoronboarded.youKeep90')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.earn90EveryPaidLiveRoom')}
                     </p>
@@ -171,11 +172,11 @@ export default function CreatorOnboarded() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-blue-100 rounded-full p-2 mt-0.5">
-                    <CheckCircle className="w-5 h-5 text-blue-600" />
+                  <div className="bg-status-info-subtle rounded-full p-2 mt-0.5">
+                    <CheckCircle className="w-5 h-5 text-status-info" />
                   </div>
                   <div className="text-start flex-1">
-                    <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.instantAccess')}</h3>
+                    <h3 className="font-semibold text-foreground">{t('screens.creatoronboarded.instantAccess')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.startCreatingPaidRoomsImmediately')}
                     </p>
@@ -183,11 +184,11 @@ export default function CreatorOnboarded() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-purple-100 rounded-full p-2 mt-0.5">
-                    <Sparkles className="w-5 h-5 text-purple-600" />
+                  <div className="bg-category-2/15 rounded-full p-2 mt-0.5">
+                    <Sparkles className="w-5 h-5 text-category-2" />
                   </div>
                   <div className="text-start flex-1">
-                    <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.directDeposits')}</h3>
+                    <h3 className="font-semibold text-foreground">{t('screens.creatoronboarded.directDeposits')}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.creatoronboarded.earningsDepositedDirectlyYourBankAccount')}
                     </p>
@@ -223,8 +224,8 @@ export default function CreatorOnboarded() {
           {!isLoading && !isRefetching && !isFullyOnboarded && (
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="bg-yellow-100 rounded-full p-6">
-                  <CheckCircle className="w-16 h-16 text-yellow-600" />
+                <div className="bg-status-warning-subtle rounded-full p-6">
+                  <CheckCircle className="w-16 h-16 text-status-warning" />
                 </div>
               </div>
 
@@ -235,9 +236,9 @@ export default function CreatorOnboarded() {
                 </p>
               </div>
 
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-start">
-                <p className="font-medium text-yellow-900 mb-2">{t('screens.creatoronboarded.whatSNext')}</p>
-                <ul className="space-y-1 text-yellow-700">
+              <div className="bg-status-warning-subtle border border-status-warning/30 rounded-lg p-4 text-sm text-start">
+                <p className="font-medium text-foreground mb-2">{t('screens.creatoronboarded.whatSNext')}</p>
+                <ul className="space-y-1 text-status-warning">
                   <li>{t('screens.creatoronboarded.stripeVerifyingYourAccountInformation')}</li>
                   <li>{t('screens.creatoronboarded.youLlReceiveEmailWhenSetup')}</li>
                   <li>{t('screens.creatoronboarded.thisUsuallyTakes510Minutes')}</li>
@@ -261,8 +262,8 @@ export default function CreatorOnboarded() {
               </div>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
     </div>
   );
 }

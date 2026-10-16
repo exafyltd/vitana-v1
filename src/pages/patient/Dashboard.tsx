@@ -1,13 +1,13 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from "@/components/layout/spotlight/Panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Calendar, TestTube, Target, Loader2, FlaskConical } from "lucide-react";
+import { Heart, Calendar, TestTube, Target, FlaskConical } from "lucide-react";
 import { Link } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
 import { formatDate } from '@/lib/locale-format';
 import AppLayout from "@/components/AppLayout";
 import { usePatientHealthResults } from '@/hooks/usePatientHealthResults';
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { RecentResultsRows } from "@/components/spotlight/member/PatientSpotlight";
 import { SpotlightPanel } from "@/components/spotlight/member/MemberSpotlight";
@@ -17,16 +17,14 @@ function RecentResultsCard() {
   const recent = (results ?? []).slice(0, 3);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('screens.patient.results.recentResultsTitle')}</CardTitle>
-        <CardDescription>{t('screens.patient.results.subtitle')}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <Panel>
+      <PanelHeader>
+        <PanelTitle>{t('screens.patient.results.recentResultsTitle')}</PanelTitle>
+        <PanelDescription>{t('screens.patient.results.subtitle')}</PanelDescription>
+      </PanelHeader>
+      <PanelContent className="space-y-3">
         {isLoading ? (
-          <div className="flex justify-center py-4">
-            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-          </div>
+          <SpotlightLoading rows={3} />
         ) : recent.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t('screens.patient.results.empty')}</p>
         ) : (
@@ -48,8 +46,8 @@ function RecentResultsCard() {
             {t('screens.patient.results.viewAll')}
           </Link>
         </Button>
-      </CardContent>
-    </Card>
+      </PanelContent>
+    </Panel>
   );
 }
 
@@ -84,95 +82,95 @@ export default function PatientDashboard() {
       <RecentResultsCard />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('screens.patient.nextAppointment')}</CardTitle>
+        <Panel>
+          <PanelHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <PanelTitle className="text-sm font-medium">{t('screens.patient.nextAppointment')}</PanelTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-2xl font-bold">{t('screens.patient.tomorrow')}</div>
             <p className="text-xs text-muted-foreground">
               {t('screens.patient.drSmithAt200Pm')}
             </p>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('screens.patient.healthScore')}</CardTitle>
+        <Panel>
+          <PanelHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <PanelTitle className="text-sm font-medium">{t('screens.patient.healthScore')}</PanelTitle>
             <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-2xl font-bold">85/100</div>
             <p className="text-xs text-muted-foreground">{t('screens.patient.text5FromLastMonth')}
             </p>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('screens.patient.pendingResults')}</CardTitle>
+        <Panel>
+          <PanelHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <PanelTitle className="text-sm font-medium">{t('screens.patient.pendingResults')}</PanelTitle>
             <TestTube className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-2xl font-bold">2</div>
             <p className="text-xs text-muted-foreground">
               {t('screens.patient.bloodWorkXray')}
             </p>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('screens.patient.goalsProgress')}</CardTitle>
+        <Panel>
+          <PanelHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <PanelTitle className="text-sm font-medium">{t('screens.patient.goalsProgress')}</PanelTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-2xl font-bold">7/10</div>
             <p className="text-xs text-muted-foreground">
               {t('screens.patient.weeklyGoalsCompleted')}
             </p>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('screens.patient.recentActivity')}</CardTitle>
-            <CardDescription>{t('screens.patient.yourLatestHealthActivities')}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('screens.patient.recentActivity')}</PanelTitle>
+            <PanelDescription>{t('screens.patient.yourLatestHealthActivities')}</PanelDescription>
+          </PanelHeader>
+          <PanelContent className="space-y-4">
             <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-status-success rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.completedDailyWalk')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.patient.text2HoursAgo')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-status-info rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.bloodPressureRecorded')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.patient.yesterday')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-status-warning rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.medicationReminder')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.patient.text3DaysAgo')}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('screens.patient.quickActions')}</CardTitle>
-            <CardDescription>{t('screens.patient.commonTasksShortcuts')}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('screens.patient.quickActions')}</PanelTitle>
+            <PanelDescription>{t('screens.patient.commonTasksShortcuts')}</PanelDescription>
+          </PanelHeader>
+          <PanelContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
               <Calendar className="me-2 h-4 w-4" />
               {t('screens.patient.scheduleAppointment')}
@@ -185,8 +183,8 @@ export default function PatientDashboard() {
               <Heart className="me-2 h-4 w-4" />
               {t('screens.patient.logHealthData')}
             </Button>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </div>
     </div>
     </AppLayout>
