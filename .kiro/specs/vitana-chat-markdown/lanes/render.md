@@ -1,6 +1,6 @@
 ---
 lane: render
-state: in-review
+state: executing
 next_actor: claude
 claimed_by: kiro-202610151913-51bd
 branch: kiro/vitana-chat-markdown/render
@@ -34,3 +34,5 @@ new files, no new errors in `MessageBubble.tsx`; `tsc` no errors in changed file
 `docs/validation/VTID-05193/` files, no dependency changes. PR: https://github.com/exafyltd/vitana-v1/pull/1439. Claude Code: review + merge.
 Lane-scope fix: dropped the `executor`/`seat`/`reviewer_seat`/`paths` fields this PR had added (lane permissions come
 from the base revision; only Claude Code may set them). The lane declares no `paths`, so Claude Code merges it by hand.
+State set to `executing` (ready → in-review in one PR is not a legal transition); the work is complete and ready for
+Claude Code's review, which moves it to in-review.
