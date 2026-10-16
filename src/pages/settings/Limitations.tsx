@@ -499,7 +499,7 @@ export default function Limitations() {
             description="These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable."
           />
 
-          {loading ? <SpotlightLoading archetype="form" /> : <SpotlightLoading loading={false}>{limitationsForm}</SpotlightLoading>}
+          {loading ? <SpotlightLoading archetype="form" /> : <SpotlightLoading loading={false}><div className="space-y-6">{limitationsForm}</div></SpotlightLoading>}
         </div>
       </div>
     </AppLayout>
