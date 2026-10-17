@@ -3947,6 +3947,8 @@
       "taskId": "Görev Kimliği",
       "taskBoard": "Görev Panosu",
       "realtimeCommandCockpit": "Gerçek zamanlı komut kokpiti",
+      "taskBoardAccessDenied": "Görev panosuna erişim yok",
+      "taskBoardAccessDeniedDescription": "Hesabın görevleri okuyamaz. Bir yöneticiden sana erişim vermesini iste.",
       "noTemplatesFoundMatchingYourCriteria": "Kriterlerine uyan şablon bulunamadı",
       "searchTemplates": "Şablonları ara...",
       "liveTicker": "Canlı Ticker",

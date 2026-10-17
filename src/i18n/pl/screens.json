@@ -3948,6 +3948,8 @@
       "taskId": "ID zadania",
       "taskBoard": "Tablica zadań",
       "realtimeCommandCockpit": "Kokpit dowodzenia w czasie rzeczywistym",
+      "taskBoardAccessDenied": "Brak dostępu do tablicy zadań",
+      "taskBoardAccessDeniedDescription": "Twoje konto nie może odczytywać zadań. Poproś administratora, żeby dał ci dostęp.",
       "noTemplatesFoundMatchingYourCriteria": "Nie znaleziono szablonów pasujących do Twoich kryteriów",
       "searchTemplates": "Szukaj szablonów...",
       "liveTicker": "Aktualności na żywo",
