@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05160",
+  "kind": "feature",
+  "paths": [
+    "supabase/functions/_shared/erase-health-raw.ts",
+    "supabase/functions/request-account-deletion/index.ts",
+    "src/lib/erase-health-raw.test.ts",
+    "docs/validation/VTID-05160/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05160/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
