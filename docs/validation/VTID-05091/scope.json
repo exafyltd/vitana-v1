@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05091",
+  "kind": "feature",
+  "paths": [
+    "src/lib/commerce-dpa.ts",
+    "src/lib/commerce-dpa.vtid-05091.test.ts",
+    "src/components/commerce/PartnerDpaSheet.tsx",
+    "src/components/commerce/PartnerDpaSheet.vtid-05091.test.tsx",
+    "src/components/commerce/SetupHub.tsx",
+    "src/components/commerce/SetupHub.vtid-05091.test.tsx",
+    "src/i18n/*/screens.json",
+    "i18n-source-stamps/*.json",
+    "tests/e2e/staging/vtid-05091-partner-dpa.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05091/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

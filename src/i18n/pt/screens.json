@@ -5249,11 +5249,13 @@
       "vitanaIndexUpSubtext": "Ótimo trabalho!",
       "vitanaIndexDownSubtext": "Pequenos passos contam.",
       "vitanaIndexStableSubtext": "Mantém a consistência.",
+      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
       "longevityJourneyEyebrow": "SEU AUDIOLIVRO DE LONGEVIDADE",
       "longevityJourneyContinue": "Continue com o episódio {session}: {topic}",
       "longevityJourneyAllDone": "Você ouviu todos os episódios. Muito bem!",
       "longevityJourneyNextStepHeadline": "Seu próximo passo:",
       "longevityJourneySubtext": "O episódio {session} está esperando por você.",
+      "longevityJourneyProgressSubtext": "O episódio {session} te espera · {done} concluídos · hoje {today}/{goal}",
       "longevityJourneyStartSession": "Ouvir episódio {session}",
       "longevityJourneyDoneLabel": "Feito",
       "longevityJourneyNowLabel": "Agora",
@@ -5453,9 +5455,7 @@
       "cancelReply": "Cancelar resposta",
       "likeComment": "Curtir comentário",
       "feedItemError": "Esta publicação não pôde ser exibida.",
-      "playTodaysEpisode": "Ouvir episódio {session}",
-      "vitanaIndexScoreSubtext": "Índice {score} · {message}",
-      "longevityJourneyProgressSubtext": "O episódio {session} te espera · {done} concluídos · hoje {today}/{goal}"
+      "playTodaysEpisode": "Ouvir episódio {session}"
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"
@@ -5949,32 +5949,60 @@
             "insight": "Growing your knowledge base"
           },
           "financeAssets": {
-            "title": "Finanças e Ativos",
-            "insight": "Construindo clareza financeira"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Finance & Assets",
+            "insight": "Building financial clarity"
           },
           "locationEnvironment": {
-            "title": "Localização e Ambiente",
-            "insight": "Mapeando seu mundo físico"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Location & Environment",
+            "insight": "Mapping your physical world"
           },
           "digitalFootprint": {
-            "title": "Pegada Digital",
-            "insight": "Gerenciando sua presença digital"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Digital Footprint",
+            "insight": "Managing your digital presence"
           },
           "valuesAspirations": {
-            "title": "Valores e Aspirações",
-            "insight": "Definindo sua bússola"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Values & Aspirations",
+            "insight": "Defining your compass"
           },
           "autopilotSettings": {
-            "title": "Piloto Automático e Contexto",
-            "insight": "Configurando seu companheiro de IA"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Autopilot & Context",
+            "insight": "Configuring your AI companion"
           },
           "futurePlans": {
-            "title": "Planos Futuros",
-            "insight": "Projetando sua evolução"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Future Plans",
+            "insight": "Designing your evolution"
           },
           "general": {
-            "title": "Não Categorizado",
-            "insight": "Memórias aguardando categorização"
+            "_pending_review": {
+              "title": true,
+              "insight": true
+            },
+            "title": "Uncategorized",
+            "insight": "Memories awaiting categorization"
           }
         },
         "lastUpdated": "Last updated {date}",
@@ -6211,7 +6239,10 @@
       "imageShareFailed": "Não foi possível partilhar",
       "imageLoading": "A carregar imagem",
       "unknownSize": "Tamanho desconhecido",
-      "talkToVitana": "Fale com a Vitana",
+      "_pending_review": {
+        "talkToVitana": true
+      },
+      "talkToVitana": "Talk to Vitana",
       "forwardInMaxina": "No MAXINA",
       "forwardShareOther": "Compartilhar em outros apps",
       "forwardShareLinkHint": "Se o seu dispositivo não puder compartilhar a imagem diretamente, será compartilhado um link válido por {days} dias.",
@@ -6268,10 +6299,16 @@
       "delete": "Excluir",
       "close": "Fechar",
       "closeNotifications": "Fechar notificações",
-      "turnOnTitle": "Notificações desativadas",
-      "turnOnBody": "Este aplicativo não pode enviar notificações para você agora. Abra as configurações do seu telefone, encontre o aplicativo Vitana e ative as notificações lá. Em seguida, toque em \"Tentar novamente\".",
+      "turnOnTitle": "As notificações estão desativadas",
+      "turnOnBody": "Este app não consegue enviar notificações para você agora. Abra as configurações do seu celular, encontre o app Vitana e ative as notificações. Depois toque em \"Tentar novamente\".",
       "turnOnTryAgain": "Tentar novamente",
-      "turnOnDismiss": "Descartar"
+      "turnOnDismiss": "Ocultar",
+      "_pending_review": {
+        "turnOnTitle": true,
+        "turnOnBody": true,
+        "turnOnTryAgain": true,
+        "turnOnDismiss": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Escolha a parte do nome do seu ID Vitana",
@@ -6884,7 +6921,10 @@
       "noMissed": "Nenhum lembrete perdido — você está com tudo em dia.",
       "creating": "A criar…",
       "createReminder": "Criar lembrete",
-      "vitana": "Vitana"
+      "vitana": "Vitana",
+      "_pending_review": {
+        "vitana": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no seu inventário",
@@ -7610,19 +7650,29 @@
       "partnerLabsError": "Algo deu errado. Por favor, tente novamente.",
       "vitanaMessages": {
         "_pending_review": {
+          "title": true,
+          "desc": true,
+          "enabled": true,
+          "enabledDesc": true,
+          "topics": true,
+          "health": true,
+          "healthDesc": true,
+          "community": true,
+          "communityDesc": true,
+          "business": true,
           "businessDesc": true,
           "loadError": true
         },
-        "title": "Mensagens da Vitana",
-        "desc": "De vez em quando, a Vitana envia uma mensagem pessoal no Messenger, com uma dica que combina com você agora.",
-        "enabled": "Receber mensagens da Vitana",
-        "enabledDesc": "No máximo uma mensagem por dia. Você pode desativá-las a qualquer momento.",
-        "topics": "Tópicos",
-        "health": "Saúde",
-        "healthDesc": "Dicas para sua saúde e seu Índice Vitana.",
-        "community": "Comunidade",
-        "communityDesc": "Pessoas, grupos e eventos que combinam com você.",
-        "business": "Negócios e renda",
+        "title": "Messages from Vitana",
+        "desc": "Now and then Vitana sends you a personal message in the Messenger, with a tip that fits you right now.",
+        "enabled": "Receive messages from Vitana",
+        "enabledDesc": "At most one message a day. You can turn them off at any time.",
+        "topics": "Topics",
+        "health": "Health",
+        "healthDesc": "Tips for your health and your Vitana Index.",
+        "community": "Community",
+        "communityDesc": "People, groups and events that suit you.",
+        "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded."
       },
@@ -11319,6 +11369,50 @@
         "rowReacceptTitle": "Novos termos de parceiro",
         "rowReacceptBody": "Os termos de parceiro mudaram (versão {version}). Leia e aceite a nova versão.",
         "rowCta": "Ler e aceitar",
+        "view": "Ver"
+      },
+      "dpa": {
+        "title": "Contrato de tratamento de dados",
+        "loadFailed": "Não foi possível carregar o contrato de tratamento de dados. Tente novamente.",
+        "notPublished": "A Vitanaland ainda está preparando o contrato de tratamento de dados. Você poderá assiná-lo assim que for publicado.",
+        "updated": "O contrato de tratamento de dados foi atualizado — leia a versão atual e confirme-a novamente.",
+        "resignNotice": "O contrato mudou (versão {version}). Leia a nova versão e assine-a novamente.",
+        "signedNotice": "Você assinou a versão {version} em {date}.",
+        "signedNoticeNoDate": "Você assinou a versão {version}.",
+        "version": "Versão {version} · publicada em {date}",
+        "bindingNotice": "A versão alemã deste contrato é a versão juridicamente vinculante. As traduções são fornecidas para facilitar a compreensão; em caso de divergência, prevalece a versão alemã.",
+        "bindingShort": "vinculante",
+        "languageLabel": "Idioma do contrato",
+        "readGerman": "Ler a versão vinculante em alemão",
+        "fallbackNotice": "Este contrato ainda não está disponível no seu idioma — você está vendo a versão alemã vinculante.",
+        "nameLabel": "Nome completo",
+        "roleLabel": "Função / cargo",
+        "fallbackDeclaration": "Li o contrato e o assino em nome de {legal_name}.",
+        "bindingDeclarationLabel": "Versão vinculante:",
+        "signerHint": "Seu nome e sua função são salvos junto com sua assinatura.",
+        "close": "Fechar",
+        "sign": "Assinar",
+        "signed": "Contrato de tratamento de dados assinado.",
+        "signFailed": "A assinatura não funcionou. Tente novamente.",
+        "errorRequiresSupplier": "Só você pode assinar o contrato, aqui na Vitanaland — não por meio de um assistente.",
+        "errorNotPublished": "No momento não há nenhum contrato de tratamento de dados publicado. Ainda não há nada para assinar.",
+        "errorInvalidLocale": "Esta versão de idioma não existe mais. O contrato foi recarregado.",
+        "errorInvalidSignature": "Informe seu nome completo e sua função e confirme a declaração.",
+        "errorOrgNotFound": "Este negócio não foi encontrado.",
+        "errorNotOrgAdmin": "Somente os admins deste negócio podem assinar o contrato.",
+        "errorNotRequired": "Seu negócio não precisa de um contrato de tratamento de dados.",
+        "errorCompanyIncomplete": "Primeiro complete a razão social e o país do seu negócio.",
+        "errorAccountEmailRequired": "Sua conta precisa de um endereço de e-mail antes que você possa assinar.",
+        "rowTitle": "Contrato de tratamento de dados",
+        "rowBody": "Leia o contrato de tratamento de dados (versão {version}) e assine-o.",
+        "rowBodyNoVersion": "Leia o contrato de tratamento de dados e assine-o.",
+        "rowPending": "Em preparação pela Vitanaland.",
+        "rowSigned": "Versão {version} assinada em {date}.",
+        "rowSignedNoDate": "Versão {version} assinada.",
+        "rowSignedPlain": "Assinado.",
+        "rowResignTitle": "Novo contrato de tratamento de dados",
+        "rowResignBody": "O contrato mudou (versão {version}). Leia e assine a nova versão.",
+        "rowCta": "Ler e assinar",
         "view": "Ver"
       }
     },
