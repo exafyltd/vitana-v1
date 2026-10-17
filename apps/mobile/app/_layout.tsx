@@ -14,6 +14,9 @@
  * bottom-bar slot and the ORB provider + overlay sit inside the shell root.
  * Without a G1 gateway URL the ORB says it is not reachable and connects to
  * nothing.
+ *
+ * VTID-05184 (N5a) — the Health Connect rationale hand-off (privacy-policy link
+ * from the Health Connect permission screen → /privacy).
  */
 import 'react-native-url-polyfill/auto';
 import { Stack } from 'expo-router';
@@ -31,6 +34,7 @@ import { useRemoteConfigRefresh } from '../src/config/remote-config';
 import { useLinkRouting } from '../src/linking/link-router';
 import { usePushLifecycle } from '../src/push/registration';
 import { OrbOverlay, OrbProvider, registerOrbUi } from '../src/orb/ui';
+import { useHealthConnectRationaleRedirect } from '../modules/health-connect-rationale';
 
 // Arabic is right-to-left; layouts use start/end, never left/right.
 I18nManager.allowRTL(true);
@@ -42,6 +46,7 @@ export default function RootLayout() {
   useRemoteConfigRefresh();
   useLinkRouting();
   usePushLifecycle();
+  useHealthConnectRationaleRedirect(); // VTID-05184: Health Connect privacy-policy link → /privacy
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>

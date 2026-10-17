@@ -1,5 +1,5 @@
 /** VTID-05157 — app.config.ts has no production profile and no store identifiers. */
-import { buildConfig, resolveProfile, IDENTIFIERS, googleIosUrlScheme } from '../app.config';
+import { buildConfig, resolveProfile, IDENTIFIERS, googleIosUrlScheme, HEALTH_SYNC_PLUGINS } from '../app.config';
 import appConfig from '../app.config';
 
 describe('APP_PROFILE', () => {
@@ -137,6 +137,7 @@ describe('auth plugins', () => {
     expect(names({})).toEqual([
       'expo-router',
       'expo-localization',
+      ...HEALTH_SYNC_PLUGINS.map((p) => (Array.isArray(p) ? p[0] : p)), // VTID-05184 (N5a)
       './modules/vitana-voice/plugin/withVitanaVoice',
       'expo-secure-store',
       'expo-apple-authentication',

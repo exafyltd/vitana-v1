@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05184",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/health-sync/**",
+    "apps/mobile/src/types/pako.d.ts",
+    "apps/mobile/plugins/**",
+    "apps/mobile/modules/health-connect-rationale/**",
+    "apps/mobile/app.config.ts",
+    "apps/mobile/app/_layout.tsx",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "apps/mobile/.gitignore",
+    "apps/mobile/README.md",
+    "apps/mobile/tests/health-sync/**",
+    "scripts/native/vendor-health-sync-contract.mjs",
+    "scripts/native/gen-ios-locales.mjs",
+    "docs/validation/VTID-05184/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05184/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
