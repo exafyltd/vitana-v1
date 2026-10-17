@@ -20,7 +20,7 @@ import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
 import { t } from '@/lib/i18n-toast';
 import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
-import { ProfileSpotlightRail } from "@/components/profile/shared/ProfileSpotlightRail";
+import { ProfileSpotlightRail, ProfileSpotlightRailSkeleton } from "@/components/profile/shared/ProfileSpotlightRail";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 interface DatabaseProfile {
@@ -341,11 +341,13 @@ export default function PublicProfilePage() {
 
   if (loading) {
     // Skeleton of the `detail` screen (owner decision 3): inside the frame on
-    // desktop Spotlight, the single-column shape on phones / flag off.
+    // desktop Spotlight, the single-column shape on phones / flag off. The
+    // loading frame carries a skeleton rail so its columns match the loaded
+    // frame and the stage does not shift when the profile arrives.
     return (
       <AppLayout>
         {spotlight ? (
-          <ScreenFrame archetype="detail">
+          <ScreenFrame archetype="detail" rail={<ProfileSpotlightRailSkeleton />}>
             <SpotlightLoading archetype="detail" />
           </ScreenFrame>
         ) : (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Image, MessageSquare, UserCheck, Users, UsersRound } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { VCard } from "@/components/ui/vcard";
+import { VCard, VCardSkeleton } from "@/components/ui/vcard";
 import { IconThumb } from "@/components/spotlight/tier-b/TierBKit";
 import { cardButtonProps } from "@/components/spotlight/tier-b/cardButtonProps";
 import { FollowListDialog } from "@/components/profile/FollowListDialog";
@@ -27,6 +27,24 @@ interface ProfileSpotlightRailProps {
  * counts, the same labels and the same follower / following / group lists.
  * Phones and flag-off desktop never render it.
  */
+/** The number of stat cards the rail renders (posts, followers, following, media, groups). */
+export const PROFILE_SPOTLIGHT_RAIL_STATS = 5;
+
+/**
+ * The rail while the profile loads: one compact skeleton per stat card, so the
+ * loading frame has the same `stage-rail` columns as the loaded one and the
+ * stage does not move when the profile arrives (owner decision 3).
+ */
+export function ProfileSpotlightRailSkeleton() {
+  return (
+    <div className="flex flex-col gap-3" aria-hidden="true" data-testid="profile-spotlight-rail-skeleton">
+      {Array.from({ length: PROFILE_SPOTLIGHT_RAIL_STATS }, (_, i) => (
+        <VCardSkeleton key={i} size="compact" />
+      ))}
+    </div>
+  );
+}
+
 export function ProfileSpotlightRail({
   profile,
   profileUserId: propUserId,
