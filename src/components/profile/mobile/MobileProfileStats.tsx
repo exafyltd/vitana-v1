@@ -59,7 +59,7 @@ export function MobileProfileStats({
       <div
         className={cn(
           "grid grid-cols-3",
-          divided ? "divide-x divide-slate-200 py-2.5 rtl:divide-x-reverse" : "gap-1 py-3 px-2",
+          divided ? "divide-x divide-border py-2.5 rtl:divide-x-reverse" : "gap-1 py-3 px-2",
           className,
         )}
         style={rowStyle}
@@ -82,7 +82,7 @@ export function MobileProfileStats({
             <button
               key={stat.key}
               type="button"
-              className={cn(cellClass, "cursor-pointer active:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400", !divided && "rounded-md")}
+              className={cn(cellClass, "cursor-pointer active:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-7/80", !divided && "rounded-md")}
               onClick={() => {
                 if (stat.key === "groups") setGroupListOpen(true);
               }}
