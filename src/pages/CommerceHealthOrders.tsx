@@ -48,7 +48,7 @@ import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 const panelClass = 'rounded-2xl border border-border bg-card p-4';
 // VTID-03999: inputs use the theme's own field styles; the amber focus ring is kept.
-const fieldClass = 'focus-visible:ring-amber-500';
+const fieldClass = 'focus-visible:ring-ring';
 
 const STATUS_OPTIONS = ['ordered', 'sample_kit_shipped', 'sample_received', 'processing', 'delivered', 'cancelled', 'failed'];
 
@@ -235,7 +235,7 @@ export default function CommerceHealthOrders() {
                                     onValueChange={(v) => submitStatus(o.id, v)}
                                     disabled={patchStatus.isPending || o.status === 'result_ready'}
                                   >
-                                    <SelectTrigger className="w-44 focus-visible:ring-amber-500">
+                                    <SelectTrigger className="w-44 focus-visible:ring-ring">
                                       <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -306,7 +306,7 @@ export default function CommerceHealthOrders() {
                                 onValueChange={(v) => submitStatus(o.id, v)}
                                 disabled={patchStatus.isPending || o.status === 'result_ready'}
                               >
-                                <SelectTrigger className="w-full focus-visible:ring-amber-500">
+                                <SelectTrigger className="w-full focus-visible:ring-ring">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -384,7 +384,7 @@ export default function CommerceHealthOrders() {
                                   <TableCell className="text-end">
                                     <Button
                                       size="sm"
-                                      className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                                      className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                                       disabled={row.member_link_status === 'pending_member'}
                                       onClick={() => setResolveRow(row)}
                                     >
@@ -420,7 +420,7 @@ export default function CommerceHealthOrders() {
                               </div>
                               <Button
                                 size="sm"
-                                className="mt-3 w-full bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+                                className="mt-3 w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                                 disabled={row.member_link_status === 'pending_member'}
                                 onClick={() => setResolveRow(row)}
                               >
@@ -463,7 +463,7 @@ export default function CommerceHealthOrders() {
               {t('screens.admin.cancel')}
             </Button>
             <Button
-              className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+              className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
               onClick={submitUpload}
               disabled={uploadResult.isPending || !uploadJson.trim()}
             >
@@ -515,7 +515,7 @@ export default function CommerceHealthOrders() {
               {t('screens.admin.cancel')}
             </Button>
             <Button
-              className="bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+              className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
               onClick={submitConfirmMatch}
               disabled={confirmMatch.isPending}
             >
