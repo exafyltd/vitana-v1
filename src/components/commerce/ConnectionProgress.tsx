@@ -43,9 +43,9 @@ export function ConnectionProgress({ state, className = '' }: { state: string; c
               className={[
                 'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold',
                 done
-                  ? 'border-amber-700 bg-amber-700 text-white'
+                  ? 'border-primary bg-primary text-primary-foreground'
                   : current
-                    ? 'border-amber-700 text-amber-700'
+                    ? 'border-primary text-primary'
                     : 'border-border text-muted-foreground',
               ].join(' ')}
             >
@@ -59,7 +59,7 @@ export function ConnectionProgress({ state, className = '' }: { state: string; c
             {i < CONNECTION_STEPS.length - 1 && (
               <span
                 aria-hidden
-                className={`hidden h-px flex-1 sm:block ${i < active ? 'bg-amber-700/60' : 'bg-border'}`}
+                className={`hidden h-px flex-1 sm:block ${i < active ? 'bg-primary/60' : 'bg-border'}`}
               />
             )}
           </li>

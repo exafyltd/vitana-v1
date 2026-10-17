@@ -125,7 +125,7 @@ export default function CommerceConnectAuthorize() {
     <CommerceShell>
       <FrameWhen on={spotlight} archetype="collection">
       <div className="mx-auto max-w-md py-10">
-        <div className="rounded-3xl border border-amber-200 bg-card p-6 shadow-xl shadow-amber-900/5" data-testid="connect-authorize">
+        <div className="rounded-3xl border border-primary/20 bg-card p-6 shadow-xl shadow-primary/5" data-testid="connect-authorize">
           {view.kind === 'loading' ? (
             <div className="flex flex-col gap-3 py-4">
               <ArchetypeSkeleton archetype="form" />
@@ -143,7 +143,7 @@ export default function CommerceConnectAuthorize() {
             </p>
           ) : (
             <>
-              <ShieldCheck className="h-8 w-8 text-amber-700" aria-hidden />
+              <ShieldCheck className="h-8 w-8 text-primary" aria-hidden />
               <h1 className="mt-3 text-xl font-semibold text-foreground">{t(`${K}.title`, { client })}</h1>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(`${K}.lead`, { client })}</p>
               {user?.email && (
@@ -154,14 +154,14 @@ export default function CommerceConnectAuthorize() {
               <ul className="mt-2 space-y-2">
                 {CAN_DO.map((key) => (
                   <li key={key} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     {t(key)}
                   </li>
                 ))}
               </ul>
               <p className="mt-4 rounded-xl bg-muted/50 p-3 text-xs leading-relaxed text-muted-foreground">{t(`${K}.youConfirm`)}</p>
               {redirectHost && (
-                <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50/60 p-3 text-xs leading-relaxed text-foreground" data-testid="connect-redirect-host">
+                <p className="mt-3 rounded-xl border border-primary/20 bg-accent/60 p-3 text-xs leading-relaxed text-foreground" data-testid="connect-redirect-host">
                   {t(`${K}.redirectsTo`, { host: redirectHost })}
                 </p>
               )}
@@ -173,7 +173,7 @@ export default function CommerceConnectAuthorize() {
                   disabled={working}
                   onClick={() => void decide(true)}
                   data-testid="connect-approve"
-                  className="h-12 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                  className="h-12 flex-1 rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                 >
                   {working ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : null}
                   {t(`${K}.approve`)}
@@ -182,7 +182,7 @@ export default function CommerceConnectAuthorize() {
                   variant="outline"
                   disabled={working}
                   onClick={() => void decide(false)}
-                  className="h-12 flex-1 rounded-xl border-amber-300 font-semibold text-amber-800 hover:bg-amber-50"
+                  className="h-12 flex-1 rounded-xl border-primary/30 font-semibold text-primary hover:bg-accent"
                 >
                   {t(`${K}.deny`)}
                 </Button>

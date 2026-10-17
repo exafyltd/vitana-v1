@@ -340,12 +340,12 @@ export default function CommercePortal() {
                 className="absolute start-full top-8 hidden h-px w-8 -translate-x-4 bg-border sm:block rtl:translate-x-4"
               />
             )}
-            <div className="h-full rounded-2xl border-2 border-amber-200 bg-card p-5 shadow-sm transition-colors hover:border-amber-400">
+            <div className="h-full rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm transition-colors hover:border-primary/40">
               <div className="flex items-center gap-3">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-500 text-lg font-bold text-white">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
                   {i + 1}
                 </span>
-                <Icon className="h-6 w-6 shrink-0 text-amber-700" />
+                <Icon className="h-6 w-6 shrink-0 text-primary" />
               </div>
               <h3 className="mt-3 text-lg font-bold text-foreground">{t(title)}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(body)}</p>
@@ -370,7 +370,7 @@ export default function CommercePortal() {
           <Button
             variant="outline"
             onClick={() => setRegisterOrgOpen(true)}
-            className="border-amber-300 bg-background text-amber-800 hover:bg-amber-50"
+            className="border-primary/30 bg-background text-primary hover:bg-accent"
           >
             <Building2 className="me-2 h-4 w-4" />
             {t('screens.commerceportal.orgOnboarding.registerCta')}
@@ -401,14 +401,14 @@ export default function CommercePortal() {
           <button
             type="button"
             onClick={() => setCatalogueImportOpen(true)}
-            className="group mt-4 flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-400/60 hover:bg-card"
+            className="group mt-4 flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/25 hover:bg-card"
           >
-            <FileUp className="h-5 w-5 shrink-0 text-amber-700" />
+            <FileUp className="h-5 w-5 shrink-0 text-primary" />
             <div className="min-w-0 flex-1">
               <p className="font-medium text-foreground">{t('screens.commerceportal.catalogueImport.entryTitle')}</p>
               <p className="truncate text-xs text-muted-foreground">{t('screens.commerceportal.catalogueImport.entrySubtitle')}</p>
             </div>
-            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-amber-700 rtl:rotate-180" />
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary rtl:rotate-180" />
           </button>
         )}
 
@@ -416,14 +416,14 @@ export default function CommercePortal() {
         {myOrgs !== null && myOrgs.length > 0 && (
           <Link
             to="/commerce/health-orders"
-            className="group mt-4 flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-amber-400/60 hover:bg-card"
+            className="group mt-4 flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/25 hover:bg-card"
           >
-            <FlaskConical className="h-5 w-5 shrink-0 text-amber-700" />
+            <FlaskConical className="h-5 w-5 shrink-0 text-primary" />
             <div className="min-w-0 flex-1">
               <p className="font-medium text-foreground">{t('screens.commerceportal.healthOrders.sectionTitle')}</p>
               <p className="truncate text-xs text-muted-foreground">{t('screens.commerceportal.healthOrders.sectionSubtitle')}</p>
             </div>
-            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-amber-700 rtl:rotate-180" />
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary rtl:rotate-180" />
           </Link>
         )}
       </section>
@@ -465,7 +465,7 @@ export default function CommercePortal() {
               size="lg"
               onClick={() => setMcpOpen(true)}
               data-testid="hero-ai"
-              className="h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+              className="h-12 w-full rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 sm:w-auto"
             >
               <Sparkles className="me-2 h-4 w-4" />
               {t('screens.commerceportal.mcpConnect.cta')}
@@ -475,7 +475,7 @@ export default function CommercePortal() {
               variant="outline"
               onClick={() => setRegisterOrgOpen(true)}
               data-testid="hero-manual"
-              className="h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+              className="h-12 w-full rounded-xl border-primary/30 bg-background px-6 text-base font-semibold text-primary hover:bg-accent sm:w-auto"
             >
               <Building2 className="me-2 h-4 w-4" />
               {t('screens.commerceportal.mcpConnect.manualCta')}
@@ -494,8 +494,8 @@ export default function CommercePortal() {
               data-testid="hero-ai"
               className={
                 aiReady
-                  ? 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
-                  : 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:order-last sm:w-auto'
+                  ? 'h-12 w-full rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 sm:w-auto'
+                  : 'h-12 w-full rounded-xl border-primary/30 bg-background px-6 text-base font-semibold text-primary hover:bg-accent sm:order-last sm:w-auto'
               }
             >
               <Sparkles className="me-2 h-4 w-4" />
@@ -507,8 +507,8 @@ export default function CommercePortal() {
               onClick={() => setRegisterOrgOpen(true)}
               className={`${
                 hasOrgs || aiReady
-                  ? 'h-12 w-full rounded-xl border-amber-300 bg-background px-6 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto'
-                  : 'h-12 w-full rounded-xl bg-amber-700 px-6 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto'
+                  ? 'h-12 w-full rounded-xl border-primary/30 bg-background px-6 text-base font-semibold text-primary hover:bg-accent sm:w-auto'
+                  : 'h-12 w-full rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 sm:w-auto'
               } ${aiReady ? '' : 'order-first'}`}
             >
               <Building2 className="me-2 h-4 w-4" />
@@ -528,7 +528,7 @@ export default function CommercePortal() {
       ref={agentCardRef}
       {...(reduce ? {} : { ...fade, transition: { duration: 0.5, delay: 0.1, ease: 'easeOut' as const } })}
       className={`${className} rounded-3xl transition-shadow duration-500 ${
-        agentHighlight ? 'ring-4 ring-amber-400/70 ring-offset-2 ring-offset-background' : ''
+        agentHighlight ? 'ring-4 ring-ring/70 ring-offset-2 ring-offset-background' : ''
       }`}
     >
       {mcpReady ? <McpConnectPanel onRegisterManually={() => setRegisterOrgOpen(true)} /> : <AgentConnectCard />}
@@ -563,7 +563,7 @@ export default function CommercePortal() {
               {t('screens.commerceportal.guest.heroSubtitle')}
             </p>
             {mcpReady && (
-              <p className="mx-auto mt-2 max-w-2xl text-base font-semibold text-amber-800 md:text-lg">
+              <p className="mx-auto mt-2 max-w-2xl text-base font-semibold text-primary md:text-lg">
                 {t('screens.commerceportal.guest.heroTagline')}
               </p>
             )}
@@ -575,7 +575,7 @@ export default function CommercePortal() {
               <Button
                 size="lg"
                 onClick={() => navigate(`/commerce/join?redirectTo=${encodeURIComponent('/commerce')}`)}
-                className="h-12 w-full rounded-xl bg-amber-700 px-8 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+                className="h-12 w-full rounded-xl bg-primary px-8 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 sm:w-auto"
               >
                 {mcpReady ? t('screens.commerceportal.mcpConnect.cta') : t('screens.commerceportal.guestCta')}
               </Button>
@@ -646,7 +646,7 @@ export default function CommercePortal() {
               <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                 <Button
                   onClick={() => setAddProductOpen(true)}
-                  className="h-11 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                  className="h-11 flex-1 rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                 >
                   <PackagePlus className="me-2 h-4 w-4" />
                   {t('screens.commerceportal.addProduct')}
@@ -654,7 +654,7 @@ export default function CommercePortal() {
                 <Button
                   variant="outline"
                   onClick={() => setManualOpen(true)}
-                  className="h-11 flex-1 rounded-xl border-amber-300 bg-background font-semibold text-amber-800 hover:bg-amber-50"
+                  className="h-11 flex-1 rounded-xl border-primary/30 bg-background font-semibold text-primary hover:bg-accent"
                 >
                   {t('screens.commerceportal.manualCta')}
                 </Button>

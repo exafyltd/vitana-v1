@@ -15,7 +15,7 @@ import type { VerticalField, VocabularyOptions } from '@/hooks/useCommerceVertic
 import { t } from '@/lib/i18n-toast';
 
 const fieldClass =
-  'focus-visible:ring-amber-600';
+  'focus-visible:ring-ring';
 
 export type AttributeValue = string | number | boolean | string[] | undefined;
 
@@ -93,7 +93,7 @@ export function VerticalFieldInput({
                 onClick={() => toggle(o.value)}
                 className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                   on
-                    ? 'border-amber-600 bg-amber-50 text-amber-900 dark:bg-amber-950/30 dark:text-amber-200'
+                    ? 'border-primary/60 bg-accent text-primary'
                     : 'border-border text-muted-foreground hover:border-foreground/30'
                 }`}
               >

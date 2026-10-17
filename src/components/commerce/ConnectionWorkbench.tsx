@@ -54,7 +54,7 @@ interface Activation {
 }
 
 const stateLabel = (state: string) => t(`screens.partnerportal.states.${state}`);
-const fieldClass = 'focus-visible:ring-amber-700';
+const fieldClass = 'focus-visible:ring-ring';
 const panelClass = 'rounded-2xl border border-border bg-card p-4';
 
 export function ConnectionWorkbench({
@@ -198,7 +198,7 @@ export function ConnectionWorkbench({
                         className={fieldClass}
                       />
                       <Button
-                        className="bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                        className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                         disabled={connecting || !shopDomain.trim()}
                         onClick={() => void connectOauth('/shopify/authorize', { shop: shopDomain.trim() })}
                       >
@@ -243,7 +243,7 @@ export function ConnectionWorkbench({
                         className={fieldClass}
                       />
                       <Button
-                        className="bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                        className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                         disabled={connecting || !fhirBaseUrl.trim() || !fhirClientId.trim()}
                         onClick={() =>
                           void connectOauth('/fhir/authorize', {
@@ -274,7 +274,7 @@ export function ConnectionWorkbench({
                   ) : preview ? (
                     <>
                       {preview.pending_review.length > 0 && (
-                        <p className="text-sm font-medium text-amber-800">
+                        <p className="text-sm font-medium text-primary">
                           {t('screens.partnerportal.pendingReview', { count: preview.pending_review.length })}
                         </p>
                       )}
@@ -295,7 +295,7 @@ export function ConnectionWorkbench({
                                 <td className="py-2 pe-3">
                                   {m.source_schema}.{m.source_field}
                                   {m.sensitive && (
-                                    <Badge variant="outline" className="ms-2 border-amber-300 bg-amber-50 text-amber-800">
+                                    <Badge variant="outline" className="ms-2 border-primary/30 bg-accent text-primary">
                                       {t('screens.partnerportal.sensitive')}
                                     </Badge>
                                   )}
@@ -373,7 +373,7 @@ export function ConnectionWorkbench({
                     </p>
                   )}
                   {activation?.awaiting_platform_approval ? (
-                    <p className="flex items-center gap-2 text-sm font-medium text-amber-800">
+                    <p className="flex items-center gap-2 text-sm font-medium text-primary">
                       <Clock className="h-4 w-4" />
                       {t('screens.commerceportal.awaitingApproval')}
                     </p>

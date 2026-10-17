@@ -19,6 +19,10 @@ vi.mock('@/lib/i18n-toast', async () => {
   const real = await vi.importActual<typeof import('@/lib/i18n-toast')>('@/lib/i18n-toast');
   return { ...real, notify: vi.fn(), notifyError: vi.fn() };
 });
+// This harness has no Router / TenantProvider / AuthProvider: pin the commerce skin inputs
+// (useCommerceSkin reads Spotlight + the signed-in user since the desktop Spotlight finish).
+vi.mock('@/hooks/useSpotlightEnabled', () => ({ useSpotlightEnabled: () => false }));
+vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: null }) }));
 
 import { t } from '@/lib/i18n-toast';
 import { fetchCompanySuggestions, suggestionSourceKey } from '@/lib/commerce-suggestions';
