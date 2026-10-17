@@ -8,6 +8,11 @@ import {
   type BucketResult,
   type StorageAdapter,
 } from '../_shared/erase-user-storage.ts';
+import {
+  eraseHealthResidue,
+  healthResidueErased,
+  vendorRevokeFailures,
+} from '../_shared/erase-health-residue.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -173,6 +178,35 @@ Deno.serve(async (req) => {
       });
     }
 
+    // ── Step 0b (VTID-05175): erase the member's health residue ──
+    // Runs before any table is touched: user_connections is erased by
+    // erase_user_data in Step 1b, and the vendor revoke needs those rows
+    // (tokens and vendor ids) to tell Terra, Vital and the OAuth vendors.
+    // The gateway also erases the webhook log rows and partner inbox
+    // references that name the member. Same rule as the Storage step: keep
+    // the account unless the residue is verified gone. A failed vendor revoke
+    // is reported, never blocking.
+    console.log(`[Deletion] Erasing health residue for user ${userId}`);
+    const healthResidue = await eraseHealthResidue(userId);
+    if (!healthResidueErased(healthResidue)) {
+      console.error("[Deletion] storage_incomplete (health residue) — account NOT deleted, retry needed", healthResidue);
+      await serviceClient
+        .from("account_deletion_requests")
+        .update({ status: "storage_incomplete", processed_at: new Date().toISOString() })
+        .eq("user_id", userId);
+      return new Response(JSON.stringify({ error: "Failed to delete account" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const vendorRevokeFailed = vendorRevokeFailures(healthResidue);
+    if (vendorRevokeFailed > 0) {
+      console.warn(
+        `[Deletion] vendor revoke failed for ${vendorRevokeFailed} connector(s); local links erased`,
+        healthResidue.vendor_revoke,
+      );
+    }
+
     // ── Step 1: Delete non-cascading table data ──
     console.log(`[Deletion] Deleting non-cascading table data for user ${userId}`);
     const tableResults = await deleteUserTableData(serviceClient, userId);
@@ -266,6 +300,12 @@ Deno.serve(async (req) => {
           table_errors: tableErrors.length,
           storage_buckets_cleaned: storageResults.filter((r) => r.deleted > 0).length,
           storage_files_deleted: storageResults.reduce((sum, r) => sum + r.deleted, 0),
+          health_residue: {
+            vendor_revoke_failed: vendorRevokeFailed,
+            webhook_log_deleted: healthResidue.webhook_log.deleted,
+            partner_inbox_deleted: healthResidue.partner_inbox.deleted,
+            partner_inbox_scrubbed: healthResidue.partner_inbox.scrubbed,
+          },
         },
       }),
       {
