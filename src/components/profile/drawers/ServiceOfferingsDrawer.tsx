@@ -100,6 +100,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('screens.profile.serviceOfferings')}</DialogTitle>

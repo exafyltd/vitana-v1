@@ -37,11 +37,13 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
 
   return (
     <Dialog open onOpenChange={() => onClose()}>
+      {/* design-allow-next-line: viewport-bound media box; on-media scrim, theme-independent */}
       <DialogContent className="max-w-6xl h-[90vh] p-0 bg-black/95 border-none">
         <div className="absolute top-4 end-4 z-50">
           <Button
             variant="ghost"
             size="icon"
+            // design-allow-next-line: on-media scrim, theme-independent
             className="text-white hover:bg-white/20 h-10 w-10 rounded-full"
             onClick={onClose}
           >
@@ -54,6 +56,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
             <Button
               variant="ghost"
               size="icon"
+              // design-allow-next-line: on-media scrim, theme-independent
               className="absolute start-4 z-50 text-white hover:bg-white/20 h-10 w-10 rounded-full"
               onClick={goPrev}
             >
@@ -67,6 +70,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
             src={video.file_url}
             controls
             autoPlay
+            // design-allow-next-line: viewport-bound media box
             className="max-h-[80vh] max-w-full rounded-lg"
           />
 
@@ -74,6 +78,7 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
             <Button
               variant="ghost"
               size="icon"
+              // design-allow-next-line: on-media scrim, theme-independent
               className="absolute end-4 z-50 text-white hover:bg-white/20 h-10 w-10 rounded-full"
               onClick={goNext}
             >
@@ -82,10 +87,13 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
           )}
         </div>
 
+        {/* design-allow-next-line: on-media scrim, theme-independent */}
         <div className="absolute bottom-0 start-0 end-0 bg-black/80 border-t border-white/10 p-4">
           <div className="flex items-center justify-between">
+            {/* design-allow-next-line: on-media scrim, theme-independent */}
             <p className="text-white text-sm font-medium">{video.title || "Video"}</p>
             {videos.length > 1 && (
+              // design-allow-next-line: on-media scrim, theme-independent
               <span className="text-white/60 text-sm">
                 {currentIndex + 1} / {videos.length}
               </span>

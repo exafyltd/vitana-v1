@@ -19,6 +19,9 @@ import { useAuth } from "@/context/AuthProvider";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
 import { t } from '@/lib/i18n-toast';
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
+import { ProfileSpotlightRail } from "@/components/profile/shared/ProfileSpotlightRail";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 interface DatabaseProfile {
   user_id: string;
@@ -74,6 +77,7 @@ export default function PublicProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFollower, setIsFollower] = useState(false);
+  const spotlight = useSpotlightEnabled();
 
   const isSharedLink = searchParams.get('utm_source') === 'profile' || !user;
 
@@ -336,31 +340,41 @@ export default function PublicProfilePage() {
   };
 
   if (loading) {
+    // Skeleton of the `detail` screen (owner decision 3): inside the frame on
+    // desktop Spotlight, the single-column shape on phones / flag off.
     return (
       <AppLayout>
-        <div className="p-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">{t('screens.publicprofilepage.loadingProfile')}</p>
-        </div>
+        {spotlight ? (
+          <ScreenFrame archetype="detail">
+            <SpotlightLoading archetype="detail" />
+          </ScreenFrame>
+        ) : (
+          <div className="p-6">
+            <SpotlightLoading archetype="detail" />
+          </div>
+        )}
       </AppLayout>
     );
   }
 
   if (error || !profile) {
+    const notFound = (
+      <div className="p-6 text-center">
+        <h1 className="text-2xl font-bold mb-4">{t('screens.publicprofilepage.userNotFound')}</h1>
+        <p className="text-muted-foreground mb-4">
+          {error || "The profile you're looking for doesn't exist."}
+        </p>
+        <button 
+          onClick={() => navigate('/')}
+          className="text-primary hover:underline"
+        >
+          {t('screens.publicprofilepage.returnHome')}
+        </button>
+      </div>
+    );
     return (
       <AppLayout>
-        <div className="p-6 text-center">
-          <h1 className="text-2xl font-bold mb-4">{t('screens.publicprofilepage.userNotFound')}</h1>
-          <p className="text-muted-foreground mb-4">
-            {error || "The profile you're looking for doesn't exist."}
-          </p>
-          <button 
-            onClick={() => navigate('/')}
-            className="text-primary hover:underline"
-          >
-            {t('screens.publicprofilepage.returnHome')}
-          </button>
-        </div>
+        {spotlight ? <ScreenFrame archetype="detail">{notFound}</ScreenFrame> : notFound}
       </AppLayout>
     );
   }
@@ -393,16 +407,8 @@ export default function PublicProfilePage() {
     );
   }
 
-  return (
-    <AppLayout>
-      <SEO 
-        title={`${profile.name} (@${profile.handle}) - VITANA`}
-        description={profile.bio || `${profile.name}'s profile on VITANA`}
-        image={profile.avatarUrl}
-        imageAlt={`${profile.name}'s profile photo`}
-        url={`https://vitana-v1.lovable.app/u/${profile.handle}`}
-      />
-      
+  const body = (
+    <>
       <ProfileLayout
         profile={profile}
         scope={scope}
@@ -413,7 +419,7 @@ export default function PublicProfilePage() {
           here via the find_community_member voice tool. The query param
           search_id keys the cached match_recipe in the gateway. */}
       {searchParams.get('from') === 'who_search' && searchParams.get('search_id') ? (
-        <div className="container max-w-3xl mx-auto px-4 mt-3">
+        <div className={spotlight ? "mt-3" : "container max-w-3xl mx-auto px-4 mt-3"}>
           <WhyThisMatchCard
             searchId={searchParams.get('search_id') as string}
             currentVitanaId={profile.handle ?? null}
@@ -422,7 +428,7 @@ export default function PublicProfilePage() {
       ) : null}
 
       {/* VTID-DANCE-D5/D9: dance preferences (visibility-honoring) */}
-      <div className="container max-w-3xl mx-auto px-4 space-y-3">
+      <div className={spotlight ? "mt-3 space-y-3" : "container max-w-3xl mx-auto px-4 space-y-3"}>
         <DancePublicSection userId={profile.id} isOwn={false} />
         {/* E5 — partner preferences. Cross-user fetch via gateway with
             server-side visibility filter applied per the subject's
@@ -434,6 +440,26 @@ export default function PublicProfilePage() {
         {/* E1 / E2 — owner's open posts (partner_seek excluded by hardcoded rule). */}
         <MyPostsSection userId={profile.id} />
       </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={`${profile.name} (@${profile.handle}) - VITANA`}
+        description={profile.bio || `${profile.name}'s profile on VITANA`}
+        image={profile.avatarUrl}
+        imageAlt={`${profile.name}'s profile photo`}
+        url={`https://vitana-v1.lovable.app/u/${profile.handle}`}
+      />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="detail" rail={<ProfileSpotlightRail profile={profile} />}>
+          {body}
+        </ScreenFrame>
+      ) : (
+        body
+      )}
     </AppLayout>
   );
 }

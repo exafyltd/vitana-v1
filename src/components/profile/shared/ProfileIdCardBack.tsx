@@ -171,13 +171,14 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
 
   return (
     <>
-      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl overflow-hidden transition-all duration-500 ease-in-out`}
+      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase || 'bg-gradient-to-br from-card/90 via-card/60 to-card/30'} ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl overflow-hidden transition-all duration-500 ease-in-out`}
            style={{
              boxShadow: themeConfig.backCard.darkBase 
                ? '0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)'
                : themeConfig.backCard.lightShadow || '0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)'
            }}>
         {/* Themed gradient border */}
+        {/* design-allow-next-line: CSS mask layers, the colour is never rendered */}
         <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : themeConfig.backCard.lightBorderOpacity || 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
         
         {/* Left edge glow (ambient light bleed for dark theme) */}
@@ -210,8 +211,8 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                   key={platform.name}
                   className={`group relative flex flex-col items-center p-5 rounded-2xl border transition-all duration-[400ms] ease-in-out ${
                     connected 
-                      ? `bg-white/70 dark:bg-gray-800/70 backdrop-blur-md cursor-pointer ${themeConfig.backCard.platformHoverGlow}` 
-                      : `bg-gray-100/40 dark:bg-gray-900/40 backdrop-blur-sm hover:scale-[1.02]`
+                      ? `bg-card/70 backdrop-blur-md cursor-pointer ${themeConfig.backCard.platformHoverGlow}` 
+                      : `bg-muted/40 backdrop-blur-sm hover:scale-[1.02]`
                   }`}
                 style={connected ? {
                   borderColor: platform.brandColor,
@@ -299,8 +300,8 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                     
                     {/* Green check overlay for connected */}
                     {connected && (
-                      <div className="absolute -top-1 -end-1 z-20 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-[0_4px_12px_rgba(34,197,94,0.4)]">
-                        <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <div className="absolute -top-1 -end-1 z-20 w-5 h-5 rounded-full bg-status-success border-2 border-border flex items-center justify-center shadow-[0_4px_12px_rgba(34,197,94,0.4)]">
+                        <svg className="h-3 w-3 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
@@ -310,7 +311,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                 
                 {/* Platform name */}
                 <span className={`text-sm font-semibold mb-3 transition-colors duration-300 ${
-                  connected ? (themeConfig.backCard.textHeader || 'text-foreground') : 'text-white/50'
+                  connected ? (themeConfig.backCard.textHeader || 'text-foreground') : 'text-muted-foreground/50'
                 }`}
                 style={connected ? { color: platform.brandColor } : {}}
                 >
@@ -390,10 +391,10 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
 
         {/* Display LinkedIn enriched data if available */}
         {profile.linkedin_url && (profile.linkedin_headline || profile.linkedin_summary) && (
-          <div className="w-full max-w-md mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="w-full max-w-md mt-4 p-4 bg-category-3/10 rounded-lg border border-category-3/25">
             <div className="flex items-center gap-2 mb-2">
               <LinkedInIcon className="h-4 w-4" connected={true} />
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">{t('screens.profile.linkedinProfileData')}</span>
+              <span className="text-xs font-semibold text-category-3">{t('screens.profile.linkedinProfileData')}</span>
             </div>
             {profile.linkedin_headline && (
               <p className="text-sm font-medium text-foreground mb-1">{profile.linkedin_headline}</p>

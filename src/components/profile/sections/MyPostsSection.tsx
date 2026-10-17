@@ -61,7 +61,7 @@ export function MyPostsSection({ userId }: MyPostsSectionProps) {
   return (
     <section id="my-posts" className="rounded-xl border border-border bg-card p-4 space-y-3">
       <header className="flex items-center gap-2">
-        <FileText className="h-4 w-4 text-blue-600" />
+        <FileText className="h-4 w-4 text-category-3" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           {t('screens.profile.myPosts')}
         </h3>
@@ -92,7 +92,7 @@ export function MyPostsSection({ userId }: MyPostsSectionProps) {
                 )}
               </div>
               {p.match_count > 0 && (
-                <span className="shrink-0 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                <span className="shrink-0 text-xs font-medium text-status-success bg-status-success-subtle border border-status-success/25 px-2 py-0.5 rounded-full">
                   {p.match_count} {p.match_count === 1 ? "match" : "matches"}
                 </span>
               )}

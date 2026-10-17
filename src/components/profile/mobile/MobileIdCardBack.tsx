@@ -153,9 +153,9 @@ export function MobileIdCardBack({
       data-testid="social-add-channel"
       onClick={() => setPickerOpen(true)}
       aria-label={translate('socialImport.addChannelAria', 'Add a social channel')}
-      className="w-12 h-12 rounded-full bg-white/70 flex items-center justify-center mx-auto shadow-sm transition-colors hover:bg-white active:scale-95"
+      className="w-12 h-12 rounded-full bg-card/70 flex items-center justify-center mx-auto shadow-sm transition-colors hover:bg-card active:scale-95"
     >
-      <Plus className="h-5 w-5 text-slate-600" />
+      <Plus className="h-5 w-5 text-muted-foreground" />
     </button>
   );
 
@@ -163,7 +163,7 @@ export function MobileIdCardBack({
     <div className={cn("px-4 pb-2", className)}>
       {/* Pastel Card - Same style as Front ID */}
       <div
-        className="relative rounded-2xl border border-white/60 overflow-hidden"
+        className="relative rounded-2xl border border-border/60 overflow-hidden"
         style={{
           // Android WebView (Appilix) can drop a card's gradient `background`
           // when the card paints on its own compositing layer, washing it out
@@ -172,9 +172,9 @@ export function MobileIdCardBack({
           // fallback so the card still renders on-brand even if the gradient
           // layer fails to paint, and promote the card onto its own stable
           // compositing layer so descendants can't knock out its background.
-          backgroundColor: "hsl(218, 65%, 92%)",
-          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
-          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
+          backgroundColor: "hsl(var(--status-info-subtle))",
+          backgroundImage: "linear-gradient(170deg, hsl(var(--status-info-subtle)) 0%, hsl(var(--sys-vitana-card)) 40%, hsl(var(--sys-feature-new-card)) 72%, hsl(var(--pill-mental-tint)) 100%)",
+          boxShadow: "0 8px 28px hsl(var(--category-3) / 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)"
         }}
@@ -183,10 +183,10 @@ export function MobileIdCardBack({
         <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-1">
+            <h2 className="text-lg font-semibold text-foreground mb-1">
               {translate('socialImport.socialPresence', 'Social Presence')}
             </h2>
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-muted-foreground">
               {translate('socialImport.verifiedConnections', 'Verified connections across your digital life')}
             </p>
           </div>
@@ -214,10 +214,10 @@ export function MobileIdCardBack({
                             {platform.icon}
                           </div>
                           <div
-                            className="absolute -top-1 -end-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
-                            style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
+                            className="absolute -top-1 -end-1 w-3.5 h-3.5 rounded-full bg-status-success flex items-center justify-center"
+                            style={{ boxShadow: "0 2px 6px hsl(var(--status-success) / 0.4)" }}
                           >
-                            <Check className="h-2 w-2 text-white" strokeWidth={3} />
+                            <Check className="h-2 w-2 text-primary-foreground" strokeWidth={3} />
                           </div>
                         </div>
 
@@ -230,7 +230,7 @@ export function MobileIdCardBack({
                         </span>
 
                         {/* External link hint */}
-                        <ExternalLink className="h-2.5 w-2.5 text-slate-500 mt-1" />
+                        <ExternalLink className="h-2.5 w-2.5 text-muted-foreground mt-1" />
                       </button>
                     );
                   })}
@@ -241,8 +241,8 @@ export function MobileIdCardBack({
               {/* Unconnected Platforms - Compact row */}
               {unconnectedPlatforms.length > 0 && editMode && (
                 <>
-                  <div className="h-px bg-black/5 my-4" />
-                  <p className="text-[11px] text-slate-600 text-center mb-2">{translate('socialImport.connect', 'Connect:')}</p>
+                  <div className="h-px bg-border/50 my-4" />
+                  <p className="text-[11px] text-muted-foreground text-center mb-2">{translate('socialImport.connect', 'Connect:')}</p>
                   <div className="flex flex-wrap items-center justify-center gap-2">
                     {unconnectedPlatforms.map((platform) => (
                       <button
@@ -251,7 +251,7 @@ export function MobileIdCardBack({
                         data-testid={`social-connect-${platform.id}`}
                         onClick={() => handleConnect(platform)}
                         aria-label={translate('socialImport.connectPlatformAria', 'Connect {platform}').replace('{platform}', platform.name)}
-                        className="flex items-center justify-center w-9 h-9 rounded-xl border border-black/5 shadow-sm transition-transform active:scale-95 [&_svg]:h-6 [&_svg]:w-6"
+                        className="flex items-center justify-center w-9 h-9 rounded-xl border border-border/50 shadow-sm transition-transform active:scale-95 [&_svg]:h-6 [&_svg]:w-6"
                         style={{ backgroundColor: platform.tileBg }}
                       >
                         {platform.icon}
@@ -265,13 +265,13 @@ export function MobileIdCardBack({
               {connectedPlatforms.length === 0 && (
                 <div className="text-center py-6">
                   <div className="mb-3">{addButton}</div>
-                  <p className="text-sm text-slate-600 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
+                  <p className="text-sm text-muted-foreground mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
                 </div>
               )}
 
               {/* Subtle footer note */}
               {connectedPlatforms.length > 0 && (
-                <p className="text-[11px] text-slate-500 text-center mt-4 italic">
+                <p className="text-[11px] text-muted-foreground text-center mt-4 italic">
                   {translate('socialImport.tapToVisit', 'Tap to visit profile')}
                 </p>
               )}
@@ -301,29 +301,29 @@ export function MobileIdCardBack({
                           {platform.icon}
                         </div>
                         <div
-                          className="absolute -top-1 -end-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
-                          style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
+                          className="absolute -top-1 -end-1 w-3.5 h-3.5 rounded-full bg-status-success flex items-center justify-center"
+                          style={{ boxShadow: "0 2px 6px hsl(var(--status-success) / 0.4)" }}
                         >
-                          <Check className="h-2 w-2 text-white" strokeWidth={3} />
+                          <Check className="h-2 w-2 text-primary-foreground" strokeWidth={3} />
                         </div>
                       </div>
                       <span className="text-[10px] font-semibold" style={{ color: platform.color }}>
                         {platform.name}
                       </span>
-                      <ExternalLink className="h-2.5 w-2.5 text-slate-500 mt-1" />
+                      <ExternalLink className="h-2.5 w-2.5 text-muted-foreground mt-1" />
                     </button>
                   ) : (
                     <div
                       key={platform.id}
-                      className="flex flex-col items-center p-3 rounded-xl border border-black/5 bg-white/30"
+                      className="flex flex-col items-center p-3 rounded-xl border border-border/50 bg-card/30"
                     >
                       <div className="mb-2 opacity-40 grayscale">
                         {platform.icon}
                       </div>
-                      <span className="text-[10px] font-semibold text-slate-400">
+                      <span className="text-[10px] font-semibold text-muted-foreground">
                         {platform.name}
                       </span>
-                      <span className="text-[9px] text-slate-400 mt-1">
+                      <span className="text-[9px] text-muted-foreground mt-1">
                         {translate('screens.profile.notLinked', 'Not linked')}
                       </span>
                     </div>
@@ -332,7 +332,7 @@ export function MobileIdCardBack({
               </div>
 
               {connectedPlatforms.length > 0 && (
-                <p className="text-[11px] text-slate-500 text-center mt-4 italic">
+                <p className="text-[11px] text-muted-foreground text-center mt-4 italic">
                   {translate('socialImport.tapToVisit', 'Tap to visit profile')}
                 </p>
               )}
