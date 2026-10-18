@@ -868,7 +868,7 @@ export function DreamNorthStar({
         ) : (
           <Button
             onClick={onSetGoal}
-            className="bg-gradient-to-r from-category-4 via-category-4 to-category-2 text-primary-foreground border-0 mt-4 rounded-full h-12 text-sm font-semibold shadow-lg"
+            className="bg-gradient-to-r from-category-4 to-category-2 text-primary-foreground border-0 mt-4 rounded-full h-12 text-sm font-semibold shadow-lg"
           >
             {t("screens.autopilotdashboard.setGoalCta")}
           </Button>

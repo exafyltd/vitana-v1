@@ -83,9 +83,9 @@ export function PersonalizedPlanCard({
   };
   
   const statusConfig = {
-    "synced": { label: "AI Optimized ✅", bg: "bg-emerald-100/60 dark:bg-emerald-800/60", text: "text-emerald-700 dark:text-emerald-300" },
-    "manual": { label: "Manual 📝", bg: "bg-muted/60", text: "text-slate-600 dark:text-slate-400" },
-    "needs-update": { label: "Needs Update ⚠️", bg: "bg-amber-100/60 dark:bg-amber-800/60", text: "text-amber-700 dark:text-amber-300" }
+    "synced": { label: "AI Optimized ✅", bg: "bg-status-success-subtle", text: "text-status-success" },
+    "manual": { label: "Manual 📝", bg: "bg-muted/60", text: "text-muted-foreground" },
+    "needs-update": { label: "Needs Update ⚠️", bg: "bg-status-warning-subtle", text: "text-status-warning" }
   };
 
   return (

@@ -13,12 +13,12 @@ interface DailyMentalCardProps {
 export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
   const getMoodColor = () => {
     if (data.moodEmoji === "😊" || data.moodEmoji === "😌" || data.moodEmoji === "🙂") {
-      return "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-emerald-200 dark:border-emerald-800";
+      return "from-status-success/10 to-category-1/10 border-status-success/30";
     }
     if (data.moodEmoji === "😐") {
-      return "from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-amber-200 dark:border-amber-800";
+      return "from-status-warning/10 to-status-warning/10 border-status-warning/30";
     }
-    return "from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30 border-rose-200 dark:border-rose-800";
+    return "from-status-error/10 to-status-warning/10 border-status-error/30";
   };
 
   const focusPercentage = data.focusScore;
