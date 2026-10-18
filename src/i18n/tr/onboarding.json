@@ -25,7 +25,9 @@
       "handleAvailable": "Kullanıcı adı müsait!",
       "handleMinLength": "En az 3 karakter",
       "saving": "Hazırlanıyor...",
-      "submit": "Hadi başlayalım!"
+      "submit": "Hadi başlayalım!",
+      "communityIntroLabel": "Beni topluluğa tanıt",
+      "communityIntroHint": "İlk haftanda diğer üyeler seninle ilgili kısa bir karşılama kartı görür ve sana merhaba diyebilir. Bunu istediğin zaman Ayarlar'dan değiştirebilirsin."
     }
   },
   "_pending_review": {}

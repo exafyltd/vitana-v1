@@ -24,7 +24,9 @@
       "handleMinLength": "Najmanje 3 karaktera",
       "saving": "Podešavanje...",
       "submit": "Hajde da počnemo!",
-      "_pending_review": {}
+      "_pending_review": {},
+      "communityIntroLabel": "Predstavi me zajednici",
+      "communityIntroHint": "Tokom tvoje prve nedelje drugi članovi vide kratku karticu dobrodošlice o tebi i mogu da te pozdrave. Ovo možeš da promeniš bilo kada u Podešavanjima."
     },
     "_pending_review": {}
   },

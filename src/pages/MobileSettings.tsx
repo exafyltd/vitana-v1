@@ -29,6 +29,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
 import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
+import { CommunityIntroToggle } from "@/components/settings/CommunityIntroToggle";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
@@ -296,6 +297,11 @@ export default function MobileSettings() {
               {/* VTID-05096: the same phone number card and "findable by my
                   number" switch as the desktop Privacy page (VTID-05058); both
                   hide themselves when unavailable. */}
+              {/* VTID-05206: "Introduce me to the community" — same switch as
+                  the desktop Privacy page; hides itself when unavailable. */}
+              <div className="pt-2" data-testid="mobile-privacy-community-intro">
+                <CommunityIntroToggle />
+              </div>
               <div className="space-y-4 pt-2" data-testid="mobile-privacy-phone">
                 <PhoneNumberCard />
                 <PhoneDiscoverabilityToggle />

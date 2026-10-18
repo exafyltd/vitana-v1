@@ -1,0 +1,25 @@
+# VTID-05206 — commands run by kiro-exafyltd-202610161022-9aff (no write to any live system; nothing called on staging or production)
+node scripts/collab/queue.mjs session-id --agent kiro --seat exafyltd   # kiro-exafyltd-202610161022-9aff
+node scripts/collab/queue.mjs --seat exafyltd --repo vitana-platform --repo vitana-v1
+node scripts/collab/queue.mjs claim new-member-welcome/new-member-card-optin --session kiro-exafyltd-202610161022-9aff   # {"ok":true}
+git checkout -b kiro/new-member-welcome/new-member-card-optin origin/main
+# read-only lookups on production (SELECT only), 2026-10-16:
+#   global_community_profiles: replica identity 'f', in supabase_realtime, policies [Authenticated users can view minimal global profiles, Users can manage their own global profile],
+#   10 columns (no community_intro_opt_in yet), triggers [trg_gcp_hide_excluded_accounts], 239 rows, 1 visible in the last 7 days; authenticated has table UPDATE
+npm ci --no-audit --no-fund --ignore-scripts
+npx vitest run src/pages/__tests__ src/hooks/useAllNewsFeed.new-members.test.ts src/hooks/useNewsFeed.community-error-logging.test.ts   # baseline: 44 passed
+npx vitest run <the seven VTID-05206 / touched suites>   # outputs/vitest-vtid-05206.txt
+# mutation checks (reverted): drop the All-tab server filter → 1 fails; drop the All-tab client check → 1 fails;
+#   drop the Community-tab server filter → 1 fails; registration step always writes → 1 fails
+npx vitest run   # 443 files, 3526 passed (outputs/vitest-full-suite.txt)
+npx tsc --noEmit -p tsconfig.app.json   # 177 errors vs 178 on origin/main, none in touched files (outputs/tsc.txt)
+npx eslint <touched + new files>   # no new error in touched files; new files clean
+npm run build   # ok (outputs/build.txt); node scripts/check-locale-chunking.mjs → OK
+node scripts/i18n-stamp-source.mjs --check-all   # exit 0
+node scripts/i18n-register-check.mjs --all   # No formal-register violations (pt fixed to você after the first run)
+node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22   # No long words found
+node scripts/check-i18n-subscriptions.mjs   # OK
+node scripts/i18n-audit.mjs --report-only   # 17193 errors, identical to origin/main; none on the new keys
+node docs/validation/VTID-05206/pglite-community-intro-check.mjs supabase/migrations/20261016110000_vtid_05206_community_intro_opt_in.sql   # 17 PASS (outputs/pglite-community-intro-check.txt)
+validateManifest(staging-tests.json) (vitana-platform scripts/ci/staging-verify/lib.cjs)   # { ok: true, errors: [] }
+node scripts/ci/pr-gate/vtid-scope.mjs init VTID-05206 --kind feature --sparring-record docs/validation/VTID-05206/plan-sparring.md --paths ...   # wrote scope.json
