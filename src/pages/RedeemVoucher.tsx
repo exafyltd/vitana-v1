@@ -1,19 +1,44 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useVoucherByCode, useClaimVoucher } from "@/hooks/useRedeemVoucher";
 import { RedemptionLanding } from "@/components/voucher/RedemptionLanding";
 import { RedemptionConfirm } from "@/components/voucher/RedemptionConfirm";
+import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Loader2, Gift, AlertCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { t } from '@/lib/i18n-toast';
+
+/**
+ * Desktop Spotlight, signed-in member: the page sits in the app shell
+ * (AppLayout sidebar) inside the `form` frame. Otherwise (phones, flag off,
+ * signed-out visitors) the page looks exactly as before.
+ */
+function RedeemShell({ inApp, children }: { inApp: boolean; children: ReactNode }) {
+  if (!inApp) return <>{children}</>;
+  return (
+    <AppLayout>
+      <ScreenFrame archetype="form">{children}</ScreenFrame>
+    </AppLayout>
+  );
+}
+
+/** The centred state column; inside the frame it drops the full-screen page backdrop. */
+function stateClass(inApp: boolean, padded = true) {
+  if (inApp) return "flex items-center justify-center py-10";
+  return `min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center${padded ? " p-4" : ""}`;
+}
 
 export default function RedeemVoucher() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const voucherCode = searchParams.get("voucher");
   const { user, loading: authLoading } = useAuth();
+  const spotlight = useSpotlightEnabled();
+  const inApp = spotlight && !!user;
   const [redeemed, setRedeemed] = useState(false);
 
   const { data: voucherData, isLoading: voucherLoading, error: voucherError } = useVoucherByCode(voucherCode || "");
@@ -48,7 +73,8 @@ export default function RedeemVoucher() {
   // No voucher code in URL
   if (!voucherCode) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center p-4">
+      <RedeemShell inApp={inApp}>
+      <div className={stateClass(inApp)}>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,29 +95,34 @@ export default function RedeemVoucher() {
           </button>
         </motion.div>
       </div>
+      </RedeemShell>
     );
   }
 
   // Loading states
   if (authLoading || voucherLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center">
+      <RedeemShell inApp={inApp}>
+      <div className={stateClass(inApp, false)}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center"
         >
+          {/* design-allow-next-line: action in progress, not a data load */}
           <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto mb-4" />
           <p className="text-muted-foreground">{t('screens.redeemvoucher.loadingYourGiftVoucher')}</p>
         </motion.div>
       </div>
+      </RedeemShell>
     );
   }
 
   // Voucher not found or error
   if (voucherError || !voucherData?.voucher) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center p-4">
+      <RedeemShell inApp={inApp}>
+      <div className={stateClass(inApp)}>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -112,20 +143,22 @@ export default function RedeemVoucher() {
           </button>
         </motion.div>
       </div>
+      </RedeemShell>
     );
   }
 
   // Voucher already redeemed
   if (voucherData.voucher.status === "redeemed" && !redeemed) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center p-4">
+      <RedeemShell inApp={inApp}>
+      <div className={stateClass(inApp)}>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-md"
         >
-          <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
-            <Gift className="w-8 h-8 text-amber-500" />
+          <div className="w-16 h-16 rounded-full bg-status-warning/10 flex items-center justify-center mx-auto mb-4">
+            <Gift className="w-8 h-8 text-status-warning" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.alreadyRedeemed')}</h1>
           <p className="text-muted-foreground mb-6">
@@ -139,13 +172,15 @@ export default function RedeemVoucher() {
           </button>
         </motion.div>
       </div>
+      </RedeemShell>
     );
   }
 
   // Voucher expired
   if (voucherData.voucher.expires_at && new Date(voucherData.voucher.expires_at) < new Date()) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center p-4">
+      <RedeemShell inApp={inApp}>
+      <div className={stateClass(inApp)}>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -165,20 +200,22 @@ export default function RedeemVoucher() {
           </button>
         </motion.div>
       </div>
+      </RedeemShell>
     );
   }
 
   // Successfully redeemed state
   if (redeemed) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center p-4">
+      <RedeemShell inApp={inApp}>
+      <div className={stateClass(inApp)}>
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center max-w-md"
         >
-          <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-10 h-10 text-emerald-500" />
+          <div className="w-20 h-20 rounded-full bg-status-success/10 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle className="w-10 h-10 text-status-success" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherClaimed')}</h1>
           <p className="text-muted-foreground mb-6">{t('screens.redeemvoucher.yourValue0VoucherHasAddedYour', { value0: voucherData.order?.tierName || "wellness" })}
@@ -197,6 +234,7 @@ export default function RedeemVoucher() {
           </div>
         </motion.div>
       </div>
+      </RedeemShell>
     );
   }
 
@@ -212,11 +250,14 @@ export default function RedeemVoucher() {
 
   // User logged in - show confirmation
   return (
-    <RedemptionConfirm
-      voucherData={voucherData}
-      onClaim={handleClaim}
-      isLoading={claimMutation.isPending}
-      error={claimMutation.error?.message}
-    />
+    <RedeemShell inApp={inApp}>
+      <RedemptionConfirm
+        voucherData={voucherData}
+        onClaim={handleClaim}
+        isLoading={claimMutation.isPending}
+        error={claimMutation.error?.message}
+        embedded={inApp}
+      />
+    </RedeemShell>
   );
 }

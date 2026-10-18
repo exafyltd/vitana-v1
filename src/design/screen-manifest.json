@@ -1298,14 +1298,6 @@
       "phase": "2-4"
     },
     {
-      "path": "/commerce/connections/:id",
-      "archetype": "detail",
-      "tier": "A",
-      "area": "Discover & marketplace",
-      "status": "legacy",
-      "phase": "2-4"
-    },
-    {
       "path": "/commerce/health-orders",
       "archetype": "collection",
       "tier": "A",
@@ -1374,7 +1366,7 @@
       "archetype": "collection",
       "tier": "B",
       "area": "Other member screens",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1382,7 +1374,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Other member screens",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -1390,7 +1382,7 @@
       "archetype": "workspace",
       "tier": "C",
       "area": "Dev",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "7"
     },
     {
@@ -1898,14 +1890,6 @@
       "phase": "2-4"
     },
     {
-      "path": "/earthlinks/*",
-      "archetype": "collection",
-      "tier": "P",
-      "area": "Public, auth, legal & portals",
-      "status": "legacy",
-      "phase": "7"
-    },
-    {
       "path": "/exafy-admin",
       "archetype": "workspace",
       "tier": "C",
@@ -2008,14 +1992,6 @@
       "area": "News & posts",
       "status": "migrated",
       "phase": "2-4"
-    },
-    {
-      "path": "/i/:code",
-      "archetype": "form",
-      "tier": "P",
-      "area": "Public, auth, legal & portals",
-      "status": "legacy",
-      "phase": "7"
     },
     {
       "path": "/inbox",
@@ -2171,10 +2147,10 @@
     },
     {
       "path": "/me/profile",
-      "archetype": "collection",
+      "archetype": "detail",
       "tier": "A",
       "area": "Profile",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2426,14 +2402,6 @@
       "phase": "7"
     },
     {
-      "path": "/profile/:id",
-      "archetype": "detail",
-      "tier": "A",
-      "area": "Profile",
-      "status": "legacy",
-      "phase": "2-4"
-    },
-    {
       "path": "/profile/me/privacy",
       "archetype": "form",
       "tier": "A",
@@ -2446,7 +2414,7 @@
       "archetype": "collection",
       "tier": "A",
       "area": "Profile",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {
@@ -2470,7 +2438,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Other member screens",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2510,7 +2478,7 @@
       "archetype": "form",
       "tier": "B",
       "area": "Settings",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2519,14 +2487,6 @@
       "tier": "B",
       "area": "Settings",
       "status": "migrated",
-      "phase": "5"
-    },
-    {
-      "path": "/settings/connected-apps",
-      "archetype": "form",
-      "tier": "B",
-      "area": "Settings",
-      "status": "legacy",
       "phase": "5"
     },
     {
@@ -2559,14 +2519,6 @@
       "tier": "B",
       "area": "Settings",
       "status": "migrated",
-      "phase": "5"
-    },
-    {
-      "path": "/settings/social",
-      "archetype": "form",
-      "tier": "B",
-      "area": "Settings",
-      "status": "legacy",
       "phase": "5"
     },
     {
@@ -2707,18 +2659,18 @@
     },
     {
       "path": "/tickets/demo",
-      "archetype": "collection",
+      "archetype": "detail",
       "tier": "B",
       "area": "Other member screens",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
       "path": "/tickets/success",
-      "archetype": "collection",
+      "archetype": "detail",
       "tier": "B",
       "area": "Other member screens",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "5"
     },
     {
@@ -2726,7 +2678,7 @@
       "archetype": "detail",
       "tier": "A",
       "area": "Community & social",
-      "status": "legacy",
+      "status": "migrated",
       "phase": "2-4"
     },
     {

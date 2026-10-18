@@ -50,11 +50,13 @@ const OPERATOR = /^\/(admin|backoffice|dev|professional|staff)(\/|$)/;
 // auth state when opened signed in. Their own phase spec
 // (vtid-05117-public-leftovers.staging.spec.ts) verifies them signed out — and
 // the commerce-shell / cart screens signed in, without the sidebar check; the
-// auth hand-off screens and /shop are proven in src/pages/vtid-05117-public-leftovers.test.tsx.
+// auth hand-off screens are proven in src/pages/vtid-05117-public-leftovers.test.tsx.
+// /shop is not listed: under desktop Spotlight it renders inside AppLayout
+// (immersive frame, sidebar kept), so the full contract check applies.
 const NO_SHELL = new Set([
   '/', '/maxina', '/alkalma', '/apply', '/reset-password', '/privacy', '/terms', '/maxina_support', '/download',
   '/maxina/app', '/exafy-admin', '/commerce-login', '/logout', '/oauth/complete', '/oauth/consent', '/auth/confirmed',
-  '/maxina/confirmed', '/alkalma/confirmed', '/onboarding/welcome', '/universal-cart', '/shop', '/commerce',
+  '/maxina/confirmed', '/alkalma/confirmed', '/onboarding/welcome', '/universal-cart', '/commerce',
   '/commerce/join', '/commerce/team', '/commerce/health-orders', '/commerce/health-orders/inbox', '/commerce/connect',
   '/commerce/connect/privacy', '/commerce/connect/authorize',
 ]);

@@ -8,13 +8,13 @@ import fs from 'fs';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 import { ARCHETYPES } from '@/components/layout/spotlight/archetypes';
-import { buildInventory } from '../../scripts/design/desktop-screen-inventory.mjs';
+import { REDIRECT_COMPONENTS, redirectComponentPaths, screenRoutes } from '../../scripts/design/screen-manifest.mjs';
 import manifest from './screen-manifest.json';
 
 interface Entry { path: string; archetype: string; tier: string; area: string; status: string; phase: string }
 
 const APP = fs.readFileSync(path.resolve(__dirname, '../App.tsx'), 'utf8');
-const routes: { path: string; tier: string }[] = buildInventory(APP).screens;
+const routes: { path: string; tier: string }[] = screenRoutes(APP);
 const entries = manifest.screens as Entry[];
 
 describe('VTID-05107 Spotlight screen manifest', () => {
@@ -44,5 +44,45 @@ describe('VTID-05107 Spotlight screen manifest', () => {
 
   it('operator routes are workspace screens', () => {
     expect(entries.filter((e) => e.tier === 'C' && e.archetype !== 'workspace').map((e) => e.path)).toEqual([]);
+  });
+});
+
+// Pure redirect components are not screens: like a <Navigate> route, a route
+// whose whole element is one of them has no manifest entry.
+describe('redirect components leave the manifest', () => {
+  const wrap = (routesJsx: string) => `<Routes>\n${routesJsx}\n<Route path="/kept" element={<KeptPage />} />\n</Routes>`;
+  const cases: [string, string][] = [
+    ['RedirectPreservingSearch', '<Route path="/old-a" element={<RedirectPreservingSearch to="/connectors" />} />'],
+    ['LegacyProfileRedirect', '<Route path="/old-b/:id" element={<LegacyProfileRedirect />} />'],
+    ['RetiredTenantRedirect', '<Route path="/old-c/*" element={<RetiredTenantRedirect />} />'],
+    ['CommerceConnectionRedirect', '<Route path="/old-d/:id" element={<AuthGuard><CommerceConnectionRedirect /></AuthGuard>} />'],
+    ['InviteLanding', '<Route path="/old-e/:code" element={<InviteLanding />} />'],
+  ];
+
+  it('covers exactly the five known redirect components', () => {
+    expect([...REDIRECT_COMPONENTS].sort()).toEqual(cases.map(([c]) => c).sort());
+  });
+
+  for (const [component, route] of cases) {
+    it(`${component}: its route is excluded, a real screen next to it is kept`, () => {
+      const src = wrap(route);
+      const redirectPath = /path="([^"]+)"/.exec(route)![1];
+      expect(redirectComponentPaths(src).has(redirectPath)).toBe(true);
+      const paths = screenRoutes(src).map((r) => r.path);
+      expect(paths).not.toContain(redirectPath);
+      expect(paths).toContain('/kept');
+    });
+  }
+
+  it('the App.tsx routes of the redirect components have no manifest entry', () => {
+    const redirects = redirectComponentPaths(APP);
+    expect(redirects.size).toBeGreaterThanOrEqual(5);
+    const listed = new Set(entries.map((e) => e.path));
+    expect([...redirects].filter((p) => listed.has(p))).toEqual([]);
+  });
+
+  it('a component that only shares a redirect name prefix is still a screen', () => {
+    const src = wrap('<Route path="/real" element={<InviteLandingPage />} />');
+    expect(screenRoutes(src).map((r) => r.path)).toContain('/real');
   });
 });

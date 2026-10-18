@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { ArrowLeft, Trash2, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Panel as Card,
+  PanelContent as CardContent,
+  PanelHeader as CardHeader,
+  PanelTitle as CardTitle,
+  PanelDescription as CardDescription,
+} from "@/components/layout/spotlight/Panel";
+import AppLayout from "@/components/AppLayout";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,9 +30,30 @@ import { t } from '@/lib/i18n-toast';
 
 type Step = "info" | "confirm" | "deleting" | "done" | "error";
 
+/**
+ * Desktop Spotlight, signed-in member: the confirm flow sits in the app shell
+ * (AppLayout sidebar) inside the `form` frame; the frame header replaces the
+ * page's own sticky back-button header. The steps, the typed DELETE check and
+ * the final dialog are unchanged. Phones, flag off and signed-out visitors keep
+ * today's page.
+ */
+function DeleteShell({ children }: { children: ReactNode }) {
+  return (
+    <AppLayout>
+      <ScreenFrame
+        archetype="form"
+        header={{ title: t('screens.legal.deleteAccount'), description: t('screens.legal.thisActionPermanentCannotUndone') }}
+      >
+        {children}
+      </ScreenFrame>
+    </AppLayout>
+  );
+}
+
 const DeleteAccount = () => {
   const navigate = useNavigate();
   const { user, session, signOut, loading: authLoading } = useAuth();
+  const spotlight = useSpotlightEnabled();
   const [step, setStep] = useState<Step>("info");
   const [confirmText, setConfirmText] = useState("");
   const [showDialog, setShowDialog] = useState(false);
@@ -94,24 +124,8 @@ const DeleteAccount = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      <SEO
-        title={t('screens.legal.deleteYourAccountMaxina')}
-        description="Delete your Maxina account and associated personal data."
-        canonical="https://vitanaland.com/delete-account"
-      />
-
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t('screens.legal.goBack')}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-lg font-semibold">{t('screens.legal.deleteAccount')}</h1>
-        </div>
-      </header>
-
-      <main className="max-w-lg mx-auto px-4 py-8 md:py-12">
+  const steps = (
+    <>
         {/* Step: Info */}
         {step === "info" && (
           <Card className="border-destructive/20">
@@ -199,6 +213,7 @@ const DeleteAccount = () => {
         {/* Step: Deleting */}
         {step === "deleting" && (
           <div className="text-center py-16 space-y-4">
+            {/* design-allow-next-line: action in progress, not a data load */}
             <Loader2 className="h-10 w-10 animate-spin text-destructive mx-auto" />
             <p className="text-foreground font-medium">{t('screens.legal.deletingYourAccount')}</p>
             <p className="text-sm text-muted-foreground">{t('screens.legal.pleaseDoNotCloseThisPage')}</p>
@@ -239,9 +254,11 @@ const DeleteAccount = () => {
             </CardContent>
           </Card>
         )}
-      </main>
+    </>
+  );
 
-      {/* Final confirmation dialog */}
+  const dialog = (
+      /* Final confirmation dialog */
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -261,6 +278,44 @@ const DeleteAccount = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+  );
+
+  if (spotlight && user) {
+    return (
+      <DeleteShell>
+        <SEO
+          title={t('screens.legal.deleteYourAccountMaxina')}
+          description="Delete your Maxina account and associated personal data."
+          canonical="https://vitanaland.com/delete-account"
+        />
+        <div className="py-2">{steps}</div>
+        {dialog}
+      </DeleteShell>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <SEO
+        title={t('screens.legal.deleteYourAccountMaxina')}
+        description="Delete your Maxina account and associated personal data."
+        canonical="https://vitanaland.com/delete-account"
+      />
+
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t('screens.legal.goBack')}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-lg font-semibold">{t('screens.legal.deleteAccount')}</h1>
+        </div>
+      </header>
+
+      <main className="max-w-lg mx-auto px-4 py-8 md:py-12">
+        {steps}
+      </main>
+
+      {dialog}
     </div>
   );
 };
