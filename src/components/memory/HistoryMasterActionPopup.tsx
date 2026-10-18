@@ -137,7 +137,8 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        {/* design-allow-next-line: viewport-bound dialog height */}
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">
               {translate('historyManagement.title', 'History Management')}

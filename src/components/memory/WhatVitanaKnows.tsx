@@ -74,7 +74,7 @@ export function WhatVitanaKnows() {
   }
 
   return (
-    <Card className="border-primary/15 bg-gradient-to-br from-violet-500/5 via-purple-500/5 to-pink-500/5">
+    <Card className="border-primary/15 bg-gradient-to-br from-category-2/5 via-category-2/5 to-category-4/5">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base font-semibold">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">

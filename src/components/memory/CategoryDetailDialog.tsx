@@ -86,6 +86,7 @@ export function CategoryDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         {/* Header */}
         <div className={cn("relative overflow-hidden p-6", category.gradient)}>
@@ -144,6 +145,7 @@ export function CategoryDetailDialog({
         </div>
 
         {/* Memories List */}
+        {/* design-allow-next-line: measured scroll height */}
         <ScrollArea className="flex-1 px-6 py-4 max-h-[400px]">
           {isLoading ? (
             <div className="text-center text-muted-foreground py-8">{t('screens.memory.loadingMemories')}
