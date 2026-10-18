@@ -348,7 +348,7 @@ export function GuidedJourneyCatalog({
               >
                 {sessionComplete ? (
                   <CheckCircle2
-                    className="h-4 w-4 shrink-0 text-emerald-500"
+                    className="h-4 w-4 shrink-0 text-status-success"
                     aria-label={t('screens.guidedCatalog.sessionComplete')}
                   />
                 ) : (
@@ -361,7 +361,7 @@ export function GuidedJourneyCatalog({
                   className={cn(
                     'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums',
                     sessionComplete
-                      ? 'bg-emerald-100 text-emerald-700'
+                      ? 'bg-status-success-subtle text-status-success'
                       : 'bg-muted text-muted-foreground',
                   )}
                 >
@@ -382,7 +382,7 @@ export function GuidedJourneyCatalog({
                 </span>
                 {audiobook && (
                   <span
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-600 text-white shadow-sm"
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-category-2 text-primary-foreground shadow-sm"
                     aria-label={t('screens.audiobook.playEpisode', { n: s.session })}
                     role="img"
                     data-testid="audiobook-play-episode"
@@ -424,12 +424,12 @@ export function GuidedJourneyCatalog({
                         className={cn(
                           'flex items-center gap-3 p-3 transition-all hover:shadow-md',
                           done
-                            ? 'border-emerald-200 bg-emerald-50/50 dark:bg-emerald-950/20'
+                            ? 'border-status-success/25 bg-status-success-subtle/50'
                             : 'hover:bg-accent/40',
                         )}
                       >
                         {done ? (
-                          <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-500" />
+                          <CheckCircle2 className="h-6 w-6 shrink-0 text-status-success" />
                         ) : (
                           <Circle className="h-6 w-6 shrink-0 text-muted-foreground/35" />
                         )}
@@ -452,7 +452,7 @@ export function GuidedJourneyCatalog({
                           )}
                         </div>
                         {done ? (
-                          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+                          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-status-success-subtle px-2.5 py-0.5 text-[10px] font-semibold text-status-success">
                             <CheckCircle2 className="h-3 w-3" />
                             {t('screens.guidedCatalog.statusDone')}
                           </span>
@@ -473,6 +473,7 @@ export function GuidedJourneyCatalog({
 
       {/* Topic Explanation (screen 02) ⇄ Guided Practice (screen 03) drawer */}
       <Drawer open={!!openTopic} onOpenChange={(o) => { if (!o) closeDrawer(); }}>
+        {/* design-allow-next-line: viewport-bound drawer height */}
         <DrawerContent className="max-h-[92dvh]">
           {/* Close (X) — top-right, like other Maxina popups. Shown in both states. */}
           <DrawerClose asChild>
@@ -501,7 +502,7 @@ export function GuidedJourneyCatalog({
                 <p className="text-sm text-muted-foreground">
                   {t('screens.guidedCatalog.congratsSubtitle')}
                 </p>
-                <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3.5 py-1.5 text-sm font-bold text-emerald-600 ring-1 ring-inset ring-emerald-500/25 dark:text-emerald-400">
+                <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-status-success/10 px-3.5 py-1.5 text-sm font-bold text-status-success ring-1 ring-inset ring-status-success/25">
                   <TrendingUp className="h-4 w-4" />
                   {t('screens.guidedCatalog.reward', { points: SESSION_INDEX_REWARD })}
                 </div>

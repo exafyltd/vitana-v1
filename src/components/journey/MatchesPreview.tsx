@@ -29,17 +29,17 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
       .toUpperCase();
 
   return (
-    <Card className="rounded-2xl border border-pink-200/60 bg-gradient-to-br from-pink-50 via-fuchsia-50 to-purple-50 shadow-sm dark:from-pink-950/20 dark:via-fuchsia-950/20 dark:to-purple-950/20">
+    <Card className="rounded-2xl border border-category-4/15 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to shadow-sm">
       <CardContent className="p-4 space-y-3">
         <div className="flex items-baseline justify-between">
-          <h3 className="text-sm font-semibold flex items-center gap-2 text-pink-900 dark:text-pink-100">
-            <Heart className="w-4 h-4 text-pink-500" />
+          <h3 className="text-sm font-semibold flex items-center gap-2 text-category-4">
+            <Heart className="w-4 h-4 text-category-4" />
             {t("screens.autopilotdashboard.matchesTitle")}
           </h3>
           <button
             type="button"
             onClick={() => navigate("/me/matches")}
-            className="text-xs font-semibold text-fuchsia-700 dark:text-fuchsia-300 hover:underline flex items-center gap-0.5"
+            className="text-xs font-semibold text-category-4 hover:underline flex items-center gap-0.5"
           >
             {t("screens.autopilotdashboard.matchesSeeAll")}
             <ChevronRight className="w-3 h-3" />
@@ -48,7 +48,7 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
 
         {isLoading ? (
           <div className="flex items-center justify-center py-4">
-            <Loader2 className="w-5 h-5 animate-spin text-pink-400" />
+            <Loader2 className="w-5 h-5 animate-spin text-category-4" />
           </div>
         ) : list.length === 0 ? (
           <p className="text-xs text-muted-foreground py-2">
@@ -61,11 +61,11 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
                 <button
                   type="button"
                   onClick={() => navigate(`/u/${m.user_id}`)}
-                  className="w-full flex items-center gap-3 p-2 rounded-xl bg-white/70 dark:bg-white/5 border border-pink-200/40 text-start hover:bg-white dark:hover:bg-white/10 transition-colors"
+                  className="w-full flex items-center gap-3 p-2 rounded-xl bg-card/70 border border-category-4/10 text-start hover:bg-card transition-colors"
                 >
-                  <Avatar className="w-10 h-10 ring-2 ring-white shadow-sm shrink-0">
+                  <Avatar className="w-10 h-10 ring-2 ring-border shadow-sm shrink-0">
                     <AvatarImage src={m.avatar_url ?? undefined} alt="" />
-                    <AvatarFallback className="bg-gradient-to-br from-pink-400 to-fuchsia-500 text-white text-xs font-semibold">
+                    <AvatarFallback className="bg-gradient-to-br from-category-4/80 to-category-4 text-primary-foreground text-xs font-semibold">
                       {initials(m.display_name)}
                     </AvatarFallback>
                   </Avatar>
@@ -76,7 +76,7 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
                         t("screens.autopilotdashboard.matchReasonDefault")}
                     </p>
                   </div>
-                  <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white shadow-sm shrink-0">
+                  <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-gradient-to-r from-category-4 to-category-4 text-primary-foreground shadow-sm shrink-0">
                     {m.compatibility_score}%
                   </span>
                 </button>
