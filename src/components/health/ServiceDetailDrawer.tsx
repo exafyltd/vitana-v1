@@ -131,7 +131,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="text-xs">{serviceDetail.category}</Badge>
                     {serviceDetail.vitanaImpact && (
-                      <Badge variant="secondary" className="text-xs bg-emerald-100 text-emerald-700">
+                      <Badge variant="secondary" className="text-xs bg-status-success-subtle text-status-success">
                         {serviceDetail.vitanaImpact}
                       </Badge>
                     )}
@@ -176,9 +176,9 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
-                <Calendar className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-700">{t('screens.health.nextAvailableNextavailable', { nextAvailable: serviceDetail.nextAvailable })}</span>
+              <div className="flex items-center gap-2 p-3 bg-status-success-subtle rounded-lg">
+                <Calendar className="w-4 h-4 text-status-success" />
+                <span className="text-sm font-medium text-status-success">{t('screens.health.nextAvailableNextavailable', { nextAvailable: serviceDetail.nextAvailable })}</span>
               </div>
             </CardContent>
           </Card>
@@ -203,7 +203,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600" />
+                <CheckCircle className="w-5 h-5 text-status-success" />
                 {t('screens.health.whatSIncluded')}
               </CardTitle>
             </CardHeader>
@@ -211,7 +211,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
               <div className="grid gap-2">
                 {serviceDetail.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <CheckCircle className="w-4 h-4 text-status-success" />
                     <span className="text-sm">{feature}</span>
                   </div>
                 ))}
@@ -223,7 +223,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Heart className="w-5 h-5 text-red-500" />
+                <Heart className="w-5 h-5 text-status-error" />
                 {t('screens.health.healthBenefits')}
               </CardTitle>
             </CardHeader>
@@ -231,7 +231,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
               <div className="grid gap-2">
                 {serviceDetail.benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <Heart className="w-4 h-4 text-red-500" />
+                    <Heart className="w-4 h-4 text-status-error" />
                     <span className="text-sm">{benefit}</span>
                   </div>
                 ))}
@@ -243,7 +243,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Users className="w-5 h-5 text-blue-600" />
+                <Users className="w-5 h-5 text-category-3" />
                 {t('screens.health.availableProviders')}
               </CardTitle>
             </CardHeader>
@@ -258,17 +258,17 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">{provider.name}</h4>
                       <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <Star className="w-4 h-4 fill-status-warning text-status-warning" />
                         <span className="text-sm font-medium">{provider.rating}</span>
                         <span className="text-xs text-muted-foreground">({provider.reviews})</span>
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground">{provider.title}</p>
                     <div className="flex items-center gap-4 mt-1">
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">{provider.experience}</span>
+                      <span className="text-xs bg-category-3/15 text-category-3 px-2 py-1 rounded">{provider.experience}</span>
                       <div className="flex gap-1">
                         {provider.specialties.slice(0, 2).map((specialty, index) => (
-                          <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">{specialty}</span>
+                          <span key={index} className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">{specialty}</span>
                         ))}
                       </div>
                     </div>
@@ -283,7 +283,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-orange-600" />
+                  <Shield className="w-5 h-5 text-status-warning" />
                   {t('screens.health.requirementsPreparation')}
                 </CardTitle>
               </CardHeader>
@@ -291,7 +291,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
                 <div className="grid gap-2">
                   {serviceDetail.requirements.map((requirement, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-orange-600" />
+                      <Shield className="w-4 h-4 text-status-warning" />
                       <span className="text-sm">{requirement}</span>
                     </div>
                   ))}

@@ -34,22 +34,23 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
         />
         
         {/* Gradient Overlay */}
+        {/* design-allow-next-line: on-media scrim, theme-independent (gradient over the recipe photo) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         
         {/* Content Overlay */}
-        <div className="absolute bottom-0 start-0 end-0 p-4 text-white">
+        <div className="absolute bottom-0 start-0 end-0 p-4 text-primary-foreground">
           <h4 className="font-semibold text-base mb-2 line-clamp-2">
             {recipe.title}
           </h4>
           
           {/* Macro Chips */}
           <div className="flex gap-2 flex-wrap">
-            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">{t('screens.health.caloriesCal', { calories: recipe.calories })}
+            <Badge variant="secondary" className="bg-card/90 text-foreground text-xs font-medium">{t('screens.health.caloriesCal', { calories: recipe.calories })}
             </Badge>
-            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">
+            <Badge variant="secondary" className="bg-card/90 text-foreground text-xs font-medium">
               {recipe.macros.protein}P
             </Badge>
-            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}
+            <Badge variant="secondary" className="bg-card/90 text-foreground text-xs font-medium">{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}
             </Badge>
           </div>
         </div>
@@ -58,7 +59,7 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
         {recipe.tags.length > 0 && (
           <div className="absolute top-2 end-2 flex gap-1">
             {recipe.tags.slice(0, 2).map(tag => (
-              <Badge key={tag} variant="outline" className="bg-white/90 backdrop-blur-sm text-xs border-transparent">
+              <Badge key={tag} variant="outline" className="bg-card/90 backdrop-blur-sm text-xs border-transparent">
                 {tag}
               </Badge>
             ))}

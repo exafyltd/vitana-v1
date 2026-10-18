@@ -92,7 +92,7 @@ export function PersonalizedPlanCard({
     <div 
       className={cn(
         "group relative overflow-hidden rounded-2xl",
-        "bg-white dark:bg-slate-900",
+        "bg-card",
         "shadow-[0_6px_20px_rgba(20,25,40,0.06)] hover:shadow-[0_10px_28px_rgba(20,25,40,0.10)]",
         "transition-shadow duration-200",
         "hover:-translate-y-[1px] transform-gpu",
@@ -102,11 +102,11 @@ export function PersonalizedPlanCard({
     >
       {/* Top-Right Meta Badge - z-20 (Always Visible) */}
       <div 
-        className="absolute end-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 px-2.5 py-1 text-[12px] font-medium"
+        className="absolute end-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-surface-sunken text-muted-foreground border border-border px-2.5 py-1 text-[12px] font-medium"
         aria-label={`AI Optimized ${summary.lastUpdated}`}
       >
         <span>{t('screens.health.aiOptimized')}</span>
-        <span className="text-slate-400 dark:text-slate-500">•</span>
+        <span className="text-muted-foreground">•</span>
         <span>{summary.lastUpdated}</span>
       </div>
 
@@ -121,7 +121,7 @@ export function PersonalizedPlanCard({
             </div>
             
             {/* Title */}
-            <h3 className="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white">
+            <h3 className="text-[15px] md:text-[16px] font-semibold text-foreground">
               {planName}
             </h3>
             
@@ -150,7 +150,7 @@ export function PersonalizedPlanCard({
               className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" 
               style={{ backgroundColor: dotColor }}
             />
-            <p className="text-[13px] leading-5 text-slate-700 dark:text-slate-300">
+            <p className="text-[13px] leading-5 text-muted-foreground">
               {summary.metricsLine}
             </p>
           </div>
@@ -161,27 +161,27 @@ export function PersonalizedPlanCard({
               className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" 
               style={{ backgroundColor: dotColor }}
             />
-            <p className="text-[13px] leading-5 text-slate-700 dark:text-slate-300">
+            <p className="text-[13px] leading-5 text-muted-foreground">
               {summary.insightLine1}
             </p>
           </div>
         </div>
 
         {/* Progress + Meta Row */}
-        <div className="flex items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between gap-4 mb-4 pb-4 border-b border-border">
           {/* Progress Bar */}
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[12px] font-medium text-slate-600 dark:text-slate-400">
+              <span className="text-[12px] font-medium text-muted-foreground">
                 {t('screens.health.progress')}
               </span>
-              <span className="text-[13px] font-semibold text-slate-900 dark:text-white">
+              <span className="text-[13px] font-semibold text-foreground">
                 {plan.adherence_score}%
               </span>
             </div>
             <div className="relative h-2 rounded-full bg-muted overflow-hidden">
               <div 
-                className="absolute start-0 top-0 h-full rounded-full bg-slate-900/80 dark:bg-slate-100/80 transition-all duration-500"
+                className="absolute start-0 top-0 h-full rounded-full bg-muted-foreground/80 transition-all duration-500"
                 style={{ width: `${plan.adherence_score}%` }}
               />
             </div>
@@ -199,7 +199,7 @@ export function PersonalizedPlanCard({
             <>
               <button
                 onClick={() => navigate(`/health/plans/${type}`)}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-muted-foreground hover:bg-muted-foreground text-primary-foreground text-[13px] font-medium transition-colors"
               >
                 <Zap className="w-3.5 h-3.5" />
                 {t('screens.health.viewPlan')}
@@ -207,7 +207,7 @@ export function PersonalizedPlanCard({
               <button
                 onClick={handleRefreshPlan}
                 disabled={isRefreshing}
-                className="inline-flex items-center justify-center rounded-full h-9 w-9 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center justify-center rounded-full h-9 w-9 bg-card hover:bg-surface-sunken border border-border text-muted-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label={t('screens.health.refreshPlan')}
               >
                 <RotateCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
@@ -217,7 +217,7 @@ export function PersonalizedPlanCard({
             <button
               onClick={onGenerateClick}
               disabled={isGenerating}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-muted-foreground hover:bg-muted-foreground text-primary-foreground text-[13px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Zap className={cn("w-3.5 h-3.5", isGenerating && "animate-pulse")} />
               {isGenerating ? "Generating..." : "Generate Plan"}

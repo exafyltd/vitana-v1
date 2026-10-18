@@ -13,14 +13,14 @@ interface ExerciseOverviewCardProps {
 
 export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOverviewCardProps) {
   return (
-    <Card className="p-6 mb-6 bg-gradient-to-br from-blue-50/50 via-cyan-50/30 to-violet-50/50 
-      dark:from-slate-900/50 dark:via-slate-800/30 dark:to-slate-900/50 
-      backdrop-blur-sm border-blue-200/50 dark:border-slate-700/50">
+    <Card className="p-6 mb-6 bg-gradient-to-br from-category-3/5 via-category-1/5 to-category-2/5 
+ 
+      backdrop-blur-sm border-border50">
       
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <Brain className="w-5 h-5 text-category-3" />
             <h2 className="text-xl font-bold">{t('screens.health.yourExercisePlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
@@ -34,17 +34,17 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
+        <div className="p-4 rounded-xl bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <TrendingUp className="w-4 h-4 text-category-3" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus}</p>
         </div>
         
-        <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
+        <div className="p-4 rounded-xl bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+            <Calendar className="w-4 h-4 text-category-1" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">{t('screens.health.sessionsperweekSessionsWeek', { sessionsPerWeek: planData.sessionsPerWeek })}
@@ -53,9 +53,9 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
           </p>
         </div>
         
-        <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
+        <div className="p-4 rounded-xl bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+            <Clock className="w-4 h-4 text-category-2" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
           <p className="text-lg font-bold">{t('screens.health.weekCurrentweekTotalweeks', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</p>
@@ -67,19 +67,19 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">{t('screens.health.weekCurrentweekTotalweeksweekProgram', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</span>
-          <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+          <span className="text-sm font-bold text-category-3">
             {planData.completionPercentage}%
           </span>
         </div>
         <Progress 
           value={planData.completionPercentage} 
-          className="h-3 bg-gradient-to-r from-white/50 to-white/30 dark:from-slate-800/50 dark:to-slate-700/50"
+          className="h-3 bg-gradient-to-r from-card/50 to-card/30"
         />
       </div>
       
-      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10 
-        dark:from-blue-500/20 dark:to-cyan-500/20 border border-blue-200/30 dark:border-blue-700/30 mb-4">
-        <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-category-3/10 to-category-1/10 
+ border border-border30 mb-4">
+        <Brain className="w-5 h-5 text-category-3 flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
           <p className="text-sm text-muted-foreground italic">

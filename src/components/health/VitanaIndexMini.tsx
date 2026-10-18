@@ -67,7 +67,7 @@ function VitanaIndexMiniBase({
   if (variant === "badge") {
     return (
       <div 
-        className="inline-flex items-center gap-1.5 rounded-full cursor-pointer px-2.5 py-1 text-[12.5px] font-medium bg-[color-mix(in_oklab,hsl(var(--accent))_14%,transparent)] ring-1 ring-[hsl(var(--accent))/28] text-foreground before:content-[''] before:inline-block before:h-3 before:w-0.5 before:rounded-full before:bg-[hsl(var(--accent))] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
+        className="inline-flex items-center gap-1.5 rounded-full cursor-pointer px-2.5 py-1 text-[12.5px] font-medium bg-[color-mix(in_oklab,hsl(var(--accent))_14%,transparent)] ring-1 ring-accent/28 text-foreground before:content-[''] before:inline-block before:h-3 before:w-0.5 before:rounded-full before:bg-accent transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
         onClick={handleClick}
         tabIndex={0}
         role="button"
@@ -103,7 +103,7 @@ function VitanaIndexMiniBase({
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-            <Activity className="w-4 h-4 text-white" />
+            <Activity className="w-4 h-4 text-primary-foreground" />
           </div>
           <div>
             <p className="font-semibold text-foreground">{t('screens.health.vitanaIndex')}</p>
@@ -142,7 +142,7 @@ function VitanaIndexMiniBase({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-              <Activity className="w-4 h-4 text-white" />
+              <Activity className="w-4 h-4 text-primary-foreground" />
             </div>
             <CardTitle className="text-lg">{t('screens.health.vitanaIndex')}</CardTitle>
           </div>
