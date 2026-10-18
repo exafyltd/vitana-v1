@@ -107,6 +107,7 @@ export function ShortPreviewCard({
       style={{
         animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`,
       }}
+      // design-allow-next-line: no scale value within 2px of 260px
       className="group relative w-full max-w-[260px] mx-auto"
       {...handlers}
       tabIndex={0}
@@ -153,13 +154,13 @@ export function ShortPreviewCard({
         <div
           className={`relative aspect-[9/16] w-full rounded-2xl overflow-hidden bg-muted transition-all duration-300 ${
             isHovering && !disabled
-              ? '-translate-y-1 shadow-lg ring-4 ring-violet-500/10'
-              : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
+              ? '-translate-y-1 shadow-lg ring-4 ring-category-2/10'
+              : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-category-2/10'
           }`}
         >
           {/* Fallback gradient if no thumbnail */}
           {!thumbnailUrl && (
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 via-purple-500/20 to-pink-500/20" />
+            <div className="absolute inset-0 bg-gradient-to-br from-category-2/20 via-category-2/20 to-category-4/20" />
           )}
 
           {/* Video Element (hidden until preview starts) */}
@@ -189,11 +190,13 @@ export function ShortPreviewCard({
           )}
 
           {/* Gradient overlay */}
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
 
           {/* Dark overlay fade-in before preview (prevents flash) */}
           {isHovering && !isPreviewing && (
             <div 
+              // design-allow-next-line: on-media scrim, theme-independent
               className="absolute inset-0 bg-black/20 pointer-events-none"
               style={{
                 animation: 'fadeIn 200ms ease-out forwards'
@@ -204,7 +207,7 @@ export function ShortPreviewCard({
           {/* Live Badge - Top Left */}
           {video.isLive && (
             <div className="absolute top-3 start-3 z-10">
-              <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
+              <Badge className="bg-status-error text-primary-foreground text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
                 {t('screens.community.live2')}
               </Badge>
             </div>
@@ -213,7 +216,8 @@ export function ShortPreviewCard({
           {/* Duration Badge - Bottom Right (outside overflow) */}
           <div className="absolute bottom-2 end-2 z-10 pointer-events-none">
             <span 
-              className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded font-medium backdrop-blur-sm"
+              // design-allow-next-line: on-media scrim, theme-independent
+              className="bg-black/60 text-primary-foreground text-[10px] px-1.5 py-0.5 rounded font-medium backdrop-blur-sm"
             >
               {video.duration}
             </span>
@@ -221,6 +225,7 @@ export function ShortPreviewCard({
 
           {/* Play Button - Centered (fades out when preview starts) */}
           <div
+            // design-allow-next-line: on-media scrim, theme-independent
             className={`absolute inset-0 bg-black/30 transition-all duration-300 flex items-center justify-center ${
               isPreviewing
                 ? 'opacity-0 pointer-events-none'
@@ -230,19 +235,20 @@ export function ShortPreviewCard({
             }`}
           >
             <div
-              className={`w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-200 ${
+              className={`w-16 h-16 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-200 ${
                 isHovering && !isPreviewing ? 'scale-110' : 'group-hover:scale-110'
               }`}
             >
-              <Play className="w-8 h-8 text-violet-600 fill-violet-600 ms-1" />
+              <Play className="w-8 h-8 text-category-2 fill-category-2 ms-1" />
             </div>
           </div>
 
           {/* Progress Bar - Bottom (only during preview) */}
           {isPreviewing && (
+            // design-allow-next-line: on-media scrim, theme-independent
             <div className="absolute bottom-0 start-0 end-0 h-1 bg-black/20 pointer-events-none">
               <div
-                className="h-full bg-gradient-to-r from-violet-500 to-sky-400 transition-all duration-100"
+                className="h-full bg-gradient-to-r from-category-2 to-category-7/80 transition-all duration-100"
                 style={{ width: `${previewProgress}%` }}
               />
             </div>

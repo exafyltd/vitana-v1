@@ -259,7 +259,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
       case 'uploading':
         return <Loader2 className="w-5 h-5 animate-spin text-primary" />;
       case 'done':
-        return <Check className="w-5 h-5 text-green-500" />;
+        return <Check className="w-5 h-5 text-status-success" />;
       case 'failed':
         return <AlertCircle className="w-5 h-5 text-destructive" />;
       default:
@@ -294,13 +294,13 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
             <div className="flex items-center gap-2 mb-1">
               <p className="font-medium text-sm truncate">{item.title}</p>
               {autoMetadata.loading && item.status === 'queued' && (
-                <Badge className="text-xs bg-violet-100 text-violet-700 border-0">
+                <Badge className="text-xs bg-category-2/15 text-category-2 border-0">
                   <Sparkles className="w-3 h-3 me-1 animate-pulse" />
                   {t('screens.community.analyzing')}
                 </Badge>
               )}
               {autoApplied && !autoMetadata.loading && item.status === 'queued' && (
-                <Badge className="text-xs bg-violet-100 text-violet-700 border-0">
+                <Badge className="text-xs bg-category-2/15 text-category-2 border-0">
                   <Sparkles className="w-3 h-3 me-1" />
                   {t('screens.community.smartfilled')}
                 </Badge>
@@ -551,6 +551,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
@@ -558,9 +559,9 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
             {items.length > 0 && (
               <div className="flex items-center gap-2 text-sm font-normal">
                 <Badge variant="outline">{t('screens.community.queuedcountQueued', { queuedCount })}</Badge>
-                {uploadingCount > 0 && <Badge className="bg-blue-100 text-blue-700">{t('screens.community.uploadingcountUploading', { uploadingCount })}</Badge>}
-                {doneCount > 0 && <Badge className="bg-green-100 text-green-700">{t('screens.community.donecountDone', { doneCount })}</Badge>}
-                {failedCount > 0 && <Badge className="bg-red-100 text-red-700">{t('screens.community.failedcountFailed', { failedCount })}</Badge>}
+                {uploadingCount > 0 && <Badge className="bg-category-3/15 text-category-3">{t('screens.community.uploadingcountUploading', { uploadingCount })}</Badge>}
+                {doneCount > 0 && <Badge className="bg-status-success-subtle text-status-success">{t('screens.community.donecountDone', { doneCount })}</Badge>}
+                {failedCount > 0 && <Badge className="bg-status-error-subtle text-status-error">{t('screens.community.failedcountFailed', { failedCount })}</Badge>}
               </div>
             )}
           </DialogTitle>
@@ -685,14 +686,14 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
 
           {/* Generic title warning */}
           {items.some(item => item.status === 'queued' && item.hasGenericTitle) && (
-            <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+            <div className="bg-status-warning-subtle border border-status-warning/25 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 mt-0.5 flex-shrink-0" />
+                <AlertCircle className="w-5 h-5 text-status-warning mt-0.5 flex-shrink-0" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                  <p className="text-sm font-medium text-status-warning mb-1">
                     {t('screens.community.someVideosNeedBetterTitles')}
                   </p>
-                  <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-3">{t('screens.community.videosWithGenericTitlesLikeDownload')}
+                  <p className="text-xs text-status-warning mb-3">{t('screens.community.videosWithGenericTitlesLikeDownload')}
                     <ChevronDown className="w-3 h-3 inline" />{t('screens.community.eachVideoEditTitleAddTags')}
                   </p>
                   <div className="flex gap-2">
@@ -788,7 +789,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                     isUploading ||
                     items.some(item => item.status === 'queued' && item.hasGenericTitle)
                   }
-                  className="bg-gradient-to-r from-violet-500 to-sky-400 hover:from-violet-600 hover:to-sky-500"
+                  className="bg-gradient-to-r from-category-2 to-category-7/80 hover:from-category-2 hover:to-category-7"
                 >
                   {isUploading ? (
                     <>

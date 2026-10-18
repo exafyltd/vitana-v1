@@ -31,6 +31,7 @@ export function InterestedPeopleSheet({ streamId, title, open, onOpenChange }: I
           <ResponsiveDialogTitle>{t('screens.liverooms.interestedTitle')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription className="line-clamp-2">{title}</ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
+        {/* design-allow-next-line: viewport-bound sheet height */}
         <div className="max-h-[60vh] overflow-y-auto px-1 pb-4" data-testid="interested-people-list">
           {isLoading ? (
             <div className="flex justify-center py-8">

@@ -138,7 +138,7 @@ export function FeatureAnnouncementCard({
           <div className="flex min-w-0 flex-1 items-center gap-1.5 flex-wrap">
             <span className={cn('text-sm font-bold leading-tight', style.eyebrowColor)}>{t(copy.eyebrowKey)}</span>
             {copy.badgeKey && (
-              <span className="inline-flex items-center rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+              <span className="inline-flex items-center rounded-full bg-gradient-to-r from-category-2 to-category-4 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-primary-foreground">
                 {t(copy.badgeKey)}
               </span>
             )}

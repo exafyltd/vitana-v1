@@ -109,6 +109,7 @@ export function NewsFeedItemCard({
         cornerBadge={
           <svg
             viewBox="0 0 80 88"
+            // design-allow-next-line: no scale value within 2px of 88px
             className="pointer-events-none absolute end-2.5 top-[44px] h-[88px] w-20"
             aria-hidden="true"
           >
@@ -169,8 +170,8 @@ export function NewsFeedItemCard({
         onDismiss={() => setDismissed(true)}
         dismissLabel={t('screens.vitanaIdentity.dismissCard')}
         widget={
-          <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-teal-300 shadow-sm">
-            <span className="text-[10px] font-bold leading-none text-emerald-900">
+          <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-status-success/25 to-category-1/40 shadow-sm">
+            <span className="text-[10px] font-bold leading-none text-status-success">
               {item.improvement > 0 ? t("screens.home.improvementPts", { pts: item.improvement }) : "—"}
             </span>
           </div>

@@ -349,7 +349,8 @@ export function LiveRoomDrawer({
 
           {/* Title Overlay */}
           <div className="absolute bottom-0 start-0 end-0 p-6">
-            <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]">
+            {/* design-allow-next-line: kept 22ch */}
+            <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-primary-foreground max-w-[22ch]">
               {room.title}
             </h2>
 
@@ -366,7 +367,7 @@ export function LiveRoomDrawer({
                     "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
                 >
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
+                  <Avatar className="h-7 w-7 ring-1 ring-border/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
@@ -394,7 +395,7 @@ export function LiveRoomDrawer({
                   data-testid="live-room-host-link"
                   className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0 text-start"
                 >
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
+                  <Avatar className="h-7 w-7 ring-1 ring-border/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
@@ -508,8 +509,8 @@ export function LiveRoomDrawer({
                 )}
               </div>
               {room.isLive ? (
-                <Badge className="bg-red-500 text-white border-0 gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <Badge className="bg-status-error text-primary-foreground border-0 gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-card animate-pulse" />
                   {t('screens.liverooms.liveNow')}
                 </Badge>
               ) : isScheduled ? (
@@ -647,6 +648,7 @@ export function LiveRoomDrawer({
     return (
       <>
         <Drawer open={open} onOpenChange={onOpenChange}>
+          {/* design-allow-next-line: viewport-bound sheet height */}
           <DrawerContent className="h-[90vh]">{content}</DrawerContent>
         </Drawer>
         

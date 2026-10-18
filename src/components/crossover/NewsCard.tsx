@@ -389,19 +389,20 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           </div>
 
           {/* Dark Overlay */}
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20 pointer-events-none" />
 
           {/* Media Play Icon Overlay */}
           {MediaIcon && (
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
-                <MediaIcon className="w-8 h-8 text-white" />
+              <div className="bg-card/20 backdrop-blur-sm rounded-full p-4 border-2 border-border/30 group-hover:scale-110 transition-transform duration-300">
+                <MediaIcon className="w-8 h-8 text-primary-foreground" />
               </div>
             </div>
           )}
 
           {/* Content Overlay */}
-          <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
+          <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-primary-foreground">
             {/* Top Section - Badges on left, Edit on right */}
             <div className="flex items-start w-full">
               {/* Left side - Category + Price + Timestamp (wraps naturally) */}
@@ -410,23 +411,24 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 {pillar && pillarVariant && (
                   <div
                     data-testid="live-room-badge"
-                    className="flex items-center gap-1.5 text-xs text-white font-bold rounded-md px-2 py-1 bg-red-600 border border-red-400/60 uppercase tracking-wide whitespace-nowrap shadow-sm"
+                    className="flex items-center gap-1.5 text-xs text-primary-foreground font-bold rounded-md px-2 py-1 bg-status-error border border-status-error/50 uppercase tracking-wide whitespace-nowrap shadow-sm"
                   >
-                    <span className={cn("h-1.5 w-1.5 rounded-full bg-white", pillarVariant === 'live-now' && "animate-pulse")} />
+                    <span className={cn("h-1.5 w-1.5 rounded-full bg-card", pillarVariant === 'live-now' && "animate-pulse")} />
                     {pillar}
                   </div>
                 )}
                 {pillar && !pillarVariant && (
                   <div className={cn(
-                    "text-xs text-white font-medium rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap",
+                    "text-xs text-primary-foreground font-medium rounded-md px-2 py-1 backdrop-blur-sm border border-border/30 uppercase tracking-wide whitespace-nowrap",
                     pillar.toLowerCase().includes('movement') || pillar.toLowerCase().includes('exercise')
-                      ? "bg-gradient-to-r from-orange-500/80 to-rose-500/80"
+                      ? "bg-gradient-to-r from-status-warning/80 to-category-4/80"
                       : pillar.toLowerCase().includes('mind') || pillar.toLowerCase().includes('mental')
-                      ? "bg-gradient-to-r from-violet-500/80 to-sky-500/80"
+                      ? "bg-gradient-to-r from-category-2/80 to-category-7/80"
                       : pillar.toLowerCase().includes('nutrition')
-                      ? "bg-gradient-to-r from-emerald-500/80 to-lime-500/80"
+                      ? "bg-gradient-to-r from-status-success/80 to-category-6/80"
                       : pillar.toLowerCase().includes('community')
-                      ? "bg-gradient-to-r from-pink-500/80 to-violet-500/80"
+                      ? "bg-gradient-to-r from-category-4/80 to-category-2/80"
+                      // design-allow-next-line: on-media scrim, theme-independent
                       : "bg-black/40"
                   )}>
                     {pillar}
@@ -438,7 +440,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                   <div className={cn(
                     "text-xs font-bold rounded-md px-2 py-1 backdrop-blur-sm border whitespace-nowrap",
                     price === "free"
-                      ? "bg-green-500/90 text-white border-green-400/50"
+                      ? "bg-status-success/90 text-primary-foreground border-status-success/40"
                       : "bg-primary/90 text-primary-foreground border-primary/50"
                   )}>
                     {price === "free" ? "FREE" : `${currency === 'EUR' ? '€' : '$'}${price}`}
@@ -447,8 +449,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
                 {/* Timestamp */}
                 {timestamp && (
-                  <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm">
+                  // design-allow-next-line: on-media scrim, theme-independent
+                  <div className="flex items-center gap-1.5 text-xs text-primary-foreground/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm">
                     <Calendar className="w-3 h-3 flex-shrink-0" />
+                    {/* design-allow-next-line: no scale value within 2px of 140px */}
                     <span className="font-medium max-w-[140px] truncate">{timestamp}</span>
                   </div>
                 )}
@@ -471,21 +475,21 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
               {/* Subtitle */}
               {subtitle && (
-                <p className="text-xs text-white/80 font-medium -mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
+                <p className="text-xs text-primary-foreground/80 font-medium -mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
                   {subtitle}
                 </p>
               )}
 
               {/* Description */}
               {description && (
-                <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
+                <p className="text-sm text-primary-foreground/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
                   {description}
                 </p>
               )}
 
               {/* Prominent relative date/time (Live Rooms) — e.g. "Today 20.00h" */}
               {whenLabel && (
-                <div className="text-2xl font-bold text-white leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
+                <div className="text-2xl font-bold text-primary-foreground leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
                   {whenLabel}
                 </div>
               )}
@@ -501,26 +505,26 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                       src={author.avatar}
                       fallback={author.name.charAt(0)}
                       alt={author.name}
-                      className="w-7 h-7 border-2 border-white/40"
+                      className="w-7 h-7 border-2 border-border/40"
                       disabled={authorId?.startsWith('demo-')}
                     />
-                    <span className="text-xs text-white font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
+                    <span className="text-xs text-primary-foreground font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
                       {author.name}
                     </span>
                   </div>
                 )}
 
                 {/* Location & Attendees */}
-                <div className="flex items-center gap-3 text-xs text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
+                <div className="flex items-center gap-3 text-xs text-primary-foreground/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
                   {location && (
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-white/70" />
+                      <MapPin className="w-3.5 h-3.5 text-primary-foreground/70" />
                       {location}
                     </div>
                   )}
                   {(attendees !== undefined || (eventId && eventParticipation?.participantCount > 0)) && (
                     <div className="flex items-center gap-1.5">
-                      <Users className="w-3.5 h-3.5 text-white/70" />
+                      <Users className="w-3.5 h-3.5 text-primary-foreground/70" />
                       {displayAttendees}
                     </div>
                   )}

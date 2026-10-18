@@ -69,6 +69,7 @@ export function EventAttachmentCard({
   if (isLoading) {
     return (
       <div
+        // design-allow-next-line: no scale value within 2px of 76px
         className="mt-3 h-[76px] animate-pulse rounded-xl bg-muted"
         data-testid="feed-event-card-loading"
       />

@@ -98,6 +98,7 @@ export function DailyVideoRoom({ roomUrl, token, onJoined, onLeft, onError }: Da
   return (
     // No fixed min-height: the viewer sizes this to the space under its own
     // header so Daily's control tray always stays on screen (VTID-04906).
+    // design-allow-next-line: on-media scrim, theme-independent
     <div ref={containerRef} data-testid="daily-video-room" className="w-full h-full min-h-0 bg-black rounded-lg" />
   );
 }
