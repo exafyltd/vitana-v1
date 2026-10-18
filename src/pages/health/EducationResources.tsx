@@ -7,7 +7,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { EducationMasterActionPopup } from "@/components/EducationMasterActionPopup";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star, Plus } from "lucide-react";
@@ -101,7 +101,7 @@ export default function EducationResources() {
       <SEO title={t('screens.health.educationResourcesHealth')} description="Access health education materials and resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.health.educationScience')}
@@ -139,24 +139,24 @@ export default function EducationResources() {
                   { title: t('screens.health.eduArticle_mentalHealth_title'), category: t('screens.health.eduCategory_psychology'), readTime: t('screens.health.eduReadTime', { mins: '7' }), rating: 4.8 },
                   { title: t('screens.health.eduArticle_preventiveCare_title'), category: t('screens.health.eduCategory_prevention'), readTime: t('screens.health.eduReadTime', { mins: '12' }), rating: 4.9 }
                 ].map((article, index) => (
-                  <Card key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20">
-                    <CardHeader>
+                  <Panel key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-card/80 backdrop-blur-sm border-border/20">
+                    <PanelHeader>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-muted-foreground bg-primary/10 px-2 py-1 rounded">{article.category}</span>
                         <div className="flex items-center gap-1">
-                          <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                          <Star className="w-3 h-3 text-status-warning fill-current" />
                           <span className="text-xs text-muted-foreground">{article.rating}</span>
                         </div>
                       </div>
-                      <CardTitle className="text-lg">{article.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                      <PanelTitle className="text-lg">{article.title}</PanelTitle>
+                    </PanelHeader>
+                    <PanelContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="w-4 h-4" />
                         <span>{t('screens.health.readtimeRead', { readTime: article.readTime })}</span>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </PanelContent>
+                  </Panel>
                 ))}
               </div>
             </SplitBarContent>
@@ -171,24 +171,24 @@ export default function EducationResources() {
                   { title: "Stress Management Strategies", category: "Mental Health", duration: "20:15", views: "4.6K" },
                   { title: "Lab Results Interpretation", category: "Medical", duration: "12:40", views: "1.9K" }
                 ].map((video, index) => (
-                  <Card key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20">
-                    <CardHeader>
+                  <Panel key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-card/80 backdrop-blur-sm border-border/20">
+                    <PanelHeader>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-muted-foreground bg-primary/10 px-2 py-1 rounded">{video.category}</span>
                         <div className="flex items-center gap-2">
-                          <Play className="w-4 h-4 text-green-500" />
+                          <Play className="w-4 h-4 text-status-success" />
                           <span className="text-xs text-muted-foreground">{t('screens.health.viewsViews', { views: video.views })}</span>
                         </div>
                       </div>
-                      <CardTitle className="text-lg">{video.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                      <PanelTitle className="text-lg">{video.title}</PanelTitle>
+                    </PanelHeader>
+                    <PanelContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Video className="w-4 h-4" />
                         <span>{video.duration}</span>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </PanelContent>
+                  </Panel>
                 ))}
               </div>
             </SplitBarContent>
@@ -203,21 +203,21 @@ export default function EducationResources() {
                   { title: "Mental Resilience Training", series: "Psychology Today", duration: "35:10", episode: "Ep. 5" },
                   { title: "Preventive Medicine Trends", series: "Future Health", duration: "48:25", episode: "Ep. 18" }
                 ].map((podcast, index) => (
-                  <Card key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20">
-                    <CardHeader>
+                  <Panel key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-card/80 backdrop-blur-sm border-border/20">
+                    <PanelHeader>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-muted-foreground bg-primary/10 px-2 py-1 rounded">{podcast.series}</span>
                         <span className="text-xs text-muted-foreground">{podcast.episode}</span>
                       </div>
-                      <CardTitle className="text-lg">{podcast.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                      <PanelTitle className="text-lg">{podcast.title}</PanelTitle>
+                    </PanelHeader>
+                    <PanelContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Headphones className="w-4 h-4" />
                         <span>{podcast.duration}</span>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </PanelContent>
+                  </Panel>
                 ))}
               </div>
             </SplitBarContent>

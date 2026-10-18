@@ -198,7 +198,7 @@ export default withScreenId(function Plans() {
       <SubNavigation items={healthNavigation} />
       
       {/* Outer Container */}
-      <div className="p-6 bg-gradient-to-br from-slate-50/70 via-indigo-50/60 to-white/70 dark:from-slate-950/90 dark:via-slate-900/85 dark:to-slate-800/80 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-sunken/70 via-category-3/5 to-card/70 min-h-screen">
         {/* Inner Container */}
         <div className="max-w-7xl mx-auto">
           
@@ -225,7 +225,7 @@ export default withScreenId(function Plans() {
           
           {/* Split Bar Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="mb-6">
-            <SplitBarList className="w-full bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+            <SplitBarList className="w-full bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="all">{t('screens.health.allPlans')}</SplitBarTrigger>
               <SplitBarTrigger value="nutrition">{t('screens.health.nutrition')}</SplitBarTrigger>
               <SplitBarTrigger value="exercise">{t('screens.health.exercise')}</SplitBarTrigger>
@@ -236,7 +236,7 @@ export default withScreenId(function Plans() {
             
             <SplitBarContent value="all">
               {isLoading ? (
-                <div className="text-center py-12 text-slate-600 dark:text-slate-400">{t('screens.health.loadingPlans')}
+                <div className="text-center py-12 text-muted-foreground">{t('screens.health.loadingPlans')}
                 </div>
               ) : (
                 <>
@@ -270,21 +270,21 @@ export default withScreenId(function Plans() {
                   </div>
                   
                   {/* Autopilot Summary Footer */}
-                  <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-[0_6px_20px_rgba(20,25,40,0.06)]">
+                  <div className="rounded-2xl bg-card border border-border p-5 md:p-6 shadow-[0_6px_20px_rgba(20,25,40,0.06)]">
                     <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                      <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
                         {t('screens.health.autopilotSummary')}
                       </h3>
-                      <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
+                      <div className="space-y-1 text-sm text-muted-foreground">
                         <div>
                           <VitanaScoreTooltip score={autopilotData.vitanaScore}>
-                            <button className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">{t('screens.health.vitanascoreVitanaScore', { vitanaScore: autopilotData.vitanaScore })}
+                            <button className="hover:text-foreground transition-colors font-semibold">{t('screens.health.vitanascoreVitanaScore', { vitanaScore: autopilotData.vitanaScore })}
                             </button>
                           </VitanaScoreTooltip>
                           <span>{t('screens.health.text5ActivePlansSyncedCrosspillarSynergy', { synergyScore: autopilotData.synergyScore })}</span>
                         </div>
                         <div>
-                          {t('screens.health.nextRecalibration')} <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span>{t('screens.health.adjustmentLastadjustment', { lastAdjustment: autopilotData.lastAdjustment })}</div>
+                          {t('screens.health.nextRecalibration')} <span className="font-medium text-muted-foreground">{autopilotData.nextRecalibration}</span>{t('screens.health.adjustmentLastadjustment', { lastAdjustment: autopilotData.lastAdjustment })}</div>
                       </div>
                     </div>
                     
@@ -292,17 +292,17 @@ export default withScreenId(function Plans() {
                     <div className="flex flex-wrap gap-2">
                       <button 
                         onClick={handleRecalibrateAll}
-                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
+                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-muted-foreground hover:bg-muted-foreground text-primary-foreground text-[13px] font-medium transition-colors"
                       >{t('screens.health.recalibrateAll')}
                       </button>
                       <button 
                         onClick={handleViewReport}
-                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
+                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-card hover:bg-surface-sunken border border-border text-muted-foreground text-[13px] font-medium transition-colors"
                       >{t('screens.health.viewDetailedReport')}
                       </button>
                       <button 
                         onClick={handleOptimizeWeakest}
-                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
+                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-card hover:bg-surface-sunken border border-border text-muted-foreground text-[13px] font-medium transition-colors"
                       >{t('screens.health.optimizeWeakestPillar')}
                       </button>
                     </div>

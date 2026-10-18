@@ -8,7 +8,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { BiomarkersMasterActionPopup } from "@/components/BiomarkersMasterActionPopup";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
@@ -465,7 +465,7 @@ export default function MyBiology() {
       />
       <SubNavigation items={healthNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.health.yourBiologyCentralHub')}
@@ -502,16 +502,16 @@ export default function MyBiology() {
             {/* My Medical Tab */}
             <SplitBarContent value="medical">
               <div className="space-y-4">
-                <Card className="bg-card/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                <Panel className="bg-card/80 backdrop-blur-sm">
+                  <PanelHeader>
+                    <PanelTitle className="flex items-center gap-2">
                       <TestTube className="w-5 h-5" />
                       {t('screens.health.medicalBiomarkers')}
-                    </CardTitle>
+                    </PanelTitle>
                     <p className="text-sm text-muted-foreground">{t('screens.health.clinicalLabResultsFromBloodTests')}
                     </p>
-                  </CardHeader>
-                  <CardContent>
+                  </PanelHeader>
+                  <PanelContent>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                       <Button 
                         variant="outline" 
@@ -559,25 +559,25 @@ export default function MyBiology() {
                         }
                       />
                     )}
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               </div>
             </SplitBarContent>
 
             {/* My Omics Tab */}
             <SplitBarContent value="omics">
               <div className="space-y-4">
-                <Card className="bg-card/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                <Panel className="bg-card/80 backdrop-blur-sm">
+                  <PanelHeader>
+                    <PanelTitle className="flex items-center gap-2">
                       <Dna className="w-5 h-5" />
                       {t('screens.health.omicsBiomarkers')}
-                    </CardTitle>
+                    </PanelTitle>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.health.genomicsEpigenomicsMetabolomicsMicrobiomeProteomic')}
                     </p>
-                  </CardHeader>
-                  <CardContent>
+                  </PanelHeader>
+                  <PanelContent>
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <Button 
                         variant="outline" 
@@ -625,25 +625,25 @@ export default function MyBiology() {
                         }
                       />
                     )}
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               </div>
             </SplitBarContent>
 
             {/* My Supplements Tab */}
             <SplitBarContent value="supplements">
               <div className="space-y-4">
-                <Card className="bg-card/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                <Panel className="bg-card/80 backdrop-blur-sm">
+                  <PanelHeader>
+                    <PanelTitle className="flex items-center gap-2">
                       <Pill className="w-5 h-5" />
                       {t('screens.health.mySupplements2')}
-                    </CardTitle>
+                    </PanelTitle>
                     <p className="text-sm text-muted-foreground">
                       {t('screens.health.trackYourSupplementRegimenAcross40')}
                     </p>
-                  </CardHeader>
-                  <CardContent>
+                  </PanelHeader>
+                  <PanelContent>
                     <div className="flex gap-3 mb-4">
                       <Button 
                         variant="default" 
@@ -658,10 +658,12 @@ export default function MyBiology() {
                       </Button>
                       
                       <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                        {/* design-allow-next-line: measured select width */}
                         <SelectTrigger className="w-[200px]">
                           <Filter className="w-4 h-4 me-2" />
                           <SelectValue placeholder={t('screens.health.filterByCategory')} />
                         </SelectTrigger>
+                        {/* design-allow-next-line: measured dropdown scroll height */}
                         <SelectContent className="max-h-[300px]">
                           <SelectItem value="all">{t('screens.health.allCategoriesLength', { length: supplements.length })}
                           </SelectItem>
@@ -719,8 +721,8 @@ export default function MyBiology() {
                         </div>
                       </div>
                     )}
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               </div>
             </SplitBarContent>
           </SplitBar>
