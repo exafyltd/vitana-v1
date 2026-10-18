@@ -45,7 +45,7 @@ export function YourEarningsWidget({ data }: YourEarningsWidgetProps) {
   const cashEur = cashBalanceCents / 100;
 
   return (
-    <Card className="border-primary/30 bg-gradient-to-br from-emerald-50/50 to-transparent dark:from-emerald-900/10">
+    <Card className="border-primary/30 bg-gradient-to-br from-status-success-subtle/50 to-transparent">
       <CardContent className="p-5 space-y-3">
         <h3 className="font-semibold text-sm">{t('billing.earnings.title')}</h3>
         <dl className="space-y-1 text-sm">

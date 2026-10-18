@@ -32,7 +32,7 @@ export const MONTH_DOTS = 3;
 export function EmptyDay() {
   return (
     <div className={`${INDEX_CARD} flex flex-col items-center gap-1 py-8 text-center`} data-testid="vcal-empty">
-      <span className="text-lg font-bold text-slate-900">{t("vcal.empty.title")}</span>
+      <span className="text-lg font-bold text-foreground">{t("vcal.empty.title")}</span>
       <span className="text-sm" style={{ color: SURFACE.muted }}>
         {t("vcal.empty.hint")}
       </span>
@@ -58,7 +58,7 @@ export function DayView({ items, onOpen, summary }: { items: CalendarWindowItem[
   return (
     <div className="flex flex-col gap-2" data-testid="vcal-day">
       {summary && (
-        <p className="px-1 text-[15px] leading-snug text-slate-700" data-testid="vcal-summary">
+        <p className="px-1 text-[15px] leading-snug text-muted-foreground" data-testid="vcal-summary">
           {summary}
         </p>
       )}
@@ -127,12 +127,12 @@ export function DayPanel({
       aria-label={label}
     >
       <div className="flex items-center justify-between gap-2">
-        <h2 className="min-w-0 truncate text-lg font-bold text-slate-900">{label}</h2>
+        <h2 className="min-w-0 truncate text-lg font-bold text-foreground">{label}</h2>
         <button
           type="button"
           onClick={onClose}
           aria-label={t("vcal.entry.close")}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-600 ring-1 ring-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground ring-1 ring-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1"
           data-testid="vcal-day-panel-close"
         >
           <X className="h-4 w-4" aria-hidden />
@@ -195,7 +195,7 @@ export function WeekView({
         return (
           <Fragment key={day.toISOString()}>
             <section
-              className={`flex min-w-0 flex-col gap-1.5 rounded-3xl border bg-white p-3 shadow-[0_6px_24px_rgba(15,23,42,0.06)] ${isToday || isOpen ? "" : "border-slate-100"}`}
+              className={`flex min-w-0 flex-col gap-1.5 rounded-3xl border bg-card p-3 shadow-[0_6px_24px_rgba(15,23,42,0.06)] ${isToday || isOpen ? "" : "border-border"}`}
               aria-label={fmtDate(day, { weekday: "long", day: "numeric", month: "long" })}
               style={
                 isOpen
@@ -280,7 +280,7 @@ export function MonthView({
                 onClick={() => toggle(day)}
                 aria-label={fmtDate(day, { weekday: "long", day: "numeric", month: "long" })}
                 aria-expanded={isOpen}
-                className="flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                className="flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-category-1"
                 style={{ color: inMonth ? SURFACE.ink : SURFACE.faint, boxShadow: isOpen ? `inset 0 0 0 2px ${SURFACE.today}` : undefined }}
                 data-testid="vcal-month-day"
               >

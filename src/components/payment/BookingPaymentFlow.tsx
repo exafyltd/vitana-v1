@@ -260,10 +260,11 @@ export default function BookingPaymentFlow({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: viewport-relative dialog height; the contract has no viewport-height token */}
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <CheckCircle className="w-5 h-5 text-green-600" />
+            <CheckCircle className="w-5 h-5 text-status-success" />
             {t('screens.payment.completeBooking')}
           </DialogTitle>
         </DialogHeader>
@@ -286,7 +287,7 @@ export default function BookingPaymentFlow({
                   <p className="font-medium text-sm">{booking.provider.name}</p>
                   {booking.provider.rating && (
                     <div className="flex items-center gap-1">
-                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      <Star className="w-3 h-3 fill-status-warning text-status-warning" />
                       <span className="text-xs">{booking.provider.rating}</span>
                     </div>
                   )}
@@ -366,7 +367,7 @@ export default function BookingPaymentFlow({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Coins className="w-5 h-5 text-orange-500" />
+                    <Coins className="w-5 h-5 text-status-warning" />
                     <div>
                       <p className="font-medium">{t('screens.payment.credits')}</p>
                       <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.credits || 0, 'CREDITS') })}</p>
@@ -388,7 +389,7 @@ export default function BookingPaymentFlow({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <DollarSign className="w-5 h-5 text-green-500" />
+                    <DollarSign className="w-5 h-5 text-status-success" />
                     <div>
                       <p className="font-medium">{t('screens.payment.usdWallet')}</p>
                       <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.usd || 0, 'USD') })}</p>
@@ -409,7 +410,7 @@ export default function BookingPaymentFlow({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <CreditCard className="w-5 h-5 text-purple-500" />
+                    <CreditCard className="w-5 h-5 text-category-2" />
                     <div>
                       <p className="font-medium">{t('screens.payment.debitcreditCard')}</p>
                       <p className="text-sm text-muted-foreground">
@@ -427,13 +428,13 @@ export default function BookingPaymentFlow({
 
           {/* Balance Check */}
           {!canAfford() && paymentMethod !== 'cash' && (
-            <Card className="border-red-200 bg-red-50">
+            <Card className="border-status-error/25 bg-status-error-subtle">
               <CardContent className="p-4">
-                <div className="flex items-center gap-2 text-red-600">
+                <div className="flex items-center gap-2 text-status-error">
                   <Shield className="w-4 h-4" />
                   <span className="text-sm font-medium">{t('screens.payment.insufficientBalance')}</span>
                 </div>
-                <p className="text-sm text-red-600 mt-1">
+                <p className="text-sm text-status-error mt-1">
                   {t('screens.payment.topUpYourWalletCompleteThis')}
                 </p>
               </CardContent>

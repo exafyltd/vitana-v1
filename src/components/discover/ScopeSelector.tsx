@@ -24,6 +24,7 @@ export function ScopeSelector({ value, onChange, className }: ScopeSelectorProps
     <div className={`flex items-center gap-2 ${className ?? ""}`}>
       <Globe className="w-4 h-4 text-muted-foreground flex-shrink-0" />
       <Select value={value} onValueChange={onChange}>
+        {/* design-allow-next-line: measured control width off the scale (>2px) */}
         <SelectTrigger className="w-[200px] h-8 text-sm">
           <SelectValue />
         </SelectTrigger>

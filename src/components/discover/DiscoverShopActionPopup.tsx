@@ -30,6 +30,7 @@ export const DiscoverShopActionPopup = ({ open, onOpenChange }: DiscoverShopActi
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: measured dialog width off the scale; no matching max-width token */}
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{t('screens.discover.quickShopActions')}</DialogTitle>

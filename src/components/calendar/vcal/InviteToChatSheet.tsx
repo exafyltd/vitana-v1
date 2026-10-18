@@ -127,11 +127,13 @@ export function InviteToChatSheet({ item, onClose }: Props) {
   const title = item.event ? entryTitle(item.event) : "";
 
   return (
+    // design-allow-next-line: modal backdrop scrim, theme-independent
     <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/40 md:items-center" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="vcal-invite-title"
+        // design-allow-next-line: viewport-relative sheet height; the contract has no viewport-height token
         className="flex max-h-[90vh] w-full max-w-md flex-col gap-4 overflow-hidden rounded-t-[28px] p-6 pb-28 md:rounded-[28px] md:pb-6"
         style={{ background: SURFACE.page, color: SURFACE.ink }}
         onClick={(e) => e.stopPropagation()}
@@ -151,7 +153,7 @@ export function InviteToChatSheet({ item, onClose }: Props) {
             type="button"
             onClick={onClose}
             aria-label={t("vcal.entry.close")}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-lg"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-lg"
           >
             ✕
           </button>
@@ -165,12 +167,12 @@ export function InviteToChatSheet({ item, onClose }: Props) {
                 value={cardTitle}
                 onChange={(ev) => setCardTitle(ev.target.value)}
                 maxLength={120}
-                className="h-11 w-full min-w-0 rounded-xl bg-white px-3 text-base text-slate-900"
+                className="h-11 w-full min-w-0 rounded-xl bg-card px-3 text-base text-foreground"
                 data-testid="vcal-invite-card-title"
               />
             </label>
             {place ? (
-              <label className="flex items-center gap-2 self-end rounded-xl bg-white px-3 text-sm text-slate-900" style={{ minHeight: 44 }}>
+              <label className="flex items-center gap-2 self-end rounded-xl bg-card px-3 text-sm text-foreground" style={{ minHeight: 44 }}>
                 <input
                   type="checkbox"
                   checked={showPlace}
@@ -186,7 +188,7 @@ export function InviteToChatSheet({ item, onClose }: Props) {
           </div>
         )}
         {item.sensitive && (
-          <p role="note" className="m-0 rounded-xl bg-orange-50 px-3 py-2 text-sm text-orange-900" data-testid="vcal-invite-sensitive">
+          <p role="note" className="m-0 rounded-xl bg-status-warning-subtle px-3 py-2 text-sm text-status-warning" data-testid="vcal-invite-sensitive">
             {t("vcal.share.sensitiveHint")}
           </p>
         )}
@@ -197,18 +199,18 @@ export function InviteToChatSheet({ item, onClose }: Props) {
           onChange={(ev) => setQuery(ev.target.value)}
           placeholder={t("vcal.invite.search")}
           aria-label={t("vcal.invite.search")}
-          className="h-12 w-full rounded-2xl bg-white px-4 text-base text-slate-900"
+          className="h-12 w-full rounded-2xl bg-card px-4 text-base text-foreground"
           data-testid="vcal-invite-search"
         />
 
         <ul className="m-0 flex min-h-0 flex-1 list-none flex-col gap-2 overflow-y-auto p-0" data-testid="vcal-invite-list">
           {loading && targets.length === 0 && (
-            <li className="rounded-2xl bg-white px-4 py-3 text-sm" style={{ color: SURFACE.muted }}>
+            <li className="rounded-2xl bg-card px-4 py-3 text-sm" style={{ color: SURFACE.muted }}>
               {t("vcal.invite.loading")}
             </li>
           )}
           {!loading && targets.length === 0 && (
-            <li className="rounded-2xl bg-white px-4 py-3 text-sm" style={{ color: SURFACE.muted }} data-testid="vcal-invite-empty">
+            <li className="rounded-2xl bg-card px-4 py-3 text-sm" style={{ color: SURFACE.muted }} data-testid="vcal-invite-empty">
               {t("vcal.invite.empty")}
             </li>
           )}
@@ -220,7 +222,8 @@ export function InviteToChatSheet({ item, onClose }: Props) {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setPicked(selected ? null : x)}
-                  className="flex min-h-[52px] w-full items-center gap-3 rounded-2xl bg-white px-4 py-2 text-start"
+                  // design-allow-next-line: measured control height off the scale (>2px)
+                  className="flex min-h-[52px] w-full items-center gap-3 rounded-2xl bg-card px-4 py-2 text-start"
                   style={selected ? { outline: `2px solid ${SURFACE.primary}` } : undefined}
                   data-testid={`vcal-invite-target-${x.kind}`}
                 >
@@ -241,7 +244,7 @@ export function InviteToChatSheet({ item, onClose }: Props) {
           type="button"
           disabled={!picked || send.isPending}
           onClick={() => picked && send.mutate(picked)}
-          className="h-14 shrink-0 rounded-[18px] text-lg font-semibold text-white disabled:opacity-50"
+          className="h-14 shrink-0 rounded-[18px] text-lg font-semibold text-primary-foreground disabled:opacity-50"
           style={{ background: SURFACE.primary }}
           data-testid="vcal-invite-send"
         >

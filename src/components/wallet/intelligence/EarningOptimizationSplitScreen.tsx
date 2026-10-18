@@ -102,7 +102,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Strategy Implementation Progress */}
-          <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
+          <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-category-2/5 border border-primary/20">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">{t('screens.wallet.strategyImplementation')}</span>
               <span className="text-sm text-muted-foreground">{t('screens.wallet.implementedstrategiesLengthComplete', { implementedStrategies, length: mockStrategies.length })}
@@ -117,7 +117,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           {/* Optimization Strategies */}
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
-              <Target className="h-4 w-4 text-green-500" />
+              <Target className="h-4 w-4 text-status-success" />
               {t('screens.wallet.recommendedStrategies')}
             </h4>
             
@@ -131,7 +131,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                     <h5 className="text-sm font-medium flex items-center gap-2">
                       {strategy.title}
                       {strategy.implemented && (
-                        <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600">
+                        <Badge variant="outline" className="text-xs bg-status-success/10 text-status-success">
                           {t('screens.wallet.active')}
                         </Badge>
                       )}
@@ -146,7 +146,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1 text-xs text-emerald-600">
+                    <div className="flex items-center gap-1 text-xs text-status-success">
                       <DollarSign className="h-3 w-3" />{t('screens.wallet.impactVtnmonth', { impact: strategy.impact })}
                     </div>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -170,11 +170,11 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
               <div className="text-xs text-muted-foreground">{t('screens.wallet.vtnPotential')}</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
-              <div className="text-lg font-bold text-emerald-600">{implementedStrategies}</div>
+              <div className="text-lg font-bold text-status-success">{implementedStrategies}</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
-              <div className="text-lg font-bold text-amber-600">{Math.round(implementationProgress)}%</div>
+              <div className="text-lg font-bold text-status-warning">{Math.round(implementationProgress)}%</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.complete')}</div>
             </div>
           </div>

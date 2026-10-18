@@ -48,7 +48,7 @@ export function GoogleSyncCard() {
   const busy = turnOn.isPending || turnOff.isPending || connect.isPending;
 
   return (
-    <section className="flex flex-col gap-2.5 rounded-[22px] bg-white p-4" data-testid="vcal-google-sync">
+    <section className="flex flex-col gap-2.5 rounded-[22px] bg-card p-4" data-testid="vcal-google-sync">
       <h3 className="m-0 text-base font-semibold">🔄 {t("vcal.google.title")}</h3>
       <p className="m-0 text-sm leading-relaxed">{t("vcal.google.intro")}</p>
       {on && (
@@ -68,7 +68,7 @@ export function GoogleSyncCard() {
         type="button"
         disabled={busy || status.isLoading}
         onClick={() => (on ? turnOff.mutate() : turnOn.mutate())}
-        className={`h-12 rounded-[18px] text-sm font-semibold disabled:opacity-60 ${on ? "" : "text-white"}`}
+        className={`h-12 rounded-[18px] text-sm font-semibold disabled:opacity-60 ${on ? "" : "text-primary-foreground"}`}
         style={{ background: on ? SURFACE.track : SURFACE.primary }}
         data-testid="vcal-google-toggle"
       >
@@ -81,7 +81,7 @@ export function GoogleSyncCard() {
 export function QuietHoursNote({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   return (
-    <section className="flex flex-col gap-2 rounded-[22px] bg-white p-4" data-testid="vcal-quiet-hours">
+    <section className="flex flex-col gap-2 rounded-[22px] bg-card p-4" data-testid="vcal-quiet-hours">
       <h3 className="m-0 text-base font-semibold">🌙 {t("vcal.quietHours.title")}</h3>
       <p className="m-0 text-sm leading-relaxed">{t("vcal.quietHours.body")}</p>
       <button

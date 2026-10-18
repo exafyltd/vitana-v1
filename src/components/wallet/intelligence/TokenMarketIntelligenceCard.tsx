@@ -100,26 +100,26 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
             <BarChart3 className="h-5 w-5 text-primary" />
             {t('screens.wallet.tokenIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.potentialincreaseApyAvailable', { potentialIncrease })}
+          <Badge variant="secondary" className="bg-status-success/10 text-status-success">{t('screens.wallet.potentialincreaseApyAvailable', { potentialIncrease })}
           </Badge>
         </div>
       </CardHeader>
       
       <CardContent className="space-y-4">
         {/* Staking Optimization */}
-        <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/5 to-blue-500/5 border border-purple-200/50">
+        <div className="p-3 rounded-lg bg-gradient-to-r from-category-2/5 to-category-3/5 border border-category-2/15">
           <div className="flex items-center gap-2 mb-2">
-            <Shield className="h-4 w-4 text-purple-600" />
+            <Shield className="h-4 w-4 text-category-2" />
             <span className="text-sm font-medium">{t('screens.wallet.stakingOptimization')}</span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-2">
             <div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.currentApy')}</div>
-              <div className="text-lg font-bold text-blue-600">{stakingData.currentAPY}%</div>
+              <div className="text-lg font-bold text-category-3">{stakingData.currentAPY}%</div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.optimizedApy')}</div>
-              <div className="text-lg font-bold text-emerald-600">{stakingData.optimizedAPY}%</div>
+              <div className="text-lg font-bold text-status-success">{stakingData.optimizedAPY}%</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground">
@@ -130,7 +130,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         {/* Market Insights */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-green-500" />
+            <TrendingUp className="h-4 w-4 text-status-success" />
             {t('screens.wallet.marketInsights')}
           </h4>
           
@@ -160,7 +160,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
                     {insight.timeframe}
                   </div>
                   {insight.actionable && (
-                    <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600">{t('screens.wallet.actionable')}
+                    <Badge variant="outline" className="text-xs bg-status-warning/10 text-status-warning">{t('screens.wallet.actionable')}
                     </Badge>
                   )}
                 </div>
@@ -170,16 +170,16 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         </div>
 
         {/* Governance Participation */}
-        <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-yellow-500/5 border-amber-200/50">
+        <div className="p-3 rounded-lg border bg-gradient-to-r from-status-warning/5 to-status-warning/5 border-status-warning/15">
           <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertTriangle className="h-4 w-4 text-status-warning" />
             <span className="text-sm font-medium">{t('screens.wallet.governanceAlert')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
             {t('screens.wallet.newProposalAvailableCommunityFundAllocation')}
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.bonusApy12')}</span>
+            <span className="text-xs text-status-warning font-medium">{t('screens.wallet.bonusApy12')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               {t('screens.wallet.voteNow')}
             </Button>

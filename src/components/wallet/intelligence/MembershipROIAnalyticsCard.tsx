@@ -90,37 +90,37 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             <Calculator className="h-5 w-5 text-primary" />
             {t('screens.wallet.membershipRoiAnalytics')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.totalroiAverageRoi', { totalROI })}
+          <Badge variant="secondary" className="bg-status-success/10 text-status-success">{t('screens.wallet.totalroiAverageRoi', { totalROI })}
           </Badge>
         </div>
       </CardHeader>
       
       <CardContent className="space-y-4">
         {/* ROI Summary */}
-        <div className="p-3 rounded-lg bg-gradient-to-r from-emerald-500/5 to-green-500/5 border border-emerald-200/50">
+        <div className="p-3 rounded-lg bg-gradient-to-r from-status-success/5 to-status-success/5 border border-status-success/15">
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
-              <div className="text-lg font-bold text-emerald-600">${totalSaved}</div>
+              <div className="text-lg font-bold text-status-success">${totalSaved}</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.totalSaved')}</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-blue-600">{totalROI}%</div>
+              <div className="text-lg font-bold text-category-3">{totalROI}%</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.avgRoi')}</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-purple-600">{avgUsage}%</div>
+              <div className="text-lg font-bold text-category-2">{avgUsage}%</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.utilization')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            {t('screens.wallet.yourMembership')} <span className="font-semibold text-emerald-600">{t('screens.wallet.highlyProfitable')}</span>{t('screens.wallet.basedUsage')}
+            {t('screens.wallet.yourMembership')} <span className="font-semibold text-status-success">{t('screens.wallet.highlyProfitable')}</span>{t('screens.wallet.basedUsage')}
           </p>
         </div>
 
         {/* Category Breakdown */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-blue-500" />
+            <Target className="h-4 w-4 text-category-3" />
             {t('screens.wallet.categoryPerformance')}
           </h4>
           
@@ -131,7 +131,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
                   <h5 className="text-sm font-medium">{metric.category}</h5>
                   <p className="text-xs text-muted-foreground">{t('screens.wallet.spentSpentSavedSaved', { spent: metric.spent, saved: metric.saved })}</p>
                 </div>
-                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.roiRoi', { roi: metric.roi })}
+                <Badge variant="outline" className="bg-status-success/10 text-status-success">{t('screens.wallet.roiRoi', { roi: metric.roi })}
                 </Badge>
               </div>
               
@@ -147,11 +147,11 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
         </div>
 
         {/* Upgrade Recommendation */}
-        <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/5 to-pink-500/5 border border-purple-200/50">
+        <div className="p-3 rounded-lg bg-gradient-to-r from-category-2/5 to-category-4/5 border border-category-2/15">
           <div className="flex items-center gap-2 mb-2">
-            <Crown className="h-4 w-4 text-purple-600" />
+            <Crown className="h-4 w-4 text-category-2" />
             <span className="text-sm font-medium">{t('screens.wallet.upgradeAnalysis')}</span>
-            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 ms-auto">{t('screens.wallet.confidenceConfidence', { confidence: upgradeRecommendation.confidence })}
+            <Badge variant="outline" className="text-xs bg-category-2/10 text-category-2 ms-auto">{t('screens.wallet.confidenceConfidence', { confidence: upgradeRecommendation.confidence })}
             </Badge>
           </div>
           
@@ -173,7 +173,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
           <div className="space-y-1 mb-3">
             {upgradeRecommendation.benefits.slice(0, 2).map((benefit, index) => (
               <div key={index} className="text-xs text-muted-foreground flex items-center gap-1">
-                <div className="w-1 h-1 rounded-full bg-purple-400" />
+                <div className="w-1 h-1 rounded-full bg-category-2/80" />
                 {benefit}
               </div>
             ))}
@@ -182,7 +182,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
           <div className="flex items-center justify-between">
             <div className="text-xs">
               <span className="text-muted-foreground">{t('screens.wallet.projectedMonthlySavings')}</span>
-              <span className="font-semibold text-emerald-600 ms-1">
+              <span className="font-semibold text-status-success ms-1">
                 ${upgradeRecommendation.projectedSavings}
               </span>
             </div>
@@ -194,9 +194,9 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
         </div>
 
         {/* Usage Optimization */}
-        <div className="p-3 rounded-lg border bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border-blue-200/50">
+        <div className="p-3 rounded-lg border bg-gradient-to-r from-category-3/5 to-category-3/5 border-category-3/15">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-4 w-4 text-blue-600" />
+            <Calendar className="h-4 w-4 text-category-3" />
             <span className="text-sm font-medium">{t('screens.wallet.usageOptimization')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">

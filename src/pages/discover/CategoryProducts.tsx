@@ -142,10 +142,10 @@ export default function CategoryProducts() {
           <div
             className={cn(
               "w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br shrink-0",
-              meta?.gradient ?? "from-indigo-500 to-slate-600"
+              meta?.gradient ?? "from-category-3 to-muted-foreground"
             )}
           >
-            {meta ? <meta.icon className="h-4 w-4 text-white" strokeWidth={2} /> : <Package className="h-4 w-4 text-white" strokeWidth={2} />}
+            {meta ? <meta.icon className="h-4 w-4 text-primary-foreground" strokeWidth={2} /> : <Package className="h-4 w-4 text-primary-foreground" strokeWidth={2} />}
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-semibold leading-tight truncate">{title}</h1>
