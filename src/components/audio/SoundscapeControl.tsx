@@ -72,7 +72,7 @@ export function SoundscapeControl() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 ms-auto min-h-[44px] min-w-[44px]"
+                className="h-6 w-6 ms-auto min-h-11 min-w-11"
                 onClick={(e) => e.stopPropagation()}
               >
                 {isMuted ? (
@@ -100,7 +100,7 @@ export function SoundscapeControl() {
                   variant="outline"
                   size="sm"
                   onClick={handleToggleMute}
-                  className="w-full min-h-[44px]"
+                  className="w-full min-h-11"
                 >
                   {isMuted ? 'Unmute' : 'Mute'}
                 </Button>

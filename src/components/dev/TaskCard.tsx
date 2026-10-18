@@ -61,7 +61,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
       onClick={onClick}
       className={cn(
         "group cursor-pointer transition-all duration-300 hover:shadow-lg",
-        "border-l-4",
+        "border-s-4",
         statusColor.border,
         task.isNew && "ring-2 ring-sys-vitana-accent animate-pulse-glow"
       )}

@@ -17,7 +17,7 @@ interface ErrorNotificationProps {
 }
 
 const ErrorNotification = ({ id, title, description, onDismiss }: ErrorNotificationProps) => (
-  <div className="relative bg-destructive/10 border-2 border-destructive rounded-lg p-4 pr-10 mb-3 shadow-lg animate-in fade-in slide-in-from-top-2 pointer-events-auto">
+  <div className="relative bg-destructive/10 border-2 border-destructive rounded-lg p-4 pe-10 mb-3 shadow-lg animate-in fade-in slide-in-from-top-2 pointer-events-auto">
     <Button
       variant="ghost"
       size="sm"
