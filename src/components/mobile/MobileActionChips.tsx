@@ -37,7 +37,7 @@ export function VitanaIndexChip({ className }: VitanaIndexChipProps) {
       </Button>
       {showStreak && (
         <span
-          className="absolute -top-1 -end-1 h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none"
+          className="absolute -top-1 -end-1 h-4 px-1 rounded-full bg-status-warning text-primary-foreground text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none"
           aria-hidden="true"
         >
           🔥{streakDays}

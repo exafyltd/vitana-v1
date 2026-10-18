@@ -123,11 +123,13 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
   const displayTime = currentTime > 0 ? currentTime : safeDuration;
 
   return (
+    // design-allow-next-line: measured bubble box / viewport-bound width
     <div className="flex items-center gap-2 min-w-[180px] max-w-[260px]">
       <button
         onClick={toggle}
         className={cn(
           "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
+          // design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent
           isOwnMessage ? "bg-black/10 hover:bg-black/20" : "bg-primary/10 hover:bg-primary/20"
         )}
       >
@@ -138,10 +140,12 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
       </button>
 
       <div className="flex-1 flex flex-col gap-1 min-w-0">
-        <div className="h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+        {/* design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent */}
+        <div className="h-1 bg-black/10 rounded-full overflow-hidden">
           <div
             className={cn(
               "h-full rounded-full transition-all duration-100",
+              // design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent
               isOwnMessage ? "bg-black/30" : "bg-primary/60"
             )}
             style={{ width: `${progress}%` }}
@@ -839,6 +843,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               on a phone (no hover) they stayed invisible but still caught taps,
               so a tap on the picture's corner downloaded it instead of opening
               the viewer, whose own toolbar covers download/copy/share/forward. */}
+          {/* design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent */}
           <div className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
           <div
             className="pointer-events-none absolute bottom-2 end-2 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 transition-opacity flex gap-1"
@@ -1216,6 +1221,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 ref={messageRef}
                 tabIndex={0}
                 className={cn(
+                  // design-allow-next-line: measured bubble box / viewport-bound width
                   "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
                   isOwnMessage
@@ -1256,6 +1262,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                       ref={editTextareaRef}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
+                      // design-allow-next-line: measured bubble box / viewport-bound width
                       className="w-full min-h-[60px] rounded-md border-2 border-border bg-card text-card-foreground px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
                     />
                     <div className="flex gap-2 justify-end">

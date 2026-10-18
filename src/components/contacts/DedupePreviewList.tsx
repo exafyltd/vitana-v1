@@ -93,19 +93,19 @@ export function DedupePreviewList({ matches, nonMatches, onMessage, pageSize = 3
       {visibleMatches.length > 0 && (
         <section className="space-y-2" data-testid="find-friends-on-platform">
           <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <span className="w-6 h-6 rounded-full bg-[hsl(var(--contact-success)/0.1)] flex items-center justify-center">
-              <Check className="w-3.5 h-3.5 text-[hsl(var(--contact-success))]" aria-hidden />
+            <span className="w-6 h-6 rounded-full bg-status-success/10 flex items-center justify-center">
+              <Check className="w-3.5 h-3.5 text-status-success" aria-hidden />
             </span>
             {t('mailhub.findFriends.results.onPlatform', { count: matches.length })}
           </h4>
           {visibleMatches.map((match) => (
             <div
               key={match.platformUser.user_id}
-              className="flex items-center gap-3 p-3 rounded-xl bg-[hsl(var(--contact-success)/0.05)] border border-[hsl(var(--contact-success)/0.1)]"
+              className="flex items-center gap-3 p-3 rounded-xl bg-status-success/5 border border-status-success/10"
             >
               <Avatar className="w-10 h-10 ring-1 ring-border/60 shrink-0">
                 <AvatarImage src={match.platformUser.avatar_url} loading="lazy" />
-                <AvatarFallback className="bg-[hsl(var(--contact-success)/0.1)] text-[hsl(var(--contact-success))]">
+                <AvatarFallback className="bg-status-success/10 text-status-success">
                   {(match.platformUser.display_name || "?").charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -135,8 +135,8 @@ export function DedupePreviewList({ matches, nonMatches, onMessage, pageSize = 3
       {filteredOthers.length > 0 && (
         <section className="space-y-2" data-testid="find-friends-to-invite">
           <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <span className="w-6 h-6 rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
-              <UserPlus className="w-3.5 h-3.5 text-[hsl(var(--contact-sync-accent))]" aria-hidden />
+            <span className="w-6 h-6 rounded-full bg-category-4/10 flex items-center justify-center">
+              <UserPlus className="w-3.5 h-3.5 text-category-4" aria-hidden />
             </span>
             {t('mailhub.findFriends.results.toInvite', { count: nonMatches.length })}
           </h4>

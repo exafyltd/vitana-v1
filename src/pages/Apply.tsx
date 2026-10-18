@@ -242,10 +242,10 @@ export default function Apply() {
         type="website"
       />
 
-      <div className="min-h-screen w-full bg-[radial-gradient(120%_120%_at_50%_0%,#FFF1D6_0%,#FFD7B5_35%,#F8A48A_65%,#C77BB8_100%)] text-neutral-900">
+      <div className="min-h-screen w-full bg-[radial-gradient(120%_120%_at_50%_0%,#FFF1D6_0%,#FFD7B5_35%,#F8A48A_65%,#C77BB8_100%)] text-foreground">
         {/* LOCALE TOGGLE */}
         <div
-          className="absolute end-4 top-4 z-10 flex items-center gap-0.5 rounded-full border border-white/60 bg-white/60 p-0.5 text-xs shadow-sm backdrop-blur md:end-8 md:top-6"
+          className="absolute end-4 top-4 z-10 flex items-center gap-0.5 rounded-full border border-border/60 bg-card/60 p-0.5 text-xs shadow-sm backdrop-blur md:end-8 md:top-6"
           role="group"
           aria-label="Language"
         >
@@ -256,8 +256,8 @@ export default function Apply() {
             className={cn(
               "rounded-full px-2.5 py-1 font-semibold tracking-wide transition",
               locale === "de"
-                ? "bg-neutral-900 text-white"
-                : "text-neutral-700 hover:text-neutral-900",
+                ? "bg-muted-foreground text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             DE
@@ -269,8 +269,8 @@ export default function Apply() {
             className={cn(
               "rounded-full px-2.5 py-1 font-semibold tracking-wide transition",
               locale === "en"
-                ? "bg-neutral-900 text-white"
-                : "text-neutral-700 hover:text-neutral-900",
+                ? "bg-muted-foreground text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             EN
@@ -297,7 +297,8 @@ export default function Apply() {
                   bottom so the gradient continues seamlessly under value cards. */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 h-full bg-gradient-to-b from-white/25 via-[#FFD7B5]/55 to-[#F8A48A]/95"
+                // design-allow-next-line: decorative warm gradient overlay, theme-independent
+                className="pointer-events-none absolute inset-x-0 top-0 h-full bg-gradient-to-b from-card/25 via-[#FFD7B5]/55 to-[#F8A48A]/95"
               />
             </>
           )}
@@ -307,22 +308,22 @@ export default function Apply() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="relative z-10 mx-auto max-w-3xl text-center"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
               {t("apply.overline")}
             </p>
 
-            <h1 className="mt-3 font-editorial text-[38px] leading-[1.05] text-neutral-900 md:mt-5 md:text-[68px]">
+            <h1 className="mt-3 font-editorial text-[38px] leading-[1.05] text-foreground md:mt-5 md:text-[68px]">
               <span className="block">{headlineLine1}</span>
-              <span className="block italic text-rose-700">{headlineLine2}</span>
+              <span className="block italic text-category-4">{headlineLine2}</span>
             </h1>
 
-            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-snug text-neutral-800 md:mt-6 md:text-lg md:leading-relaxed">
+            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-snug text-foreground md:mt-6 md:text-lg md:leading-relaxed">
               {subheadline}
             </p>
-            <p className="mx-auto mt-2.5 max-w-xl text-[15px] leading-snug text-neutral-800 md:mt-4 md:text-lg md:leading-relaxed">
+            <p className="mx-auto mt-2.5 max-w-xl text-[15px] leading-snug text-foreground md:mt-4 md:text-lg md:leading-relaxed">
               {t("apply.subheadlineTicket")}
             </p>
-            <p className="mx-auto mt-2.5 max-w-xl text-[15px] leading-snug text-neutral-800 md:mt-4 md:text-lg md:leading-relaxed">
+            <p className="mx-auto mt-2.5 max-w-xl text-[15px] leading-snug text-foreground md:mt-4 md:text-lg md:leading-relaxed">
               {t("apply.subheadlineCommunity")}
             </p>
 
@@ -340,7 +341,7 @@ export default function Apply() {
 
             <Button
               onClick={scrollToForm}
-              className="mt-5 h-11 rounded-full bg-neutral-900 px-8 text-sm font-semibold tracking-wide text-white hover:bg-neutral-800 md:mt-9 md:h-12"
+              className="mt-5 h-11 rounded-full bg-muted-foreground px-8 text-sm font-semibold tracking-wide text-primary-foreground hover:bg-muted-foreground md:mt-9 md:h-12"
             >
               {t("apply.ctaScroll")}
               <ArrowDown className="ms-2 h-4 w-4" />
@@ -382,16 +383,16 @@ export default function Apply() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5 }}
-            className="mx-auto max-w-3xl rounded-3xl border border-white/60 bg-white/75 p-6 shadow-sm backdrop-blur md:p-9"
+            className="mx-auto max-w-3xl rounded-3xl border border-border/60 bg-card/75 p-6 shadow-sm backdrop-blur md:p-9"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-category-4">
               {t("apply.aboutEyebrow")}
             </p>
-            <h2 className="mt-2 font-editorial text-2xl text-neutral-900 md:text-3xl">
+            <h2 className="mt-2 font-editorial text-2xl text-foreground md:text-3xl">
               {t("apply.aboutTitle")}
             </h2>
 
-            <div className="mt-6 divide-y divide-neutral-200/70">
+            <div className="mt-6 divide-y divide-border/70">
               <EntityRow
                 label={t("apply.aboutVitanalandLabel")}
                 tag={t("apply.aboutVitanalandTag")}
@@ -415,14 +416,14 @@ export default function Apply() {
               />
             </div>
 
-            <div className="mt-8 border-t border-neutral-200/70 pt-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-700">
+            <div className="mt-8 border-t border-border/70 pt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-category-4">
                 {t("apply.benefitsEyebrow")}
               </p>
-              <h3 className="mt-2 font-editorial text-xl text-neutral-900 md:text-2xl">
+              <h3 className="mt-2 font-editorial text-xl text-foreground md:text-2xl">
                 {t("apply.benefitsTitle")}
               </h3>
-              <ul className="mt-4 space-y-2.5 text-sm text-neutral-700 md:text-base">
+              <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground md:text-base">
                 <BenefitItem>{t("apply.benefitTicket")}</BenefitItem>
                 <BenefitItem>{t("apply.benefitEvents")}</BenefitItem>
                 <BenefitItem>{t("apply.benefitVitana")}</BenefitItem>
@@ -446,15 +447,15 @@ export default function Apply() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.5 }}
-                className="rounded-3xl border border-white/60 bg-white/85 p-6 shadow-xl backdrop-blur-md md:p-8"
+                className="rounded-3xl border border-border/60 bg-card/85 p-6 shadow-xl backdrop-blur-md md:p-8"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-700">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-category-4">
                   {t("apply.formEyebrow")}
                 </p>
-                <h2 className="mt-2 font-editorial text-2xl text-neutral-900 md:text-3xl">
+                <h2 className="mt-2 font-editorial text-2xl text-foreground md:text-3xl">
                   {t("apply.formTitle")}
                 </h2>
-                <p className="mt-2 text-sm text-neutral-600">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {t("apply.formIntro")}
                 </p>
 
@@ -515,9 +516,9 @@ export default function Apply() {
                   </Field>
 
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-neutral-800">
+                    <Label className="text-sm font-medium text-foreground">
                       {t("apply.deviceLabel")}
-                      <span className="ms-1 text-rose-600">*</span>
+                      <span className="ms-1 text-category-4">*</span>
                     </Label>
                     <RadioGroup
                       value={form.device}
@@ -600,7 +601,7 @@ export default function Apply() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="mt-7 h-12 w-full rounded-full bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500 text-sm font-semibold uppercase tracking-wider text-white shadow-md hover:opacity-95 disabled:opacity-60"
+                  className="mt-7 h-12 w-full rounded-full bg-gradient-to-r from-category-4 via-category-4 to-status-warning text-sm font-semibold uppercase tracking-wider text-primary-foreground shadow-md hover:opacity-95 disabled:opacity-60"
                 >
                   {submitting ? t("apply.submitting") : t("apply.submit")}
                 </Button>
@@ -611,13 +612,13 @@ export default function Apply() {
 
         {/* FOOTER */}
         <footer className="px-5 pb-10 pt-2 md:px-10">
-          <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 border-t border-white/40 pt-6 text-xs text-neutral-700 md:flex-row">
+          <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 border-t border-border/40 pt-6 text-xs text-muted-foreground md:flex-row">
             <p>© 2026 {t("apply.footerCopy")}</p>
             <div className="flex items-center gap-4">
-              <a href={`/privacy?lang=${locale}`} className="hover:text-neutral-900">
+              <a href={`/privacy?lang=${locale}`} className="hover:text-foreground">
                 {t("apply.footerPrivacy")}
               </a>
-              <a href={`/terms?lang=${locale}`} className="hover:text-neutral-900">
+              <a href={`/terms?lang=${locale}`} className="hover:text-foreground">
                 {t("apply.footerTerms")}
               </a>
             </div>
@@ -637,7 +638,7 @@ function Chip({
   children: React.ReactNode;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/60 px-3 py-1.5 text-xs font-medium text-neutral-800 backdrop-blur">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card/60 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur">
       {icon}
       {children}
     </span>
@@ -658,19 +659,19 @@ function EntityRow({
   return (
     <div className="flex flex-col gap-1.5 py-4 md:flex-row md:items-start md:gap-6">
       <div className="flex items-baseline gap-2 md:w-44 md:shrink-0">
-        <span className="font-editorial text-xl text-neutral-900 md:text-2xl">
+        <span className="font-editorial text-xl text-foreground md:text-2xl">
           {label}
         </span>
-        <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-rose-700">
+        <span className="rounded-full bg-category-4/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-category-4">
           {tag}
         </span>
       </div>
       <div className="flex-1">
-        <p className="text-sm leading-relaxed text-neutral-700 md:text-base">
+        <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
           {description}
         </p>
         {tagline ? (
-          <p className="mt-1.5 font-editorial text-base italic text-rose-700/90 md:text-lg">
+          <p className="mt-1.5 font-editorial text-base italic text-category-4/90 md:text-lg">
             {tagline}
           </p>
         ) : null}
@@ -682,7 +683,7 @@ function EntityRow({
 function BenefitItem({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-2.5">
-      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" />
+      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-category-4" />
       <span>{children}</span>
     </li>
   );
@@ -698,12 +699,12 @@ function ValueCard({
   body: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/60 bg-white/75 p-5 shadow-sm backdrop-blur">
-      <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-rose-100 text-rose-700">
+    <div className="rounded-2xl border border-border/60 bg-card/75 p-5 shadow-sm backdrop-blur">
+      <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-category-4/15 text-category-4">
         {icon}
       </div>
-      <h3 className="mt-3 font-editorial text-lg text-neutral-900">{title}</h3>
-      <p className="mt-1 text-sm leading-relaxed text-neutral-700">{body}</p>
+      <h3 className="mt-3 font-editorial text-lg text-foreground">{title}</h3>
+      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{body}</p>
     </div>
   );
 }
@@ -723,12 +724,12 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id} className="text-sm font-medium text-neutral-800">
+      <Label htmlFor={id} className="text-sm font-medium text-foreground">
         {label}
-        {required && <span className="ms-1 text-rose-600">*</span>}
+        {required && <span className="ms-1 text-category-4">*</span>}
       </Label>
       {children}
-      {help && <p className="text-xs text-neutral-500">{help}</p>}
+      {help && <p className="text-xs text-muted-foreground">{help}</p>}
     </div>
   );
 }
@@ -748,8 +749,8 @@ function DeviceOption({
       className={cn(
         "flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition",
         selected
-          ? "border-rose-500 bg-rose-50 text-rose-700"
-          : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300",
+          ? "border-category-4 bg-category-4/10 text-category-4"
+          : "border-border bg-card text-muted-foreground hover:border-border",
       )}
     >
       <RadioGroupItem id={`device-${value}`} value={value} className="sr-only" />
@@ -782,9 +783,9 @@ function ConsentRow({
         onCheckedChange={onCheckedChange}
         className="mt-0.5"
       />
-      <span className="text-sm leading-relaxed text-neutral-700">
+      <span className="text-sm leading-relaxed text-muted-foreground">
         {label}
-        {required && <span className="ms-1 text-rose-600">*</span>}
+        {required && <span className="ms-1 text-category-4">*</span>}
       </span>
     </label>
   );
@@ -802,18 +803,18 @@ function SuccessPanel({
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="rounded-3xl border border-white/60 bg-white/90 p-8 text-center shadow-xl backdrop-blur-md"
+      className="rounded-3xl border border-border/60 bg-card/90 p-8 text-center shadow-xl backdrop-blur-md"
     >
-      <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+      <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-status-success-subtle text-status-success">
         <CheckCircle2 className="h-7 w-7" />
       </div>
-      <h2 className="mt-4 font-editorial text-3xl text-neutral-900">
+      <h2 className="mt-4 font-editorial text-3xl text-foreground">
         {t("apply.successTitle")}
       </h2>
-      <p className="mt-3 text-base text-neutral-700">
+      <p className="mt-3 text-base text-muted-foreground">
         {t("apply.successBody", { email })}
       </p>
-      <p className="mt-2 text-sm text-neutral-500">{t("apply.successHint")}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{t("apply.successHint")}</p>
     </motion.div>
   );
 }

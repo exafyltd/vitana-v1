@@ -11,7 +11,7 @@ import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileAction
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -495,6 +495,7 @@ function MobileSupport() {
 
   return (
     <MobileAppShell>
+      {/* design-allow-next-line: viewport-bound full height */}
       <div className="px-4 pt-4 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader
           title={t("mobilesupport.title")}
@@ -531,8 +532,8 @@ function MobileSupport() {
             showSuccess ? (
               <Card className="rounded-2xl border-border/50 shadow-sm">
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="p-4 rounded-full bg-green-100 dark:bg-green-950/30">
-                    <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
+                  <div className="p-4 rounded-full bg-status-success-subtle">
+                    <CheckCircle2 className="h-10 w-10 text-status-success" />
                   </div>
                   <h3 className="text-lg font-semibold">{t("mobilesupport.sentTitle")}</h3>
                   {createdTicket ? (

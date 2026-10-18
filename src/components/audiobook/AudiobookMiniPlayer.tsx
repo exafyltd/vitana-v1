@@ -33,8 +33,8 @@ import { cn } from '@/lib/utils';
 
 function iconButton(extra?: string) {
   return cn(
-    'inline-flex h-11 min-w-11 items-center justify-center rounded-full text-gray-700',
-    'hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500',
+    'inline-flex h-11 min-w-11 items-center justify-center rounded-full text-muted-foreground',
+    'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-2',
     'disabled:opacity-40',
     extra,
   );
@@ -85,26 +85,27 @@ export function AudiobookMiniPlayer() {
       data-testid="audiobook-mini-player"
       className={cn(
         'fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+5.5rem)] z-50',
+        // design-allow-next-line: measured mini-player width
         'md:inset-x-auto md:end-6 md:bottom-6 md:w-[400px]',
-        'rounded-3xl border border-purple-100 bg-white/95 p-3 shadow-2xl backdrop-blur-md',
+        'rounded-3xl border border-category-2/15 bg-card/95 p-3 shadow-2xl backdrop-blur-md',
       )}
     >
       {episodeSummary && (
         <div
-          className="mb-3 flex items-start gap-3 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 p-3"
+          className="mb-3 flex items-start gap-3 rounded-2xl bg-gradient-to-r from-category-2/10 to-category-4/10 p-3"
           data-testid="audiobook-episode-summary"
           aria-live="polite"
         >
-          <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-purple-500" aria-hidden="true" />
+          <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-category-2" aria-hidden="true" />
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-gray-900">
+            <p className="text-sm font-semibold text-foreground">
               {t('screens.audiobook.episodeDone', { n: episodeSummary.episode })}
             </p>
-            <p className="text-xs text-purple-700">{t('screens.audiobook.episodeDoneReward')}</p>
+            <p className="text-xs text-category-2">{t('screens.audiobook.episodeDoneReward')}</p>
             <button
               type="button"
               onClick={tryItNow}
-              className="mt-2 inline-flex h-9 items-center rounded-full bg-white px-3 text-xs font-medium text-purple-700 shadow-sm hover:bg-purple-50"
+              className="mt-2 inline-flex h-9 items-center rounded-full bg-card px-3 text-xs font-medium text-category-2 shadow-sm hover:bg-category-2/10"
               data-testid="audiobook-try-it-now"
             >
               {t('screens.audiobook.tryItNow')}
@@ -122,14 +123,14 @@ export function AudiobookMiniPlayer() {
       )}
 
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#C084FC]">
-          <Headphones className="h-5 w-5 text-white" aria-hidden="true" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-category-4 to-category-2">
+          <Headphones className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-medium uppercase tracking-wide text-purple-600">
+          <p className="text-xs font-medium uppercase tracking-wide text-category-2">
             {track ? t('screens.audiobook.episodeN', { n: track.episode }) : t('screens.audiobook.title')}
           </p>
-          <p className="truncate text-sm font-semibold text-gray-900" data-testid="audiobook-track-title">
+          <p className="truncate text-sm font-semibold text-foreground" data-testid="audiobook-track-title">
             {finished ? t('screens.audiobook.finished') : track?.title ?? t('screens.audiobook.loading')}
           </p>
         </div>
@@ -145,19 +146,19 @@ export function AudiobookMiniPlayer() {
       </div>
 
       <div
-        className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-purple-100"
+        className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-category-2/15"
         role="progressbar"
         aria-label={t('screens.audiobook.progress')}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(pct)}
       >
-        <div className="h-full rounded-full bg-purple-500 transition-[width]" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-category-2 transition-[width]" style={{ width: `${pct}%` }} />
       </div>
 
       {error ? (
         <div className="mt-3 flex flex-wrap items-center gap-2" data-testid="audiobook-error" aria-live="polite">
-          <p className="flex-1 text-sm text-gray-700">
+          <p className="flex-1 text-sm text-muted-foreground">
             {error === 'unavailable'
               ? t('screens.audiobook.unavailable')
               : error === 'empty'
@@ -168,7 +169,7 @@ export function AudiobookMiniPlayer() {
             <button
               type="button"
               onClick={() => (track ? player.askVitana() : activateOrb())}
-              className="inline-flex h-11 items-center gap-2 rounded-full bg-purple-600 px-4 text-sm font-medium text-white"
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-category-2 px-4 text-sm font-medium text-primary-foreground"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
               {t('screens.audiobook.askVitana')}
@@ -177,7 +178,7 @@ export function AudiobookMiniPlayer() {
             <button
               type="button"
               onClick={player.retry}
-              className="inline-flex h-11 items-center rounded-full bg-purple-600 px-4 text-sm font-medium text-white"
+              className="inline-flex h-11 items-center rounded-full bg-category-2 px-4 text-sm font-medium text-primary-foreground"
             >
               {t('screens.audiobook.retry')}
             </button>
@@ -207,7 +208,7 @@ export function AudiobookMiniPlayer() {
             onClick={player.toggle}
             disabled={finished}
             aria-label={playing ? t('screens.audiobook.pause') : t('screens.audiobook.play')}
-            className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-white shadow-md hover:bg-purple-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 disabled:opacity-40"
+            className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-category-2 text-primary-foreground shadow-md hover:bg-category-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-2/80 disabled:opacity-40"
             data-testid="audiobook-play-pause"
           >
             {loading ? (
@@ -234,7 +235,7 @@ export function AudiobookMiniPlayer() {
                 ? t('screens.audiobook.sleepOn', { min: sleepMinutes })
                 : t('screens.audiobook.sleepOff')
             }
-            className={iconButton(cn('gap-0.5 px-1 text-[11px] font-semibold', sleepMinutes && 'text-purple-700'))}
+            className={iconButton(cn('gap-0.5 px-1 text-[11px] font-semibold', sleepMinutes && 'text-category-2'))}
             data-testid="audiobook-sleep"
           >
             <Moon className="h-5 w-5" aria-hidden="true" />
@@ -247,7 +248,7 @@ export function AudiobookMiniPlayer() {
         <button
           type="button"
           onClick={player.askVitana}
-          className="mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-medium text-purple-700 hover:bg-purple-50"
+          className="mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-medium text-category-2 hover:bg-category-2/10"
           data-testid="audiobook-ask-vitana"
         >
           <MessageCircle className="h-4 w-4" aria-hidden="true" />

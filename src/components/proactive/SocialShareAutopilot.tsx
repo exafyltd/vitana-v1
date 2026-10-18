@@ -164,7 +164,7 @@ export function SocialShareAutopilot() {
 
         {/* Connected platforms status */}
         {connectedPlatforms.length === 0 && (
-          <div className="p-4 rounded-lg border border-yellow-500/20 bg-yellow-500/5">
+          <div className="p-4 rounded-lg border border-status-warning/20 bg-status-warning/5">
             <p className="text-sm font-medium mb-2">{t('screens.proactive.noPlatformsConnected')}</p>
             <Button variant="outline" size="sm" asChild>
               <Link to="/sharing">{t('screens.proactive.connectSocialMedia')}</Link>

@@ -255,10 +255,11 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: viewport-bound dialog / measured media box */}
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <MessageSquare className="w-6 h-6 text-purple-600" />
+            <MessageSquare className="w-6 h-6 text-category-2" />
             {t('screens.common.createNewContent')}
           </DialogTitle>
         </DialogHeader>
@@ -387,6 +388,7 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
                     value={formData.content}
                     onChange={(e) => setFormData({...formData, content: e.target.value})}
                     placeholder={t('screens.common.writeYourArticleContentHere')}
+                    // design-allow-next-line: viewport-bound dialog / measured media box
                     className="mt-1 min-h-[200px]"
                   />
                 </div>
@@ -427,8 +429,10 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
                 {mediaPreview ? (
                   <div className="relative rounded-lg overflow-hidden border">
                     {mediaKind === "video" ? (
+                      // design-allow-next-line: on-media scrim + measured media box, theme-independent
                       <video src={mediaPreview} controls playsInline className="w-full max-h-[300px] bg-black" />
                     ) : (
+                      // design-allow-next-line: measured media box
                       <img src={mediaPreview} alt={t('screens.profile.preview')} className="w-full max-h-[300px] object-cover" />
                     )}
                     <Button
@@ -446,7 +450,7 @@ export function CreateContentPopup({ isOpen, onClose, initialContent, initialTyp
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-400 transition-colors"
+                    className="w-full border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-category-2/80 transition-colors"
                   >
                     <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                     <p className="text-lg font-medium mb-2">{t('screens.common.uploadMedia')}</p>

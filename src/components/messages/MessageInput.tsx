@@ -659,7 +659,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
         {/* Send/Mic button outside the pill */}
         {canSend ? (
-          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label={t('screens.messages.sendMessage')}>
+          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-primary-foreground hover:bg-domain-messages-accent/90" aria-label={t('screens.messages.sendMessage')}>
             {isUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (

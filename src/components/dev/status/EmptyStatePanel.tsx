@@ -54,8 +54,8 @@ export function EmptyStatePanel({
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center max-w-md p-6 space-y-4">
-          <div className="w-16 h-16 rounded-full bg-yellow-500/10 flex items-center justify-center mx-auto">
-            <AlertCircle className="w-8 h-8 text-yellow-600" />
+          <div className="w-16 h-16 rounded-full bg-status-warning/10 flex items-center justify-center mx-auto">
+            <AlertCircle className="w-8 h-8 text-status-warning" />
           </div>
           <div>
             <h3 className="font-semibold text-lg mb-2">{t('screens.dev.streamingUnavailable')}</h3>
