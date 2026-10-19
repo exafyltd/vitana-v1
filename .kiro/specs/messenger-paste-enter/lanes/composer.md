@@ -18,7 +18,7 @@ paths:
 claimed_by: kiro-202610161055-a631
 branch: kiro/messenger-paste-enter/composer
 pr: https://github.com/exafyltd/vitana-v1/pull/1445
-updated: 2026-10-19T14:35Z
+updated: 2026-10-19T14:50Z
 ---
 # Paste screenshots and Enter-to-send in the Messenger composer
 Plan: `.kiro/specs/messenger-paste-enter/` — `plan.md` (plan block) and the `tasks.md` section marked
@@ -83,3 +83,13 @@ the messenger issues", so I re-claimed the lane.
   `getI18nLocale`, which the date formatting calls once those messages are a few days old. This lane doesn't touch it,
   and it is outside the lane's paths. It needs its own fix.
 - **Next:** merge only on the owner's explicit "merge #1445" (§7b), then STAGING-VERIFY, then Gate 2.
+
+### 2026-10-19T14:50Z · kiro-202610161055-a631 · executing (merged under §7b; staging deploy blocked)
+Owner instruction 2026-10-19, in the conversation: "merge it" (PR #1445). Merged by squash as
+**32a82e6b68407fc1b45b7a7eca43123c9a0e067b**. Independent review approved (semantic_reviewer, 2 rounds). Required checks
+were green. The only red check, `Vitest (jsdom)`, is not required and fails on main too: the date-dependent
+deep-link test.
+`DEPLOY.yml` (production) ran only its cutover gate: frozen, `aws_prod` skipped. Nothing went to production.
+`AWS Stage Deploy Community App (ECS)` run 39271829177 failed twice (attempts 1 and 2) before building anything: the
+public.ecr.aws base-image pull (`node:20-alpine`, `nginx`) returned `429 toomanyrequests: Data limit exceeded`.
+That is a CI infrastructure limit, not this change. STAGING-VERIFY has not run, so there is no Gate 2 yet.
