@@ -257,6 +257,7 @@ describe("Messenger composer: paste a screenshot (VTID-05229)", () => {
   it("paste works the same on a touch device (phone paste menu)", async () => {
     device("touch");
     const { box } = setup();
+    expect(box.getAttribute("enterkeyhint")).toBe("enter");
     await act(async () => {
       fireEvent.paste(box, { clipboardData: clipboard({ files: [png()] }) });
     });
