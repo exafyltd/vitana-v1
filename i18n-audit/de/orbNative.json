@@ -1,0 +1,240 @@
+{
+  "verdicts": {
+    "orbNative.bench.os": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "orbNative.micUsageDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.status.connecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.status.thinking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.status.reconnecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.status.ended": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.status.muted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.status.unavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.rationale.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.rationale.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.rationale.continue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.rationale.notNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.denied.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.denied.openSettings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.a11y.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.a11y.micMute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.a11y.micUnmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.a11y.restart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Less direct and slightly verbose phrasing for a technical term.",
+      "suggested": "Sprach-Echo-Test",
+      "phase": "llm"
+    },
+    "orbNative.bench.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.modeEcho": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.modeSpeech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.rate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.start": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.stop": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.phaseIdle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.phaseNoiseFloor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.phasePlaying": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.pass": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.fail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orbNative.bench.openings": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "orbNative.bench.barges": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.peak": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.noiseFloor": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.noisyRoom": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.stopLatency": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.device": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.route": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.aecPath": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.voiceProcessing": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.on": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.off": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.share": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "orbNative.bench.unavailable": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    }
+  },
+  "generatedAt": "2026-10-19T09:18:33.492Z"
+}
