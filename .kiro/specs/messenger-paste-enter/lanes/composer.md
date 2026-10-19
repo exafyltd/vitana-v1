@@ -18,7 +18,7 @@ paths:
 claimed_by: kiro-202610161055-a631
 branch: kiro/messenger-paste-enter/composer
 pr: https://github.com/exafyltd/vitana-v1/pull/1445
-updated: 2026-10-16T15:00Z
+updated: 2026-10-19T14:35Z
 ---
 # Paste screenshots and Enter-to-send in the Messenger composer
 Plan: `.kiro/specs/messenger-paste-enter/` — `plan.md` (plan block) and the `tasks.md` section marked
@@ -65,3 +65,21 @@ Next (claude, reviewer_seat): review #1445 against `tasks.md` acceptance. If app
 STAGING-VERIFY → Gate 2. If changes are needed: back to `executing`, `next_actor: kiro`.
 State is set to `executing`, because ready → in-review in one PR is not a legal transition (Collab handoff check).
 The work is complete and ready for Claude Code's review, which moves the lane to in-review/verified.
+
+### 2026-10-19T14:35Z · kiro-202610161055-a631 · executing (independent review approved, awaiting owner merge instruction)
+The owner moved the process to §7b (collaboration.md, 2026-10-18) and said "continue with this session's requests related to
+the messenger issues", so I re-claimed the lane.
+- **Review (semantic_reviewer, independent of the builder):**
+  - Round 1 on ef57fcfb2: the component was approved, with 6 findings on test coverage and the staging spec.
+  - All 6 fixed in 9e69eb393: Vitest cases for Ctrl/Alt/Meta+Enter, Enter during an upload, removing a pasted image and
+    paste on touch; the staging empty-box Enter check replaces the assertion that always passed; one Enter = exactly one
+    POST; the send allowance is anchored to `POST global_messages` and limited to the Enter test; the 04926 manifest
+    claim is corrected.
+  - Round 2: **approved**. The nit it raised is fixed in 2f9ca742c.
+- **Tests:** MessageInput suites 33/33; the new suite has 21 tests, 13 of which fail on main's component.
+- **CI on 2f9ca742c:** all green except `Vitest (jsdom)`, which is not required. Its 1 failure is
+  `ConversationView.deeplink-scroll.vtid-05201.test.tsx`, a pre-existing breakage that also fails on unchanged main
+  704b5def4. The cause: the fixture has hard-coded `created_at: 2026-10-15`, and the `@/lib/i18n-toast` mock lacks
+  `getI18nLocale`, which the date formatting calls once those messages are a few days old. This lane doesn't touch it,
+  and it is outside the lane's paths. It needs its own fix.
+- **Next:** merge only on the owner's explicit "merge #1445" (§7b), then STAGING-VERIFY, then Gate 2.
