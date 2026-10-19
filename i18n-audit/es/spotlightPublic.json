@@ -1,0 +1,15 @@
+{
+  "verdicts": {
+    "spotlightPublic.event.free": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightPublic.event.fromPrice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-10-19T09:24:43.988Z"
+}
