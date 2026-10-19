@@ -17,12 +17,15 @@
 import type { Page, APIRequestContext, Route } from '@playwright/test';
 import { test, expect } from './staging-guard';
 
-// The Enter test's message POST is aborted by the guard on purpose (it proves
-// Enter sends); every other entry mirrors the VTID-04966 spec.
-test.use({
-  allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|chat\/groups\/[0-9a-f-]+\/read)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log|global_messages|messages)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/[a-z_]+|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/,
-});
+// Same tolerated aborts as the VTID-04966 spec. Only the desktop Enter test
+// additionally tolerates the aborted message insert (it proves Enter sends):
+// exactly one method on exactly one table, nowhere else in this file.
+const BASE_ALLOWED =
+  / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|chat\/groups\/[0-9a-f-]+\/read)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/[a-z_]+|functions\/v1\/list_my_memberships)|preview-aws-gateway\.vitanaland\.com\/api\/v1\/orb\/live\/session\/prewarm)/;
+const SEND_ALLOWED = new RegExp(
+  `^POST https:\\/\\/inmkhvwdcuyhnxkgfvsb\\.supabase\\.co\\/rest\\/v1\\/global_messages(\\?[^ ]*)?$|${BASE_ALLOWED.source}`,
+);
+test.use({ allowAbortedWrites: BASE_ALLOWED });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const DESKTOP = '(hover: hover) and (pointer: fine)';
@@ -123,13 +126,19 @@ async function openProbeGroup(page: Page, request: APIRequestContext) {
   return { box, messageWrites };
 }
 
-test.describe('desktop keyboard', () => {
-  test.use({ viewport: { width: 1440, height: 900 } });
+test.describe('desktop keyboard — Enter', () => {
+  test.use({ viewport: { width: 1440, height: 900 }, allowAbortedWrites: SEND_ALLOWED });
 
-  test('Shift+Enter adds a line; Enter sends', async ({ page, request }) => {
+  test('Enter in an empty box does nothing; Shift+Enter adds a line; Enter sends', async ({ page, request }) => {
     const { box, messageWrites } = await openProbeGroup(page, request);
     expect(await page.evaluate((q) => matchMedia(q).matches, DESKTOP), 'this browser does not report a desktop pointer').toBe(true);
     await expect(box).toHaveAttribute('enterkeyhint', 'send');
+
+    // R2.5: Enter with nothing to send adds no blank line and sends nothing.
+    await box.press('Enter');
+    await page.waitForTimeout(500);
+    await expect(box).toHaveValue('');
+    expect(messageWrites, 'Enter in an empty box tried to send').toEqual([]);
 
     await box.pressSequentially('Zeile eins');
     await box.press('Shift+Enter');
@@ -138,12 +147,20 @@ test.describe('desktop keyboard', () => {
     await page.waitForTimeout(1000);
     expect(messageWrites, 'Shift+Enter tried to send the message').toEqual([]);
 
-    // Enter sends: the message POST is attempted (the guard aborts it, nothing
-    // is written) and no blank line is added.
+    // Enter sends: exactly one message POST is attempted (the guard aborts it,
+    // nothing is written) and Enter adds no line. Once the aborted send has
+    // settled, the box holds either nothing (cleared) or exactly the two lines
+    // (restored after the failed send), never an extra newline.
     await box.press('Enter');
     await expect.poll(() => messageWrites.length, { message: 'Enter did not try to send the message' }).toBeGreaterThan(0);
-    await expect(box).not.toHaveValue(/\n$/);
+    await page.waitForTimeout(1500);
+    expect(messageWrites, 'one Enter sent more than once').toHaveLength(1);
+    expect(['', 'Zeile eins\nZeile zwei'], 'Enter added a line to the message').toContain(await box.inputValue());
   });
+});
+
+test.describe('desktop keyboard — paste', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
 
   test('pasting a screenshot attaches it without sending', async ({ page, request }) => {
     const { box, messageWrites } = await openProbeGroup(page, request);

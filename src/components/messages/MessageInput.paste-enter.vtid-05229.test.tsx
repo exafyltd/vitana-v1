@@ -123,6 +123,15 @@ describe("Messenger composer: Enter on desktop (VTID-05229)", () => {
     expect(onSendMessage).not.toHaveBeenCalled();
   });
 
+  it("Ctrl/Alt/Meta+Enter do not send and are left to the browser", async () => {
+    const { type, enter, onSendMessage } = setup();
+    type("Hallo");
+    expect(await enter({ ctrlKey: true })).toBe(true);
+    expect(await enter({ altKey: true })).toBe(true);
+    expect(await enter({ metaKey: true })).toBe(true);
+    expect(onSendMessage).not.toHaveBeenCalled();
+  });
+
   it("Enter in an empty box does nothing and adds no blank line", async () => {
     const { enter, onSendMessage } = setup();
     expect(await enter()).toBe(false);
@@ -213,6 +222,46 @@ describe("Messenger composer: paste a screenshot (VTID-05229)", () => {
     expect(kind).toBe("attachment");
     expect(data.attachments).toHaveLength(1);
     expect(data.attachments[0]).toMatchObject({ type: "image", mime: "image/png" });
+  });
+
+  it("Enter while the pasted image is still uploading sends nothing and adds no line", async () => {
+    let finish: (v: unknown) => void = () => {};
+    uploadChatAttachment.mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+    const { box, type, enter, onSendMessage } = setup();
+    await act(async () => {
+      fireEvent.paste(box, { clipboardData: clipboard({ files: [png()] }) });
+    });
+    type("Siehe Bild");
+    expect(await enter()).toBe(false);
+    expect(onSendMessage).not.toHaveBeenCalled();
+    expect(box.value).toBe("Siehe Bild");
+    await act(async () => {
+      finish({ url: "https://signed.example/x.png", path: "g1/x.png", name: "x.png", size: 4, type: "image/png" });
+    });
+  });
+
+  it("a pasted image can be removed before sending; then Enter sends nothing", async () => {
+    const { box, enter, onSendMessage } = setup();
+    await act(async () => {
+      fireEvent.paste(box, { clipboardData: clipboard({ files: [png()] }) });
+    });
+    const remove = await screen.findByLabelText(/^Remove screenshot-\d{8}-\d{6}\.png$/);
+    await act(async () => {
+      fireEvent.click(remove);
+    });
+    expect(screen.queryByAltText(/^screenshot-/)).toBeNull();
+    await enter();
+    expect(onSendMessage).not.toHaveBeenCalled();
+  });
+
+  it("paste works the same on a touch device (phone paste menu)", async () => {
+    device("touch");
+    const { box } = setup();
+    await act(async () => {
+      fireEvent.paste(box, { clipboardData: clipboard({ files: [png()] }) });
+    });
+    expect(uploadChatAttachment).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.getByAltText(/^screenshot-/)).toBeInTheDocument());
   });
 
   it("works when the browser only fills clipboardData.items (Safari)", async () => {
