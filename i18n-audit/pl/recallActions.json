@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "recallActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.askAiQuestion.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.askAiQuestion.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.advancedSearch.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.advancedSearch.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.patternAnalysis.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.patternAnalysis.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Verbose and slightly formal phrasing for 'wellness data'. A more concise and natural translation is preferred for a friendly app.",
+      "suggested": "Odkryj trendy i wzorce w swoich danych o samopoczuciu",
+      "phase": "llm"
+    },
+    "recallActions.items.memoryInsights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.memoryInsights.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.searchByDate.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.searchByDate.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.locationMemories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.locationMemories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.filterByCategory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.filterByCategory.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Verbose and slightly formal phrasing for 'wellness pillars'. Using 'wellness' as a loanword is more concise and common in this context.",
+      "suggested": "Przeglądaj wspomnienia według filarów wellness i kategorii",
+      "phase": "llm"
+    },
+    "recallActions.items.quickRecalls.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.quickRecalls.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-10-19T09:23:20.386Z"
+}
