@@ -431,7 +431,10 @@ line (e.g. a fixed timestamp shown to the user *in their own data*), use:
 DE is the source of truth. Brand voice is **du-form** (informal) throughout.
 Never write `Sie/Ihr/Ihnen` — even when translators emit it, the LLM audit
 will flag it. After bulk translation, always run the audit workflow:
-`gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=gemini`.
+`gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=deepseek`.
+It runs on demand only; there is no nightly audit. `deepseek` is the default because the Gemini key is out of quota
+and the direct Anthropic API has no credit. DeepSeek also translates, so treat its verdicts as a weaker cross-check
+until a Bedrock auditor exists (follow-up).
 Apply the auto-confidence suggestions via:
 `node scripts/apply-audit-suggestions.mjs --locale=<code>` (≥0.80 by default).
 
