@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05229",
+  "kind": "feature",
+  "paths": [
+    "src/components/messages/MessageInput.tsx",
+    "src/components/messages/MessageInput.*.test.tsx",
+    "tests/e2e/staging/vtid-04966-enter-newline.staging.spec.ts",
+    "tests/e2e/staging/vtid-05229-paste-enter.staging.spec.ts",
+    "docs/validation/VTID-05229/**",
+    "docs/validation/VTID-04966/staging-tests.json",
+    ".kiro/specs/messenger-paste-enter/lanes/composer.md"
+  ],
+  "sparring_record": "docs/validation/VTID-05229/plan-sparring.md",
+  "weakens_tests": [
+    { "file": "tests/e2e/staging/vtid-04966-enter-newline.staging.spec.ts", "reason": "folded into tests/e2e/staging/vtid-05229-paste-enter.staging.spec.ts (sparring F4): its touch-device assertions are kept there unchanged (two lines via Enter, box grows, enterkeyhint=enter, no message POST); docs/validation/VTID-04966/staging-tests.json now points at the new spec" }
+  ],
+  "red_green_exempt": []
+}

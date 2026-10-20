@@ -3,6 +3,11 @@
  * the message. Enter (and Shift+Enter) now make a new line; only the send
  * button sends. An Enter that picks an @mention suggestion still picks it and
  * adds no line (VTID-04926).
+ *
+ * VTID-05229 (owner request 2026-10-16): this contract now holds on
+ * touch-first devices only — with a real keyboard (fine pointer + hover)
+ * Enter sends; see MessageInput.paste-enter.vtid-05229.test.tsx. This suite is
+ * pinned to a touch device.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
@@ -51,8 +56,13 @@ function setup(withMentions = false) {
   return { onSendMessage, box, type, enter };
 }
 
-describe("Messenger composer: Enter makes a new line (VTID-04966)", () => {
+describe("Messenger composer: Enter makes a new line on touch devices (VTID-04966)", () => {
   beforeEach(() => {
+    // A touch-first device: no `(hover: hover) and (pointer: fine)` (VTID-05229).
+    vi.spyOn(window, "matchMedia").mockImplementation((query: string) => ({
+      matches: false, media: query, onchange: null, addListener: vi.fn(), removeListener: vi.fn(),
+      addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn(),
+    }) as unknown as MediaQueryList);
     vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
       cb(0);
       return 0;
