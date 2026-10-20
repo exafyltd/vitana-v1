@@ -214,3 +214,72 @@ describe('endpoints(config)', () => {
     expect(() => requireValue({}, 'supabasePublishableKey')).toThrow(/is not set/);
   });
 });
+
+// VTID-05249 — per-profile env source: development empty, test-g1 placeholder set,
+// production refused, a missing required test-g1 value is a ConfigMissingError.
+import { resolveProfileConfig, URL_KEYS, VALUE_KEYS } from '../src/config/env';
+
+const KNOWN_KEYS = new Set<string>([...URL_KEYS, ...VALUE_KEYS]);
+// The committed file name per profile: development.json ships as-is; the G1
+// profile ships as test-g1.example.json (the real values are owner-supplied).
+const PROFILE_FILE: Record<string, string> = { development: 'development.json', 'test-g1': 'test-g1.example.json' };
+/** The raw committed JSON for a profile, with the doc keys (`_comment`) stripped. */
+const profileJson = (name: string): Record<string, string> => {
+  const raw = JSON.parse(readFileSync(join(__dirname, `../env/${PROFILE_FILE[name]}`), 'utf8')) as Record<string, unknown>;
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(raw)) if (KNOWN_KEYS.has(k) && typeof v === 'string') out[k] = v;
+  return out;
+};
+
+describe('per-profile env source (VTID-05249)', () => {
+  it('development resolves to {} (no network)', () => {
+    expect(profileJson('development')).toEqual({});
+    expect(resolveProfileConfig('development', {})).toEqual({});
+  });
+
+  it('the test-g1 placeholder set loads and every URL passes assertNotProduction', () => {
+    const resolved = resolveProfileConfig('test-g1', {});
+    expect(resolved).toEqual(profileJson('test-g1'));
+    // Every resolved URL is a host assertNotProduction accepts, and none is a blocked host.
+    for (const key of URL_KEYS) {
+      const url = resolved[key];
+      if (url) {
+        expect(isBlockedHost(url)).toBe(false);
+        expect(() => assertNotProduction(url)).not.toThrow();
+      }
+    }
+    // The placeholder set is complete enough that endpoints() builds without a ConfigMissingError.
+    expect(() => endpoints(resolved)).not.toThrow();
+  });
+
+  it('a production/staging host in a profile throws', () => {
+    for (const url of ['https://gateway.vitanaland.com', 'https://preview-aws.vitanaland.com', `https://${PROD_REF}.supabase.co`]) {
+      expect(() => resolveProfileConfig('test-g1', { gatewayUrl: url })).toThrow(/never reach production or staging/);
+    }
+  });
+
+  it('the production publishable key in a profile throws', () => {
+    expect(() => resolveProfileConfig('test-g1', { supabasePublishableKey: jwt({ ref: PROD_REF, role: 'anon' }) })).toThrow(/production/);
+    expect(() => resolveProfileConfig('test-g1', { supabasePublishableKey: `sb_publishable_${PROD_REF}_abc` })).toThrow(/production/);
+  });
+
+  it('a missing required test-g1 value yields ConfigMissingError naming the keys', () => {
+    // A profile that omits the three required endpoints: endpoints() must name them, never fall back.
+    const resolved = resolveProfileConfig('development', {});
+    let error: unknown;
+    try {
+      endpoints(resolved);
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toBeInstanceOf(ConfigMissingError);
+    expect((error as ConfigMissingError).keys).toEqual(['gatewayUrl', 'supabaseUrl', 'supabasePublishableKey']);
+  });
+
+  it('EXPO_PUBLIC_* overrides the profile JSON for a set key', () => {
+    const resolved = resolveProfileConfig('test-g1', { gatewayUrl: 'https://override.g1.invalid' });
+    expect(resolved.gatewayUrl).toBe('https://override.g1.invalid');
+    // An unset override leaves the committed placeholder in place.
+    expect(resolved.supabaseUrl).toBe(profileJson('test-g1').supabaseUrl);
+  });
+});
