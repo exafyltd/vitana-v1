@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05229",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, one made-up legacy group appended to the inbox's own GET reads inside the browser. Desktop (1440, fine pointer): enterkeyhint=send; Enter in an empty box adds nothing and writes nothing; Shift+Enter makes two lines with no message write; Enter attempts exactly one POST global_messages (aborted by the staging guard, nothing written; only that test tolerates it) and adds no line. Desktop paste: a synthetic paste of a PNG shows a screenshot-<timestamp>.png preview, storage upload and signing answered inside the browser (nothing reaches storage), no message write. Touch (390, hasTouch): Enter makes two lines, the box grows, enterkeyhint=enter, no message write (VTID-04966). Read-only.",
+      "spec": "tests/e2e/staging/vtid-05229-paste-enter.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-04926 @mentions still work in the deployed composer after the Enter change (the spec picks a member by click at 390 px; Enter on the list is covered by Vitest on desktop and touch)",
+      "spec": "tests/e2e/staging/vtid-04926-mentions.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/messages/MessageInput.paste-enter.vtid-05229.test.tsx src/components/messages/MessageInput.enter-newline.vtid-04966.test.tsx src/components/messages/MessageInput.mentions.vtid-04926.test.tsx",
+      "reason": "desktop: Enter sends once (double Enter too), Shift+Enter new line, Ctrl/Alt/Meta+Enter no send, empty Enter no blank line, Enter during an upload no send, IME Enter no send, mention Enter picks only, enterkeyhint=send; touch: Enter new line, enterkeyhint=enter; paste: image uploaded/renamed/previewed not sent, removable before sending, sent with caption, works on touch, items-only clipboard, real names kept, text wins, disallowed type, no conversation, disabled"
+    }
+  ]
+}
