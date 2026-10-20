@@ -1,0 +1,380 @@
+{
+  "verdicts": {
+    "spotlightTierB.common.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.common.errorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.common.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.pillarsAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.conditionsDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.educationDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.noVideosTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.noVideosDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.noPodcastsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.noPodcastsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.servicesDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.plansDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.biologyDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportFallbackTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.blood_panel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.genomics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.metabolomics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.microbiome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.allergy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.cancer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.hormones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.imaging": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportType.other": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportStatus.uploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportStatus.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportStatus.parsed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.reportStatus.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.categoryCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.noSupplementsInCategory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.health.indexDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.creditsLine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.request": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.exchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.withdraw": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.clearFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.noMatchingTransactions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.transfer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.exchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.reward": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.purchase": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.withdrawal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.stake": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txType.reseller_commission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txStatus.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txStatus.completed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txStatus.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.txStatus.cancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.balanceDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.creditsAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.vtnaAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.wallet.usdAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.ai.overviewDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.ai.assistantDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.ai.assistantTabAi": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.settings.connectorsDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.settings.limitationsDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.settings.tenantRoleDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.calendar.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.calendar.viewsAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.filtersAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.anyStyle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.emptyBoard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.emptyDance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.kindPartner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.matchTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.intents.matchDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.sharing.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.sharing.campaignsDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.sharing.bulkActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.sharing.exitBulkMode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.sharing.consentDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightTierB.sharing.campaignDetailDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-10-20T08:53:49.833Z"
+}

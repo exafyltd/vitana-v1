@@ -48,8 +48,8 @@
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
-      "suggested": "Озарения архетипа",
+      "issue": "Meaning of 'Insights' is not accurately conveyed by 'Идеи'. 'Идеи' means 'ideas', while 'insights' implies deeper understanding or revelations.",
+      "suggested": "Понимание архетипов",
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeBadge": {
@@ -173,10 +173,8 @@
       "phase": "llm"
     },
     "autopilot.popup.moreActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -221,9 +219,9 @@
     },
     "autopilot.widget.active": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "confidence": 0.95,
+      "issue": "The English 'Active' is an adjective, but the Russian 'Активно' is an adverb ('actively'). For a status or label, an adjective is needed.",
+      "suggested": "Активный",
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -460,7 +458,69 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "autopilot.draft.titlePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.titleCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.hint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.loading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Пишу черновик' means 'I am writing a draft'. Given the context (e.g., Vitana preparing a draft), it's likely the system is doing the writing, not the user.",
+      "suggested": "Создание черновика…",
+      "phase": "llm"
+    },
+    "autopilot.draft.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.regenerate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.confirmCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.draft.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-10-20T08:46:39.196Z"
 }
