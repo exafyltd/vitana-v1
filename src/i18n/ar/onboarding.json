@@ -24,7 +24,9 @@
       "handleMinLength": "3 أحرف على الأقل",
       "saving": "جاري الإعداد...",
       "submit": "هيا نبدأ!",
-      "_pending_review": {}
+      "_pending_review": {},
+      "communityIntroLabel": "عرّفني على المجتمع",
+      "communityIntroHint": "خلال أسبوعك الأول، يرى الأعضاء الآخرون بطاقة ترحيب قصيرة عنك ويمكنهم إلقاء التحية عليك. يمكنك تغيير ذلك في أي وقت من الإعدادات."
     },
     "_pending_review": {}
   },

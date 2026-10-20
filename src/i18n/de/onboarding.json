@@ -23,7 +23,9 @@
       "handleAvailable": "Benutzername ist verfügbar!",
       "handleMinLength": "Mindestens 3 Zeichen",
       "saving": "Wird eingerichtet...",
-      "submit": "Los geht's!"
+      "submit": "Los geht's!",
+      "communityIntroLabel": "Mich der Community vorstellen",
+      "communityIntroHint": "In deiner ersten Woche sehen andere Mitglieder eine kurze Willkommenskarte über dich und können dir Hallo sagen. Du kannst das jederzeit in den Einstellungen ändern."
     }
   }
 }
