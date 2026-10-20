@@ -51,6 +51,7 @@ depends_on: [<lane-id>, ...] # lanes that must be done first
 executor: kiro | claude      # who builds it (VTID-05213)
 seat: <seat>                 # the Kiro account that builds it (docs/programs/areas.yaml)
 reviewer_seat: <seat>|claude # who reviews it — never the lane's own seat
+governance: owner            # only on an owner-named executor: kiro lane that changes governance paths (§7b, VTID-05260)
 paths:                       # the only files the lane may change (Lane scope); required from executing on
   - src/pages/messages/**
 claimed_by: <session id>     # the session working it
@@ -99,7 +100,8 @@ comments cannot address one account — each account **pulls** its own work inst
   seat, never the lane's own `seat`, or `claude`) and `paths` (globs of the only files the lane may change; required once
   it is `executing`). The PR-GATE check **Lane scope** fails a lane PR that changes anything else, and any change to a
   governance path (`.github/**`, `.claude/**`, `.kiro/steering/**`, `.kiro/automations/**`, `scripts/collab/**`,
-  `CLAUDE.md`, `docs/programs/areas.yaml`) from a lane that is not `executor: claude`.
+  `CLAUDE.md`, `docs/programs/areas.yaml`) from a lane that is not `executor: claude` — or an owner-named Kiro
+  governance lane (`executor: kiro` + `governance: owner`, §7b).
 
 ## 4. Session start
 1. `git fetch --prune origin` in both checkouts.
@@ -140,7 +142,8 @@ the work because each has its own credits.
   (`converged-auto-v1`) — that replaces the owner's Gate 1 for it — and its lanes get their VTIDs. Not converged after
   the re-plan session → `parked`, on the board, no message. Claude Code may still spar its own plans with its local
   partner; the owner then answers Gate 1 as before.
-- **Building — the lane's seat** (`executor: kiro`), or Claude Code for `executor: claude` lanes (governance paths).
+- **Building — the lane's seat** (`executor: kiro`), or Claude Code for `executor: claude` lanes (governance paths;
+  an owner-named Kiro governance lane, §7b, is built by its seat).
 - **Reviewing — the lane's `reviewer_seat`.** Per lane, independently and in parallel: executor claims → implements →
   PR → `in-review`, `next_actor: kiro` (the reviewer seat picks it up) → the reviewer checks the PR against `tasks.md`
   acceptance, CI and Lane scope, comments on GitHub and appends a review entry (`review: approve|changes`, commit
@@ -150,7 +153,8 @@ the work because each has its own credits.
   rule: verified lane, review from `reviewer_seat` on the current head, every required check green incl. Lane scope,
   no conflict, dependencies done. Until it runs `live`, Claude Code merges a `verified` lane on the same rule.
 - **Claude Code — exceptions only:** `executor: claude` lanes, lanes nobody picked up (reassigned to `claude`), parked
-  plans and lanes it can fix, partner outages, and anything touching a governance path.
+  plans and lanes it can fix, partner outages, and anything touching a governance path that is not an owner-named
+  Kiro governance lane (§7b).
 - The owner is asked only Gate 2 (and Gate 1 for a plan Claude Code sparred itself). Mid-flight stops (security or
   data-loss risk, a failure surviving 3 fixes) park the lane and show it on the board.
 - Every existing rule is unchanged: sparring before a VTID, never test against production, staging tests read-only.
@@ -159,14 +163,44 @@ the work because each has its own credits.
 Applies to Kiro (as executor, reviewer or planner), and to Claude Code whenever it executes a lane. They never:
 - allocate a VTID (CI and the coordinator do), take a `_plan` claim of a plan they did not author, or edit another
   lane's file;
-- merge or approve a PR on GitHub (the Project Manager merges), dispatch a workflow, or deploy;
+- merge or approve a PR on GitHub (the Project Manager merges), dispatch a workflow, or deploy — **except under the
+  owner-directed exception in §7b below**;
 - review their own lane (a lane's `seat` never reviews it);
 - writes to a live system, even though its credentials allow it: no Supabase writes (`execute_sql` with
   INSERT/UPDATE/DELETE/DDL, `apply_migration`, `deploy_edge_function`, branch/project/secret tools) and no mutating
-  AWS call (ECS, ELB, ECR, IAM or Secrets Manager writes).
+  AWS call (ECS, ELB, ECR, IAM or Secrets Manager writes) — **except the staging-only merge/deploy in §7b**.
 
 Reading for diagnosis is fine. A database change is a migration file in the lane's PR. Blocked → a log entry and
 `next_actor: claude`, never a workaround.
+
+## 7b. Owner-directed merge/deploy exception (owner decision 2026-10-18, VTID-05218 amendment)
+Owner decision: until the Project Manager runs `live` end to end, a Kiro session **may merge a PR and let it
+auto-deploy to staging** — but only when ALL of the following hold:
+- the owner has **explicitly instructed this specific merge in the conversation** (a standing "merge my lanes"
+  does not count — it is per PR, or per a named set the owner lists);
+- the PR targets `main` and its deploy path is **staging only** (`AWS-STAGE-DEPLOY-GATEWAY.yml` and the other
+  `AWS-STAGE-*` / preview workflows). Production (PUBLISH, `publish-to-prod.sh`, any `AWS-PROD-DEPLOY-*`) is **still
+  forbidden to Kiro** — that stays the owner's PUBLISH decision at Gate 2;
+- the session records the merge in the lane log (or the plan's handoff) with the owner-instruction reference and the
+  merge commit SHA, so the override is auditable;
+- every other guardrail is unchanged: never test/write against production, sparring before a VTID, staging tests
+  read-only. A failing *governance-artifact* check that is a known false positive for the change (e.g. a lane-less
+  governance PR, or a missing-VTID evidence pack for an owner-authorized bypass) may be `--admin`-overridden; a real
+  red test or build is never overridden.
+
+This exception exists so sessions finish end to end to a verified staging build instead of stalling at the merge;
+the two owner gates and the production boundary are untouched.
+
+**Owner-named governance lanes (owner decision 2026-10-20, VTID-05260).** The owner may name a lane for Kiro to build
+on governance paths. Its plan states the owner's instruction, and the lane carries `executor: kiro` and
+`governance: owner` (exactly that value; any other value, or the field on a lane that is not `executor: kiro`, is an
+error). Then `validate` and **Lane scope** accept the governance files that lie inside the lane's `paths` — nothing
+outside them. Everything else stays as for any lane:
+- the plan is still sparred, the lane gets its VTID from CI, and its `reviewer_seat` reviews it;
+- only a `_plan` commit sets or changes `governance`, and only while the lane is `ready`. Lane scope reads the field
+  from the base revision, so a lane PR that adds or changes it is refused: a lane never grants it to itself;
+- it merges only on the owner's explicit merge instruction for that PR in the conversation (above). Never in an
+  unattended automation run, and never to production.
 
 ## 8. Waking each agent
 - Kiro Web seats: their scheduled automation (`.kiro/automations/<seat>.md`) does at most one item per run, in this

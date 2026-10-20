@@ -16,7 +16,13 @@ inclusion: always
   writes (`execute_sql` with INSERT/UPDATE/DELETE/DDL, `apply_migration`, `deploy_edge_function`, branch/project/secret
   tools) and no mutating AWS call (ECS, ELB, ECR, IAM or Secrets Manager writes). Reading for diagnosis is fine. A
   database change is a migration file in the lane's PR. Blocked → a log entry and `next_actor: claude`, never a
-  workaround.
+  workaround. The current roles and the two owner exceptions are in `.claude/rules/collaboration.md` §7–§7b.
+- **Owner-named governance lanes (VTID-05260, collaboration.md §7b).** You may build a lane that changes governance
+  paths (`.github/**`, `.claude/**`, `.kiro/steering/**`, `.kiro/automations/**`, `scripts/collab/**`, `CLAUDE.md`,
+  `docs/programs/areas.yaml`) only when its lane file already carries `executor: kiro` and `governance: owner`, set by
+  the plan's `_plan` commit while the lane was `ready`. Never add or change `governance` in your own lane PR — Lane
+  scope reads it from the base revision and refuses the PR. Such a lane merges only on the owner's explicit merge
+  instruction for that PR in the conversation, never in an unattended run, never to production.
 - **Collaboration with Claude Code (VTID-05145).** At the start of every session: generate your session id
   (`node <vitana-platform>/scripts/collab/queue.mjs session-id --agent kiro`) and say it, with your lane, in your first
   reply; `git fetch --prune origin`; run the queue (`queue.mjs --repo <vitana-platform> --repo <vitana-v1>`) and work a
