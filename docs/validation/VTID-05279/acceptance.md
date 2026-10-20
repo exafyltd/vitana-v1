@@ -17,13 +17,13 @@ TEST: grep -o -E 'get_overview|search_codebase|get_context|get_symbol|get_why|ge
 
 AC-4: "Why no host is exempt" is the rule plus one "why" clause and keeps the migration guards and the
 `notification_test_actors` registration.
-TEST: grep -c -E '20260805160000|_notif_is_test_actor\(\)|Register any new test account in' CLAUDE.md  # => 3
+TEST: grep -o -E '20260805160000|_notif_is_test_actor\(\)|Register any new test account in' CLAUDE.md | wc -l  # => 3
 TEST: grep -c -E '14:54 and 15:00 UTC|community-app-pr-123|This section exists for the follow-up' CLAUDE.md  # => 0
 
 AC-5: the Collaboration roles paragraph agrees with `collaboration.md` §3a/§7–§7b (reviewer agent, CI VTIDs,
 §7b merges, Claude optional, protected gate files need owner/legacy Claude review).
 TEST: grep -c "one Kiro account reviews another's lane" CLAUDE.md  # => 0
-TEST: grep -c -E 'vitana-lane-reviewer|converged-auto-v1|never merges on a reviewer-agent accept alone' CLAUDE.md  # => 2
+TEST: grep -c -E 'vitana-lane-reviewer|converged-auto-v1|never merges on a reviewer-agent accept alone' CLAUDE.md  # => 3
 
 AC-6: steering role lines point at `collaboration.md` §7–§7b; no stale line count; session-start steps once; "never
 test against production" kept.

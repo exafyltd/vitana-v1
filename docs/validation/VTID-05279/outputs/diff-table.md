@@ -24,15 +24,15 @@ table of every removal and condensation, for the owner's protected-gate review (
 | i18n hard rule, dates & numbers, catalog register, locales & RTL, AI locale rule | — | — | verbatim |
 | Codebase intelligence + graphify (K) | see "Weakened on purpose" | 89 → 13 lines | tool list, source/tests final authority |
 
-## .kiro/steering/vitana-kiro-notes.md (23 → 18 lines)
+## .kiro/steering/vitana-kiro-notes.md (23 → 19 lines)
 | Removed | Condensed | Kept |
 |---|---|---|
-| the "about 1,000 lines" claim (wrong for both repos); the Collaboration bullet's session-start steps (duplicated in `vitana-load-project-rules.md` item 4, `collaboration.md` §3–§5 and `CLAUDE.md`) — moved, not dropped | role line points at `collaboration.md` §7–§7b as the single source of truth | sparring never skipped, CI PLAN-SPAR, no VTID before convergence; resume-vtid; `CLAUDE.md` always included, `.claude/rules` path-scoped; role: plans/builds/reviews, pipeline end to end, Claude optional; §7a never-list (no VTID by hand, no production deploy, no live writes, never accept own lane); entry point `vitana-pipeline.md` |
+| the "about 1,000 lines" claim (wrong for both repos); the Collaboration bullet's session-start steps (duplicated in `vitana-load-project-rules.md` item 4, `collaboration.md` §3–§5 and `CLAUDE.md`) — moved, not dropped | role line names `collaboration.md` §7–§7b as the single source of truth; §7a never-list spelled out | sparring never skipped, every plan a `plan(<slug>)` PR never left only in chat, CI PLAN-SPAR, no VTID before convergence (CI allocates); resume-vtid; `CLAUDE.md` always included, `.claude/rules` path-scoped; Kiro plans, builds, reviews, runs the pipeline end to end; Claude Code optional; never: VTID by hand, production deploy, merge except under §7b, live Supabase/AWS writes, accepting own lane; entry point `vitana-pipeline.md` |
 
-## .kiro/steering/vitana-load-project-rules.md (26 → 30 lines)
+## .kiro/steering/vitana-load-project-rules.md (26 → 26 lines)
 | Removed | Condensed | Kept / added |
 |---|---|---|
-| — | item 2 role line names §7–§7b as single source of truth and spells out: reviews (reviewer agent accepts, never own lane), merges only under §7b, CI allocates VTIDs, never deploys production, no Supabase/AWS writes, Claude optional | items 1 and 3 verbatim (never test against production; access NOT read-only); item 4 now carries the session-start steps once (session id command, `git fetch --prune origin`, queue, claim, driver §8, plan pushed as a PR) |
+| item 2's role restatement (plan/build/merge/CI VTIDs/PUBLISH/no live writes) — it duplicated `vitana-kiro-notes.md` and `collaboration.md` §7–§7b | item 2 now points at `vitana-kiro-notes.md` + `collaboration.md` §7–§7b | items 1 and 3 verbatim (never test against production; access NOT read-only; database change = migration file; fix forward max 3, park, Claude only if available); item 4 carries the session-start steps once (session id command, `git fetch --prune origin`, queue, claim, driver §8) |
 
-Both steering files stay byte-identical across repos only if the `rules-trim` lane (vitana-platform) lands the same
-text; that lane had not edited them when this commit was made — see the PR body.
+Both steering files are byte-identical to the `rules-trim` lane's (vitana-platform) working copy as of this commit;
+that lane had not pushed yet — the PR body asks for a re-check against its pushed head.
