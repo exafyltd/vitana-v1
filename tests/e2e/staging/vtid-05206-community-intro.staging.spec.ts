@@ -57,6 +57,14 @@ async function answerOptIn(page: import('@playwright/test').Page, value: boolean
 
 for (const value of [false, true]) {
   test(`VTID-05206: Settings → Privacy shows "Introduce me to the community" ${value ? 'on' : 'off'} (phone)`, async ({ page, request }) => {
+    // Diagnostics only: when the row is missing, the failure says what the page was doing (url, failed
+    // requests, the opt-in read, the visible text) instead of just "element(s) not found". No assertion is relaxed.
+    const seen: string[] = [];
+    page.on('console', (m) => { if (m.type() === 'error') seen.push(`console: ${m.text().slice(0, 140)}`); });
+    page.on('pageerror', (e) => seen.push(`pageerror: ${String(e.message).slice(0, 140)}`));
+    page.on('requestfailed', (r) => { if (/supabase\.co|vitanaland\.com/.test(r.url())) seen.push(`reqfailed: ${r.method()} ${r.url().slice(0, 90)} ${r.failure()?.errorText ?? ''}`); });
+    page.on('response', (r) => { if (/global_community_profiles/.test(r.url())) seen.push(`resp ${r.status()}: ${r.url().slice(0, 130)}`); });
+
     await page.setViewportSize({ width: 390, height: 844 });
     await signIn(page, request);
     await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
@@ -64,7 +72,14 @@ for (const value of [false, true]) {
 
     await page.goto('/settings?mode=privacy.visibility', { waitUntil: 'domcontentloaded' });
     const row = page.getByTestId('community-intro');
-    await expect(row).toBeVisible({ timeout: 30_000 });
+    try {
+      await expect(row).toBeVisible({ timeout: 30_000 });
+    } catch (err) {
+      const body = (await page.locator('body').innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 280);
+      throw new Error(
+        `community-intro row not visible (value=${value}). url=${page.url()} | events(${seen.length})=${seen.slice(0, 8).join(' ; ') || 'none'} | body="${body}" | ${(err as Error).message.split('\n')[0]}`,
+      );
+    }
     await expect(page.getByTestId('community-intro-switch')).toHaveAttribute('aria-checked', String(value));
     await expect(page.getByTestId('community-intro-switch')).toBeEnabled();
     await row.scrollIntoViewIfNeeded();
