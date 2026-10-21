@@ -1,0 +1,161 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Wstecz",
+      "loading": "Ładowanie …",
+      "loadMore": "Załaduj więcej",
+      "retry": "Spróbuj ponownie",
+      "errorBody": "Nie udało się tego teraz załadować. Spróbuj ponownie."
+    },
+    "groups": {
+      "title": "Grupy",
+      "subtitle": "Dołącz do grup o wspólnych zainteresowaniach lub stwórz własną.",
+      "tabsLabel": "Widok grup",
+      "tabMine": "Moje grupy",
+      "tabDiscover": "Odkrywaj",
+      "memberCount": "{count} członków",
+      "public": "Publiczna",
+      "private": "Prywatna",
+      "join": "Dołącz",
+      "joining": "Dołączanie …",
+      "leave": "Opuść",
+      "leaving": "Opuszczanie …",
+      "emptyMineTitle": "Nie masz jeszcze grup",
+      "emptyMineDesc": "Dołącz do pierwszej grupy, aby zacząć.",
+      "emptyDiscoverTitle": "Brak grup do odkrycia",
+      "emptyDiscoverDesc": "Bądź pierwszą osobą, która założy grupę społeczności."
+    },
+    "groupDetail": {
+      "title": "Grupa",
+      "memberCount": "{count} członków",
+      "membersWithCount": "Członkowie ({count})",
+      "plusMore": "+{count}",
+      "join": "Dołącz do grupy",
+      "leave": "Opuść grupę",
+      "notFoundTitle": "Nie znaleziono grupy",
+      "notFoundDesc": "Ta grupa mogła zostać usunięta lub nie istnieje.",
+      "browse": "Przeglądaj grupy"
+    },
+    "members": {
+      "title": "Członkowie społeczności",
+      "subtitle": "Poznaj całą społeczność Vitana — dotknij karty.",
+      "searchPlaceholder": "Szukaj po imieniu lub ID Vitana",
+      "searchLabel": "Szukaj członków",
+      "sortLabel": "Sortuj",
+      "sort": {
+        "newest": "Najnowsi",
+        "oldest": "Najpierw założyciele",
+        "name": "Według imienia"
+      },
+      "danceLabel": "Taniec",
+      "dance": {
+        "all": "Wszyscy",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Towarzyski",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Członek",
+      "empty": "Brak członków.",
+      "emptyDance": "Nikt jeszcze nie wskazał tego tańca jako preferencji — bądź pierwszą osobą!",
+      "viewProfile": "Zobacz profil"
+    },
+    "openAsks": {
+      "title": "Otwarte prośby",
+      "summaryLoading": "Ładowanie próśb …",
+      "summaryEmpty": "Brak otwartych próśb.",
+      "summaryCount": "{n} otwartych próśb",
+      "kindLabel": "Rodzaj",
+      "filterAll": "Wszystkie",
+      "topicLabel": "Temat",
+      "topic": {
+        "everything": "Wszystko",
+        "dance": "Tylko taniec"
+      },
+      "kind": {
+        "commercial_buy": "Kupno",
+        "commercial_sell": "Sprzedaż",
+        "activity_seek": "Aktywność",
+        "partner_seek": "Partner",
+        "social_seek": "Towarzysko",
+        "mutual_aid": "Wzajemna pomoc",
+        "learning_seek": "Nauka",
+        "mentor_seek": "Mentoring"
+      },
+      "time": {
+        "justNow": "Przed chwilą",
+        "minutes": "{n} min temu",
+        "hours": "{n} godz. temu",
+        "days": "{n} dni temu"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "Brak otwartych próśb w tym widoku.",
+      "emptyDance": "Brak otwartych próśb o taniec — opublikuj swoją i bądź pierwszą osobą!"
+    },
+    "findPartner": {
+      "title": "Znajdź partnera",
+      "subtitle": "Znajdź osoby pasujące do twoich otwartych życzeń.",
+      "viewLabel": "Widok",
+      "view": {
+        "matches": "Dopasowania",
+        "board": "Tablica",
+        "posts": "Moje wpisy",
+        "members": "Członkowie"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "Dopasowanie",
+      "emptyMatches": "Brak dopasowań. Opublikuj życzenie, a będziemy mieć oko."
+    },
+    "matches": {
+      "title": "Osoby pasujące do ciebie",
+      "subtitle": "Twoje dopasowania ze społeczności.",
+      "empty": "Brak dopasowań. Zajrzyj wkrótce.",
+      "fallbackName": "Członek społeczności",
+      "reasonDefault": "Wspólne zainteresowania",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "Tablica społeczności",
+      "boardSubtitle": "Czego inni teraz szukają.",
+      "filtersLabel": "Filtry",
+      "filter": {
+        "all": "Wszystkie",
+        "dance": "Taniec"
+      },
+      "kind": {
+        "commercial_buy": "Kupno",
+        "commercial_sell": "Sprzedaż",
+        "activity_seek": "Aktywność",
+        "partner_seek": "Partner",
+        "social_seek": "Towarzysko",
+        "mutual_aid": "Wzajemna pomoc"
+      },
+      "viewMine": "Zobacz moje intencje",
+      "emptyBoard": "Brak otwartych intencji w tym widoku. Bądź pierwszą osobą.",
+      "emptyDance": "Brak otwartych wpisów o tańcu — opublikuj swój i bądź pierwszą osobą!",
+      "emptyMine": "Brak wpisów w tym widoku."
+    },
+    "intentMatch": {
+      "title": "Szczegóły dopasowania",
+      "backMine": "Wróć do moich intencji",
+      "notFound": "Nie znaleziono intencji.",
+      "matchesCount": "Dopasowania ({count})",
+      "noMatches": "Brak dopasowań — szukamy dalej dla ciebie."
+    },
+    "search": {
+      "title": "Szukaj",
+      "subtitle": "Znajdź członków społeczności Vitana.",
+      "placeholder": "Szukaj członków",
+      "inputLabel": "Szukana fraza",
+      "submit": "Szukaj",
+      "memberMeta": "Członek społeczności",
+      "fallbackName": "Członek",
+      "emptyTitle": "Brak wyników",
+      "emptyDesc": "Zmień szukaną frazę i spróbuj ponownie."
+    }
+  }
+}

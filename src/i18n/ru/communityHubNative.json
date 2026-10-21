@@ -1,0 +1,161 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Назад",
+      "loading": "Загрузка …",
+      "loadMore": "Загрузить ещё",
+      "retry": "Повторить",
+      "errorBody": "Сейчас не удалось это загрузить. Попробуй ещё раз."
+    },
+    "groups": {
+      "title": "Группы",
+      "subtitle": "Вступай в группы по интересам или создай свою.",
+      "tabsLabel": "Просмотр групп",
+      "tabMine": "Мои группы",
+      "tabDiscover": "Открыть",
+      "memberCount": "{count} участников",
+      "public": "Открытая",
+      "private": "Закрытая",
+      "join": "Вступить",
+      "joining": "Вступаем …",
+      "leave": "Выйти",
+      "leaving": "Выходим …",
+      "emptyMineTitle": "Пока нет групп",
+      "emptyMineDesc": "Вступи в первую группу, чтобы начать.",
+      "emptyDiscoverTitle": "Нет групп для просмотра",
+      "emptyDiscoverDesc": "Создай первую группу сообщества."
+    },
+    "groupDetail": {
+      "title": "Группа",
+      "memberCount": "{count} участников",
+      "membersWithCount": "Участники ({count})",
+      "plusMore": "+{count}",
+      "join": "Вступить в группу",
+      "leave": "Выйти из группы",
+      "notFoundTitle": "Группа не найдена",
+      "notFoundDesc": "Возможно, эта группа была удалена или не существует.",
+      "browse": "Просмотреть группы"
+    },
+    "members": {
+      "title": "Участники сообщества",
+      "subtitle": "Познакомься со всем сообществом Vitana — нажми на карточку.",
+      "searchPlaceholder": "Поиск по имени или Vitana ID",
+      "searchLabel": "Поиск участников",
+      "sortLabel": "Сортировка",
+      "sort": {
+        "newest": "Новые",
+        "oldest": "Сначала основатели",
+        "name": "По имени"
+      },
+      "danceLabel": "Танец",
+      "dance": {
+        "all": "Все",
+        "salsa": "Сальса",
+        "tango": "Танго",
+        "bachata": "Бачата",
+        "kizomba": "Кизомба",
+        "swing": "Свинг",
+        "ballroom": "Бальные",
+        "hiphop": "Хип-хоп"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Участник",
+      "empty": "Пока нет участников.",
+      "emptyDance": "Никто ещё не указал этот танец как предпочтение — будь первым!",
+      "viewProfile": "Открыть профиль"
+    },
+    "openAsks": {
+      "title": "Открытые запросы",
+      "summaryLoading": "Загрузка запросов …",
+      "summaryEmpty": "Пока нет открытых запросов.",
+      "summaryCount": "{n} открытых запросов",
+      "kindLabel": "Тип",
+      "filterAll": "Все",
+      "topicLabel": "Тема",
+      "topic": {
+        "everything": "Всё",
+        "dance": "Только танцы"
+      },
+      "kind": {
+        "commercial_buy": "Покупка",
+        "commercial_sell": "Продажа",
+        "activity_seek": "Активность",
+        "partner_seek": "Партнёр",
+        "social_seek": "Общение",
+        "mutual_aid": "Взаимопомощь",
+        "learning_seek": "Обучение",
+        "mentor_seek": "Наставничество"
+      },
+      "time": {
+        "justNow": "Только что",
+        "minutes": "{n} мин назад",
+        "hours": "{n} ч назад",
+        "days": "{n} дн назад"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "В этом разделе нет открытых запросов.",
+      "emptyDance": "Пока нет открытых танцевальных запросов — опубликуй свой и будь первым!"
+    },
+    "findPartner": {
+      "title": "Найти партнёра",
+      "subtitle": "Найди людей, подходящих твоим открытым пожеланиям.",
+      "viewLabel": "Вид",
+      "view": {
+        "matches": "Совпадения",
+        "board": "Доска",
+        "posts": "Мои посты",
+        "members": "Участники"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "Совпадение",
+      "emptyMatches": "Совпадений пока нет. Опубликуй пожелание, и мы будем следить."
+    },
+    "matches": {
+      "title": "Люди, которые тебе подходят",
+      "subtitle": "Твои совпадения из сообщества.",
+      "empty": "Совпадений пока нет. Загляни позже.",
+      "fallbackName": "Участник сообщества",
+      "reasonDefault": "Общие интересы",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "Доска сообщества",
+      "boardSubtitle": "Что сейчас ищут другие.",
+      "filtersLabel": "Фильтры",
+      "filter": {
+        "all": "Все",
+        "dance": "Танец"
+      },
+      "kind": {
+        "commercial_buy": "Покупка",
+        "commercial_sell": "Продажа",
+        "activity_seek": "Активность",
+        "partner_seek": "Партнёр",
+        "social_seek": "Общение",
+        "mutual_aid": "Взаимопомощь"
+      },
+      "viewMine": "Мои намерения",
+      "emptyBoard": "В этом разделе нет открытых намерений. Будь первым.",
+      "emptyDance": "Пока нет открытых танцевальных постов — опубликуй свой и будь первым!",
+      "emptyMine": "В этом разделе нет постов."
+    },
+    "intentMatch": {
+      "title": "Детали совпадения",
+      "backMine": "Назад к моим намерениям",
+      "notFound": "Намерение не найдено.",
+      "matchesCount": "Совпадения ({count})",
+      "noMatches": "Совпадений пока нет — мы продолжаем искать для тебя."
+    },
+    "search": {
+      "title": "Поиск",
+      "subtitle": "Найди участников сообщества Vitana.",
+      "placeholder": "Поиск участников",
+      "inputLabel": "Поисковый запрос",
+      "submit": "Искать",
+      "memberMeta": "Участник сообщества",
+      "fallbackName": "Участник",
+      "emptyTitle": "Ничего не найдено",
+      "emptyDesc": "Измени запрос и попробуй снова."
+    }
+  }
+}

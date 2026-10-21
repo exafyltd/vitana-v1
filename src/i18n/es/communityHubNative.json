@@ -1,0 +1,161 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Atrás",
+      "loading": "Cargando …",
+      "loadMore": "Cargar más",
+      "retry": "Reintentar",
+      "errorBody": "No pudimos cargar eso ahora mismo. Inténtalo de nuevo."
+    },
+    "groups": {
+      "title": "Grupos",
+      "subtitle": "Únete a grupos con intereses comunes o crea el tuyo.",
+      "tabsLabel": "Vista de grupos",
+      "tabMine": "Mis grupos",
+      "tabDiscover": "Descubrir",
+      "memberCount": "{count} miembros",
+      "public": "Público",
+      "private": "Privado",
+      "join": "Unirse",
+      "joining": "Uniéndote …",
+      "leave": "Salir",
+      "leaving": "Saliendo …",
+      "emptyMineTitle": "Aún no tienes grupos",
+      "emptyMineDesc": "Únete a tu primer grupo para empezar.",
+      "emptyDiscoverTitle": "No hay grupos para descubrir",
+      "emptyDiscoverDesc": "Sé la primera persona en crear un grupo de la comunidad."
+    },
+    "groupDetail": {
+      "title": "Grupo",
+      "memberCount": "{count} miembros",
+      "membersWithCount": "Miembros ({count})",
+      "plusMore": "+{count}",
+      "join": "Unirse al grupo",
+      "leave": "Salir del grupo",
+      "notFoundTitle": "Grupo no encontrado",
+      "notFoundDesc": "Es posible que este grupo se haya eliminado o no exista.",
+      "browse": "Explorar grupos"
+    },
+    "members": {
+      "title": "Miembros de la comunidad",
+      "subtitle": "Conoce a toda la comunidad de Vitana: toca una tarjeta.",
+      "searchPlaceholder": "Buscar por nombre o ID de Vitana",
+      "searchLabel": "Buscar miembros",
+      "sortLabel": "Ordenar",
+      "sort": {
+        "newest": "Más recientes",
+        "oldest": "Fundadores primero",
+        "name": "Por nombre"
+      },
+      "danceLabel": "Baile",
+      "dance": {
+        "all": "Todos",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "De salón",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Miembro",
+      "empty": "Aún no hay miembros.",
+      "emptyDance": "Nadie ha indicado este baile como preferencia todavía: ¡sé la primera persona!",
+      "viewProfile": "Ver perfil"
+    },
+    "openAsks": {
+      "title": "Peticiones abiertas",
+      "summaryLoading": "Cargando peticiones …",
+      "summaryEmpty": "Aún no hay peticiones abiertas.",
+      "summaryCount": "{n} peticiones abiertas",
+      "kindLabel": "Tipo",
+      "filterAll": "Todas",
+      "topicLabel": "Tema",
+      "topic": {
+        "everything": "Todo",
+        "dance": "Solo baile"
+      },
+      "kind": {
+        "commercial_buy": "Comprar",
+        "commercial_sell": "Vender",
+        "activity_seek": "Actividad",
+        "partner_seek": "Pareja",
+        "social_seek": "Social",
+        "mutual_aid": "Ayuda mutua",
+        "learning_seek": "Aprender",
+        "mentor_seek": "Mentoría"
+      },
+      "time": {
+        "justNow": "Ahora mismo",
+        "minutes": "hace {n} min",
+        "hours": "hace {n} h",
+        "days": "hace {n} d"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "No hay peticiones abiertas en esta vista.",
+      "emptyDance": "Aún no hay peticiones de baile abiertas: ¡publica la tuya y sé la primera persona!"
+    },
+    "findPartner": {
+      "title": "Encontrar pareja",
+      "subtitle": "Encuentra personas que coincidan con tus deseos abiertos.",
+      "viewLabel": "Vista",
+      "view": {
+        "matches": "Coincidencias",
+        "board": "Tablón",
+        "posts": "Mis publicaciones",
+        "members": "Miembros"
+      },
+      "scorePercent": "{score} %",
+      "matchFallback": "Coincidencia",
+      "emptyMatches": "Aún no hay coincidencias. Publica un deseo y estaremos atentos."
+    },
+    "matches": {
+      "title": "Personas que coinciden contigo",
+      "subtitle": "Tus coincidencias de la comunidad.",
+      "empty": "Aún no hay coincidencias. Vuelve pronto.",
+      "fallbackName": "Miembro de la comunidad",
+      "reasonDefault": "Intereses comunes",
+      "score": "{score} %"
+    },
+    "intents": {
+      "boardTitle": "Tablón de la comunidad",
+      "boardSubtitle": "Lo que otras personas buscan ahora mismo.",
+      "filtersLabel": "Filtros",
+      "filter": {
+        "all": "Todos",
+        "dance": "Baile"
+      },
+      "kind": {
+        "commercial_buy": "Comprar",
+        "commercial_sell": "Vender",
+        "activity_seek": "Actividad",
+        "partner_seek": "Pareja",
+        "social_seek": "Social",
+        "mutual_aid": "Ayuda mutua"
+      },
+      "viewMine": "Ver mis intenciones",
+      "emptyBoard": "No hay intenciones abiertas en esta vista. Sé la primera persona.",
+      "emptyDance": "Aún no hay publicaciones de baile abiertas: ¡publica la tuya y sé la primera persona!",
+      "emptyMine": "No hay publicaciones en esta vista."
+    },
+    "intentMatch": {
+      "title": "Detalles de la coincidencia",
+      "backMine": "Volver a mis intenciones",
+      "notFound": "Intención no encontrada.",
+      "matchesCount": "Coincidencias ({count})",
+      "noMatches": "Aún no hay coincidencias: seguiremos buscando para ti."
+    },
+    "search": {
+      "title": "Buscar",
+      "subtitle": "Encuentra miembros de la comunidad de Vitana.",
+      "placeholder": "Buscar miembros",
+      "inputLabel": "Término de búsqueda",
+      "submit": "Buscar",
+      "memberMeta": "Miembro de la comunidad",
+      "fallbackName": "Miembro",
+      "emptyTitle": "Sin resultados",
+      "emptyDesc": "Ajusta tu término de búsqueda e inténtalo de nuevo."
+    }
+  }
+}

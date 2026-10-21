@@ -79,6 +79,13 @@ import { dismissToast, getToasts, type ToastEntry } from '@vitana/ui/toast/store
 
 export { notify, notifyError } from '@vitana/ui';
 
+// VTID-05296 (N-W2 community-hub) — the N2 primitives the ported community /
+// intents / search screens render, exposed through the one UI door so screen
+// files never import `@vitana/ui` directly (tests/ports.test.ts). The kit's
+// contracts match the screens' needs, so these are plain re-exports.
+export { Button, Badge, Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, Skeleton } from '@vitana/ui';
+export type { ButtonProps, ButtonVariant, ButtonSize, BadgeProps, BadgeVariant } from '@vitana/ui';
+
 // ── provider and theme ──────────────────────────────────────────────────
 /** The kit's root provider with the member's colour scheme and the language's direction. */
 export function UIProvider({ colorScheme, direction, children }: { colorScheme: ColorScheme; direction: Direction; children: ReactNode }) {

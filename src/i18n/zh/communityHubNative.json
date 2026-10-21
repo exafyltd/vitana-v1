@@ -1,0 +1,161 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "返回",
+      "loading": "加载中 …",
+      "loadMore": "加载更多",
+      "retry": "重试",
+      "errorBody": "暂时无法加载，请重试。"
+    },
+    "groups": {
+      "title": "群组",
+      "subtitle": "加入兴趣相投的群组，或创建你自己的群组。",
+      "tabsLabel": "群组视图",
+      "tabMine": "我的群组",
+      "tabDiscover": "发现",
+      "memberCount": "{count} 名成员",
+      "public": "公开",
+      "private": "私密",
+      "join": "加入",
+      "joining": "加入中 …",
+      "leave": "退出",
+      "leaving": "退出中 …",
+      "emptyMineTitle": "还没有群组",
+      "emptyMineDesc": "加入你的第一个群组开始吧。",
+      "emptyDiscoverTitle": "暂无可发现的群组",
+      "emptyDiscoverDesc": "成为第一个创建社区群组的人。"
+    },
+    "groupDetail": {
+      "title": "群组",
+      "memberCount": "{count} 名成员",
+      "membersWithCount": "成员（{count}）",
+      "plusMore": "+{count}",
+      "join": "加入群组",
+      "leave": "退出群组",
+      "notFoundTitle": "未找到群组",
+      "notFoundDesc": "该群组可能已被删除或不存在。",
+      "browse": "浏览群组"
+    },
+    "members": {
+      "title": "社区成员",
+      "subtitle": "认识整个 Vitana 社区——点按卡片。",
+      "searchPlaceholder": "按姓名或 Vitana ID 搜索",
+      "searchLabel": "搜索成员",
+      "sortLabel": "排序",
+      "sort": {
+        "newest": "最新",
+        "oldest": "创始成员优先",
+        "name": "按姓名"
+      },
+      "danceLabel": "舞蹈",
+      "dance": {
+        "all": "全部",
+        "salsa": "萨尔萨",
+        "tango": "探戈",
+        "bachata": "巴恰塔",
+        "kizomba": "吉宗巴",
+        "swing": "摇摆舞",
+        "ballroom": "交谊舞",
+        "hiphop": "嘻哈"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "成员",
+      "empty": "还没有成员。",
+      "emptyDance": "还没有人把这种舞蹈设为偏好——成为第一个吧！",
+      "viewProfile": "查看资料"
+    },
+    "openAsks": {
+      "title": "公开请求",
+      "summaryLoading": "正在加载请求 …",
+      "summaryEmpty": "还没有公开请求。",
+      "summaryCount": "{n} 条公开请求",
+      "kindLabel": "类型",
+      "filterAll": "全部",
+      "topicLabel": "主题",
+      "topic": {
+        "everything": "全部",
+        "dance": "仅舞蹈"
+      },
+      "kind": {
+        "commercial_buy": "求购",
+        "commercial_sell": "出售",
+        "activity_seek": "活动",
+        "partner_seek": "伙伴",
+        "social_seek": "社交",
+        "mutual_aid": "互助",
+        "learning_seek": "学习",
+        "mentor_seek": "指导"
+      },
+      "time": {
+        "justNow": "刚刚",
+        "minutes": "{n} 分钟前",
+        "hours": "{n} 小时前",
+        "days": "{n} 天前"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "此视图中没有公开请求。",
+      "emptyDance": "还没有公开的舞蹈请求——发布你的，成为第一个吧！"
+    },
+    "findPartner": {
+      "title": "寻找伙伴",
+      "subtitle": "找到与你的公开愿望相匹配的人。",
+      "viewLabel": "视图",
+      "view": {
+        "matches": "匹配",
+        "board": "看板",
+        "posts": "我的发布",
+        "members": "成员"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "匹配",
+      "emptyMatches": "还没有匹配。发布一个愿望，我们会帮你留意。"
+    },
+    "matches": {
+      "title": "与你匹配的人",
+      "subtitle": "来自社区的匹配。",
+      "empty": "还没有匹配。稍后再来看看。",
+      "fallbackName": "社区成员",
+      "reasonDefault": "共同兴趣",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "社区看板",
+      "boardSubtitle": "其他人现在在寻找什么。",
+      "filtersLabel": "筛选",
+      "filter": {
+        "all": "全部",
+        "dance": "舞蹈"
+      },
+      "kind": {
+        "commercial_buy": "求购",
+        "commercial_sell": "出售",
+        "activity_seek": "活动",
+        "partner_seek": "伙伴",
+        "social_seek": "社交",
+        "mutual_aid": "互助"
+      },
+      "viewMine": "查看我的意向",
+      "emptyBoard": "此视图中没有公开意向。成为第一个吧。",
+      "emptyDance": "还没有公开的舞蹈发布——发布你的，成为第一个吧！",
+      "emptyMine": "此视图中没有发布。"
+    },
+    "intentMatch": {
+      "title": "匹配详情",
+      "backMine": "返回我的意向",
+      "notFound": "未找到意向。",
+      "matchesCount": "匹配（{count}）",
+      "noMatches": "还没有匹配——我们会继续为你寻找。"
+    },
+    "search": {
+      "title": "搜索",
+      "subtitle": "查找 Vitana 社区的成员。",
+      "placeholder": "搜索成员",
+      "inputLabel": "搜索词",
+      "submit": "搜索",
+      "memberMeta": "社区成员",
+      "fallbackName": "成员",
+      "emptyTitle": "没有结果",
+      "emptyDesc": "调整搜索词后重试。"
+    }
+  }
+}

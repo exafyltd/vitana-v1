@@ -1,0 +1,161 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Nazad",
+      "loading": "Učitavanje …",
+      "loadMore": "Učitaj još",
+      "retry": "Pokušaj ponovo",
+      "errorBody": "Trenutno nismo mogli to da učitamo. Pokušaj ponovo."
+    },
+    "groups": {
+      "title": "Grupe",
+      "subtitle": "Pridruži se grupama sa zajedničkim interesovanjima ili napravi svoju.",
+      "tabsLabel": "Prikaz grupa",
+      "tabMine": "Moje grupe",
+      "tabDiscover": "Otkrij",
+      "memberCount": "{count} članova",
+      "public": "Javna",
+      "private": "Privatna",
+      "join": "Pridruži se",
+      "joining": "Pridruživanje …",
+      "leave": "Napusti",
+      "leaving": "Napuštanje …",
+      "emptyMineTitle": "Još nemaš grupe",
+      "emptyMineDesc": "Pridruži se prvoj grupi da započneš.",
+      "emptyDiscoverTitle": "Nema grupa za otkrivanje",
+      "emptyDiscoverDesc": "Budi prva osoba koja pravi grupu zajednice."
+    },
+    "groupDetail": {
+      "title": "Grupa",
+      "memberCount": "{count} članova",
+      "membersWithCount": "Članovi ({count})",
+      "plusMore": "+{count}",
+      "join": "Pridruži se grupi",
+      "leave": "Napusti grupu",
+      "notFoundTitle": "Grupa nije pronađena",
+      "notFoundDesc": "Ova grupa je možda uklonjena ili ne postoji.",
+      "browse": "Pregledaj grupe"
+    },
+    "members": {
+      "title": "Članovi zajednice",
+      "subtitle": "Upoznaj celu Vitana zajednicu — dodirni karticu.",
+      "searchPlaceholder": "Pretraga po imenu ili Vitana ID-u",
+      "searchLabel": "Pretraži članove",
+      "sortLabel": "Sortiranje",
+      "sort": {
+        "newest": "Najnoviji",
+        "oldest": "Prvo osnivači",
+        "name": "Po imenu"
+      },
+      "danceLabel": "Ples",
+      "dance": {
+        "all": "Svi",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bačata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Društveni",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Član",
+      "empty": "Još nema članova.",
+      "emptyDance": "Niko još nije postavio ovaj ples kao preferenciju — budi prva osoba!",
+      "viewProfile": "Pogledaj profil"
+    },
+    "openAsks": {
+      "title": "Otvoreni zahtevi",
+      "summaryLoading": "Učitavanje zahteva …",
+      "summaryEmpty": "Još nema otvorenih zahteva.",
+      "summaryCount": "{n} otvorenih zahteva",
+      "kindLabel": "Vrsta",
+      "filterAll": "Svi",
+      "topicLabel": "Tema",
+      "topic": {
+        "everything": "Sve",
+        "dance": "Samo ples"
+      },
+      "kind": {
+        "commercial_buy": "Kupovina",
+        "commercial_sell": "Prodaja",
+        "activity_seek": "Aktivnost",
+        "partner_seek": "Partner",
+        "social_seek": "Druženje",
+        "mutual_aid": "Uzajamna pomoć",
+        "learning_seek": "Učenje",
+        "mentor_seek": "Mentorstvo"
+      },
+      "time": {
+        "justNow": "Upravo sada",
+        "minutes": "pre {n} min",
+        "hours": "pre {n} h",
+        "days": "pre {n} d"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "Nema otvorenih zahteva u ovom prikazu.",
+      "emptyDance": "Još nema otvorenih plesnih zahteva — objavi svoj i budi prva osoba!"
+    },
+    "findPartner": {
+      "title": "Pronađi partnera",
+      "subtitle": "Pronađi ljude koji odgovaraju tvojim otvorenim željama.",
+      "viewLabel": "Prikaz",
+      "view": {
+        "matches": "Poklapanja",
+        "board": "Tabla",
+        "posts": "Moje objave",
+        "members": "Članovi"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "Poklapanje",
+      "emptyMatches": "Još nema poklapanja. Objavi želju i mi ćemo pratiti."
+    },
+    "matches": {
+      "title": "Ljudi koji ti odgovaraju",
+      "subtitle": "Tvoja poklapanja iz zajednice.",
+      "empty": "Još nema poklapanja. Navrati uskoro.",
+      "fallbackName": "Član zajednice",
+      "reasonDefault": "Zajednička interesovanja",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "Tabla zajednice",
+      "boardSubtitle": "Šta drugi trenutno traže.",
+      "filtersLabel": "Filteri",
+      "filter": {
+        "all": "Svi",
+        "dance": "Ples"
+      },
+      "kind": {
+        "commercial_buy": "Kupovina",
+        "commercial_sell": "Prodaja",
+        "activity_seek": "Aktivnost",
+        "partner_seek": "Partner",
+        "social_seek": "Druženje",
+        "mutual_aid": "Uzajamna pomoć"
+      },
+      "viewMine": "Pogledaj moje namere",
+      "emptyBoard": "Nema otvorenih namera u ovom prikazu. Budi prva osoba.",
+      "emptyDance": "Još nema otvorenih plesnih objava — objavi svoju i budi prva osoba!",
+      "emptyMine": "Nema objava u ovom prikazu."
+    },
+    "intentMatch": {
+      "title": "Detalji poklapanja",
+      "backMine": "Nazad na moje namere",
+      "notFound": "Namera nije pronađena.",
+      "matchesCount": "Poklapanja ({count})",
+      "noMatches": "Još nema poklapanja — nastavljamo da tražimo za tebe."
+    },
+    "search": {
+      "title": "Pretraga",
+      "subtitle": "Pronađi članove Vitana zajednice.",
+      "placeholder": "Pretraži članove",
+      "inputLabel": "Pojam za pretragu",
+      "submit": "Pretraži",
+      "memberMeta": "Član zajednice",
+      "fallbackName": "Član",
+      "emptyTitle": "Nema rezultata",
+      "emptyDesc": "Promeni pojam za pretragu i pokušaj ponovo."
+    }
+  }
+}
