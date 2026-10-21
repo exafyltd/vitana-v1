@@ -1,0 +1,110 @@
+{
+  "verdicts": {
+    "tenantPortal.tagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.logoAlt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.tabsAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.signInTab": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.signUpTab": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.signInTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.signUpTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.signInButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.signUpButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.checkEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.confirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.joinIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.join": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.inviteOnly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.loadError.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.loadError.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.errors.generic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.errors.signInFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.errors.alreadyRegistered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tenantPortal.errors.notJoinable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-10-21T08:55:38.598Z"
+}
