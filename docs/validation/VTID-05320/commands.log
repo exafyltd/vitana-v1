@@ -5,3 +5,13 @@ $ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/me
 $ npx tsc --noEmit -p tsconfig.app.json   # no error in any touched file (pre-existing errors elsewhere unchanged)
 $ npx eslint <touched files>   # error counts equal to origin/main (ratchet): useGlobalMessages 54=54, MessageBubble 26=26, ConversationView 51=51, GroupChat 12=12, useChatApi 3=3; new files 0
 Backward compatible with the gateway before VTID-05310: unknown body fields are ignored, /chat/delivered 404 is logged only.
+# independent review (semantic_reviewer; agent:vitana-lane-reviewer returned model_unavailable in this Kiro Web session): changes — all fixed:
+#   one module-level outbox store per member shared by every hook instance (one reload re-post, one reconnect flush, no overwrites);
+#   legacy group items never auto-re-posted; delivery re-reads the current item (a queued retry of a sent item does nothing) and a second enqueue is a no-op;
+#   sign-out (user id change) clears the member's outbox and drops late writes; non-composer callers (calendar invite, profile/meetup buttons) await the stored row and throw on failure;
+#   20 s send timeout (DM, fallback insert, group); offline items stay "Sending" and flush on reconnect; a stored legacy message is never marked "Not sent";
+#   unsent rows can be discarded (DM + group); delivered receipts re-queued on failure; fallback insert carries reply_to; Retry hidden without a handler;
+#   GroupChat sends serialized with a double-tap guard (group persistence across reloads deferred — recorded in the PR).
+$ npx vitest run src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx src/lib/messaging/outbox.test.ts   # head: 17 + 11 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging src/components/ui src/components/profile src/components/community   # head: 696 passed, 1 failed = VTID-05201 fixture (#1473)
+$ npx eslint <touched>   # 54/26/51/12/3 = origin/main; new files 0

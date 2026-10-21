@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo, useSyncExternalStore } from "react";
 import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
@@ -27,14 +27,21 @@ import {
   type ChatConversation,
 } from "./useChatApi";
 import {
-  loadOutbox,
-  saveOutbox,
   upsertItem,
+  removeItem,
   mergeOutbox,
   reconcileByClientId,
   newClientMessageId,
   itemToRow,
   SENT_GRACE_MS,
+  outboxStore,
+  subscribeOutbox,
+  getOutboxItems,
+  updateOutbox,
+  enqueueOutboxDelivery,
+  isQueued,
+  claimBootstrap,
+  resetOutbox,
   type OutboxItem,
 } from "@/lib/messaging/outbox";
 
@@ -46,7 +53,27 @@ interface SendMessageArgs {
   type?: string;
   contentData?: any;
   parentMessageId?: string;
+  /**
+   * VTID-05320: true (the composer) → resolve at once with the outbox row; a
+   * failure shows on the bubble with Retry. Unset (every other caller, e.g. the
+   * profile "message" button, calendar invites) → wait for the server row and
+   * throw on failure, as before.
+   */
+  queued?: boolean;
 }
+
+/** VTID-05320: a send that does not answer in time fails (the chain moves on). */
+const SEND_TIMEOUT_MS = 20_000;
+function withTimeout<T>(p: PromiseLike<T>, ms = SEND_TIMEOUT_MS): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("send_timeout")), ms);
+    Promise.resolve(p).then(
+      (v) => { clearTimeout(timer); resolve(v); },
+      (e) => { clearTimeout(timer); reject(e); }
+    );
+  });
+}
+const EMPTY_OUTBOX: OutboxItem[] = [];
 
 // ── Cache timing constants ──────────────────────────────────────────
 const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — thread list shown without refetch
@@ -957,14 +984,22 @@ export function useGlobalMessages(
   // VTID-05320: sends no longer block the composer (each one is an outbox
   // item); kept for the hook's public shape.
   const [isSending] = useState(false);
-  const [outbox, setOutbox] = useState<OutboxItem[]>([]);
-  const outboxRef = useRef<OutboxItem[]>([]);
-  const inFlightRef = useRef<Set<string>>(new Set());
   const [typingUsers] = useState<
     Array<{ id: string; name: string; avatar?: string }>
   >([]);
 
   const isGlobalContext = forceActive ?? dbRole === "community";
+  // VTID-05320: one outbox per member, shared by every instance of this hook.
+  const outboxUserId = isGlobalContext ? user?.id ?? null : null;
+  const subscribe = useCallback(
+    (cb: () => void) => (outboxUserId ? subscribeOutbox(outboxUserId, cb) : () => undefined),
+    [outboxUserId]
+  );
+  const outbox = useSyncExternalStore(
+    subscribe,
+    () => (outboxUserId ? getOutboxItems(outboxUserId) : EMPTY_OUTBOX),
+    () => EMPTY_OUTBOX
+  );
 
   // ── Threads (conversations list) ──────────────────────────────────
 
@@ -1189,67 +1224,84 @@ export function useGlobalMessages(
   // ── Send message via gateway (VTID-05320: outbox) ─────────────────
   //
   // A send is an outbox item (src/lib/messaging/outbox.ts) with its own
-  // client_message_id. It renders at once (merged into `messages` below), the
-  // composer is free immediately, and the item leaves the outbox only when the
-  // server row is in the cache. A failure keeps it as "failed" with Retry —
-  // the same client_message_id is re-posted, so a retry never duplicates.
+  // client_message_id, in ONE store per member shared by every instance of
+  // this hook. It renders at once (merged into `messages` below) and leaves the
+  // outbox only after the server row is known. Sends of one conversation go
+  // out one at a time, in order. A failure keeps it as "Not sent" with Retry —
+  // the same client_message_id is re-posted, so a retry never duplicates a DM.
+  // Offline, it stays "Sending" and is posted when the connection returns.
 
   const commitOutbox = useCallback(
-    (updater: (prev: OutboxItem[]) => OutboxItem[]) => {
-      const next = updater(outboxRef.current);
-      outboxRef.current = next;
-      setOutbox(next);
-      if (user?.id) saveOutbox(user.id, next);
+    (updater: (prev: OutboxItem[]) => OutboxItem[], generation?: number) => {
+      if (!outboxUserId) return;
+      updateOutbox(outboxUserId, updater, generation);
     },
-    [user?.id]
+    [outboxUserId]
   );
 
   const deliverItem = useCallback(
-    async (item: OutboxItem): Promise<GlobalMessage | null> => {
-      if (!user || !isGlobalContext) return null;
+    async (clientMessageId: string): Promise<GlobalMessage | null> => {
+      if (!user || !isGlobalContext || !outboxUserId) return null;
+      const generation = outboxStore(outboxUserId).generation;
+      // Always the CURRENT item: a queued retry of something that has been sent
+      // (or discarded) meanwhile does nothing.
+      const item = getOutboxItems(outboxUserId).find((i) => i.client_message_id === clientMessageId);
+      if (!item || item.status === "sent") return null;
       const cid = item.client_message_id;
-      if (inFlightRef.current.has(cid)) return null;
-      inFlightRef.current.add(cid);
-      commitOutbox((prev) => upsertItem(prev, { ...item, status: "sending", attempts: item.attempts + 1 }));
       const threadId = item.thread_id;
       const body = item.body;
       const effectiveType = item.message_type;
       const contentData = (item.content_data ?? undefined) as { attachments?: unknown[]; mentions?: unknown[] } | undefined;
 
+      if (typeof navigator !== "undefined" && navigator.onLine === false) {
+        commitOutbox((prev) => upsertItem(prev, { ...item, status: "sending", offline: true }), generation);
+        return null;
+      }
+      commitOutbox((prev) => upsertItem(prev, { ...item, status: "sending", offline: false, attempts: item.attempts + 1 }), generation);
+
+      let stored = false;
       try {
         let realMsg: GlobalMessage;
         let duplicate = false;
 
         if (item.kind === "legacy") {
           // Group threads: insert directly into global_messages
-          const { data: inserted, error: insertErr } = await supabase
-            .from("global_messages")
-            .insert({
-              thread_id: threadId,
-              sender_id: user.id,
-              body,
-              message_type: effectiveType,
-              content_data: effectiveType !== "text" ? contentData : undefined,
-            } as any)
-            .select()
-            .single();
+          const { data: inserted, error: insertErr } = await withTimeout(
+            supabase
+              .from("global_messages")
+              .insert({
+                thread_id: threadId,
+                sender_id: user.id,
+                body,
+                message_type: effectiveType,
+                content_data: effectiveType !== "text" ? contentData : undefined,
+              } as any)
+              .select()
+              .single()
+          );
           if (insertErr || !inserted) throw insertErr || new Error("Group message insert failed");
+          stored = true;
 
-          // Update thread's updated_at and sender's last_read_at
+          // Bookkeeping after the insert never turns a stored message into
+          // "Not sent" (a Retry would insert it twice — no dedup here).
           const now = new Date().toISOString();
-          await Promise.all([
-            supabase
-              .from("global_message_threads")
-              .update({ updated_at: now } as any)
-              .eq("id", threadId),
-            supabase
-              .from("global_thread_participants")
-              .update({ last_read_at: now } as any)
-              .eq("thread_id", threadId)
-              .eq("user_id", user.id),
-          ]);
+          try {
+            await Promise.all([
+              supabase
+                .from("global_message_threads")
+                .update({ updated_at: now } as any)
+                .eq("id", threadId),
+              supabase
+                .from("global_thread_participants")
+                .update({ last_read_at: now } as any)
+                .eq("thread_id", threadId)
+                .eq("user_id", user.id),
+            ]);
+          } catch (err) {
+            console.warn("[chat] thread bookkeeping after send failed:", err);
+          }
 
-          const profileMap = await enrichProfiles([user.id]);
+          const profileMap = await enrichProfiles([user.id]).catch(() => ({} as Record<string, ProfileEntry>));
           realMsg = {
             id: (inserted as any).id,
             thread_id: threadId,
@@ -1285,7 +1337,7 @@ export function useGlobalMessages(
 
           let created: ChatMessage;
           try {
-            created = await sendChatMessage(threadId, body, gatewayOptions);
+            created = await withTimeout(sendChatMessage(threadId, body, gatewayOptions));
           } catch (gatewayErr) {
             console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
             const tenantId = (user as any).app_metadata?.active_tenant_id;
@@ -1297,26 +1349,27 @@ export function useGlobalMessages(
               content: body,
               client_message_id: cid,
             };
-            if (hasPayload) {
-              insertRow.message_type = effectiveType;
-              insertRow.metadata = payload;
-            }
+            const meta: Record<string, unknown> = { ...payload };
+            // Read endpoints re-check a reply target against the conversation (VTID-05310).
+            if (item.reply_to_message_id) meta.reply_to = { message_id: item.reply_to_message_id };
+            if (hasPayload) insertRow.message_type = effectiveType;
+            if (Object.keys(meta).length > 0) insertRow.metadata = meta;
             type DirectResult = { data: unknown; error: { code?: string; message?: string } | null };
             // eslint-disable-next-line @typescript-eslint/no-explicit-any -- client_message_id is newer than the generated types
             const chatTable = () => supabase.from("chat_messages") as any;
-            let res = (await chatTable().insert(insertRow).select().single()) as DirectResult;
+            let res = (await withTimeout(chatTable().insert(insertRow).select().single())) as DirectResult;
             // Before the VTID-05310 migration the column does not exist yet.
             if (res.error && /client_message_id/.test(res.error.message || "") && res.error.code !== "23505") {
               delete insertRow.client_message_id;
-              res = (await chatTable().insert(insertRow).select().single()) as DirectResult;
+              res = (await withTimeout(chatTable().insert(insertRow).select().single())) as DirectResult;
             }
             if (res.error && res.error.code === "23505") {
               // The gateway did store it before failing to answer: same send.
-              const again = (await chatTable()
+              const again = (await withTimeout(chatTable()
                 .select("*")
                 .eq("sender_id", user.id)
                 .eq("client_message_id", cid)
-                .maybeSingle()) as DirectResult;
+                .maybeSingle())) as DirectResult;
               if (again.error || !again.data) throw res.error;
               res = { data: again.data, error: null };
               duplicate = true;
@@ -1324,9 +1377,10 @@ export function useGlobalMessages(
             if (res.error || !res.data) throw res.error || new Error("Supabase insert returned no data");
             created = res.data as unknown as ChatMessage;
           }
+          stored = true;
           duplicate = duplicate || !!created.duplicate;
 
-          const profileMap = await enrichProfiles([created.sender_id]);
+          const profileMap = await enrichProfiles([created.sender_id]).catch(() => ({} as Record<string, ProfileEntry>));
           realMsg = toGlobalMessage(created, threadId, profileMap);
           realMsg.client_message_id = realMsg.client_message_id || cid;
           // A DM may be the viewer greeting a new member — refresh both feeds
@@ -1355,14 +1409,14 @@ export function useGlobalMessages(
 
         // The server row goes into the cache (matched by client_message_id, never
         // by position). The item turns 'sent' and keeps rendering that row until
-        // a fetch of the thread contains it, so an in-flight refetch cannot hide it.
+        // a fetch that started after this point has landed (see below).
         updateMessagesOptimistically(threadId, (prev) => reconcileByClientId(prev, realMsg, cid));
         commitOutbox((prev) => {
           const cur = prev.find((i) => i.client_message_id === cid);
           return cur
             ? upsertItem(prev, { ...cur, status: "sent", server_row: realMsg as unknown as OutboxItem["server_row"], sent_at: Date.now() })
             : prev;
-        });
+        }, generation);
 
         // Move thread to top
         const now = new Date().toISOString();
@@ -1378,37 +1432,34 @@ export function useGlobalMessages(
         return realMsg;
       } catch (error) {
         console.error("Error sending chat message:", error);
+        if (stored) return null; // stored; a later step failed — never "Not sent"
         const offline = typeof navigator !== "undefined" && navigator.onLine === false;
         commitOutbox((prev) => {
           const cur = prev.find((i) => i.client_message_id === cid);
-          return cur ? upsertItem(prev, { ...cur, status: "failed", offline }) : prev;
-        });
+          if (!cur) return prev;
+          // Offline: still "Sending", posted when the connection returns.
+          return upsertItem(prev, offline ? { ...cur, status: "sending", offline: true } : { ...cur, status: "failed", offline: false });
+        }, generation);
         return null;
-      } finally {
-        inFlightRef.current.delete(cid);
       }
     },
-    [user, isGlobalContext, queryClient, commitOutbox, updateMessagesOptimistically, updateThreadsOptimistically]
+    [user, isGlobalContext, outboxUserId, queryClient, commitOutbox, updateMessagesOptimistically, updateThreadsOptimistically]
   );
 
-  // One send at a time per conversation, in the order the member sent them —
-  // the server stores them in that order and the bubbles never swap.
-  const sendChainRef = useRef<Record<string, Promise<unknown>>>({});
   const enqueueDelivery = useCallback(
     (item: OutboxItem): Promise<GlobalMessage | null> => {
-      const prev = sendChainRef.current[item.thread_id] ?? Promise.resolve();
-      const next = prev.catch(() => undefined).then(() => deliverItem(item));
-      sendChainRef.current[item.thread_id] = next;
-      return next;
+      if (!outboxUserId) return Promise.resolve(null);
+      return enqueueOutboxDelivery(outboxUserId, item, () => deliverItem(item.client_message_id));
     },
-    [deliverItem]
+    [outboxUserId, deliverItem]
   );
 
   // Retire 'sent' items once a fetch that started after the send completed has
   // landed for their thread (or after the grace period).
   useEffect(() => {
+    if (!outboxUserId) return;
     const now = Date.now();
-    const stale = outboxRef.current.filter(
+    const stale = getOutboxItems(outboxUserId).filter(
       (i) => i.status === "sent" && (
         (fetchStartedRef.current[i.thread_id] ?? 0) > (i.sent_at ?? 0) ||
         now - (i.sent_at ?? 0) > SENT_GRACE_MS
@@ -1418,7 +1469,7 @@ export function useGlobalMessages(
       const ids = new Set(stale.map((i) => i.client_message_id));
       commitOutbox((prev) => prev.filter((i) => !ids.has(i.client_message_id)));
     }
-  }, [messages, activeThreadId, commitOutbox]);
+  }, [messages, outboxUserId, commitOutbox]);
 
   const sendMessageLegacy = useCallback(
     async (
@@ -1427,9 +1478,10 @@ export function useGlobalMessages(
       _messageType = "text",
       _contentData?: any,
       _parentMessageId?: string,
-      _actionButtons?: any[]
+      _actionButtons?: any[],
+      queued = false
     ) => {
-      if (!user || !isGlobalContext) return;
+      if (!user || !isGlobalContext || !outboxUserId) return;
 
       // Determine effective message type — preserve explicit types like 'voice', only auto-detect 'attachment'
       const effectiveType = (_messageType && _messageType !== "text")
@@ -1455,51 +1507,82 @@ export function useGlobalMessages(
         status: "sending",
       };
       commitOutbox((prev) => upsertItem(prev, item));
-      // Resolves with the stored row, or null when it failed (the bubble shows
-      // Failed + Retry); never throws, so the composer stays cleared.
-      void enqueueDelivery(item);
-      return { ...itemToRow(item), sender: { user_id: user.id, display_name: user.user_metadata?.display_name || "Me", avatar_url: user.user_metadata?.avatar_url || null } } as unknown as GlobalMessage;
+      const delivery = enqueueDelivery(item);
+      if (queued) {
+        // The composer: never throws, the bubble carries the outcome.
+        void delivery;
+        return { ...itemToRow(item), sender: { user_id: user.id, display_name: user.user_metadata?.display_name || "Me", avatar_url: user.user_metadata?.avatar_url || null } } as unknown as GlobalMessage;
+      }
+      // Every other caller waits for the stored row, as before, and a failure
+      // is theirs to report — so the item does not linger as "Not sent".
+      const real = await delivery;
+      if (!real) {
+        const left = getOutboxItems(outboxUserId).find((i) => i.client_message_id === item.client_message_id);
+        if (!left || left.status !== "sent") {
+          commitOutbox((prev) => removeItem(prev, item.client_message_id));
+          throw new Error("send_failed");
+        }
+        return left.server_row as unknown as GlobalMessage;
+      }
+      return real;
     },
-    [user, isGlobalContext, queryClient, commitOutbox, enqueueDelivery]
+    [user, isGlobalContext, outboxUserId, queryClient, commitOutbox, enqueueDelivery]
   );
 
   /** VTID-05320: one tap re-sends a failed message with its original client_message_id. */
   const retryMessage = useCallback(
     async (clientMessageId: string) => {
-      const item = outboxRef.current.find((i) => i.client_message_id === clientMessageId);
+      if (!outboxUserId || isQueued(outboxUserId, clientMessageId)) return null;
+      const item = getOutboxItems(outboxUserId).find((i) => i.client_message_id === clientMessageId);
       if (!item || item.status === "sent") return null;
       return enqueueDelivery(item);
     },
-    [enqueueDelivery]
+    [outboxUserId, enqueueDelivery]
   );
 
-  // Load this member's outbox (survives a reload); re-post pending items once.
-  useEffect(() => {
-    if (!user?.id || !isGlobalContext) {
-      outboxRef.current = [];
-      setOutbox([]);
-      return;
-    }
-    const items = loadOutbox(user.id);
-    outboxRef.current = items;
-    setOutbox(items);
-    for (const i of items) {
-      if (i.status === "sending") void enqueueDelivery(i);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per member
-  }, [user?.id, isGlobalContext]);
+  /** VTID-05320: drop an unsent message (the bubble's delete on a "Not sent" row). */
+  const discardMessage = useCallback(
+    (clientMessageId: string) => {
+      if (!outboxUserId) return;
+      commitOutbox((prev) => {
+        const cur = prev.find((i) => i.client_message_id === clientMessageId);
+        return cur && cur.status !== "sent" && !isQueued(outboxUserId, clientMessageId) ? removeItem(prev, clientMessageId) : prev;
+      });
+    },
+    [outboxUserId, commitOutbox]
+  );
 
-  // Reconnect: items that failed while offline are re-posted once.
+  // Once per member per page load (whichever instance mounts first): re-post
+  // DM items a reload interrupted. Legacy group items are never re-posted
+  // automatically (global_messages has no dedup).
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!outboxUserId || !claimBootstrap(outboxUserId)) return;
+    for (const i of getOutboxItems(outboxUserId)) {
+      if (i.kind === "dm" && i.status === "sending") void enqueueDelivery(i);
+    }
+  }, [outboxUserId, enqueueDelivery]);
+
+  // Reconnect: DM items waiting offline are posted (queued ids are skipped, so
+  // several instances listening post each item once).
+  useEffect(() => {
+    if (typeof window === "undefined" || !outboxUserId) return;
     const onOnline = () => {
-      for (const i of outboxRef.current) {
-        if (i.status === "failed" && i.offline) void enqueueDelivery({ ...i, offline: false });
+      for (const i of getOutboxItems(outboxUserId)) {
+        if (i.kind === "dm" && i.status === "sending" && i.offline) void enqueueDelivery(i);
       }
     };
     window.addEventListener("online", onOnline);
     return () => window.removeEventListener("online", onOnline);
-  }, [enqueueDelivery]);
+  }, [outboxUserId, enqueueDelivery]);
+
+  // Sign-out: nothing of this member's unsent messages stays on the device.
+  const lastUserIdRef = useRef<string | null>(user?.id ?? null);
+  useEffect(() => {
+    const prev = lastUserIdRef.current;
+    const cur = user?.id ?? null;
+    if (prev && prev !== cur) resetOutbox(prev);
+    lastUserIdRef.current = cur;
+  }, [user?.id]);
 
   const sendMessage = useCallback(
     async (args: SendMessageArgs & { actionButtons?: any[] }) => {
@@ -1509,7 +1592,8 @@ export function useGlobalMessages(
         args.type || "text",
         args.contentData,
         args.parentMessageId,
-        args.actionButtons
+        args.actionButtons,
+        !!args.queued
       );
     },
     [sendMessageLegacy]
@@ -1758,6 +1842,8 @@ export function useGlobalMessages(
       }
       if (batch.length > 0) {
         markMessagesDelivered(batch).catch((err) => {
+          // Not reported after all: a later fetch / event may report it again.
+          for (const id of batch) deliveredReportedRef.current.delete(id);
           console.warn("[useGlobalMessages] delivered receipt failed:", err);
         });
       }
@@ -2032,6 +2118,7 @@ export function useGlobalMessages(
     typingUsers,
     sendMessage,
     retryMessage,
+    discardMessage,
     createThread,
     markAsRead,
     markAllAsRead,

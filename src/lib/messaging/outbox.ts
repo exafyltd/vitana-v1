@@ -235,3 +235,106 @@ export function reconcileByClientId<T extends { id: string; client_message_id?: 
   }
   return out;
 }
+
+// ── One store per member (shared by every useGlobalMessages instance) ──────
+//
+// The hook is mounted several times at once (inbox list, open conversation,
+// profile / meetup "message" buttons). They must share ONE list, ONE send
+// chain per conversation, ONE reload re-post and ONE reconnect flush, or they
+// overwrite each other's items and post the same message twice.
+
+type Listener = () => void;
+
+interface OutboxStore {
+  userId: string;
+  items: OutboxItem[];
+  listeners: Set<Listener>;
+  /** One send at a time per conversation, in send order. */
+  chains: Record<string, Promise<unknown>>;
+  /** client ids queued or in flight (a second enqueue is a no-op). */
+  queued: Set<string>;
+  /** The reload re-post ran for this page load. */
+  bootstrapped: boolean;
+  /** Bumped on sign-out: late writes of an old session are dropped. */
+  generation: number;
+}
+
+const stores = new Map<string, OutboxStore>();
+
+export function outboxStore(userId: string): OutboxStore {
+  let s = stores.get(userId);
+  if (!s) {
+    s = { userId, items: loadOutbox(userId), listeners: new Set(), chains: {}, queued: new Set(), bootstrapped: false, generation: 0 };
+    stores.set(userId, s);
+  }
+  return s;
+}
+
+export function subscribeOutbox(userId: string, listener: Listener): () => void {
+  const s = outboxStore(userId);
+  s.listeners.add(listener);
+  return () => s.listeners.delete(listener);
+}
+
+export function getOutboxItems(userId: string): OutboxItem[] {
+  return outboxStore(userId).items;
+}
+
+/** Update, persist and notify. A write from an older generation (signed out since) is dropped. */
+export function updateOutbox(userId: string, updater: (prev: OutboxItem[]) => OutboxItem[], generation?: number): void {
+  const s = outboxStore(userId);
+  if (generation !== undefined && generation !== s.generation) return;
+  const next = updater(s.items);
+  if (next === s.items) return;
+  s.items = next;
+  saveOutbox(userId, next);
+  s.listeners.forEach((l) => l());
+}
+
+/**
+ * Run `deliver` for this item after the conversation's previous send. A second
+ * enqueue of an id already queued / in flight returns null at once.
+ */
+export function enqueueOutboxDelivery<T>(userId: string, item: OutboxItem, deliver: () => Promise<T>): Promise<T | null> {
+  const s = outboxStore(userId);
+  if (s.queued.has(item.client_message_id)) return Promise.resolve(null);
+  s.queued.add(item.client_message_id);
+  const prev = s.chains[item.thread_id] ?? Promise.resolve();
+  const next = prev
+    .catch(() => undefined)
+    .then(deliver)
+    .finally(() => s.queued.delete(item.client_message_id));
+  s.chains[item.thread_id] = next.catch(() => undefined);
+  return next;
+}
+
+export function isQueued(userId: string, clientMessageId: string): boolean {
+  return outboxStore(userId).queued.has(clientMessageId);
+}
+
+/** Returns true the first time per member per page load (the reload re-post). */
+export function claimBootstrap(userId: string): boolean {
+  const s = outboxStore(userId);
+  if (s.bootstrapped) return false;
+  s.bootstrapped = true;
+  return true;
+}
+
+/** Sign-out: drop everything of this member on this device and ignore late writes. */
+export function resetOutbox(userId: string): void {
+  const s = stores.get(userId);
+  clearOutbox(userId);
+  if (!s) return;
+  s.generation += 1;
+  s.items = [];
+  s.chains = {};
+  s.queued.clear();
+  s.bootstrapped = false;
+  s.listeners.forEach((l) => l());
+}
+
+/** Tests only: forget every store. */
+export function __resetOutboxStoresForTests(): void {
+  stores.clear();
+  memory.clear();
+}

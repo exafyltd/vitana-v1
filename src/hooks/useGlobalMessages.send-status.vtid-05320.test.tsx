@@ -86,13 +86,12 @@ vi.mock('./useChatApi', () => ({
 }));
 
 import { useGlobalMessages, patchDeliveryState, type GlobalMessage } from './useGlobalMessages';
-import { loadOutbox, saveOutbox, clearOutbox, newClientMessageId } from '@/lib/messaging/outbox';
+import { loadOutbox, saveOutbox, clearOutbox, newClientMessageId, __resetOutboxStoresForTests } from '@/lib/messaging/outbox';
 
 function wrapper(qc: QueryClient) {
   return ({ children }: { children: React.ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
 }
-function setup(threadId: string | null = PEER) {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+function setup(threadId: string | null = PEER, qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })) {
   const r = renderHook(() => useGlobalMessages(threadId, true), { wrapper: wrapper(qc) });
   return { ...r, qc };
 }
@@ -104,6 +103,7 @@ function serverRow(content: string, cid: string | null, over: Record<string, unk
 const bodies = (m: GlobalMessage[]) => m.map((x) => `${x.body}:${x.send_status ?? 'server'}`);
 
 beforeEach(() => {
+  __resetOutboxStoresForTests();
   localStorage.clear();
   clearOutbox(ME);
   clearOutbox('someone-else');
@@ -126,7 +126,7 @@ describe('send → failed → retry (same client_message_id)', () => {
 
     let returned: unknown;
     await act(async () => {
-      returned = await result.current.sendMessage({ threadId: PEER, content: 'hello there' });
+      returned = await result.current.sendMessage({ threadId: PEER, content: 'hello there', queued: true });
     });
     expect(returned).toBeTruthy(); // never throws → composer stays cleared
     await waitFor(() => expect(bodies(result.current.messages)).toEqual(['hello there:failed']));
@@ -146,7 +146,7 @@ describe('send → failed → retry (same client_message_id)', () => {
     await waitFor(() => expect(result.current.isMessagesLoading).toBe(false));
     sendChatMessage.mockImplementation(async (_to: string, body: string, opts: { clientMessageId: string }) =>
       ({ ...serverRow(body, opts.clientMessageId, { receiver_id: '00000000-0000-0000-0000-000000000001' }), duplicate: true }));
-    await act(async () => { await result.current.sendMessage({ threadId: '00000000-0000-0000-0000-000000000001', content: 'hi vitana' }); });
+    await act(async () => { await result.current.sendMessage({ threadId: '00000000-0000-0000-0000-000000000001', content: 'hi vitana', queued: true }); });
     await waitFor(() => expect(bodies(result.current.messages)).toEqual(['hi vitana:server']));
     expect(requestVitanaReply).not.toHaveBeenCalled();
   });
@@ -158,8 +158,8 @@ describe('send → failed → retry (same client_message_id)', () => {
     sendChatMessage.mockImplementation((_to: string, body: string, opts: { clientMessageId: string }) =>
       new Promise((res) => resolvers.push(() => res(serverRow(body, opts.clientMessageId)))));
     await act(async () => {
-      await result.current.sendMessage({ threadId: PEER, content: 'one' });
-      await result.current.sendMessage({ threadId: PEER, content: 'two' });
+      await result.current.sendMessage({ threadId: PEER, content: 'one', queued: true });
+      await result.current.sendMessage({ threadId: PEER, content: 'two', queued: true });
     });
     expect(result.current.isSending).toBe(false);
     expect(bodies(result.current.messages)).toEqual(['one:sending', 'two:sending']);
@@ -181,7 +181,7 @@ describe('send → failed → retry (same client_message_id)', () => {
     sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
     fallbackInsert.mockImplementation((row: { client_message_id: string; content: string }) =>
       ({ data: serverRow(row.content, row.client_message_id, { id: 'fallback-77' }), error: null }));
-    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'via fallback' }); });
+    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'via fallback', queued: true }); });
     await waitFor(() => expect(result.current.messages.map((m) => `${m.id}:${m.send_status ?? ''}`)).toEqual(['fallback-77:']));
     expect(fallbackInsert.mock.calls[0][0]).toMatchObject({ client_message_id: expect.any(String) });
   });
@@ -191,7 +191,7 @@ describe('send → failed → retry (same client_message_id)', () => {
     await waitFor(() => expect(result.current.isMessagesLoading).toBe(false));
     sendChatMessage.mockImplementation(async (_t: string, b: string, o: { clientMessageId: string }) => serverRow(b, o.clientMessageId));
     const mentions = [{ user_id: PEER, display_name: 'Ana' }];
-    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'hi @Ana', contentData: { mentions } }); });
+    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'hi @Ana', contentData: { mentions }, queued: true }); });
     expect(sendChatMessage.mock.calls[0][2]).toMatchObject({ contentData: { mentions } });
   });
 });
@@ -254,3 +254,101 @@ describe('delivery state', () => {
     expect(ids).not.toContain('grp-1');
   });
 });
+
+describe('review fixes', () => {
+  it('several mounted instances share one outbox: a reload re-posts once and nothing is overwritten', async () => {
+    const pending = newClientMessageId();
+    saveOutbox(ME, [{ client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: '2026-10-21T10:00:00.000Z', attempts: 1, status: 'sending' }]);
+    let release: () => void = () => undefined;
+    sendChatMessage.mockImplementation((_t: string, b: string, o: { clientMessageId: string }) =>
+      new Promise((res) => { release = () => res(serverRow(b, o.clientMessageId)); }));
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const list = setup(null, qc);          // e.g. the inbox list
+    const open = setup(PEER, qc);          // the open conversation
+    await waitFor(() => expect(sendChatMessage).toHaveBeenCalledTimes(1));
+    // A new send from the conversation while the re-post is in flight.
+    await act(async () => { await open.result.current.sendMessage({ threadId: PEER, content: 'new one', queued: true }); });
+    await act(async () => { release(); });
+    await waitFor(() => expect(sendChatMessage).toHaveBeenCalledTimes(2));
+    await act(async () => { release(); });
+    await waitFor(() => expect(open.result.current.messages.map((m) => m.body)).toEqual(['was in flight', 'new one']));
+    expect(sendChatMessage.mock.calls.map((c) => c[1])).toEqual(['was in flight', 'new one']);
+    void list;
+  });
+
+  it('a legacy group-thread message is never re-posted automatically (no server dedup)', async () => {
+    saveOutbox(ME, [{ client_message_id: newClientMessageId(), user_id: ME, thread_id: 'legacy-thread', kind: 'legacy', body: 'g', message_type: 'text', created_at: new Date().toISOString(), attempts: 1, status: 'sending' }]);
+    setup('legacy-thread');
+    await act(async () => { window.dispatchEvent(new Event('online')); });
+    await new Promise((r) => setTimeout(r, 30));
+    expect(fallbackInsert).not.toHaveBeenCalled();
+    expect(sendChatMessage).not.toHaveBeenCalled();
+  });
+
+  it('two Retry taps post once', async () => {
+    const { result } = setup();
+    await waitFor(() => expect(result.current.isMessagesLoading).toBe(false));
+    sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
+    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'x', queued: true }); });
+    await waitFor(() => expect(result.current.messages[0]?.send_status).toBe('failed'));
+    const cid = result.current.messages[0].client_message_id!;
+    let release: () => void = () => undefined;
+    sendChatMessage.mockImplementation((_t: string, b: string, o: { clientMessageId: string }) =>
+      new Promise((res) => { release = () => res(serverRow(b, o.clientMessageId)); }));
+    await act(async () => {
+      void result.current.retryMessage(cid);
+      void result.current.retryMessage(cid);
+    });
+    await act(async () => { release(); });
+    await waitFor(() => expect(result.current.messages[0].send_status).toBeUndefined());
+    expect(sendChatMessage).toHaveBeenCalledTimes(2); // the failed attempt + one retry
+  });
+
+  it('offline: the message stays "Sending" and is posted when the connection returns', async () => {
+    const { result } = setup();
+    await waitFor(() => expect(result.current.isMessagesLoading).toBe(false));
+    const onLine = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'later', queued: true }); });
+    expect(sendChatMessage).not.toHaveBeenCalled();
+    expect(bodies(result.current.messages)).toEqual(['later:sending']);
+    onLine.mockReturnValue(true);
+    sendChatMessage.mockImplementation(async (_t: string, b: string, o: { clientMessageId: string }) => serverRow(b, o.clientMessageId));
+    await act(async () => { window.dispatchEvent(new Event('online')); });
+    await waitFor(() => expect(bodies(result.current.messages)).toEqual(['later:server']));
+    onLine.mockRestore();
+  });
+
+  it('a non-composer caller (e.g. a calendar invite) waits for the stored row and gets an error on failure', async () => {
+    const { result } = setup();
+    await waitFor(() => expect(result.current.isMessagesLoading).toBe(false));
+    sendChatMessage.mockImplementationOnce(async (_t: string, b: string, o: { clientMessageId: string }) => serverRow(b, o.clientMessageId, { id: 'srv-real' }));
+    let got: { id: string } | undefined;
+    await act(async () => { got = (await result.current.sendMessage({ threadId: PEER, content: 'invite', type: 'calendar_invite' })) as { id: string }; });
+    expect(got!.id).toBe('srv-real');
+    sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
+    await expect(act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'boom' }); })).rejects.toThrow('send_failed');
+    expect(result.current.messages.some((m) => m.send_status === 'failed')).toBe(false);
+  });
+
+  it('an unsent message can be discarded', async () => {
+    const { result } = setup();
+    await waitFor(() => expect(result.current.isMessagesLoading).toBe(false));
+    sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
+    await act(async () => { await result.current.sendMessage({ threadId: PEER, content: 'oops', queued: true }); });
+    await waitFor(() => expect(result.current.messages[0]?.send_status).toBe('failed'));
+    act(() => result.current.discardMessage(result.current.messages[0].client_message_id!));
+    expect(result.current.messages).toEqual([]);
+    expect(loadOutbox(ME)).toEqual([]);
+  });
+
+  it('sign-out clears the member\'s outbox from the device', async () => {
+    saveOutbox(ME, [{ client_message_id: newClientMessageId(), user_id: ME, thread_id: PEER, kind: 'dm', body: 'secret', message_type: 'text', created_at: new Date().toISOString(), attempts: 1, status: 'failed' }]);
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const r = renderHook(() => useGlobalMessages(PEER, true), { wrapper: wrapper(qc) });
+    await waitFor(() => expect(r.result.current.messages).toHaveLength(1));
+    currentUser = null;
+    r.rerender();
+    await waitFor(() => expect(localStorage.getItem('vitana:chat:outbox:v1:' + ME)).toBeNull());
+  });
+});
+

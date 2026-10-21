@@ -341,12 +341,16 @@ export default function GroupChat() {
     const cid = row.client_message_id;
     setMessages(prev => prev.map(m => (m.client_message_id === cid && m.send_status ? { ...m, send_status: "sending" } : m)));
     try {
-      const saved = await sendGroupMessage(groupId, row.content, {
-        messageType: row.message_type,
-        contentData: (row.metadata as Record<string, unknown>) || null,
-        clientMessageId: cid,
-        replyToMessageId: row.reply_to_message_id ?? null,
-      });
+      // A send that does not answer in 20 s fails, so the next one can go.
+      const saved = await Promise.race([
+        sendGroupMessage(groupId, row.content, {
+          messageType: row.message_type,
+          contentData: (row.metadata as Record<string, unknown>) || null,
+          clientMessageId: cid,
+          replyToMessageId: row.reply_to_message_id ?? null,
+        }),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("send_timeout")), 20_000)),
+      ]);
       const { duplicate: _dup, ...stored } = saved;
       setMessages(prev => reconcileByClientId(prev, { ...stored, client_message_id: stored.client_message_id ?? cid }, cid));
     } catch (err) {
@@ -354,6 +358,20 @@ export default function GroupChat() {
       setMessages(prev => prev.map(m => (m.client_message_id === cid && m.send_status ? { ...m, send_status: "failed" } : m)));
     }
   }, [groupId]);
+
+  // One send at a time, in send order; a second tap on Retry while the same
+  // message is queued or in flight does nothing.
+  const groupChainRef = useRef<Promise<unknown>>(Promise.resolve());
+  const groupQueuedRef = useRef<Set<string>>(new Set());
+  const enqueueGroupRow = useCallback((row: GroupRow) => {
+    const cid = row.client_message_id;
+    if (!cid || groupQueuedRef.current.has(cid)) return;
+    groupQueuedRef.current.add(cid);
+    groupChainRef.current = groupChainRef.current
+      .catch(() => undefined)
+      .then(() => deliverGroupRow(row))
+      .finally(() => groupQueuedRef.current.delete(cid));
+  }, [deliverGroupRow]);
 
   const handleSend = useCallback(async (
     content: string,
@@ -378,13 +396,13 @@ export default function GroupChat() {
       send_status: "sending",
     };
     setMessages(prev => [...prev, optimistic]);
-    void deliverGroupRow(optimistic);
-  }, [groupId, userId, deliverGroupRow]);
+    enqueueGroupRow(optimistic);
+  }, [groupId, userId, enqueueGroupRow]);
 
   const handleRetry = useCallback((cid: string) => {
     const row = messages.find(m => m.client_message_id === cid && m.send_status === "failed");
-    if (row) void deliverGroupRow(row);
-  }, [messages, deliverGroupRow]);
+    if (row) enqueueGroupRow(row);
+  }, [messages, enqueueGroupRow]);
 
   // MessageBubble's edit ("correction") flow is a no-op unless onUpdateMessage
   // is supplied — see handleEditSave's `!onUpdateMessage` guard.
@@ -403,6 +421,12 @@ export default function GroupChat() {
 
   const handleDeleteMessage = useCallback(async (messageId: string) => {
     if (!groupId) return;
+    // VTID-05320: an unsent message exists only here — discard it locally.
+    if (messageId.startsWith("temp-")) {
+      const cid = messageId.slice("temp-".length);
+      if (!groupQueuedRef.current.has(cid)) setMessages(prev => prev.filter(m => m.id !== messageId));
+      return;
+    }
     try {
       await deleteGroupMessage(groupId, messageId);
       setMessages(prev => prev.filter(m => m.id !== messageId));
