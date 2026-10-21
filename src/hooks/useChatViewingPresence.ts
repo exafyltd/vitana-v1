@@ -12,8 +12,8 @@
  * (sendBeacon cannot carry the Authorization header); if it is lost, the
  * server row simply expires within 45 s.
  * Posts are sent one after another (an active:true can never overtake the
- * active:false that follows it), a true is dropped if viewing ended while it
- * waited, and a failed post (signed out, offline, 4xx/5xx) arms no timer and
+ * queued active:false that follows it; on hide an extra keepalive false goes
+ * out at once), a true is dropped if viewing ended while it waited, and a failed post (signed out, offline, 4xx/5xx) arms no timer and
  * is retried on the next focus/visibility change.
  * One device id per tab (sessionStorage). A duplicated tab copies it; then one
  * tab's active:false clears the other's row — that only means a push arrives.
@@ -90,6 +90,10 @@ export function useChatViewingPresence(conversationKey: string | null | undefine
         const res = await fetch(`${GATEWAY_API_URL}/chat/viewing`, {
           method: 'POST',
           keepalive,
+          // A hung request must not hold the queue (and the active:false behind it).
+          signal: !keepalive && typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function'
+            ? AbortSignal.timeout(10_000)
+            : undefined,
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify({ device_id: deviceId, ...body }),
         });
@@ -142,16 +146,16 @@ export function useChatViewingPresence(conversationKey: string | null | undefine
       timer = null;
       if (retry) clearTimeout(retry);
       retry = null;
-      if (!active) return;
       active = false;
       if (!mayBeOn) return; // nothing was switched on (a waiting true is dropped)
       mayBeOn = false;
       if (unloading) {
-        // Hidden / unloading: send now (no await before fetch), keepalive.
+        // Hidden / unloading: send now (no await before fetch), keepalive —
+        // and queue a normal one too, which lands after a heartbeat already in
+        // flight (on a real unload it is simply cancelled; a second false is harmless).
         void send({ active: false }, tokenRef.current, true);
-      } else {
-        void post({ active: false });
       }
+      void post({ active: false });
     };
     const pageHidden = () => document.visibilityState !== 'visible';
     const reevaluate = () => (isViewingNow() ? start() : stop(pageHidden()));

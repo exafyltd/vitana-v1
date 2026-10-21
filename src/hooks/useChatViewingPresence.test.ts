@@ -103,7 +103,7 @@ describe('useChatViewingPresence', () => {
     expect(bodies().at(-1)?.active).toBe(false);
   });
 
-  it('closing / leaving the page (hidden, then pagehide — the browser order) sends active:false once, keepalive, with the header', async () => {
+  it('closing / leaving the page (hidden, then pagehide — the browser order) sends a keepalive active:false at once, with the header', async () => {
     renderHook(() => useChatViewingPresence('dm:22222222-2222-4222-8222-222222222222'));
     await flush();
     const n = fetchMock.mock.calls.length;
@@ -114,7 +114,9 @@ describe('useChatViewingPresence', () => {
     window.dispatchEvent(new Event('pagehide'));
     await flush();
     const offs = calls().slice(n);
-    expect(offs).toHaveLength(1);
+    // The keepalive one first; then the queued normal one (cancelled by a real unload). pagehide adds nothing.
+    expect(offs).toHaveLength(2);
+    expect(offs.every((c) => JSON.parse(c[1].body as string).active === false)).toBe(true);
     expect(offs[0][1].keepalive).toBe(true);
     expect((offs[0][1].headers as Record<string, string>).Authorization).toBe('Bearer tok');
     expect(JSON.parse(offs[0][1].body as string)).toEqual({ device_id: chatDeviceId(), active: false });
@@ -124,9 +126,9 @@ describe('useChatViewingPresence', () => {
     renderHook(() => useChatViewingPresence('dm:22222222-2222-4222-8222-222222222222'));
     await flush();
     await act(async () => { window.dispatchEvent(new Event('pagehide')); });
-    const last = calls().at(-1)!;
-    expect(last[1].keepalive).toBe(true);
-    expect(JSON.parse(last[1].body as string).active).toBe(false);
+    const keepalive = calls().filter((c) => c[1].keepalive === true);
+    expect(keepalive).toHaveLength(1);
+    expect(JSON.parse(keepalive[0][1].body as string).active).toBe(false);
   });
 
   it('an active:true still waiting for the session is dropped when viewing ends: it never lands after the active:false', async () => {
@@ -223,4 +225,41 @@ describe('useChatViewingPresence', () => {
     expect(chatDeviceId()).toBe(a);
     expect(a).toMatch(/^[A-Za-z0-9_-]{8,64}$/);
   });
+
+  it('a false waits for a heartbeat true that is already in flight (queued, in order)', async () => {
+    let finish!: () => void;
+    renderHook(() => useChatViewingPresence('dm:22222222-2222-4222-8222-222222222222'));
+    await flush();
+    fetchMock.mockImplementationOnce(() => new Promise((r) => { finish = () => r({ ok: true }); }));
+    await act(async () => { vi.advanceTimersByTime(VIEWING_HEARTBEAT_MS); });
+    await flush();
+    const before = fetchMock.mock.calls.length; // the heartbeat true is in flight
+    focused = false;
+    await act(async () => { window.dispatchEvent(new Event('blur')); });
+    await flush();
+    expect(fetchMock.mock.calls.length).toBe(before); // the false waits
+    await act(async () => { finish(); });
+    await flush();
+    await flush();
+    expect(bodies().at(-1)).toEqual({ device_id: chatDeviceId(), active: false });
+  });
+
+  it('hiding while a heartbeat is in flight: keepalive false at once AND a queued false after the heartbeat', async () => {
+    let finish!: () => void;
+    renderHook(() => useChatViewingPresence('dm:22222222-2222-4222-8222-222222222222'));
+    await flush();
+    fetchMock.mockImplementationOnce(() => new Promise((r) => { finish = () => r({ ok: true }); }));
+    await act(async () => { vi.advanceTimersByTime(VIEWING_HEARTBEAT_MS); });
+    await flush();
+    visibility = 'hidden';
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect((calls().at(-1)![1] as RequestInit).keepalive).toBe(true);
+    await act(async () => { finish(); });
+    await flush();
+    await flush();
+    const last = calls().at(-1)!;
+    expect(last[1].keepalive).toBe(false);
+    expect(JSON.parse(last[1].body as string).active).toBe(false);
+  });
 });
+
