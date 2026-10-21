@@ -141,6 +141,13 @@
       "retry": "Повторить",
       "retryLabel": "Отправить это сообщение ещё раз",
       "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "К последним",
+      "one": "Новые сообщения: 1",
+      "other": "Новые сообщения: {count}",
+      "unread": "Непрочитанные сообщения",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

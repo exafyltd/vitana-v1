@@ -21,6 +21,8 @@ import { newClientMessageId, tempIdFor, reconcileByClientId } from "@/lib/messag
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
+import NewMessagesPill from "@/components/messages/NewMessagesPill";
+import { useChatScrollAnchor, distanceFromBottom, NEAR_BOTTOM_PX } from "@/hooks/useChatScrollAnchor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchGroup,
@@ -81,6 +83,9 @@ interface BubbleMessage {
 }
 
 /** VTID-05320: a group row as kept on this screen — server rows plus local unsent ones. */
+/** Keys that scroll a page: pressing one hands the scroll position to the member. */
+const SCROLL_KEYS = new Set(["PageUp", "PageDown", "ArrowUp", "ArrowDown", "Home", "End", " "]);
+
 type GroupRow = ChatGroupMessage & { send_status?: "sending" | "failed" };
 
 function toBubbleMessage(msg: GroupRow, groupId: string): BubbleMessage {
@@ -318,15 +323,69 @@ export default function GroupChat() {
     };
   }, [ready, groupId, initialScrollMessageId, applyPin]);
 
-  // New messages after the member has scrolled: follow them down, as before.
+  // While still pinned (the member has not touched the screen yet) a new
+  // message re-applies the pin, as before.
   useLayoutEffect(() => {
     if (!ready) return;
-    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current) {
-      if (pinnedRef.current) applyPin();
-      else scrollToBottom(true);
+    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current && pinnedRef.current) {
+      applyPin();
     }
     prevMessageCountRef.current = messages.length;
-  }, [ready, messages.length, applyPin, scrollToBottom]);
+  }, [ready, messages.length, applyPin]);
+
+  // VTID-05319: after that, new messages no longer drag the member down while
+  // they read earlier ones (this used to smooth-scroll to the bottom on every
+  // message). At the bottom the view follows; otherwise "↓ N new messages".
+  // Either <main> or the document scrolls (VTID-04928), so measure both.
+  const groupIsAtBottom = useCallback(() => {
+    const main = mainRef.current;
+    if (main && main.scrollHeight > main.clientHeight + 1) return distanceFromBottom(main) <= NEAR_BOTTOM_PX;
+    const doc = document.scrollingElement || document.documentElement;
+    return distanceFromBottom({
+      scrollHeight: doc.scrollHeight,
+      scrollTop: window.scrollY || doc.scrollTop,
+      clientHeight: window.innerHeight,
+    }) <= NEAR_BOTTOM_PX;
+  }, []);
+  const followGroupNewest = useCallback(() => scrollToBottom(false), [scrollToBottom]);
+  const scrollAnchor = useChatScrollAnchor({
+    conversationKey: groupId ?? null,
+    rows: messages,
+    meId: userId,
+    isAtBottom: groupIsAtBottom,
+    follow: followGroupNewest,
+    enabled: ready,
+  });
+  const { onScroll: onGroupScroll, markAway: markGroupAway } = scrollAnchor;
+  // Opened on a deep-linked message: that is not "the bottom".
+  useLayoutEffect(() => {
+    if (initialScrollMessageId) markGroupAway();
+  }, [groupId, initialScrollMessageId, markGroupAway]);
+  useEffect(() => {
+    if (!ready) return;
+    const main = mainRef.current;
+    // Scrolling away from the bottom by any means (keyboard, scrollbar, touch,
+    // wheel) releases the opening pin, so later messages never drag the member
+    // down. A pinned deep-link target is centred (not at the bottom) by design,
+    // so there only an explicit gesture releases it.
+    const onScroll = () => {
+      if (!pinTargetRef.current && !groupIsAtBottom()) pinnedRef.current = false;
+      onGroupScroll();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return; // typing
+      if (SCROLL_KEYS.has(e.key)) pinnedRef.current = false;
+    };
+    main?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("keydown", onKey);
+    return () => {
+      main?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [ready, onGroupScroll, groupIsAtBottom]);
 
   // MessageInput.onSendMessage matches the DM signature so all of its
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
@@ -510,7 +569,7 @@ export default function GroupChat() {
               <SpotlightRowsSkeleton count={6} />
             ) : (
               <section className="flex flex-col rounded-vcard border bg-card shadow-vcard">
-                <main ref={mainRef} className="px-4 py-4">
+                <main ref={mainRef} tabIndex={-1} className="px-4 py-4 focus:outline-none">
                   <div ref={contentRef}>
                     {messages.length === 0 ? (
                       <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
@@ -547,6 +606,7 @@ export default function GroupChat() {
                   </div>
                 </main>
                 <footer className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
+                  <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} focusAfterJump={() => mainRef.current} style={{ bottom: "calc(100% + 8px)" }} />
                   <MessageInput
                     threadId={group.id}
                     activeThread={{ id: group.id, type: "group" }}
@@ -625,7 +685,7 @@ export default function GroupChat() {
         </div>
       </header>
 
-      <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+      <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none">
         <div ref={contentRef}>
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-gray-500">
@@ -679,6 +739,7 @@ export default function GroupChat() {
         className="sticky bottom-0 border-t bg-white px-2 pt-2"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.5rem)" }}
       >
+        <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} focusAfterJump={() => mainRef.current} style={{ bottom: "calc(100% + 8px)" }} />
         <MessageInput
           threadId={group.id}
           activeThread={{ id: group.id, type: "group" }}

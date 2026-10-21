@@ -141,6 +141,13 @@
       "retry": "Retry",
       "retryLabel": "Send this message again",
       "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "Jump to latest",
+      "one": "1 new message",
+      "other": "{count} new messages",
+      "unread": "Unread messages",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
