@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05248",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "G1 Wave-1 exit-path smoke (remote-config, push, deep-link) plus the Noop-default guard, offline against the loopback fixture",
+      "ref": "cd apps/mobile && npx jest tests/g1-smoke",
+      "cwd": ".",
+      "reason": "This lane adds only a test-only push provider and the g1-smoke suites; there is no deployed surface to probe on staging. The suites are read-only by construction and talk ONLY to the loopback fixture gateway (tools/fixture-gateway) on 127.0.0.1: remote-config asserts push_enabled on and updateRequired from a high min-version, the push suite installs the G1TestPushProvider through setPushProvider and asserts its token POST is recorded by the fixture and a push data.url resolves through resolveLink, and the deep-link suite resolves and routes every LINK_PATHS universal link through resolve-link / link-router / auth-port. A guard test pins the production default provider as NoopPushProvider. loopbackFetch refuses any host other than 127.0.0.1, so no request can ever leave the loopback for staging or production."
+    }
+  ]
+}

@@ -17,9 +17,12 @@ import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useTranslation } from "@/hooks/useTranslation";
+import { newClientMessageId, tempIdFor, reconcileByClientId } from "@/lib/messaging/outbox";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
+import NewMessagesPill from "@/components/messages/NewMessagesPill";
+import { useChatScrollAnchor, distanceFromBottom, NEAR_BOTTOM_PX } from "@/hooks/useChatScrollAnchor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchGroup,
@@ -73,9 +76,19 @@ interface BubbleMessage {
   message_type: string;
   created_at: string;
   thread_id: string;
+  /** VTID-05320: local send state (sending | failed) and its idempotency key. */
+  send_status?: "sending" | "failed";
+  client_message_id?: string | null;
+  reply_to_message_id?: string | null;
 }
 
-function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage {
+/** VTID-05320: a group row as kept on this screen — server rows plus local unsent ones. */
+/** Keys that scroll a page: pressing one hands the scroll position to the member. */
+const SCROLL_KEYS = new Set(["PageUp", "PageDown", "ArrowUp", "ArrowDown", "Home", "End", " "]);
+
+type GroupRow = ChatGroupMessage & { send_status?: "sending" | "failed" };
+
+function toBubbleMessage(msg: GroupRow, groupId: string): BubbleMessage {
   return {
     id: msg.id,
     sender_id: msg.sender_id,
@@ -85,7 +98,20 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
     message_type: msg.message_type || "text",
     created_at: msg.created_at,
     thread_id: groupId,
+    send_status: msg.send_status,
+    client_message_id: msg.client_message_id ?? null,
+    reply_to_message_id: msg.reply_to_message_id ?? null,
   };
+}
+
+/**
+ * VTID-05320: a refetch replaces the server rows but keeps this screen's
+ * unsent rows (sending | failed) unless their client_message_id arrived.
+ */
+export function mergeGroupRows(prev: GroupRow[], server: GroupRow[]): GroupRow[] {
+  const arrived = new Set(server.map((m) => m.client_message_id).filter(Boolean) as string[]);
+  const local = prev.filter((m) => m.send_status && !(m.client_message_id && arrived.has(m.client_message_id)));
+  return local.length === 0 ? server : [...server, ...local];
 }
 
 // VTID-04928: engines without scrollIntoView (jsdom) must never crash the page.
@@ -106,11 +132,12 @@ export default function GroupChat() {
   const spotlight = useSpotlightEnabled();
 
   const [group, setGroup] = useState<GroupWithMembers | null>(null);
-  const [messages, setMessages] = useState<ChatGroupMessage[]>([]);
+  const [messages, setMessages] = useState<GroupRow[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [messagesLoaded, setMessagesLoaded] = useState(false);
-  const [isSending, setIsSending] = useState(false);
+  // VTID-05320: sends no longer block each other; kept for the composer props.
+  const [isSending] = useState(false);
   const streamEndRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
 
@@ -146,7 +173,7 @@ export default function GroupChat() {
     if (!groupId) return;
     try {
       const msgs = await fetchGroupMessages(groupId, 100);
-      setMessages(msgs.slice().reverse());
+      setMessages(prev => mergeGroupRows(prev, msgs.slice().reverse()));
       setMessagesLoaded(true);
       setLoadError(null);
     } catch (err) {
@@ -296,29 +323,126 @@ export default function GroupChat() {
     };
   }, [ready, groupId, initialScrollMessageId, applyPin]);
 
-  // New messages after the member has scrolled: follow them down, as before.
+  // While still pinned (the member has not touched the screen yet) a new
+  // message re-applies the pin, as before.
   useLayoutEffect(() => {
     if (!ready) return;
-    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current) {
-      if (pinnedRef.current) applyPin();
-      else scrollToBottom(true);
+    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current && pinnedRef.current) {
+      applyPin();
     }
     prevMessageCountRef.current = messages.length;
-  }, [ready, messages.length, applyPin, scrollToBottom]);
+  }, [ready, messages.length, applyPin]);
+
+  // VTID-05319: after that, new messages no longer drag the member down while
+  // they read earlier ones (this used to smooth-scroll to the bottom on every
+  // message). At the bottom the view follows; otherwise "↓ N new messages".
+  // Either <main> or the document scrolls (VTID-04928), so measure both.
+  const groupIsAtBottom = useCallback(() => {
+    const main = mainRef.current;
+    if (main && main.scrollHeight > main.clientHeight + 1) return distanceFromBottom(main) <= NEAR_BOTTOM_PX;
+    const doc = document.scrollingElement || document.documentElement;
+    return distanceFromBottom({
+      scrollHeight: doc.scrollHeight,
+      scrollTop: window.scrollY || doc.scrollTop,
+      clientHeight: window.innerHeight,
+    }) <= NEAR_BOTTOM_PX;
+  }, []);
+  const followGroupNewest = useCallback(() => scrollToBottom(false), [scrollToBottom]);
+  const scrollAnchor = useChatScrollAnchor({
+    conversationKey: groupId ?? null,
+    rows: messages,
+    meId: userId,
+    isAtBottom: groupIsAtBottom,
+    follow: followGroupNewest,
+    enabled: ready,
+  });
+  const { onScroll: onGroupScroll, markAway: markGroupAway } = scrollAnchor;
+  // Opened on a deep-linked message: that is not "the bottom".
+  useLayoutEffect(() => {
+    if (initialScrollMessageId) markGroupAway();
+  }, [groupId, initialScrollMessageId, markGroupAway]);
+  useEffect(() => {
+    if (!ready) return;
+    const main = mainRef.current;
+    // Scrolling away from the bottom by any means (keyboard, scrollbar, touch,
+    // wheel) releases the opening pin, so later messages never drag the member
+    // down. A pinned deep-link target is centred (not at the bottom) by design,
+    // so there only an explicit gesture releases it.
+    const onScroll = () => {
+      if (!pinTargetRef.current && !groupIsAtBottom()) pinnedRef.current = false;
+      onGroupScroll();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return; // typing
+      if (SCROLL_KEYS.has(e.key)) pinnedRef.current = false;
+    };
+    main?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("keydown", onKey);
+    return () => {
+      main?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [ready, onGroupScroll, groupIsAtBottom]);
 
   // MessageInput.onSendMessage matches the DM signature so all of its
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
   // unchanged. The gateway accepts message_type + content_data and stores
   // them in chat_messages.metadata.
+  // VTID-05320: every send has a client_message_id. The row shows at once
+  // (Sending), becomes the server row on success (matched by that id), and on
+  // failure stays as "Not sent" with Retry — the retry re-posts the same id,
+  // which the gateway dedups. Sends no longer wait for each other.
+  const deliverGroupRow = useCallback(async (row: GroupRow) => {
+    if (!groupId || !row.client_message_id) return;
+    const cid = row.client_message_id;
+    setMessages(prev => prev.map(m => (m.client_message_id === cid && m.send_status ? { ...m, send_status: "sending" } : m)));
+    try {
+      // A send that does not answer in 20 s fails, so the next one can go.
+      const saved = await Promise.race([
+        sendGroupMessage(groupId, row.content, {
+          messageType: row.message_type,
+          contentData: (row.metadata as Record<string, unknown>) || null,
+          clientMessageId: cid,
+          replyToMessageId: row.reply_to_message_id ?? null,
+        }),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("send_timeout")), 20_000)),
+      ]);
+      const { duplicate: _dup, ...stored } = saved;
+      setMessages(prev => reconcileByClientId(prev, { ...stored, client_message_id: stored.client_message_id ?? cid }, cid));
+    } catch (err) {
+      console.warn("[GroupChat] send failed:", err);
+      setMessages(prev => prev.map(m => (m.client_message_id === cid && m.send_status ? { ...m, send_status: "failed" } : m)));
+    }
+  }, [groupId]);
+
+  // One send at a time, in send order; a second tap on Retry while the same
+  // message is queued or in flight does nothing.
+  const groupChainRef = useRef<Promise<unknown>>(Promise.resolve());
+  const groupQueuedRef = useRef<Set<string>>(new Set());
+  const enqueueGroupRow = useCallback((row: GroupRow) => {
+    const cid = row.client_message_id;
+    if (!cid || groupQueuedRef.current.has(cid)) return;
+    groupQueuedRef.current.add(cid);
+    groupChainRef.current = groupChainRef.current
+      .catch(() => undefined)
+      .then(() => deliverGroupRow(row))
+      .finally(() => groupQueuedRef.current.delete(cid));
+  }, [deliverGroupRow]);
+
   const handleSend = useCallback(async (
     content: string,
     messageType?: string,
     contentData?: Record<string, unknown> | null,
+    _actionButtons?: unknown,
+    parentMessageId?: string,
   ) => {
-    if (!groupId || isSending) return;
-    const tempId = `temp-${Date.now()}`;
-    const optimistic: ChatGroupMessage = {
-      id: tempId,
+    if (!groupId) return;
+    const cid = newClientMessageId();
+    const optimistic: GroupRow = {
+      id: tempIdFor(cid),
       tenant_id: "",
       sender_id: userId || "",
       group_id: groupId,
@@ -326,22 +450,18 @@ export default function GroupChat() {
       created_at: new Date().toISOString(),
       message_type: messageType || "text",
       metadata: contentData || undefined,
+      client_message_id: cid,
+      reply_to_message_id: parentMessageId && !parentMessageId.startsWith("temp-") ? parentMessageId : null,
+      send_status: "sending",
     };
     setMessages(prev => [...prev, optimistic]);
-    setIsSending(true);
-    try {
-      const saved = await sendGroupMessage(groupId, content, {
-        messageType,
-        contentData: contentData || null,
-      });
-      setMessages(prev => prev.map(m => (m.id === tempId ? saved : m)));
-    } catch (err) {
-      setMessages(prev => prev.filter(m => m.id !== tempId));
-      setLoadError(err instanceof Error ? err.message : "Failed to send");
-    } finally {
-      setIsSending(false);
-    }
-  }, [groupId, isSending, userId]);
+    enqueueGroupRow(optimistic);
+  }, [groupId, userId, enqueueGroupRow]);
+
+  const handleRetry = useCallback((cid: string) => {
+    const row = messages.find(m => m.client_message_id === cid && m.send_status === "failed");
+    if (row) enqueueGroupRow(row);
+  }, [messages, enqueueGroupRow]);
 
   // MessageBubble's edit ("correction") flow is a no-op unless onUpdateMessage
   // is supplied — see handleEditSave's `!onUpdateMessage` guard.
@@ -360,6 +480,12 @@ export default function GroupChat() {
 
   const handleDeleteMessage = useCallback(async (messageId: string) => {
     if (!groupId) return;
+    // VTID-05320: an unsent message exists only here — discard it locally.
+    if (messageId.startsWith("temp-")) {
+      const cid = messageId.slice("temp-".length);
+      if (!groupQueuedRef.current.has(cid)) setMessages(prev => prev.filter(m => m.id !== messageId));
+      return;
+    }
     try {
       await deleteGroupMessage(groupId, messageId);
       setMessages(prev => prev.filter(m => m.id !== messageId));
@@ -443,7 +569,7 @@ export default function GroupChat() {
               <SpotlightRowsSkeleton count={6} />
             ) : (
               <section className="flex flex-col rounded-vcard border bg-card shadow-vcard">
-                <main ref={mainRef} className="px-4 py-4">
+                <main ref={mainRef} tabIndex={-1} className="px-4 py-4 focus:outline-none">
                   <div ref={contentRef}>
                     {messages.length === 0 ? (
                       <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
@@ -469,6 +595,7 @@ export default function GroupChat() {
                                 showAvatar={!isOwn}
                                 onUpdateMessage={handleUpdateMessage}
                                 onDeleteMessage={handleDeleteMessage}
+                                onRetry={handleRetry}
                               />
                             </div>
                           );
@@ -479,6 +606,7 @@ export default function GroupChat() {
                   </div>
                 </main>
                 <footer className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
+                  <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} focusAfterJump={() => mainRef.current} style={{ bottom: "calc(100% + 8px)" }} />
                   <MessageInput
                     threadId={group.id}
                     activeThread={{ id: group.id, type: "group" }}
@@ -557,7 +685,7 @@ export default function GroupChat() {
         </div>
       </header>
 
-      <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+      <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none">
         <div ref={contentRef}>
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-gray-500">
@@ -596,6 +724,7 @@ export default function GroupChat() {
                     showAvatar={!isOwn}
                     onUpdateMessage={handleUpdateMessage}
                     onDeleteMessage={handleDeleteMessage}
+                    onRetry={handleRetry}
                   />
                 </div>
               );
@@ -610,6 +739,7 @@ export default function GroupChat() {
         className="sticky bottom-0 border-t bg-white px-2 pt-2"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.5rem)" }}
       >
+        <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} focusAfterJump={() => mainRef.current} style={{ bottom: "calc(100% + 8px)" }} />
         <MessageInput
           threadId={group.id}
           activeThread={{ id: group.id, type: "group" }}
