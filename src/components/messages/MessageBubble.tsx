@@ -62,6 +62,7 @@ import { describeGroupNotice } from '@/lib/messaging/groupSystemNotice';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
+import { type GroupPosition, isGroupEnd, isGroupStart } from '@/lib/messaging/grouping';
 import { CalendarInviteCard } from '@/components/messages/CalendarInviteCard';
 import { isInviteCard } from '@/lib/calendar-window-client';
 import { VitanaChatCard, isVitanaCardPayload } from '@/components/vitana/VitanaChatCard';
@@ -80,6 +81,8 @@ interface MessageBubbleProps {
   onRetry?: (clientMessageId: string) => void;
   /** VTID-05318: the replied-to message is not available in this conversation. */
   parentUnavailable?: boolean;
+  /** VTID-05314: place of this bubble in a run of one sender's messages. */
+  groupPosition?: GroupPosition;
 }
 
 // WhatsApp-style voice message player
@@ -182,6 +185,19 @@ function isLegacySharedPlaceholder(body: string | undefined, contentData: any): 
   return trimmed === `Shared ${attachments.length} files`;
 }
 
+/**
+ * VTID-05314: corners facing the neighbours of the same group are tightened;
+ * the last bubble keeps the full (tail) corner. Logical classes, so RTL mirrors.
+ */
+function groupCornerClass(position: GroupPosition | undefined, isOwnMessage: boolean): string | false {
+  if (!position || position === 'single') return false;
+  const top = isOwnMessage ? 'rounded-se-md' : 'rounded-ss-md';
+  const bottom = isOwnMessage ? 'rounded-ee-md' : 'rounded-es-md';
+  if (position === 'first') return bottom;
+  if (position === 'last') return top;
+  return cn(top, bottom);
+}
+
 const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
   isOwnMessage,
@@ -194,7 +210,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onDeleteMessage,
   onSendReply,
   onRetry,
-  parentUnavailable
+  parentUnavailable,
+  groupPosition
 }) => {
   // VTID-03663 — this component is React.memo'd (see the default export), so it
   // bails out on shallow-equal props and the LanguageProvider re-render cascade
@@ -444,6 +461,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     hasLegacyFiles;
   const isTextMessageType = !hasStructuredContent;
   const formattedTime = formatDate(new Date(message.created_at), 'HH:mm');
+  // VTID-05314: in a group the avatar/name sit on the first bubble and the
+  // time on the last. Other people's earlier bubbles show the time on hover
+  // (title) and long-press (drawer); own bubbles keep time + delivery status.
+  const groupStart = isGroupStart(groupPosition);
+  const groupEnd = isGroupEnd(groupPosition);
+  const showTime = isOwnMessage || groupEnd;
+  const showSenderHeader = showAvatar && groupStart;
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
     : 'text-muted-foreground';
@@ -459,18 +483,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       {renderStatusIcon(true)}
     </>
   );
+  const hiddenTimeLabel = formatDate(new Date(message.created_at), 'PPp');
   // Ghost spacer appended inside the text <p> so the last line reserves
   // room for the corner-pinned timestamp (matches timestamp width exactly).
-  const textTimestampSpacer = (
+  const textTimestampSpacer = showTime ? (
     <span
       aria-hidden="true"
       className="inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"
     >
       {timestampSpacerInner}
     </span>
-  );
+  ) : null;
   // Real timestamp, absolutely positioned in the bubble's bottom-right corner.
-  const textTimestampOverlay = (
+  const textTimestampOverlay = showTime ? (
     <span
       className={cn(
         "absolute bottom-1.5 end-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none",
@@ -479,9 +504,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     >
       {timestampInner}
     </span>
-  );
+  ) : null;
   // Fallback row for media / cards / voice / edit mode — below the content.
-  const inlineBelowTimestamp = (
+  const inlineBelowTimestamp = showTime ? (
     <div
       className={cn(
         "flex items-center justify-end gap-1 mt-1 text-[10px] leading-none",
@@ -491,7 +516,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       <span className="tabular-nums">{formattedTime}</span>
       {renderStatusIcon()}
     </div>
-  );
+  ) : null;
 
   const handleImageClick = (attachment: ChatAttachmentLike) => {
     const index = Math.max(0, imageAttachments.indexOf(attachment));
@@ -1188,7 +1213,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
         )}>
-          {showAvatar && (() => {
+          {showSenderHeader && (() => {
             // VTID-04992: the sender's avatar opens their profile (the
             // Vitana assistant has none, so it stays a plain picture).
             const senderId = message.sender_id || (message.sender as any)?.user_id;
@@ -1212,7 +1237,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "flex-1 flex flex-col min-w-0 overflow-hidden",
           isOwnMessage ? "items-end order-1" : "items-start"
         )}>
-          {!isOwnMessage && showAvatar && (() => {
+          {!isOwnMessage && showSenderHeader && (() => {
             const senderId = message.sender_id || (message.sender as any)?.user_id;
             const isBot = isVitanaBot(senderId);
             const name = isBot
@@ -1241,9 +1266,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div 
                 ref={messageRef}
                 tabIndex={0}
+                title={showTime ? undefined : hiddenTimeLabel}
+                data-group-position={groupPosition}
                 className={cn(
                   "rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
+                  groupCornerClass(groupPosition, isOwnMessage),
                   isOwnMessage
                     ? "bg-domain-messages-bubble text-domain-messages-bubble-foreground"
                     : "bg-muted",
@@ -1298,6 +1326,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   <>
                     {renderContent()}
                     {isTextMessageType ? textTimestampOverlay : inlineBelowTimestamp}
+                    {!showTime && <span className="sr-only">{hiddenTimeLabel}</span>}
                   </>
                 )}
               </div>
@@ -1377,6 +1406,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       <Drawer open={showDoubleTapReactions} onOpenChange={(open) => { setShowDoubleTapReactions(open); if (!open) setShowDeleteConfirm(false); }} repositionInputs={false}>
         <DrawerContent className="!z-[120] pb-safe" overlayClassName="!z-[119]">
           <div className="px-4 pt-2 pb-4 space-y-4">
+            {/* VTID-05314: the time of a grouped bubble that does not show it. */}
+            {!showTime && (
+              <p className="text-center text-xs text-muted-foreground tabular-nums" data-testid="message-drawer-time">
+                {hiddenTimeLabel}
+              </p>
+            )}
             {/* Quick reactions row */}
             <div className="flex justify-center gap-3 py-2">
               {['👍', '❤️', '😂', '😮', '🙏', '🎉'].map((emoji) => (

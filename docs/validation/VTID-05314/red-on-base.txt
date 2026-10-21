@@ -1,0 +1,15 @@
+     × first bubble of someone else's group: name shown, time hidden from view but on hover and for screen readers 12ms
+     × middle bubble: no name, both start corners tightened, time hidden 6ms
+     × last bubble: no name, keeps the tail (bottom corner) and shows the time 5ms
+     × my own grouped bubbles use the end-side corners and keep time + status on every bubble 7ms
+     × a single bubble keeps the plain rounded shape 4ms
+ FAIL  src/lib/messaging/grouping.test.ts [ src/lib/messaging/grouping.test.ts ]
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx > MessageBubble grouping (VTID-05314) > first bubble of someone else's group: name shown, time hidden from view but on hover and for screen readers
+ FAIL  src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx > MessageBubble grouping (VTID-05314) > middle bubble: no name, both start corners tightened, time hidden
+ FAIL  src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx > MessageBubble grouping (VTID-05314) > last bubble: no name, keeps the tail (bottom corner) and shows the time
+ FAIL  src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx > MessageBubble grouping (VTID-05314) > my own grouped bubbles use the end-side corners and keep time + status on every bubble
+ FAIL  src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx > MessageBubble grouping (VTID-05314) > a single bubble keeps the plain rounded shape
+
+Base = origin/kiro/messenger-ux-v2/ui-viewing-presence (5223c3ab7). grouping.test.ts fails to import (module missing);
+the bubble suite fails 5/6 (the 'no position = unchanged' case passes on base by design). Head: 16/16 pass.

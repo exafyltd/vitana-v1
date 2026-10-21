@@ -1,0 +1,8 @@
+# VTID-05314 (messenger-ux-v2/ui-compact-grouping) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/lib/messaging/grouping.test.ts src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx   # base: fail (see red-on-base.txt); head: 16 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # head: 111 files / 584 tests passed
+$ npx tsc --noEmit -p tsconfig.app.json   # no errors in touched files
+$ npx eslint <touched files>   # error counts equal to base (MessageBubble 26, ConversationView 51, GroupChat 12; new files 0)
+Stacked on ui-viewing-presence (#1480), which already builds on ui-reply-jump (the lane's depends_on).
+Density: the values from #1425/#1472 are unchanged (DM: mb-0.5 inside a group / mb-1.5 after it; group chat: 8 px between groups as before, 2 px inside).
+Decision: my own bubbles keep time + delivery status on every message (R7 needs a per-message status); other people's first/middle bubbles move the time to hover (title), screen readers (sr-only) and the long-press drawer.
