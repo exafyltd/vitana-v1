@@ -242,8 +242,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // VTID-05319: the thread whose opening position is set (the list is hidden
   // until then), the frozen unread divider of this visit, and the scroll API.
   const [positionedThread, setPositionedThread] = useState<string | null>(null);
-  const [unreadAnchor, setUnreadAnchor] = useState<{ threadId: string; messageId: string } | null>(null);
+  const [unreadAnchor, setUnreadAnchor] = useState<{ threadId: string; messageId: string; visit: number } | null>(null);
   const unreadPositionedRef = useRef<string | null>(null);
+  // Each opening of a conversation is a visit; an anchor from an earlier visit
+  // (even of the same conversation) is never used to position this one.
+  const visitRef = useRef(0);
   const scrollAnchorApi = useRef<{ onScroll: () => void } | null>(null);
 
   // Use hybrid messages directly from the hook - no local state needed
@@ -456,6 +459,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }, [topMessageId]);
 
 
+  // Every switch is a new opening, also back to a conversation positioned
+  // before with an empty one in between (that one never positions).
+  const lastOpenedThreadRef = useRef(threadId);
+  useLayoutEffect(() => {
+    if (lastOpenedThreadRef.current === threadId) return;
+    lastOpenedThreadRef.current = threadId;
+    setPositionedThread(null);
+  }, [threadId]);
+
   // VTID-05319: the opening position is set in a layout effect, i.e. before the
   // first paint of the list, and the list stays invisible until it is set — so
   // the first visible frame already shows the newest message (or the unread
@@ -467,17 +479,23 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     // On a switch the query briefly serves the previous DM's rows as
     // placeholder: wait for this conversation's own rows before positioning
     // (otherwise its unread divider would be decided on the wrong rows).
+    // Only while this conversation is still being fetched: legacy direct
+    // threads carry another thread_id on their rows, and once fetching has
+    // settled the rows are this conversation's whatever their thread_id.
     const bottomRow = messages[messages.length - 1] as { thread_id?: string | null };
     const isDm = threads.find((t: { id: string; type?: string }) => t.id === threadId)?.type === 'direct';
-    if (isDm && bottomRow?.thread_id && bottomRow.thread_id !== threadId) return;
+    if (isDm && isMessagesFetching && bottomRow?.thread_id && bottomRow.thread_id !== threadId) return;
     const el = scrollRef.current;
     if (!el) return;
     hasInitialScrolledRef.current = threadId;
     // A new visit decides its own unread position (A → B → A included).
     unreadPositionedRef.current = null;
+    visitRef.current += 1;
+    const visit = visitRef.current;
     const target = initialScrollMessageId ? document.getElementById(`msg-${initialScrollMessageId}`) : null;
     if (target) {
       // A deep link / jump target wins over the bottom and the unread divider.
+      setUnreadAnchor(null);
       target.scrollIntoView({ behavior: 'auto', block: 'center' });
       isUserNearBottomRef.current = distanceFromBottom(el) <= NEAR_BOTTOM_PX;
       if (!isUserNearBottomRef.current) scrollAnchor.markAway();
@@ -489,16 +507,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       const firstUnread = messages.find(
         (m) => m.sender_id !== user?.id && m.read_at === null && !String(m.id).startsWith('temp-')
       );
-      setUnreadAnchor(firstUnread ? { threadId, messageId: firstUnread.id } : null);
+      setUnreadAnchor(firstUnread ? { threadId, messageId: firstUnread.id, visit } : null);
       el.scrollTop = el.scrollHeight - el.clientHeight;
       isUserNearBottomRef.current = true;
     }
     setPositionedThread(threadId);
-  }, [threadId, messages, threads, positionedThread, initialScrollMessageId, user?.id, scrollAnchor]);
+  }, [threadId, messages, threads, isMessagesFetching, positionedThread, initialScrollMessageId, user?.id, scrollAnchor]);
 
   // Once the unread divider is rendered, open at it (above the newest message).
   useLayoutEffect(() => {
-    if (!unreadAnchor || unreadAnchor.threadId !== threadId || unreadPositionedRef.current === threadId) return;
+    if (!unreadAnchor || unreadAnchor.threadId !== threadId || unreadAnchor.visit !== visitRef.current || unreadPositionedRef.current === threadId) return;
     const el = scrollRef.current;
     const divider = document.getElementById(`unread-divider-${unreadAnchor.messageId}`);
     if (!el || !divider) return;

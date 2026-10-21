@@ -14,6 +14,7 @@ import React from 'react';
 
 let threads: unknown[] = [];
 let messages: unknown[] = [];
+let fetching = false;
 vi.mock('@/hooks/useHybridMessages', () => ({
   useHybridMessages: () => ({
     threads,
@@ -27,7 +28,7 @@ vi.mock('@/hooks/useHybridMessages', () => ({
     fetchMessages: vi.fn(),
     context: 'global',
     isMessagesLoading: false,
-    isMessagesFetching: false,
+    isMessagesFetching: fetching,
     loadOlderMessages: vi.fn(),
     hasOlderMessages: false,
     isLoadingOlder: false,
@@ -88,6 +89,7 @@ beforeEach(() => {
   vi.stubGlobal('ResizeObserver', NoopObserver);
   vi.stubGlobal('IntersectionObserver', NoopObserver);
   scrollToSpy.mockClear();
+  fetching = false;
   positionsSeenBeforePaint = [];
   vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'cancelAnimationFrame'] });
 });
@@ -237,14 +239,39 @@ describe('ConversationView switching conversations (VTID-05319 review fixes)', (
     threads = [...thread(), bob()];
     messages = [msg('m1', 'alice', 10)];
     const view = render(<ConversationView threadId="alice" context="global" />);
-    // Switch to Bob: for a moment the query still serves Alice's rows.
+    // Switch to Bob: for a moment the query still serves Alice's rows (fetching).
+    fetching = true;
     view.rerender(<ConversationView threadId="bob" context="global" />);
     expect(scroller().dataset.positioned).toBe('false');
     // Bob's own rows arrive, with an unread one.
+    fetching = false;
     messages = [bobMsg('b1', 5), bobMsg('b2', 2, null)];
     view.rerender(<ConversationView threadId="bob" context="global" />);
     expect(scroller().dataset.positioned).toBe('true');
     expect(screen.getByTestId('unread-divider').id).toBe('unread-divider-b2');
+  });
+
+  it('a legacy direct thread whose rows carry another thread_id is shown once fetching settled (never hidden forever)', () => {
+    threads = [...thread(), bob()];
+    fetching = false;
+    messages = [{ ...bobMsg('l1', 5), thread_id: '99999999-9999-4999-8999-999999999999' }];
+    render(<ConversationView threadId="bob" context="global" />);
+    expect(scroller().dataset.positioned).toBe('true');
+    expect(scroller().style.visibility).toBe('');
+  });
+
+  it('A (unread) → empty B → A: the old divider of the first visit is never used', () => {
+    threads = [...thread(), bob()];
+    fetching = false;
+    messages = [msg('m1', 'alice', 10), msg('u1', 'alice', 5, null)];
+    const view = render(<ConversationView threadId="alice" context="global" />);
+    expect(screen.getByTestId('unread-divider').id).toBe('unread-divider-u1');
+    messages = [];
+    view.rerender(<ConversationView threadId="bob" context="global" />);
+    messages = [msg('m1', 'alice', 10), msg('u1', 'alice', 5), msg('m2', 'me', 2)];
+    view.rerender(<ConversationView threadId="alice" context="global" />);
+    expect(screen.queryByTestId('unread-divider')).toBeNull();
+    expect(scroller().scrollTop).toBe(SCROLL_H - CLIENT_H);
   });
 });
 
