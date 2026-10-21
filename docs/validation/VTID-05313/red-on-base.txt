@@ -1,0 +1,5 @@
+$ npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx  # on origin/main 69d39ef34
+Error: [vitest] No "getI18nLocale" export is defined on the "@/lib/i18n-toast" mock. Did you forget to return it from "vi.mock"?
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx > ConversationView — deep-link scroll (VTID-05201) > scrolls the target message into view without smooth animation
+      Tests  1 failed (1)

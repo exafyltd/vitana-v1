@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05203",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Conversation and message-bubble behaviour is unchanged by the density tweak (class tokens only); the look is confirmed by the owner's visual check",
+      "ref": "npx vitest run src/components/messages",
+      "cwd": ".",
+      "reason": "Spacing is a visual change; a staging browser spec cannot assert taste and cannot create chat content without writing to the production database staging shares. Vitest guards behaviour; the owner confirms the look from screenshots."
+    }
+  ]
+}
