@@ -1,6 +1,6 @@
 {
   "vtid": "VTID-05296",
-  "service": "native-app",
+  "service": "community-app",
   "notes": "The native Maxina app (apps/mobile) has no staging/production web host and no production profile (collaboration §7a). Parity for this lane is proven by the fixture / fake-gateway Jest suites below, each rendering the ported screens in their loaded / empty / error states with no network. The suites and the exact states they cover are listed per-file so this file does not overstate coverage. Device-runtime parity (plan §8) is deferred to the G1 owner gate and is NOT a merge blocker.",
   "tests": [
     { "kind": "existing", "ref": "npm --prefix apps/mobile run typecheck", "cwd": ".",
