@@ -148,6 +148,15 @@
       "other": "Nowe wiadomości: {count}",
       "unread": "Nieprzeczytane wiadomości",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Oryginalna wiadomość jest niedostępna",
+      "loading": "Oryginalna wiadomość…",
+      "jumpToOriginal": "Przejdź do oryginalnej wiadomości",
+      "jumpTo": "Przejdź do oryginalnej wiadomości: {name}",
+      "unknownSender": "Członek",
+      "noText": "Załącznik",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

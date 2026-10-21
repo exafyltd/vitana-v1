@@ -137,6 +137,15 @@
       "other": "{count} neue Nachrichten",
       "unread": "Ungelesene Nachrichten",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Ursprüngliche Nachricht nicht verfügbar",
+      "loading": "Ursprüngliche Nachricht…",
+      "jumpToOriginal": "Zur ursprünglichen Nachricht",
+      "jumpTo": "Zur ursprünglichen Nachricht von {name}",
+      "unknownSender": "Mitglied",
+      "noText": "Anhang",
+      "_pending_review": {}
     }
   }
 }

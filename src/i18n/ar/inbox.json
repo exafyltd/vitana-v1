@@ -148,6 +148,15 @@
       "other": "رسائل جديدة: {count}",
       "unread": "رسائل غير مقروءة",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "الرسالة الأصلية غير متاحة",
+      "loading": "الرسالة الأصلية…",
+      "jumpToOriginal": "الانتقال إلى الرسالة الأصلية",
+      "jumpTo": "الانتقال إلى الرسالة الأصلية من {name}",
+      "unknownSender": "عضو",
+      "noText": "مرفق",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

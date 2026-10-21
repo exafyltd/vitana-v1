@@ -78,6 +78,8 @@ interface MessageBubbleProps {
   onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
   /** VTID-05320: re-send a failed message (its client_message_id). */
   onRetry?: (clientMessageId: string) => void;
+  /** VTID-05318: the replied-to message is not available in this conversation. */
+  parentUnavailable?: boolean;
 }
 
 // WhatsApp-style voice message player
@@ -191,7 +193,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onUpdateMessage,
   onDeleteMessage,
   onSendReply,
-  onRetry
+  onRetry,
+  parentUnavailable
 }) => {
   // VTID-03663 — this component is React.memo'd (see the default export), so it
   // bails out on shallow-equal props and the LanguageProvider re-render cascade
@@ -1259,7 +1262,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     parentMessage={parentMessage}
                     onQuoteClick={handleScrollToParent}
                     isOwnMessage={isOwnMessage}
-                    
+                    unavailable={parentUnavailable}
                   />
                 )}
                 
