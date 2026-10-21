@@ -42,6 +42,7 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { useOrbFrontDoor } from "@/hooks/useOrbFrontDoor";
 import { useRouteTracker } from "@/hooks/useRouteTracker";
+import { useTenantMeta } from "@/hooks/useTenantMeta";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
@@ -474,6 +475,8 @@ const AppHooksInitializer = () => {
   useOrbFrontDoor();
   useRouteTracker();
   useScreenReadyTracking();
+  // VTID-05242: document.title + favicon from the active tenant (Maxina: untouched).
+  useTenantMeta();
   // Warm route chunks + React Query data for the first authenticated screens as
   // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
   usePostLoginWarmup();

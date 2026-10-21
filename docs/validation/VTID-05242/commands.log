@@ -1,0 +1,49 @@
+# VTID-05242 — verification (mt-frontend-brand/brand-surface), 2026-10-21, Windows, Node 20, Vitest 4.1.10
+# Base: vitana-v1 origin/main 69d39ef34 (VTID-05248, #1471). Session kiro-hotmail-202610211102-7ed9.
+
+## red on base (the two new suites copied onto a detached base worktree at 69d39ef34)
+npx vitest run src/hooks/useTenantMeta.test.ts src/lib/store-links.test.ts
+  -> exit 1, Test Files 2 failed (2)
+     useTenantMeta.test.ts: Failed to resolve import "@/hooks/useTenantMeta"
+     store-links.test.ts:   TypeError: storeLinksFor is not a function
+
+## green on head
+npx vitest run src/hooks/useTenantMeta.test.ts src/lib/store-links.test.ts
+  -> Test Files 2 passed (2), Tests 26 passed (26)
+
+## full suite on head (npx vitest run)
+  -> Test Files 29 failed | 417 passed (446); Tests 45 failed | 3523 passed (3568)
+  The same 28 failing files were run on the base worktree (69d39ef34): 23 failed there too (Windows-only: CRLF
+  source checks, path separators; plus ConversationView.deeplink-scroll.vtid-05201, red on Linux main as well:
+  https://github.com/exafyltd/vitana-v1/actions/runs/39590383593). The 5 that passed on base and failed on head
+  were timeouts under full-suite load; re-run alone on head:
+  npx vitest run src/integrations/supabase/role-tables-no-client-writes.vtid-05147.test.ts
+    src/lib/__guards__/member-link.guard.test.ts src/lib/__guards__/share-button.guard.test.ts
+    src/lib/tenant-registry.maxina-golden.test.tsx src/navigation/registry/registry.test.ts
+  -> Test Files 5 passed (5), Tests 27 passed (27)
+  No failure is caused by this lane; CI (Linux) is the authoritative run.
+
+## types / lint
+npx tsc --noEmit -p tsconfig.app.json   -> 0 errors in lane files (repo total 177, all pre-existing; App.tsx(77) TS2440
+                                           'Wallet' is the pre-existing import at base line 76)
+npx eslint <8 changed .ts/.tsx files>   -> new files (useTenantMeta.ts/.test.ts, store-links.test.ts) clean; the 10 errors
+                                           reported are on untouched pre-existing lines of App.tsx (no-explicit-any),
+                                           RedemptionLanding.tsx:109 (text-white), RedeemVoucher.tsx:90/133/134/186/187
+                                           (spinner, amber/emerald) — the diff adds none (ratchet unchanged)
+
+## i18n
+DE first (src/i18n/de/tenantBrand.json, du-form), EN mirror; only {brand} placeholders.
+npm run i18n:register                   -> No formal-register violations
+npm run i18n:inventory                  -> pages 392, keys 4702, namespaces 47 (generated with POSIX paths so the file
+                                           matches the Linux CI generator; the rest of the diff is main's own staleness)
+
+## screens / registry / parity
+src/App.tsx: one import + one useTenantMeta() call in AppHooksInitializer; no route, no JSX element.
+node scripts/design/screen-manifest.mjs --check   -> exit 0
+node scripts/native/parity-ledger.mjs --check     -> OK, 435 rows
+src/navigation/registry/registry.test.ts          -> 11 passed
+
+## not done in this lane
+B1 (CommerceJoin slug) deferred: two existing tests outside the lane's paths pin tenant_slug 'maxina'
+(CommerceJoin.oauth-first.test.ts:24, CommerceJoin.routing.test.ts:55). CommerceJoin keeps the Maxina literal,
+which equals what activeTenantSlug() resolves on every host serving the page today.

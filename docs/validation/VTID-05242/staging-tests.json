@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05242",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "name": "app shell is served with the compiled Maxina title", "target": "frontend", "method": "GET", "path": "/", "expect_content_type": "text/html", "expect_body_contains": "<title>VITANA Platform</title>" },
+    { "kind": "http", "name": "voucher redemption route is served by the SPA", "target": "frontend", "method": "GET", "path": "/redeem", "expect_content_type": "text/html", "expect_body_contains": "<div id=\"root\"" },
+    { "kind": "http", "name": "the Maxina portal (the fallback navigate target) is served by the SPA", "target": "frontend", "method": "GET", "path": "/maxina", "expect_content_type": "text/html", "expect_body_contains": "<div id=\"root\"" },
+    { "kind": "existing", "ref": "npx vitest run src/hooks/useTenantMeta.test.ts src/lib/store-links.test.ts", "cwd": ".", "reason": "Staging is read-only and has no non-Maxina tenant (D13), so a tenant override cannot be observed there. These suites pin the active-slug order with the Maxina fallback, the voucher portal path and logo, useTenantMeta setting title/favicon only (never OG) and leaving Maxina untouched, the AppHooksInitializer mount, the AuthGuard OAuth retry base and the store-link fallback." }
+  ]
+}

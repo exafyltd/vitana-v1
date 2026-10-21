@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Gift, Sparkles, Calendar, Users, Star } from "lucide-react";
 import type { VoucherLookupData } from "@/hooks/useRedeemVoucher";
 import { t } from '@/lib/i18n-toast';
+import { MAXINA_LOGO, useTenantPortal } from '@/hooks/useTenantMeta';
 
 interface RedemptionLandingProps {
   voucherData: VoucherLookupData;
@@ -42,13 +43,16 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
   const tier = voucherData.voucher?.tier || "experience";
   const config = TIER_CONFIG[tier] || TIER_CONFIG.experience;
   const redirectTo = encodeURIComponent(`/redeem?voucher=${voucherCode}`);
+  // VTID-05242: the active tenant's portal and logo; Maxina as the fallback.
+  const portal = useTenantPortal();
+  const logoAlt = portal.isMaxina ? MAXINA_LOGO.alt : t('tenantBrand.logoAlt', { brand: portal.brandName });
 
   const handleLogin = () => {
-    navigate(`/maxina?redirectTo=${redirectTo}`);
+    navigate(`${portal.portalPath}?redirectTo=${redirectTo}`);
   };
 
   const handleRegister = () => {
-    navigate(`/maxina?redirectTo=${redirectTo}&mode=register`);
+    navigate(`${portal.portalPath}?redirectTo=${redirectTo}&mode=register`);
   };
 
   return (
@@ -57,11 +61,13 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
       <div className="safe-area-top" />
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border/50">
         <div className="flex items-center justify-center py-4 px-4">
-          <img 
-            src="/images/maxina-logo.png" 
-            alt="MAXINA" 
-            className="h-8 w-auto"
-          />
+          {portal.logoUrl && (
+            <img 
+              src={portal.logoUrl} 
+              alt={logoAlt} 
+              className="h-8 w-auto"
+            />
+          )}
         </div>
       </header>
 
