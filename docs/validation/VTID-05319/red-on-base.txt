@@ -1,0 +1,10 @@
+# red on base: origin/main 69d39ef34, the new test files copied in
+Error: Failed to resolve import "./useChatScrollAnchor" from "src/hooks/useChatScrollAnchor.test.ts". Does the file exist?
+ FAIL  src/components/messages/ConversationView.scroll-anchoring.vtid-05319.test.tsx > ConversationView new messages without forced scrolling (VTID-05319, R9) > reading earlier messages: a new message shows "↓ 1 new message" and the view stays; the pill goes to the newest
+ FAIL  src/components/messages/ConversationView.scroll-anchoring.vtid-05319.test.tsx > ConversationView opening position (VTID-05319, R8) > opens at the unread divider when the peer sent messages I have not read
+ FAIL  src/components/messages/ConversationView.scroll-anchoring.vtid-05319.test.tsx > ConversationView opening position (VTID-05319, R8) > the first visible frame already shows the newest message: hidden until positioned, positioned before paint, no smooth scroll, no timers
+ FAIL  src/hooks/useChatScrollAnchor.test.ts [ src/hooks/useChatScrollAnchor.test.ts ]
+ FAIL  src/pages/messages/GroupChat.new-messages.vtid-05319.test.tsx > GroupChat new messages without forced scrolling (VTID-05319) > at the bottom a new message keeps the newest in view, without a pill
+ FAIL  src/pages/messages/GroupChat.new-messages.vtid-05319.test.tsx > GroupChat new messages without forced scrolling (VTID-05319) > reading earlier messages: a new message shows the pill and does not move the view; the pill goes down
+ Test Files  3 failed (3)
+      Tests  5 failed | 2 passed (7)
