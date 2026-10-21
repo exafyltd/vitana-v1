@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05315",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/ui/emoji-picker.recents.vtid-05315.test.tsx src/components/ui/emoji-picker.vtid-05202.test.tsx",
+      "reason": "recents per member (no cross-member leak), immediate update, one-time handover of the device list, in-memory fallback when storage fails, VTID-05202 behaviour unchanged when nobody is signed in"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# VTID-05315 (messenger-ux-v2/ui-emoji-recents) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/components/ui/emoji-picker.recents.vtid-05315.test.tsx   # origin/main: fails (red-on-base.txt)
+$ npx vitest run src/components/ui/emoji-picker src/components/messages   # head: 117 passed
+$ npx eslint emoji-picker.tsx + new test   # 0 errors (base 0)
+Deviation from plan §5 lane 9: reactions are recorded when picked through the EmojiPicker (the composer / "more" picker); ReactionPopover is the list of who reacted (no picker), and the quick-reaction row lives in MessageBubble (outside this lane's paths) — not recorded.

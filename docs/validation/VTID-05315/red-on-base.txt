@@ -1,0 +1,7 @@
+# red on base: origin/main 610b7270a, the new test file copied in
+ FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > member A's picks never show for member B on the same device
+ FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > the device-wide list becomes the first signed-in member's, once
+ FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > when storage fails, picks are kept in memory for the session
+ FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > without a signed-in member the device key is used (VTID-05202 behaviour)
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
