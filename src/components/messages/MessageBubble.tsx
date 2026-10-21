@@ -1322,7 +1322,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
           {/* VTID-05320: a message that could not be sent keeps its text and
               offers one-tap Retry (same client_message_id, never a duplicate). */}
-          {isOwnMessage && isFailed && message.client_message_id && (
+          {isOwnMessage && isFailed && message.client_message_id && onRetry && (
             <div className="mt-0.5 flex items-center justify-end gap-1.5 text-xs text-destructive" data-testid="message-failed-row">
               <span>{t('inbox.messageStatus.failed')}</span>
               <button
