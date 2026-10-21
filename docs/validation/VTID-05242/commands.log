@@ -47,3 +47,10 @@ src/navigation/registry/registry.test.ts          -> 11 passed
 B1 (CommerceJoin slug) deferred: two existing tests outside the lane's paths pin tenant_slug 'maxina'
 (CommerceJoin.oauth-first.test.ts:24, CommerceJoin.routing.test.ts:55). CommerceJoin keeps the Maxina literal,
 which equals what activeTenantSlug() resolves on every host serving the page today.
+
+## 2026-10-21 update: merged origin/main (cc19942b) + EN pivot bot commit e7e62ca8
+The i18n EN pivot bot (VTID-03509) added a _pending_review metadata key to src/i18n/en/tenantBrand.json, which the
+lane's DE/EN key-parity test counted as a user key (1 red). Test now ignores _-prefixed metadata keys.
+npx vitest run src/hooks/useTenantMeta.test.ts src/lib/store-links.test.ts -> before fix 1 failed | 25 passed; after 26 passed
+npx eslint (lane files) error counts origin/main vs head: App.tsx 4/4, RedemptionLanding.tsx 1/1, RedeemVoucher.tsx 5/5, AuthGuard.tsx 0/0 (no new errors)
+npx tsc --noEmit -p tsconfig.app.json | lane files -> 0 errors (project-wide errors are main's own)

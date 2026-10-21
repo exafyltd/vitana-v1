@@ -210,8 +210,11 @@ describe('wiring (source checks)', () => {
 describe('i18n (DE first, du-form, EN mirror)', () => {
   const de = JSON.parse(SRC('i18n/de/tenantBrand.json')).tenantBrand;
   const en = JSON.parse(SRC('i18n/en/tenantBrand.json')).tenantBrand;
+  // `_`-prefixed keys (e.g. `_pending_review`) are i18n pipeline metadata added by the
+  // EN pivot propagation bot (VTID-03509), not user-visible strings.
+  const userKeys = (o: Record<string, unknown>) => Object.keys(o).filter((k) => !k.startsWith('_')).sort();
   it('every key exists in DE and EN with the {brand} placeholder', () => {
-    expect(Object.keys(en).sort()).toEqual(Object.keys(de).sort());
+    expect(userKeys(en)).toEqual(userKeys(de));
     for (const k of Object.keys(de)) {
       expect(de[k]).toContain('{brand}');
       expect(en[k]).toContain('{brand}');
