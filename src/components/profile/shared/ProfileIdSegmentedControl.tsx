@@ -68,10 +68,10 @@ export function ProfileIdSegmentedControl<T extends string>({
     <div className={cn("flex justify-center", className)}>
       <div
         className={cn(
-          "relative flex p-1 rounded-full border border-black/5 dark:border-white/10 w-full bg-white/70 dark:bg-white/5 backdrop-blur-sm",
+          "relative flex p-1 rounded-full border border-border/50 w-full bg-card/70 backdrop-blur-sm",
           sizeStyle.containerMaxW
         )}
-        style={{ boxShadow: "inset 0 1px 2px rgba(0,0,0,0.04)" }}
+        style={{ boxShadow: "inset 0 1px 2px hsl(var(--foreground) / 0.04)" }}
       >
         <motion.div
           className="absolute top-1 bottom-1 rounded-full"

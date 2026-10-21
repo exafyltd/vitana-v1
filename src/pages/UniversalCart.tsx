@@ -19,7 +19,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Panel, PanelContent, PanelHeader } from "@/components/layout/spotlight/Panel";
 import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
@@ -252,16 +252,16 @@ export default function UniversalCartPage() {
           <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
-        <Card className="mt-6">
-          <CardContent className="py-10 text-center space-y-2">
+        <Panel className="mt-6">
+          <PanelContent className="py-10 text-center space-y-2">
             <h2 className="text-lg font-medium">
               {t("universalCart.page.roleBlockedTitle")}
             </h2>
             <p className="text-sm text-muted-foreground">
               {t("universalCart.page.roleBlockedBody")}
             </p>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </CartMain>
     );
   }
@@ -288,16 +288,16 @@ export default function UniversalCartPage() {
           <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
-        <Card className="mt-6">
-          <CardContent className="py-10 text-center space-y-2">
+        <Panel className="mt-6">
+          <PanelContent className="py-10 text-center space-y-2">
             <h2 className="text-lg font-medium">
               {t("universalCart.page.errorTitle")}
             </h2>
             <p className="text-sm text-muted-foreground">
               {t("universalCart.page.errorBody")}
             </p>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </CartMain>
     );
   }
@@ -494,8 +494,8 @@ export default function UniversalCartPage() {
           )}
 
           {/* Prompt box — "Wonach suchst du?" → gateway proposes INTO this cart. */}
-          <Card>
-            <CardContent className="space-y-3 pt-6">
+          <Panel>
+            <PanelContent className="space-y-3 pt-6">
               <Label htmlFor="agent-prompt" className="flex items-center gap-1.5 text-sm font-medium">
                 <Sparkles className="h-4 w-4" />
                 {t("universalCart.agent.promptLabel")}
@@ -574,8 +574,8 @@ export default function UniversalCartPage() {
                   </AlertDescription>
                 </Alert>
               )}
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
 
           {/* Vitana schlägt vor — agent-proposed lines, ABOVE the buyable list. */}
           {agentItems.length > 0 && (
@@ -636,8 +636,8 @@ export default function UniversalCartPage() {
           )}
 
           {isCartEmpty ? (
-            <Card>
-              <CardContent className="py-10 text-center space-y-3">
+            <Panel>
+              <PanelContent className="py-10 text-center space-y-3">
                 <h2 className="text-lg font-medium">
                   {t("universalCart.page.emptyTitle")}
                 </h2>
@@ -647,15 +647,15 @@ export default function UniversalCartPage() {
                 <Button asChild variant="outline" className="mt-2">
                   <Link to="/discover">{t("universalCart.page.linkToDiscover")}</Link>
                 </Button>
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           ) : (
             <div className="space-y-3">
               <GatewayWalletBalanceCard />
 
               {buyableItems.map((item) => (
-                <Card key={item.id}>
-                  <CardHeader className="pb-2">
+                <Panel key={item.id}>
+                  <PanelHeader className="pb-2">
                     <div className="flex items-start justify-between gap-3">
                       <CartLineHeader item={item} />
                       <Button
@@ -669,8 +669,8 @@ export default function UniversalCartPage() {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                  </CardHeader>
-                  <CardContent className="flex items-center justify-between gap-3 pt-0">
+                  </PanelHeader>
+                  <PanelContent className="flex items-center justify-between gap-3 pt-0">
                     <QuantityStepper
                       item={item}
                       onChange={(next) => onQuantity(item, next)}
@@ -686,21 +686,21 @@ export default function UniversalCartPage() {
                       <Bookmark className="me-2 h-4 w-4" />
                       {t("universalCart.saved.saveForLater")}
                     </Button>
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               ))}
 
               {affiliateRedirects.length > 0 && (
-                <Card>
-                  <CardHeader className="pb-2">
+                <Panel>
+                  <PanelHeader className="pb-2">
                     <h2 className="text-sm font-medium">
                       {t("marketplaceCheckout.checkout.affiliateTitle")}
                     </h2>
                     <p className="text-xs text-muted-foreground">
                       {t("marketplaceCheckout.checkout.affiliateBody")}
                     </p>
-                  </CardHeader>
-                  <CardContent className="space-y-2 pt-0">
+                  </PanelHeader>
+                  <PanelContent className="space-y-2 pt-0">
                     {affiliateRedirects.map((r) => (
                       <Button
                         key={r.item_id}
@@ -715,8 +715,8 @@ export default function UniversalCartPage() {
                         </a>
                       </Button>
                     ))}
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               )}
 
               <Button
@@ -745,21 +745,21 @@ export default function UniversalCartPage() {
         {/* ---- Saved tab: items flagged metadata.saved ---- */}
         <TabsContent value="saved" className="mt-4">
           {isSavedEmpty ? (
-            <Card>
-              <CardContent className="py-10 text-center space-y-3">
+            <Panel>
+              <PanelContent className="py-10 text-center space-y-3">
                 <h2 className="text-lg font-medium">
                   {t("universalCart.saved.emptyTitle")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   {t("universalCart.saved.emptyBody")}
                 </p>
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           ) : (
             <div className="space-y-3">
               {savedItems.map((item) => (
-                <Card key={item.id}>
-                  <CardHeader className="pb-2">
+                <Panel key={item.id}>
+                  <PanelHeader className="pb-2">
                     <div className="flex items-start justify-between gap-3">
                       <CartLineHeader item={item} />
                       <Button
@@ -773,8 +773,8 @@ export default function UniversalCartPage() {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                  </CardHeader>
-                  <CardContent className="flex items-center justify-end gap-3 pt-0">
+                  </PanelHeader>
+                  <PanelContent className="flex items-center justify-end gap-3 pt-0">
                     <Button
                       type="button"
                       variant="outline"
@@ -785,8 +785,8 @@ export default function UniversalCartPage() {
                       <ShoppingBag className="me-2 h-4 w-4" />
                       {t("universalCart.saved.moveToCart")}
                     </Button>
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               ))}
             </div>
           )}

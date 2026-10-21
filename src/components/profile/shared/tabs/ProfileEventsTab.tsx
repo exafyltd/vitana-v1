@@ -224,13 +224,13 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
     return (
       <div className="grid gap-6 md:grid-cols-2">
         {[1, 2, 3, 4].map((i) => (
-          <Card key={i} className="rounded-2xl bg-white/40 dark:bg-white/10 animate-pulse overflow-hidden">
-            <div className="h-24 bg-white/30 dark:bg-white/5"></div>
+          <Card key={i} className="rounded-2xl bg-card/40 animate-pulse overflow-hidden">
+            <div className="h-24 bg-card/30"></div>
             <CardContent className="p-5 space-y-3">
-              <div className="h-5 bg-white/60 dark:bg-white/10 rounded-lg w-3/4"></div>
-              <div className="h-4 bg-white/40 dark:bg-white/5 rounded w-full"></div>
-              <div className="h-4 bg-white/40 dark:bg-white/5 rounded w-5/6"></div>
-              <div className="h-9 bg-white/50 dark:bg-white/10 rounded-full mt-4"></div>
+              <div className="h-5 bg-card/60 rounded-lg w-3/4"></div>
+              <div className="h-4 bg-card/40 rounded w-full"></div>
+              <div className="h-4 bg-card/40 rounded w-5/6"></div>
+              <div className="h-9 bg-card/50 rounded-full mt-4"></div>
             </CardContent>
           </Card>
         ))}
@@ -243,10 +243,10 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
   if (!hasAnyEvents) {
     return (
       <div className="text-center py-16 px-6">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-violet-50 to-sky-50 dark:from-violet-950/30 dark:to-sky-950/30 mb-6">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-category-2/10 to-category-7/10 mb-6">
           <Calendar className="w-10 h-10 text-primary/60" />
         </div>
-        <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-100">
+        <h3 className="text-xl font-semibold mb-3 text-foreground">
           {isOwnProfile ? "Your event journey begins here ✨" : `${profile.name?.split(' ')[0]} hasn't joined any events`}
         </h3>
         <p className="text-muted-foreground mb-8 max-w-md mx-auto leading-relaxed">
@@ -270,15 +270,15 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
       <Tabs defaultValue="created" className="w-full">
         {/* Custom Tab Styling with Gradient Underline */}
         <div className="relative mb-8">
-          <TabsList className="inline-flex h-auto items-center justify-start gap-8 bg-transparent p-0 border-b border-white/20 w-full">
+          <TabsList className="inline-flex h-auto items-center justify-start gap-8 bg-transparent p-0 border-b border-border/20 w-full">
             <TabsTrigger 
               value="created"
-              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:start-0 after:end-0 after:h-0.5 after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
+              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:start-0 after:end-0 after:h-0.5 after:bg-gradient-to-r after:from-category-2/80 after:to-category-7/80 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
             >{t('screens.profile.createdLength', { length: createdEvents.length })}
             </TabsTrigger>
             <TabsTrigger 
               value="joined"
-              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:start-0 after:end-0 after:h-0.5 after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
+              className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:start-0 after:end-0 after:h-0.5 after:bg-gradient-to-r after:from-category-2/80 after:to-category-7/80 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
             >{t('screens.profile.joinedLength', { length: joinedEvents.length })}
             </TabsTrigger>
           </TabsList>
@@ -287,7 +287,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         <TabsContent value="created" className="mt-0">
           {createdEvents.length === 0 ? (
             <div className="text-center py-12 px-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-violet-50 to-sky-50 dark:from-violet-950/30 dark:to-sky-950/30 mb-5">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-category-2/10 to-category-7/10 mb-5">
                 <Calendar className="w-8 h-8 text-primary/60" />
               </div>
               <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -324,6 +324,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     location={event.location || "Virtual"}
                     attendees={event.participant_count}
                     timestamp={formatTimestamp(event.start_time)}
+                    // design-allow-next-line: measured box, no scale class within 2 px
                     className="min-h-80 md:min-h-[360px]"
                     showSmartAction={!isMock}
                     eventId={isMock ? undefined : event.id}
@@ -334,6 +335,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                         <Button
                           size="sm"
                           variant="outline"
+                          // design-allow-next-line: on-media scrim, theme-independent
                           className="rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -379,7 +381,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         <TabsContent value="joined" className="mt-0">
           {joinedEvents.length === 0 ? (
             <div className="text-center py-12 px-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-50 to-rose-50 dark:from-amber-950/30 dark:to-rose-950/30 mb-5">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-status-warning-subtle to-category-4/10 mb-5">
                 <Users className="w-8 h-8 text-primary/60" />
               </div>
               <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -415,6 +417,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     location={event.location || "Virtual"}
                     attendees={event.participant_count}
                     timestamp={formatTimestamp(event.start_time)}
+                    // design-allow-next-line: measured box, no scale class within 2 px
                     className="min-h-80 md:min-h-[360px]"
                     showSmartAction={!isMock}
                     eventId={isMock ? undefined : event.id}
@@ -425,6 +428,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                         <Button
                           size="sm"
                           variant="outline"
+                          // design-allow-next-line: on-media scrim, theme-independent
                           className="rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20"
                           onClick={(e) => {
                             e.stopPropagation();

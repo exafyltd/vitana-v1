@@ -267,6 +267,7 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <SheetContent side="bottom" className="h-[85dvh] rounded-t-2xl p-0 flex flex-col [&>button.absolute]:hidden">
         <SheetHeader className="sr-only">
           <SheetTitle>{translate('profilePosts.createPost', 'Create Post')}</SheetTitle>
@@ -350,8 +351,10 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
           {mediaPreview && (
             <div className="relative mt-3 rounded-xl overflow-hidden border">
               {mediaKind === 'video' ? (
+                // design-allow-next-line: measured box, no scale class within 2 px; on-media scrim, theme-independent
                 <video src={mediaPreview} controls playsInline className="w-full max-h-[300px] bg-black" />
               ) : (
+                // design-allow-next-line: measured box, no scale class within 2 px
                 <img src={mediaPreview} alt={t('screens.profile.preview')} className="w-full max-h-[300px] object-cover" />
               )}
               <Button

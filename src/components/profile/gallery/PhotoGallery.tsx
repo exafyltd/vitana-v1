@@ -88,7 +88,9 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
                 loading="lazy"
               />
               {photo.caption && (
+                // design-allow-next-line: on-media scrim, theme-independent
                 <div className="absolute bottom-0 start-0 end-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                  {/* design-allow-next-line: on-media scrim, theme-independent */}
                   <p className="text-xs text-white line-clamp-2">{photo.caption}</p>
                 </div>
               )}

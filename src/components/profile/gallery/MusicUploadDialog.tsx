@@ -100,6 +100,7 @@ export function MusicUploadDialog({ open, onOpenChange, onUpload, isUploading, p
               <div className="flex items-center gap-3 justify-center">
                 <Music className="h-8 w-8 text-primary" />
                 <div className="text-start">
+                  {/* design-allow-next-line: truncation width, no scale class within 2 px */}
                   <p className="text-sm font-medium truncate max-w-[200px]">{file.name}</p>
                   <p className="text-xs text-muted-foreground">{t('screens.profile.value0Mb', { value0: (file.size / 1024 / 1024).toFixed(1) })}</p>
                 </div>

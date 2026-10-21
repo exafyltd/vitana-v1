@@ -89,7 +89,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
   };
 
   return (
-    <div className="w-full space-y-6 animate-fade-in bg-gradient-to-b from-white to-emerald-50/60 dark:from-slate-900 dark:to-emerald-950 rounded-2xl p-6">
+    <div className="w-full space-y-6 animate-fade-in bg-gradient-to-b from-card to-status-success-subtle/60 rounded-2xl p-6">
       {/* Privacy Settings */}
       {editMode && onEditVisibility && (
         <Card className="p-6 border border-dashed border-muted-foreground/20 rounded-2xl shadow-sm bg-gradient-to-br from-background/95 to-background/80 backdrop-blur-sm">
@@ -110,28 +110,28 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
 
       {/* Overall Health Score - Centered Focus Element */}
       {profile.vitanaIndex && (
-        <Card className="relative overflow-hidden rounded-3xl shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-0 bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/60 dark:from-emerald-950/40 dark:via-slate-900 dark:to-teal-950/30">
+        <Card className="relative overflow-hidden rounded-3xl shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-0 bg-gradient-to-br from-status-success-subtle/80 via-card to-category-1/5">
           {/* Radial glow background */}
-          <div className="absolute inset-0 bg-gradient-radial from-emerald-200/30 via-transparent to-transparent dark:from-emerald-600/20" />
+          <div className="absolute inset-0 bg-gradient-radial from-status-success/10 via-transparent to-transparent" />
           
           <CardContent className="relative py-12 px-8">
             {/* Centered glowing score */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center gap-3 mb-3">
-                <Activity className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <Activity className="h-6 w-6 text-status-success" />
                 <h3 className="text-lg font-semibold text-foreground">{t('screens.profile.overallHealthScore')}</h3>
               </div>
               
               {/* Animated glowing number */}
               <div className="relative inline-block">
-                <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-emerald-500/40 to-teal-500/40 rounded-full animate-pulse" />
-                <div className="relative text-7xl font-bold bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent animate-fade-in">
+                <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-status-success/40 to-category-1/40 rounded-full animate-pulse" />
+                <div className="relative text-7xl font-bold bg-gradient-to-br from-status-success to-category-1 bg-clip-text text-transparent animate-fade-in">
                   {profile.vitanaIndex}
                 </div>
               </div>
               
               {profile.vitanaPercentile && (
-                <Badge className="mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full px-4 py-1.5 shadow-lg">
+                <Badge className="mt-4 bg-gradient-to-r from-status-success to-category-1 text-primary-foreground border-0 rounded-full px-4 py-1.5 shadow-lg">
                   <Trophy className="h-3.5 w-3.5 me-1.5" />{t('screens.profile.topValue02', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
@@ -141,7 +141,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <div className="max-w-md mx-auto mb-6">
               <div className="h-3 w-full bg-muted/40 rounded-full overflow-hidden shadow-inner">
                 <div 
-                  className="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 rounded-full transition-all duration-700 ease-out shadow-lg"
+                  className="h-full bg-gradient-to-r from-status-success via-category-1 to-status-success rounded-full transition-all duration-700 ease-out shadow-lg"
                   style={{ width: `${profile.vitanaIndex / 10}%` }}
                 />
               </div>
@@ -151,7 +151,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             </div>
 
             {/* Community Comparison - Compact */}
-            <div className="max-w-xl mx-auto mt-8 p-5 rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-muted/30 shadow-sm">
+            <div className="max-w-xl mx-auto mt-8 p-5 rounded-2xl bg-card/60 backdrop-blur-sm border border-muted/30 shadow-sm">
               <h4 className="font-medium text-sm flex items-center justify-center gap-2 mb-4 text-muted-foreground">
                 <Users className="h-4 w-4" />
                 {t('screens.profile.yourWellnessSync')}
@@ -173,7 +173,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             </div>
 
             {/* Latest Achievement */}
-            <div className="max-w-xl mx-auto mt-6 p-4 rounded-2xl bg-gradient-to-r from-violet-50/80 to-purple-50/80 dark:from-violet-950/40 dark:to-purple-950/40 border border-violet-200/40 dark:border-violet-800/30 shadow-sm">
+            <div className="max-w-xl mx-auto mt-6 p-4 rounded-2xl bg-gradient-to-r from-category-2/10 to-category-2/10 border border-category-2/10 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="font-medium text-sm text-foreground">{t('screens.profile.latestAchievement')}</div>
@@ -195,12 +195,12 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-xl bg-gradient-to-br ${metric.accentColor} text-white shadow-md`}>
+                  <div className={`p-2.5 rounded-xl bg-gradient-to-br ${metric.accentColor} text-primary-foreground shadow-md`}>
                     {metric.icon}
                   </div>
                   <span className="font-semibold text-foreground">{metric.label}</span>
                 </div>
-                <Badge variant="outline" className="text-xs rounded-full border-current/30 bg-white/60 dark:bg-slate-900/60">
+                <Badge variant="outline" className="text-xs rounded-full border-current/30 bg-card/60">
                   {metric.trend}
                 </Badge>
               </div>
@@ -228,12 +228,12 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
       </div>
 
       {/* Recent Health Insights - Colorful Pills */}
-      <Card className="rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] border-muted/40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
+      <Card className="rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] border-muted/40 bg-card/80 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span className="text-lg">{t('screens.profile.recentHealthInsights')}</span>
-            <Badge variant="outline" className="text-xs rounded-full border-emerald-300 dark:border-emerald-700 bg-emerald-50/80 dark:bg-emerald-950/40">
-              <TrendingUp className="h-3 w-3 me-1 text-emerald-600 dark:text-emerald-400" />
+            <Badge variant="outline" className="text-xs rounded-full border-status-success/40 bg-status-success-subtle/80">
+              <TrendingUp className="h-3 w-3 me-1 text-status-success" />
               {t('screens.profile.improving')}
             </Badge>
           </CardTitle>
@@ -242,49 +242,49 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
           <div className="space-y-5">
             {/* Progress Visualizations */}
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-5 rounded-2xl border border-indigo-200/50 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50/80 to-purple-50/60 dark:from-indigo-950/40 dark:to-purple-950/30 shadow-sm">
+              <div className="p-5 rounded-2xl border border-category-3/15 bg-gradient-to-br from-category-3/10 to-category-2/5 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
-                  <Moon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                  <Moon className="h-5 w-5 text-category-3" />
                   <span className="font-semibold text-sm text-foreground">{t('screens.profile.sleepConsistency')}</span>
                 </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">{t('screens.profile.text21Days')}</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-category-3 to-category-2 bg-clip-text text-transparent">{t('screens.profile.text21Days')}</div>
                 <div className="text-xs text-muted-foreground mb-3">{t('screens.profile.currentStreak')}</div>
                 <div className="h-2 w-full bg-muted/40 rounded-full overflow-hidden shadow-inner">
-                  <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" style={{ width: '70%' }} />
+                  <div className="h-full bg-gradient-to-r from-category-3 to-category-2 rounded-full" style={{ width: '70%' }} />
                 </div>
               </div>
               
-              <div className="p-5 rounded-2xl border border-orange-200/50 dark:border-orange-800/30 bg-gradient-to-br from-orange-50/80 to-rose-50/60 dark:from-orange-950/40 dark:to-rose-950/30 shadow-sm">
+              <div className="p-5 rounded-2xl border border-status-warning/15 bg-gradient-to-br from-status-warning-subtle/80 to-category-4/5 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
-                  <Activity className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                  <Activity className="h-5 w-5 text-status-warning" />
                   <span className="font-semibold text-sm text-foreground">{t('screens.profile.workoutGoals')}</span>
                 </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-rose-600 dark:from-orange-400 dark:to-rose-400 bg-clip-text text-transparent">4/5</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-status-warning to-category-4 bg-clip-text text-transparent">4/5</div>
                 <div className="text-xs text-muted-foreground mb-3">{t('screens.profile.thisWeek')}</div>
                 <div className="h-2 w-full bg-muted/40 rounded-full overflow-hidden shadow-inner">
-                  <div className="h-full bg-gradient-to-r from-orange-500 to-rose-500 rounded-full" style={{ width: '80%' }} />
+                  <div className="h-full bg-gradient-to-r from-status-warning to-category-4 rounded-full" style={{ width: '80%' }} />
                 </div>
               </div>
             </div>
             
             {/* Insight Pills with Emojis */}
             <div className="space-y-3 pt-2">
-              <div className="p-4 bg-gradient-to-br from-orange-50/90 to-rose-50/80 dark:from-orange-950/50 dark:to-rose-950/40 rounded-2xl border border-orange-200/50 dark:border-orange-800/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-4 bg-gradient-to-br from-status-warning-subtle/90 to-category-4/10 rounded-2xl border border-status-warning/15 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg me-2">🎉</span>
-                  <strong className="text-orange-700 dark:text-orange-400">{t('screens.profile.greatProgress')}</strong>{t('screens.profile.yourExerciseConsistencyHasImprovedBy')}
+                  <strong className="text-status-warning">{t('screens.profile.greatProgress')}</strong>{t('screens.profile.yourExerciseConsistencyHasImprovedBy')}
                 </p>
               </div>
-              <div className="p-4 bg-gradient-to-br from-indigo-50/90 to-purple-50/80 dark:from-indigo-950/50 dark:to-purple-950/40 rounded-2xl border border-indigo-200/50 dark:border-indigo-800/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-4 bg-gradient-to-br from-category-3/10 to-category-2/10 rounded-2xl border border-category-3/15 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg me-2">😴</span>
-                  <strong className="text-indigo-700 dark:text-indigo-400">{t('screens.profile.sleepQuality')}</strong>{t('screens.profile.youReAveraging75Hours')}
+                  <strong className="text-category-3">{t('screens.profile.sleepQuality')}</strong>{t('screens.profile.youReAveraging75Hours')}
                 </p>
               </div>
-              <div className="p-4 bg-gradient-to-br from-green-50/90 to-emerald-50/80 dark:from-green-950/50 dark:to-emerald-950/40 rounded-2xl border border-green-200/50 dark:border-green-800/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-4 bg-gradient-to-br from-status-success-subtle/90 to-status-success-subtle/80 rounded-2xl border border-status-success/15 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg me-2">🥗</span>
-                  <strong className="text-green-700 dark:text-green-400">{t('screens.profile.nutritionTip')}</strong>{t('screens.profile.considerAddingMoreLeafyGreensBoost')}
+                  <strong className="text-status-success">{t('screens.profile.nutritionTip')}</strong>{t('screens.profile.considerAddingMoreLeafyGreensBoost')}
                 </p>
               </div>
             </div>

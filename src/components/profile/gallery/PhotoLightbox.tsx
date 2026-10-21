@@ -45,6 +45,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
 
   return (
     <div
+      // design-allow-next-line: on-media scrim, theme-independent
       className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
       onClick={onClose}
       onTouchStart={handleTouchStart}
@@ -54,6 +55,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
       <Button
         variant="ghost"
         size="icon"
+        // design-allow-next-line: on-media scrim, theme-independent
         className="absolute top-4 end-4 z-10 text-white hover:bg-white/10"
         onClick={onClose}
       >
@@ -66,6 +68,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
           <Button
             variant="ghost"
             size="icon"
+            // design-allow-next-line: on-media scrim, theme-independent
             className="absolute start-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 h-12 w-12"
             onClick={(e) => { e.stopPropagation(); goPrev(); }}
           >
@@ -74,6 +77,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
           <Button
             variant="ghost"
             size="icon"
+            // design-allow-next-line: on-media scrim, theme-independent
             className="absolute end-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 h-12 w-12"
             onClick={(e) => { e.stopPropagation(); goNext(); }}
           >
@@ -83,15 +87,19 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: PhotoLightboxPr
       )}
 
       {/* Image */}
+      {/* design-allow-next-line: viewport-bound media box */}
       <div className="max-w-[90vw] max-h-[85vh] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
         <img
           src={photo.image_url}
           alt={photo.caption || 'Photo'}
+          // design-allow-next-line: viewport-bound media box
           className="max-w-full max-h-[80vh] object-contain rounded-lg"
         />
         {photo.caption && (
+          // design-allow-next-line: on-media scrim, theme-independent
           <p className="text-white/80 text-sm mt-3 text-center max-w-lg">{photo.caption}</p>
         )}
+        {/* design-allow-next-line: on-media scrim, theme-independent */}
         <p className="text-white/40 text-xs mt-2">{current + 1} / {photos.length}</p>
       </div>
     </div>
