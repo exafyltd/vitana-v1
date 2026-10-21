@@ -3,7 +3,7 @@
 # base origin/main 05cca220904d427f394b490fac19fc5a8190b1cc · head 2c0502d073aea05896ed26d1510452f8072996fe (branch kiro/claude-md-cleanup/rules-trim-v1)
 
 ## Line counts (before = origin/main, after = HEAD)
-  CLAUDE.md: 574 -> 470
+  CLAUDE.md: 574 -> 471
   .kiro/steering/vitana-kiro-notes.md: 23 -> 19
   .kiro/steering/vitana-load-project-rules.md: 26 -> 26
   .claude/CLAUDE.md: 89 -> 89
@@ -19,7 +19,7 @@ $ grep -E '^RESULT' docs/validation/VTID-05279/outputs/must-keep-check.txt
 
 ## Acceptance TESTs (acceptance.md)
 $ grep -c '' CLAUDE.md
-  470
+  471
   (exit 0)
 
 $ grep -c '^RESULT: PASS' docs/validation/VTID-05279/outputs/must-keep-check.txt
@@ -76,7 +76,9 @@ $ git diff --quiet origin/main...HEAD -- .claude/CLAUDE.md && echo '.claude/CLAU
   (exit 0)
 
 ## PR-GATE checks relevant to a docs-only change (local)
-  note: guard.test.cjs test 8 reads the working copy; on this Windows checkout (core.autocrlf=true, w/crlf) its /^---\ninclusion/ match fails for every revision. The committed LF blobs are checked directly below.
+  note: guard.test.cjs reads the working copy of .kiro/steering/vitana-kiro-notes.md. Re-run for the review fixes with that
+  file at LF in the working copy (git ls-files --eol: i/lf w/lf): 8/8 pass, recorded below. Its /^---\ninclusion/ match
+  would fail only on a CRLF working copy; the committed LF blobs are also checked directly below.
 $ node -e "const g=(r)=>require('child_process').execFileSync('git',['show',r+':.kiro/steering/vitana-kiro-notes.md'],{encoding:'utf8'});for(const r of ['origin/main','HEAD']){const n=g(r);console.log(r,/^---\ninclusion: always\n---/.test(n),/Plan sparring is never skipped/.test(n),/resume-vtid\.sh/.test(n))}"
   origin/main true true true
   HEAD true true true
@@ -139,3 +141,24 @@ $ node C:/Users/dstev/AppData/Local/Temp/queue-main.mjs scope-check --repo . --b
   returns empty for (checked: gh pr list --search "plan(claude-md-cleanup) in:title" -> []; "claude-md-cleanup in:title" -> #4232).
   Both checks resolve once the plan PR merges. collaboration.md §7b lists "lane file not found because the spec is not on main yet"
   as a known false positive. The plan's executor: claude on a protected-gate lane is the owner exception (plan Decision 2).
+
+## Review fixes (reviewer agent, base head 22a087e51f40e6a86cbe9f52a7af870eb1ceb206)
+  "Why no host is exempt": PREVIEW-DEPLOY-FRONTEND.yml and STAGE-DEPLOY-FRONTEND.yml named again (both exist in
+  .github/workflows/); incident rephrased "a session reproducing VTID-03503 created five test posts …".
+  .kiro/steering/vitana-kiro-notes.md: "write to a live system (Supabase, AWS, gateway)"; both steering files are
+  byte-identical (SHA-256) to exafyltd/vitana-platform branch kiro/claude-md-cleanup/rules-trim.
+  CLAUDE.md 470 -> 471 lines (paragraph rewrapped); AC-1, line counts above and outputs/ updated.
+$ powershell -File <task-dir>/v1-evidence.ps1      # => outputs/must-keep-check.txt RESULT: PASS (only change: CLAUDE.md 574 -> 471)
+$ grep -c '' CLAUDE.md
+  471
+  (exit 0)
+$ git ls-files --eol .kiro/steering/vitana-kiro-notes.md
+  i/lf    w/lf    attr/                 	.kiro/steering/vitana-kiro-notes.md
+$ node --test --test-reporter=tap scripts/ci/kiro-steering/guard.test.cjs 2>&1 | grep -E '^# (tests|pass|fail)'
+  # tests 8
+  # pass 8
+  # fail 0
+  (exit 0)
+$ node scripts/ci/kiro-steering/guard.cjs .
+  kiro-steering: OK
+  (exit 0)

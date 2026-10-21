@@ -4,7 +4,7 @@ from `exafyltd/vitana-platform` `.kiro/specs/claude-md-cleanup/tasks.md` lane `r
 vitana-v1 repo root; results in `commands.log`.
 
 AC-1: v1 `CLAUDE.md` is roughly 450–480 lines (from 574).
-TEST: grep -c '' CLAUDE.md  # => 470
+TEST: grep -c '' CLAUDE.md  # => 471
 
 AC-2: every VERIFICATION token present in the lane files on `origin/main` is still present, plus `20260805160000`,
 and every v1 keep-list section is still there.

@@ -55,7 +55,7 @@ claim step (steering)                        1 ->   1  OK   [queue.mjs claim <sl
 roles source of truth (steering)             0 ->   3  OK   [§7–§7b]
 
 ## Line counts (before = origin/main, after = head)
-CLAUDE.md                                       574 ->  470
+CLAUDE.md                                       574 ->  471
 .kiro/steering/vitana-kiro-notes.md              23 ->   19
 .kiro/steering/vitana-load-project-rules.md      26 ->   26
 

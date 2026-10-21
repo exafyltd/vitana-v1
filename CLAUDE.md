@@ -267,15 +267,16 @@ staging without breaking the absolute rule. The rule itself does not change.
 
 The ban at the top of this file covers **every write** as this account (a profile edit, an onboarding step, a
 settings toggle, a wallet call), not only community content, **and no host is exempt**: PR-preview and staging
-frontend builds override only the gateway URL and inherit the **production** Supabase project from the committed
-`.env` (gateway-staging uses production Supabase too, `docs/STAGING.md` §6/§9b). **The host selects which _code_
-runs; it does not select which database gets written.** Reading is fine everywhere; writing is fine nowhere, and
-community content (posts, comments, likes, videos, chat messages) has no exception clause at all. Verify against
-content that already exists, a Vitest unit/integration test, or a local Supabase; if a change genuinely cannot be
-verified without new community content, **that is a blocker to raise, not a rule to route around** (it needs an
-isolated Supabase project, which does not exist yet). Why: the account is a full member of the production tenant,
-so on 2026-08-05 five test posts fanned out through `trg_notify_community_post` into 960 notifications and 600
-unrecallable pushes to real members (VTID-03503).
+frontend builds (`PREVIEW-DEPLOY-FRONTEND.yml`, `STAGE-DEPLOY-FRONTEND.yml`) override only the gateway URL and
+inherit the **production** Supabase project from the committed `.env` (gateway-staging uses production Supabase too,
+`docs/STAGING.md` §6/§9b). **The host selects which _code_ runs; it does not select which database gets written.**
+Reading is fine everywhere; writing is fine nowhere, and community content (posts, comments, likes, videos, chat
+messages) has no exception clause at all. Verify against content that already exists, a Vitest unit/integration
+test, or a local Supabase; if a change genuinely cannot be verified without new community content, **that is a
+blocker to raise, not a rule to route around** (it needs an isolated Supabase project, which does not exist yet).
+Why: the account is a full member of the production tenant, so on 2026-08-05 a session reproducing VTID-03503
+created five test posts that fanned out through `trg_notify_community_post` into 960 notifications and 600
+unrecallable pushes to real members.
 
 The guards from migration `20260805160000` (`_notif_is_test_actor()` plus a BEFORE INSERT sink guard on
 `user_notifications` that drops any notification whose actor is a registered or `e2e-%`/`@vitanatest.exafy.io`

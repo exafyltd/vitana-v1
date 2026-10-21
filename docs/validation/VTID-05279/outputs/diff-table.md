@@ -7,7 +7,7 @@ table of every removal and condensation, for the owner's protected-gate review (
 |---|---|---|---|
 | K — codebase intelligence | "Mandatory Codebase Intelligence Workflow" (`:486-565`) + "graphify" (`:566-574`), 89 lines: always query RepoWise **and** Graphify before any work; mandatory index-freshness check; mandatory pre-execution code map; ban on broad grep / recursive reads; mandatory `repowise update` + `graphify --update` after every change ("a task is not complete until both indexes are current") | "Codebase intelligence — RepoWise and Graphify (recommended)", 13 lines: use them for unfamiliar or cross-module work; compact tool list kept (`get_overview`, `search_codebase`, `get_context`, `get_symbol`, `get_why`, `get_risk`, `repowise update`; `graphify query/path/explain`, wiki index, `GRAPH_REPORT.md`, `graphify update .`, `graphify claude install`) | Owner instruction 2026-10-20 (plan item K, Decision 10, R1-F3). Kept as a rule: source and tests stay the final authority; re-read the source when an index result is stale, approximate or ambiguous. |
 
-## CLAUDE.md (574 → 470 lines)
+## CLAUDE.md (574 → 471 lines)
 | Section | Removed | Condensed | Kept |
 |---|---|---|---|
 | ABSOLUTE RULE — never test against production | — | — | verbatim |
