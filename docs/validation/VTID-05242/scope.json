@@ -1,0 +1,22 @@
+{
+  "vtid": "VTID-05242",
+  "lane": "mt-frontend-brand/brand-surface",
+  "kind": "feature",
+  "summary": "Member-facing brand constants follow the active tenant with Maxina as the compiled fallback: AuthGuard OAuth retry base, voucher redemption portal path + logo, per-tenant store links (Maxina fallback), useTenantMeta() title + favicon (never OG) mounted in AppHooksInitializer.",
+  "sparring_record": "docs/validation/VTID-05242/plan-sparring.md",
+  "paths": [
+    "src/pages/CommerceJoin.tsx",
+    "src/components/AuthGuard.tsx",
+    "src/pages/RedeemVoucher.tsx",
+    "src/components/voucher/RedemptionLanding.tsx",
+    "src/lib/store-links.ts",
+    "src/lib/store-links.test.ts",
+    "src/hooks/useTenantMeta.ts",
+    "src/hooks/useTenantMeta.test.ts",
+    "src/App.tsx",
+    "src/i18n/de/tenantBrand.json",
+    "src/i18n/en/tenantBrand.json",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05242/**"
+  ]
+}

@@ -8,12 +8,18 @@ import { Loader2, Gift, AlertCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { t } from '@/lib/i18n-toast';
+import { useTenantPortal } from '@/hooks/useTenantMeta';
 
 export default function RedeemVoucher() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const voucherCode = searchParams.get("voucher");
   const { user, loading: authLoading } = useAuth();
+  // VTID-05242: the active tenant's portal; Maxina as the fallback.
+  const portal = useTenantPortal();
+  const goToPortalLabel = portal.isMaxina
+    ? t('screens.redeemvoucher.goMaxina')
+    : t('tenantBrand.goToPortal', { brand: portal.brandName });
   const [redeemed, setRedeemed] = useState(false);
 
   const { data: voucherData, isLoading: voucherLoading, error: voucherError } = useVoucherByCode(voucherCode || "");
@@ -62,10 +68,10 @@ export default function RedeemVoucher() {
             {t('screens.redeemvoucher.thisRedemptionLinkMissingVoucherCode')}
           </p>
           <button
-            onClick={() => navigate("/maxina")}
+            onClick={() => navigate(portal.portalPath)}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            {t('screens.redeemvoucher.goMaxina')}
+            {goToPortalLabel}
           </button>
         </motion.div>
       </div>
@@ -105,10 +111,10 @@ export default function RedeemVoucher() {
             {t('screens.redeemvoucher.weCouldnTFindVoucherWith')}
           </p>
           <button
-            onClick={() => navigate("/maxina")}
+            onClick={() => navigate(portal.portalPath)}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            {t('screens.redeemvoucher.goMaxina')}
+            {goToPortalLabel}
           </button>
         </motion.div>
       </div>
@@ -132,10 +138,10 @@ export default function RedeemVoucher() {
             {t('screens.redeemvoucher.thisVoucherHasAlreadyClaimedIf')}
           </p>
           <button
-            onClick={() => navigate("/maxina")}
+            onClick={() => navigate(portal.portalPath)}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            {t('screens.redeemvoucher.goMaxina')}
+            {goToPortalLabel}
           </button>
         </motion.div>
       </div>
@@ -158,10 +164,10 @@ export default function RedeemVoucher() {
           <p className="text-muted-foreground mb-6">{t('screens.redeemvoucher.thisVoucherHasExpiredCanNo')}
           </p>
           <button
-            onClick={() => navigate("/maxina")}
+            onClick={() => navigate(portal.portalPath)}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            {t('screens.redeemvoucher.goMaxina')}
+            {goToPortalLabel}
           </button>
         </motion.div>
       </div>

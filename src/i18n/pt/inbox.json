@@ -131,24 +131,7 @@
       "today": "Hoje",
       "yesterday": "Ontem"
     },
-    "_pending_review": {},
-    "messageStatus": {
-      "sending": "Enviando",
-      "sent": "Enviada",
-      "delivered": "Entregue",
-      "read": "Lida",
-      "failed": "Não enviada",
-      "retry": "Tentar de novo",
-      "retryLabel": "Enviar esta mensagem de novo",
-      "_pending_review": {}
-    },
-    "newMessages": {
-      "none": "Ir para a mais recente",
-      "one": "1 nova mensagem",
-      "other": "{count} novas mensagens",
-      "unread": "Mensagens não lidas",
-      "_pending_review": {}
-    }
+    "_pending_review": {}
   },
   "_pending_review": {}
 }

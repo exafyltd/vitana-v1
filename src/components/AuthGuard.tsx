@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import { DelayedLoader } from "@/components/ui/DelayedLoader";
+import { useTenantSafe } from "@/hooks/useTenant";
+import { activeTenantSlug } from "@/hooks/useTenantMeta";
 
 interface AuthGuardProps {
   children: ReactElement;
@@ -41,6 +43,7 @@ function clearCallbackParams() {
 export default function AuthGuard({ children, allowGuest = false }: AuthGuardProps) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const tenantCtx = useTenantSafe();
   const [oauthState, setOauthState] = useState<OAuthState>('idle');
   const recoveryAttempted = useRef(false);
   const pollRef = useRef<ReturnType<typeof setInterval>>();
@@ -264,11 +267,18 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
 
               // Re-initiate Apple sign-in
               try {
-                localStorage.setItem('tenant_slug', readStoredTenantSlug('tenant_slug') || 'maxina');
+                // VTID-05242: the active tenant's portal, then the persisted
+                // slug, then the domain mapping; Maxina as the fallback.
+                const retrySlug = activeTenantSlug({
+                  tenantSlug: tenantCtx?.tenant?.slug,
+                  candidates: [readStoredTenantSlug('tenant_slug')],
+                  hostname: window.location.hostname,
+                });
+                localStorage.setItem('tenant_slug', retrySlug);
                 await supabase.auth.signInWithOAuth({
                   provider: 'apple',
                   options: {
-                    redirectTo: window.location.origin + '/' + (readStoredTenantSlug('tenant_slug') || 'maxina'),
+                    redirectTo: window.location.origin + '/' + retrySlug,
                   }
                 });
               } catch (err) {
