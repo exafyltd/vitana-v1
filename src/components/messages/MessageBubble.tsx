@@ -1177,7 +1177,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <>
       <div className={cn(
-        "flex gap-2 w-full relative",
+        "flex gap-1.5 w-full relative",
         isOwnMessage ? "justify-end" : "justify-start"
       )}>
         {/* Avatar column - fixed width to maintain alignment */}
@@ -1239,7 +1239,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 ref={messageRef}
                 tabIndex={0}
                 className={cn(
-                  "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                  "rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
                   isOwnMessage
                     ? "bg-domain-messages-bubble text-domain-messages-bubble-foreground"
