@@ -4,10 +4,11 @@ import { useAuth } from "@/context/AuthProvider";
 import { useVoucherByCode, useClaimVoucher } from "@/hooks/useRedeemVoucher";
 import { RedemptionLanding } from "@/components/voucher/RedemptionLanding";
 import { RedemptionConfirm } from "@/components/voucher/RedemptionConfirm";
-import { Loader2, Gift, AlertCircle, CheckCircle } from "lucide-react";
+import { Gift, AlertCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { t } from '@/lib/i18n-toast';
+import { SpotlightLoading } from "@/components/layout/spotlight";
 
 export default function RedeemVoucher() {
   const [searchParams] = useSearchParams();
@@ -75,15 +76,10 @@ export default function RedeemVoucher() {
   // Loading states
   if (authLoading || voucherLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center"
-        >
-          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">{t('screens.redeemvoucher.loadingYourGiftVoucher')}</p>
-        </motion.div>
+      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <SpotlightLoading archetype="form" />
+        </div>
       </div>
     );
   }
