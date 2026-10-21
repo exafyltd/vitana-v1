@@ -1,0 +1,8 @@
+# VTID-05284 commands (lane i18n-audit-nightly-off/workflow-off, session kiro-202610181950-f0b7, 2026-10-21)
+node docs/validation/VTID-05284/check-workflow-off.cjs 1a553367f   -> exit 1, 2 passed / 8 failed (red on base, expected)
+node docs/validation/VTID-05284/check-workflow-off.cjs c6131fef7   -> exit 0, 10 passed / 0 failed (YAML parse via js-yaml, T1-T4, node --check of the script)
+node <vitana-platform>/scripts/collab/queue.mjs scope-check --base 1a553367f --head c6131fef7 --branch kiro/i18n-audit-nightly-off/workflow-off --lane-repo exafyltd/vitana-platform
+                                                                   -> 1 problem: scripts/i18n-audit-llm.mjs outside lane paths (lane file on vitana-platform main omits it; converged plan change 4 / tasks T4 include it). Fixed by the lane-file PR in vitana-platform (same lane, same session) adding it to paths.
+CI on c6131fef7: Vitest (jsdom) red on src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx; main 1a553367f has the same red (Unit Tests run 39566622579), not this lane's.
+CI on c6131fef7: pr-gate red on 'Docker pull failed: Data limit exceeded' (runner infra), needs a re-run.
+Not run locally: npm test / lint / build (frontend untouched; disk on the Kiro host had 89 MB free, no checkout possible). CI runs them.
