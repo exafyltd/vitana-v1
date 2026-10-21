@@ -6,11 +6,12 @@
  */
 import { useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Badge, Skeleton, Text, Avatar, Icon } from '../../ports/ui';
+import { Button, Badge, Skeleton, Text, Avatar, Icon, TextInput } from '../../ports/ui';
 import { useI18n } from '../../i18n/I18nProvider';
 import { useAuth } from '../../auth/AuthProvider';
 import { navigateToWebPath } from '../../navigation/navigate';
-import { ScreenScaffold, CardRow, FilterChips, ListEmpty } from './components';
+import { ScreenScaffold, CardRow, FilterChips, ListEmpty, ListError } from './components';
+import { CreateGroupSheet } from './CreateGroupSheet';
 import {
   useUserGroups,
   useGroupDirectory,
@@ -89,16 +90,41 @@ export function GroupsScreen({ initialTab = 'my-groups' as Tab }: { initialTab?:
   const { t } = useI18n();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
+  const [search, setSearch] = useState('');
+  const [createOpen, setCreateOpen] = useState(false);
 
   const { data: myGroups = [], isLoading: loadingMyGroups } = useUserGroups(user?.id);
-  const { data: allGroups = [], isLoading: loadingDirectory } = useGroupDirectory();
+  // The directory query takes the search term (web `useGroupDirectory(searchQuery)`).
+  const { data: allGroups = [], isLoading: loadingDirectory, isError: directoryError, refetch: refetchDirectory } =
+    useGroupDirectory(activeTab === 'recommended' ? search : undefined);
 
   const myGroupIds = new Set(myGroups.map((g) => g.id));
   const recommendedGroups = allGroups.filter((g) => !myGroupIds.has(g.id));
   const mine = activeTab !== 'recommended';
 
+  // My-groups is a client-side name filter over the loaded list (web search box
+  // drives both tabs). Discover forwards the term to the directory query above.
+  const q = search.trim().toLowerCase();
+  const visibleMine = q ? myGroups.filter((g) => g.name.toLowerCase().includes(q)) : myGroups;
+
   return (
-    <ScreenScaffold title={t('communityHubNative.groups.title')} subtitle={t('communityHubNative.groups.subtitle')} testID="screen-groups">
+    <ScreenScaffold
+      title={t('communityHubNative.groups.title')}
+      subtitle={t('communityHubNative.groups.subtitle')}
+      action={
+        <Button size="sm" onPress={() => setCreateOpen(true)} testID="groups-create">
+          {t('communityHubNative.groups.create')}
+        </Button>
+      }
+      testID="screen-groups"
+    >
+      <TextInput
+        value={search}
+        onChangeText={setSearch}
+        placeholder={t('communityHubNative.groups.searchPlaceholder')}
+        accessibilityLabel={t('communityHubNative.groups.searchLabel')}
+        testID="groups-search"
+      />
       <FilterChips
         groupLabel={t('communityHubNative.groups.tabsLabel')}
         chips={[
@@ -113,7 +139,7 @@ export function GroupsScreen({ initialTab = 'my-groups' as Tab }: { initialTab?:
       {mine ? (
         loadingMyGroups ? (
           <GroupSkeletons count={3} />
-        ) : myGroups.length === 0 ? (
+        ) : visibleMine.length === 0 ? (
           <ListEmpty
             title={t('communityHubNative.groups.emptyMineTitle')}
             description={t('communityHubNative.groups.emptyMineDesc')}
@@ -121,13 +147,19 @@ export function GroupsScreen({ initialTab = 'my-groups' as Tab }: { initialTab?:
           />
         ) : (
           <View style={styles.list} testID="groups-list-mine">
-            {myGroups.map((g) => (
+            {visibleMine.map((g) => (
               <GroupCard key={g.id} group={g} />
             ))}
           </View>
         )
       ) : loadingDirectory ? (
         <GroupSkeletons count={6} />
+      ) : directoryError ? (
+        <ListError
+          message={t('communityHubNative.common.errorBody')}
+          retryLabel={t('communityHubNative.common.retry')}
+          onRetry={() => void refetchDirectory()}
+        />
       ) : recommendedGroups.length === 0 ? (
         <ListEmpty
           title={t('communityHubNative.groups.emptyDiscoverTitle')}
@@ -141,6 +173,8 @@ export function GroupsScreen({ initialTab = 'my-groups' as Tab }: { initialTab?:
           ))}
         </View>
       )}
+
+      <CreateGroupSheet open={createOpen} onClose={() => setCreateOpen(false)} />
     </ScreenScaffold>
   );
 }

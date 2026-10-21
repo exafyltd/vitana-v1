@@ -23,7 +23,10 @@
       "emptyMineTitle": "Пока нет групп",
       "emptyMineDesc": "Вступи в первую группу, чтобы начать.",
       "emptyDiscoverTitle": "Нет групп для просмотра",
-      "emptyDiscoverDesc": "Создай первую группу сообщества."
+      "emptyDiscoverDesc": "Создай первую группу сообщества.",
+      "create": "Создать",
+      "searchPlaceholder": "Искать группы",
+      "searchLabel": "Искать группы"
     },
     "groupDetail": {
       "title": "Группа",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "{score}%",
       "matchFallback": "Совпадение",
-      "emptyMatches": "Совпадений пока нет. Опубликуй пожелание, и мы будем следить."
+      "emptyMatches": "Совпадений пока нет. Опубликуй пожелание, и мы будем следить.",
+      "newWish": "Новое желание",
+      "searchPlaceholder": "Искать публикации и совпадения",
+      "searchLabel": "Искать публикации и совпадения",
+      "filter": "Фильтр",
+      "filterActive": "Фильтр ({count})",
+      "noMatchesForFilters": "Нет совпадений по этим фильтрам. Сбрось, чтобы увидеть больше.",
+      "showingOfTotal": "Показано {shown} из {total}",
+      "filterTitle": "Фильтровать совпадения",
+      "filterMinScore": "Минимальный балл",
+      "filterClear": "Сбросить",
+      "filterShowResults": "Показать {count} совпадений"
     },
     "matches": {
       "title": "Люди, которые тебе подходят",
@@ -132,12 +146,26 @@
         "activity_seek": "Активность",
         "partner_seek": "Партнёр",
         "social_seek": "Общение",
-        "mutual_aid": "Взаимопомощь"
+        "mutual_aid": "Взаимопомощь",
+        "learning_seek": "Обучение",
+        "mentor_seek": "Наставничество"
       },
       "viewMine": "Мои намерения",
       "emptyBoard": "В этом разделе нет открытых намерений. Будь первым.",
       "emptyDance": "Пока нет открытых танцевальных постов — опубликуй свой и будь первым!",
-      "emptyMine": "В этом разделе нет постов."
+      "emptyMine": "В этом разделе нет постов.",
+      "post": "Опубликовать",
+      "styleLabel": "Стиль",
+      "variety": {
+        "any": "Любой",
+        "salsa": "Сальса",
+        "tango": "Танго",
+        "bachata": "Бачата",
+        "kizomba": "Кизомба",
+        "swing": "Свинг",
+        "ballroom": "Бальные танцы",
+        "hiphop": "Хип-хоп"
+      }
     },
     "intentMatch": {
       "title": "Детали совпадения",
@@ -156,6 +184,56 @@
       "fallbackName": "Участник",
       "emptyTitle": "Ничего не найдено",
       "emptyDesc": "Измени запрос и попробуй снова."
+    },
+    "createGroup": {
+      "title": "Создать новую группу",
+      "namePlaceholder": "напр. Утренние бегуны или Здоровая кухня",
+      "nameLabel": "Название группы",
+      "descriptionPlaceholder": "Опиши цель и занятия своей группы",
+      "descriptionLabel": "Описание",
+      "categoryLabel": "Категория",
+      "category": {
+        "fitness": "Фитнес",
+        "nutrition": "Питание",
+        "mental-health": "Психическое здоровье",
+        "support": "Поддержка",
+        "learning": "Обучение",
+        "social": "Общение"
+      },
+      "privacyLabel": "Видимость",
+      "privacy": {
+        "public": "Публичная",
+        "private": "Приватная"
+      },
+      "cancel": "Отмена",
+      "submit": "Создать группу",
+      "creating": "Создание …",
+      "created": "Группа создана.",
+      "nameRequired": "Введи название группы."
+    },
+    "composer": {
+      "title": "Опубликовать в сообществе",
+      "kindLabel": "Тип",
+      "kind": {
+        "commercial_buy": "Покупка",
+        "commercial_sell": "Продажа",
+        "activity_seek": "Активность",
+        "social_seek": "Общение",
+        "mutual_aid": "Взаимопомощь",
+        "partner_seek": "Партнёр"
+      },
+      "titlePlaceholder": "Короткий заголовок",
+      "titleLabel": "Заголовок",
+      "scopePlaceholder": "Опиши, что тебе нужно или что ты предлагаешь",
+      "scopeLabel": "Описание",
+      "budgetMin": "Бюджет мин.",
+      "budgetMax": "Бюджет макс.",
+      "cancel": "Отмена",
+      "submit": "Опубликовать",
+      "posting": "Публикация …",
+      "posted": "Опубликовано в сообществе.",
+      "titleRequired": "Введи заголовок не менее 3 символов.",
+      "scopeTooShort": "Опиши не менее чем в 20 символах."
     }
   }
 }

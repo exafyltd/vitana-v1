@@ -64,6 +64,49 @@ describe('IntentBoardScreen', () => {
     await waitFor(() => expect(screen.getByText('Tango social this weekend')).toBeTruthy());
     expect(screen.queryByText('Book swap')).toBeNull();
   });
+
+  it('shows the dance-variety chips on the dance meta-tab and narrows by variety', async () => {
+    const d = createCommunitySupabaseDouble();
+    const bachata = { ...intent, intent_id: 'i-3', category: 'dance.bachata', title: 'Bachata practice', kind_payload: { dance: { variety: 'bachata' } } };
+    render(<IntentBoardScreen />, {
+      wrapper: makeCommunityWrapper({
+        client: d.client,
+        gateway: { '/intent-board': { compass: null, kinds_shown: [], intents: [intent, bachata] } },
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId('intent-board-list')).toBeTruthy());
+    fireEvent.press(screen.getByTestId('intent-board-filter-dance'));
+    await waitFor(() => expect(screen.getByTestId('intent-board-variety')).toBeTruthy());
+    // Tango + Bachata both show under "any"; selecting bachata drops the tango post.
+    fireEvent.press(screen.getByTestId('intent-board-variety-bachata'));
+    await waitFor(() => expect(screen.queryByText('Tango social this weekend')).toBeNull());
+    expect(screen.getByText('Bachata practice')).toBeTruthy();
+  });
+
+  it('includes the learning_seek filter and forwards it as a kind', async () => {
+    const d = createCommunitySupabaseDouble();
+    const learning = { ...intent, intent_id: 'i-4', intent_kind: 'activity_seek', category: null, title: 'Learn to lead' };
+    render(<IntentBoardScreen />, {
+      wrapper: makeCommunityWrapper({
+        client: d.client,
+        gateway: { '/intent-board': { compass: null, kinds_shown: [], intents: [learning] } },
+      }),
+    });
+    await waitFor(() => expect(screen.getByTestId('intent-board-list')).toBeTruthy());
+    expect(screen.getByTestId('intent-board-filter-learning_seek')).toBeTruthy();
+    fireEvent.press(screen.getByTestId('intent-board-filter-learning_seek'));
+    await waitFor(() => expect(screen.getByTestId('intent-board-list')).toBeTruthy());
+  });
+
+  it('opens the composer from the Post action', async () => {
+    const d = createCommunitySupabaseDouble();
+    render(<IntentBoardScreen />, {
+      wrapper: makeCommunityWrapper({ client: d.client, gateway: { '/intent-board': { compass: null, kinds_shown: [], intents: [intent] } } }),
+    });
+    await waitFor(() => expect(screen.getByTestId('intent-board-list')).toBeTruthy());
+    fireEvent.press(screen.getByTestId('intent-board-post'));
+    expect(screen.getByTestId('composer-submit', { includeHiddenElements: true })).toBeTruthy();
+  });
 });
 
 describe('IntentMatchDetailScreen', () => {

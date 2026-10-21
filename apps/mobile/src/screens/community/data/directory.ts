@@ -3,9 +3,26 @@
  * directory reads the web community screens use: the members directory
  * (`/community/members`, web `Members.tsx`), the open-asks feed
  * (`/community/open-asks`, web `OpenAsks.tsx`) and the global member search
- * (`global_community_profiles`, web `useCommunityMembers.ts`). Reads only;
- * the member-listing queries are reused unchanged, so the test/service
- * allowlist exclusion (program NEVER rule 45) is inherited, not re-added.
+ * (`global_community_profiles`, web `useCommunityMembers.ts`). Reads only.
+ *
+ * CORRECTION (acceptance review VTID-05296): these queries are NOT imported
+ * from `@vitana/core` — this file RE-IMPLEMENTS them against the native
+ * PostgREST / gateway client (`getSupabase()` / `getGateway()`), with the same
+ * tables, columns and filters as the web hooks. The test/service allowlist
+ * exclusion (program NEVER rule 45 — `service_bot_accounts` ∪
+ * `notification_test_actors`) is therefore enforced exactly as on web, by the
+ * SAME mechanisms, not by sharing a query object:
+ *   - Global member search reads `global_community_profiles` filtered to
+ *     `is_visible = true`. The platform DB trigger (migration
+ *     `vtid_04888_rule45`) sets `is_visible = false` for any profile whose
+ *     `user_id` is in either allowlist, so filtering on it excludes both —
+ *     identical to web `useCommunityMembers`.
+ *   - The `/community/members` and `/community/open-asks` gateway feeds apply
+ *     the exclusion server-side in the gateway, so the native client inherits
+ *     it from the endpoint, not from this file.
+ * A member-listing surface added here MUST keep both exclusions (the
+ * `is_visible` filter for direct profile reads; a gateway feed for server-side
+ * lists) — never a raw unfiltered `global_community_profiles` select.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -177,7 +194,12 @@ export interface SearchMember {
   avatar_url: string | null;
 }
 
-/** Mirrors `useCommunityMembers` — visible global community profiles, name search. */
+/**
+ * Mirrors `useCommunityMembers` — visible global community profiles, name
+ * search. The `is_visible = true` filter is the allowlist exclusion (rule 45):
+ * `vtid_04888_rule45` hides any `service_bot_accounts` / `notification_test_actors`
+ * profile. Keep it on every direct profile read.
+ */
 export function useMemberSearch(query: string) {
   const term = query.trim();
   return useQuery({

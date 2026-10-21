@@ -2,10 +2,15 @@
  * VTID-05296 (N-W2 community-hub) — native twin of the web group data hooks
  * (`src/hooks/useUserGroups.ts`, `useGroupDirectory.ts`, the inline queries in
  * `GroupDetail.tsx` and `useGroupMembership.ts`). Same PostgREST queries, same
- * columns, same transforms, against the injected native Supabase client
- * (`getSupabase()`), so no new member-listing query is introduced — the
- * test/service allowlist exclusion (program NEVER rule 45) is inherited from
- * the shared tables, not re-implemented.
+ * columns, same transforms, RE-IMPLEMENTED against the injected native
+ * Supabase client (`getSupabase()`) — not imported from `@vitana/core`.
+ *
+ * These are group / group-membership reads and writes, not a member-listing
+ * directory: they surface groups and a group's own roster, never a browsable
+ * list of community member profiles. Rule 45 (`service_bot_accounts` ∪
+ * `notification_test_actors`) governs real-member-facing profile surfaces,
+ * which live in `directory.ts` (members/search/find-partner); this file adds
+ * no such surface.
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getSupabase } from '../../../auth/client';
@@ -202,6 +207,65 @@ export function useGroupMembersPreview(id: string | undefined) {
         .limit(12);
       if (error) return [];
       return ((data as GroupMemberPreview[] | null) ?? []);
+    },
+  });
+}
+
+export interface CreateGroupInput {
+  name: string;
+  description?: string;
+  category?: string;
+  is_public: boolean;
+}
+
+/**
+ * Mirrors the web `CreateGroupPopup` insert (`src/components/CreateGroupPopup.tsx`):
+ * insert the group as `approved`, ensure the creator is an `admin` member, then
+ * invalidate the directory + my-groups caches. Direct Supabase insert against
+ * the injected native client.
+ */
+export function useCreateGroup(onCreated?: (groupId: string) => void) {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: CreateGroupInput): Promise<{ id: string }> => {
+      const userId = user?.id;
+      if (!userId) throw new Error('not signed in');
+      const supabase = getSupabase();
+      const { data: created, error: groupError } = await supabase
+        .from('global_community_groups')
+        .insert({
+          name: input.name.trim(),
+          description: input.description?.trim() || null,
+          category: input.category || null,
+          is_public: input.is_public,
+          created_by: userId,
+          status: 'approved',
+          member_count: 0,
+        })
+        .select('id')
+        .single();
+      if (groupError) throw groupError;
+      const groupId = (created as { id: string }).id;
+
+      const { count, error: checkError } = await supabase
+        .from('global_community_group_members')
+        .select('id', { count: 'exact', head: true })
+        .eq('group_id', groupId)
+        .eq('user_id', userId);
+      if (checkError) throw checkError;
+      if ((count ?? 0) === 0) {
+        const { error: memberError } = await supabase
+          .from('global_community_group_members')
+          .insert({ group_id: groupId, user_id: userId, role: 'admin' });
+        if (memberError) throw memberError;
+      }
+      return { id: groupId };
+    },
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ['user-groups'] });
+      queryClient.invalidateQueries({ queryKey: ['group-directory'] });
+      onCreated?.(result.id);
     },
   });
 }

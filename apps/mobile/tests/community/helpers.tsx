@@ -68,9 +68,12 @@ export function createCommunitySupabaseDouble(opts: SupabaseDoubleOptions = {}) 
     const compute = (): Result => {
       if (opts.failTables) return err('table error');
       if (mode === 'insert') {
+        // Real PostgREST returns the inserted row from `.insert().select()`;
+        // assign an id when the caller didn't supply one so `.single()` resolves.
+        const row: Row = { id: `ins-${inserts.length + 1}`, ...(insertValues ?? {}) };
         inserts.push({ table, values: insertValues ?? {} });
         record(`from.${table}.insert`, [insertValues]);
-        return ok(null);
+        return ok([row]);
       }
       if (mode === 'delete') {
         deletes.push({ table, filters: filters.map(([, c, v]) => [c, v]) });

@@ -23,7 +23,10 @@
       "emptyMineTitle": "还没有群组",
       "emptyMineDesc": "加入你的第一个群组开始吧。",
       "emptyDiscoverTitle": "暂无可发现的群组",
-      "emptyDiscoverDesc": "成为第一个创建社区群组的人。"
+      "emptyDiscoverDesc": "成为第一个创建社区群组的人。",
+      "create": "创建",
+      "searchPlaceholder": "搜索群组",
+      "searchLabel": "搜索群组"
     },
     "groupDetail": {
       "title": "群组",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "{score}%",
       "matchFallback": "匹配",
-      "emptyMatches": "还没有匹配。发布一个愿望，我们会帮你留意。"
+      "emptyMatches": "还没有匹配。发布一个愿望，我们会帮你留意。",
+      "newWish": "新愿望",
+      "searchPlaceholder": "搜索帖子和匹配",
+      "searchLabel": "搜索帖子和匹配",
+      "filter": "筛选",
+      "filterActive": "筛选（{count}）",
+      "noMatchesForFilters": "这些筛选没有匹配。重置以查看更多。",
+      "showingOfTotal": "显示 {total} 中的 {shown}",
+      "filterTitle": "筛选匹配",
+      "filterMinScore": "最低分数",
+      "filterClear": "重置",
+      "filterShowResults": "显示 {count} 个匹配"
     },
     "matches": {
       "title": "与你匹配的人",
@@ -132,12 +146,26 @@
         "activity_seek": "活动",
         "partner_seek": "伙伴",
         "social_seek": "社交",
-        "mutual_aid": "互助"
+        "mutual_aid": "互助",
+        "learning_seek": "学习",
+        "mentor_seek": "指导"
       },
       "viewMine": "查看我的意向",
       "emptyBoard": "此视图中没有公开意向。成为第一个吧。",
       "emptyDance": "还没有公开的舞蹈发布——发布你的，成为第一个吧！",
-      "emptyMine": "此视图中没有发布。"
+      "emptyMine": "此视图中没有发布。",
+      "post": "发布",
+      "styleLabel": "风格",
+      "variety": {
+        "any": "任意",
+        "salsa": "萨尔萨",
+        "tango": "探戈",
+        "bachata": "巴恰塔",
+        "kizomba": "基宗巴",
+        "swing": "摇摆舞",
+        "ballroom": "标准舞",
+        "hiphop": "嘻哈"
+      }
     },
     "intentMatch": {
       "title": "匹配详情",
@@ -156,6 +184,56 @@
       "fallbackName": "成员",
       "emptyTitle": "没有结果",
       "emptyDesc": "调整搜索词后重试。"
+    },
+    "createGroup": {
+      "title": "创建新群组",
+      "namePlaceholder": "例如：晨跑者或健康烹饪",
+      "nameLabel": "群组名称",
+      "descriptionPlaceholder": "描述你群组的目标和活动",
+      "descriptionLabel": "描述",
+      "categoryLabel": "类别",
+      "category": {
+        "fitness": "健身",
+        "nutrition": "营养",
+        "mental-health": "心理健康",
+        "support": "支持",
+        "learning": "学习",
+        "social": "社交"
+      },
+      "privacyLabel": "可见性",
+      "privacy": {
+        "public": "公开",
+        "private": "私密"
+      },
+      "cancel": "取消",
+      "submit": "创建群组",
+      "creating": "创建中 …",
+      "created": "群组已创建。",
+      "nameRequired": "请输入群组名称。"
+    },
+    "composer": {
+      "title": "发布到社区",
+      "kindLabel": "类型",
+      "kind": {
+        "commercial_buy": "求购",
+        "commercial_sell": "出售",
+        "activity_seek": "活动",
+        "social_seek": "社交",
+        "mutual_aid": "互助",
+        "partner_seek": "伙伴"
+      },
+      "titlePlaceholder": "简短标题",
+      "titleLabel": "标题",
+      "scopePlaceholder": "描述你的需求或提供的内容",
+      "scopeLabel": "描述",
+      "budgetMin": "最低预算",
+      "budgetMax": "最高预算",
+      "cancel": "取消",
+      "submit": "发布",
+      "posting": "发布中 …",
+      "posted": "已发布到社区。",
+      "titleRequired": "请输入至少 3 个字符的标题。",
+      "scopeTooShort": "请用至少 20 个字符描述。"
     }
   }
 }

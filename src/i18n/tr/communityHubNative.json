@@ -23,7 +23,10 @@
       "emptyMineTitle": "Henüz grup yok",
       "emptyMineDesc": "Başlamak için ilk gruba katıl.",
       "emptyDiscoverTitle": "Keşfedilecek grup yok",
-      "emptyDiscoverDesc": "Bir topluluk grubu oluşturan ilk kişi ol."
+      "emptyDiscoverDesc": "Bir topluluk grubu oluşturan ilk kişi ol.",
+      "create": "Oluştur",
+      "searchPlaceholder": "Grup ara",
+      "searchLabel": "Grup ara"
     },
     "groupDetail": {
       "title": "Grup",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "%{score}",
       "matchFallback": "Eşleşme",
-      "emptyMatches": "Henüz eşleşme yok. Bir dilek paylaş, gözümüz üzerinde olsun."
+      "emptyMatches": "Henüz eşleşme yok. Bir dilek paylaş, gözümüz üzerinde olsun.",
+      "newWish": "Yeni istek",
+      "searchPlaceholder": "Gönderi ve eşleşme ara",
+      "searchLabel": "Gönderi ve eşleşme ara",
+      "filter": "Filtrele",
+      "filterActive": "Filtre ({count})",
+      "noMatchesForFilters": "Bu filtreler için eşleşme yok. Daha fazlası için sıfırla.",
+      "showingOfTotal": "{total} içinden {shown} gösteriliyor",
+      "filterTitle": "Eşleşmeleri filtrele",
+      "filterMinScore": "Minimum puan",
+      "filterClear": "Sıfırla",
+      "filterShowResults": "{count} eşleşme göster"
     },
     "matches": {
       "title": "Seninle eşleşen kişiler",
@@ -132,12 +146,26 @@
         "activity_seek": "Etkinlik",
         "partner_seek": "Partner",
         "social_seek": "Sosyal",
-        "mutual_aid": "Karşılıklı yardım"
+        "mutual_aid": "Karşılıklı yardım",
+        "learning_seek": "Öğrenme",
+        "mentor_seek": "Mentorluk"
       },
       "viewMine": "Niyetlerimi gör",
       "emptyBoard": "Bu görünümde açık niyet yok. İlk kişi sen ol.",
       "emptyDance": "Henüz açık dans gönderisi yok — kendininkini paylaş ve ilk kişi ol!",
-      "emptyMine": "Bu görünümde gönderi yok."
+      "emptyMine": "Bu görünümde gönderi yok.",
+      "post": "Gönder",
+      "styleLabel": "Stil",
+      "variety": {
+        "any": "Herhangi",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Balo dansı",
+        "hiphop": "Hip-hop"
+      }
     },
     "intentMatch": {
       "title": "Eşleşme ayrıntıları",
@@ -156,6 +184,56 @@
       "fallbackName": "Üye",
       "emptyTitle": "Sonuç yok",
       "emptyDesc": "Arama terimini değiştir ve tekrar dene."
+    },
+    "createGroup": {
+      "title": "Yeni bir grup oluştur",
+      "namePlaceholder": "örn. Sabah Koşucuları ya da Sağlıklı Yemek",
+      "nameLabel": "Grup adı",
+      "descriptionPlaceholder": "Grubunun amacını ve etkinliklerini anlat",
+      "descriptionLabel": "Açıklama",
+      "categoryLabel": "Kategori",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Beslenme",
+        "mental-health": "Ruh sağlığı",
+        "support": "Destek",
+        "learning": "Öğrenme",
+        "social": "Sosyal"
+      },
+      "privacyLabel": "Görünürlük",
+      "privacy": {
+        "public": "Herkese açık",
+        "private": "Özel"
+      },
+      "cancel": "İptal",
+      "submit": "Grup oluştur",
+      "creating": "Oluşturuluyor …",
+      "created": "Grup oluşturuldu.",
+      "nameRequired": "Bir grup adı gir."
+    },
+    "composer": {
+      "title": "Topluluğa gönder",
+      "kindLabel": "Tür",
+      "kind": {
+        "commercial_buy": "Alım",
+        "commercial_sell": "Satım",
+        "activity_seek": "Etkinlik",
+        "social_seek": "Sosyal",
+        "mutual_aid": "Karşılıklı yardım",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Kısa başlık",
+      "titleLabel": "Başlık",
+      "scopePlaceholder": "Neye ihtiyacın olduğunu veya ne sunduğunu anlat",
+      "scopeLabel": "Açıklama",
+      "budgetMin": "Bütçe min.",
+      "budgetMax": "Bütçe maks.",
+      "cancel": "İptal",
+      "submit": "Gönder",
+      "posting": "Gönderiliyor …",
+      "posted": "Topluluğa gönderildi.",
+      "titleRequired": "En az 3 karakterlik bir başlık gir.",
+      "scopeTooShort": "En az 20 karakterle anlat."
     }
   }
 }

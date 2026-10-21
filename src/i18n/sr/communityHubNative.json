@@ -23,7 +23,10 @@
       "emptyMineTitle": "Još nemaš grupe",
       "emptyMineDesc": "Pridruži se prvoj grupi da započneš.",
       "emptyDiscoverTitle": "Nema grupa za otkrivanje",
-      "emptyDiscoverDesc": "Budi prva osoba koja pravi grupu zajednice."
+      "emptyDiscoverDesc": "Budi prva osoba koja pravi grupu zajednice.",
+      "create": "Napravi",
+      "searchPlaceholder": "Pretraži grupe",
+      "searchLabel": "Pretraži grupe"
     },
     "groupDetail": {
       "title": "Grupa",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "{score}%",
       "matchFallback": "Poklapanje",
-      "emptyMatches": "Još nema poklapanja. Objavi želju i mi ćemo pratiti."
+      "emptyMatches": "Još nema poklapanja. Objavi želju i mi ćemo pratiti.",
+      "newWish": "Nova želja",
+      "searchPlaceholder": "Pretraži objave i podudaranja",
+      "searchLabel": "Pretraži objave i podudaranja",
+      "filter": "Filter",
+      "filterActive": "Filter ({count})",
+      "noMatchesForFilters": "Nema podudaranja za ove filtere. Resetuj da vidiš više.",
+      "showingOfTotal": "Prikazano {shown} od {total}",
+      "filterTitle": "Filtriraj podudaranja",
+      "filterMinScore": "Minimalni rezultat",
+      "filterClear": "Resetuj",
+      "filterShowResults": "Prikaži {count} podudaranja"
     },
     "matches": {
       "title": "Ljudi koji ti odgovaraju",
@@ -132,12 +146,26 @@
         "activity_seek": "Aktivnost",
         "partner_seek": "Partner",
         "social_seek": "Druženje",
-        "mutual_aid": "Uzajamna pomoć"
+        "mutual_aid": "Uzajamna pomoć",
+        "learning_seek": "Učenje",
+        "mentor_seek": "Mentorstvo"
       },
       "viewMine": "Pogledaj moje namere",
       "emptyBoard": "Nema otvorenih namera u ovom prikazu. Budi prva osoba.",
       "emptyDance": "Još nema otvorenih plesnih objava — objavi svoju i budi prva osoba!",
-      "emptyMine": "Nema objava u ovom prikazu."
+      "emptyMine": "Nema objava u ovom prikazu.",
+      "post": "Objavi",
+      "styleLabel": "Stil",
+      "variety": {
+        "any": "Bilo koji",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bačata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Standardni plesovi",
+        "hiphop": "Hip-hop"
+      }
     },
     "intentMatch": {
       "title": "Detalji poklapanja",
@@ -156,6 +184,56 @@
       "fallbackName": "Član",
       "emptyTitle": "Nema rezultata",
       "emptyDesc": "Promeni pojam za pretragu i pokušaj ponovo."
+    },
+    "createGroup": {
+      "title": "Napravi novu grupu",
+      "namePlaceholder": "npr. Jutarnji trkači ili Zdravo kuvanje",
+      "nameLabel": "Naziv grupe",
+      "descriptionPlaceholder": "Opiši svrhu i aktivnosti svoje grupe",
+      "descriptionLabel": "Opis",
+      "categoryLabel": "Kategorija",
+      "category": {
+        "fitness": "Fitnes",
+        "nutrition": "Ishrana",
+        "mental-health": "Mentalno zdravlje",
+        "support": "Podrška",
+        "learning": "Učenje",
+        "social": "Društveno"
+      },
+      "privacyLabel": "Vidljivost",
+      "privacy": {
+        "public": "Javna",
+        "private": "Privatna"
+      },
+      "cancel": "Otkaži",
+      "submit": "Napravi grupu",
+      "creating": "Pravljenje …",
+      "created": "Grupa je napravljena.",
+      "nameRequired": "Unesi naziv grupe."
+    },
+    "composer": {
+      "title": "Objavi u zajednici",
+      "kindLabel": "Vrsta",
+      "kind": {
+        "commercial_buy": "Kupovina",
+        "commercial_sell": "Prodaja",
+        "activity_seek": "Aktivnost",
+        "social_seek": "Društveno",
+        "mutual_aid": "Uzajamna pomoć",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Kratak naslov",
+      "titleLabel": "Naslov",
+      "scopePlaceholder": "Opiši šta ti treba ili šta nudiš",
+      "scopeLabel": "Opis",
+      "budgetMin": "Budžet min.",
+      "budgetMax": "Budžet maks.",
+      "cancel": "Otkaži",
+      "submit": "Objavi",
+      "posting": "Objavljivanje …",
+      "posted": "Objavljeno u zajednici.",
+      "titleRequired": "Unesi naslov od najmanje 3 znaka.",
+      "scopeTooShort": "Opiši to u najmanje 20 znakova."
     }
   }
 }

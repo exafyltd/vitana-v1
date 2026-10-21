@@ -23,7 +23,10 @@
       "emptyMineTitle": "Nie masz jeszcze grup",
       "emptyMineDesc": "Dołącz do pierwszej grupy, aby zacząć.",
       "emptyDiscoverTitle": "Brak grup do odkrycia",
-      "emptyDiscoverDesc": "Bądź pierwszą osobą, która założy grupę społeczności."
+      "emptyDiscoverDesc": "Bądź pierwszą osobą, która założy grupę społeczności.",
+      "create": "Utwórz",
+      "searchPlaceholder": "Szukaj grup",
+      "searchLabel": "Szukaj grup"
     },
     "groupDetail": {
       "title": "Grupa",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "{score}%",
       "matchFallback": "Dopasowanie",
-      "emptyMatches": "Brak dopasowań. Opublikuj życzenie, a będziemy mieć oko."
+      "emptyMatches": "Brak dopasowań. Opublikuj życzenie, a będziemy mieć oko.",
+      "newWish": "Nowe życzenie",
+      "searchPlaceholder": "Szukaj postów i dopasowań",
+      "searchLabel": "Szukaj postów i dopasowań",
+      "filter": "Filtruj",
+      "filterActive": "Filtr ({count})",
+      "noMatchesForFilters": "Brak dopasowań dla tych filtrów. Zresetuj, aby zobaczyć więcej.",
+      "showingOfTotal": "Pokazano {shown} z {total}",
+      "filterTitle": "Filtruj dopasowania",
+      "filterMinScore": "Minimalny wynik",
+      "filterClear": "Zresetuj",
+      "filterShowResults": "Pokaż {count} dopasowań"
     },
     "matches": {
       "title": "Osoby pasujące do ciebie",
@@ -132,12 +146,26 @@
         "activity_seek": "Aktywność",
         "partner_seek": "Partner",
         "social_seek": "Towarzysko",
-        "mutual_aid": "Wzajemna pomoc"
+        "mutual_aid": "Wzajemna pomoc",
+        "learning_seek": "Nauka",
+        "mentor_seek": "Mentoring"
       },
       "viewMine": "Zobacz moje intencje",
       "emptyBoard": "Brak otwartych intencji w tym widoku. Bądź pierwszą osobą.",
       "emptyDance": "Brak otwartych wpisów o tańcu — opublikuj swój i bądź pierwszą osobą!",
-      "emptyMine": "Brak wpisów w tym widoku."
+      "emptyMine": "Brak wpisów w tym widoku.",
+      "post": "Opublikuj",
+      "styleLabel": "Styl",
+      "variety": {
+        "any": "Dowolny",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Taniec towarzyski",
+        "hiphop": "Hip-hop"
+      }
     },
     "intentMatch": {
       "title": "Szczegóły dopasowania",
@@ -156,6 +184,56 @@
       "fallbackName": "Członek",
       "emptyTitle": "Brak wyników",
       "emptyDesc": "Zmień szukaną frazę i spróbuj ponownie."
+    },
+    "createGroup": {
+      "title": "Utwórz nową grupę",
+      "namePlaceholder": "np. Poranni biegacze albo Zdrowe gotowanie",
+      "nameLabel": "Nazwa grupy",
+      "descriptionPlaceholder": "Opisz cel i aktywności swojej grupy",
+      "descriptionLabel": "Opis",
+      "categoryLabel": "Kategoria",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Odżywianie",
+        "mental-health": "Zdrowie psychiczne",
+        "support": "Wsparcie",
+        "learning": "Nauka",
+        "social": "Społeczność"
+      },
+      "privacyLabel": "Widoczność",
+      "privacy": {
+        "public": "Publiczna",
+        "private": "Prywatna"
+      },
+      "cancel": "Anuluj",
+      "submit": "Utwórz grupę",
+      "creating": "Tworzenie …",
+      "created": "Grupa utworzona.",
+      "nameRequired": "Podaj nazwę grupy."
+    },
+    "composer": {
+      "title": "Opublikuj w społeczności",
+      "kindLabel": "Rodzaj",
+      "kind": {
+        "commercial_buy": "Kupno",
+        "commercial_sell": "Sprzedaż",
+        "activity_seek": "Aktywność",
+        "social_seek": "Społeczne",
+        "mutual_aid": "Wzajemna pomoc",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Krótki nagłówek",
+      "titleLabel": "Tytuł",
+      "scopePlaceholder": "Opisz, czego potrzebujesz lub co oferujesz",
+      "scopeLabel": "Opis",
+      "budgetMin": "Budżet min.",
+      "budgetMax": "Budżet maks.",
+      "cancel": "Anuluj",
+      "submit": "Opublikuj",
+      "posting": "Publikowanie …",
+      "posted": "Opublikowano w społeczności.",
+      "titleRequired": "Podaj tytuł o długości co najmniej 3 znaków.",
+      "scopeTooShort": "Opisz to w co najmniej 20 znakach."
     }
   }
 }

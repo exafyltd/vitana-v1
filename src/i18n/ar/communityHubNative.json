@@ -23,7 +23,10 @@
       "emptyMineTitle": "لا توجد مجموعات بعد",
       "emptyMineDesc": "انضم إلى مجموعتك الأولى للبدء.",
       "emptyDiscoverTitle": "لا توجد مجموعات لاستكشافها",
-      "emptyDiscoverDesc": "كن أول من ينشئ مجموعة للمجتمع."
+      "emptyDiscoverDesc": "كن أول من ينشئ مجموعة للمجتمع.",
+      "create": "إنشاء",
+      "searchPlaceholder": "ابحث عن مجموعات",
+      "searchLabel": "ابحث عن مجموعات"
     },
     "groupDetail": {
       "title": "المجموعة",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "{score}٪",
       "matchFallback": "تطابق",
-      "emptyMatches": "لا توجد تطابقات بعد. انشر رغبة وسنبقى متيقظين."
+      "emptyMatches": "لا توجد تطابقات بعد. انشر رغبة وسنبقى متيقظين.",
+      "newWish": "رغبة جديدة",
+      "searchPlaceholder": "ابحث في المنشورات والمطابقات",
+      "searchLabel": "ابحث في المنشورات والمطابقات",
+      "filter": "تصفية",
+      "filterActive": "تصفية ({count})",
+      "noMatchesForFilters": "لا مطابقات لهذه الفلاتر. أعد الضبط لرؤية المزيد.",
+      "showingOfTotal": "عرض {shown} من {total}",
+      "filterTitle": "تصفية المطابقات",
+      "filterMinScore": "أدنى نتيجة",
+      "filterClear": "إعادة الضبط",
+      "filterShowResults": "عرض {count} مطابقة"
     },
     "matches": {
       "title": "أشخاص يتوافقون معك",
@@ -132,12 +146,26 @@
         "activity_seek": "نشاط",
         "partner_seek": "شريك",
         "social_seek": "اجتماعي",
-        "mutual_aid": "مساعدة متبادلة"
+        "mutual_aid": "مساعدة متبادلة",
+        "learning_seek": "تعلّم",
+        "mentor_seek": "إرشاد"
       },
       "viewMine": "عرض نواياي",
       "emptyBoard": "لا توجد نوايا مفتوحة في هذا العرض. كن الأول.",
       "emptyDance": "لا توجد منشورات رقص مفتوحة بعد — انشر منشورك وكن الأول!",
-      "emptyMine": "لا توجد منشورات في هذا العرض."
+      "emptyMine": "لا توجد منشورات في هذا العرض.",
+      "post": "نشر",
+      "styleLabel": "النمط",
+      "variety": {
+        "any": "أي",
+        "salsa": "سالسا",
+        "tango": "تانغو",
+        "bachata": "باتشاتا",
+        "kizomba": "كيزومبا",
+        "swing": "سوينغ",
+        "ballroom": "الرقص القاعي",
+        "hiphop": "هيب هوب"
+      }
     },
     "intentMatch": {
       "title": "تفاصيل التطابق",
@@ -156,6 +184,56 @@
       "fallbackName": "عضو",
       "emptyTitle": "لا توجد نتائج",
       "emptyDesc": "عدّل مصطلح البحث وحاول مرة أخرى."
+    },
+    "createGroup": {
+      "title": "إنشاء مجموعة جديدة",
+      "namePlaceholder": "مثل عدّاؤو الصباح أو الطبخ الصحي",
+      "nameLabel": "اسم المجموعة",
+      "descriptionPlaceholder": "صف هدف مجموعتك وأنشطتها",
+      "descriptionLabel": "الوصف",
+      "categoryLabel": "الفئة",
+      "category": {
+        "fitness": "اللياقة",
+        "nutrition": "التغذية",
+        "mental-health": "الصحة النفسية",
+        "support": "الدعم",
+        "learning": "التعلّم",
+        "social": "اجتماعي"
+      },
+      "privacyLabel": "الظهور",
+      "privacy": {
+        "public": "عامة",
+        "private": "خاصة"
+      },
+      "cancel": "إلغاء",
+      "submit": "إنشاء المجموعة",
+      "creating": "جارٍ الإنشاء …",
+      "created": "تم إنشاء المجموعة.",
+      "nameRequired": "أدخل اسم المجموعة."
+    },
+    "composer": {
+      "title": "النشر في المجتمع",
+      "kindLabel": "النوع",
+      "kind": {
+        "commercial_buy": "شراء",
+        "commercial_sell": "بيع",
+        "activity_seek": "نشاط",
+        "social_seek": "اجتماعي",
+        "mutual_aid": "تعاون متبادل",
+        "partner_seek": "شريك"
+      },
+      "titlePlaceholder": "عنوان قصير",
+      "titleLabel": "العنوان",
+      "scopePlaceholder": "صف ما تحتاجه أو تقدّمه",
+      "scopeLabel": "الوصف",
+      "budgetMin": "أدنى ميزانية",
+      "budgetMax": "أقصى ميزانية",
+      "cancel": "إلغاء",
+      "submit": "نشر",
+      "posting": "جارٍ النشر …",
+      "posted": "تم النشر في المجتمع.",
+      "titleRequired": "أدخل عنوانًا من 3 أحرف على الأقل.",
+      "scopeTooShort": "صِفه بما لا يقل عن 20 حرفًا."
     }
   }
 }

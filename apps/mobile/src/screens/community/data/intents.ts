@@ -4,7 +4,7 @@
  * are called with bare paths (the native gateway fetch prepends `/api/v1`);
  * the shapes mirror the web types 1:1. Reads only.
  */
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getGateway } from '../../../auth/gateway';
 import { gatewayJson } from '../../../ports/core';
 
@@ -67,8 +67,16 @@ const bareQuery = (params: URLSearchParams) => {
   return qs ? `?${qs}` : '';
 };
 
+/**
+ * The board kind filters (web `IntentBoard.KIND_FILTERS`): the intent kinds
+ * plus `learning_seek` / `mentor_seek` (which the gateway forwards as a `kind`),
+ * the client-side `dance` meta-tab and `all`. A string, because the two seek
+ * kinds are not part of the posted `IntentKind` union.
+ */
+export type BoardFilter = IntentKind | 'learning_seek' | 'mentor_seek' | 'all' | 'dance';
+
 /** Mirrors `getIntentBoard`. `filter === 'dance'` is client-side (web IntentBoard.tsx). */
-export function useIntentBoard(filter: IntentKind | 'all' | 'dance') {
+export function useIntentBoard(filter: BoardFilter) {
   return useQuery({
     queryKey: ['intent-board', filter],
     queryFn: async (): Promise<BoardResponse> => {
@@ -89,6 +97,48 @@ export function useMyIntents(tab: IntentKind | 'all') {
       if (tab !== 'all') params.set('kind', tab);
       const data = await gatewayJson<{ intents?: UserIntent[] }>(getGateway(), `/intents${bareQuery(params)}`);
       return data.intents ?? [];
+    },
+  });
+}
+
+/** The composer's kind options (web `IntentComposer.KIND_OPTIONS`). */
+export const INTENT_COMPOSER_KINDS: IntentKind[] = [
+  'commercial_buy',
+  'commercial_sell',
+  'activity_seek',
+  'social_seek',
+  'mutual_aid',
+  'partner_seek',
+];
+
+export interface PostIntentInput {
+  intent_kind: IntentKind;
+  title: string;
+  scope: string;
+  kind_payload?: Record<string, unknown>;
+}
+
+/**
+ * Mirrors `postIntent` in `src/lib/intentApi.ts` — `POST /intents`. The native
+ * composer invalidates the board + my-intents + matches caches on success so
+ * the just-posted wish shows up, exactly like the web `onPosted` → refresh.
+ */
+export function usePostIntent(onPosted?: (intentId: string) => void) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: PostIntentInput): Promise<{ intent_id: string }> => {
+      const data = await gatewayJson<{ intent_id: string; intent?: UserIntent }>(getGateway(), '/intents', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(input),
+      });
+      return { intent_id: data.intent_id ?? data.intent?.intent_id ?? '' };
+    },
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ['intent-board'] });
+      queryClient.invalidateQueries({ queryKey: ['my-intents'] });
+      queryClient.invalidateQueries({ queryKey: ['find-partner-matches'] });
+      onPosted?.(result.intent_id);
     },
   });
 }

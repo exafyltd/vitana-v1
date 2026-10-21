@@ -36,4 +36,10 @@ describe('SearchScreen', () => {
     await waitFor(() => expect(screen.getByTestId('search-list')).toBeTruthy());
     expect(screen.getByText('Ana Belić')).toBeTruthy();
   });
+
+  it('shows the error state when the profile query fails', async () => {
+    const d = createCommunitySupabaseDouble({ tables: { global_community_profiles: profiles }, failTables: true });
+    render(<SearchScreen initialQuery="ana" />, { wrapper: makeCommunityWrapper({ client: d.client }) });
+    await waitFor(() => expect(screen.getByTestId('list-error')).toBeTruthy());
+  });
 });

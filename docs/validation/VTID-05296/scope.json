@@ -17,5 +17,49 @@
   ],
   "sparring_record": "docs/validation/VTID-05296/plan-sparring.md",
   "weakens_tests": [],
-  "red_green_exempt": []
+  "red_green_exempt": [],
+  "review_response": {
+    "note": "Acceptance review (vitana-lane-reviewer) CHANGES_REQUESTED addressed in a follow-up commit on the same branch. This scope.json now records the exact files touched by the lane (original commit 8326dbc + review-fix commit).",
+    "files_touched": [
+      "apps/mobile/src/ports/ui.tsx",
+      "apps/mobile/src/navigation/resolve.ts",
+      "apps/mobile/src/screens/community/CreateGroupSheet.tsx",
+      "apps/mobile/src/screens/community/FindPartnerFilterSheet.tsx",
+      "apps/mobile/src/screens/community/FindPartnerScreen.tsx",
+      "apps/mobile/src/screens/community/GroupDetailScreen.tsx",
+      "apps/mobile/src/screens/community/GroupsScreen.tsx",
+      "apps/mobile/src/screens/community/IntentBoardScreen.tsx",
+      "apps/mobile/src/screens/community/IntentCard.tsx",
+      "apps/mobile/src/screens/community/IntentComposer.tsx",
+      "apps/mobile/src/screens/community/IntentMatchDetailScreen.tsx",
+      "apps/mobile/src/screens/community/MatchesScreen.tsx",
+      "apps/mobile/src/screens/community/MembersScreen.tsx",
+      "apps/mobile/src/screens/community/OpenAsksScreen.tsx",
+      "apps/mobile/src/screens/community/SearchScreen.tsx",
+      "apps/mobile/src/screens/community/components.tsx",
+      "apps/mobile/src/screens/community/data/directory.ts",
+      "apps/mobile/src/screens/community/data/findPartner.ts",
+      "apps/mobile/src/screens/community/data/groups.ts",
+      "apps/mobile/src/screens/community/data/intents.ts",
+      "apps/mobile/src/screens/community/data/matches.ts",
+      "apps/mobile/app/(app)/comm/**",
+      "apps/mobile/app/(app)/me/matches.tsx",
+      "apps/mobile/app/(app)/intents/**",
+      "apps/mobile/app/(app)/search.tsx",
+      "apps/mobile/maestro/community/**",
+      "apps/mobile/tests/community/**",
+      "apps/mobile/parity/ledger.json",
+      "src/i18n/*/communityHubNative.json",
+      "docs/validation/VTID-05296/**"
+    ],
+    "outside_declared_lane_paths": {
+      "files": [
+        "apps/mobile/src/ports/ui.tsx",
+        "apps/mobile/src/navigation/resolve.ts",
+        "apps/mobile/tests/community/**"
+      ],
+      "reason": "These are legitimate shared native-infra the community screens must use: ports/ui.tsx is the single door to the N2 UI kit (this lane adds Slider to it for the Find-a-Partner filter sheet); navigation/resolve.ts resolves the web paths the ported screens deep-link to; tests/community/** are this lane's own fixture/fake-gateway Jest suites. They are kept and used as-is.",
+      "lane_path_widening": "NOT done from this lane. The `scope.json`/lane `paths` include these globs already (ports/ui.tsx, navigation/resolve.ts, tests/community/**). The Lane-scope CI check reconciliation (widening the canonical lane-paths definition) is handled SEPARATELY by the coordinator, not from this lane — this lane's job is correct, scoped CODE only."
+    }
+  }
 }

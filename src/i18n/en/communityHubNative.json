@@ -23,7 +23,60 @@
       "emptyMineTitle": "No groups yet",
       "emptyMineDesc": "Join your first group to get started.",
       "emptyDiscoverTitle": "No groups to discover",
-      "emptyDiscoverDesc": "Be the first to start a community group."
+      "emptyDiscoverDesc": "Be the first to start a community group.",
+      "create": "Create",
+      "searchPlaceholder": "Search groups",
+      "searchLabel": "Search groups"
+    },
+    "createGroup": {
+      "title": "Create a new group",
+      "namePlaceholder": "e.g. Morning Runners or Healthy Cooking",
+      "nameLabel": "Group name",
+      "descriptionPlaceholder": "Describe your group's purpose and activities",
+      "descriptionLabel": "Description",
+      "categoryLabel": "Category",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Nutrition",
+        "mental-health": "Mental health",
+        "support": "Support",
+        "learning": "Learning",
+        "social": "Social"
+      },
+      "privacyLabel": "Visibility",
+      "privacy": {
+        "public": "Public",
+        "private": "Private"
+      },
+      "cancel": "Cancel",
+      "submit": "Create group",
+      "creating": "Creating …",
+      "created": "Group created.",
+      "nameRequired": "Please enter a group name."
+    },
+    "composer": {
+      "title": "Post to the community",
+      "kindLabel": "Kind",
+      "kind": {
+        "commercial_buy": "Buying",
+        "commercial_sell": "Selling",
+        "activity_seek": "Activity",
+        "social_seek": "Social",
+        "mutual_aid": "Mutual aid",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Short headline",
+      "titleLabel": "Title",
+      "scopePlaceholder": "Describe what you need or offer",
+      "scopeLabel": "Description",
+      "budgetMin": "Budget min.",
+      "budgetMax": "Budget max.",
+      "cancel": "Cancel",
+      "submit": "Post",
+      "posting": "Posting …",
+      "posted": "Posted to the community.",
+      "titleRequired": "Please enter a title of at least 3 characters.",
+      "scopeTooShort": "Please describe it in at least 20 characters."
     },
     "groupDetail": {
       "title": "Group",
@@ -108,7 +161,18 @@
       },
       "scorePercent": "{score}%",
       "matchFallback": "Match",
-      "emptyMatches": "No matches yet. Post a wish and we'll keep an eye out."
+      "emptyMatches": "No matches yet. Post a wish and we'll keep an eye out.",
+      "newWish": "New wish",
+      "searchPlaceholder": "Search posts & matches",
+      "searchLabel": "Search posts and matches",
+      "filter": "Filter",
+      "filterActive": "Filter ({count})",
+      "noMatchesForFilters": "No matches for these filters. Reset to see more.",
+      "showingOfTotal": "Showing {shown} of {total}",
+      "filterTitle": "Filter matches",
+      "filterMinScore": "Minimum score",
+      "filterClear": "Reset",
+      "filterShowResults": "Show {count} matches"
     },
     "matches": {
       "title": "People who match you",
@@ -132,7 +196,21 @@
         "activity_seek": "Activity",
         "partner_seek": "Partner",
         "social_seek": "Social",
-        "mutual_aid": "Mutual aid"
+        "mutual_aid": "Mutual aid",
+        "learning_seek": "Learning",
+        "mentor_seek": "Mentoring"
+      },
+      "post": "Post",
+      "styleLabel": "Style",
+      "variety": {
+        "any": "Any",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Ballroom",
+        "hiphop": "Hip-hop"
       },
       "viewMine": "View my intents",
       "emptyBoard": "No open intents in this view. Be the first.",

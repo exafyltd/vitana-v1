@@ -83,8 +83,8 @@ export { notify, notifyError } from '@vitana/ui';
 // intents / search screens render, exposed through the one UI door so screen
 // files never import `@vitana/ui` directly (tests/ports.test.ts). The kit's
 // contracts match the screens' needs, so these are plain re-exports.
-export { Button, Badge, Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, Skeleton } from '@vitana/ui';
-export type { ButtonProps, ButtonVariant, ButtonSize, BadgeProps, BadgeVariant } from '@vitana/ui';
+export { Button, Badge, Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, Skeleton, Slider } from '@vitana/ui';
+export type { ButtonProps, ButtonVariant, ButtonSize, BadgeProps, BadgeVariant, SliderProps } from '@vitana/ui';
 
 // ── provider and theme ──────────────────────────────────────────────────
 /** The kit's root provider with the member's colour scheme and the language's direction. */

@@ -66,6 +66,37 @@ describe('GroupsScreen', () => {
     render(<GroupsScreen initialTab="recommended" />, { wrapper: makeCommunityWrapper({ client: d.client }) });
     await waitFor(() => expect(screen.getByTestId('groups-list-discover')).toBeTruthy());
   });
+
+  it('shows the directory error state when the discover query fails', async () => {
+    const d = createCommunitySupabaseDouble({ failTables: true });
+    render(<GroupsScreen initialTab="recommended" />, { wrapper: makeCommunityWrapper({ client: d.client }) });
+    await waitFor(() => expect(screen.getByTestId('list-error')).toBeTruthy());
+  });
+
+  it('filters My groups by the search box', async () => {
+    const other = { ...mineGroup, id: 'g-3', name: 'Evening Stretch', created_by: 'u-self' };
+    const d = createCommunitySupabaseDouble({ tables: { global_community_groups: [mineGroup, other], global_community_group_members: [] } });
+    render(<GroupsScreen />, { wrapper: makeCommunityWrapper({ client: d.client }) });
+    await waitFor(() => expect(screen.getByTestId('groups-list-mine')).toBeTruthy());
+    expect(screen.getByText('Morning Flow')).toBeTruthy();
+    fireEvent.changeText(screen.getByTestId('groups-search'), 'evening');
+    await waitFor(() => expect(screen.queryByText('Morning Flow')).toBeNull());
+    expect(screen.getByText('Evening Stretch')).toBeTruthy();
+  });
+
+  it('opens the create-group sheet and inserts a group on submit', async () => {
+    const d = createCommunitySupabaseDouble({ tables: { global_community_groups: [], global_community_group_members: [] } });
+    render(<GroupsScreen />, { wrapper: makeCommunityWrapper({ client: d.client }) });
+    await waitFor(() => expect(screen.getByTestId('screen-groups')).toBeTruthy());
+    fireEvent.press(screen.getByTestId('groups-create'));
+    fireEvent.changeText(screen.getByTestId('create-group-name', { includeHiddenElements: true }), 'Sunset Yogis');
+    await waitFor(() => {
+      fireEvent.press(screen.getByTestId('create-group-submit', { includeHiddenElements: true }));
+      expect(d.inserts.some((i) => i.table === 'global_community_groups')).toBe(true);
+    });
+    const inserted = d.inserts.find((i) => i.table === 'global_community_groups');
+    expect(inserted?.values.name).toBe('Sunset Yogis');
+  });
 });
 
 describe('GroupDetailScreen', () => {
@@ -85,6 +116,12 @@ describe('GroupDetailScreen', () => {
   it('shows the not-found state when the group is missing', async () => {
     const d = createCommunitySupabaseDouble({ tables: { global_community_groups: [], global_community_group_members: [] } });
     render(<GroupDetailScreen id="missing" />, { wrapper: makeCommunityWrapper({ client: d.client }) });
+    await waitFor(() => expect(screen.getByTestId('group-detail-not-found')).toBeTruthy());
+  });
+
+  it('shows the not-found state when the detail query errors', async () => {
+    const d = createCommunitySupabaseDouble({ failTables: true });
+    render(<GroupDetailScreen id="g-1" />, { wrapper: makeCommunityWrapper({ client: d.client }) });
     await waitFor(() => expect(screen.getByTestId('group-detail-not-found')).toBeTruthy());
   });
 });

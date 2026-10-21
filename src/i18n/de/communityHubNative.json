@@ -23,7 +23,60 @@
       "emptyMineTitle": "Noch keine Gruppen",
       "emptyMineDesc": "Tritt deiner ersten Gruppe bei, um loszulegen.",
       "emptyDiscoverTitle": "Keine Gruppen zum Entdecken",
-      "emptyDiscoverDesc": "Starte als Erste:r eine Community-Gruppe."
+      "emptyDiscoverDesc": "Starte als Erste:r eine Community-Gruppe.",
+      "create": "Erstellen",
+      "searchPlaceholder": "Gruppen suchen",
+      "searchLabel": "Gruppen suchen"
+    },
+    "createGroup": {
+      "title": "Neue Gruppe erstellen",
+      "namePlaceholder": "z. B. Morgenläufer oder Gesund kochen",
+      "nameLabel": "Gruppenname",
+      "descriptionPlaceholder": "Beschreibe den Zweck und die Aktivitäten deiner Gruppe",
+      "descriptionLabel": "Beschreibung",
+      "categoryLabel": "Kategorie",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Ernährung",
+        "mental-health": "Mentale Gesundheit",
+        "support": "Unterstützung",
+        "learning": "Lernen",
+        "social": "Sozial"
+      },
+      "privacyLabel": "Sichtbarkeit",
+      "privacy": {
+        "public": "Öffentlich",
+        "private": "Privat"
+      },
+      "cancel": "Abbrechen",
+      "submit": "Gruppe erstellen",
+      "creating": "Wird erstellt …",
+      "created": "Gruppe erstellt.",
+      "nameRequired": "Bitte gib einen Gruppennamen ein."
+    },
+    "composer": {
+      "title": "Für die Community posten",
+      "kindLabel": "Art",
+      "kind": {
+        "commercial_buy": "Kaufen",
+        "commercial_sell": "Verkaufen",
+        "activity_seek": "Aktivität",
+        "social_seek": "Sozial",
+        "mutual_aid": "Gegenseitige Hilfe",
+        "partner_seek": "Partner:in"
+      },
+      "titlePlaceholder": "Kurze Überschrift",
+      "titleLabel": "Titel",
+      "scopePlaceholder": "Beschreibe, was du brauchst oder anbietest",
+      "scopeLabel": "Beschreibung",
+      "budgetMin": "Budget min.",
+      "budgetMax": "Budget max.",
+      "cancel": "Abbrechen",
+      "submit": "Posten",
+      "posting": "Wird gepostet …",
+      "posted": "In der Community gepostet.",
+      "titleRequired": "Bitte gib einen Titel mit mindestens 3 Zeichen ein.",
+      "scopeTooShort": "Bitte beschreibe es mit mindestens 20 Zeichen."
     },
     "groupDetail": {
       "title": "Gruppe",
@@ -108,7 +161,18 @@
       },
       "scorePercent": "{score} %",
       "matchFallback": "Match",
-      "emptyMatches": "Noch keine Matches. Poste einen Wunsch, und wir halten die Augen offen."
+      "emptyMatches": "Noch keine Matches. Poste einen Wunsch, und wir halten die Augen offen.",
+      "newWish": "Neuer Wunsch",
+      "searchPlaceholder": "Beiträge & Matches suchen",
+      "searchLabel": "Beiträge und Matches suchen",
+      "filter": "Filter",
+      "filterActive": "Filter ({count})",
+      "noMatchesForFilters": "Keine Matches für diese Filter. Setze sie zurück, um mehr zu sehen.",
+      "showingOfTotal": "{shown} von {total} werden angezeigt",
+      "filterTitle": "Matches filtern",
+      "filterMinScore": "Mindest-Score",
+      "filterClear": "Zurücksetzen",
+      "filterShowResults": "{count} Matches anzeigen"
     },
     "matches": {
       "title": "Personen, die zu dir passen",
@@ -132,7 +196,21 @@
         "activity_seek": "Aktivität",
         "partner_seek": "Partner:in",
         "social_seek": "Sozial",
-        "mutual_aid": "Gegenseitige Hilfe"
+        "mutual_aid": "Gegenseitige Hilfe",
+        "learning_seek": "Lernen",
+        "mentor_seek": "Mentoring"
+      },
+      "post": "Posten",
+      "styleLabel": "Stil",
+      "variety": {
+        "any": "Beliebig",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Standard",
+        "hiphop": "Hip-Hop"
       },
       "viewMine": "Meine Beiträge ansehen",
       "emptyBoard": "Keine offenen Einträge in dieser Ansicht. Sei die:der Erste.",

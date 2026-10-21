@@ -23,7 +23,10 @@
       "emptyMineTitle": "Pas encore de groupes",
       "emptyMineDesc": "Rejoins ton premier groupe pour commencer.",
       "emptyDiscoverTitle": "Aucun groupe à découvrir",
-      "emptyDiscoverDesc": "Sois la première personne à créer un groupe de la communauté."
+      "emptyDiscoverDesc": "Sois la première personne à créer un groupe de la communauté.",
+      "create": "Créer",
+      "searchPlaceholder": "Rechercher des groupes",
+      "searchLabel": "Rechercher des groupes"
     },
     "groupDetail": {
       "title": "Groupe",
@@ -108,7 +111,18 @@
       },
       "scorePercent": "{score} %",
       "matchFallback": "Correspondance",
-      "emptyMatches": "Pas encore de correspondances. Publie un souhait et nous resterons à l'affût."
+      "emptyMatches": "Pas encore de correspondances. Publie un souhait et nous resterons à l'affût.",
+      "newWish": "Nouveau souhait",
+      "searchPlaceholder": "Rechercher publications et correspondances",
+      "searchLabel": "Rechercher publications et correspondances",
+      "filter": "Filtrer",
+      "filterActive": "Filtre ({count})",
+      "noMatchesForFilters": "Aucune correspondance pour ces filtres. Réinitialise pour en voir plus.",
+      "showingOfTotal": "Affichage de {shown} sur {total}",
+      "filterTitle": "Filtrer les correspondances",
+      "filterMinScore": "Score minimum",
+      "filterClear": "Réinitialiser",
+      "filterShowResults": "Afficher {count} correspondances"
     },
     "matches": {
       "title": "Personnes qui te correspondent",
@@ -132,12 +146,26 @@
         "activity_seek": "Activité",
         "partner_seek": "Partenaire",
         "social_seek": "Social",
-        "mutual_aid": "Entraide"
+        "mutual_aid": "Entraide",
+        "learning_seek": "Apprentissage",
+        "mentor_seek": "Mentorat"
       },
       "viewMine": "Voir mes intentions",
       "emptyBoard": "Aucune intention ouverte dans cette vue. Sois la première personne.",
       "emptyDance": "Pas encore de publications de danse ouvertes : publie la tienne et sois la première personne !",
-      "emptyMine": "Aucune publication dans cette vue."
+      "emptyMine": "Aucune publication dans cette vue.",
+      "post": "Publier",
+      "styleLabel": "Style",
+      "variety": {
+        "any": "Tous",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Danses de salon",
+        "hiphop": "Hip-hop"
+      }
     },
     "intentMatch": {
       "title": "Détails de la correspondance",
@@ -156,6 +184,56 @@
       "fallbackName": "Membre",
       "emptyTitle": "Aucun résultat",
       "emptyDesc": "Modifie ton terme de recherche et réessaie."
+    },
+    "createGroup": {
+      "title": "Créer un nouveau groupe",
+      "namePlaceholder": "p. ex. Coureurs du matin ou Cuisine saine",
+      "nameLabel": "Nom du groupe",
+      "descriptionPlaceholder": "Décris l'objectif et les activités de ton groupe",
+      "descriptionLabel": "Description",
+      "categoryLabel": "Catégorie",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Nutrition",
+        "mental-health": "Santé mentale",
+        "support": "Soutien",
+        "learning": "Apprentissage",
+        "social": "Social"
+      },
+      "privacyLabel": "Visibilité",
+      "privacy": {
+        "public": "Public",
+        "private": "Privé"
+      },
+      "cancel": "Annuler",
+      "submit": "Créer le groupe",
+      "creating": "Création …",
+      "created": "Groupe créé.",
+      "nameRequired": "Saisis un nom de groupe."
+    },
+    "composer": {
+      "title": "Publier dans la communauté",
+      "kindLabel": "Type",
+      "kind": {
+        "commercial_buy": "Achat",
+        "commercial_sell": "Vente",
+        "activity_seek": "Activité",
+        "social_seek": "Social",
+        "mutual_aid": "Entraide",
+        "partner_seek": "Partenaire"
+      },
+      "titlePlaceholder": "Titre court",
+      "titleLabel": "Titre",
+      "scopePlaceholder": "Décris ce dont tu as besoin ou ce que tu proposes",
+      "scopeLabel": "Description",
+      "budgetMin": "Budget min.",
+      "budgetMax": "Budget max.",
+      "cancel": "Annuler",
+      "submit": "Publier",
+      "posting": "Publication …",
+      "posted": "Publié dans la communauté.",
+      "titleRequired": "Saisis un titre d’au moins 3 caractères.",
+      "scopeTooShort": "Décris-le en au moins 20 caractères."
     }
   }
 }
