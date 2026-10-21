@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05210",
+  "kind": "fix",
+  "paths": [
+    "src/components/vitana/vitana-card-catalog.ts",
+    "src/pages/EditProfilePage.tsx",
+    "src/components/profile/mobile/MobileIdCardSwitcher.tsx",
+    "src/components/profile/desktop/DesktopIdCardSwitcher.tsx",
+    "src/components/feature/feature-cards.test.tsx",
+    "src/components/vitana/EnrichmentCardStrip.profile.vtid-05210.test.tsx",
+    "src/pages/EditProfilePage.card-placement.vtid-05210.test.ts",
+    "tests/e2e/staging/vtid-05210-profile-card-placement.staging.spec.ts",
+    "tests/e2e/staging/vtid-05085-enrichment-cards.staging.spec.ts",
+    "docs/validation/VTID-05210/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05210/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

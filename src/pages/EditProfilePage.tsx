@@ -48,6 +48,7 @@ import { useProfileShare } from "@/hooks/useProfileShare";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { t } from '@/lib/i18n-toast';
 import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
+import { PROFILE_ENRICHMENT_CARDS } from "@/components/vitana/vitana-card-catalog";
 import { InterestsPicker } from "@/components/profile/InterestsPicker";
 import { useProfileEditorDeepLink } from "@/hooks/useProfileEditorDeepLink";
 
@@ -435,11 +436,9 @@ export default function EditProfilePage() {
         {/* NO EditToolbar on mobile! */}
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
-          {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
-          <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} only="server" className="px-4 pt-3" />
-          {/* VTID-05086: the profile's feature cards, stacked below the carousel. */}
-          <EnrichmentCardStrip screen="profile" layout="stacked" only="features" className="px-4 pt-2" />
-          {/* ID Card Switcher - Front/Back with segmented control */}
+          {/* ID Card Switcher - Front/Back with segmented control. The member's
+              own profile comes first; the Vitana cards sit in the Posts tab
+              below (VTID-05210). */}
           <MobileIdCardSwitcher
             profile={profile}
             editMode={true}
@@ -485,6 +484,12 @@ export default function EditProfilePage() {
                 
                 {/* Autopilot Banner */}
                 <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
+
+                {/* VTID-05210: the enrich-your-profile zone — G1 "Complete your
+                    profile", then the open profile-enrichment cards, next to the
+                    Cover Library tile. Never above the ID card. */}
+                <EnrichmentCardStrip screen="profile" layout="stacked" only="features" />
+                <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={PROFILE_ENRICHMENT_CARDS.length} only="server" />
 
                 {/* VTID-02806: cover photos for posts (universal + library) */}
                 <button
@@ -678,13 +683,6 @@ export default function EditProfilePage() {
         description="Edit your VITANA profile and customize your public presence" 
       />
       
-      {/* VTID-05085: every open enrichment card, as a carousel at the top. */}
-      <div className="container mx-auto px-4 pt-4">
-        <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={11} only="server" />
-        {/* VTID-05086: the profile's feature cards, stacked below the carousel. */}
-        <EnrichmentCardStrip screen="profile" layout="stacked" only="features" className="mt-2" />
-      </div>
-
       <ProfileLayout
         profile={profile}
         scope={scope}
@@ -699,8 +697,11 @@ export default function EditProfilePage() {
         onEditAccount={handleEditAccount}
       />
 
-      {/* VTID-02806: discoverable entry to the Cover Library drawer */}
-      <div className="container mx-auto px-4 mt-4">
+      {/* VTID-05210: the enrich-your-profile zone below the profile — G1, the
+          open profile-enrichment cards, then the VTID-02806 Cover Library tile. */}
+      <div className="container mx-auto px-4 mt-4 space-y-4">
+        <EnrichmentCardStrip screen="profile" layout="stacked" only="features" />
+        <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={PROFILE_ENRICHMENT_CARDS.length} only="server" />
         <button
           type="button"
           onClick={() => setCoverLibraryDrawerOpen(true)}

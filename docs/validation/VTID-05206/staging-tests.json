@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05206",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Settings → Privacy (phone) shows \"Introduce me to the community\" on and off; read-only, the switch is never flipped",
+      "spec": "tests/e2e/staging/vtid-05206-community-intro.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Opt-in filter on both new-member listings, the Settings switch, the registration step, the migration and the texts",
+      "ref": "npx vitest run src/hooks/community-intro-feed.vtid-05206.test.ts src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx src/lib/community-intro.vtid-05206.test.ts src/pages/settings/__tests__/privacy-community-intro.vtid-05206.test.tsx src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx src/hooks/useAllNewsFeed.new-members.test.ts",
+      "cwd": ".",
+      "reason": "Staging writes to the production database (CLAUDE.md rules 31-32, 48), so switching the setting and registering a member cannot run there. These suites prove what the read-only staging spec cannot: an opted-out or unknown newcomer gets no card on either feed tab, the switch writes only community_intro_opt_in on the member's own row, the registration step writes only an explicit no, and a failed read shows no card. The column's defaults (existing members false, new signups true), the owner-only write and the unchanged realtime/RLS setup are proven on PGlite: docs/validation/VTID-05206/outputs/pglite-community-intro-check.txt."
+    }
+  ]
+}

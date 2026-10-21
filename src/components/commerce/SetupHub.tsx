@@ -40,6 +40,7 @@ import { adminFetch } from '@/lib/admin-api';
 import { PARTNER_ONBOARDING_API } from '@/lib/commerce-host';
 import { countryOptions } from '@/lib/commerce-countries';
 import { isValidWebsite, normalizeWebsite } from '@/lib/commerce-register';
+import { NO_SUGGESTIONS, fetchCompanySuggestions, suggestionSourceKey, type CompanySuggestions } from '@/lib/commerce-suggestions';
 import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { t, notifyError, getI18nLocale } from '@/lib/i18n-toast';
 import { fetchPartnerTerms, type TermsStatus } from '@/lib/commerce-terms';
@@ -596,14 +597,36 @@ function ProfileSheet({
   const [country, setCountry] = useState(initialCountry);
   const [website, setWebsite] = useState(initialWebsite);
   const [saving, setSaving] = useState(false);
+  // VTID-05209: suggested values for what is still missing, and summary vs. inputs.
+  const [suggestions, setSuggestions] = useState<CompanySuggestions>(NO_SUGGESTIONS);
+  const [editing, setEditing] = useState(false);
   const countries = useMemo(() => (open ? countryOptions() : []), [open]);
 
   useEffect(() => {
-    if (open) {
-      setCountry(initialCountry);
-      setWebsite(initialWebsite);
-    }
-  }, [open, initialCountry, initialWebsite]);
+    if (!open) return;
+    setCountry(initialCountry);
+    setWebsite(initialWebsite);
+    setSuggestions(NO_SUGGESTIONS);
+    setEditing(false);
+    let live = true;
+    void fetchCompanySuggestions(adminFetch, { orgId }).then((s) => {
+      if (!live) return;
+      setSuggestions(s);
+      // Saved values and anything typed while the request ran always win:
+      // a suggestion only fills a field that is still empty.
+      if (!initialCountry && s.country) setCountry((c) => c || s.country!.value);
+      if (!initialWebsite && s.website) setWebsite((w) => (w.trim() ? w : s.website!.value));
+    });
+    return () => {
+      live = false;
+    };
+  }, [open, orgId, initialCountry, initialWebsite]);
+
+  const countryName = countries.find((c) => c.code === country)?.name ?? country;
+  const countrySourceKey = !initialCountry && suggestions.country?.value === country ? suggestionSourceKey(suggestions.country.source) : null;
+  const websiteSourceKey = !initialWebsite && suggestions.website?.value === website ? suggestionSourceKey(suggestions.website.source) : null;
+  // Both known and plausible: a short summary with one Save; the inputs only on "Change".
+  const summary = !editing && !!country && !!website.trim() && isValidWebsite(website);
 
   const save = async () => {
     setSaving(true);
@@ -627,43 +650,82 @@ function ProfileSheet({
       <ResponsiveDialogContent fullscreenOnMobile>
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="text-2xl font-bold">
-            {t('screens.commerceportal.setupHub.profileTitle')}
+            {t(summary ? 'screens.commerceportal.setupHub.profileConfirmTitle' : 'screens.commerceportal.setupHub.profileTitle')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <ResponsiveDialogBody className="space-y-3 md:mt-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="sh-website">
-              {t('screens.commerceportal.orgOnboarding.website')}{' '}
-              <span className="font-normal text-muted-foreground">{t('screens.commerceportal.orgOnboarding.optional')}</span>
-            </Label>
-            <Input
-              id="sh-website"
-              type="url"
-              inputMode="url"
-              dir="ltr"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              className="h-12 text-base focus-visible:ring-amber-500"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="sh-country">{t('screens.commerceportal.orgOnboarding.country')}</Label>
-            <select
-              id="sh-country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
-            >
-              <option value="" disabled>
-                {t('screens.commerceportal.orgOnboarding.countryPlaceholder')}
-              </option>
-              {countries.map((c) => (
-                <option key={c.code} value={c.code}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          {summary ? (
+            <div className="space-y-3 rounded-xl border border-border p-3" data-testid="profile-summary">
+              <div>
+                <p className="text-xs text-muted-foreground">{t('screens.commerceportal.orgOnboarding.country')}</p>
+                <p className="text-base font-medium text-foreground" data-testid="profile-summary-country">{countryName}</p>
+                {countrySourceKey && <p className="text-xs text-muted-foreground">{t(countrySourceKey)}</p>}
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">{t('screens.commerceportal.orgOnboarding.website')}</p>
+                <p className="break-all text-base font-medium text-foreground" dir="ltr" data-testid="profile-summary-website">
+                  {website}
+                </p>
+                {websiteSourceKey && <p className="text-xs text-muted-foreground">{t(websiteSourceKey)}</p>}
+              </div>
+              <Button
+                type="button"
+                variant="link"
+                className="h-auto p-0 text-base"
+                onClick={() => setEditing(true)}
+                data-testid="profile-change"
+              >
+                {t('screens.commerceportal.orgOnboarding.change')}
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-1.5">
+                <Label htmlFor="sh-website">
+                  {t('screens.commerceportal.orgOnboarding.website')}{' '}
+                  <span className="font-normal text-muted-foreground">{t('screens.commerceportal.orgOnboarding.optional')}</span>
+                </Label>
+                <Input
+                  id="sh-website"
+                  type="url"
+                  inputMode="url"
+                  dir="ltr"
+                  value={website}
+                  onChange={(e) => {
+                    // Once the supplier types, the inputs stay: never flip to the summary mid-edit.
+                    setEditing(true);
+                    setWebsite(e.target.value);
+                  }}
+                  className="h-12 text-base focus-visible:ring-amber-500"
+                  data-testid="profile-website"
+                />
+                {websiteSourceKey && <p className="text-xs text-muted-foreground">{t(websiteSourceKey)}</p>}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="sh-country">{t('screens.commerceportal.orgOnboarding.country')}</Label>
+                <select
+                  id="sh-country"
+                  value={country}
+                  onChange={(e) => {
+                    setEditing(true);
+                    setCountry(e.target.value);
+                  }}
+                  data-testid="profile-country"
+                  className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                >
+                  <option value="" disabled>
+                    {t('screens.commerceportal.orgOnboarding.countryPlaceholder')}
+                  </option>
+                  {countries.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                {countrySourceKey && <p className="text-xs text-muted-foreground">{t(countrySourceKey)}</p>}
+              </div>
+            </>
+          )}
         </ResponsiveDialogBody>
         <ResponsiveDialogFooter className="flex-row gap-2 md:mt-4">
           <Button
@@ -671,6 +733,7 @@ function ProfileSheet({
             className="h-12 flex-1 bg-amber-700 text-base font-semibold text-white hover:bg-amber-800"
             disabled={saving || !country || !isValidWebsite(website)}
             onClick={() => void save()}
+            data-testid="profile-save"
           >
             {saving && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
             {t('screens.commerceportal.setupHub.profileSave')}

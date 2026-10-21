@@ -7,18 +7,20 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ComponentType } from 'react';
 import type { VitanaCardProps } from '@/components/vitana/card-props';
 
 vi.mock('@/hooks/useEnrichmentCards', () => ({
   useInvalidateEnrichmentCards: () => vi.fn(),
   useEnrichmentCardDismiss: () => vi.fn(),
+  enrichmentCardsKey: (userId: string | undefined) => ['enrichment-cards', userId ?? null] as const,
 }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'user-1' } }) }));
 
 import { VITANA_CARD_REGISTRY } from '@/components/vitana/card-registry';
 import { BOOST_CARD_TYPES, CARD_DEEP_LINKS, CARD_STYLE, type VitanaCardType } from '@/components/vitana/vitana-card-catalog';
-import { CompleteProfileCard } from './CompleteProfileCard';
+import { CompleteProfileCard, G1_FALLBACK_LINK } from './CompleteProfileCard';
 import { UnreadMatchesCard } from './UnreadMatchesCard';
 import { StreakAtRiskCard } from './StreakAtRiskCard';
 import de from '@/i18n/de/screens.json';
@@ -34,14 +36,23 @@ function Where() {
 function renderCard(type: VitanaCardType, props: VitanaCardProps = {}) {
   const Card = VITANA_CARD_REGISTRY[type] as ComponentType<VitanaCardProps>;
   return render(
-    <MemoryRouter initialEntries={['/home']}>
-      <Routes>
-        <Route path="/home" element={<Card {...props} />} />
-        <Route path="*" element={<Where />} />
-      </Routes>
-    </MemoryRouter>,
+    <QueryClientProvider client={new QueryClient()}>
+      <MemoryRouter initialEntries={['/home']}>
+        <Routes>
+          <Route path="/home" element={<Card {...props} />} />
+          <Route path="*" element={<Where />} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 }
+
+/**
+ * Where each button lands with an empty card cache. VTID-05212: G1 opens the
+ * first open profile step from the cached profile list, so with nothing cached
+ * it opens the About editor rather than the bare profile page.
+ */
+const LANDS_ON: Record<string, string | undefined> = { ...CARD_DEEP_LINKS, G1: G1_FALLBACK_LINK };
 
 const action = (type: VitanaCardType) => screen.getByTestId(`vitana-card-action-${type}`);
 
@@ -79,7 +90,7 @@ describe('boost cards G1–G3', () => {
   it.each(BOOST_CARD_TYPES)('%s: the button navigates to its deep link', (type) => {
     renderCard(type);
     fireEvent.click(action(type));
-    expect(screen.getByTestId('where').textContent).toBe(CARD_DEEP_LINKS[type]);
+    expect(screen.getByTestId('where').textContent).toBe(LANDS_ON[type]);
   });
 
   it('deep links: G1 the profile editor, G2 the matches page, G3 the daily diary', () => {

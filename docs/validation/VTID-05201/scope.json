@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05201",
+  "kind": "fix",
+  "paths": [
+    "src/components/messages/ConversationView.tsx",
+    "src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx",
+    "docs/validation/VTID-05201/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05201/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

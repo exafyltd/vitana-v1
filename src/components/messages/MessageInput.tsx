@@ -11,6 +11,7 @@ import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { 
   validateFile, 
   uploadChatAttachment, 
@@ -97,7 +98,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   // This ref is set synchronously at the top of handleSend, closing that
   // window; isSending still drives the disabled UI state as before.
   const sendingLockRef = useRef(false);
-  const mentionEnterConsumedRef = useRef(false);
+  const enterConsumedRef = useRef(false);
+  // VTID-05229: Enter sends only where there is a real keyboard. The input
+  // device decides, not the screen width: a narrow desktop window still has a
+  // keyboard, a wide tablet does not. Touch-first devices keep VTID-04966
+  // (Enter = new line, only the send button sends).
+  const sendsOnEnter = useMediaQuery('(hover: hover) and (pointer: fine)');
   const { toast } = useToast();
   const { user } = useAuth();
   const { activeTenantId } = useTenant();
@@ -251,14 +257,41 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  /** VTID-05229: plain Enter (no modifier) on a device with a real keyboard. */
+  const isSendEnter = (e: React.KeyboardEvent) =>
+    sendsOnEnter && e.key === 'Enter' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey;
+
+  /**
+   * An IME is still composing (Japanese/Chinese/Korean input, some Android
+   * keyboards): Enter confirms the composition and must never send. This reads
+   * the DOM event, not `isComposing` above, which is the typing-indicator state.
+   */
+  const isImeEnter = (e: React.KeyboardEvent) => e.nativeEvent.isComposing || e.keyCode === 229;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // While the @mention list is open, Enter/Tab/arrows/Esc pick or close a
+    // suggestion (VTID-04926); such an Enter only picks.
+    const mentionConsumed = mentionComposer.onKeyDown(e);
+    enterConsumedRef.current = mentionConsumed && e.key === 'Enter';
+    if (mentionConsumed || isImeEnter(e) || !isSendEnter(e)) return;
+    // Desktop Enter never adds a line; handleSend's own guards make it a no-op
+    // when there is nothing to send, an upload is running or a send is in
+    // flight (and its lock stops a double send). The flag also makes the
+    // keypress below swallow the line.
+    e.preventDefault();
+    enterConsumedRef.current = true;
+    void handleSend();
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    // Enter always makes a new line; only the send button sends (owner
-    // decision 2026-10-07). The one exception is an Enter that just picked an
-    // @mention suggestion (VTID-04926): not every keyboard drops the keypress
+    // On touch devices Enter makes a new line; only the send button sends
+    // (VTID-04966, owner decision 2026-10-07). An Enter whose keydown picked
+    // an @mention suggestion (VTID-04926) or sent on desktop (VTID-05229)
+    // must not add a line either: not every keyboard drops the keypress
     // after a prevented keydown, so the keydown leaves a flag and this
-    // keypress must not add a line either.
-    if (e.key === 'Enter' && mentionEnterConsumedRef.current) {
-      mentionEnterConsumedRef.current = false;
+    // keypress must not add a line.
+    if (e.key === 'Enter' && enterConsumedRef.current) {
+      enterConsumedRef.current = false;
       e.preventDefault();
     }
   };
@@ -283,7 +316,50 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    await uploadFiles(Array.from(e.target.files || []));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  /**
+   * VTID-05229: a pasted screenshot arrives as a file without a real name
+   * (browsers call it `image.png`). Give it one the recipient can recognise.
+   */
+  const renameIfGeneric = (file: File): File => {
+    if (file.name && !/^image\.(png|jpe?g|gif|webp)$/i.test(file.name)) return file;
+    const ext = ({ 'image/jpeg': 'jpg', 'image/jpg': 'jpg', 'image/gif': 'gif', 'image/webp': 'webp' } as Record<string, string>)[
+      (file.type || '').toLowerCase()
+    ] ?? 'png';
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, '0');
+    const stamp = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+    return new File([file], `screenshot-${stamp}.${ext}`, { type: file.type || 'image/png', lastModified: file.lastModified });
+  };
+
+  /**
+   * VTID-05229: Ctrl/Cmd+V (or the phone's paste menu) of a screenshot puts it
+   * in the attachment preview, exactly like the paperclip. Plain text on the
+   * clipboard wins: a copy from Word/Excel or "copy image" in a browser (which
+   * also carries a URL/alt text) pastes text as before and attaches nothing.
+   */
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const data = e.clipboardData;
+    if (!data || disabled || isUploading) return;
+    let files = Array.from(data.files || []);
+    if (files.length === 0) {
+      // Safari and older Chromium fill only `items`.
+      files = Array.from(data.items || [])
+        .filter((item) => item.kind === 'file')
+        .map((item) => item.getAsFile())
+        .filter((file): file is File => file !== null);
+    }
+    if (files.length === 0 || (data.getData('text/plain') || '').trim() !== '') return;
+    e.preventDefault();
+    void uploadFiles(files.map(renameIfGeneric));
+  };
+
+  const uploadFiles = async (files: File[]) => {
     if (files.length === 0) return;
 
     // Validate all files first
@@ -291,7 +367,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
       const validation = validateFile(file);
       if (!validation.valid) {
         notifyError('toasts.messages.fileNotAllowed');
-        if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }
     }
@@ -299,7 +374,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
     // Ensure we have a thread to attach to
     if (!threadId) {
       notifyError('toasts.messages.openConversation', 'toasts.messages.selectOpenConversationBeforeAttachingFiles');
-      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
@@ -371,9 +445,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
 
     setIsUploading(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   const removeAttachment = (index: number) => {
@@ -633,14 +704,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
               ref={textareaRef}
               value={message}
               onChange={handleInputChange}
-              // While the @mention list is open, Enter/Tab/arrows/Esc pick or
-              // close a suggestion; preventDefault there also stops the
-              // keypress below from sending the message.
-              onKeyDown={(e) => {
-                mentionEnterConsumedRef.current = mentionComposer.onKeyDown(e) && e.key === 'Enter';
-              }}
+              onKeyDown={handleKeyDown}
+              onPaste={handlePaste}
               onKeyUp={(e) => {
-                if (e.key === 'Enter') mentionEnterConsumedRef.current = false;
+                if (e.key === 'Enter') enterConsumedRef.current = false;
                 mentionComposer.sync();
               }}
               onClick={mentionComposer.sync}
@@ -650,7 +717,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               disabled={disabled}
               className="min-h-6 resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
-              enterKeyHint="enter"
+              enterKeyHint={sendsOnEnter ? 'send' : 'enter'}
               aria-label={t('screens.messages.messageComposer')}
               aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
             />

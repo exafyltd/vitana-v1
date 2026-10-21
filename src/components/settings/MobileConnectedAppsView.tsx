@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 
 import { MobileIntegrationSection } from "./MobileIntegrationSection";
 import { MailCalendarContactsSection } from "./connected-apps/MailCalendarContactsSection";
+import { MAIL_CALENDAR_CONTACTS_ANCHOR } from "./connected-apps/anchors";
 import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
 import { MobileIntegrationDetailSheet } from "./MobileIntegrationDetailSheet";
 import { MobileConnectionSummary } from "./MobileConnectionSummary";
@@ -431,7 +432,9 @@ export function MobileConnectedAppsView() {
           )}
 
           {/* VTID-04406: Mail, Calendar & Contacts — the nine apps, one real
-              switch each, driven by the gateway Connected Apps hub. */}
+              switch each, driven by the gateway Connected Apps hub.
+              VTID-05212: the card deep links (#calendar, #contacts) scroll here. */}
+          <div id={MAIL_CALENDAR_CONTACTS_ANCHOR} className="scroll-mt-4">
           {(activeCategory === 'all' || activeCategory === 'productivity') && !searchQuery.trim() && (
             <MailCalendarContactsSection
               title={translate('connectedApps.sections.productivity', 'Mail, Calendar & Contacts')}
@@ -444,6 +447,7 @@ export function MobileConnectedAppsView() {
               defaultExpanded
             />
           )}
+          </div>
 
           {/* Music & Video — Spotify, YouTube, YouTube Music, Apple Music */}
           {(activeCategory === 'all' || activeCategory === 'media') && filteredMedia.length > 0 && (

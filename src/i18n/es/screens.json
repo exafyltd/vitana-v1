@@ -7672,7 +7672,10 @@
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded."
-      }
+      },
+      "communityIntroTitle": "Presentarme a la comunidad",
+      "communityIntroBody": "Durante tu primera semana, otros miembros ven una breve tarjeta de bienvenida sobre ti y pueden saludarte.",
+      "communityIntroSaveFailed": "No se pudo guardar tu ajuste. Inténtalo de nuevo."
     },
     "sharing": {
       "activateCampaign": "Activar campaña",
@@ -10880,7 +10883,12 @@
         "successTitle": "Ya estás registrado 🎉",
         "successBusinessId": "ID del negocio",
         "successBody": "Ahora preparemos tu negocio para Vitanaland.",
-        "successCta": "Continuar configuración"
+        "successCta": "Continuar configuración",
+        "countryConfirm": "País: {name}",
+        "change": "Cambiar",
+        "fromEmail": "De tu dirección de correo electrónico",
+        "fromWebsite": "De la dirección de tu sitio web",
+        "fromVatId": "De tu número de IVA"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11019,6 +11027,7 @@
         "businessLabel": "Negocio:",
         "readiness": "{percent} % listo para publicar",
         "profileTitle": "Perfil del negocio",
+        "profileConfirmTitle": "¿Está todo correcto?",
         "profileBody": "Tu país y tu sitio web.",
         "profileCta": "Completar",
         "profileSave": "Guardar",

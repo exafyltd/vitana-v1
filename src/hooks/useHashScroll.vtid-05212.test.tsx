@@ -1,0 +1,233 @@
+/**
+ * VTID-05212 C3 — `useHashScroll` lands a deep link on its section and
+ * consumes the hash; and the Connectors screen wires it to the Mail, Calendar
+ * & Contacts section on desktop and mobile (source checks for the page, which
+ * needs dozens of providers to render).
+ */
+import React from 'react';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, act } from '@testing-library/react';
+import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useHashScroll, HASH_SCROLL_RETRY_MS, HASH_SCROLL_WATCH_MS, HASH_SCROLL_POLL_MS, HASH_SCROLL_APPEAR_MS } from './useHashScroll';
+import { CONNECTOR_SECTION_HASHES, MAIL_CALENDAR_CONTACTS_ANCHOR } from '@/components/settings/connected-apps/anchors';
+
+let goTo: (to: string) => void = () => {};
+
+function Page() {
+  useHashScroll(CONNECTOR_SECTION_HASHES);
+  const loc = useLocation();
+  goTo = useNavigate();
+  return (
+    <div>
+      <div data-testid="loc">{loc.pathname + loc.search + loc.hash}</div>
+      <div id={MAIL_CALENDAR_CONTACTS_ANCHOR}>mail, calendar, contacts</div>
+    </div>
+  );
+}
+
+function renderAt(url: string) {
+  return render(
+    <MemoryRouter initialEntries={[url]}>
+      <Routes>
+        <Route path="/connectors" element={<Page />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
+let scrolled: Element[] = [];
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  scrolled = [];
+  Element.prototype.scrollIntoView = function (this: Element) {
+    scrolled.push(this);
+  } as Element['scrollIntoView'];
+  vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => setTimeout(() => cb(0), 0));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
+
+describe('useHashScroll (VTID-05212)', () => {
+  it.each(['#calendar', '#contacts'])('%s scrolls to the Mail, Calendar & Contacts section and drops the hash, keeping the query', (hash) => {
+    const { getByTestId } = renderAt(`/connectors?tab=productivity${hash}`);
+    act(() => {
+      vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+    });
+    expect(scrolled.length).toBeGreaterThan(0);
+    expect(scrolled.every((el) => el.id === MAIL_CALENDAR_CONTACTS_ANCHOR)).toBe(true);
+    expect(getByTestId('loc').textContent).toBe('/connectors?tab=productivity');
+  });
+
+  it('following the same link again scrolls again (the hash was consumed)', () => {
+    renderAt('/connectors#contacts');
+    act(() => {
+      vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+    });
+    const first = scrolled.length;
+    act(() => goTo('/connectors#contacts'));
+    act(() => {
+      vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+    });
+    expect(scrolled.length).toBeGreaterThan(first);
+  });
+
+  describe('late content (the section drifts after the first scrolls)', () => {
+    const placeSectionAt = (top: number) => {
+      const el = document.getElementById(MAIL_CALENDAR_CONTACTS_ANCHOR)!;
+      el.getBoundingClientRect = () => ({ top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) }) as DOMRect;
+    };
+
+    it('scrolls again when the section has drifted away from the top', () => {
+      renderAt('/connectors?tab=productivity#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      const afterFirst = scrolled.length;
+      placeSectionAt(900);
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
+      });
+      expect(scrolled.length).toBeGreaterThan(afterFirst);
+    });
+
+    it('does not move a section that is already at the top', () => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      const afterFirst = scrolled.length;
+      placeSectionAt(16);
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
+      });
+      expect(scrolled).toHaveLength(afterFirst);
+    });
+
+    it('keeps catching the section while content keeps growing, up to the end of the watch', () => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      placeSectionAt(900);
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
+      });
+      const afterFirstDrift = scrolled.length;
+      placeSectionAt(1400); // more content arrived above it, many seconds in
+      act(() => {
+        vi.advanceTimersByTime(8_000);
+        placeSectionAt(1900);
+        vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
+      });
+      expect(scrolled.length).toBeGreaterThan(afterFirstDrift);
+    });
+
+    it('stops watching after HASH_SCROLL_WATCH_MS', () => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + HASH_SCROLL_POLL_MS);
+      });
+      const afterWatch = scrolled.length;
+      placeSectionAt(900);
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
+      });
+      expect(scrolled).toHaveLength(afterWatch);
+    });
+
+    it('catches a section that only appears after the watch time has passed (cold load)', () => {
+      function LatePage() {
+        useHashScroll(CONNECTOR_SECTION_HASHES);
+        const [shown, setShown] = React.useState(false);
+        React.useEffect(() => {
+          const t = setTimeout(() => setShown(true), HASH_SCROLL_WATCH_MS + 5_000);
+          return () => clearTimeout(t);
+        }, []);
+        return shown ? <div id={MAIL_CALENDAR_CONTACTS_ANCHOR}>mail, calendar, contacts</div> : <div>loading</div>;
+      }
+      // jsdom lays nothing out (top 0); put the late section far below the top, as on desktop.
+      const realRect = Element.prototype.getBoundingClientRect;
+      Element.prototype.getBoundingClientRect = function (this: Element) {
+        const top = this.id === MAIL_CALENDAR_CONTACTS_ANCHOR ? 900 : 0;
+        return { top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) } as DOMRect;
+      };
+      try {
+        render(
+          <MemoryRouter initialEntries={['/connectors?tab=productivity#calendar']}>
+            <Routes>
+              <Route path="/connectors" element={<LatePage />} />
+            </Routes>
+          </MemoryRouter>,
+        );
+        act(() => {
+          vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS + 5_000);
+        });
+        expect(document.getElementById(MAIL_CALENDAR_CONTACTS_ANCHOR)).not.toBeNull(); // React commits the late section when act ends
+        expect(scrolled).toHaveLength(0);
+        act(() => {
+          vi.advanceTimersByTime(HASH_SCROLL_POLL_MS * 2);
+        });
+        expect(scrolled.length).toBeGreaterThan(0);
+        expect(HASH_SCROLL_APPEAR_MS).toBeGreaterThan(HASH_SCROLL_WATCH_MS + 5_000);
+      } finally {
+        Element.prototype.getBoundingClientRect = realRect;
+      }
+    });
+
+    it.each(['wheel', 'touchstart', 'keydown', 'pointerdown'])('stops once the member takes over (%s)', (name) => {
+      renderAt('/connectors#calendar');
+      act(() => {
+        vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+      });
+      const afterFirst = scrolled.length;
+      placeSectionAt(900);
+      act(() => {
+        window.dispatchEvent(new Event(name));
+        vi.advanceTimersByTime(HASH_SCROLL_WATCH_MS);
+      });
+      expect(scrolled).toHaveLength(afterFirst);
+    });
+  });
+
+  it('an unknown hash or no hash does nothing and stays in the URL', () => {
+    const { getByTestId } = renderAt('/connectors#somewhere-else');
+    act(() => {
+      vi.advanceTimersByTime(HASH_SCROLL_RETRY_MS);
+    });
+    expect(scrolled).toHaveLength(0);
+    expect(getByTestId('loc').textContent).toBe('/connectors#somewhere-else');
+  });
+});
+
+describe('Connectors wires the card deep links (VTID-05212)', () => {
+  const page = readFileSync(resolve(__dirname, '../pages/settings/ConnectedApps.tsx'), 'utf8');
+  const mobile = readFileSync(resolve(__dirname, '../components/settings/MobileConnectedAppsView.tsx'), 'utf8');
+
+  it('calls useHashScroll before the mobile early return, so both layouts get it', () => {
+    const hook = page.indexOf('useHashScroll(CONNECTOR_SECTION_HASHES)');
+    expect(hook).toBeGreaterThan(0);
+    expect(hook).toBeLessThan(page.indexOf('if (isMobile) {'));
+  });
+
+  it('desktop: the anchor sits on the Mail, Calendar & Contacts section', () => {
+    const anchor = page.indexOf('id={MAIL_CALENDAR_CONTACTS_ANCHOR}');
+    expect(anchor).toBeGreaterThan(0);
+    expect(page.indexOf('<MailCalendarContactsPanel', anchor)).toBeGreaterThan(anchor);
+  });
+
+  it('mobile: the anchor wraps the Mail, Calendar & Contacts section', () => {
+    const anchor = mobile.indexOf('id={MAIL_CALENDAR_CONTACTS_ANCHOR}');
+    expect(anchor).toBeGreaterThan(0);
+    expect(mobile.indexOf('<MailCalendarContactsSection', anchor)).toBeGreaterThan(anchor);
+  });
+
+  it('both hashes point at that section', () => {
+    expect(CONNECTOR_SECTION_HASHES).toEqual({ calendar: MAIL_CALENDAR_CONTACTS_ANCHOR, contacts: MAIL_CALENDAR_CONTACTS_ANCHOR });
+  });
+});

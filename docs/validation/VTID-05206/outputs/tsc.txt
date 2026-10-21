@@ -1,0 +1,2 @@
+npx tsc --noEmit -p tsconfig.app.json
+head: 177 errors; origin/main: 178 errors; none in a file this change adds or touches

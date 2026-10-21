@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05209",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Business profile at 390x844 and 1280x900: with country and website missing, the sheet shows the suggested values as a summary with one Save, Change reveals the prefilled inputs, nothing is saved (demo business served in the browser, any PATCH recorded and aborted); and the staging gateway's GET /partner-onboarding/company-suggestions answers { ok, country, website } for the signed-in test user (read-only)",
+      "spec": "tests/e2e/staging/vtid-05209-company-suggestions.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/commerce/company-suggestions.vtid-05209.test.tsx src/components/commerce/SetupHub.test.ts src/components/commerce/SetupHub.vtid-05136.test.tsx src/components/commerce/supplier-journey-language.test.ts src/components/commerce/mobile-adaptation.test.ts src/lib/commerce-ai-setup.test.ts",
+      "reason": "Registering a business and saving the profile are writes to the database staging shares with production, so they are proven in CI with a mocked adminFetch: website prefilled from the email, country as one confirm line, Change reveals the list, a picked or draft country is never replaced, no suggestion or a failing route keeps today's list, the profile summary saves exactly the shown values, saved values win; plus the existing SetupHub and AI-setup rules"
+    }
+  ]
+}

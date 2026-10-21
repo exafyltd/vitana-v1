@@ -33,6 +33,7 @@ import { Loader2, Mic, PartyPopper, Sparkles } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
 import { COMMERCE_CATEGORIES } from '@/lib/commerce-categories';
 import { countryOptions, guessCountry } from '@/lib/commerce-countries';
+import { fetchCompanySuggestions } from '@/lib/commerce-suggestions';
 import { isValidWebsite, normalizeWebsite } from '@/lib/commerce-register';
 import {
   VOICE_SETUP_EVENTS,
@@ -94,13 +95,27 @@ export function AiSetupSheet({
   const [error, setError] = useState('');
   const [outcome, setOutcome] = useState<ApplyOutcome | null>(null);
   const setupKey = useRef('');
+  const currentDraft = useRef<SetupDraft | null>(null);
   const countries = useMemo(() => (open ? countryOptions() : []), [open]);
 
   const startReview = (d: SetupDraft) => {
+    const fallback = guessCountry();
+    currentDraft.current = d;
     setDraft(d);
-    setReview(reviewFromDraft(d, guessCountry()));
+    setReview(reviewFromDraft(d, fallback));
     setupKey.current = newSetupKey();
     setStep('review');
+    // VTID-05209: the AI read no country — the website's country domain (`.de`,
+    // `.co.uk`) comes before the browser guess. Never over a country the
+    // supplier already changed on the review; nothing is saved until Create.
+    if (!d.business.country && d.website) {
+      void fetchCompanySuggestions(adminFetch, { website: d.website }).then((s) => {
+        const c = s.country;
+        // A newer draft makes this answer stale.
+        if (!c || c.source !== 'website_domain' || currentDraft.current !== d) return;
+        setReview((r) => (r && r.country === fallback ? { ...r, country: c.value } : r));
+      });
+    }
   };
 
   useEffect(() => {

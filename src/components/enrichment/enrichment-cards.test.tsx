@@ -60,7 +60,8 @@ const deCards = (de as unknown as { screens: { vitanaCards: Record<string, { tit
 
 function Where() {
   const loc = useLocation();
-  return <div data-testid="where">{loc.pathname + loc.hash}</div>;
+  // VTID-05212: E8/E9 carry a query (`?tab=productivity`), so the full location is compared.
+  return <div data-testid="where">{loc.pathname + loc.search + loc.hash}</div>;
 }
 
 function renderCard(type: VitanaCardType, props: VitanaCardProps = {}) {

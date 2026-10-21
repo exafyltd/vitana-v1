@@ -127,12 +127,12 @@ export const CARD_DEEP_LINKS: Partial<Record<VitanaCardType, string>> = {
   E2: '/me/profile#about',
   E4: '/me/profile#interests',
   E5: '/me/profile#location',
-  E8: '/connectors',
-  E9: '/connectors#contacts',
+  E8: '/connectors?tab=productivity#calendar',
+  E9: '/connectors?tab=productivity#contacts',
   E11: '/me/profile#cover',
   F1: '/autopilot',
   F3: '/daily-diary',
-  F4: '/assistant',
+  F4: '/comm/talk-to-vitana',
   F5: '/me/matches',
   F6: '/autopilot',
   F9: '/calendar',
@@ -157,6 +157,11 @@ export const CARD_DEEP_LINKS: Partial<Record<VitanaCardType, string>> = {
  *   boost card the server sends for any other screen is not shown. G3 "Streak
  *   at Risk" goes on My Journey because `/autopilot` is the Longevity
  *   Journey surface.
+ * - Profile (VTID-05210, owner 2026-10-15) shows only cards that enrich the
+ *   profile itself: `allow` keeps PROFILE_ENRICHMENT_CARDS + G1 and there are
+ *   no feature cards. Connectors (E8, E9), notifications (E10), Vitana Index
+ *   (F2, already on the ID card), Talk to Vitana (F4) and Invite (F7) stay on
+ *   their other screens. `allow` must list G1 — it is checked before `boost`.
  */
 export type CardScreen =
   | 'home'
@@ -178,11 +183,14 @@ export interface CardScreenConfig {
   features: readonly FeatureCardType[];
 }
 
+/** Enrichment cards that enrich the profile itself (VTID-05210, owner 2026-10-15). */
+export const PROFILE_ENRICHMENT_CARDS = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E11'] as const satisfies readonly EnrichmentCardType[];
+
 export const CARD_SCREENS: Record<CardScreen, CardScreenConfig> = {
   // Home: no new feature cards (plan §4; owner question open) — its existing
   // Vitana cards stay as they are in Home.tsx.
   home: { server: 'home', boost: ['G1', 'G2', 'G3'], features: [] },
-  profile: { server: 'profile', boost: ['G1'], features: ['F2', 'F4', 'F7'] },
+  profile: { server: 'profile', allow: [...PROFILE_ENRICHMENT_CARDS, 'G1'], boost: ['G1'], features: [] },
   'vitana-index': { server: 'vitana-index', boost: ['G3'], features: ['F3', 'F4', 'F6'] },
   autopilot: { server: 'autopilot', boost: ['G3'], features: ['F1', 'F2', 'F3', 'F9'] },
   community: { server: 'community', features: ['F5', 'F7', 'F10'] },

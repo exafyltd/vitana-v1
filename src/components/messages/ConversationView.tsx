@@ -473,7 +473,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     const el = document.getElementById(`msg-${initialScrollMessageId}`);
     if (!el) return; // not rendered yet (e.g. still paginating) — retry on next messages update
     hasInitialScrolledRef.current = threadId;
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Jump instantly to the deep-linked message instead of animating. Opening
+    // a chat from a notification should land directly on the message (like
+    // WhatsApp/Telegram) — the smooth glide read as amateurish. The highlight
+    // flash still draws the eye to the right bubble.
+    el.scrollIntoView({ behavior: 'auto', block: 'center' });
     el.classList.add('message-highlight');
     const timer = setTimeout(() => el.classList.remove('message-highlight'), 1500);
     onInitialMessageScrolled?.();

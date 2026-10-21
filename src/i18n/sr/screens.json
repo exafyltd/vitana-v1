@@ -7717,7 +7717,10 @@
         "business": "Posao i prihod",
         "businessDesc": "Opciono: ideje kako da zaradiš od svog znanja u Vitanalandu. Podrazumevano isključeno – samo ako ga uključiš.",
         "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke."
-      }
+      },
+      "communityIntroTitle": "Predstavi me zajednici",
+      "communityIntroBody": "Tokom tvoje prve nedelje drugi članovi vide kratku karticu dobrodošlice o tebi i mogu da te pozdrave.",
+      "communityIntroSaveFailed": "Podešavanje nije sačuvano. Pokušaj ponovo."
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",
@@ -11071,7 +11074,12 @@
         "successTitle": "Registracija je uspela 🎉",
         "successBusinessId": "ID posla",
         "successBody": "Sada da pripremimo tvoj posao za Vitanaland.",
-        "successCta": "Nastavi podešavanje"
+        "successCta": "Nastavi podešavanje",
+        "countryConfirm": "Država: {name}",
+        "change": "Promeni",
+        "fromEmail": "Iz tvoje imejl adrese",
+        "fromWebsite": "Iz adrese tvog sajta",
+        "fromVatId": "Iz tvog PDV broja"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11205,6 +11213,7 @@
         "businessLabel": "Posao:",
         "readiness": "{percent}% spremno za objavu",
         "profileTitle": "Profil posla",
+        "profileConfirmTitle": "Da li je ovo tačno?",
         "profileBody": "Tvoja država i veb-sajt.",
         "profileCta": "Dopuni",
         "profileSave": "Sačuvaj",

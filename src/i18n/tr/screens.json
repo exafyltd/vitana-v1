@@ -7732,7 +7732,10 @@
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded."
-      }
+      },
+      "communityIntroTitle": "Beni topluluğa tanıt",
+      "communityIntroBody": "İlk haftanda diğer üyeler seninle ilgili kısa bir karşılama kartı görür ve sana merhaba diyebilir.",
+      "communityIntroSaveFailed": "Ayarın kaydedilemedi. Lütfen tekrar dene."
     },
     "sharing": {
       "activateCampaign": "Kampanyayı Etkinleştir",
@@ -11079,7 +11082,12 @@
         "successTitle": "Kaydın tamam 🎉",
         "successBusinessId": "İşletme kimliği",
         "successBody": "Şimdi işletmeni Vitanaland için hazırlayalım.",
-        "successCta": "Kuruluma devam et"
+        "successCta": "Kuruluma devam et",
+        "countryConfirm": "Ülke: {name}",
+        "change": "Değiştir",
+        "fromEmail": "E-posta adresinden",
+        "fromWebsite": "Web sitesi adresinden",
+        "fromVatId": "KDV numarandan"
       },
       "healthOrders": {
         "_pending_review": {
@@ -11213,6 +11221,7 @@
         "businessLabel": "İşletme:",
         "readiness": "Yayına {percent}% hazır",
         "profileTitle": "İşletme profili",
+        "profileConfirmTitle": "Bu doğru mu?",
         "profileBody": "Ülken ve web siten.",
         "profileCta": "Tamamla",
         "profileSave": "Kaydet",

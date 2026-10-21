@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05212",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "E8/E9 deep links land on Mail, Calendar & Contacts (phone + desktop); G1 on /me/profile opens a profile editor",
+      "spec": "tests/e2e/staging/vtid-05212-card-actions.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Every card's action: G1 first open step, F4 ORB-first, F8 never stuck, every navigating card also inside a chat",
+      "ref": "npx vitest run src/components/vitana/card-actions.vtid-05212.test.tsx src/components/enrichment/ src/components/feature/feature-cards.test.tsx src/components/vitana/card-deeplinks.test.ts",
+      "cwd": ".",
+      "reason": "A read-only staging spec cannot open the ORB, force a tip without a destination, or seed the card cache; Vitest covers each branch."
+    },
+    {
+      "kind": "existing",
+      "name": "Instagram/Facebook connect in the Appilix app: ?return=mobile, bounce overlay, poller",
+      "ref": "npx vitest run src/hooks/useGoogleConnect.social-appilix.vtid-05212.test.tsx src/hooks/useHashScroll.vtid-05212.test.tsx",
+      "cwd": ".",
+      "reason": "Staging has no Meta OAuth clients (the cards are hidden there, VTID-05211) and starting an OAuth flow is a write; the hook is proven in Vitest."
+    }
+  ]
+}

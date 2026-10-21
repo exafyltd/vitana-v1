@@ -60,7 +60,13 @@ export function DidYouKnowCard({ hideDismiss = false }: DidYouKnowCardProps = {}
         // sessionStorage unavailable (private mode) — navigation still proceeds.
       }
       navigate(url);
+      return;
     }
+    // VTID-05212: no destination. When accept() recorded the tip it has already
+    // hidden it (the card unmounts); when it recorded nothing (no tip or no
+    // session yet) the button must not stay disabled forever. No decline here:
+    // an accepted tip would get a second, contradicting event.
+    setBusy(false);
   };
 
   const { headline, subtext } = splitTipCopy(tip.card_copy);
