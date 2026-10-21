@@ -1,0 +1,6 @@
+# VTID-05318 (messenger-ux-v2/ui-reply-jump) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run <3 new test files>   # origin/main: all fail (red-on-base.txt)
+$ npx vitest run <3 new test files>   # head: 6 + 4 + 2 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks   # head: 527 passed, 1 failed = VTID-05201 fixture (fixed on main by #1473; this branch is stacked on #1474/#1476)
+$ npx tsc --noEmit -p tsconfig.app.json   # no error in touched files
+$ npx eslint <touched>   # ConversationView 51, GroupChat 12, MessageBubble 26, ReplyQuote 1, useChatApi 3 = origin/main; new files 0

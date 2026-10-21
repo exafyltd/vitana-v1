@@ -148,6 +148,15 @@
       "other": "{count} 条新消息",
       "unread": "未读消息",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "原消息不可用",
+      "loading": "原消息…",
+      "jumpToOriginal": "转到原消息",
+      "jumpTo": "转到 {name} 的原消息",
+      "unknownSender": "成员",
+      "noText": "附件",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
