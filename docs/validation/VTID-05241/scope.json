@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05241",
+  "lane": "mt-frontend-brand/adminfetch-header",
+  "summary": "adminFetch sends X-Vitana-Tenant (ctx.tenantId, else the session's app_metadata.active_tenant_id) and X-Vitana-Active-Role (only when the caller passes ctx.role) when known; absent otherwise. JSDoc now matches the code. No caller changed; no gateway route reads the headers yet (WS7 follow-on).",
+  "paths": [
+    "src/lib/admin-api.ts",
+    "src/lib/admin-api.test.ts",
+    "docs/validation/VTID-05241/**"
+  ]
+}
