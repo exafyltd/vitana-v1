@@ -1,0 +1,8 @@
+# VTID-05313 (messenger-ux-v2/test-fixture-05201) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx   # origin/main 69d39ef34
+  Tests 1 failed (1)   — No "getI18nLocale" export is defined on the "@/lib/i18n-toast" mock (red-on-base.txt)
+$ npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx   # head
+  Tests 1 passed (1)
+$ npx vitest run   # head, full suite
+  Test Files 444 passed (444) · Tests 3547 passed (3547)
+Assertion unchanged: expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'center' }).
