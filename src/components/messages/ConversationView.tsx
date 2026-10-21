@@ -17,6 +17,7 @@ import TypingIndicator from './TypingIndicator';
 import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { useJumpToMessage, unionByIdSorted, bridgeWindow } from '@/hooks/useJumpToMessage';
+import { useChatViewingPresence } from '@/hooks/useChatViewingPresence';
 import { fetchConversationAround, fetchConversationAfter, type ChatMessage } from '@/hooks/useChatApi';
 
 /** VTID-05318: a row of the list as far as jumping and reply quotes need it. */
@@ -355,6 +356,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }, [threadId, isDirectThread, toViewRow, messages]);
 
   const jumpToMessage = useJumpToMessage({ loadAround, onJump: () => scrollAnchorApi.current?.markAway?.() });
+
+  // VTID-05322: while this DM is on screen, no push for it (gateway VTID-05312).
+  useChatViewingPresence(isDirectThread && threadId ? `dm:${threadId}` : null);
 
   // Reply quotes whose original is not loaded: fetched once each (null = not
   // available in this conversation — deleted, or never part of it).

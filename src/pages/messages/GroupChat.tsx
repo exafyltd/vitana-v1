@@ -19,6 +19,7 @@ import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/
 import { useTranslation } from "@/hooks/useTranslation";
 import { newClientMessageId, tempIdFor, reconcileByClientId } from "@/lib/messaging/outbox";
 import { useJumpToMessage, unionByIdSorted, bridgeWindow } from "@/hooks/useJumpToMessage";
+import { useChatViewingPresence } from "@/hooks/useChatViewingPresence";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
@@ -468,6 +469,8 @@ export default function GroupChat() {
     return true;
   }, [groupId, messages]);
   const jumpToMessage = useJumpToMessage({ loadAround, onJump: markGroupAway });
+  // VTID-05322: while this group is on screen, no push for it (gateway VTID-05312).
+  useChatViewingPresence(groupId ? `group:${groupId}` : null);
   const rowById = useMemo(() => new Map(shownMessages.map((m) => [m.id, m])), [shownMessages]);
   const bubbleParentProps = (msg: GroupRow) => {
     const pid = msg.reply_to_message_id;

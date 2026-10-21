@@ -1,0 +1,4 @@
+# VTID-05322 (messenger-ux-v2/ui-viewing-presence) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/hooks/useChatViewingPresence.test.ts   # base: fails (module missing); head: 5 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks   # head: all green
+Order note: built after ui-reply-jump and before ui-compact-grouping (the plan lists grouping first; the two only share ConversationView/GroupChat and are sequenced, never parallel).
