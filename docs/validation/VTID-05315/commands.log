@@ -1,5 +1,16 @@
 # VTID-05315 (messenger-ux-v2/ui-emoji-recents) — session kiro-exafyltd-202610211130-c65e
-$ npx vitest run src/components/ui/emoji-picker.recents.vtid-05315.test.tsx   # origin/main: fails (red-on-base.txt)
-$ npx vitest run src/components/ui/emoji-picker src/components/messages   # head: 117 passed
-$ npx eslint emoji-picker.tsx + new test   # 0 errors (base 0)
-Deviation from plan §5 lane 9: reactions are recorded when picked through the EmojiPicker (the composer / "more" picker); ReactionPopover is the list of who reacted (no picker), and the quick-reaction row lives in MessageBubble (outside this lane's paths) — not recorded.
+$ npx vitest run src/components/ui/emoji-picker.vtid-05315.test.tsx   # base: fails (no per-member key); head: 8 passed
+$ npx vitest run src/components/ui/emoji-picker.vtid-05202.test.tsx   # unchanged suite: 3 passed
+$ npx tsc --noEmit -p tsconfig.app.json   # 177 errors repo-wide, none in emoji-picker.tsx / its tests
+## Review fixes (semantic_reviewer, /projects/sandbox/reviews/pr1478.md)
+- The session copy wins over storage (a pick survives reopening when only writes fail, e.g. quota full).
+- The device list is handed over once per device (a `:migrated` marker); later signed-out picks are never handed to another member.
+- The default heart is back to main's code point (no unrelated seed change).
+- Tests: renamed to the lane glob (emoji-picker.vtid-05315.test.tsx), memory reset per test, unique member ids, exact assertions; new: quota-only failure, member switch on a mounted picker, no second handover. 3 of the new tests fail on the pre-fix code.
+## Deviation (corrected)
+Reactions are NOT recorded by this lane. Every reaction goes through MessageContextMenu's quick reactions or a
+ReactionCluster chip → MessageBubble.handleReactionSelect → useMessageReactions.addReaction; no reaction UI renders
+EmojiPicker, and ReactionPopover (the lane's file) only lists who reacted. None of those files is in this lane's paths.
+`recordRecentEmoji` is exported; the one-line call in MessageBubble.handleReactionSelect is done in lane
+ui-media-album (whose paths include MessageBubble.tsx) after this lane is merged. Until then: composer picks are per member,
+reactions do not reorder the recent list.

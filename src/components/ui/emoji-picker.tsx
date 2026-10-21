@@ -24,7 +24,7 @@ const RECENT_STORAGE_KEY = 'vitana:emoji:recent:v1';
 const RECENT_MAX = 24;
 // Seeded so the "recent" tab is never emptier than two rows for a new user.
 const RECENT_SEED = [
-  '😊', '👍', '❤', '😂', '😮', '🙏', '🎉', '💪',
+  '😊', '👍', '❤️', '😂', '😮', '🙏', '🎉', '💪',
   '🔥', '😍', '🥰', '😎', '👏', '🙌', '💯', '✨',
 ];
 
@@ -34,6 +34,14 @@ export function recentEmojiKey(userId?: string | null): string {
 
 /** Session copy, used when storage cannot be read or written. */
 const memoryRecents = new Map<string, string[]>();
+// Set once the device list was handed over, so later signed-out picks are
+// never handed to another member.
+const MIGRATED_KEY = `${RECENT_STORAGE_KEY}:migrated`;
+
+/** Test-only: forget the session copies. */
+export function __resetRecentEmojiMemoryForTests(): void {
+  memoryRecents.clear();
+}
 
 function withSeed(list: string[]): string[] {
   // Backfill from the seed so the tab always shows at least two rows, even
@@ -57,21 +65,26 @@ function readStored(key: string): string[] | null {
 /** The member's own picks, most recent first (no seed). */
 function loadOwnRecents(userId?: string | null): string[] {
   const key = recentEmojiKey(userId);
+  // This session's picks are at least as new as storage (a write may have
+  // failed, e.g. quota full), so the session copy wins when it exists.
+  const remembered = memoryRecents.get(key);
+  if (remembered) return remembered;
   try {
     let own = readStored(key);
-    if (!own && userId) {
-      // One-time: the device-wide list of VTID-05202 becomes this member's.
+    if (!own && userId && localStorage.getItem(MIGRATED_KEY) !== '1') {
+      // Once per device: the device-wide list of VTID-05202 becomes the first
+      // signed-in member's. Later signed-out picks stay on the device key.
       const legacy = readStored(RECENT_STORAGE_KEY);
       if (legacy) {
         localStorage.setItem(key, JSON.stringify(legacy.slice(0, RECENT_MAX)));
         localStorage.removeItem(RECENT_STORAGE_KEY);
+        localStorage.setItem(MIGRATED_KEY, '1');
         own = legacy;
       }
     }
-    if (own) return own;
-    return memoryRecents.get(key) ?? [];
+    return own ?? [];
   } catch {
-    return memoryRecents.get(key) ?? [];
+    return [];
   }
 }
 
@@ -80,7 +93,7 @@ export function loadRecentEmojis(userId?: string | null): string[] {
   return own.length === 0 ? [...RECENT_SEED] : withSeed(own);
 }
 
-/** Records a pick (composer or reaction) and returns the new recents list. */
+/** Records a pick and returns the new recents list (composer picker; exported for reaction paths). */
 export function recordRecentEmoji(emoji: string, userId?: string | null): string[] {
   const key = recentEmojiKey(userId);
   // Most-recently-used first, de-duplicated — built from the member's own

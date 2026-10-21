@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import React from 'react';
-import { EmojiPicker, recentEmojiKey, loadRecentEmojis, recordRecentEmoji } from './emoji-picker';
+import { EmojiPicker, recentEmojiKey, loadRecentEmojis, recordRecentEmoji, __resetRecentEmojiMemoryForTests } from './emoji-picker';
 import { AuthContext, type AuthContextValue } from '@/context/AuthContext';
 
 const DEVICE_KEY = 'vitana:emoji:recent:v1';
@@ -28,6 +28,7 @@ beforeEach(() => {
   cleanup();
   localStorage.clear();
   vi.restoreAllMocks();
+  __resetRecentEmojiMemoryForTests();
 });
 
 describe('per-member recent emojis (VTID-05315)', () => {
@@ -35,7 +36,7 @@ describe('per-member recent emojis (VTID-05315)', () => {
     openPicker('user-a');
     fireEvent.click(screen.getAllByText('🔥')[0]);
     cleanup();
-    expect(JSON.parse(localStorage.getItem(recentEmojiKey('user-a'))!)).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem(recentEmojiKey('user-a'))!)[0]).toBe('🔥');
     openPicker('user-b');
     expect(localStorage.getItem(recentEmojiKey('user-b'))).toBeNull();
     expect(recentGrid()[0]).toBe('😊'); // B sees the seed, not A's pick
@@ -50,10 +51,41 @@ describe('per-member recent emojis (VTID-05315)', () => {
 
   it('the device-wide list becomes the first signed-in member\'s, once', () => {
     localStorage.setItem(DEVICE_KEY, JSON.stringify(['🚀', '🌈']));
-    expect(loadRecentEmojis('user-a').slice(0, 2)).toEqual(['🚀', '🌈']);
+    expect(loadRecentEmojis('user-m1').slice(0, 2)).toEqual(['🚀', '🌈']);
     expect(localStorage.getItem(DEVICE_KEY)).toBeNull();
-    expect(JSON.parse(localStorage.getItem(recentEmojiKey('user-a'))!)).toEqual(['🚀', '🌈']);
-    expect(loadRecentEmojis('user-b')[0]).toBe('😊');
+    expect(JSON.parse(localStorage.getItem(recentEmojiKey('user-m1'))!)).toEqual(['🚀', '🌈']);
+    expect(loadRecentEmojis('user-m2')[0]).toBe('😊');
+  });
+
+  it('picks made later while signed out are never handed to another member', () => {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify(['🚀']));
+    loadRecentEmojis('user-h1'); // the one-time handover
+    recordRecentEmoji('🐙', null); // signed out on the same device
+    expect(loadRecentEmojis('user-h2')[0]).toBe('😊');
+    expect(localStorage.getItem(recentEmojiKey('user-h2'))).toBeNull();
+  });
+
+  it('only writes fail (quota full): a new pick survives reopening the picker', () => {
+    localStorage.setItem(recentEmojiKey('user-q'), JSON.stringify(['🌈']));
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('QuotaExceeded'); });
+    openPicker('user-q');
+    fireEvent.click(screen.getAllByText('🔥')[0]);
+    cleanup();
+    openPicker('user-q'); // reopen: reads storage (still ['🌈']) and the session copy
+    expect(recentGrid().slice(0, 2)).toEqual(['🔥', '🌈']);
+  });
+
+  it('switching member on a picker that stays mounted shows the new member\'s list', () => {
+    localStorage.setItem(`${DEVICE_KEY}:migrated`, '1');
+    localStorage.setItem(recentEmojiKey('user-s1'), JSON.stringify(['🐝']));
+    localStorage.setItem(recentEmojiKey('user-s2'), JSON.stringify(['🐳']));
+    const view = render(asMember('user-s1', <EmojiPicker onEmojiSelect={vi.fn()} />));
+    fireEvent.click(screen.getAllByRole('button')[0]);
+    expect(recentGrid()[0]).toBe('🐝');
+    view.rerender(asMember(null, <EmojiPicker onEmojiSelect={vi.fn()} />));
+    expect(recentGrid()[0]).toBe('😊');
+    view.rerender(asMember('user-s2', <EmojiPicker onEmojiSelect={vi.fn()} />));
+    expect(recentGrid()[0]).toBe('🐳');
   });
 
   it('when storage fails, picks are kept in memory for the session', () => {
