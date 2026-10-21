@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { CheckCircle, Loader2, AlertCircle, Calendar, ArrowRight } from "lucide-react";
+import { CheckCircle, AlertCircle, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VCard } from "@/components/ui/vcard";
 import AppLayout from "@/components/AppLayout";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { useAuth } from "@/context/AuthProvider";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
@@ -99,24 +99,26 @@ export default function TicketPurchaseSuccess() {
     );
   }
 
+  // Loading state — the purchase is being fetched (loading) and the payment
+  // confirmed (verifying); this is a data load, so show the detail skeleton
+  // in the shape of the ticket that is coming, never a page spinner (SR-20).
   if (loading || verifying) {
     const confirming = (
-      <div className="text-center space-y-4">
-        {/* design-allow-next-line: action in progress, not a data load */}
-        <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-        <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.confirmingYourPurchase')}</p>
+      <div className="space-y-4">
+        <ArchetypeSkeleton archetype="detail" />
+        <p className="text-center text-muted-foreground">{t('screens.ticketpurchasesuccess.confirmingYourPurchase')}</p>
       </div>
     );
     if (inApp) {
       return (
         <TicketShell>
-          <div className="flex items-center justify-center py-16">{confirming}</div>
+          {confirming}
         </TicketShell>
       );
     }
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        {confirming}
+      <div className="min-h-screen bg-background p-4">
+        <div className="mx-auto w-full max-w-stage py-8">{confirming}</div>
       </div>
     );
   }

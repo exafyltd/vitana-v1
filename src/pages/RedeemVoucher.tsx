@@ -5,9 +5,9 @@ import { useVoucherByCode, useClaimVoucher } from "@/hooks/useRedeemVoucher";
 import { RedemptionLanding } from "@/components/voucher/RedemptionLanding";
 import { RedemptionConfirm } from "@/components/voucher/RedemptionConfirm";
 import AppLayout from "@/components/AppLayout";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
-import { Loader2, Gift, AlertCircle, CheckCircle } from "lucide-react";
+import { Gift, AlertCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { t } from '@/lib/i18n-toast';
@@ -99,20 +99,16 @@ export default function RedeemVoucher() {
     );
   }
 
-  // Loading states
+  // Loading state — the gift voucher is being fetched (authLoading || voucherLoading),
+  // so this is a data load: show the form skeleton, never a page spinner (SR-20).
   if (authLoading || voucherLoading) {
     return (
       <RedeemShell inApp={inApp}>
-      <div className={stateClass(inApp, false)}>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center"
-        >
-          {/* design-allow-next-line: action in progress, not a data load */}
-          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">{t('screens.redeemvoucher.loadingYourGiftVoucher')}</p>
-        </motion.div>
+      <div className={inApp ? "" : stateClass(inApp, false)}>
+        <div className={inApp ? "" : "mx-auto w-full max-w-form px-4"}>
+          <ArchetypeSkeleton archetype="form" />
+          <p className="mt-4 text-center text-muted-foreground">{t('screens.redeemvoucher.loadingYourGiftVoucher')}</p>
+        </div>
       </div>
       </RedeemShell>
     );
