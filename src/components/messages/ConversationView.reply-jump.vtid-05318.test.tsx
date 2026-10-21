@@ -11,9 +11,11 @@ import React from 'react';
 
 let threads: unknown[] = [];
 let messages: unknown[] = [];
+const sendMessage = vi.fn(async (..._a: unknown[]) => undefined);
+let composerSend: ((...a: unknown[]) => unknown) | null = null;
 vi.mock('@/hooks/useHybridMessages', () => ({
   useHybridMessages: () => ({
-    threads, messages, sendMessage: vi.fn(), markAsRead: vi.fn(), isSending: false, typingUsers: [],
+    threads, messages, sendMessage: (...a: unknown[]) => sendMessage(...a), markAsRead: vi.fn(), isSending: false, typingUsers: [],
     startTyping: vi.fn(), stopTyping: vi.fn(), fetchMessages: vi.fn(), context: 'global',
     isMessagesLoading: false, isMessagesFetching: false, loadOlderMessages: vi.fn(), hasOlderMessages: false, isLoadingOlder: false,
   }),
@@ -23,6 +25,7 @@ const fetchConversationAfter = vi.fn(async (..._a: unknown[]) => [] as unknown[]
 vi.mock('@/hooks/useChatApi', () => ({
   fetchConversationAround: (...a: unknown[]) => fetchConversationAround(...a),
   fetchConversationAfter: (...a: unknown[]) => fetchConversationAfter(...a),
+  fetchConversation: vi.fn(async () => []),
 }));
 vi.mock('@/hooks/useCalendarEvents', () => ({
   useCalendarEvents: () => ({ respondToInvite: vi.fn(), getInviteResponse: vi.fn(), addEvent: vi.fn(), fetchEvents: vi.fn() }),
@@ -38,12 +41,15 @@ vi.mock('@/lib/i18n-toast', async (importOriginal) => ({
   notify: vi.fn(),
   notifyError: (...a: unknown[]) => notifyError(...a),
 }));
-vi.mock('./MessageInput', () => ({ default: () => null }));
+vi.mock('./MessageInput', () => ({
+  default: (p: { onSendMessage: (...a: unknown[]) => unknown }) => { composerSend = p.onSendMessage; return null; },
+}));
 // The bubble stand-in exposes what ConversationView gives it.
 vi.mock('./MessageBubble', () => ({
-  default: (p: { message: { id: string; body: string; reply_to_message_id?: string }; parentMessage?: { body: string } | null; parentUnavailable?: boolean; onScrollToMessage?: (id: string) => void }) => (
+  default: (p: { message: { id: string; body: string; reply_to_message_id?: string }; parentMessage?: { body: string } | null; parentUnavailable?: boolean; onScrollToMessage?: (id: string) => void; onReply?: (m: unknown) => void }) => (
     <div data-testid={`bubble-${p.message.id}`}>
       {p.message.body}
+      <button data-testid={`reply-${p.message.id}`} onClick={() => p.onReply?.(p.message)}>reply</button>
       {p.message.reply_to_message_id && (
         <button
           data-testid={`quote-${p.message.id}`}
@@ -148,4 +154,18 @@ describe('reply quotes in a DM (VTID-05318)', () => {
     expect(screen.getByTestId('bubble-bridge')).toBeTruthy(); // no hole between the window and the page
     await waitFor(() => expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'center' }));
   });
+
+  it('a DM reply is sent with the replied-to message id', async () => {
+    threads = [{
+      id: 'alice', type: 'direct', created_by: 'alice', created_at: '2026-10-21T09:00:00Z', updated_at: '2026-10-21T10:00:00Z', unread_count: 0,
+      participants: [{ user_id: 'me', role: 'member' }, { user_id: 'alice', display_name: 'Alice', role: 'member' }],
+    }];
+    messages = [{ id: 'q1', thread_id: 'alice', sender_id: 'alice', body: 'question', message_type: 'text', created_at: '2026-10-21T10:00:00Z', updated_at: '2026-10-21T10:00:00Z', read_at: '2026-10-21T10:00:01Z' }];
+    sendMessage.mockClear();
+    render(<ConversationView threadId="alice" context="global" />);
+    fireEvent.click(screen.getByTestId('reply-q1'));
+    await act(async () => { await composerSend!('answer', 'text'); });
+    expect(sendMessage.mock.calls[0][0]).toMatchObject({ parentMessageId: 'q1', content: 'answer' });
+  });
 });
+

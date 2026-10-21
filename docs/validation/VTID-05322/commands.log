@@ -2,3 +2,9 @@
 $ npx vitest run src/hooks/useChatViewingPresence.test.ts   # base: fails (module missing); head: 5 passed
 $ npx vitest run src/components/messages src/pages/messages src/hooks   # head: all green
 Order note: built after ui-reply-jump and before ui-compact-grouping (the plan lists grouping first; the two only share ConversationView/GroupChat and are sequenced, never parallel).
+
+## Review fixes (semantic_reviewer, /projects/sandbox/reviews/pr1480.md)
+$ npx vitest run src/hooks/useChatViewingPresence.test.ts   # 13 passed (was 5)
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # 108 files / 588 tests passed
+Fixed: hidden page (the browser fires it before pagehide) sends active:false at once with fetch keepalive and the last token (test uses the real hidden→pagehide order); posts are queued in order and a waiting active:true is dropped when viewing ended (never lands after the false); a false is only sent if a true may have gone out; a failed first post (signed out / offline / 4xx / 5xx — res.ok is checked) arms no heartbeat and is retried after 20 s or on the next focus/visibility; the token for keepalive follows onAuthStateChange; no call when the build names no gateway (VITE_GATEWAY_BASE / VITE_GATEWAY_URL — staging and prod builds set both); tests split and cleaned up (unstub globals/envs, visibilityState restored).
+Known and accepted: a duplicated tab copies the sessionStorage device id; then one tab's active:false clears the other's row → a push arrives (fail-open).
