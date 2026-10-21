@@ -99,11 +99,15 @@ Git is the only channel between Claude Code and Kiro sessions — the owner neve
 `node <vitana-platform>/scripts/collab/queue.mjs --repo <vitana-platform> --repo <vitana-v1>` and work lanes whose
 `next_actor` is you; state your session id + lane in your first reply; claim a lane before touching it, one session per
 lane; push and update the lane file before ending. Full rules: `.claude/rules/collaboration.md`.
-**Roles (owner decisions 2026-10-14, Project Manager plan v2, VTID-05218 — replaces VTID-05192):** Kiro plans, builds
-and reviews (one Kiro account reviews another's lane); CI spars every `plan(` PR (`PLAN-SPAR.yml` in vitana-platform)
-and a converged plan is approved by policy; the Project Manager merges by rule and sends Gate 2; Claude Code handles
-exceptions only (governance-path lanes, unpicked or parked work, partner outages). Kiro never merges, deploys or writes
-to a live system. See `.claude/rules/collaboration.md` §7–§7a.
+**Roles (owner decisions 2026-10-14 and 2026-10-20, VTID-05218/VTID-05278 — replaces VTID-05192; `collaboration.md`
+§3a/§7–§7b is the source of truth):** Kiro plans, builds and reviews — the reviewer agent `vitana-lane-reviewer`
+accepts a lane, never its builder; CI spars every `plan(` PR (`PLAN-SPAR.yml` in vitana-platform), approves a
+converged plan by policy (`converged-auto-v1`) and allocates the VTIDs; the Project Manager merges under the PM merge
+rule §7b (the plan driver applies it while the PM is not live) and sends Gate 2. Claude Code is optional and handles
+exceptions; `executor: claude` lanes go to the exceptions seat while it is unavailable (§7). A protected gate file
+(§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs a legacy Claude or owner review on the
+current head. Kiro merges to `main`/staging only under §7b, never deploys to production and never writes a live system
+from session tools. See `.claude/rules/collaboration.md` §7–§8b.
 
 ## Overview
 
@@ -261,53 +265,23 @@ staging without breaking the absolute rule. The rule itself does not change.
 
 ### Why no host is exempt from the absolute rule above (VTID-03506)
 
-The ban at the top of this file covers **every write** as this account — a
-profile edit, an onboarding step, a settings toggle, a wallet call, not only
-community content. This section exists for the follow-up question it kept
-provoking: *"then I'll just run it against the preview instead."*
+The ban at the top of this file covers **every write** as this account (a profile edit, an onboarding step, a
+settings toggle, a wallet call), not only community content, **and no host is exempt**: PR-preview and staging
+frontend builds (`PREVIEW-DEPLOY-FRONTEND.yml`, `STAGE-DEPLOY-FRONTEND.yml`) override only the gateway URL and
+inherit the **production** Supabase project from the committed `.env` (gateway-staging uses production Supabase too,
+`docs/STAGING.md` §6/§9b). **The host selects which _code_ runs; it does not select which database gets written.**
+Reading is fine everywhere; writing is fine nowhere, and community content (posts, comments, likes, videos, chat
+messages) has no exception clause at all. Verify against content that already exists, a Vitest unit/integration
+test, or a local Supabase; if a change genuinely cannot be verified without new community content, **that is a
+blocker to raise, not a rule to route around** (it needs an isolated Supabase project, which does not exist yet).
+Why: the account is a full member of the production tenant, so on 2026-08-05 a session reproducing VTID-03503
+created five test posts that fanned out through `trg_notify_community_post` into 960 notifications and 600
+unrecallable pushes to real members.
 
-**You cannot. There is no safe host for a write today, and picking a "safer" URL
-does not create one.** `PREVIEW-DEPLOY-FRONTEND.yml` (L69–81) and
-`STAGE-DEPLOY-FRONTEND.yml` (L72–93) override **only** the gateway URL and
-deliberately leave Supabase unset, so both builds inherit the **production**
-Supabase project from the committed `.env` — gateway-staging runs against prod
-Supabase too (BOOTSTRAP-ORB-STAGING-SUPABASE-ALIGN; `docs/STAGING.md` §6/§9b),
-and the frontend must match it or authed features silently degrade. A post
-created on `community-app-pr-123` lands in the same `profile_posts` rows real
-members read. **The host selects which _code_ runs; it does not select which
-database gets written.**
-
-So a PR preview is not an isolated environment — it is production with different
-frontend code in front of it. Every write lands in the same rows real members
-read, whichever URL you were pointed at. **Reading is fine everywhere; writing is
-fine nowhere**, and community content — posts, comments, likes, videos, chat
-messages — is the case with no exception clause at all, because it reaches real
-feeds and lock screens the instant it lands.
-
-Verify feed and interaction changes against content that already exists, a Vitest
-unit/integration test, or a local Supabase. If a change genuinely cannot be
-verified without new community content, **that is a blocker to raise, not a rule
-to route around** — it needs an isolated Supabase project for testing, which does
-not exist yet.
-
-On 2026-08-05 a session reproducing VTID-03503 created 5 public posts as this
-account on production between 14:54 and 15:00 UTC. Using a PR preview would have
-produced the identical rows and the identical pushes — the environment was never
-the protection anyone assumed it was. `trg_notify_community_post`
-fans out to every member of the author's tenant, so those 5 inserts became **960
-notifications and 600 delivered pushes** — real members' lock screens filled with
-"E2E Test User shared a new post". Deleting the posts afterwards fixed nothing:
-a push is unrecallable the moment it is sent.
-
-The account is a full member of the production tenant, which is what makes a
-"harmless" test write indistinguishable from a real member posting. Two guards
-now exist (migration `20260805160000`): `_notif_is_test_actor()` plus a BEFORE
-INSERT sink guard on `user_notifications` that drops any notification whose
-actor is a registered or `e2e-%`/`@vitanatest.exafy.io` account. **Treat them as
-the seatbelt, not the permission slip** — they stop notifications, not the posts,
-comments, likes, or chat messages themselves, which still land in the real feed
-in front of real people. Register any new test account in
-`notification_test_actors`.
+The guards from migration `20260805160000` (`_notif_is_test_actor()` plus a BEFORE INSERT sink guard on
+`user_notifications` that drops any notification whose actor is a registered or `e2e-%`/`@vitanatest.exafy.io`
+account) are **the seatbelt, not the permission slip**: they stop notifications, not the posts, comments, likes or
+chat messages themselves. Register any new test account in `notification_test_actors`.
 
 ## What's New cards — automatic (VTID-04733)
 
@@ -482,92 +456,16 @@ wrapper OR the explicit skip-comment should be rejected in PR review.
 
 ---
 
-## Mandatory Codebase Intelligence Workflow
+## Codebase intelligence — RepoWise and Graphify (recommended)
 
-Before planning, modifying, debugging, reviewing, or generating code, always query both RepoWise and Graphify. Do not begin implementation from assumptions or broad grep searches.
+For unfamiliar or cross-module work, RepoWise and Graphify are usually faster and cheaper than browsing raw files; use
+them when they help. Source code and tests stay the final authority: never rely on a relationship the indexes or the
+source do not support, and re-read the source when an index result is stale, approximate or ambiguous.
 
-### 1. Verify index freshness
-
-1. Determine the current repository and Git `HEAD`.
-2. Select the correct RepoWise MCP server. Never use an index belonging to another repository or an older checkout.
-3. Confirm RepoWise's indexed commit matches `HEAD`.
-4. Check for `graphify-out/graph.json`.
-5. If either index is missing or stale, update it before implementation:
-   - `repowise update`
-   - `graphify --update`
-
-Report any indexing failure clearly. Do not silently continue with stale information.
-
-### 2. Read the codebase before execution
-
-Use RepoWise for precise code and health information:
-
-1. Call `get_overview` once to understand architecture, layers, entry points, and key modules.
-2. Use `search_codebase` to locate relevant concepts, symbols, and paths.
-3. Use `get_context` for compact file and module context.
-4. Use `get_symbol` only when full implementation bodies are required.
-5. Use `get_why` when architectural decisions or historical rationale matter.
-6. Call `get_risk` before changing shared, central, or high-risk files.
-
-Use Graphify for relationships and system-wide reasoning:
-
-1. Run `graphify query "<task-specific question>" --budget 1500`.
-2. Use `graphify path "<source>" "<target>"` to trace dependencies or data flow.
-3. Use `graphify explain "<component>"` for unfamiliar systems.
-4. Pay particular attention to god nodes, community boundaries, dependency paths, and surprising cross-module connections.
-
-### 3. Produce a pre-execution code map
-
-Before editing, establish:
-
-- Relevant entry points and execution flow.
-- Files, symbols, modules, and tests involved.
-- Upstream and downstream dependencies.
-- Existing patterns that should be followed.
-- Architectural constraints and recorded decisions.
-- Health hotspots, complexity, missing tests, and change risk.
-- The smallest safe implementation scope.
-
-Do not start execution until this map is sufficient to explain what will change, why, and what may be affected.
-
-### 4. Minimize token and search waste
-
-- Treat RepoWise and Graphify as the primary navigation layer.
-- Do not recursively read directories or perform broad grep searches when an indexed query can answer the question.
-- Retrieve compact context first and expand only the exact files or symbols required.
-- Do not repeatedly call `get_overview` during the same task unless the index changes.
-- Reuse already retrieved results instead of requesting identical context again.
-- Raw file reads are allowed only for targeted implementation details, verification, or when an index result is missing, stale, ambiguous, or approximate.
-- Source code and tests remain the final authority; never invent a relationship that the indexes or source do not support.
-
-### 5. Validate after implementation
-
-After changing code:
-
-1. Run the relevant tests, linting, type checks, and build.
-2. Re-query change risk for the affected files when appropriate.
-3. Update both indexes:
-   - `repowise update`
-   - `graphify --update`
-4. Confirm the indexes now match the final Git state.
-5. Summarize changed behavior, affected dependencies, risks, and verification evidence.
-
-A task is not complete until the implementation is verified and both indexes are current.
-
-For Graphify's built-in Claude integration, also run once per repository:
-
-```
-graphify claude install
-```
-
-This workflow improves Claude's navigation speed, token efficiency, and change accuracy. It does not automatically improve application runtime performance—that requires acting on the health and performance findings uncovered by the indexes.
-
-## graphify
-
-This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
-
-Rules:
-- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
-- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
-- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
-- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+- **RepoWise:** `get_overview` (architecture map, once per task), `search_codebase`, `get_context`, `get_symbol` (one
+  full body), `get_why` (decisions and rationale), `get_risk` (before changing shared or high-risk files). Refresh a
+  stale index with `repowise update`.
+- **Graphify** (`graphify-out/graph.json`): `graphify query "<question>" --budget 1500`, `graphify path "<A>" "<B>"`,
+  `graphify explain "<concept>"`. `graphify-out/wiki/index.md` (if present) for broad navigation;
+  `graphify-out/GRAPH_REPORT.md` only for architecture review. Refresh with `graphify update .` (AST-only, no API
+  cost). One-time setup per repository: `graphify claude install`.

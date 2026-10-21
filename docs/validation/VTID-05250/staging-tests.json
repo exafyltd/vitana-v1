@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05250",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "fixture gateway serves the G1 HTTP contract and binds loopback-only",
+      "ref": "cd apps/mobile && npx jest tests/fixture-gateway",
+      "cwd": ".",
+      "reason": "This lane is a local, loopback-only tools fixture (apps/mobile/tools/fixture-gateway) with no deployed surface, so there is nothing on staging to probe. The fixture suite is read-only by construction: it starts the server on 127.0.0.1, asserts each route's shape (app-config passing the real parseAppConfigResponse, the auth/me 401 toggle, notifications/token, AASA/assetlinks) and that it refuses to bind to any non-loopback/non-private address. It opens no outbound connection and can never reach staging or production."
+    }
+  ]
+}
