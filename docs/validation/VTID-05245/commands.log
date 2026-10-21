@@ -1,0 +1,27 @@
+# VTID-05245 (mt-frontend-brand/email-brand-db) — verification commands
+# Session kiro-hotmail-202610211102-7ed9, 2026-10-21. The lane changes only SQL + docs
+# (no TS/TSX), so vitest/lint/build cover no lane code; CI on the PR head is the evidence.
+
+## CI on the first heads (2026-10-20T08:43Z, before plan(mt-frontend-brand) #4172 merged at 13:54+02:00)
+vitana-v1#1464 d049a17da: Lane scope FAIL - lane file not on vitana-platform main yet (plan PR unmerged then)
+vitana-v1#1464 d049a17da: Vitest (jsdom) FAIL - 1 failed | 443 passed (444) files; the one failure is
+  src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx ("No getI18nLocale export on the
+  @/lib/i18n-toast mock") - a file this lane does not touch; red from the base main 32a82e6b6, not the lane.
+vitana-platform#4204 874d84322: Lane scope FAIL - same cause (lane file absent on the base).
+
+## Fix: merge origin/main into both lane branches (no rebase, no force)
+git merge --no-ff origin/main (vitana-v1, worktree)            -> ae674f777, clean, lane diff vs main = 5 files (lane paths only)
+git merge-tree --write-tree + commit-tree (vitana-platform)    -> 553dcfbec, clean, lane diff vs main = 1 file (MIGRATION-QUEUE.md)
+
+## Local checks (queue.mjs from vitana-platform origin/main)
+node queue.mjs scope-check --base origin/main --head 553dcfbec --branch kiro/mt-frontend-brand/email-brand-db-queue
+  -> PASS "every change is inside its paths" (exit 0)
+node queue.mjs validate --base origin/main --head 553dcfbec   -> PASS "0 handoff/lane file(s) changed, all valid" (exit 0)
+node queue.mjs scope-check --repo . --base origin/main --head HEAD --lane-repo exafyltd/vitana-platform (vitana-v1)
+  -> not decidable locally: the lane-file fetch from vitana-platform main hit the local gh REST rate limit
+     (core remaining 0); the lane file is on vitana-platform main (975a1bdb8), so CI decides it on the new head.
+ls supabase/migrations (vitana-v1 origin/main) -> latest 20261016110000; 20261101090000 is still the newest prefix, no renumber.
+
+## Migration
+Not applied (Kiro never applies; collaboration §7). Migration awaits owner apply of
+supabase/migrations/20261101090000_vtid_05245_tenant_email_branding.sql; pre-check.sql / post-check.sql / rollback.sql here.
