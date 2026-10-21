@@ -129,7 +129,12 @@ describe('ConversationView opening position (VTID-05319, R8)', () => {
     expect(el.style.visibility).toBe('');
     expect(el.scrollTop).toBe(SCROLL_H - CLIENT_H);
     expect(scrollToSpy).not.toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth' }));
-    expect(vi.getTimerCount()).toBe(0); // no 50/150/300 ms retry timers any more
+    // No 50/150/300 ms retry timers any more: whatever is still scheduled
+    // (React's own work) never moves the list.
+    const before = el.scrollTop;
+    act(() => { vi.runOnlyPendingTimers(); });
+    expect(el.scrollTop).toBe(before);
+    expect(scrollToSpy).not.toHaveBeenCalled();
     // Never painted visible-but-not-at-the-bottom.
     for (const p of positionsSeenBeforePaint) {
       if (p.visibility !== 'hidden') expect(p.scrollTop).toBe(SCROLL_H - CLIENT_H);
