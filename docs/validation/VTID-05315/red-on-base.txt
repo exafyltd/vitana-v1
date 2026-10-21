@@ -1,7 +1,35 @@
-# red on base: origin/main 610b7270a, the new test file copied in
- FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > member A's picks never show for member B on the same device
- FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > the device-wide list becomes the first signed-in member's, once
- FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > when storage fails, picks are kept in memory for the session
- FAIL  src/components/ui/emoji-picker.recents.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > without a signed-in member the device key is used (VTID-05202 behaviour)
- Test Files  1 failed (1)
-      Tests  4 failed | 1 passed (5)
+## base = origin/main (7499b3b7d), test = emoji-picker.vtid-05315.test.tsx (head version)
+     × member A's picks never show for member B on the same device 3ms
+     × a pick moves to the front of the recent tab at once (same picker, no reopen) 1ms
+     × the device-wide list becomes the first signed-in member's, once 0ms
+     × picks made later while signed out are never handed to another member 0ms
+     × the first signed-in check sets the handover marker even without a device list 0ms
+     × picks made in another tab are kept (storage is re-read when it works) 0ms
+     × only writes fail (quota full): a new pick survives reopening the picker 0ms
+     × switching member on a picker that stays mounted shows the new member's list 0ms
+     × when storage fails, picks are kept in memory for the session 0ms
+     × without a signed-in member the device key is used (VTID-05202 behaviour) 0ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > member A's picks never show for member B on the same device
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > a pick moves to the front of the recent tab at once (same picker, no reopen)
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > the device-wide list becomes the first signed-in member's, once
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > picks made later while signed out are never handed to another member
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > the first signed-in check sets the handover marker even without a device list
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > picks made in another tab are kept (storage is re-read when it works)
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > only writes fail (quota full): a new pick survives reopening the picker
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > switching member on a picker that stays mounted shows the new member's list
+ FAIL  src/components/ui/emoji-picker.vtid-05315.test.tsx > per-member recent emojis (VTID-05315) > when storage fails, picks are kept in memory for the session
+
+## pre-review lane code (73c8a63e8 emoji-picker.tsx + a test-reset shim) with the same test file
+     ✓ member A's picks never show for member B on the same device 155ms
+     ✓ a pick moves to the front of the recent tab at once (same picker, no reopen) 27ms
+     ✓ the device-wide list becomes the first signed-in member's, once 2ms
+     × picks made later while signed out are never handed to another member 4ms
+     × the first signed-in check sets the handover marker even without a device list 1ms
+     ✓ picks made in another tab are kept (storage is re-read when it works) 0ms
+     × only writes fail (quota full): a new pick survives reopening the picker 39ms
+     ✓ switching member on a picker that stays mounted shows the new member's list 24ms
+     ✓ when storage fails, picks are kept in memory for the session 3ms
+     ✓ without a signed-in member the device key is used (VTID-05202 behaviour) 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 7 passed (10)

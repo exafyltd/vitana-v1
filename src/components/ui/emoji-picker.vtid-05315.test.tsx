@@ -65,6 +65,20 @@ describe('per-member recent emojis (VTID-05315)', () => {
     expect(localStorage.getItem(recentEmojiKey('user-h2'))).toBeNull();
   });
 
+  it('the first signed-in check sets the handover marker even without a device list', () => {
+    loadRecentEmojis('user-n1'); // no device list yet
+    recordRecentEmoji('🐙', null); // later signed-out pick on the same device
+    expect(loadRecentEmojis('user-n2')[0]).toBe('😊');
+    expect(localStorage.getItem(recentEmojiKey('user-n2'))).toBeNull();
+  });
+
+  it('picks made in another tab are kept (storage is re-read when it works)', () => {
+    recordRecentEmoji('🐝', 'user-t');
+    // Another tab of the same member writes its own pick.
+    localStorage.setItem(recentEmojiKey('user-t'), JSON.stringify(['🐳', '🐝']));
+    expect(recordRecentEmoji('🦋', 'user-t').slice(0, 3)).toEqual(['🦋', '🐳', '🐝']);
+  });
+
   it('only writes fail (quota full): a new pick survives reopening the picker', () => {
     localStorage.setItem(recentEmojiKey('user-q'), JSON.stringify(['🌈']));
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('QuotaExceeded'); });

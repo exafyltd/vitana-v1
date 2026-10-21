@@ -65,22 +65,25 @@ function readStored(key: string): string[] | null {
 /** The member's own picks, most recent first (no seed). */
 function loadOwnRecents(userId?: string | null): string[] {
   const key = recentEmojiKey(userId);
-  // This session's picks are at least as new as storage (a write may have
-  // failed, e.g. quota full), so the session copy wins when it exists.
+  // A session copy exists only after a write failed (e.g. quota full); then it
+  // is newer than storage and wins. Otherwise storage is read every time, so
+  // picks made in another tab are kept.
   const remembered = memoryRecents.get(key);
   if (remembered) return remembered;
   try {
     let own = readStored(key);
     if (!own && userId && localStorage.getItem(MIGRATED_KEY) !== '1') {
       // Once per device: the device-wide list of VTID-05202 becomes the first
-      // signed-in member's. Later signed-out picks stay on the device key.
+      // signed-in member's. The marker is set by that first check whether or
+      // not there was a list, so later signed-out picks (device key) are never
+      // handed to anyone.
       const legacy = readStored(RECENT_STORAGE_KEY);
       if (legacy) {
         localStorage.setItem(key, JSON.stringify(legacy.slice(0, RECENT_MAX)));
         localStorage.removeItem(RECENT_STORAGE_KEY);
-        localStorage.setItem(MIGRATED_KEY, '1');
         own = legacy;
       }
+      localStorage.setItem(MIGRATED_KEY, '1');
     }
     return own ?? [];
   } catch {
@@ -99,11 +102,12 @@ export function recordRecentEmoji(emoji: string, userId?: string | null): string
   // Most-recently-used first, de-duplicated — built from the member's own
   // picks, never from the seed.
   const own = [emoji, ...loadOwnRecents(userId).filter((e) => e !== emoji)].slice(0, RECENT_MAX);
-  memoryRecents.set(key, own);
   try {
     localStorage.setItem(key, JSON.stringify(own));
+    memoryRecents.delete(key);
   } catch {
     /* storage unavailable (private mode / quota) — kept in memory for this session */
+    memoryRecents.set(key, own);
   }
   return withSeed(own);
 }
