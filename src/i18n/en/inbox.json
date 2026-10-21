@@ -131,7 +131,17 @@
       "today": "Today",
       "yesterday": "Yesterday"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "Sending",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "read": "Read",
+      "failed": "Not sent",
+      "retry": "Retry",
+      "retryLabel": "Send this message again",
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }

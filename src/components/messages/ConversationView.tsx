@@ -110,7 +110,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     loadOlderMessages,
     hasOlderMessages,
     isLoadingOlder,
-  } = useHybridMessages(context, threadId);
+    // VTID-05320: Retry / discard of an unsent bubble (global context; the tenant hook has none).
+    retryMessage,
+    discardMessage,
+  } = useHybridMessages(context, threadId) as ReturnType<typeof useHybridMessages> & {
+    retryMessage?: (clientMessageId: string) => Promise<unknown>;
+    discardMessage?: (clientMessageId: string) => void;
+  };
+
 
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -512,12 +519,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     try {
       setSendError(null);
       
-      // Check if offline first
-      if (!navigator.onLine) {
-        setSendError('You are offline. Message will be sent when connection is restored.');
-        console.warn('📴 Offline - message queued');
-        return;
-      }
+      // VTID-05320: no offline short-circuit any more — the message goes into
+      // the outbox, shows as "Not sent" with Retry, and is re-posted once when
+      // the connection returns (useGlobalMessages).
 
       if (!threadId) {
         console.error('No thread ID available for sending message');
@@ -543,7 +547,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         recipientId,
         parentMessageId: parentMessageId || replyingTo?.id,
         actionButtons,
-      });
+        // VTID-05320: composer sends resolve at once (the bubble shows the
+        // outcome). A calendar invite waits for the stored row: its id is the
+        // sender's calendar event's source_message_id.
+        queued: messageType !== 'calendar_invite',
+      } as Parameters<typeof sendMessage>[0]);
 
       const newMessage = await sendPromise;
 
@@ -1046,7 +1054,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-2 sm:px-3 py-1 overscroll-contain" 
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
@@ -1136,7 +1144,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   <div
                     id={`msg-${message.id}`}
                     className={cn(
-                      shouldUseSmallSpacing ? "mb-0.5" : "mb-2",
+                      shouldUseSmallSpacing ? "mb-0.5" : "mb-1.5",
                       "transition-colors duration-500"
                     )}
                   >
@@ -1188,6 +1196,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                           }
                         }}
                         onDeleteMessage={async (messageId: string) => {
+                          // VTID-05320: an unsent message is only local — discard it.
+                          if (String(messageId).startsWith('temp-')) {
+                            discardMessage?.(String(messageId).slice('temp-'.length));
+                            return;
+                          }
                           try {
                             const ct = threads.find((t: any) => t.id === threadId);
                             const isGroup = ct?.type === 'group';
@@ -1219,6 +1232,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                           }
                         }}
                         onSendReply={handleSendMessage}
+                        onRetry={retryMessage ? (cid: string) => { void retryMessage(cid); } : undefined}
                       />
                     </SwipeableMessage>
                   </div>

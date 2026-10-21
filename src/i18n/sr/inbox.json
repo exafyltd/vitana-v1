@@ -131,7 +131,17 @@
       "today": "Danas",
       "yesterday": "Juče"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "Šalje se",
+      "sent": "Poslato",
+      "delivered": "Isporučeno",
+      "read": "Pročitano",
+      "failed": "Nije poslato",
+      "retry": "Pošalji ponovo",
+      "retryLabel": "Pošalji ovu poruku ponovo",
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }

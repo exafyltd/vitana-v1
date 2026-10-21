@@ -120,6 +120,16 @@
       "composerPlaceholder": "Nachricht…",
       "today": "Heute",
       "yesterday": "Gestern"
+    },
+    "messageStatus": {
+      "sending": "Wird gesendet",
+      "sent": "Gesendet",
+      "delivered": "Zugestellt",
+      "read": "Gelesen",
+      "failed": "Nicht gesendet",
+      "retry": "Erneut senden",
+      "retryLabel": "Diese Nachricht erneut senden",
+      "_pending_review": {}
     }
   }
 }

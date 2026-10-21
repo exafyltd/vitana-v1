@@ -36,7 +36,9 @@ import {
   Trash2,
   Play,
   Pause,
-  Mic
+  Mic,
+  AlertCircle,
+  RotateCw
 } from 'lucide-react';
 import { VitanaMessageActions } from './VitanaMessageActions';
 import { ChatImageViewer, type ChatViewerImage } from './ChatImageViewer';
@@ -74,6 +76,8 @@ interface MessageBubbleProps {
   onUpdateMessage?: (messageId: string, updates: any) => void;
   onDeleteMessage?: (messageId: string) => void;
   onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
+  /** VTID-05320: re-send a failed message (its client_message_id). */
+  onRetry?: (clientMessageId: string) => void;
 }
 
 // WhatsApp-style voice message player
@@ -186,7 +190,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   parentMessage,
   onUpdateMessage,
   onDeleteMessage,
-  onSendReply
+  onSendReply,
+  onRetry
 }) => {
   // VTID-03663 — this component is React.memo'd (see the default export), so it
   // bails out on shallow-equal props and the LanguageProvider re-render cascade
@@ -359,9 +364,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   // Check if this is an optimistic message (temporary)
   const isOptimistic = message.id?.toString().startsWith('temp-');
-  
+  // VTID-05320: outbox rows carry send_status (sending | failed).
+  const isFailed = message.send_status === 'failed';
+
   const getMessageStatus = () => {
-    if (isOptimistic) {
+    if (isFailed) {
+      return 'failed';
+    }
+    if (isOptimistic || message.send_status === 'sending') {
       return 'sending';
     }
     
@@ -382,23 +392,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     return 'sending';
   };
 
-  const renderStatusIcon = () => {
+  const renderStatusIcon = (decorative = false) => {
     if (!isOwnMessage) return null;
 
     const status = getMessageStatus();
 
+    // VTID-05320: every state has its own icon and a spoken label (the
+    // invisible layout spacer copy carries neither).
+    const a11y = decorative
+      ? { 'aria-hidden': true as const }
+      : { role: 'img', 'aria-label': t(`inbox.messageStatus.${status}`), 'data-testid': `message-status-${status}` };
     switch (status) {
+      case 'failed':
+        return <AlertCircle className="w-3 h-3 text-destructive" {...a11y} />;
       case 'sending':
-        return <Loader2 className="w-3 h-3 animate-spin" />;
+        return <Clock className="w-3 h-3" {...a11y} />;
       case 'sent':
         // Single checkmark - message sent but not delivered
-        return <Check className="w-3 h-3" />;
+        return <Check className="w-3 h-3" {...a11y} />;
       case 'delivered':
         // Double checkmark - message delivered but not read
-        return <CheckCheck className="w-3 h-3" />;
+        return <CheckCheck className="w-3 h-3" {...a11y} />;
       case 'read':
         // Colored double checkmark - message read (WhatsApp style)
-        return <CheckCheck className="w-3 h-3 text-primary" />;
+        return <CheckCheck className="w-3 h-3 text-primary" {...a11y} />;
       default:
         return <Clock className="w-3 h-3" />;
     }
@@ -433,6 +450,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       {renderStatusIcon()}
     </>
   );
+  const timestampSpacerInner = (
+    <>
+      <span className="tabular-nums">{formattedTime}</span>
+      {renderStatusIcon(true)}
+    </>
+  );
   // Ghost spacer appended inside the text <p> so the last line reserves
   // room for the corner-pinned timestamp (matches timestamp width exactly).
   const textTimestampSpacer = (
@@ -440,7 +463,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       aria-hidden="true"
       className="inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"
     >
-      {timestampInner}
+      {timestampSpacerInner}
     </span>
   );
   // Real timestamp, absolutely positioned in the bubble's bottom-right corner.
@@ -1154,7 +1177,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <>
       <div className={cn(
-        "flex gap-2 w-full relative",
+        "flex gap-1.5 w-full relative",
         isOwnMessage ? "justify-end" : "justify-start"
       )}>
         {/* Avatar column - fixed width to maintain alignment */}
@@ -1216,7 +1239,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 ref={messageRef}
                 tabIndex={0}
                 className={cn(
-                  "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                  "rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
                   isOwnMessage
                     ? "bg-domain-messages-bubble text-domain-messages-bubble-foreground"
@@ -1296,6 +1319,24 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </div>
             </ReactionPopover>
           </div>
+
+          {/* VTID-05320: a message that could not be sent keeps its text and
+              offers one-tap Retry (same client_message_id, never a duplicate). */}
+          {isOwnMessage && isFailed && message.client_message_id && onRetry && (
+            <div className="mt-0.5 flex items-center justify-end gap-1.5 text-xs text-destructive" data-testid="message-failed-row">
+              <span>{t('inbox.messageStatus.failed')}</span>
+              <button
+                type="button"
+                onClick={() => onRetry?.(message.client_message_id)}
+                className="inline-flex min-h-11 items-center gap-1 rounded-md px-2 font-medium underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label={t('inbox.messageStatus.retryLabel')}
+                data-testid="message-retry"
+              >
+                <RotateCw className="h-3.5 w-3.5" aria-hidden />
+                {t('inbox.messageStatus.retry')}
+              </button>
+            </div>
+          )}
 
           {/* VTID-05100 — the card sits under the bubble, outside its context
               menu, so a tap opens the card's screen. No X in the chat. */}

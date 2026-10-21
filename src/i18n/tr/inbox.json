@@ -131,6 +131,16 @@
       "composerPlaceholder": "Mesaj…",
       "today": "Bugün",
       "yesterday": "Dün"
+    },
+    "messageStatus": {
+      "sending": "Gönderiliyor",
+      "sent": "Gönderildi",
+      "delivered": "İletildi",
+      "read": "Okundu",
+      "failed": "Gönderilemedi",
+      "retry": "Tekrar dene",
+      "retryLabel": "Bu mesajı tekrar gönder",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

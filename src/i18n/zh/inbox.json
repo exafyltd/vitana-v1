@@ -131,7 +131,17 @@
       "today": "今天",
       "yesterday": "昨天"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "发送中",
+      "sent": "已发送",
+      "delivered": "已送达",
+      "read": "已读",
+      "failed": "未发送",
+      "retry": "重试",
+      "retryLabel": "重新发送这条消息",
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }
