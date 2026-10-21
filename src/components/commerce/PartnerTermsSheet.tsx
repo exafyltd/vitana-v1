@@ -54,7 +54,7 @@ function TermsBody({ terms }: { terms: PartnerTerms }) {
             {b.text}
           </h4>
         ) : b.kind === 'marker' ? (
-          <p key={i} className="rounded-lg bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-900" dir="ltr">
+          <p key={i} className="rounded-lg bg-accent px-2 py-1 text-xs font-semibold text-primary" dir="ltr">
             {b.text}
           </p>
         ) : b.kind === 'item' ? (
@@ -164,12 +164,13 @@ export function PartnerTermsSheet({
       {/* VTID-04925: capped to the window on wide screens so the footer (tick + Accept) is never cut off. */}
       <ResponsiveDialogContent
         fullscreenOnMobile
+        // design-allow-next-line: calc against fixed chrome (viewport-bound sheet height)
         className="md:max-w-3xl lg:flex lg:max-h-[calc(100dvh-2rem)] lg:flex-col lg:overflow-hidden lg:[&>div]:min-h-0 lg:[&>div]:flex-1"
         data-testid="partner-terms-sheet"
       >
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="flex items-center gap-2 text-2xl font-bold">
-            <ShieldCheck className="h-6 w-6 shrink-0 text-amber-700" />
+            <ShieldCheck className="h-6 w-6 shrink-0 text-primary" />
             {t(`${K}.title`)}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
@@ -188,7 +189,7 @@ export function PartnerTermsSheet({
           ) : (
             <>
               {updated && (
-                <p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" data-testid="partner-terms-updated">
+                <p className="rounded-xl border border-status-warning/40 bg-status-warning-subtle p-3 text-sm text-foreground" data-testid="partner-terms-updated">
                   {t(`${K}.updated`)}
                 </p>
               )}
@@ -223,14 +224,14 @@ export function PartnerTermsSheet({
               </div>
 
               {/* German is binding — always on screen, whatever language is shown. */}
-              <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-sm text-amber-950" data-testid="partner-terms-binding-notice">
+              <div className="rounded-xl border border-primary/20 bg-accent/70 p-3 text-sm text-primary" data-testid="partner-terms-binding-notice">
                 <p>{t(`${K}.bindingNotice`)}</p>
                 {!showingGerman && (
                   <button
                     type="button"
                     onClick={() => void switchTo(BINDING_TERMS_LOCALE)}
                     disabled={switching}
-                    className="mt-1 min-h-11 font-semibold text-amber-800 underline underline-offset-2"
+                    className="mt-1 min-h-11 font-semibold text-primary underline underline-offset-2"
                     data-testid="partner-terms-read-german"
                   >
                     {t(`${K}.readGerman`)}
@@ -273,7 +274,7 @@ export function PartnerTermsSheet({
         {/* VTID-04925: the tick and Accept live together in the footer, always on screen. */}
         <ResponsiveDialogFooter className="flex-col gap-3 sm:flex-col sm:justify-start sm:space-x-0" data-testid="partner-terms-footer">
           {terms && !loading && !failed && (
-            <div className="rounded-xl bg-amber-50/60 p-3">
+            <div className="rounded-xl bg-accent/60 p-3">
               <label className="flex min-h-11 cursor-pointer items-start gap-3 text-sm font-medium text-foreground">
                 <Checkbox
                   checked={agreed}
@@ -297,7 +298,7 @@ export function PartnerTermsSheet({
                 onClick={() => void accept()}
                 disabled={!agreed || saving || switching}
                 data-testid="partner-terms-accept"
-                className="h-12 flex-1 rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800 sm:flex-none"
+                className="h-12 flex-1 rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90 sm:flex-none"
               >
                 {saving ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : null}
                 {t(`${K}.accept`)}
