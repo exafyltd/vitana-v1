@@ -1,5 +1,5 @@
 # VTID-05315 (messenger-ux-v2/ui-emoji-recents) — session kiro-exafyltd-202610211130-c65e
-$ npx vitest run src/components/ui/emoji-picker.vtid-05315.test.tsx   # base (origin/main): 10 of 10 fail; pre-review lane code: 4 fail (red-on-base.txt); head: 10 passed
+$ npx vitest run src/components/ui/emoji-picker.vtid-05315.test.tsx   # base (origin/main): 10 of 10 fail; pre-review lane code: 3 fail (red-on-base.txt); head: 10 passed
 $ npx vitest run src/components/ui/emoji-picker.vtid-05202.test.tsx   # unchanged suite: 3 passed
 $ npx tsc --noEmit -p tsconfig.app.json   # 177 errors repo-wide, none in emoji-picker.tsx / its tests
 ## Review fixes (semantic_reviewer, /projects/sandbox/reviews/pr1478.md)
