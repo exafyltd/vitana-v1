@@ -57,7 +57,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: i18n-audit-llm-${{ github.event.inputs.locale || 'all' }}
