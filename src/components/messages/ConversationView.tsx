@@ -110,7 +110,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     loadOlderMessages,
     hasOlderMessages,
     isLoadingOlder,
-  } = useHybridMessages(context, threadId);
+    // VTID-05320: Retry on a failed bubble (global context; the tenant hook has none).
+    retryMessage,
+  } = useHybridMessages(context, threadId) as ReturnType<typeof useHybridMessages> & {
+    retryMessage?: (clientMessageId: string) => Promise<unknown>;
+  };
+
 
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -512,12 +517,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     try {
       setSendError(null);
       
-      // Check if offline first
-      if (!navigator.onLine) {
-        setSendError('You are offline. Message will be sent when connection is restored.');
-        console.warn('📴 Offline - message queued');
-        return;
-      }
+      // VTID-05320: no offline short-circuit any more — the message goes into
+      // the outbox, shows as "Not sent" with Retry, and is re-posted once when
+      // the connection returns (useGlobalMessages).
 
       if (!threadId) {
         console.error('No thread ID available for sending message');
@@ -1219,6 +1221,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                           }
                         }}
                         onSendReply={handleSendMessage}
+                        onRetry={retryMessage ? (cid: string) => { void retryMessage(cid); } : undefined}
                       />
                     </SwipeableMessage>
                   </div>

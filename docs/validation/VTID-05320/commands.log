@@ -1,0 +1,7 @@
+# VTID-05320 (messenger-ux-v2/ui-send-status) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run <3 new files>        # origin/main 69d39ef34 (files copied): every new test fails (red-on-base.txt)
+$ npx vitest run src/lib/messaging/outbox.test.ts src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx   # head: 11 + 10 + 9 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging src/components/ui   # head: 589 passed, 1 failed = ConversationView.deeplink-scroll.vtid-05201 (pre-existing on main, fixed by VTID-05313 #1473)
+$ npx tsc --noEmit -p tsconfig.app.json   # no error in any touched file (pre-existing errors elsewhere unchanged)
+$ npx eslint <touched files>   # error counts equal to origin/main (ratchet): useGlobalMessages 54=54, MessageBubble 26=26, ConversationView 51=51, GroupChat 12=12, useChatApi 3=3; new files 0
+Backward compatible with the gateway before VTID-05310: unknown body fields are ignored, /chat/delivered 404 is logged only.

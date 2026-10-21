@@ -17,6 +17,7 @@ import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useTranslation } from "@/hooks/useTranslation";
+import { newClientMessageId, tempIdFor, reconcileByClientId } from "@/lib/messaging/outbox";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
@@ -73,9 +74,16 @@ interface BubbleMessage {
   message_type: string;
   created_at: string;
   thread_id: string;
+  /** VTID-05320: local send state (sending | failed) and its idempotency key. */
+  send_status?: "sending" | "failed";
+  client_message_id?: string | null;
+  reply_to_message_id?: string | null;
 }
 
-function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage {
+/** VTID-05320: a group row as kept on this screen — server rows plus local unsent ones. */
+type GroupRow = ChatGroupMessage & { send_status?: "sending" | "failed" };
+
+function toBubbleMessage(msg: GroupRow, groupId: string): BubbleMessage {
   return {
     id: msg.id,
     sender_id: msg.sender_id,
@@ -85,7 +93,20 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
     message_type: msg.message_type || "text",
     created_at: msg.created_at,
     thread_id: groupId,
+    send_status: msg.send_status,
+    client_message_id: msg.client_message_id ?? null,
+    reply_to_message_id: msg.reply_to_message_id ?? null,
   };
+}
+
+/**
+ * VTID-05320: a refetch replaces the server rows but keeps this screen's
+ * unsent rows (sending | failed) unless their client_message_id arrived.
+ */
+export function mergeGroupRows(prev: GroupRow[], server: GroupRow[]): GroupRow[] {
+  const arrived = new Set(server.map((m) => m.client_message_id).filter(Boolean) as string[]);
+  const local = prev.filter((m) => m.send_status && !(m.client_message_id && arrived.has(m.client_message_id)));
+  return local.length === 0 ? server : [...server, ...local];
 }
 
 // VTID-04928: engines without scrollIntoView (jsdom) must never crash the page.
@@ -106,11 +127,12 @@ export default function GroupChat() {
   const spotlight = useSpotlightEnabled();
 
   const [group, setGroup] = useState<GroupWithMembers | null>(null);
-  const [messages, setMessages] = useState<ChatGroupMessage[]>([]);
+  const [messages, setMessages] = useState<GroupRow[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [messagesLoaded, setMessagesLoaded] = useState(false);
-  const [isSending, setIsSending] = useState(false);
+  // VTID-05320: sends no longer block each other; kept for the composer props.
+  const [isSending] = useState(false);
   const streamEndRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
 
@@ -146,7 +168,7 @@ export default function GroupChat() {
     if (!groupId) return;
     try {
       const msgs = await fetchGroupMessages(groupId, 100);
-      setMessages(msgs.slice().reverse());
+      setMessages(prev => mergeGroupRows(prev, msgs.slice().reverse()));
       setMessagesLoaded(true);
       setLoadError(null);
     } catch (err) {
@@ -310,15 +332,40 @@ export default function GroupChat() {
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
   // unchanged. The gateway accepts message_type + content_data and stores
   // them in chat_messages.metadata.
+  // VTID-05320: every send has a client_message_id. The row shows at once
+  // (Sending), becomes the server row on success (matched by that id), and on
+  // failure stays as "Not sent" with Retry — the retry re-posts the same id,
+  // which the gateway dedups. Sends no longer wait for each other.
+  const deliverGroupRow = useCallback(async (row: GroupRow) => {
+    if (!groupId || !row.client_message_id) return;
+    const cid = row.client_message_id;
+    setMessages(prev => prev.map(m => (m.client_message_id === cid && m.send_status ? { ...m, send_status: "sending" } : m)));
+    try {
+      const saved = await sendGroupMessage(groupId, row.content, {
+        messageType: row.message_type,
+        contentData: (row.metadata as Record<string, unknown>) || null,
+        clientMessageId: cid,
+        replyToMessageId: row.reply_to_message_id ?? null,
+      });
+      const { duplicate: _dup, ...stored } = saved;
+      setMessages(prev => reconcileByClientId(prev, { ...stored, client_message_id: stored.client_message_id ?? cid }, cid));
+    } catch (err) {
+      console.warn("[GroupChat] send failed:", err);
+      setMessages(prev => prev.map(m => (m.client_message_id === cid && m.send_status ? { ...m, send_status: "failed" } : m)));
+    }
+  }, [groupId]);
+
   const handleSend = useCallback(async (
     content: string,
     messageType?: string,
     contentData?: Record<string, unknown> | null,
+    _actionButtons?: unknown,
+    parentMessageId?: string,
   ) => {
-    if (!groupId || isSending) return;
-    const tempId = `temp-${Date.now()}`;
-    const optimistic: ChatGroupMessage = {
-      id: tempId,
+    if (!groupId) return;
+    const cid = newClientMessageId();
+    const optimistic: GroupRow = {
+      id: tempIdFor(cid),
       tenant_id: "",
       sender_id: userId || "",
       group_id: groupId,
@@ -326,22 +373,18 @@ export default function GroupChat() {
       created_at: new Date().toISOString(),
       message_type: messageType || "text",
       metadata: contentData || undefined,
+      client_message_id: cid,
+      reply_to_message_id: parentMessageId && !parentMessageId.startsWith("temp-") ? parentMessageId : null,
+      send_status: "sending",
     };
     setMessages(prev => [...prev, optimistic]);
-    setIsSending(true);
-    try {
-      const saved = await sendGroupMessage(groupId, content, {
-        messageType,
-        contentData: contentData || null,
-      });
-      setMessages(prev => prev.map(m => (m.id === tempId ? saved : m)));
-    } catch (err) {
-      setMessages(prev => prev.filter(m => m.id !== tempId));
-      setLoadError(err instanceof Error ? err.message : "Failed to send");
-    } finally {
-      setIsSending(false);
-    }
-  }, [groupId, isSending, userId]);
+    void deliverGroupRow(optimistic);
+  }, [groupId, userId, deliverGroupRow]);
+
+  const handleRetry = useCallback((cid: string) => {
+    const row = messages.find(m => m.client_message_id === cid && m.send_status === "failed");
+    if (row) void deliverGroupRow(row);
+  }, [messages, deliverGroupRow]);
 
   // MessageBubble's edit ("correction") flow is a no-op unless onUpdateMessage
   // is supplied — see handleEditSave's `!onUpdateMessage` guard.
@@ -469,6 +512,7 @@ export default function GroupChat() {
                                 showAvatar={!isOwn}
                                 onUpdateMessage={handleUpdateMessage}
                                 onDeleteMessage={handleDeleteMessage}
+                                onRetry={handleRetry}
                               />
                             </div>
                           );
@@ -596,6 +640,7 @@ export default function GroupChat() {
                     showAvatar={!isOwn}
                     onUpdateMessage={handleUpdateMessage}
                     onDeleteMessage={handleDeleteMessage}
+                    onRetry={handleRetry}
                   />
                 </div>
               );

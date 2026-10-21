@@ -22,9 +22,21 @@ import {
   requestVitanaReply,
   markChatRead,
   markAllChatRead,
+  markMessagesDelivered,
   type ChatMessage,
   type ChatConversation,
 } from "./useChatApi";
+import {
+  loadOutbox,
+  saveOutbox,
+  upsertItem,
+  mergeOutbox,
+  reconcileByClientId,
+  newClientMessageId,
+  itemToRow,
+  SENT_GRACE_MS,
+  type OutboxItem,
+} from "@/lib/messaging/outbox";
 
 /** Which conversations a bulk "mark all as read" should affect. */
 export type MarkAllFilter = "all" | "direct" | "groups";
@@ -115,6 +127,15 @@ export interface GlobalMessage {
     display_name?: string;
     avatar_url?: string;
   } | null;
+  /** VTID-05320: delivery state of a DM (chat_messages). */
+  read_at?: string | null;
+  delivered_at?: string | null;
+  /** VTID-05320: idempotency key of the send; matches an outbox item. */
+  client_message_id?: string | null;
+  /** VTID-05320: reply target (validated by the gateway). */
+  reply_to_message_id?: string | null;
+  /** VTID-05320: only on outbox rows — the send is in flight or failed. */
+  send_status?: 'sending' | 'failed';
 }
 
 export interface GlobalMessageThread {
@@ -216,7 +237,33 @@ function toGlobalMessage(
     sender: profileMap[msg.sender_id]
       ? { user_id: msg.sender_id, ...profileMap[msg.sender_id] }
       : null,
+    // VTID-05320: delivery state + send identity (previously dropped here, so
+    // DMs never left "sent").
+    read_at: msg.read_at ?? null,
+    delivered_at: msg.delivered_at ?? null,
+    client_message_id: msg.client_message_id ?? null,
+    reply_to_message_id: msg.reply_to_message_id ?? null,
   };
+}
+
+/**
+ * VTID-05320: apply a realtime UPDATE of my sent DM to the cached list —
+ * delivered_at / read_at only, never cleared once set.
+ */
+export function patchDeliveryState(
+  prev: GlobalMessage[] | undefined,
+  raw: { id: string; delivered_at?: string | null; read_at?: string | null }
+): GlobalMessage[] | undefined {
+  if (!prev) return prev;
+  const idx = prev.findIndex((m) => m.id === raw.id);
+  if (idx < 0) return prev;
+  const cur = prev[idx];
+  const delivered_at = cur.delivered_at || raw.delivered_at || (raw.read_at ? raw.read_at : null);
+  const read_at = cur.read_at || raw.read_at || null;
+  if (delivered_at === (cur.delivered_at ?? null) && read_at === (cur.read_at ?? null)) return prev;
+  const next = prev.slice();
+  next[idx] = { ...cur, delivered_at, read_at };
+  return next;
 }
 
 /** Fetch profiles from Supabase for a set of user IDs (with in-memory cache) */
@@ -907,7 +954,12 @@ export function useGlobalMessages(
   // useHybridMessages.ts's own comment; same fix, same reason.
   const { dbRole } = useRole();
   const queryClient = useQueryClient();
-  const [isSending, setIsSending] = useState(false);
+  // VTID-05320: sends no longer block the composer (each one is an outbox
+  // item); kept for the hook's public shape.
+  const [isSending] = useState(false);
+  const [outbox, setOutbox] = useState<OutboxItem[]>([]);
+  const outboxRef = useRef<OutboxItem[]>([]);
+  const inFlightRef = useRef<Set<string>>(new Set());
   const [typingUsers] = useState<
     Array<{ id: string; name: string; avatar?: string }>
   >([]);
@@ -956,6 +1008,10 @@ export function useGlobalMessages(
 
   // ── Messages for active thread (= peer) ───────────────────────────
 
+  // VTID-05320: when the newest fetch of each thread STARTED. A 'sent' outbox
+  // item is retired once a fetch that started after its send completed has
+  // landed (its result is authoritative for that message).
+  const fetchStartedRef = useRef<Record<string, number>>({});
   const {
     data: messages = [],
     isLoading: isMessagesLoading,
@@ -965,7 +1021,10 @@ export function useGlobalMessages(
     queryKey: ["global-messages", activeThreadId],
     queryFn: async (): Promise<GlobalMessage[]> => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
-      return buildGlobalMessagesQueryFn(user.id, activeThreadId, queryClient);
+      const startedAt = Date.now();
+      const rows = await buildGlobalMessagesQueryFn(user.id, activeThreadId, queryClient);
+      fetchStartedRef.current[activeThreadId] = Math.max(fetchStartedRef.current[activeThreadId] ?? 0, startedAt);
+      return rows;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: MESSAGES_STALE_TIME,
@@ -995,7 +1054,7 @@ export function useGlobalMessages(
 
   const olderMessages = (activeThreadId && olderByThread[activeThreadId]) || EMPTY_MESSAGES;
 
-  const mergedMessages = useMemo(() => {
+  const historyMessages = useMemo(() => {
     if (olderMessages.length === 0) return messages;
     const seen = new Set(messages.map((m) => m.id));
     const prefix = olderMessages.filter((m) => !seen.has(m.id));
@@ -1005,11 +1064,19 @@ export function useGlobalMessages(
     );
   }, [messages, olderMessages]);
 
+  // VTID-05320: the open thread's unsent messages (sending | failed) render
+  // after its server rows; one that already arrived (same client_message_id)
+  // is hidden, so a realtime echo or refetch never doubles a message.
+  const mergedMessages = useMemo(
+    () => mergeOutbox(historyMessages, outbox, activeThreadId) as GlobalMessage[],
+    [historyMessages, outbox, activeThreadId]
+  );
+
   // A short thread never filled its first page, so there is nothing behind it.
   const hasOlderMessages =
     !!activeThreadId &&
     !exhaustedThreads[activeThreadId] &&
-    mergedMessages.length >= MESSAGE_PAGE_SIZE;
+    historyMessages.length >= MESSAGE_PAGE_SIZE;
 
   /**
    * Fetch one page of older history. Returns how many NEW messages were
@@ -1022,7 +1089,7 @@ export function useGlobalMessages(
     if (!user || !activeThreadId || !isGlobalContext) return 0;
     if (isLoadingOlder || exhaustedThreads[activeThreadId]) return 0;
 
-    const oldest = mergedMessages[0];
+    const oldest = historyMessages[0];
     if (!oldest) return 0;
 
     setIsLoadingOlder(true);
@@ -1038,7 +1105,7 @@ export function useGlobalMessages(
       }
       if (older.length === 0) return 0;
 
-      const known = new Set(mergedMessages.map((m) => m.id));
+      const known = new Set(historyMessages.map((m) => m.id));
       const fresh = older.filter((m) => !known.has(m.id));
       if (fresh.length === 0) return 0;
 
@@ -1062,7 +1129,7 @@ export function useGlobalMessages(
     isGlobalContext,
     isLoadingOlder,
     exhaustedThreads,
-    mergedMessages,
+    historyMessages,
     queryClient,
   ]);
 
@@ -1119,54 +1186,41 @@ export function useGlobalMessages(
     [queryClient, user?.id]
   );
 
-  // ── Send message via gateway ──────────────────────────────────────
+  // ── Send message via gateway (VTID-05320: outbox) ─────────────────
+  //
+  // A send is an outbox item (src/lib/messaging/outbox.ts) with its own
+  // client_message_id. It renders at once (merged into `messages` below), the
+  // composer is free immediately, and the item leaves the outbox only when the
+  // server row is in the cache. A failure keeps it as "failed" with Retry —
+  // the same client_message_id is re-posted, so a retry never duplicates.
 
-  const sendMessageLegacy = useCallback(
-    async (
-      threadId: string,
-      body: string,
-      _messageType = "text",
-      _contentData?: any,
-      _parentMessageId?: string,
-      _actionButtons?: any[]
-    ) => {
-      if (!user || !isGlobalContext) return;
+  const commitOutbox = useCallback(
+    (updater: (prev: OutboxItem[]) => OutboxItem[]) => {
+      const next = updater(outboxRef.current);
+      outboxRef.current = next;
+      setOutbox(next);
+      if (user?.id) saveOutbox(user.id, next);
+    },
+    [user?.id]
+  );
+
+  const deliverItem = useCallback(
+    async (item: OutboxItem): Promise<GlobalMessage | null> => {
+      if (!user || !isGlobalContext) return null;
+      const cid = item.client_message_id;
+      if (inFlightRef.current.has(cid)) return null;
+      inFlightRef.current.add(cid);
+      commitOutbox((prev) => upsertItem(prev, { ...item, status: "sending", attempts: item.attempts + 1 }));
+      const threadId = item.thread_id;
+      const body = item.body;
+      const effectiveType = item.message_type;
+      const contentData = (item.content_data ?? undefined) as { attachments?: unknown[]; mentions?: unknown[] } | undefined;
 
       try {
-        setIsSending(true);
-
-        // Determine effective message type — preserve explicit types like 'voice', only auto-detect 'attachment'
-        const effectiveType = (_messageType && _messageType !== "text")
-          ? _messageType
-          : (_contentData?.attachments?.length ? "attachment" : "text");
-
-        // Optimistic message
-        const optimistic: GlobalMessage = {
-          id: `temp-${Date.now()}`,
-          thread_id: threadId,
-          sender_id: user.id,
-          body,
-          message_type: effectiveType,
-          content_data: _contentData || undefined,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          sender: {
-            user_id: user.id,
-            display_name: user.user_metadata?.display_name || "Me",
-            avatar_url: user.user_metadata?.avatar_url || null,
-          },
-        };
-
-        updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
-
-        // Check if this is a group thread
-        const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-        const targetThread = cachedThreads.find((t) => t.id === threadId);
-        const isGroupThread = targetThread?.type === "group";
-
         let realMsg: GlobalMessage;
+        let duplicate = false;
 
-        if (isGroupThread) {
+        if (item.kind === "legacy") {
           // Group threads: insert directly into global_messages
           const { data: inserted, error: insertErr } = await supabase
             .from("global_messages")
@@ -1175,7 +1229,7 @@ export function useGlobalMessages(
               sender_id: user.id,
               body,
               message_type: effectiveType,
-              content_data: effectiveType !== "text" ? _contentData : undefined,
+              content_data: effectiveType !== "text" ? contentData : undefined,
             } as any)
             .select()
             .single();
@@ -1202,12 +1256,13 @@ export function useGlobalMessages(
             sender_id: user.id,
             body,
             message_type: effectiveType,
-            content_data: effectiveType !== "text" ? _contentData : undefined,
+            content_data: effectiveType !== "text" ? contentData : undefined,
             created_at: (inserted as any).created_at,
             updated_at: (inserted as any).updated_at || (inserted as any).created_at,
             sender: profileMap[user.id]
               ? { user_id: user.id, ...profileMap[user.id] }
               : { user_id: user.id, display_name: "Me" },
+            client_message_id: cid,
           };
         } else {
           // Direct threads: route everything (text + attachments + voice) through
@@ -1215,10 +1270,18 @@ export function useGlobalMessages(
           // which bypasses the buggy self-referential chat_group_members RLS
           // policy that otherwise fires on .insert().select() via the
           // users_read_group_messages SELECT policy on chat_messages.
-          const isRich = effectiveType !== "text" && _contentData?.attachments?.length;
-          const gatewayOptions = isRich
-            ? { messageType: effectiveType, contentData: { attachments: _contentData.attachments } }
-            : undefined;
+          // VTID-05320: attachments AND mentions travel as content_data (mentions
+          // in a plain-text DM were dropped before).
+          const payload: Record<string, unknown> = {};
+          if (contentData?.attachments?.length) payload.attachments = contentData.attachments;
+          if (contentData?.mentions?.length) payload.mentions = contentData.mentions;
+          const hasPayload = Object.keys(payload).length > 0;
+          const isRich = effectiveType !== "text" && !!contentData?.attachments?.length;
+          const gatewayOptions = {
+            ...(hasPayload ? { messageType: effectiveType, contentData: payload } : {}),
+            clientMessageId: cid,
+            replyToMessageId: item.reply_to_message_id ?? null,
+          };
 
           let created: ChatMessage;
           try {
@@ -1232,22 +1295,40 @@ export function useGlobalMessages(
               sender_id: user.id,
               receiver_id: threadId,
               content: body,
+              client_message_id: cid,
             };
-            if (isRich) {
+            if (hasPayload) {
               insertRow.message_type = effectiveType;
-              insertRow.metadata = { attachments: _contentData.attachments };
+              insertRow.metadata = payload;
             }
-            const { data: inserted, error: insertErr } = await supabase
-              .from("chat_messages")
-              .insert(insertRow)
-              .select()
-              .single();
-            if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
-            created = inserted as unknown as ChatMessage;
+            type DirectResult = { data: unknown; error: { code?: string; message?: string } | null };
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- client_message_id is newer than the generated types
+            const chatTable = () => supabase.from("chat_messages") as any;
+            let res = (await chatTable().insert(insertRow).select().single()) as DirectResult;
+            // Before the VTID-05310 migration the column does not exist yet.
+            if (res.error && /client_message_id/.test(res.error.message || "") && res.error.code !== "23505") {
+              delete insertRow.client_message_id;
+              res = (await chatTable().insert(insertRow).select().single()) as DirectResult;
+            }
+            if (res.error && res.error.code === "23505") {
+              // The gateway did store it before failing to answer: same send.
+              const again = (await chatTable()
+                .select("*")
+                .eq("sender_id", user.id)
+                .eq("client_message_id", cid)
+                .maybeSingle()) as DirectResult;
+              if (again.error || !again.data) throw res.error;
+              res = { data: again.data, error: null };
+              duplicate = true;
+            }
+            if (res.error || !res.data) throw res.error || new Error("Supabase insert returned no data");
+            created = res.data as unknown as ChatMessage;
           }
+          duplicate = duplicate || !!created.duplicate;
 
           const profileMap = await enrichProfiles([created.sender_id]);
           realMsg = toGlobalMessage(created, threadId, profileMap);
+          realMsg.client_message_id = realMsg.client_message_id || cid;
           // A DM may be the viewer greeting a new member — refresh both feeds
           // so that member's "say hello" card drops away (VTID-04590).
           queryClient.invalidateQueries({ queryKey: ["all-news-feed"] });
@@ -1256,34 +1337,32 @@ export function useGlobalMessages(
             // toGlobalMessage maps metadata→content_data, but be explicit
             // so the local optimistic→real swap preserves the attachment payload
             // even if the gateway response shape changes.
-            realMsg.content_data = (created as any).metadata || { attachments: _contentData.attachments };
+            realMsg.content_data = (created as any).metadata || payload;
             realMsg.message_type = effectiveType;
           }
 
           // VTID-03470: /send no longer triggers Vitana's reply itself (see
           // chat.ts) — ask for it explicitly via a separate, awaited fetch.
-          // Not awaited HERE: this send call should still resolve instantly
-          // like any other message send, exactly as before. Because this is
-          // a real browser fetch (not server-side fire-and-forget), the
-          // browser keeps it alive independent of this function returning —
-          // unlike the old in-process background promise on the gateway,
-          // which Cloud Run could freeze the instant /send responded. The
-          // reply lands in chat_messages and arrives via the existing
-          // Realtime subscription like any other message; failures here
-          // are logged only, since the user's own message already sent
-          // successfully regardless of whether Vitana's reply comes back.
-          if (isVitanaBot(threadId) && effectiveType === "text" && body.trim().length > 0) {
+          // Not awaited HERE: the reply lands in chat_messages and arrives via
+          // the existing Realtime subscription. VTID-05320: a duplicate (a
+          // retry of a send the gateway already had) never asks twice.
+          if (!duplicate && isVitanaBot(threadId) && effectiveType === "text" && body.trim().length > 0) {
             requestVitanaReply(body).catch((err) => {
               console.warn("[chat] Vitana reply request failed:", err);
             });
           }
         }
 
-        // Replace optimistic with real
-
-        updateMessagesOptimistically(threadId, (prev) =>
-          prev.map((m) => (m.id === optimistic.id ? realMsg : m))
-        );
+        // The server row goes into the cache (matched by client_message_id, never
+        // by position). The item turns 'sent' and keeps rendering that row until
+        // a fetch of the thread contains it, so an in-flight refetch cannot hide it.
+        updateMessagesOptimistically(threadId, (prev) => reconcileByClientId(prev, realMsg, cid));
+        commitOutbox((prev) => {
+          const cur = prev.find((i) => i.client_message_id === cid);
+          return cur
+            ? upsertItem(prev, { ...cur, status: "sent", server_row: realMsg as unknown as OutboxItem["server_row"], sent_at: Date.now() })
+            : prev;
+        });
 
         // Move thread to top
         const now = new Date().toISOString();
@@ -1299,13 +1378,128 @@ export function useGlobalMessages(
         return realMsg;
       } catch (error) {
         console.error("Error sending chat message:", error);
-        throw error;
+        const offline = typeof navigator !== "undefined" && navigator.onLine === false;
+        commitOutbox((prev) => {
+          const cur = prev.find((i) => i.client_message_id === cid);
+          return cur ? upsertItem(prev, { ...cur, status: "failed", offline }) : prev;
+        });
+        return null;
       } finally {
-        setIsSending(false);
+        inFlightRef.current.delete(cid);
       }
     },
-    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically]
+    [user, isGlobalContext, queryClient, commitOutbox, updateMessagesOptimistically, updateThreadsOptimistically]
   );
+
+  // One send at a time per conversation, in the order the member sent them —
+  // the server stores them in that order and the bubbles never swap.
+  const sendChainRef = useRef<Record<string, Promise<unknown>>>({});
+  const enqueueDelivery = useCallback(
+    (item: OutboxItem): Promise<GlobalMessage | null> => {
+      const prev = sendChainRef.current[item.thread_id] ?? Promise.resolve();
+      const next = prev.catch(() => undefined).then(() => deliverItem(item));
+      sendChainRef.current[item.thread_id] = next;
+      return next;
+    },
+    [deliverItem]
+  );
+
+  // Retire 'sent' items once a fetch that started after the send completed has
+  // landed for their thread (or after the grace period).
+  useEffect(() => {
+    const now = Date.now();
+    const stale = outboxRef.current.filter(
+      (i) => i.status === "sent" && (
+        (fetchStartedRef.current[i.thread_id] ?? 0) > (i.sent_at ?? 0) ||
+        now - (i.sent_at ?? 0) > SENT_GRACE_MS
+      )
+    );
+    if (stale.length > 0) {
+      const ids = new Set(stale.map((i) => i.client_message_id));
+      commitOutbox((prev) => prev.filter((i) => !ids.has(i.client_message_id)));
+    }
+  }, [messages, activeThreadId, commitOutbox]);
+
+  const sendMessageLegacy = useCallback(
+    async (
+      threadId: string,
+      body: string,
+      _messageType = "text",
+      _contentData?: any,
+      _parentMessageId?: string,
+      _actionButtons?: any[]
+    ) => {
+      if (!user || !isGlobalContext) return;
+
+      // Determine effective message type — preserve explicit types like 'voice', only auto-detect 'attachment'
+      const effectiveType = (_messageType && _messageType !== "text")
+        ? _messageType
+        : (_contentData?.attachments?.length ? "attachment" : "text");
+
+      // Check if this is a group thread
+      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+      const targetThread = cachedThreads.find((t) => t.id === threadId);
+      const isGroupThread = targetThread?.type === "group";
+
+      const item: OutboxItem = {
+        client_message_id: newClientMessageId(),
+        user_id: user.id,
+        thread_id: threadId,
+        kind: isGroupThread ? "legacy" : "dm",
+        body,
+        message_type: effectiveType,
+        content_data: _contentData || null,
+        reply_to_message_id: !isGroupThread && _parentMessageId && !_parentMessageId.startsWith("temp-") ? _parentMessageId : null,
+        created_at: new Date().toISOString(),
+        attempts: 0,
+        status: "sending",
+      };
+      commitOutbox((prev) => upsertItem(prev, item));
+      // Resolves with the stored row, or null when it failed (the bubble shows
+      // Failed + Retry); never throws, so the composer stays cleared.
+      void enqueueDelivery(item);
+      return { ...itemToRow(item), sender: { user_id: user.id, display_name: user.user_metadata?.display_name || "Me", avatar_url: user.user_metadata?.avatar_url || null } } as unknown as GlobalMessage;
+    },
+    [user, isGlobalContext, queryClient, commitOutbox, enqueueDelivery]
+  );
+
+  /** VTID-05320: one tap re-sends a failed message with its original client_message_id. */
+  const retryMessage = useCallback(
+    async (clientMessageId: string) => {
+      const item = outboxRef.current.find((i) => i.client_message_id === clientMessageId);
+      if (!item || item.status === "sent") return null;
+      return enqueueDelivery(item);
+    },
+    [enqueueDelivery]
+  );
+
+  // Load this member's outbox (survives a reload); re-post pending items once.
+  useEffect(() => {
+    if (!user?.id || !isGlobalContext) {
+      outboxRef.current = [];
+      setOutbox([]);
+      return;
+    }
+    const items = loadOutbox(user.id);
+    outboxRef.current = items;
+    setOutbox(items);
+    for (const i of items) {
+      if (i.status === "sending") void enqueueDelivery(i);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per member
+  }, [user?.id, isGlobalContext]);
+
+  // Reconnect: items that failed while offline are re-posted once.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onOnline = () => {
+      for (const i of outboxRef.current) {
+        if (i.status === "failed" && i.offline) void enqueueDelivery({ ...i, offline: false });
+      }
+    };
+    window.addEventListener("online", onOnline);
+    return () => window.removeEventListener("online", onOnline);
+  }, [enqueueDelivery]);
 
   const sendMessage = useCallback(
     async (args: SendMessageArgs & { actionButtons?: any[] }) => {
@@ -1543,6 +1737,47 @@ export function useGlobalMessages(
     activeThreadIdRef.current = activeThreadId ?? null;
   }, [activeThreadId]);
 
+  // VTID-05320: delivery receipts. Received DMs (realtime or fetched) are
+  // reported to POST /chat/delivered in one batch per 500 ms. DMs only —
+  // groups have no per-message delivery state.
+  const deliveredQueueRef = useRef<Set<string>>(new Set());
+  const deliveredReportedRef = useRef<Set<string>>(new Set());
+  const deliveredTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const queueDelivered = useCallback((ids: string[]) => {
+    for (const id of ids) {
+      if (!id || id.startsWith("temp-") || deliveredReportedRef.current.has(id)) continue;
+      deliveredQueueRef.current.add(id);
+    }
+    if (deliveredQueueRef.current.size === 0 || deliveredTimerRef.current) return;
+    deliveredTimerRef.current = setTimeout(() => {
+      deliveredTimerRef.current = null;
+      const batch = Array.from(deliveredQueueRef.current).slice(0, 200);
+      for (const id of batch) {
+        deliveredQueueRef.current.delete(id);
+        deliveredReportedRef.current.add(id);
+      }
+      if (batch.length > 0) {
+        markMessagesDelivered(batch).catch((err) => {
+          console.warn("[useGlobalMessages] delivered receipt failed:", err);
+        });
+      }
+    }, 500);
+  }, []);
+  useEffect(() => () => {
+    if (deliveredTimerRef.current) clearTimeout(deliveredTimerRef.current);
+  }, []);
+
+  // Fetched rows of the open DM that came from the peer and are not yet
+  // delivered/read get a receipt too (covers messages that arrived offline).
+  const openThreadType = threads.find((t) => t.id === activeThreadId)?.type;
+  useEffect(() => {
+    if (!user || !isGlobalContext || !activeThreadId || openThreadType === "group") return;
+    const ids = messages
+      .filter((m) => m.sender_id === activeThreadId && !m.delivered_at && !m.read_at)
+      .map((m) => m.id);
+    if (ids.length > 0) queueDelivered(ids);
+  }, [user, isGlobalContext, activeThreadId, openThreadType, messages, queueDelivered]);
+
   useEffect(() => {
     if (!user || !isGlobalContext) return;
 
@@ -1560,6 +1795,10 @@ export function useGlobalMessages(
         (payload) => {
           const raw = payload.new as ChatMessage;
           const peerId = raw.sender_id;
+          // VTID-05320: a group row is not a DM of this peer (receiver_id is NULL
+          // for group rows, so this is defensive); a DM reached this client.
+          if ((raw as { group_id?: string | null }).group_id) return;
+          queueDelivered([raw.id]);
 
           // VTID-05200 (chat-ux): the message belongs to the conversation the
           // member has open with the app focused, so it is read on arrival and
@@ -1653,6 +1892,28 @@ export function useGlobalMessages(
             });
         }
       )
+      // VTID-05320: my sent DMs moving to delivered / read. Realtime authorises
+      // the UPDATE with the row's SELECT policy (users_read_own_messages:
+      // sender_id = auth.uid()). Only delivered_at / read_at of a row already in
+      // the cache are patched; a status never moves back. A missed event is
+      // corrected by the focus refetch below.
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "chat_messages",
+          filter: `sender_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const raw = payload.new as ChatMessage & { group_id?: string | null };
+          if (!raw?.id || raw.group_id || !raw.receiver_id) return;
+          queryClient.setQueryData(
+            ["global-messages", raw.receiver_id],
+            (prev: GlobalMessage[] | undefined) => patchDeliveryState(prev, raw)
+          );
+        }
+      )
       .subscribe((status) => {
         // FIX 1.3: Add subscription status/error handling
         if (status === 'SUBSCRIBED') {
@@ -1685,7 +1946,7 @@ export function useGlobalMessages(
     return () => {
       removeRealtimeChannel(channel);
     };
-  }, [user, isGlobalContext, queryClient]); // FIX 1.2: Remove unstable dependencies (updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads)
+  }, [user, isGlobalContext, queryClient, queueDelivered]); // FIX 1.2: Remove unstable dependencies (updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads)
 
   // FALLBACK POLL: engage whenever realtime is NOT actively connected. Two
   // bugs were fixed here:
@@ -1751,7 +2012,9 @@ export function useGlobalMessages(
   const stableMessages = useMemo(() => mergedMessages, [
     // Only update reference when message IDs or count change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    mergedMessages.map((m) => m.id).join(","),
+    // VTID-05320: and when an outbox row changes state (sending ↔ failed) or a
+    // DM's delivery state moves (sent → delivered → read).
+    mergedMessages.map((m) => `${m.id}:${m.send_status ?? ""}:${m.delivered_at ? 1 : 0}${m.read_at ? 1 : 0}`).join(","),
   ]);
 
   // ── Return ────────────────────────────────────────────────────────
@@ -1768,6 +2031,7 @@ export function useGlobalMessages(
     isSending,
     typingUsers,
     sendMessage,
+    retryMessage,
     createThread,
     markAsRead,
     markAllAsRead,
