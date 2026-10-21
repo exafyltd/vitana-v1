@@ -1,0 +1,6 @@
+# VTID-05319 (messenger-ux-v2/ui-scroll-anchoring) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run <3 new test files>   # origin/main 69d39ef34: 3 files fail (red-on-base.txt; 2 of the 7 ConversationView/GroupChat cases already hold on main and pin unchanged behaviour)
+$ npx vitest run <3 new test files>   # head: 7 + 5 + 2 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # head: 537 passed, 1 failed = VTID-05201 fixture (fixed by VTID-05313 #1473; passes with that fix applied)
+$ npx eslint ConversationView.tsx GroupChat.tsx   # 51 / 12 errors = origin/main (ratchet); new files 0
+Branch is based on ui-send-status (#1474): this PR's own commit is the last one.

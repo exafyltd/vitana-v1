@@ -21,6 +21,8 @@ import { newClientMessageId, tempIdFor, reconcileByClientId } from "@/lib/messag
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
+import NewMessagesPill from "@/components/messages/NewMessagesPill";
+import { useChatScrollAnchor, distanceFromBottom, NEAR_BOTTOM_PX } from "@/hooks/useChatScrollAnchor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchGroup,
@@ -318,15 +320,55 @@ export default function GroupChat() {
     };
   }, [ready, groupId, initialScrollMessageId, applyPin]);
 
-  // New messages after the member has scrolled: follow them down, as before.
+  // While still pinned (the member has not touched the screen yet) a new
+  // message re-applies the pin, as before.
   useLayoutEffect(() => {
     if (!ready) return;
-    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current) {
-      if (pinnedRef.current) applyPin();
-      else scrollToBottom(true);
+    if (prevMessageCountRef.current > 0 && messages.length > prevMessageCountRef.current && pinnedRef.current) {
+      applyPin();
     }
     prevMessageCountRef.current = messages.length;
-  }, [ready, messages.length, applyPin, scrollToBottom]);
+  }, [ready, messages.length, applyPin]);
+
+  // VTID-05319: after that, new messages no longer drag the member down while
+  // they read earlier ones (this used to smooth-scroll to the bottom on every
+  // message). At the bottom the view follows; otherwise "↓ N new messages".
+  // Either <main> or the document scrolls (VTID-04928), so measure both.
+  const groupIsAtBottom = useCallback(() => {
+    const main = mainRef.current;
+    if (main && main.scrollHeight > main.clientHeight + 1) return distanceFromBottom(main) <= NEAR_BOTTOM_PX;
+    const doc = document.scrollingElement || document.documentElement;
+    return distanceFromBottom({
+      scrollHeight: doc.scrollHeight,
+      scrollTop: window.scrollY || doc.scrollTop,
+      clientHeight: window.innerHeight,
+    }) <= NEAR_BOTTOM_PX;
+  }, []);
+  const followGroupNewest = useCallback(() => scrollToBottom(false), [scrollToBottom]);
+  const newestGroupRow = messages.length > 0 ? messages[messages.length - 1] : null;
+  const scrollAnchor = useChatScrollAnchor({
+    conversationKey: groupId ?? null,
+    newest: newestGroupRow ? { id: newestGroupRow.id, sender_id: newestGroupRow.sender_id } : null,
+    meId: userId,
+    isAtBottom: groupIsAtBottom,
+    follow: followGroupNewest,
+    enabled: ready,
+  });
+  const { onScroll: onGroupScroll, markAway: markGroupAway } = scrollAnchor;
+  // Opened on a deep-linked message: that is not "the bottom".
+  useLayoutEffect(() => {
+    if (initialScrollMessageId) markGroupAway();
+  }, [groupId, initialScrollMessageId, markGroupAway]);
+  useEffect(() => {
+    if (!ready) return;
+    const main = mainRef.current;
+    main?.addEventListener("scroll", onGroupScroll, { passive: true });
+    window.addEventListener("scroll", onGroupScroll, { passive: true });
+    return () => {
+      main?.removeEventListener("scroll", onGroupScroll);
+      window.removeEventListener("scroll", onGroupScroll);
+    };
+  }, [ready, onGroupScroll]);
 
   // MessageInput.onSendMessage matches the DM signature so all of its
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
@@ -523,6 +565,7 @@ export default function GroupChat() {
                   </div>
                 </main>
                 <footer className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
+                  <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} style={{ bottom: "calc(100% + 8px)" }} />
                   <MessageInput
                     threadId={group.id}
                     activeThread={{ id: group.id, type: "group" }}
@@ -655,6 +698,7 @@ export default function GroupChat() {
         className="sticky bottom-0 border-t bg-white px-2 pt-2"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.5rem)" }}
       >
+        <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} style={{ bottom: "calc(100% + 8px)" }} />
         <MessageInput
           threadId={group.id}
           activeThread={{ id: group.id, type: "group" }}

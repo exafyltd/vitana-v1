@@ -141,6 +141,13 @@
       "retry": "重试",
       "retryLabel": "重新发送这条消息",
       "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "跳到最新",
+      "one": "1 条新消息",
+      "other": "{count} 条新消息",
+      "unread": "未读消息",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

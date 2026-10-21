@@ -130,6 +130,13 @@
       "retry": "Erneut senden",
       "retryLabel": "Diese Nachricht erneut senden",
       "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "Zur neuesten Nachricht",
+      "one": "1 neue Nachricht",
+      "other": "{count} neue Nachrichten",
+      "unread": "Ungelesene Nachrichten",
+      "_pending_review": {}
     }
   }
 }
