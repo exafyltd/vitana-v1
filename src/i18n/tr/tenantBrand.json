@@ -1,0 +1,10 @@
+{
+  "tenantBrand": {
+    "_pending_review": {
+      "goToPortal": true,
+      "logoAlt": true
+    },
+    "goToPortal": "Go to {brand}",
+    "logoAlt": "{brand} logo"
+  }
+}
