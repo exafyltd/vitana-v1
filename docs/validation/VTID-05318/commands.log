@@ -4,3 +4,9 @@ $ npx vitest run <3 new test files>   # head: 6 + 4 + 2 passed
 $ npx vitest run src/components/messages src/pages/messages src/hooks   # head: 527 passed, 1 failed = VTID-05201 fixture (fixed on main by #1473; this branch is stacked on #1474/#1476)
 $ npx tsc --noEmit -p tsconfig.app.json   # no error in touched files
 $ npx eslint <touched>   # ConversationView 51, GroupChat 12, MessageBubble 26, ReplyQuote 1, useChatApi 3 = origin/main; new files 0
+
+## Review fixes (semantic_reviewer, /projects/sandbox/reviews/pr1477.md)
+$ npx vitest run src/hooks/useJumpToMessage.test.ts src/components/messages/ConversationView.reply-jump.vtid-05318.test.tsx src/pages/messages/GroupChat.reply.vtid-05318.test.tsx   # 8 + 5 + 6 passed; the 4 new group tests fail on the pre-fix GroupChat
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # all green
+Fixed: only jump rows OLDER than the loaded rows are shown (withJumpRows) — a delete/edit/realtime update of loaded rows always wins, a deleted message never comes back; group edits/deletes also apply to jump rows; the jump releases the bottom-follow (DM isUserNearBottomRef, group pin) so growing content can't pull it back; a late group window is dropped after a group switch; the reply preview resets on group switch; group voice/attachment sends answer the open preview; swipe-to-reply in groups (phone); abandoned quote fetches are retried on the next visit (no stuck "loading"); paging back from a DM jump window uses the window's oldest row (?before=); legacy group threads in the DM view jump quietly to rendered rows only; a repeat tap restarts the highlight; DM reply send carries the parent id (test).
+Deviation for Gate 2: plan I8 says "replace the window"; the lane keeps the latest page and bridges forward (?after=, now up to 10 pages = 1000 rows). Beyond that a gap can remain between the window and the latest page (rare: > 1000 messages between).

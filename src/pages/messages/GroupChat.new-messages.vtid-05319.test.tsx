@@ -130,3 +130,56 @@ describe("GroupChat new messages without forced scrolling (VTID-05319)", () => {
     expect(screen.queryByTestId("new-messages-pill")).toBeNull();
   });
 });
+
+describe("GroupChat review fixes (VTID-05319)", () => {
+  async function newMessageWhileScrolledUp(takeOver: () => void) {
+    open();
+    await screen.findAllByTestId("bubble");
+    await settle();
+    takeOver();
+    scrollTop = 1000;
+    fireEvent.scroll(document.querySelector("main")!);
+    scrollTopWrites.length = 0;
+    fetchGroupMessages.mockResolvedValue([row(4), row(3), row(2), row(1)]);
+    await act(async () => { realtime.forEach((cb) => cb()); });
+    await settle();
+  }
+
+  it("scrolling up with the keyboard releases the opening pin: no forced follow, the pill shows", async () => {
+    await newMessageWhileScrolledUp(() => {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "PageUp" }));
+    });
+    expect(scrollTopWrites).toEqual([]);
+    expect(screen.getByTestId("new-messages-pill")).toBeTruthy();
+  });
+
+  it("scrolling up with the scrollbar (a scroll away from the bottom, no touch/wheel/key) releases it too", async () => {
+    await newMessageWhileScrolledUp(() => {});
+    expect(scrollTopWrites).toEqual([]);
+    expect(screen.getByTestId("new-messages-pill")).toBeTruthy();
+  });
+
+  it("two messages arriving in one refetch count as 2", async () => {
+    open();
+    await screen.findAllByTestId("bubble");
+    await settle();
+    scrollTop = 1000;
+    fireEvent.scroll(document.querySelector("main")!);
+    fetchGroupMessages.mockResolvedValue([row(5), row(4), row(3), row(2), row(1)]);
+    await act(async () => { realtime.forEach((cb) => cb()); });
+    await settle();
+    expect(screen.getByTestId("new-messages-pill").textContent).toContain("inbox.newMessages.other");
+  });
+
+  it("the opening position is written in the layout pass, not in a later animation frame", async () => {
+    const raf = vi.fn(() => 0);
+    vi.stubGlobal("requestAnimationFrame", raf);
+    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+    open();
+    await screen.findAllByTestId("bubble");
+    // No animation frame has run (stubbed), yet the list is already at the newest message.
+    expect(scrollTopWrites).toContain(5000);
+    expect(smoothScrolls).toEqual([]);
+  });
+});
+

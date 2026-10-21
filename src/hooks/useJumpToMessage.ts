@@ -24,10 +24,20 @@ function nextFrame(): Promise<void> {
   });
 }
 
+const highlightTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
+
 export function scrollToRow(el: HTMLElement): void {
   if (typeof el.scrollIntoView === 'function') el.scrollIntoView({ behavior: 'auto', block: 'center' });
+  // A second jump to the same row restarts the highlight (and its 1.5 s).
+  const previous = highlightTimers.get(el);
+  if (previous) clearTimeout(previous);
+  el.classList.remove('message-highlight');
+  void el.offsetWidth; // reflow, so the CSS animation starts again
   el.classList.add('message-highlight');
-  setTimeout(() => el.classList.remove('message-highlight'), HIGHLIGHT_MS);
+  highlightTimers.set(el, setTimeout(() => {
+    el.classList.remove('message-highlight');
+    highlightTimers.delete(el);
+  }, HIGHLIGHT_MS));
 }
 
 export interface JumpOptions {
@@ -88,6 +98,20 @@ export function unionByIdSorted<T extends Timed>(a: T[], b: T[]): T[] {
 }
 
 /**
+ * The rendered list: the loaded rows plus the jump rows OLDER than the oldest
+ * loaded row. Jump rows that overlap the loaded range are never shown, so a
+ * delete, an edit or a realtime update of the loaded rows always wins (a stale
+ * copy can't bring a deleted message back).
+ */
+export function withJumpRows<T extends Timed>(loaded: T[], jump: T[]): T[] {
+  if (jump.length === 0) return loaded;
+  if (loaded.length === 0) return unionByIdSorted([], jump);
+  const oldest = loaded.reduce((min, r) => (r.created_at < min ? r.created_at : min), loaded[0].created_at);
+  const older = jump.filter((r) => r.created_at < oldest);
+  return older.length === 0 ? loaded : unionByIdSorted(loaded, older);
+}
+
+/**
  * Rows to add so that `window` connects to `loaded`. `fetchAfter(iso)` returns
  * up to one page of rows newer than iso, ascending.
  */
@@ -96,7 +120,7 @@ export async function bridgeWindow<T extends Timed>(
   hasNewer: boolean,
   loaded: T[],
   fetchAfter: (afterIso: string) => Promise<T[]>,
-  maxPages = 5,
+  maxPages = 10,
 ): Promise<T[]> {
   if (window.length === 0) return [];
   const loadedIds = new Set(loaded.map((r) => r.id));

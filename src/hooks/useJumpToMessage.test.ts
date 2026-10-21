@@ -87,3 +87,30 @@ describe('window merge', () => {
     expect(fetchAfter).not.toHaveBeenCalled();
   });
 });
+
+describe('VTID-05318 review fixes', () => {
+  it('withJumpRows shows only jump rows older than the loaded ones (a deleted loaded row never comes back)', async () => {
+    const { withJumpRows } = await import('./useJumpToMessage');
+    const t = (id: string, m: number) => ({ id, created_at: new Date(2026, 9, 21, 10, m).toISOString() });
+    const loaded = [t('n1', 50), t('n3', 52)]; // n2 was deleted from the loaded page
+    const jump = [t('old', 0), t('mid', 10), t('n1', 50), t('n2', 51), t('n3', 52)];
+    expect(withJumpRows(loaded, jump).map((r) => r.id)).toEqual(['old', 'mid', 'n1', 'n3']);
+    expect(withJumpRows(loaded, [])).toBe(loaded);
+  });
+
+  it('a second jump to the same row restarts its highlight for the full 1.5 s', async () => {
+    vi.useFakeTimers();
+    const { scrollToRow, HIGHLIGHT_MS } = await import('./useJumpToMessage');
+    const el = document.createElement('div');
+    el.scrollIntoView = vi.fn();
+    scrollToRow(el);
+    vi.advanceTimersByTime(1000);
+    scrollToRow(el);
+    vi.advanceTimersByTime(HIGHLIGHT_MS - 100);
+    expect(el.classList.contains('message-highlight')).toBe(true);
+    vi.advanceTimersByTime(200);
+    expect(el.classList.contains('message-highlight')).toBe(false);
+    vi.useRealTimers();
+  });
+});
+

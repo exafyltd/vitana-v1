@@ -23,11 +23,18 @@ export function distanceFromBottom(el: { scrollHeight: number; scrollTop: number
   return Math.max(0, el.scrollHeight - el.scrollTop - el.clientHeight);
 }
 
+export interface AnchorRow {
+  id: string;
+  sender_id?: string | null;
+  created_at?: string | null;
+  client_message_id?: string | null;
+}
+
 export interface ScrollAnchorOptions {
   /** Changes when another conversation opens (resets the count). */
   conversationKey: string | null;
-  /** The newest rendered message (bottom of the list). */
-  newest: { id: string; sender_id?: string | null } | null;
+  /** The rendered messages, oldest first (the last one is at the bottom). */
+  rows: readonly AnchorRow[];
   /** The signed-in member. */
   meId?: string | null;
   /** True while the view is within `threshold` of its bottom. */
@@ -38,10 +45,34 @@ export interface ScrollAnchorOptions {
   enabled?: boolean;
 }
 
-export function useChatScrollAnchor({ conversationKey, newest, meId, isAtBottom, follow, enabled = true }: ScrollAnchorOptions) {
+/**
+ * The rows that arrived below `previous` (the former bottom row). Empty when
+ * nothing new is at the bottom: older pages prepended, the newest row deleted,
+ * or my unsent row got its server id (same client_message_id).
+ */
+export function arrivedBelow(rows: readonly AnchorRow[], previous: AnchorRow): AnchorRow[] {
+  const newest = rows[rows.length - 1];
+  if (!newest || newest.id === previous.id) return [];
+  if (previous.client_message_id && newest.client_message_id === previous.client_message_id) return [];
+  const index = rows.findIndex((r) => r.id === previous.id);
+  if (index >= 0) return rows.slice(index + 1);
+  // The former bottom row is gone (deleted, or replaced by its server copy):
+  // only rows newer than it count.
+  const since = previous.created_at ? Date.parse(previous.created_at) : NaN;
+  if (!Number.isFinite(since)) return [newest];
+  return rows.filter((r) => {
+    if (previous.client_message_id && r.client_message_id === previous.client_message_id) return false;
+    const at = r.created_at ? Date.parse(r.created_at) : NaN;
+    return Number.isFinite(at) && at > since;
+  });
+}
+
+export function useChatScrollAnchor({ conversationKey, rows, meId, isAtBottom, follow, enabled = true }: ScrollAnchorOptions) {
   const [newCount, setNewCount] = useState(0);
   const atBottomRef = useRef(true);
-  const lastNewestRef = useRef<string | null>(null);
+  const lastNewestRef = useRef<AnchorRow | null>(null);
+  const rowsRef = useRef(rows);
+  rowsRef.current = rows;
   const keyRef = useRef<string | null>(null);
 
   // A new conversation starts at the bottom with nothing counted.
@@ -54,24 +85,28 @@ export function useChatScrollAnchor({ conversationKey, newest, meId, isAtBottom,
     setNewCount(0);
   }, [conversationKey]);
 
+  const newest = rows.length > 0 ? rows[rows.length - 1] : null;
   const newestId = newest?.id ?? null;
-  const newestSender = newest?.sender_id ?? null;
 
   // Runs after the DOM has the new message and before paint.
   useLayoutEffect(() => {
-    if (!enabled || !newestId) return;
+    const current = rowsRef.current;
+    const bottom = current.length > 0 ? current[current.length - 1] : null;
+    if (!enabled || !bottom) return;
     const previous = lastNewestRef.current;
-    lastNewestRef.current = newestId;
-    if (previous === null || previous === newestId) return; // first render of this conversation / no new bottom row
-    const mine = !!meId && newestSender === meId;
+    lastNewestRef.current = { id: bottom.id, sender_id: bottom.sender_id, created_at: bottom.created_at, client_message_id: bottom.client_message_id };
+    if (previous === null) return; // first render of this conversation
+    const arrived = arrivedBelow(current, previous);
+    if (arrived.length === 0) return;
+    const mine = !!meId && arrived.some((r) => r.sender_id === meId);
     if (mine || atBottomRef.current) {
       follow();
       atBottomRef.current = true;
       setNewCount(0);
       return;
     }
-    setNewCount((n) => n + 1);
-  }, [enabled, newestId, newestSender, meId, follow]);
+    setNewCount((n) => n + arrived.length);
+  }, [enabled, newestId, meId, follow]);
 
   /** Call from the scroll handler of whatever element scrolls. */
   const onScroll = useCallback(() => {
