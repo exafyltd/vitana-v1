@@ -89,7 +89,7 @@ beforeEach(() => {
   vi.stubGlobal('IntersectionObserver', NoopObserver);
   scrollToSpy.mockClear();
   positionsSeenBeforePaint = [];
-  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'cancelAnimationFrame'] });
 });
 afterEach(() => {
   vi.useRealTimers();
@@ -125,20 +125,29 @@ describe('ConversationView opening position (VTID-05319, R8)', () => {
     };
     render(<><ConversationView threadId="alice" context="global" /><Probe /></>);
     const el = scroller();
+    // The first commit renders the list hidden, and already at the newest
+    // message by the end of its layout effects ...
+    expect(positionsSeenBeforePaint[0]).toEqual({ visibility: 'hidden', scrollTop: SCROLL_H - CLIENT_H });
+    // ... and the positioning layout effect + its synchronous re-render finish
+    // inside the same render() call, i.e. before the browser paints: the first
+    // painted state is visible AND at the newest message.
     expect(el.dataset.positioned).toBe('true');
     expect(el.style.visibility).toBe('');
     expect(el.scrollTop).toBe(SCROLL_H - CLIENT_H);
     expect(scrollToSpy).not.toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth' }));
-    // No 50/150/300 ms retry timers any more: whatever is still scheduled
-    // (React's own work) never moves the list.
-    const before = el.scrollTop;
-    act(() => { vi.runOnlyPendingTimers(); });
-    expect(el.scrollTop).toBe(before);
+    // No timed retries: from here on nothing writes the scroll position —
+    // neither timers nor animation frames (the old 50/150/300 ms retries did
+    // setTimeout → requestAnimationFrame → scrollTop write).
+    let writes = 0;
+    let value = el.scrollTop;
+    Object.defineProperty(el, 'scrollTop', {
+      configurable: true,
+      get: () => value,
+      set: (v: number) => { writes += 1; value = v; },
+    });
+    act(() => { vi.advanceTimersByTime(1000); });
+    expect(writes).toBe(0);
     expect(scrollToSpy).not.toHaveBeenCalled();
-    // Never painted visible-but-not-at-the-bottom.
-    for (const p of positionsSeenBeforePaint) {
-      if (p.visibility !== 'hidden') expect(p.scrollTop).toBe(SCROLL_H - CLIENT_H);
-    }
   });
 
   it('opens at the unread divider when the peer sent messages I have not read', () => {
@@ -170,6 +179,7 @@ describe('ConversationView new messages without forced scrolling (VTID-05319, R9
     // The member scrolls up.
     el.scrollTop = 200;
     act(() => { fireEvent.scroll(el); });
+    act(() => { vi.advanceTimersByTime(20); }); // the scroll handler measures in an animation frame
     act(() => { vi.useRealTimers(); });
     return new Promise<void>((resolve) => requestAnimationFrame(() => {
       messages = [...messages, msg('new1', 'alice', 0)];
@@ -196,3 +206,66 @@ describe('ConversationView new messages without forced scrolling (VTID-05319, R9
     expect(screen.queryByTestId('new-messages-pill')).toBeNull();
   });
 });
+
+describe('ConversationView switching conversations (VTID-05319 review fixes)', () => {
+  function bob() {
+    return {
+      id: 'bob', type: 'direct', created_by: 'bob', created_at: iso(100), updated_at: iso(1), unread_count: 0,
+      participants: [{ user_id: 'me', role: 'member' }, { user_id: 'bob', display_name: 'Bob', role: 'member' }],
+    };
+  }
+  const bobMsg = (id: string, minAgo: number, read_at: string | null = iso(0)) =>
+    ({ ...msg(id, 'bob', minAgo, read_at), thread_id: 'bob' });
+
+  it('A → B → A: coming back with new unread messages opens at the divider again', () => {
+    threads = [...thread(), bob()];
+    messages = [msg('m1', 'alice', 10), msg('u1', 'alice', 5, null)];
+    const view = render(<ConversationView threadId="alice" context="global" />);
+    expect(screen.getByTestId('unread-divider').id).toBe('unread-divider-u1');
+
+    messages = [bobMsg('b1', 3)];
+    view.rerender(<ConversationView threadId="bob" context="global" />);
+    expect(screen.queryByTestId('unread-divider')).toBeNull();
+
+    messages = [msg('m1', 'alice', 10), msg('u1', 'alice', 5), msg('u2', 'alice', 1, null)];
+    view.rerender(<ConversationView threadId="alice" context="global" />);
+    expect(screen.getByTestId('unread-divider').id).toBe('unread-divider-u2');
+    expect(scroller().scrollTop).not.toBe(SCROLL_H - CLIENT_H);
+  });
+
+  it("the previous DM's rows (query placeholder) never decide the new DM's position or divider", () => {
+    threads = [...thread(), bob()];
+    messages = [msg('m1', 'alice', 10)];
+    const view = render(<ConversationView threadId="alice" context="global" />);
+    // Switch to Bob: for a moment the query still serves Alice's rows.
+    view.rerender(<ConversationView threadId="bob" context="global" />);
+    expect(scroller().dataset.positioned).toBe('false');
+    // Bob's own rows arrive, with an unread one.
+    messages = [bobMsg('b1', 5), bobMsg('b2', 2, null)];
+    view.rerender(<ConversationView threadId="bob" context="global" />);
+    expect(scroller().dataset.positioned).toBe('true');
+    expect(screen.getByTestId('unread-divider').id).toBe('unread-divider-b2');
+  });
+});
+
+describe('NewMessagesPill accessibility (VTID-05319 review fixes)', () => {
+  it('the count is announced from an always-mounted status region, and focus stays in the chat after the jump', async () => {
+    const { default: NewMessagesPill } = await import('./NewMessagesPill');
+    const target = document.createElement('div');
+    target.tabIndex = -1;
+    document.body.appendChild(target);
+    const onClick = vi.fn();
+    const view = render(<NewMessagesPill count={0} onClick={onClick} focusAfterJump={() => target} />);
+    const status = screen.getByTestId('new-messages-status');
+    expect(status.getAttribute('role')).toBe('status');
+    expect(status.textContent).toBe('');
+    view.rerender(<NewMessagesPill count={2} onClick={onClick} focusAfterJump={() => target} />);
+    expect(screen.getByTestId('new-messages-status')).toBe(status); // same node: the change is announced
+    expect(status.textContent).toContain('inbox.newMessages.other');
+    fireEvent.click(screen.getByTestId('new-messages-pill'));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(target);
+    target.remove();
+  });
+});
+

@@ -523,10 +523,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     isUserNearBottomRef.current = true;
   }, []);
   const isAtBottom = useCallback(() => distanceFromBottom(scrollRef.current) <= NEAR_BOTTOM_PX, []);
-  const newestMessage = messages.length > 0 ? messages[messages.length - 1] : null;
   const scrollAnchor = useChatScrollAnchor({
     conversationKey: threadId ?? null,
-    newest: newestMessage ? { id: newestMessage.id, sender_id: newestMessage.sender_id } : null,
+    rows: messages,
     meId: user?.id,
     isAtBottom,
     follow: followNewest,
@@ -562,9 +561,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // the member is at the bottom.
   useLayoutEffect(() => {
     if (!threadId || messages.length === 0 || positionedThread === threadId) return;
+    // On a switch the query briefly serves the previous DM's rows as
+    // placeholder: wait for this conversation's own rows before positioning
+    // (otherwise its unread divider would be decided on the wrong rows).
+    const bottomRow = messages[messages.length - 1] as { thread_id?: string | null };
+    const isDm = threads.find((t: { id: string; type?: string }) => t.id === threadId)?.type === 'direct';
+    if (isDm && bottomRow?.thread_id && bottomRow.thread_id !== threadId) return;
     const el = scrollRef.current;
     if (!el) return;
     hasInitialScrolledRef.current = threadId;
+    // A new visit decides its own unread position (A → B → A included).
+    unreadPositionedRef.current = null;
     const target = initialScrollMessageId ? document.getElementById(`msg-${initialScrollMessageId}`) : null;
     if (target) {
       // A deep link / jump target wins over the bottom and the unread divider.
@@ -584,7 +591,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       isUserNearBottomRef.current = true;
     }
     setPositionedThread(threadId);
-  }, [threadId, messages, positionedThread, initialScrollMessageId, user?.id, scrollAnchor]);
+  }, [threadId, messages, threads, positionedThread, initialScrollMessageId, user?.id, scrollAnchor]);
 
   // Once the unread divider is rendered, open at it (above the newest message).
   useLayoutEffect(() => {
@@ -1183,9 +1190,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         {/* Messages - Scrollable area */}
         <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
         <div 
-          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-2 sm:px-3 py-1 overscroll-contain" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-2 sm:px-3 py-1 overscroll-contain focus:outline-none" 
           id="chat-scroll"
           ref={scrollRef}
+          tabIndex={-1}
           onScroll={handleScroll}
           data-positioned={positionedThread === threadId ? 'true' : 'false'}
           style={{
@@ -1388,6 +1396,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         <NewMessagesPill
           count={scrollAnchor.newCount}
           onClick={scrollAnchor.jumpToLatest}
+          focusAfterJump={() => scrollRef.current}
           style={isMobile ? { bottom: 'calc(var(--composer-h, 56px) + 12px)' } : undefined}
         />
         </div>
