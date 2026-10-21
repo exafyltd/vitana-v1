@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { CheckCircle, Loader2, AlertCircle, Calendar, ArrowRight } from "lucide-react";
+import { CheckCircle, AlertCircle, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { useTicketPurchase } from "@/hooks/useEventTickets";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
+import { SpotlightLoading } from "@/components/layout/spotlight";
 
 export default function TicketPurchaseSuccess() {
   const [searchParams] = useSearchParams();
@@ -63,10 +64,9 @@ export default function TicketPurchaseSuccess() {
 
   if (loading || verifying) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-          <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.confirmingYourPurchase')}</p>
+      <div className="min-h-screen bg-background p-4">
+        <div className="mx-auto max-w-md py-8">
+          <SpotlightLoading archetype="collection" />
         </div>
       </div>
     );
