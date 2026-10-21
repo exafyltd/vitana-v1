@@ -73,9 +73,12 @@ describe('MessageBubble grouping (VTID-05314)', () => {
     expect(visibleTime()).toHaveLength(0);
     const chip = screen.getByTestId('message-hover-time');
     expect(chip.textContent).toBe('10:07');
+    expect(chip.className).toContain('opacity-0');
     expect(chip.className).toContain('group-hover/bubble:opacity-100');
     expect(chip.className).toContain('group-focus-visible/bubble:opacity-100');
     expect(chip.getAttribute('aria-hidden')).toBe('true'); // read once, from the sr-only text
+    // Inside the bubble's own corner stamp (never outside the clipped column).
+    expect(surface.contains(chip)).toBe(true);
     expect(surface.className).toContain('group/bubble');
     expect(surface.getAttribute('title')).toBeNull();
     expect(surface.querySelector('.sr-only')?.textContent).toMatch(/10:07/);
@@ -107,7 +110,7 @@ describe('MessageBubble grouping (VTID-05314)', () => {
     expect(surface.className).toContain('rounded-ee-md');
     expect(visibleTime()).toHaveLength(0);
     expect(screen.getByTestId('message-status-sent')).toBeTruthy();
-    expect(screen.getByTestId('message-hover-time').className).toContain('end-full');
+    expect(surface.contains(screen.getByTestId('message-hover-time'))).toBe(true);
   });
 
   it('my own last bubble shows time and status', () => {
