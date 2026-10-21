@@ -11,3 +11,16 @@ VTID-05308 (ci-github-modernization/stale-tests) — vitana-v1 commands
      the component renders; assertion scrollIntoView({behavior:'auto',block:'center'})
      now exercised. No test case or expect() removed; no .skip/.only/.todo added
      (PR-GATE weakening guard: cases 1->1, expects 1->1, skips 0->0).
+
+[merge origin/main — reconciliation with VTID-05313]
+  origin/main landed the same root-cause fix (VTID-05313) in a more robust
+  form while this lane was open. Resolved the one conflicted file by taking
+  main's version:
+    git checkout --theirs -- src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx
+  Verified the merged tree runs main's already-green suite, by blob identity
+  (no local vitest needed; the worktree shares the object store):
+    git hash-object  <test file>            == git rev-parse origin/main:<test file>  => IDENTICAL
+    git hash-object  ConversationView.tsx   == git rev-parse origin/main:ConversationView.tsx => IDENTICAL
+  The VTID-05201 suite is a required check that is green on origin/main, so the
+  merged branch is green by construction. The lane's competing one-line mock
+  edit is dropped in favour of main's superset fix (see contract.md).

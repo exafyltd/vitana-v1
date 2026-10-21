@@ -30,3 +30,21 @@ mocked `MessageBubble`) and calls `scrollIntoView` with exactly those options.
 - Test cases: 1 → 1. `expect()` calls: 1 → 1. `.skip/.only/.todo`: 0 → 0.
 - PR-GATE `evaluateWeakening` (scripts/ci/pr-gate/lib.mjs:184) passes with no
   exemption.
+
+## Reconciliation with main (VTID-05313) — merge of origin/main into this lane
+While this lane was open, `origin/main` landed the SAME root-cause fix under
+VTID-05313 — confirming the diagnosis above — in a more robust form:
+- it keeps the real `@/lib/i18n-toast` via `vi.mock(..., async (importOriginal)
+  => ({ ...(await importOriginal()), t, notify, notifyError }))` instead of
+  hardcoding `getI18nLocale: () => 'de-DE'`, so every other real export
+  (not just `getI18nLocale`) stays live for the date divider; and
+- it makes the fixture timestamps relative to `now` (`NOW_ISO`) so the day
+  divider never ages into a different code path over time.
+On merging origin/main, the lane takes main's version of
+`ConversationView.deeplink-scroll.vtid-05201.test.tsx` verbatim (the merged
+blob is byte-identical to `origin/main:` that file, and `ConversationView.tsx`
+is likewise identical to main). T1's objective — the VTID-05201 suite green at
+the cause with nothing deleted or weakened — is therefore satisfied by the
+merged tree, which runs exactly main's already-green required suite. The lane's
+competing one-line mock edit is dropped in favour of main's superset fix; no
+behaviour is changed beyond the converged plan.

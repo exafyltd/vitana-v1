@@ -131,7 +131,24 @@
       "today": "Hoy",
       "yesterday": "Ayer"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "Enviando",
+      "sent": "Enviado",
+      "delivered": "Entregado",
+      "read": "Leído",
+      "failed": "No enviado",
+      "retry": "Reintentar",
+      "retryLabel": "Enviar este mensaje de nuevo",
+      "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "Ir al último",
+      "one": "1 mensaje nuevo",
+      "other": "{count} mensajes nuevos",
+      "unread": "Mensajes no leídos",
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }
