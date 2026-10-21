@@ -1,0 +1,12 @@
+﻿{
+    "vtid":  "VTID-05289",
+    "service":  "community-app",
+    "tests":  [
+                  {
+                      "kind":  "playwright",
+                      "name":  "desktop-spotlight-finish/colours-batch-5 on staging: ?spotlight=1 renders the Spotlight archetype/skeleton contract and intact sidebar chrome, no page-level spinner after settle, read-only",
+                      "spec":  "tests/e2e/staging/vtid-05289-colours-batch-5.staging.spec.ts",
+                      "cwd":  "."
+                  }
+              ]
+}
