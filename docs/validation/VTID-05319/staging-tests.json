@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05319",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/hooks/useChatScrollAnchor.test.ts src/components/messages/ConversationView.scroll-anchoring.vtid-05319.test.tsx src/pages/messages/GroupChat.new-messages.vtid-05319.test.tsx src/pages/messages src/components/messages",
+      "reason": "first visible frame at the newest message (hidden until positioned, positioned in a layout effect, no smooth scroll, no retry timers), unread divider, deep link wins, new messages counted in the pill while reading earlier ones (DM and group), anchored at the bottom, own message follows"
+    }
+  ]
+}
