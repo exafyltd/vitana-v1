@@ -35,7 +35,12 @@ vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'me' } 
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => false }));
 vi.mock('@/hooks/use-toast', () => ({ useToast: () => ({ toast: vi.fn() }) }));
 vi.mock('@/lib/messageStatus', () => ({ autoMarkAsDelivered: vi.fn(), markMessagesAsRead: vi.fn() }));
-vi.mock('@/lib/i18n-toast', () => ({ t: (k: string) => k, notify: vi.fn(), notifyError: vi.fn() }));
+// getI18nLocale is part of the real @/lib/i18n-toast surface: locale-format.ts
+// imports it (currentBcp47 → getI18nLocale), and ConversationView's date
+// dividers call formatDate(). Without it in the mock the component throws on
+// first render and the scroll assertion is never reached (stale mock, not a
+// product bug). Returns the module's own default locale.
+vi.mock('@/lib/i18n-toast', () => ({ t: (k: string) => k, notify: vi.fn(), notifyError: vi.fn(), getI18nLocale: () => 'de-DE' }));
 vi.mock('./MessageInput', () => ({ default: () => null }));
 vi.mock('./MessageBubble', () => ({ default: () => null }));
 vi.mock('./GroupMembersModal', () => ({ default: () => null }));

@@ -1,0 +1,13 @@
+VTID-05308 (ci-github-modernization/stale-tests) — vitana-v1 commands
+=====================================================================
+
+[red on base] npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx
+  => FAIL (exit 1): Test Files 1 failed (1) / Tests 1 failed (1)
+     getI18nLocale missing from @/lib/i18n-toast mock -> ConversationView render throws.
+
+[green on head] npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx
+  => PASS (exit 0): Test Files 1 passed (1) / Tests 1 passed (1)
+     Fix: added getI18nLocale: () => 'de-DE' to the @/lib/i18n-toast mock so
+     the component renders; assertion scrollIntoView({behavior:'auto',block:'center'})
+     now exercised. No test case or expect() removed; no .skip/.only/.todo added
+     (PR-GATE weakening guard: cases 1->1, expects 1->1, skips 0->0).
