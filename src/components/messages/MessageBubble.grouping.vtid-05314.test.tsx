@@ -2,12 +2,12 @@
  * VTID-05314 (messenger-ux-v2/ui-compact-grouping) — inside a run of one
  * sender's messages the avatar and name show once (first bubble), the corners
  * facing the neighbours are tightened with logical (RTL-safe) classes, the
- * last bubble keeps its tail, and other people's earlier bubbles move the
- * time to hover (title) / screen readers / the long-press drawer. My own
- * bubbles keep time and delivery status on every message.
+ * last bubble keeps its tail and the time; earlier bubbles show the time on
+ * hover / keyboard focus (chip), to screen readers and in the long-press
+ * drawer. My own earlier bubbles keep the delivery status icon (R7).
  */
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'me' } }) }));
@@ -53,7 +53,9 @@ function bubble(position: GroupPosition | undefined, own = false) {
   return { view, surface };
 }
 
-const visibleTime = () => screen.queryAllByText('10:07').filter((el) => !el.closest('[aria-hidden="true"]'));
+// The time inside the bubble's corner stamp (not the spacer, not the hover chip, not sr-only).
+const visibleTime = () => screen.queryAllByText('10:07').filter((el) => !el.closest('[aria-hidden="true"]') && !el.closest('.sr-only'));
+const avatars = (root: HTMLElement) => root.querySelectorAll('[class*="w-8 h-8"]').length;
 
 describe('MessageBubble grouping (VTID-05314)', () => {
   it('without a position the bubble is unchanged: name, time, full corners', () => {
@@ -61,22 +63,30 @@ describe('MessageBubble grouping (VTID-05314)', () => {
     expect(screen.getByText('Peer Name')).toBeTruthy();
     expect(visibleTime()).toHaveLength(1);
     expect(surface.className).not.toMatch(/rounded-(ss|se|es|ee)-md/);
-    expect(surface.getAttribute('title')).toBeNull();
+    expect(screen.queryByTestId('message-hover-time')).toBeNull();
   });
 
-  it('first bubble of someone else\'s group: name shown, time hidden from view but on hover and for screen readers', () => {
-    const { surface } = bubble('first');
+  it('first bubble of someone else\'s group: name and avatar shown, time only on hover/focus and for screen readers', () => {
+    const { surface, view } = bubble('first');
     expect(screen.getByText('Peer Name')).toBeTruthy();
+    expect(avatars(view.container)).toBe(1);
     expect(visibleTime()).toHaveLength(0);
-    expect(surface.getAttribute('title')).toMatch(/10:07/);
+    const chip = screen.getByTestId('message-hover-time');
+    expect(chip.textContent).toBe('10:07');
+    expect(chip.className).toContain('group-hover/bubble:opacity-100');
+    expect(chip.className).toContain('group-focus-visible/bubble:opacity-100');
+    expect(chip.getAttribute('aria-hidden')).toBe('true'); // read once, from the sr-only text
+    expect(surface.className).toContain('group/bubble');
+    expect(surface.getAttribute('title')).toBeNull();
     expect(surface.querySelector('.sr-only')?.textContent).toMatch(/10:07/);
     expect(surface.className).toContain('rounded-es-md');
     expect(surface.className).not.toContain('rounded-ss-md');
   });
 
-  it('middle bubble: no name, both start corners tightened, time hidden', () => {
-    const { surface } = bubble('middle');
+  it('middle bubble: no name, no avatar, both start corners tightened, time hidden', () => {
+    const { surface, view } = bubble('middle');
     expect(screen.queryByText('Peer Name')).toBeNull();
+    expect(avatars(view.container)).toBe(0);
     expect(visibleTime()).toHaveLength(0);
     expect(surface.className).toContain('rounded-ss-md');
     expect(surface.className).toContain('rounded-es-md');
@@ -88,15 +98,32 @@ describe('MessageBubble grouping (VTID-05314)', () => {
     expect(visibleTime()).toHaveLength(1);
     expect(surface.className).toContain('rounded-ss-md');
     expect(surface.className).not.toContain('rounded-es-md');
-    expect(surface.getAttribute('title')).toBeNull();
+    expect(screen.queryByTestId('message-hover-time')).toBeNull();
   });
 
-  it('my own grouped bubbles use the end-side corners and keep time + status on every bubble', () => {
+  it('my own earlier bubbles use the end-side corners and keep the status icon, not the time', () => {
     const { surface } = bubble('middle', true);
     expect(surface.className).toContain('rounded-se-md');
     expect(surface.className).toContain('rounded-ee-md');
+    expect(visibleTime()).toHaveLength(0);
+    expect(screen.getByTestId('message-status-sent')).toBeTruthy();
+    expect(screen.getByTestId('message-hover-time').className).toContain('end-full');
+  });
+
+  it('my own last bubble shows time and status', () => {
+    bubble('last', true);
     expect(visibleTime()).toHaveLength(1);
     expect(screen.getByTestId('message-status-sent')).toBeTruthy();
+  });
+
+  it('long-press on a bubble without its time shows the time in the drawer', () => {
+    vi.useFakeTimers();
+    const { surface } = bubble('middle');
+    fireEvent.touchStart(surface, { touches: [{ clientX: 1, clientY: 1 }] });
+    act(() => { vi.advanceTimersByTime(600); });
+    fireEvent.touchEnd(surface);
+    vi.useRealTimers();
+    expect(screen.getByTestId('message-drawer-time').textContent).toMatch(/10:07/);
   });
 
   it('a single bubble keeps the plain rounded shape', () => {

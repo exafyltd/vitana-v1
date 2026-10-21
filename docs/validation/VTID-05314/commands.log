@@ -4,5 +4,10 @@ $ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/me
 $ npx tsc --noEmit -p tsconfig.app.json   # no errors in touched files
 $ npx eslint <touched files>   # error counts equal to base (MessageBubble 26, ConversationView 51, GroupChat 12; new files 0)
 Stacked on ui-viewing-presence (#1480), which already builds on ui-reply-jump (the lane's depends_on).
-Density: the values from #1425/#1472 are unchanged (DM: mb-0.5 inside a group / mb-1.5 after it; group chat: 8 px between groups as before, 2 px inside).
-Decision: my own bubbles keep time + delivery status on every message (R7 needs a per-message status); other people's first/middle bubbles move the time to hover (title), screen readers (sr-only) and the long-press drawer.
+
+## Review fixes (semantic_reviewer, /projects/sandbox/reviews/pr1481.md)
+$ npx vitest run src/lib/messaging/grouping.test.ts src/components/messages/*grouping.vtid-05314.test.tsx   # 10 + 8 + 1 + 1 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # all green
+Spacing: the density VALUES of #1425/#1472 are unchanged. Deliberate change: in the DM view the small gap now sits INSIDE a group (main put it after the run's last bubble, an off-by-one), and the avatar/name reappear after a > 5 min gap or a day change. Group chat standalone layout keeps main's space-y-2 (dividers and notices exactly as on main), in-group bubbles get !mt-0.5; the spotlight layout's flex gap-2 became per-item margins with the same geometry.
+Time: every group's last bubble shows its time; earlier bubbles show it on hover AND keyboard focus (chip beside the bubble), once to screen readers (sr-only, no title — no double announcement) and in the long-press drawer. My own earlier bubbles keep only the status icon (Sending / Not sent stays visible per message, R7) — the reviewer's middle ground.
+Screenshots (desktop / mobile / RTL) are not produced in this sandbox — the owner's visual check on staging replaces them (Gate 2).

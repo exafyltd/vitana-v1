@@ -462,31 +462,34 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const isTextMessageType = !hasStructuredContent;
   const formattedTime = formatDate(new Date(message.created_at), 'HH:mm');
   // VTID-05314: in a group the avatar/name sit on the first bubble and the
-  // time on the last. Other people's earlier bubbles show the time on hover
-  // (title) and long-press (drawer); own bubbles keep time + delivery status.
+  // time on the last. Earlier bubbles show their time on hover / keyboard
+  // focus (a small chip beside the bubble), to screen readers and in the
+  // long-press drawer. My own earlier bubbles keep their delivery status icon
+  // (R7: Sending / Not sent is per message), without the time.
   const groupStart = isGroupStart(groupPosition);
   const groupEnd = isGroupEnd(groupPosition);
-  const showTime = isOwnMessage || groupEnd;
+  const showTime = groupEnd;
+  const showStamp = showTime || isOwnMessage;
   const showSenderHeader = showAvatar && groupStart;
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
     : 'text-muted-foreground';
   const timestampInner = (
     <>
-      <span className="tabular-nums">{formattedTime}</span>
+      {showTime && <span className="tabular-nums">{formattedTime}</span>}
       {renderStatusIcon()}
     </>
   );
   const timestampSpacerInner = (
     <>
-      <span className="tabular-nums">{formattedTime}</span>
+      {showTime && <span className="tabular-nums">{formattedTime}</span>}
       {renderStatusIcon(true)}
     </>
   );
   const hiddenTimeLabel = formatDate(new Date(message.created_at), 'PPp');
   // Ghost spacer appended inside the text <p> so the last line reserves
   // room for the corner-pinned timestamp (matches timestamp width exactly).
-  const textTimestampSpacer = showTime ? (
+  const textTimestampSpacer = showStamp ? (
     <span
       aria-hidden="true"
       className="inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"
@@ -495,7 +498,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     </span>
   ) : null;
   // Real timestamp, absolutely positioned in the bubble's bottom-right corner.
-  const textTimestampOverlay = showTime ? (
+  const textTimestampOverlay = showStamp ? (
     <span
       className={cn(
         "absolute bottom-1.5 end-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none",
@@ -506,15 +509,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     </span>
   ) : null;
   // Fallback row for media / cards / voice / edit mode — below the content.
-  const inlineBelowTimestamp = showTime ? (
+  const inlineBelowTimestamp = showStamp ? (
     <div
       className={cn(
         "flex items-center justify-end gap-1 mt-1 text-[10px] leading-none",
         timestampColorClass
       )}
     >
-      <span className="tabular-nums">{formattedTime}</span>
-      {renderStatusIcon()}
+      {timestampInner}
     </div>
   ) : null;
 
@@ -1266,10 +1268,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div 
                 ref={messageRef}
                 tabIndex={0}
-                title={showTime ? undefined : hiddenTimeLabel}
                 data-group-position={groupPosition}
                 className={cn(
-                  "rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                  "group/bubble rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
                   groupCornerClass(groupPosition, isOwnMessage),
                   isOwnMessage
@@ -1326,7 +1327,21 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   <>
                     {renderContent()}
                     {isTextMessageType ? textTimestampOverlay : inlineBelowTimestamp}
-                    {!showTime && <span className="sr-only">{hiddenTimeLabel}</span>}
+                    {!showTime && (
+                      <>
+                        <span className="sr-only">{hiddenTimeLabel}</span>
+                        <span
+                          aria-hidden="true"
+                          data-testid="message-hover-time"
+                          className={cn(
+                            "pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[10px] leading-none tabular-nums text-muted-foreground opacity-0 transition-opacity group-hover/bubble:opacity-100 group-focus-visible/bubble:opacity-100",
+                            isOwnMessage ? "end-full me-2" : "start-full ms-2"
+                          )}
+                        >
+                          {formattedTime}
+                        </span>
+                      </>
+                    )}
                   </>
                 )}
               </div>
