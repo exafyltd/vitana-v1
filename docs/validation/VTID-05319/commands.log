@@ -1,0 +1,13 @@
+# VTID-05319 (messenger-ux-v2/ui-scroll-anchoring) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run <3 new test files>   # origin/main 69d39ef34: 3 files fail (red-on-base.txt; 2 of the 7 ConversationView/GroupChat cases already hold on main and pin unchanged behaviour)
+$ npx vitest run <3 new test files>   # head: 7 + 5 + 2 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # head: 537 passed, 1 failed = VTID-05201 fixture (fixed by VTID-05313 #1473; passes with that fix applied)
+$ npx eslint ConversationView.tsx GroupChat.tsx   # 51 / 12 errors = origin/main (ratchet); new files 0
+Branch is based on ui-send-status (#1474): this PR's own commit is the last one.
+
+## Review fixes (semantic_reviewer, /projects/sandbox/reviews/pr1476.md)
+$ npx vitest run src/hooks/useChatScrollAnchor.test.ts src/components/messages/ConversationView.scroll-anchoring.vtid-05319.test.tsx src/pages/messages/GroupChat.new-messages.vtid-05319.test.tsx   # 11 + 8 + 6 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib/messaging   # 104 files / 556 tests passed
+Strictness restored: "no timed retries" now fakes setTimeout AND requestAnimationFrame and asserts zero scrollTop writes for 1 s after open (verified to fail when a setTimeout→rAF→scrollTop retry is re-inserted); the probe asserts the first commit is hidden.
+Fixed: pill counts every arrived row (batches), not a deleted newest row or my own temp→server swap; GroupChat pin released by keyboard and by scrolling away (scrollbar), not only touch/wheel; unread position re-decided on every visit (A→B→A); placeholder rows of the previous DM never position the new one; pill status is an always-mounted live region and focus moves to the list after the jump.
+Deviations recorded for Gate 2: (1) the unread divider uses per-message read_at, so it appears in DMs only — group chats have no per-message read state in the client (plan said last_read_at); (2) desktop/mobile/RTL screenshots are not produced in this sandbox (no browser able to reach staging) — the owner's visual check on staging replaces them.

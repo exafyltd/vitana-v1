@@ -141,6 +141,13 @@
       "retry": "Ponów",
       "retryLabel": "Wyślij tę wiadomość ponownie",
       "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "Przejdź do najnowszych",
+      "one": "Nowe wiadomości: 1",
+      "other": "Nowe wiadomości: {count}",
+      "unread": "Nieprzeczytane wiadomości",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

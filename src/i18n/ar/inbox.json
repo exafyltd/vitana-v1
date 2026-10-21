@@ -141,6 +141,13 @@
       "retry": "إعادة المحاولة",
       "retryLabel": "أرسل هذه الرسالة مرة أخرى",
       "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "الانتقال إلى الأحدث",
+      "one": "رسائل جديدة: 1",
+      "other": "رسائل جديدة: {count}",
+      "unread": "رسائل غير مقروءة",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
