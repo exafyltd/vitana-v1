@@ -18,9 +18,11 @@ import { useAuth } from "@/context/AuthProvider";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useTranslation } from "@/hooks/useTranslation";
 import { newClientMessageId, tempIdFor, reconcileByClientId } from "@/lib/messaging/outbox";
-import { useJumpToMessage, unionByIdSorted, bridgeWindow } from "@/hooks/useJumpToMessage";
+import { useJumpToMessage, unionByIdSorted, bridgeWindow, withJumpRows } from "@/hooks/useJumpToMessage";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
+import { SwipeableMessage } from "@/components/messages/SwipeableMessage";
+import { useIsMobile } from "@/hooks/use-mobile";
 import MessageDivider from "@/components/messages/MessageDivider";
 import NewMessagesPill from "@/components/messages/NewMessagesPill";
 import { useChatScrollAnchor, distanceFromBottom, NEAR_BOTTOM_PX } from "@/hooks/useChatScrollAnchor";
@@ -129,6 +131,7 @@ export default function GroupChat() {
   const { user } = useAuth();
   const { translate } = useTranslation();
   const userId = user?.id;
+  const isMobile = useIsMobile();
   // VTID-05117 — Spotlight (desktop + flag): the thread opens inside the Vitanaland frame
   // (sidebar + Inbox sections) on the conversation archetype; phones and flag-off keep the
   // full-screen chat below. Same refs, same pinning/scroll logic, same composer.
@@ -161,16 +164,20 @@ export default function GroupChat() {
   // VTID-05318: rows loaded around a jump target, shown with the latest page
   // (kept apart so the 8 s refresh of the latest page never drops them).
   const [jumpRows, setJumpRows] = useState<GroupRow[]>([]);
-  useEffect(() => { setJumpRows([]); }, [groupId]);
-  const shownMessages = useMemo(
-    () => (jumpRows.length > 0 ? unionByIdSorted(messages, jumpRows) : messages),
-    [messages, jumpRows]
-  );
+  // Only jump rows older than the latest page are shown (see withJumpRows).
+  const shownMessages = useMemo(() => withJumpRows(messages, jumpRows), [messages, jumpRows]);
   // Replied-to messages that are not loaded: fetched once each (null = gone).
   const [fetchedParents, setFetchedParents] = useState<Record<string, GroupRow | null | undefined>>({});
+  const parentsInFlightRef = useRef<Set<string>>(new Set());
   const currentGroupRef = useRef<string | undefined>(groupId);
   currentGroupRef.current = groupId;
   const [replyingTo, setReplyingTo] = useState<Record<string, unknown> | null>(null);
+  // Another group: nothing of the previous one carries over (jump window,
+  // reply preview — its message id belongs to the other group).
+  useEffect(() => {
+    setJumpRows([]);
+    setReplyingTo(null);
+  }, [groupId]);
 
   const messageItems = useMemo(() => {
     return getDateSeparatedMessageItems(
@@ -457,6 +464,9 @@ export default function GroupChat() {
     parentMessageId?: string,
   ) => {
     if (!groupId) return;
+    // Voice and attachment sends come without the parent id: the open reply
+    // preview is still what they answer (as in the DM view).
+    const replyTarget = parentMessageId || (typeof replyingTo?.id === "string" ? replyingTo.id : undefined);
     const cid = newClientMessageId();
     const optimistic: GroupRow = {
       id: tempIdFor(cid),
@@ -468,23 +478,32 @@ export default function GroupChat() {
       message_type: messageType || "text",
       metadata: contentData || undefined,
       client_message_id: cid,
-      reply_to_message_id: parentMessageId && !parentMessageId.startsWith("temp-") ? parentMessageId : null,
+      reply_to_message_id: replyTarget && !replyTarget.startsWith("temp-") ? replyTarget : null,
       send_status: "sending",
     };
     setMessages(prev => [...prev, optimistic]);
     setReplyingTo(null);
     enqueueGroupRow(optimistic);
-  }, [groupId, userId, enqueueGroupRow]);
+  }, [groupId, userId, enqueueGroupRow, replyingTo]);
 
   const loadAround = useCallback(async (messageId: string): Promise<boolean> => {
     if (!groupId) return false;
     const win = await fetchGroupMessagesAround(groupId, messageId, 40);
     if (!win || win.data.length === 0) return false;
-    const bridged = await bridgeWindow(win.data as GroupRow[], win.has_newer, messages, (after) => fetchGroupMessagesAfter(groupId, after, 100) as Promise<GroupRow[]>);
+    const forGroup = groupId;
+    const bridged = await bridgeWindow(win.data as GroupRow[], win.has_newer, messages, (after) => fetchGroupMessagesAfter(forGroup, after, 100) as Promise<GroupRow[]>);
+    // The member may have opened another group meanwhile: never mix them.
+    if (currentGroupRef.current !== forGroup) return false;
     setJumpRows((prev) => unionByIdSorted(prev, bridged));
     return true;
   }, [groupId, messages]);
-  const jumpToMessage = useJumpToMessage({ loadAround, onJump: markGroupAway });
+  // The jump leaves the bottom: release the opening pin, else growing content
+  // pulls the view straight back down.
+  const onGroupJump = useCallback(() => {
+    pinnedRef.current = false;
+    markGroupAway();
+  }, [markGroupAway]);
+  const jumpToMessage = useJumpToMessage({ loadAround, onJump: onGroupJump });
   const rowById = useMemo(() => new Map(shownMessages.map((m) => [m.id, m])), [shownMessages]);
   const bubbleParentProps = (msg: GroupRow) => {
     const pid = msg.reply_to_message_id;
@@ -502,6 +521,14 @@ export default function GroupChat() {
     if (String(bubbleMessage.id ?? '').startsWith('temp-')) return;
     setReplyingTo(bubbleMessage);
   }, []);
+  // Swipe-to-reply (phone): the same preview the bubble's Reply action opens.
+  const replyTargetFor = useCallback((msg: GroupRow): Record<string, unknown> => {
+    const sender = memberById.get(msg.sender_id);
+    return {
+      ...toBubbleMessage(msg, groupId ?? ""),
+      sender: sender ? { user_id: sender.user_id, display_name: sender.display_name, avatar_url: sender.avatar_url } : null,
+    };
+  }, [memberById, groupId]);
   const handleJump = useCallback((messageId: string) => { void jumpToMessage(messageId); }, [jumpToMessage]);
 
   useEffect(() => {
@@ -510,20 +537,24 @@ export default function GroupChat() {
     const missing = Array.from(new Set(
       shownMessages
         .map((m) => m.reply_to_message_id)
-        .filter((id): id is string => !!id && !known.has(id) && !(id in fetchedParents))
+        .filter((id): id is string => !!id && !known.has(id) && fetchedParents[id] === undefined && !parentsInFlightRef.current.has(id))
     )).slice(0, 10);
     if (missing.length === 0) return;
     const forGroup = groupId;
     const stillHere = () => currentGroupRef.current === forGroup;
-    setFetchedParents((prev) => ({ ...prev, ...Object.fromEntries(missing.map((id) => [id, undefined])) }));
+    missing.forEach((id) => parentsInFlightRef.current.add(id));
     (async () => {
       for (const id of missing) {
+        // Left the group: the rest stays unresolved and is fetched on the next visit.
+        if (!stillHere()) { parentsInFlightRef.current.delete(id); continue; }
         try {
           const win = await fetchGroupMessagesAround(forGroup, id, 2);
           const row = win?.data.find((r) => r.id === id) as GroupRow | undefined;
           if (stillHere()) setFetchedParents((prev) => ({ ...prev, [id]: row ?? null }));
         } catch {
           if (stillHere()) setFetchedParents((prev) => ({ ...prev, [id]: null }));
+        } finally {
+          parentsInFlightRef.current.delete(id);
         }
       }
     })();
@@ -544,6 +575,7 @@ export default function GroupChat() {
     try {
       const saved = await updateGroupMessage(groupId, messageId, content);
       setMessages(prev => prev.map(m => (m.id === messageId ? saved : m)));
+      setJumpRows(prev => prev.map(m => (m.id === messageId ? saved : m)));
     } catch (err) {
       notifyError('toasts.messages.updateFailed', 'toasts.messages.failedUpdateMessagePleaseTryAgain');
       throw err;
@@ -561,6 +593,7 @@ export default function GroupChat() {
     try {
       await deleteGroupMessage(groupId, messageId);
       setMessages(prev => prev.filter(m => m.id !== messageId));
+      setJumpRows(prev => prev.filter(m => m.id !== messageId));
       notify('toasts.messages.messageDeleted');
     } catch (err) {
       notifyError('toasts.messages.deleteFailed', 'toasts.messages.failedDeleteMessagePleaseTryAgain');
@@ -656,22 +689,24 @@ export default function GroupChat() {
                           const sender = memberById.get(msg.sender_id);
                           return (
                             <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-150">
-                              <MessageBubble
-                                message={{
-                                  ...toBubbleMessage(msg, group.id),
-                                  sender: sender
-                                    ? { user_id: sender.user_id, display_name: sender.display_name, avatar_url: sender.avatar_url }
-                                    : null,
-                                }}
-                                isOwnMessage={isOwn}
-                                showAvatar={!isOwn}
-                                onUpdateMessage={handleUpdateMessage}
-                                onDeleteMessage={handleDeleteMessage}
-                                onRetry={handleRetry}
-                                onReply={handleReply}
-                                onScrollToMessage={handleJump}
-                                {...bubbleParentProps(msg)}
-                              />
+                              <SwipeableMessage onReply={() => handleReply(replyTargetFor(msg))} isOwnMessage={isOwn} enabled={isMobile}>
+                                <MessageBubble
+                                  message={{
+                                    ...toBubbleMessage(msg, group.id),
+                                    sender: sender
+                                      ? { user_id: sender.user_id, display_name: sender.display_name, avatar_url: sender.avatar_url }
+                                      : null,
+                                  }}
+                                  isOwnMessage={isOwn}
+                                  showAvatar={!isOwn}
+                                  onUpdateMessage={handleUpdateMessage}
+                                  onDeleteMessage={handleDeleteMessage}
+                                  onRetry={handleRetry}
+                                  onReply={handleReply}
+                                  onScrollToMessage={handleJump}
+                                  {...bubbleParentProps(msg)}
+                                />
+                              </SwipeableMessage>
                             </div>
                           );
                         })}
@@ -786,26 +821,28 @@ export default function GroupChat() {
               const sender = memberById.get(msg.sender_id);
               return (
                 <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-500">
-                  <MessageBubble
-                    message={{
-                      ...toBubbleMessage(msg, group.id),
-                      sender: sender
-                        ? {
-                            user_id: sender.user_id,
-                            display_name: sender.display_name,
-                            avatar_url: sender.avatar_url,
-                          }
-                        : null,
-                    }}
-                    isOwnMessage={isOwn}
-                    showAvatar={!isOwn}
-                    onUpdateMessage={handleUpdateMessage}
-                    onDeleteMessage={handleDeleteMessage}
-                    onRetry={handleRetry}
-                    onReply={handleReply}
-                    onScrollToMessage={handleJump}
-                    {...bubbleParentProps(msg)}
-                  />
+                  <SwipeableMessage onReply={() => handleReply(replyTargetFor(msg))} isOwnMessage={isOwn} enabled={isMobile}>
+                    <MessageBubble
+                      message={{
+                        ...toBubbleMessage(msg, group.id),
+                        sender: sender
+                          ? {
+                              user_id: sender.user_id,
+                              display_name: sender.display_name,
+                              avatar_url: sender.avatar_url,
+                            }
+                          : null,
+                      }}
+                      isOwnMessage={isOwn}
+                      showAvatar={!isOwn}
+                      onUpdateMessage={handleUpdateMessage}
+                      onDeleteMessage={handleDeleteMessage}
+                      onRetry={handleRetry}
+                      onReply={handleReply}
+                      onScrollToMessage={handleJump}
+                      {...bubbleParentProps(msg)}
+                    />
+                  </SwipeableMessage>
                 </div>
               );
             })}
