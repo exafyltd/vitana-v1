@@ -46,10 +46,11 @@ vi.mock('./MessageInput', () => ({
 }));
 // The bubble stand-in exposes what ConversationView gives it.
 vi.mock('./MessageBubble', () => ({
-  default: (p: { message: { id: string; body: string; reply_to_message_id?: string }; parentMessage?: { body: string } | null; parentUnavailable?: boolean; onScrollToMessage?: (id: string) => void; onReply?: (m: unknown) => void }) => (
+  default: (p: { message: { id: string; body: string; reply_to_message_id?: string }; parentMessage?: { body: string } | null; parentUnavailable?: boolean; onScrollToMessage?: (id: string) => void; onReply?: (m: unknown) => void; onDeleteMessage?: (id: string) => unknown }) => (
     <div data-testid={`bubble-${p.message.id}`}>
       {p.message.body}
       <button data-testid={`reply-${p.message.id}`} onClick={() => p.onReply?.(p.message)}>reply</button>
+      <button data-testid={`del-${p.message.id}`} onClick={() => p.onDeleteMessage?.(p.message.id)}>delete</button>
       {p.message.reply_to_message_id && (
         <button
           data-testid={`quote-${p.message.id}`}
@@ -69,7 +70,7 @@ vi.mock('@/components/ui/clickable-avatar', () => ({ ClickableAvatar: () => null
 function builder() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- thenable query-builder stub
   const b: any = {
-    select: vi.fn(() => b), eq: vi.fn(() => b), in: vi.fn(() => b), or: vi.fn(() => b),
+    select: vi.fn(() => b), eq: vi.fn(() => b), in: vi.fn(() => b), or: vi.fn(() => b), delete: vi.fn(() => b), update: vi.fn(() => b),
     maybeSingle: vi.fn(() => Promise.resolve({ data: null, error: null })),
     single: vi.fn(() => Promise.resolve({ data: null, error: null })),
     then: (resolve: (v: unknown) => void) => resolve({ data: [], error: null }),
@@ -166,6 +167,25 @@ describe('reply quotes in a DM (VTID-05318)', () => {
     fireEvent.click(screen.getByTestId('reply-q1'));
     await act(async () => { await composerSend!('answer', 'text'); });
     expect(sendMessage.mock.calls[0][0]).toMatchObject({ parentMessageId: 'q1', content: 'answer' });
+  });
+
+  it('deleting a message that is shown only from the jump window removes it at once', async () => {
+    threads = [{
+      id: 'alice', type: 'direct', created_by: 'alice', created_at: '2026-10-21T09:00:00Z', updated_at: '2026-10-21T10:00:00Z', unread_count: 0,
+      participants: [{ user_id: 'me', role: 'member' }, { user_id: 'alice', display_name: 'Alice', role: 'member' }],
+    }];
+    const at = (m: number) => new Date(Date.UTC(2026, 9, 21, 10, m)).toISOString();
+    const row = (id: string, m: number, extra: Record<string, unknown> = {}) => ({ id, sender_id: 'alice', receiver_id: 'me', content: id, created_at: at(m), read_at: at(59), ...extra });
+    messages = [{ id: 'a1', thread_id: 'alice', sender_id: 'me', body: 'a1', message_type: 'text', created_at: at(50), updated_at: at(50), read_at: at(59), reply_to_message_id: 'old' }];
+    fetchConversationAround.mockImplementation(async (_p: string, id: string, limit: number) =>
+      limit === 2 ? { data: [row('old', 1)], has_older: false, has_newer: true } : { data: [row(id, 1), row('w2', 2)], has_older: false, has_newer: false });
+    render(<ConversationView threadId="alice" context="global" />);
+    await waitFor(() => expect(screen.getByTestId('quote-a1').dataset.state).toBe('loaded'));
+    fireEvent.click(screen.getByTestId('quote-a1'));
+    await screen.findByTestId('bubble-w2');
+    await act(async () => { fireEvent.click(screen.getByTestId('del-w2')); });
+    await waitFor(() => expect(screen.queryByTestId('bubble-w2')).toBeNull());
+    expect(screen.getByTestId('bubble-old')).toBeTruthy();
   });
 });
 

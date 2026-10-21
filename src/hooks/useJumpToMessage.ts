@@ -41,8 +41,8 @@ export function scrollToRow(el: HTMLElement): void {
 }
 
 export interface JumpOptions {
-  /** Load the messages around `messageId` into the view. False = not in this conversation. */
-  loadAround: (messageId: string) => Promise<boolean>;
+  /** Load the messages around `messageId` into the view. False = not in this conversation; null = abandoned (left the conversation): no jump, no toast. */
+  loadAround: (messageId: string) => Promise<boolean | null>;
   /** Called right before the scroll (e.g. so the view stops following the bottom). */
   onJump?: () => void;
 }
@@ -61,6 +61,7 @@ export function useJumpToMessage({ loadAround, onJump }: JumpOptions) {
     pending.current = messageId;
     try {
       const ok = await loadAround(messageId).catch(() => false);
+      if (ok === null) return false;
       if (ok) {
         // The window renders on the next commit; give it up to a few frames.
         for (let i = 0; i < 5; i++) {
@@ -123,10 +124,14 @@ export async function bridgeWindow<T extends Timed>(
   maxPages = 10,
 ): Promise<T[]> {
   if (window.length === 0) return [];
-  const loadedIds = new Set(loaded.map((r) => r.id));
   let rows = window.slice();
-  // Connected already: the window overlaps the loaded rows, or reaches the newest.
-  const connected = () => !hasNewerLeft || rows.some((r) => loadedIds.has(r.id)) || (loaded.length > 0 && rows[rows.length - 1].created_at >= loaded[0].created_at);
+  // Connected once the rows reach the NEWEST loaded row (or there is nothing
+  // newer): the loaded page only ever holds the latest messages and moves
+  // forward as new ones arrive, so a bridge that only touched its oldest row
+  // would leave a hole later. Copies of loaded rows stay hidden (withJumpRows)
+  // until the page moves past them.
+  const newestLoaded = loaded.reduce<string | null>((max, r) => (max === null || r.created_at > max ? r.created_at : max), null);
+  const connected = () => !hasNewerLeft || (newestLoaded !== null && rows[rows.length - 1].created_at >= newestLoaded);
   let hasNewerLeft = hasNewer;
   let pages = 0;
   while (!connected() && pages < maxPages) {

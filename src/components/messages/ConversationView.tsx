@@ -266,6 +266,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [jumpRows, setJumpRows] = useState<{ threadId: string | null; rows: JumpViewRow[] }>({ threadId: null, rows: [] });
   const baseMessages = hybridMessagesFromHook || [];
   const olderJumpPendingRef = useRef(false);
+  // `${thread}|${oldest id}` once paging back from a jump window reached the start.
+  const jumpHistoryEndRef = useRef<string | null>(null);
   const messages = useMemo(
     () => (jumpRows.threadId === threadId && jumpRows.rows.length > 0
       ? (withJumpRows(baseMessages as unknown as JumpViewRow[], jumpRows.rows) as unknown as typeof baseMessages)
@@ -314,8 +316,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       const el = scrollRef.current;
       scrollAnchorRef.current = el ? el.scrollHeight - el.scrollTop : null;
       const forThread = threadId;
+      if (jumpHistoryEndRef.current === `${forThread}|${top.id}`) { scrollAnchorRef.current = null; olderJumpPendingRef.current = false; return; }
       void fetchConversation(forThread, 50, top.created_at)
         .then((rows) => {
+          if (rows.length < 50) jumpHistoryEndRef.current = `${forThread}|${rows.length ? rows.reduce((a, b) => (a.created_at < b.created_at ? a : b)).id : top.id}`;
           if (currentThreadRef.current !== forThread || rows.length === 0) { scrollAnchorRef.current = null; return; }
           const older = rows.map(toViewRowRef.current);
           setJumpRows((prev) => (prev.threadId === forThread ? { threadId: forThread, rows: unionByIdSorted(prev.rows, older) } : prev));
@@ -370,14 +374,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Load the window around a message of this DM and connect it to the loaded
   // rows (forward pages), so the list stays continuous. False = not here.
-  const loadAround = useCallback(async (messageId: string): Promise<boolean> => {
+  const loadAround = useCallback(async (messageId: string): Promise<boolean | null> => {
     if (!threadId || !isDirectThread) return false;
+    const forThread = threadId;
     const win = await fetchConversationAround(threadId, messageId, 40);
+    if (currentThreadRef.current !== forThread) return null; // left meanwhile: no jump, no toast
     if (!win || win.data.length === 0) return false;
     const peer = threadId;
     const windowRows = win.data.map(toViewRow);
     const bridged = await bridgeWindow<JumpViewRow>(windowRows, win.has_newer, messages as unknown as JumpViewRow[], async (after) =>
       (await fetchConversationAfter(peer, after, 100)).map(toViewRow));
+    if (currentThreadRef.current !== forThread) return null;
     setJumpRows((prev) => ({ threadId, rows: unionByIdSorted(prev.threadId === threadId ? prev.rows : [], bridged) }));
     return true;
   }, [threadId, isDirectThread, toViewRow, messages]);
@@ -396,6 +403,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // available in this conversation — deleted, or never part of it).
   const [fetchedParents, setFetchedParents] = useState<Record<string, JumpViewRow | null | undefined>>({});
   const parentsInFlightRef = useRef<Set<string>>(new Set());
+  // Bumped after each batch of quote fetches, so the next batch (> 10) starts.
+  const [parentsRound, setParentsRound] = useState(0);
   const currentThreadRef = useRef<string | null | undefined>(threadId);
   currentThreadRef.current = threadId;
   useEffect(() => {
@@ -415,21 +424,24 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     const stillHere = () => currentThreadRef.current === forThread;
     missing.forEach((id) => parentsInFlightRef.current.add(id));
     (async () => {
+      let resolved = 0;
       for (const id of missing) {
         if (!stillHere()) { parentsInFlightRef.current.delete(id); continue; }
         try {
           const win = await fetchConversationAround(forThread, id, 2);
           const row = win?.data.find((r) => r.id === id);
-          if (stillHere()) setFetchedParents((prev) => ({ ...prev, [id]: row ? toViewRow(row) : null }));
+          if (stillHere()) { resolved += 1; setFetchedParents((prev) => ({ ...prev, [id]: row ? toViewRow(row) : null })); }
         } catch {
-          if (stillHere()) setFetchedParents((prev) => ({ ...prev, [id]: null }));
+          // A network / server error is not "gone" (404 → null above): retried later.
         } finally {
           parentsInFlightRef.current.delete(id);
         }
       }
+      // A full batch may have more behind it; only go on if this one resolved something.
+      if (stillHere() && missing.length === 10 && resolved > 0) setParentsRound((n) => n + 1);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- fetchedParents is read as a guard only
-  }, [messages, isDirectThread, threadId, toViewRow]);
+  }, [messages, isDirectThread, threadId, toViewRow, parentsRound]);
 
   // Track scroll position and trigger top pagination — throttled via rAF, no state updates
   const handleScroll = useCallback(() => {
@@ -1389,6 +1401,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                             }
                             
                             console.log('[Edit] Mutation succeeded for message:', messageId, 'table:', table);
+                            // VTID-05318: a row shown only from a jump window shows the new text too.
+                            const edited = String(updates.body ?? updates.content ?? '');
+                            setJumpRows((prev) => ({ ...prev, rows: prev.rows.map((r) => (r.id === messageId ? { ...r, body: edited, content: edited } as typeof r : r)) }));
                             if (fetchMessages) {
                               console.log('[Edit] Triggering refetch for threadId:', threadId);
                               await fetchMessages(threadId);
@@ -1425,6 +1440,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                               throw error;
                             }
                             console.log('[Delete] Mutation succeeded for message:', messageId, 'table:', table);
+                            // VTID-05318: a row shown only from a jump window goes too.
+                            setJumpRows((prev) => ({ ...prev, rows: prev.rows.filter((r) => r.id !== messageId) }));
                             notify('toasts.messages.messageDeleted');
                             if (fetchMessages) {
                               console.log('[Delete] Triggering refetch for threadId:', threadId);

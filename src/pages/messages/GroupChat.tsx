@@ -486,14 +486,14 @@ export default function GroupChat() {
     enqueueGroupRow(optimistic);
   }, [groupId, userId, enqueueGroupRow, replyingTo]);
 
-  const loadAround = useCallback(async (messageId: string): Promise<boolean> => {
+  const loadAround = useCallback(async (messageId: string): Promise<boolean | null> => {
     if (!groupId) return false;
     const win = await fetchGroupMessagesAround(groupId, messageId, 40);
     if (!win || win.data.length === 0) return false;
     const forGroup = groupId;
     const bridged = await bridgeWindow(win.data as GroupRow[], win.has_newer, messages, (after) => fetchGroupMessagesAfter(forGroup, after, 100) as Promise<GroupRow[]>);
-    // The member may have opened another group meanwhile: never mix them.
-    if (currentGroupRef.current !== forGroup) return false;
+    // The member may have opened another group meanwhile: never mix them, no toast.
+    if (currentGroupRef.current !== forGroup) return null;
     setJumpRows((prev) => unionByIdSorted(prev, bridged));
     return true;
   }, [groupId, messages]);
@@ -552,7 +552,7 @@ export default function GroupChat() {
           const row = win?.data.find((r) => r.id === id) as GroupRow | undefined;
           if (stillHere()) setFetchedParents((prev) => ({ ...prev, [id]: row ?? null }));
         } catch {
-          if (stillHere()) setFetchedParents((prev) => ({ ...prev, [id]: null }));
+          // A network / server error is not "gone" (404 → null above): retried later.
         } finally {
           parentsInFlightRef.current.delete(id);
         }

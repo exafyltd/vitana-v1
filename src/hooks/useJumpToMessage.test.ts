@@ -67,20 +67,24 @@ describe('window merge', () => {
     expect(unionByIdSorted([r('b', 2), r('c', 3)], [r('a', 1), r('b', 2)]).map((x) => x.id)).toEqual(['a', 'b', 'c']);
   });
 
-  it('bridgeWindow fetches forward until the window meets the loaded page', async () => {
+  it('bridgeWindow fetches forward until the window reaches the NEWEST loaded row (no hole when the page later moves on)', async () => {
     const loaded = [r('m50', 50), r('m51', 51)];
     const window = [r('m10', 10), r('m11', 11)];
     const pages: Record<string, Array<{ id: string; created_at: string }>> = {
       [r('x', 11).created_at]: [r('m20', 20), r('m30', 30)],
       [r('x', 30).created_at]: [r('m40', 40), r('m50', 50)],
+      [r('x', 50).created_at]: [r('m51', 51)],
     };
     const fetchAfter = vi.fn(async (after: string) => pages[after] ?? []);
     const rows = await bridgeWindow(window, true, loaded, fetchAfter);
-    expect(rows.map((x) => x.id)).toEqual(['m10', 'm11', 'm20', 'm30', 'm40', 'm50']);
-    expect(fetchAfter).toHaveBeenCalledTimes(2);
+    expect(rows.map((x) => x.id)).toEqual(['m10', 'm11', 'm20', 'm30', 'm40', 'm50', 'm51']);
+    expect(fetchAfter).toHaveBeenCalledTimes(3);
+    // Later the loaded page moves on (m50 dropped): the jump rows still cover it.
+    const { withJumpRows } = await import('./useJumpToMessage');
+    expect(withJumpRows([r('m51', 51), r('m52', 52)], rows).map((x) => x.id)).toEqual(['m10', 'm11', 'm20', 'm30', 'm40', 'm50', 'm51', 'm52']);
   });
 
-  it('bridgeWindow does nothing when the window already reaches the loaded rows', async () => {
+  it('bridgeWindow does nothing when the window already reaches the newest loaded row', async () => {
     const fetchAfter = vi.fn();
     const rows = await bridgeWindow([r('m49', 49), r('m50', 50)], true, [r('m50', 50)], fetchAfter);
     expect(rows).toHaveLength(2);
