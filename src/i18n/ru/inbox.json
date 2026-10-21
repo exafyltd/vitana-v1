@@ -11,35 +11,30 @@
       "direct": "Личные",
       "contacts": "Контакты",
       "notifications": "Уведомления",
-      "archived": "Архивные",
-      "_pending_review": {}
+      "archived": "Архивные"
     },
     "contextTabs": {
       "community": "Сообщество",
-      "network": "Сеть",
-      "_pending_review": {}
+      "network": "Сеть"
     },
     "actions": {
       "new": "Новое",
       "newMessage": "Новое сообщение",
       "createGroup": "Создать группу",
       "markAllRead": "Отметить все как прочитанные",
-      "menu": "Ещё",
-      "_pending_review": {}
+      "menu": "Ещё"
     },
     "composer": {
       "placeholder": "Напиши своё сообщение...",
       "send": "Отправить",
       "attachments": "Вложения",
       "recipients": "Кому:",
-      "add": "Добавить",
-      "_pending_review": {}
+      "add": "Добавить"
     },
     "states": {
       "empty": "Пока нет сообщений",
       "loading": "Загрузка сообщений...",
-      "error": "Не удалось загрузить сообщения",
-      "_pending_review": {}
+      "error": "Не удалось загрузить сообщения"
     },
     "newConversation": {
       "title": "Начать новый разговор",
@@ -59,8 +54,7 @@
       "cancel": "Отмена",
       "startChat": "Начать чат",
       "createGroup": "Создать группу",
-      "creating": "Создание...",
-      "_pending_review": {}
+      "creating": "Создание..."
     },
     "createGroup": {
       "title": "Создать группу",
@@ -77,8 +71,7 @@
       "created": "Группа создана",
       "createdDesc": "\"{name}\" успешно создана.",
       "failed": "Не удалось создать группу",
-      "failedDesc": "Пожалуйста, попробуй еще раз.",
-      "_pending_review": {}
+      "failedDesc": "Пожалуйста, попробуй еще раз."
     },
     "toast": {
       "success": "Успех",
@@ -95,8 +88,7 @@
       "groupCreated": "Группа \"{name}\" успешно создана!",
       "groupFailed": "Не удалось создать группу",
       "allMarkedRead": "Все сообщения помечены как прочитанные",
-      "markAllReadFailed": "Не удалось пометить все как прочитанные. Пожалуйста, попробуй еще раз.",
-      "_pending_review": {}
+      "markAllReadFailed": "Не удалось пометить все как прочитанные. Пожалуйста, попробуй еще раз."
     },
     "createGroupAction": "Создать новую группу",
     "newConversationAction": "Новая беседа",
@@ -114,8 +106,7 @@
       "globalDescription": "Начни разговор или присоединись к сообществу, чтобы общаться с другими.",
       "tenantDescription": "Общайся с коллегами и членами команды в своей профессиональной сети.",
       "startConversation": "Начать разговор",
-      "discoverPeople": "Найти людей",
-      "_pending_review": {}
+      "discoverPeople": "Найти людей"
     },
     "group": {
       "loading": "Загрузка группы…",
@@ -127,11 +118,38 @@
       "officialBadge": "официальная группа",
       "empty": "Пока нет сообщений.",
       "composerPlaceholder": "Сообщение…",
-      "_pending_review": {},
       "today": "Сегодня",
       "yesterday": "Вчера"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "messageStatus": {
+      "_pending_review": {
+        "sending": true,
+        "sent": true,
+        "delivered": true,
+        "read": true,
+        "failed": true,
+        "retry": true,
+        "retryLabel": true
+      },
+      "sending": "Sending",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "read": "Read",
+      "failed": "Not sent",
+      "retry": "Retry",
+      "retryLabel": "Send this message again"
+    },
+    "newMessages": {
+      "_pending_review": {
+        "none": true,
+        "one": true,
+        "other": true,
+        "unread": true
+      },
+      "none": "Jump to latest",
+      "one": "1 new message",
+      "other": "{count} new messages",
+      "unread": "Unread messages"
+    }
+  }
 }
