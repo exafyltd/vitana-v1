@@ -113,6 +113,7 @@ export function VerifyPhoneDialog({ open, onOpenChange }: VerifyPhoneDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: calc against viewport gutter */}
       <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md overflow-x-hidden" data-testid="verify-phone-dialog">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

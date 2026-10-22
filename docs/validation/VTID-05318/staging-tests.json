@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05318",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/hooks/useJumpToMessage.test.ts src/components/messages/ConversationView.reply-jump.vtid-05318.test.tsx src/pages/messages/GroupChat.reply.vtid-05318.test.tsx src/pages/messages src/components/messages",
+      "reason": "jump to a loaded / unloaded / unavailable message, window connected to the loaded page, reply quotes resolve unloaded originals once, unavailable state, group Reply → reply_to_message_id; replying needs a send (a write), proven in CI"
+    }
+  ]
+}

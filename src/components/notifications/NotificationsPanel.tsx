@@ -387,7 +387,7 @@ function NotificationRow({
           transition-colors
         "
       >
-        <X className="h-[18px] w-[18px]" strokeWidth={2.75} />
+        <X className="h-4 w-4" strokeWidth={2.75} />
       </button>
     </div>
   );

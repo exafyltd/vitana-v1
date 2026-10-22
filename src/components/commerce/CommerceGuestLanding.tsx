@@ -79,8 +79,8 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
         <h2 className="text-xl font-bold text-foreground md:text-2xl">{t(`${K}.whyTitle`)}</h2>
         <ul className="mt-6 grid gap-5 sm:grid-cols-3">
           {WHY.map(({ icon: Icon, title, body }) => (
-            <li key={title} className="rounded-2xl border border-amber-200 bg-card p-5 shadow-sm">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
+            <li key={title} className="rounded-2xl border border-primary/20 bg-card p-5 shadow-sm">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-primary">
                 <Icon className="h-5 w-5" />
               </span>
               <h3 className="mt-3 text-base font-bold text-foreground md:text-lg">{t(title)}</h3>
@@ -94,11 +94,11 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
       {mcpReady && (
         <motion.section
           {...fade}
-          className="mt-12 rounded-3xl border border-amber-200 bg-gradient-to-b from-amber-50 to-card p-5 shadow-xl shadow-amber-900/5 md:mt-16 md:p-8"
+          className="mt-12 rounded-3xl border border-primary/20 bg-gradient-to-b from-accent to-card p-5 shadow-xl shadow-primary/5 md:mt-16 md:p-8"
           data-testid="guest-one-step"
         >
           <h2 className="text-xl font-bold text-foreground md:text-2xl">{t(`${K}.oneStepTitle`)}</h2>
-          <p className="mt-2 text-base font-medium text-amber-900">{t(`${K}.oneStepLead`)}</p>
+          <p className="mt-2 text-base font-medium text-primary">{t(`${K}.oneStepLead`)}</p>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">{t(`${K}.oneStepBody`)}</p>
           <p className="mt-2 text-sm text-muted-foreground">
             {t(`${K}.oneStepWorksWith`)}{' '}
@@ -109,18 +109,18 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
 
           <ol className="mt-6 grid gap-3 sm:grid-cols-4" data-testid="guest-flow">
             {FLOW.map(({ icon: Icon, label }, i) => (
-              <li key={label} className="relative flex items-center gap-3 rounded-2xl border border-amber-200 bg-card p-4 sm:flex-col sm:items-start">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-white">
+              <li key={label} className="relative flex items-center gap-3 rounded-2xl border border-primary/20 bg-card p-4 sm:flex-col sm:items-start">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
                   {i + 1}
                 </span>
                 <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                  <Icon className="h-4 w-4 shrink-0 text-amber-700" />
+                  <Icon className="h-4 w-4 shrink-0 text-primary" />
                   {t(label)}
                 </span>
                 {i < FLOW.length - 1 && (
                   <ArrowRight
                     aria-hidden
-                    className="absolute -end-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-amber-400 sm:block rtl:rotate-180"
+                    className="absolute -end-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-primary sm:block rtl:rotate-180"
                   />
                 )}
               </li>
@@ -128,7 +128,7 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
           </ol>
 
           <p className="mt-5 rounded-xl bg-card/80 p-3 text-sm leading-relaxed text-muted-foreground">
-            <ShieldCheck className="me-1.5 inline h-4 w-4 align-text-bottom text-amber-700" />
+            <ShieldCheck className="me-1.5 inline h-4 w-4 align-text-bottom text-primary" />
             {t(`${K}.oneStepControl`)}
           </p>
 
@@ -137,7 +137,7 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
             onClick={() => setWhatIsOpen((v) => !v)}
             aria-expanded={whatIsOpen}
             data-testid="guest-what-is-mcp"
-            className="mt-4 flex min-h-11 items-center gap-1.5 text-start text-sm font-semibold text-amber-800 hover:text-amber-900"
+            className="mt-4 flex min-h-11 items-center gap-1.5 text-start text-sm font-semibold text-primary hover:text-primary/80"
           >
             {t(`${K}.whatIsMcp`)}
             <ChevronDown className={`h-4 w-4 transition-transform ${whatIsOpen ? 'rotate-180' : ''}`} />
@@ -151,7 +151,7 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
           <Button
             size="lg"
             onClick={onJoin}
-            className="mt-6 h-12 w-full rounded-xl bg-amber-700 px-8 text-base font-semibold text-white shadow-sm hover:bg-amber-800 sm:w-auto"
+            className="mt-6 h-12 w-full rounded-xl bg-primary px-8 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 sm:w-auto"
           >
             {t('screens.commerceportal.mcpConnect.cta')}
           </Button>
@@ -160,7 +160,7 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
               asChild
               size="lg"
               variant="outline"
-              className="mt-3 h-12 w-full rounded-xl border-amber-300 px-8 text-base font-semibold text-amber-900 hover:bg-amber-50 sm:ms-3 sm:mt-6 sm:w-auto"
+              className="mt-3 h-12 w-full rounded-xl border-primary/30 px-8 text-base font-semibold text-primary hover:bg-accent sm:ms-3 sm:mt-6 sm:w-auto"
             >
               <a href={chatgptUrl} target="_blank" rel="noopener noreferrer" data-testid="guest-connect-chatgpt">
                 {t('screens.commerceportal.mcpConnect.chatgptCta')}
@@ -176,15 +176,15 @@ export function CommerceGuestLanding({ mcpReady, onJoin, steps }: CommerceGuestL
       {/* CLOSING */}
       <motion.section
         {...fade}
-        className="mt-12 rounded-3xl bg-amber-700 px-6 py-10 text-center text-white md:mt-16 md:px-10"
+        className="mt-12 rounded-3xl bg-primary px-6 py-10 text-center text-primary-foreground md:mt-16 md:px-10"
         data-testid="guest-closing"
       >
         <h2 className="mx-auto max-w-2xl text-2xl font-bold leading-tight md:text-3xl">{t(`${K}.closingTitle`)}</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-amber-50 md:text-base">{t(`${K}.closingBody`)}</p>
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-primary-foreground md:text-base">{t(`${K}.closingBody`)}</p>
         <Button
           size="lg"
           onClick={onJoin}
-          className="mt-6 h-12 w-full rounded-xl bg-white px-8 text-base font-semibold text-amber-800 hover:bg-amber-50 sm:w-auto"
+          className="mt-6 h-12 w-full rounded-xl bg-card px-8 text-base font-semibold text-primary hover:bg-accent sm:w-auto"
         >
           {t(guestCtaKey(mcpReady))}
         </Button>

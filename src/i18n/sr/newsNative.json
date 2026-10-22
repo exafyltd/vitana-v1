@@ -1,0 +1,14 @@
+{
+  "newsNative": {
+    "article": {
+      "unavailableTitle": "Članak nije dostupan",
+      "unavailableBody": "Ovaj članak ne može da se otvori ovde. Vrati se na fid da ga ponovo otvoriš.",
+      "backToFeed": "Nazad na fid"
+    },
+    "post": {
+      "video": "Video",
+      "likes": "Sviđanja: {count}",
+      "comments": "Komentari: {count}"
+    }
+  }
+}

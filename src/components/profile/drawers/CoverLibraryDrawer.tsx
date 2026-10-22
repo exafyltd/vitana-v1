@@ -369,6 +369,7 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <ResponsiveDialogContent className="max-w-2xl md:max-h-[90vh] overflow-y-auto">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>
@@ -528,6 +529,7 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
                       alt={label}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
+                    {/* design-allow-next-line: on-media scrim, theme-independent */}
                     <div className="absolute inset-x-0 bottom-0 px-2 py-1 bg-black/50 text-white text-[11px] truncate">
                       {label}
                     </div>
@@ -538,6 +540,7 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
                       )}
                       onClick={() => onLibraryRemove(row)}
                       disabled={libraryDeleting === row.id}
+                      // design-allow-next-line: on-media scrim, theme-independent
                       className="absolute top-1 end-1 p-1 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
                     >
                       {libraryDeleting === row.id ? (

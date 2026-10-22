@@ -102,6 +102,7 @@ export function PartnerLabsConsentDialog({ open, onOpenChange, onConnectedChange
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: no scale value within 2px of 480px */}
       <ResponsiveDialogContent className="sm:max-w-[480px]">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t("screens.settings.partnerLabsConnectTitle")}</ResponsiveDialogTitle>

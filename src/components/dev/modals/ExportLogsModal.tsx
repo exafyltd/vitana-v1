@@ -43,6 +43,7 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: no scale value within 2px of 600px */}
       <DialogContent className="sm:max-w-[600px] rounded-2xl p-6">
         <DialogHeader>
           <DialogTitle>{t('screens.dev.exportCommandHistory')}</DialogTitle>

@@ -118,12 +118,12 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
 
       {/* Professional Info */}
       {profile.compliance?.isProfessional && (
-        <Card className="bg-blue-50/50 border-blue-200/50">
+        <Card className="bg-category-3/5 border-category-3/15">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Star className="h-5 w-5 text-blue-600" />
+                <div className="w-10 h-10 bg-category-3/15 rounded-full flex items-center justify-center">
+                  <Star className="h-5 w-5 text-category-3" />
                 </div>
                 <div>
                   <h3 className="font-semibold">{t('screens.profile.verifiedProfessional')}</h3>

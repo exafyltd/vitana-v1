@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05284",
+  "kind": "infra",
+  "paths": [
+    ".github/workflows/i18n-audit-llm.yml",
+    "CLAUDE.md",
+    "scripts/i18n-audit-llm.mjs"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

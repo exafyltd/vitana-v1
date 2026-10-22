@@ -45,12 +45,12 @@ export default function DiscountCodeInput({ onApply, appliedCode, onClear }: Dis
 
   if (applied) {
     return (
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 dark:bg-green-950/30 dark:border-green-800">
-        <Check className="h-4 w-4 text-green-600 shrink-0" />
-        <span className="text-sm text-green-700 dark:text-green-400 font-medium flex-1">
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-status-success-subtle border border-status-success/30">
+        <Check className="h-4 w-4 text-status-success shrink-0" />
+        <span className="text-sm text-status-success font-medium flex-1">
           {translate('discount.applied')} <code className="font-mono">{code}</code>
         </span>
-        <button onClick={handleClear} className="text-green-600 hover:text-green-800">
+        <button onClick={handleClear} className="text-status-success hover:text-status-success/80">
           <X className="h-4 w-4" />
         </button>
       </div>

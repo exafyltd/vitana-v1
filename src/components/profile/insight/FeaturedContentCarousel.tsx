@@ -71,7 +71,7 @@ export function FeaturedContentCarousel({ content, className }: FeaturedContentC
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between text-lg">
           <div className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-[hsl(var(--pill-nutrition-accent))]" />
+            <TrendingUp className="h-5 w-5 text-pill-nutrition-accent" />
             {t('screens.profile.featuredContent')}
           </div>
           {displayContent.length > 1 && (
@@ -105,7 +105,9 @@ export function FeaturedContentCarousel({ content, className }: FeaturedContentC
                 alt={currentItem.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <Badge className="absolute top-3 end-3 bg-black/50 text-white border-0 backdrop-blur-sm">
                 {t('screens.profile.video')}
               </Badge>
@@ -159,7 +161,7 @@ export function FeaturedContentCarousel({ content, className }: FeaturedContentC
                 onClick={() => setCurrentIndex(index)}
                 className={`h-1.5 rounded-full transition-all ${
                   index === currentIndex 
-                    ? 'w-6 bg-[hsl(var(--pill-nutrition-accent))]' 
+                    ? 'w-6 bg-pill-nutrition-accent' 
                     : 'w-1.5 bg-muted'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}

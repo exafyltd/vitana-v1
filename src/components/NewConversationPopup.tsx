@@ -399,6 +399,7 @@ export default function NewConversationPopup({
 
   return (
     <Dialog open={open} onOpenChange={resetForm}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="sm:max-w-md max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
