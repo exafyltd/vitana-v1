@@ -60,6 +60,7 @@ import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandle
 import { t, useI18nLocale } from '@/lib/i18n-toast';
 import { describeGroupNotice } from '@/lib/messaging/groupSystemNotice';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { parseChatMarkdown, type MdInline } from '@/lib/chatMarkdown';
 
 import { formatDate } from '@/lib/locale-format';
 import { CalendarInviteCard } from '@/components/messages/CalendarInviteCard';
@@ -703,9 +704,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     finalizeLongPressGesture();
   }, [finalizeLongPressGesture]);
 
-  const renderLinkedText = useCallback((text?: string, className?: string, trailingInline?: React.ReactNode) => {
-    if (!text) return null;
+  // VTID-05193: only the Vitana bot's own replies are parsed as Markdown;
+  // members' messages render exactly as before (literal `**`).
+  const isFromVitana = isVitanaBot(message.sender_id || message.sender?.user_id);
 
+  // VTID-05193: the URL + @mention loop, shared by the plain renderer and the
+  // Vitana Markdown renderer so links and mentions behave identically in both.
+  const linkifyInline = useCallback((text: string, keyPrefix: string): React.ReactNode[] => {
     const urlRegex = /https?:\/\/[^\s<]+/gi;
     const trailingPunctuation = '.,!?;:)]}';
     const nodes: React.ReactNode[] = [];
@@ -726,7 +731,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         } else {
           nodes.push(
             <Link
-              key={`mention-${seg.mention.user_id}-${offset}-${nodes.length}`}
+              key={`${keyPrefix}mention-${seg.mention.user_id}-${offset}-${nodes.length}`}
               to={`/u/${seg.mention.user_id}`}
               data-testid="message-mention"
               className={cn(
@@ -768,7 +773,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       if (cleanUrl && inAppPath) {
         nodes.push(
           <a
-            key={`${cleanUrl}-${start}`}
+            key={`${keyPrefix}${cleanUrl}-${start}`}
             href={cleanUrl}
             data-in-app-link="event"
             className={cn(
@@ -787,7 +792,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       } else if (cleanUrl) {
         nodes.push(
           <a
-            key={`${cleanUrl}-${start}`}
+            key={`${keyPrefix}${cleanUrl}-${start}`}
             href={cleanUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -813,6 +818,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       pushPlain(text.slice(lastIndex), lastIndex);
     }
 
+    return nodes;
+  }, [isOwnMessage, navigate, messageMentions]);
+
+  const renderLinkedText = useCallback((text?: string, className?: string, trailingInline?: React.ReactNode) => {
+    if (!text) return null;
+
+    const nodes = linkifyInline(text, '');
+
     if (trailingInline) {
       nodes.push(trailingInline);
     }
@@ -822,7 +835,80 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         {nodes.length > 0 ? nodes : text}
       </p>
     );
-  }, [isOwnMessage, navigate, messageMentions]);
+  }, [linkifyInline]);
+
+  // VTID-05193: Vitana's replies are written in Markdown by the gateway text
+  // brain. Render the safe subset from `chatMarkdown` as React nodes (never
+  // HTML); every plain-text leaf goes through the same linkify + @mention path.
+  // A `<div>` wrapper, not `<p>`, so lists are valid HTML.
+  const renderBotMarkdown = useCallback((text?: string, className?: string, trailingInline?: React.ReactNode) => {
+    if (!text) return null;
+    const blocks = parseChatMarkdown(text);
+    if (blocks.length === 0) return renderLinkedText(text, className, trailingInline);
+
+    const renderInline = (inlines: MdInline[], keyPrefix: string): React.ReactNode[] =>
+      inlines.flatMap((node, index): React.ReactNode[] => {
+        const key = `${keyPrefix}${index}`;
+        switch (node.type) {
+          case 'text':
+            return linkifyInline(node.text, `${key}-`);
+          case 'strong':
+            return [<strong key={key} className="font-semibold">{renderInline(node.children, `${key}-`)}</strong>];
+          case 'em':
+            return [<em key={key}>{renderInline(node.children, `${key}-`)}</em>];
+          case 'code':
+            return [
+              <code key={key} className="rounded bg-muted px-1 font-mono text-xs">
+                {node.text}
+              </code>,
+            ];
+          default:
+            return [];
+        }
+      });
+
+    const lastIndex = blocks.length - 1;
+    const withTrailing = (nodes: React.ReactNode[], isLast: boolean) =>
+      isLast && trailingInline
+        ? [...nodes, <React.Fragment key="md-trailing">{trailingInline}</React.Fragment>]
+        : nodes;
+
+    return (
+      <div className={cn("whitespace-pre-wrap break-words space-y-1", className)} data-testid="vitana-markdown">
+        {blocks.map((block, blockIndex) => {
+          const key = `md-${blockIndex}`;
+          const isLast = blockIndex === lastIndex;
+          if (block.type === 'paragraph') {
+            return <p key={key}>{withTrailing(renderInline(block.children, `${key}-`), isLast)}</p>;
+          }
+          if (block.type === 'heading') {
+            return (
+              <p key={key} className="font-semibold">
+                {withTrailing(renderInline(block.children, `${key}-`), isLast)}
+              </p>
+            );
+          }
+          const items = block.items.map((item, itemIndex) => (
+            <li key={`${key}-${itemIndex}`}>
+              {withTrailing(
+                renderInline(item, `${key}-${itemIndex}-`),
+                isLast && itemIndex === block.items.length - 1,
+              )}
+            </li>
+          ));
+          return block.ordered ? (
+            <ol key={key} start={block.start} className="list-decimal ps-5 space-y-0.5">
+              {items}
+            </ol>
+          ) : (
+            <ul key={key} className="list-disc ps-5 space-y-0.5">
+              {items}
+            </ul>
+          );
+        })}
+      </div>
+    );
+  }, [linkifyInline, renderLinkedText]);
 
   const renderAttachment = (attachment: any, key: string) => {
     // Mime can be empty on Android pickers; fall back to filename extension
@@ -1057,7 +1143,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'template':
         return (
           <div className="space-y-2">
-            {renderLinkedText(message.body)}
+            {isFromVitana ? renderBotMarkdown(message.body) : renderLinkedText(message.body)}
             {message.content_data?.quick_replies && (
               <div className="flex flex-wrap gap-1">
                 {message.content_data.quick_replies.map((reply: string, index: number) => (
@@ -1148,7 +1234,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         // explicit controls beneath the text.
         return (
           <>
-            {renderLinkedText(optimisticContent ?? message.body, undefined, textTimestampSpacer)}
+            {(isFromVitana ? renderBotMarkdown : renderLinkedText)(
+              optimisticContent ?? message.body,
+              undefined,
+              textTimestampSpacer,
+            )}
             <VitanaMessageActions contentData={message.content_data} />
           </>
         );
