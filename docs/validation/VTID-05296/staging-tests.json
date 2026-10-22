@@ -3,14 +3,14 @@
   "service": "community-app",
   "notes": "The native Maxina app (apps/mobile) has no staging/production web host and no production profile (collaboration §7a). Parity for this lane is proven by the fixture / fake-gateway Jest suites below, each rendering the ported screens in their loaded / empty / error states with no network. The suites and the exact states they cover are listed per-file so this file does not overstate coverage. Device-runtime parity (plan §8) is deferred to the G1 owner gate and is NOT a merge blocker.",
   "tests": [
-    { "kind": "existing", "ref": "npm --prefix apps/mobile run typecheck", "cwd": ".",
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
       "reason": "the ported screens, data hooks and routes type-check under React 19 (ReactElement, not global JSX)" },
     { "kind": "existing", "ref": "npx jest tests/community --config apps/mobile/jest.config.js", "cwd": "apps/mobile",
       "reason": "8 suites / 49 tests — see suites[] below for the exact states each proves" },
-    { "kind": "existing", "ref": "node scripts/native/parity-ledger.mjs --check", "cwd": ".",
-      "reason": "the 16 community-hub ledger rows are native and each has a concrete native route file under apps/mobile/app (check reports 435 rows, 20 native routes)" },
-    { "kind": "existing", "ref": "npm --prefix apps/mobile run bundle (APP_PROFILE=development)", "cwd": ".",
-      "reason": "the development bundle exports for iOS and Android, proving the routes and screens bundle in the native app" }
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 16 community-hub ledger rows are native and each has a concrete native route file under apps/mobile/app (check reports 435 rows, 20 native routes) — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile",
+      "reason": "the development bundle exports for iOS and Android, proving the routes and screens bundle in the native app (run with APP_PROFILE=development)" }
   ],
   "suites": [
     { "file": "tests/community/groups.test.tsx",
