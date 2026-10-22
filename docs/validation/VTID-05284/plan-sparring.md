@@ -18,4 +18,4 @@ CI record: `.kiro/specs/i18n-audit-nightly-off/sparring/` (`round-1.md`, `respon
   2026-10-19 "ok, execute" (on the recommendation to stop the nightly audit and update the `CLAUDE.md` audit
   command); 2026-10-21 "now you can run fully end to end without stopping" and "yes, execute your recommendation";
   2026-10-21 the owner's authorization of the §7b merges of exafyltd/vitana-platform#4250 and exafyltd/vitana-v1#1470.
-  The `CLAUDE.md` change is the one-line audit command (`--provider=deepseek`) and nothing else.
+  The `CLAUDE.md` change is the audit command (`-f provider=deepseek`) plus a three-line note (on demand only, why DeepSeek, weaker cross-check) and nothing else.
