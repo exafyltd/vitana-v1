@@ -8,9 +8,9 @@
  * (documented in the FEAT findings); this card is presentational and opens the
  * post on press. React 19: typed with `ReactElement`.
  */
-import type { ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { Avatar, Icon, Text, useUITheme } from '../../../ports/ui';
+import { Avatar, BottomSheet, Button, Icon, Text, useUITheme } from '../../../ports/ui';
 import { radius } from '../../../ports/tokens';
 import { motivationKeyFor, type PostFeedItem } from '../../../ports/feed';
 import { useI18n } from '../../../i18n/I18nProvider';
@@ -20,12 +20,38 @@ function initialOf(name: string): string {
   return (name || '•').trim().charAt(0).toUpperCase();
 }
 
-export function CommunityPostCard({ item, onPress }: { item: PostFeedItem; onPress: () => void }): ReactElement {
+/**
+ * `autoOpenComments` mirrors the web `CommunityPostCard`'s prop (VTID-03744):
+ * the `/home/comments` deep link flips it true on the first commentable post so
+ * the comments sheet opens on arrival, and a later re-render with the prop still
+ * true must NOT re-force a sheet the member closed — so we open only on the
+ * false→true edge (tracked by a ref), never on every true render. The native
+ * comments data layer (reading/writing comments) is a later home FEAT (the web
+ * card's full comment thread + reply + like); this sheet opens to the post's
+ * comment count and hands off to the full post view, so the deep link lands
+ * somewhere real today without a comments backend the lane has not built.
+ */
+export function CommunityPostCard({
+  item,
+  onPress,
+  autoOpenComments,
+}: {
+  item: PostFeedItem;
+  onPress: () => void;
+  autoOpenComments?: boolean;
+}): ReactElement {
   const { colors } = useUITheme();
   const { t, locale } = useI18n();
   const media = item.image_url || item.video_url || null;
   const motivation = t(motivationKeyFor(item));
   const timestamp = formatTimeAgo(item.published_at, locale);
+
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const wasAutoOpen = useRef(false);
+  useEffect(() => {
+    if (autoOpenComments && !wasAutoOpen.current) setCommentsOpen(true);
+    wasAutoOpen.current = !!autoOpenComments;
+  }, [autoOpenComments]);
 
   return (
     <Pressable
@@ -98,13 +124,33 @@ export function CommunityPostCard({ item, onPress }: { item: PostFeedItem; onPre
             {t('newsNative.post.likes', { count: item.likes_count })}
           </Text>
         </View>
-        <View style={styles.stat}>
+        <Pressable
+          style={styles.stat}
+          onPress={() => setCommentsOpen(true)}
+          accessibilityRole="button"
+          accessibilityLabel={t('homeNative.comments.open')}
+          testID={`feed-post-${item.id}-comments`}
+        >
           <Icon name="MessageSquare" size={16} color={colors.mutedForeground} />
           <Text variant="caption" muted>
             {t('newsNative.post.comments', { count: item.comments_count })}
           </Text>
-        </View>
+        </Pressable>
       </View>
+
+      <BottomSheet
+        open={commentsOpen}
+        onClose={() => setCommentsOpen(false)}
+        title={t('homeNative.comments.title')}
+        testID={`feed-post-${item.id}-comments-sheet`}
+      >
+        <Text variant="body" muted>
+          {t('newsNative.post.comments', { count: item.comments_count })}
+        </Text>
+        <Button size="sm" onPress={onPress} testID={`feed-post-${item.id}-comments-open-post`}>
+          {t('homeNative.comments.openPost')}
+        </Button>
+      </BottomSheet>
     </Pressable>
   );
 }

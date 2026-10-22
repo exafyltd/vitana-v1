@@ -19,7 +19,7 @@
  *    phase (`src/config/feed.ts` default `'global'`); the web reads a Vite env
  *    switch (`VITE_FEED_MODE`) the native app has no equivalent for yet.
  */
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getSupabase } from '../../../auth/client';
 import { gatewayGet } from '../../../auth/gateway';
 import { useAuth } from '../../../auth/AuthProvider';
@@ -653,4 +653,61 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       newsQuery.refetch();
     },
   };
+}
+
+// ─── Create post (Supabase) ──────────────────────────────────────────────────
+
+/** Fields the native create-post sheet can submit (text-first; media upload is a later FEAT). */
+export interface CreatePostInput {
+  content: string;
+  backgroundStyle?: string | null;
+  mentions?: PostMention[];
+}
+
+/**
+ * Native twin of web `useProfilePosts().createPost` (`src/hooks/useProfilePosts.ts`,
+ * class B: it imports `@/integrations/supabase/client`). Same bare insert with a
+ * client-generated id doubling as an idempotency key, and the same reconcile: a
+ * transport error after the server committed is checked against the row before
+ * being treated as a failure (so a dropped response is not a false error, and a
+ * naive retry cannot duplicate the post). Media upload (storage) and the
+ * event-game fields are a later FEAT; this sheet is text + background only.
+ */
+export function useCreatePost() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ content, backgroundStyle, mentions }: CreatePostInput) => {
+      if (!user?.id) throw new Error('Not authenticated');
+      const supabase = getSupabase();
+      const id =
+        globalThis.crypto?.randomUUID?.() ??
+        `${Date.now().toString(16)}-${Math.random().toString(16).slice(2, 10)}`;
+      const { error } = await supabase.from('profile_posts' as never).insert({
+        id,
+        user_id: user.id,
+        content,
+        image_url: null,
+        video_url: null,
+        // Coloured backgrounds only apply to text-only posts (web parity).
+        background_style: backgroundStyle ?? null,
+        mentions: mentions ?? [],
+      } as never);
+      if (error) {
+        const { data: existing } = await supabase
+          .from('profile_posts' as never)
+          .select('id')
+          .eq('id', id)
+          .maybeSingle();
+        if (!existing) throw error;
+        // Row landed despite the transport error — treat as success (web parity).
+      }
+      return { id };
+    },
+    onSuccess: () => {
+      // Launch-phase feed shows the author's own posts, so refresh it at once.
+      void queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
+      void queryClient.invalidateQueries({ queryKey: ['profile-posts', user?.id] });
+    },
+  });
 }

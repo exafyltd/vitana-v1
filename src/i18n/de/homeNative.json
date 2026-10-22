@@ -18,6 +18,15 @@
     "performer": {
       "badge": "Spotlight der Community",
       "improvement": "+{value} beim Vitana Index"
+    },
+    "compose": {
+      "cancel": "Abbrechen",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "Kommentare",
+      "open": "Kommentare öffnen",
+      "openPost": "Beitrag öffnen"
     }
   }
 }

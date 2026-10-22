@@ -24,7 +24,7 @@
  *    is the feed.
  * React 19: typed with `ReactElement`.
  */
-import { useMemo, type ReactElement } from 'react';
+import { useEffect, useMemo, useState, type ReactElement } from 'react';
 import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button, DelayedLoader, Text, useUITheme } from '../../ports/ui';
@@ -48,6 +48,7 @@ import { useAllNewsFeed, useCommunityNews } from './data/feed';
 import { useEnrichmentCards, type EnrichmentCard as EnrichmentCardData } from './data/enrichment';
 import type { NewsArticle } from './types';
 import { FeedItemErrorBoundary } from './FeedItemErrorBoundary';
+import { MobileCreatePostSheet } from './MobileCreatePostSheet';
 import { ArticleCard } from './cards/ArticleCard';
 import { CommunityPostCard } from './cards/CommunityPostCard';
 import { NewMemberCard } from './cards/NewMemberCard';
@@ -55,6 +56,29 @@ import { EnrichmentCard } from './cards/EnrichmentCard';
 import { FeatureAnnouncementCard, PerformerCard } from './cards/ServerCard';
 
 export type HomeTab = 'all' | 'community';
+
+/**
+ * The deep-link routes (`/home/compose`, `/home/comments`, `/home/notif`) are
+ * thin route files that render HomeScreen with one of these flags set, mirroring
+ * the web `src/pages/Home.tsx` path-based deep links (Appilix's Android WebView
+ * drops query-string deep links on a push tap, so each has a path twin). See the
+ * per-prop comments below for the web behaviour each one mirrors.
+ */
+export interface HomeScreenProps {
+  /** `/home/compose` — open the create-post sheet on mount (web `location.pathname === '/home/compose'`). */
+  openComposeOnMount?: boolean;
+  /** `/home/comments` — auto-open the first commentable post's comments on mount (web `commentsDeepLinkActive`). */
+  openCommentsOnMount?: boolean;
+  /**
+   * `/home/notif` — the feature-announcement push tap target. On the web this
+   * route is deliberately kept out of the ORB front-door's landing-route set so
+   * the overlay does not cover the card the notification is about
+   * (`src/App.tsx` /home/notif). The native app has no ORB front-door overlay
+   * yet (a later ORB wave), so there is nothing to suppress today; the flag is
+   * threaded through so the behaviour is wired the moment that overlay lands.
+   */
+  suppressFrontDoor?: boolean;
+}
 
 /** One rendered row of the feed list. */
 type FeedRow =
@@ -76,11 +100,36 @@ function articleToFeedItem(article: NewsArticle): ArticleFeedItem {
   };
 }
 
-export function HomeScreen(): ReactElement {
+export function HomeScreen({ openComposeOnMount, openCommentsOnMount, suppressFrontDoor: _suppressFrontDoor }: HomeScreenProps = {}): ReactElement {
   const { colors } = useUITheme();
-  const { t, locale } = useI18n();
-  const params = useLocalSearchParams<{ tab?: string }>();
+  const { t } = useI18n();
+  const params = useLocalSearchParams<{ tab?: string; compose?: string }>();
   const activeTab: HomeTab = params.tab === 'community' ? 'community' : 'all';
+
+  // Create-post sheet. Opened by the `/home/compose` route (openComposeOnMount)
+  // OR by `/home?compose=1` (the Brand-New-Feature card's CTA / a push payload
+  // that keeps its query string). The web strips the param right after opening
+  // so back/refresh does not reopen it (src/pages/Home.tsx); the native twin
+  // clears it with router.setParams.
+  const [composeOpen, setComposeOpen] = useState(!!openComposeOnMount);
+  useEffect(() => {
+    if (params.compose === '1') {
+      setComposeOpen(true);
+      router.setParams({ compose: undefined });
+    }
+  }, [params.compose]);
+  const closeCompose = () => setComposeOpen(false);
+
+  // Comments deep link (`/home/comments`). A transient flag that auto-opens the
+  // first commentable post's comments on mount and clears shortly after, so a
+  // later re-render cannot re-force a sheet the member closed (web
+  // `commentsDeepLinkActive`, src/pages/Home.tsx).
+  const [commentsDeepLinkActive, setCommentsDeepLinkActive] = useState(!!openCommentsOnMount);
+  useEffect(() => {
+    if (!commentsDeepLinkActive) return undefined;
+    const id = setTimeout(() => setCommentsDeepLinkActive(false), 500);
+    return () => clearTimeout(id);
+  }, [commentsDeepLinkActive]);
 
   const allFeed = useAllNewsFeed({ enabled: activeTab === 'all' });
   const community = useCommunityNews({ enabled: activeTab === 'community' });
@@ -127,6 +176,12 @@ export function HomeScreen(): ReactElement {
   const rows = activeTab === 'all' ? allRows : communityRows;
   const isLoading = activeTab === 'all' ? allFeed.isLoading : community.isLoading;
   const isError = activeTab === 'all' ? allFeed.isError : community.isError;
+
+  // Only `post`-kind items render the comments sheet (the web gates the deep
+  // link to the first `post`, not article/feature/performer/new_member).
+  const firstCommentableId = commentsDeepLinkActive
+    ? rows.find((row) => row.type === 'item' && row.item.kind === 'post')?.key
+    : undefined;
 
   const onRefresh = () => {
     if (activeTab === 'all') allFeed.refetch();
@@ -193,7 +248,13 @@ export function HomeScreen(): ReactElement {
       case 'article':
         return <ArticleCard item={item} onPress={() => openArticleItem(item)} />;
       case 'post':
-        return <CommunityPostCard item={item as PostFeedItem} onPress={() => navigateToWebPath(`/post/${item.source}/${item.post_id}`)} />;
+        return (
+          <CommunityPostCard
+            item={item as PostFeedItem}
+            autoOpenComments={item.id === firstCommentableId}
+            onPress={() => navigateToWebPath(`/post/${item.source}/${item.post_id}`)}
+          />
+        );
       case 'new_member':
         return <NewMemberCard item={item as NewMemberFeedItem} />;
       case 'feature_announcement':
@@ -221,6 +282,7 @@ export function HomeScreen(): ReactElement {
       <View style={[styles.root, { backgroundColor: colors.background }]} testID="screen-home">
         {header}
         <DelayedLoader accessibilityLabel={t('screens.home.loadingNews')} />
+        <MobileCreatePostSheet open={composeOpen} onClose={closeCompose} />
       </View>
     );
   }
@@ -267,6 +329,7 @@ export function HomeScreen(): ReactElement {
           ) : null
         }
       />
+      <MobileCreatePostSheet open={composeOpen} onClose={closeCompose} />
     </View>
   );
 }

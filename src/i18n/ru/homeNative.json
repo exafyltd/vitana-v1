@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "Новости",
+    "selectFeed": "Выбрать ленту",
+    "newMember": {
+      "badge": "Новичок в сообществе",
+      "fallbackName": "Новый участник"
+    },
+    "card": {
+      "dismiss": "Скрыть карточку",
+      "open": "Открыть"
+    },
+    "feature": {
+      "brandNew": "Новая функция",
+      "didYouKnow": "Знаете ли вы?",
+      "tryIt": "Попробовать сейчас"
+    },
+    "performer": {
+      "badge": "В центре внимания сообщества",
+      "improvement": "+{value} в Vitana Index"
+    },
+    "compose": {
+      "cancel": "Отмена",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "Комментарии",
+      "open": "Открыть комментарии",
+      "openPost": "Открыть публикацию"
+    }
+  }
+}

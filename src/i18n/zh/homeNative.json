@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "资讯",
+    "selectFeed": "选择信息流",
+    "newMember": {
+      "badge": "社区新成员",
+      "fallbackName": "新成员"
+    },
+    "card": {
+      "dismiss": "忽略此卡片",
+      "open": "打开"
+    },
+    "feature": {
+      "brandNew": "全新功能",
+      "didYouKnow": "你知道吗？",
+      "tryIt": "立即体验"
+    },
+    "performer": {
+      "badge": "社区亮点",
+      "improvement": "Vitana Index +{value}"
+    },
+    "compose": {
+      "cancel": "取消",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "评论",
+      "open": "打开评论",
+      "openPost": "打开帖子"
+    }
+  }
+}
