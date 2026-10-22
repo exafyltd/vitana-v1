@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05091",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "GET /api/v1/partner-onboarding/<nil uuid>/dpa answers 401 JSON anonymously and 403/404 JSON (never 5xx) for the signed-in test user; Commerce setup hub with a demo lab business served in the browser (page.route): the DPA row reads 'being prepared' (data-state=todo, data-dpa=pending_legal, nothing to click) while no version is published, and with a placeholder version the sheet opens with the declaration unticked and Sign disabled until name, role and tick are there, on phone and desktop without overflow — Sign never clicked, the sign endpoint aborted",
+      "spec": "tests/e2e/staging/vtid-05091-partner-dpa.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "parse/sign helpers, the exact sign body (version, German hash, shown locale, trimmed name and role, declaration_confirmed), Sign disabled until name+role+tick, language switch keeps the tick and never signs, German binding notice and fallback, Arabic rtl, catalogue fallback declaration, each refusal code (DPA_SIGNATURE_REQUIRES_SUPPLIER, DPA_NOT_PUBLISHED, INVALID_SHOWN_LOCALE, INVALID_SIGNATURE, ORG_NOT_FOUND, NOT_ORG_ADMIN, DPA_NOT_REQUIRED, DPA_COMPANY_INCOMPLETE, ACCOUNT_EMAIL_REQUIRED) with its own message, 409 DPA_VERSION_MISMATCH/DPA_CONTENT_MISMATCH reload the text and clear the tick, signed and re-sign states in the sheet and the hub row, the row only when the checklist requires a DPA, RTL class scan, copy in all 11 locales",
+      "ref": "npx vitest run src/lib/commerce-dpa.vtid-05091.test.ts src/components/commerce/PartnerDpaSheet.vtid-05091.test.tsx src/components/commerce/SetupHub.vtid-05091.test.tsx",
+      "cwd": ".",
+      "reason": "Staging is read-only against the production Supabase project, no DPA version is published there (legal publishes it later through the admin API) and the VTID-05090 migration is applied only after Gate 2, so staging can only observe the guarded read path and the unpublished state. Signing is a write; these Vitests render the real sheet and hub with a mocked gateway and prove every write path and refusal code."
+    }
+  ]
+}
