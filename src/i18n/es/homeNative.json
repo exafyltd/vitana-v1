@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "Novedades",
+    "selectFeed": "Elegir feed",
+    "newMember": {
+      "badge": "Nuevo en la comunidad",
+      "fallbackName": "Nuevo miembro"
+    },
+    "card": {
+      "dismiss": "Descartar tarjeta",
+      "open": "Abrir"
+    },
+    "feature": {
+      "brandNew": "Función nueva",
+      "didYouKnow": "¿Sabías que?",
+      "tryIt": "Pruébalo ahora"
+    },
+    "performer": {
+      "badge": "Destacado de la comunidad",
+      "improvement": "+{value} en el Vitana Index"
+    },
+    "compose": {
+      "cancel": "Cancelar",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "Comentarios",
+      "open": "Abrir comentarios",
+      "openPost": "Abrir publicación"
+    }
+  }
+}

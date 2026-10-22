@@ -118,7 +118,7 @@ function LinesEditor({ field, value, onChange, invalid }: { field: DraftField; v
       </div>
       <div className="flex items-center justify-between gap-2">
         {field.canAddRows ? <Button type="button" variant="outline" size="sm" onClick={add} data-testid={`draft-add-line-${field.key}`}><Plus className="h-4 w-4 me-1" aria-hidden="true" />{t("screens.backoffice.draft.addLine")}</Button> : <span />}
-        {totals && (totals.debit > 0 || totals.credit > 0) && <span className={`text-xs ${totals.balanced ? "text-emerald-700" : "text-destructive"}`} role="status">{totals.balanced ? t("screens.backoffice.accounting.common.balanced") : t("screens.backoffice.draft.differenceIs", { amount: formatMoney(Math.abs(totals.debit - totals.credit)) })}</span>}
+        {totals && (totals.debit > 0 || totals.credit > 0) && <span className={`text-xs ${totals.balanced ? "text-status-success" : "text-destructive"}`} role="status">{totals.balanced ? t("screens.backoffice.accounting.common.balanced") : t("screens.backoffice.draft.differenceIs", { amount: formatMoney(Math.abs(totals.debit - totals.credit)) })}</span>}
       </div>
     </div>
   );
@@ -286,7 +286,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
           )}
           {(draft.phase === "review" || draft.phase === "submitting") && <ReviewCard spec={spec} payload={payload} idempotencyKey={draft.key} values={values} />}
           {draft.phase === "review" && tier !== "draft" && (
-            <div className={`mt-3 flex items-start gap-3 rounded-md border px-3 py-3 ${tier === "high" ? "border-destructive/30 bg-destructive/5" : "border-amber-500/30 bg-amber-500/5"}`} data-testid="draft-confirm-box">
+            <div className={`mt-3 flex items-start gap-3 rounded-md border px-3 py-3 ${tier === "high" ? "border-destructive/30 bg-destructive/5" : "border-status-warning/30 bg-status-warning/5"}`} data-testid="draft-confirm-box">
               <Checkbox id={`draft-confirm-${spec.id}`} checked={confirmed} onCheckedChange={(v) => setConfirmed(v === true)} aria-describedby={`draft-confirm-${spec.id}-hint`} data-testid="draft-confirm" />
               <div className="space-y-1">
                 <Label htmlFor={`draft-confirm-${spec.id}`} className="text-sm font-medium leading-snug">{t(tier === "high" ? "screens.backoffice.draft.confirmHigh" : "screens.backoffice.draft.confirmCommit")}</Label>
@@ -296,7 +296,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
           )}
           {draft.phase === "done" && (
             <div className="space-y-3" data-testid="draft-done">
-              <div role="status" className="rounded-md border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm">
+              <div role="status" className="rounded-md border border-status-success/30 bg-status-success/5 px-4 py-3 text-sm">
                 <div className="font-medium">{summary.reference ? t(tierKey(spec, "screens.backoffice.draft.createdWithRef", "screens.backoffice.draft.updatedWithRef", "screens.backoffice.draft.doneCommitWithRef"), { ref: summary.reference }) : t(tierKey(spec, "screens.backoffice.draft.created", "screens.backoffice.draft.updated", "screens.backoffice.draft.doneCommitLine"))}</div>
                 {summary.message && <p className="text-xs text-muted-foreground mt-1" dir="auto">{summary.message}</p>}
                 {cmd?.replayed && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.replayed")}</p>}
@@ -307,7 +307,7 @@ export function DraftCommandDialog({ formId, open, onOpenChange, initial }: { fo
           )}
           {draft.phase === "queued" && (
             <div className="space-y-3" data-testid="draft-queued">
-              <div role="status" className="rounded-md border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm">
+              <div role="status" className="rounded-md border border-status-warning/30 bg-status-warning/5 px-4 py-3 text-sm">
                 <div className="font-medium">{t("screens.backoffice.draft.queuedLine")}</div>
                 {draft.approvalId && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.queuedWithId", { id: draft.approvalId })}</p>}
                 {cmd?.reason === "no_eligible_approver" && <p className="text-xs text-destructive mt-1">{t("screens.backoffice.draft.queuedNoApprover")}</p>}

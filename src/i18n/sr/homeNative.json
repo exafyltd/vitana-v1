@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "Novosti",
+    "selectFeed": "Izaberi feed",
+    "newMember": {
+      "badge": "Novi u zajednici",
+      "fallbackName": "Novi član"
+    },
+    "card": {
+      "dismiss": "Sakrij karticu",
+      "open": "Otvori"
+    },
+    "feature": {
+      "brandNew": "Nova funkcija",
+      "didYouKnow": "Da li si znao?",
+      "tryIt": "Isprobaj odmah"
+    },
+    "performer": {
+      "badge": "U fokusu zajednice",
+      "improvement": "+{value} na Vitana Index-u"
+    },
+    "compose": {
+      "cancel": "Otkaži",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "Komentari",
+      "open": "Otvori komentare",
+      "openPost": "Otvori objavu"
+    }
+  }
+}
