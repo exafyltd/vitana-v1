@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelDescription as CardDescription, PanelHeader as CardHeader, PanelTitle as CardTitle } from "@/components/layout/spotlight/Panel";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Shield, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
@@ -7,13 +9,9 @@ import SEO from "@/components/SEO";
 import { t } from '@/lib/i18n-toast';
 
 export default function NotAuthorized() {
-  return (
-    <AppLayout>
-      <SEO 
-        title={t('screens.notauthorized.accessDeniedVitana')}
-        description="You don't have permission to access this resource."
-      />
-      <div className="min-h-screen flex items-center justify-center p-6">
+  const spotlight = useSpotlightEnabled();
+
+  const panel = (
         <Card className="max-w-md w-full">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
@@ -47,7 +45,24 @@ export default function NotAuthorized() {
             </div>
           </CardContent>
         </Card>
-      </div>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={t('screens.notauthorized.accessDeniedVitana')}
+        description="You don't have permission to access this resource."
+      />
+      {spotlight ? (
+        // Desktop Spotlight: the 403 panel in the `form` frame (one centred column).
+        <ScreenFrame archetype="form">
+          <div className="flex justify-center py-10">{panel}</div>
+        </ScreenFrame>
+      ) : (
+        <div className="min-h-screen flex items-center justify-center p-6">
+          {panel}
+        </div>
+      )}
     </AppLayout>
   );
 }
