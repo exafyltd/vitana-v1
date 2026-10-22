@@ -106,8 +106,9 @@ converged plan by policy (`converged-auto-v1`) and allocates the VTIDs; the Proj
 rule §7b (the plan driver applies it while the PM is not live) and sends Gate 2. Claude Code is optional and handles
 exceptions; `executor: claude` lanes go to the exceptions seat while it is unavailable (§7). A protected gate file
 (§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs a legacy Claude or owner review on the
-current head. Kiro merges to `main`/staging only under §7b, never deploys to production and never writes a live system
-from session tools. See `.claude/rules/collaboration.md` §7–§8b.
+current head. Kiro merges to `main`/staging only under §7b, deploys to production only on the owner's explicit command
+in the conversation (§7c: a full publish, or only one session's changes) and never writes a live system from session
+tools. See `.claude/rules/collaboration.md` §7–§8b.
 
 ## Overview
 
