@@ -14,7 +14,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card } from "@/components/ui/card";
+import { Panel } from '@/components/layout/spotlight/Panel';
 import { communityFetch } from "@/lib/community-gateway";
 import { communityNavigation } from "@/config/navigation";
 import { notifyError, t } from '@/lib/i18n-toast';
@@ -149,7 +149,7 @@ export default function TalkToVitana() {
       <SubNavigation items={communityNavigation} />
 
       <div className="mx-auto max-w-2xl space-y-6 p-4">
-        <Card className="space-y-3 p-4">
+        <Panel className="space-y-3 p-4">
           <div className="flex items-center gap-2 text-sm font-medium">
             <MessageSquare className="h-4 w-4" />
             {t('screens.community.whatSYourMind')}
@@ -185,7 +185,7 @@ export default function TalkToVitana() {
             </Button>
           </div>
           {lastTicket && (
-            <div className="rounded-md border border-emerald-500/40 bg-emerald-500/5 p-3 text-sm" data-testid="ticket-created">
+            <div className="rounded-md border border-status-success/40 bg-status-success/5 p-3 text-sm" data-testid="ticket-created">
               <div className="font-medium">{t('supportTickets.submittedTitle')}</div>
               <div>{t('supportTickets.submittedNumber', { number: lastTicket.ticket_number })}</div>
               <Link className="text-primary underline" to={`/comm/talk-to-vitana?ticket=${encodeURIComponent(lastTicket.id)}`}>
@@ -196,9 +196,9 @@ export default function TalkToVitana() {
           <p className="text-xs text-muted-foreground">
             {t('screens.community.vitanaDevonSageAtlasMiraAi')}
           </p>
-        </Card>
+        </Panel>
 
-        {/* VTID-05086: Unified Card System — stacked below the assistant. */}
+        {/* VTID-05086: Unified Panel System — stacked below the assistant. */}
         <EnrichmentCardStrip screen="talk-to-vitana" />
 
         <MyTicketsList headingKey="screens.community.yourReports" />

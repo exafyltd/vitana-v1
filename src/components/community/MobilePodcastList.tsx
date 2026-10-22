@@ -115,12 +115,13 @@ export function MobilePodcastList({ podcasts, currentUserId }: MobilePodcastList
                 size="icon"
                 variant="secondary"
                 onClick={() => handlePlay(podcast)}
-                className="absolute inset-0 m-auto h-10 w-10 rounded-full bg-black/60 hover:bg-black/70 text-white"
+                // design-allow-next-line: on-media scrim, theme-independent
+                className="absolute inset-0 m-auto h-10 w-10 rounded-full bg-black/60 hover:bg-black/70 text-primary-foreground"
               >
                 {isCurrentlyPlaying ? (
                   <div className="flex gap-0.5">
-                    <div className="w-1 h-4 bg-white rounded-full animate-pulse" />
-                    <div className="w-1 h-4 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                    <div className="w-1 h-4 bg-card rounded-full animate-pulse" />
+                    <div className="w-1 h-4 bg-card rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
                   </div>
                 ) : (
                   <Play className="h-5 w-5 ms-0.5" />

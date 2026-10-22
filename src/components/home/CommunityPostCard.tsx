@@ -222,7 +222,7 @@ export function CommunityPostCard({
               aria-pressed={comment.liked_by_me}
               className={cn(
                 "flex items-center gap-1 text-[10px] transition-colors",
-                comment.liked_by_me ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
+                comment.liked_by_me ? "text-category-4" : "text-muted-foreground hover:text-category-4",
                 !user && "opacity-50 cursor-not-allowed",
               )}
             >
@@ -288,6 +288,7 @@ export function CommunityPostCard({
           (background ? (
             <div
               className={cn(
+                // design-allow-next-line: no scale value within 2px of 180px
                 "-mx-4 mb-1 flex min-h-[180px] items-center justify-center px-6 py-8 text-center",
                 background.fillClass,
               )}
@@ -327,7 +328,7 @@ export function CommunityPostCard({
               aria-pressed={isLiked}
               className={cn(
                 "flex items-center gap-1 text-xs transition-colors",
-                isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
+                isLiked ? "text-category-4" : "text-muted-foreground hover:text-category-4",
               )}
             >
               <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
@@ -343,7 +344,7 @@ export function CommunityPostCard({
               aria-expanded={showComments}
               className={cn(
                 "flex items-center gap-1 text-xs transition-colors",
-                showComments ? "text-blue-500" : "text-muted-foreground hover:text-blue-500",
+                showComments ? "text-category-3" : "text-muted-foreground hover:text-category-3",
               )}
             >
               <MessageCircle className="h-3.5 w-3.5" />

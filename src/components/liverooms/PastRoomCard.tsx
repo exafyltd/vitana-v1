@@ -75,6 +75,7 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
           an aspect-ratio, so a portrait source still crops to a short banner)
           so the whole card fits on screen when the Past tab opens; fixed height
           in the desktop grid. */}
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <div className="relative h-[34vh] sm:h-44 shrink-0 bg-muted">
         {stream.cover_image_url ? (
           <img
@@ -93,9 +94,11 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
             type="button"
             onClick={() => setPlayerOpen(true)}
             aria-label={t('screens.liverooms.past.watchRecording')}
+            // design-allow-next-line: on-media scrim, theme-independent
             className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors"
           >
-            <span className="flex items-center justify-center w-14 h-14 rounded-full bg-white/90">
+            <span className="flex items-center justify-center w-14 h-14 rounded-full bg-card/90">
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <Play className="w-6 h-6 text-black ms-0.5" />
             </span>
           </button>

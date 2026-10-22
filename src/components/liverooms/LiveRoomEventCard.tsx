@@ -71,6 +71,7 @@ export function LiveRoomEventCard({
       aria-label={`${room.title} - ${room.isLive ? t('screens.liverooms.live') : t('screens.liverooms.scheduled')}`}
       data-room-id={room.id}
       className={cn(
+        // design-allow-next-line: no scale value within 2px of 420px
         'group relative flex h-full min-h-[420px] cursor-pointer flex-col overflow-hidden rounded-3xl border-0 shadow-md',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         className,
@@ -89,6 +90,7 @@ export function LiveRoomEventCard({
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-10">🎙️</div>
         )}
+        {/* design-allow-next-line: on-media scrim, theme-independent */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
       </div>
 
@@ -97,13 +99,13 @@ export function LiveRoomEventCard({
         {room.isLive ? (
           <Badge
             data-testid="live-room-badge"
-            className="gap-1.5 border-0 bg-red-500 px-3 py-1.5 text-xs text-white shadow-lg"
+            className="gap-1.5 border-0 bg-status-error px-3 py-1.5 text-xs text-primary-foreground shadow-lg"
           >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-card" />
             {t('screens.liverooms.live')}
           </Badge>
         ) : (
-          <Badge className="gap-1.5 border-0 bg-emerald-500 px-3 py-1.5 text-xs text-white shadow-lg">
+          <Badge className="gap-1.5 border-0 bg-status-success px-3 py-1.5 text-xs text-primary-foreground shadow-lg">
             <Radio className="h-3.5 w-3.5" aria-hidden="true" />
             {t('screens.liverooms.liveRoomTag')}
           </Badge>
@@ -112,17 +114,20 @@ export function LiveRoomEventCard({
           {room.isLive && (
             <span
               data-testid="live-room-card-viewers"
-              className="inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md"
+              // design-allow-next-line: on-media scrim, theme-independent
+              className="inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium text-primary-foreground backdrop-blur-md"
             >
               <Users className="h-3.5 w-3.5" aria-hidden="true" />
               {room.participants}
             </span>
           )}
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-black/35 backdrop-blur-md [&_button]:h-10 [&_button]:w-10 [&_button]:rounded-full [&_button]:text-white">
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-black/35 backdrop-blur-md [&_button]:h-10 [&_button]:w-10 [&_button]:rounded-full [&_button]:text-primary-foreground">
             {shareButton}
           </span>
           {isCreator && (
-            <KebabMenu className="rounded-full bg-black/35 text-white backdrop-blur-md hover:bg-black/50">
+            // design-allow-next-line: on-media scrim, theme-independent
+            <KebabMenu className="rounded-full bg-black/35 text-primary-foreground backdrop-blur-md hover:bg-black/50">
               <DropdownMenuItem onClick={(e) => cta(e, onEdit)}>
                 <Pencil className="me-2 h-4 w-4" />
                 {t('screens.liverooms.edit')}
@@ -148,12 +153,12 @@ export function LiveRoomEventCard({
             src={room.host.avatar}
             fallback={room.host.name[0]}
             alt={room.host.name}
-            className="h-10 w-10 ring-2 ring-white/60"
+            className="h-10 w-10 ring-2 ring-border/60"
             disabled={room.host.id.startsWith('demo-')}
           />
           <div className="min-w-0 leading-tight">
-            <p className="truncate text-sm font-semibold text-white">{room.host.name}</p>
-            <p className="text-xs text-white/70">{t('screens.liverooms.host')}</p>
+            <p className="truncate text-sm font-semibold text-primary-foreground">{room.host.name}</p>
+            <p className="text-xs text-primary-foreground/70">{t('screens.liverooms.host')}</p>
           </div>
           {room.location && (
             <span className={cn(pill, 'ms-auto shrink-0 px-2.5 py-1')}>
@@ -163,8 +168,8 @@ export function LiveRoomEventCard({
           )}
         </div>
 
-        <h3 className="line-clamp-2 text-xl font-bold leading-snug text-white drop-shadow">{room.title}</h3>
-        {room.description && <p className="line-clamp-2 text-sm text-white/85">{room.description}</p>}
+        <h3 className="line-clamp-2 text-xl font-bold leading-snug text-primary-foreground drop-shadow">{room.title}</h3>
+        {room.description && <p className="line-clamp-2 text-sm text-primary-foreground/85">{room.description}</p>}
 
         {/* One row, never wrapping. If a long locale cannot fit, only the date·time pill gives way
             (its text is cut with an ellipsis) so duration and "going" always stay fully visible. */}
@@ -190,7 +195,7 @@ export function LiveRoomEventCard({
             <button
               type="button"
               data-testid="live-room-interested"
-              className={cn(pill, 'min-h-8 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white')}
+              className={cn(pill, 'min-h-8 hover:bg-card/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border')}
               aria-label={t('screens.liverooms.interestedAria')}
               onClick={(e) => {
                 e.stopPropagation();
@@ -205,17 +210,18 @@ export function LiveRoomEventCard({
 
         <div className="flex items-center justify-between gap-3 pt-1">
           {room.isPremium ? (
-            <Badge variant="outline" className="border-yellow-400/60 bg-yellow-500/20 px-3 py-1.5 text-yellow-100 backdrop-blur-sm">
+            <Badge variant="outline" className="border-status-warning/50 bg-status-warning/20 px-3 py-1.5 text-status-warning backdrop-blur-sm">
               {t('screens.liverooms.premium')}
             </Badge>
           ) : (
-            <Badge className="border-0 bg-emerald-500 px-3 py-1.5 text-sm text-white">{t('screens.liverooms.free')}</Badge>
+            <Badge className="border-0 bg-status-success px-3 py-1.5 text-sm text-primary-foreground">{t('screens.liverooms.free')}</Badge>
           )}
 
           {room.isLive ? (
             <Button
               data-testid="live-room-card-join"
-              className="h-12 min-w-[150px] flex-1 rounded-full bg-white text-base font-semibold text-slate-900 hover:bg-white/90 sm:flex-none"
+              // design-allow-next-line: no scale value within 2px of 150px
+              className="h-12 min-w-[150px] flex-1 rounded-full bg-card text-base font-semibold text-foreground hover:bg-card/90 sm:flex-none"
               onClick={(e) => cta(e, onJoinClick)}
               aria-label={isCreator ? t('screens.liverooms.manageAria') : t('screens.liverooms.joinAria')}
             >
@@ -224,7 +230,8 @@ export function LiveRoomEventCard({
           ) : dueForHost ? (
             <Button
               data-testid="live-room-card-start"
-              className="h-12 min-w-[150px] flex-1 rounded-full bg-white text-base font-semibold text-slate-900 hover:bg-white/90 sm:flex-none"
+              // design-allow-next-line: no scale value within 2px of 150px
+              className="h-12 min-w-[150px] flex-1 rounded-full bg-card text-base font-semibold text-foreground hover:bg-card/90 sm:flex-none"
               onClick={(e) => cta(e, onJoinClick)}
             >
               {t('screens.liveRoom.startNow')}
@@ -233,10 +240,11 @@ export function LiveRoomEventCard({
             <Button
               data-testid="live-room-card-notify"
               className={cn(
+                // design-allow-next-line: no scale value within 2px of 150px
                 'h-12 min-w-[150px] flex-1 gap-2 rounded-full text-base font-semibold sm:flex-none',
                 isNotifying
-                  ? 'bg-white/25 text-white backdrop-blur-md hover:bg-white/30'
-                  : 'bg-white text-slate-900 hover:bg-white/90',
+                  ? 'bg-card/25 text-primary-foreground backdrop-blur-md hover:bg-card/30'
+                  : 'bg-card text-foreground hover:bg-card/90',
               )}
               onClick={(e) => cta(e, onNotifyClick)}
               aria-label={isNotifying ? t('screens.liverooms.notifyAriaOn') : t('screens.liverooms.notifyAriaOff')}

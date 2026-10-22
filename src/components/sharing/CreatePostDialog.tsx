@@ -245,6 +245,7 @@ export function CreatePostDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
+        {/* design-allow-next-line: no scale value within 2px of 500px; viewport-bound sheet height */}
         <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
