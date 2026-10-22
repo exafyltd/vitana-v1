@@ -2,7 +2,7 @@
  * Task Stream Hook - Real-Time SSE/WebSocket Integration
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTaskStore } from "@/state/taskStore";
 import { fetchTasks, pollTasks } from "@/lib/taskApi";
 import { Task } from "@/types/task";
@@ -13,12 +13,18 @@ const STREAM_URL = GATEWAY_BASE;
 const POLL_INTERVAL = 10000; // 10 seconds
 const MAX_BACKOFF = 30000; // 30 seconds
 
-export function useTaskStream() {
+export interface TaskStreamState {
+  /** VTID-05063: the gateway answered 401/403 to a task read; polling has stopped. */
+  accessDenied: boolean;
+}
+
+export function useTaskStream(): TaskStreamState {
   const { addTask, updateTask, removeTask, setConnectionState, setTasks } = useTaskStore();
   const connectionIdRef = useRef<string | null>(null);
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
   const lastUpdateRef = useRef<string>(new Date().toISOString());
   const mountedRef = useRef(false);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
     // Prevent double mount in React Strict Mode
@@ -26,34 +32,9 @@ export function useTaskStream() {
     mountedRef.current = true;
 
     let aborted = false;
+    let denied = false;
     let backoff = 1000;
     let isPolling = false;
-
-    // Initial data load
-    fetchTasks().then((tasks) => {
-      if (!aborted) {
-        setTasks(tasks);
-        if (tasks.length > 0) {
-          lastUpdateRef.current = tasks[0].updated_at;
-        }
-      }
-    });
-
-    const startPolling = () => {
-      if (isPolling) return;
-      isPolling = true;
-      console.log("⚠️ Starting polling fallback");
-      
-      pollingRef.current = setInterval(async () => {
-        const updates = await pollTasks(lastUpdateRef.current);
-        if (updates.length > 0) {
-          updates.forEach((task) => {
-            addTask(task);
-            lastUpdateRef.current = task.updated_at;
-          });
-        }
-      }, POLL_INTERVAL);
-    };
 
     const stopPolling = () => {
       if (pollingRef.current) {
@@ -61,6 +42,55 @@ export function useTaskStream() {
         pollingRef.current = null;
       }
       isPolling = false;
+    };
+
+    // VTID-05063: 401/403 means this user may not read the task ledger.
+    // Asking again every 10 s cannot change that, so polling stops for good.
+    const denyAccess = () => {
+      if (denied || aborted) return;
+      denied = true;
+      console.warn("⚠️ Task reads denied (401/403), polling stopped");
+      stopPolling();
+      setAccessDenied(true);
+    };
+
+    // Initial data load
+    fetchTasks().then((result) => {
+      if (aborted) return;
+      if (!result.ok) {
+        if (result.reason === "access_denied") {
+          denyAccess();
+        } else {
+          setTasks([]);
+        }
+        return;
+      }
+      setTasks(result.tasks);
+      if (result.tasks.length > 0) {
+        lastUpdateRef.current = result.tasks[0].updated_at;
+      }
+    });
+
+    const startPolling = () => {
+      if (isPolling || denied) return;
+      isPolling = true;
+      console.log("⚠️ Starting polling fallback");
+      
+      pollingRef.current = setInterval(async () => {
+        const result = await pollTasks(lastUpdateRef.current);
+        if (aborted || denied) return;
+        if (!result.ok) {
+          if (result.reason === "access_denied") denyAccess();
+          return;
+        }
+        const updates = result.tasks;
+        if (updates.length > 0) {
+          updates.forEach((task) => {
+            addTask(task);
+            lastUpdateRef.current = task.updated_at;
+          });
+        }
+      }, POLL_INTERVAL);
     };
 
     const connectStream = () => {
@@ -146,4 +176,6 @@ export function useTaskStream() {
       stopPolling();
     };
   }, [addTask, updateTask, removeTask, setConnectionState, setTasks]);
+
+  return { accessDenied };
 }

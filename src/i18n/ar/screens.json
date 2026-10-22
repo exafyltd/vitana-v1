@@ -3947,6 +3947,8 @@
       "taskId": "معرّف المهمة",
       "taskBoard": "لوحة المهام",
       "realtimeCommandCockpit": "قمرة قيادة للتحكم في الوقت الفعلي",
+      "taskBoardAccessDenied": "لا يمكن الوصول إلى لوحة المهام",
+      "taskBoardAccessDeniedDescription": "لا يُسمح لحسابك بقراءة المهام. اطلب من أحد المسؤولين أن يمنحك الوصول.",
       "noTemplatesFoundMatchingYourCriteria": "لم يتم العثور على قوالب مطابقة لمعاييرك",
       "searchTemplates": "ابحث عن قوالب...",
       "liveTicker": "شريط الأخبار المباشر",

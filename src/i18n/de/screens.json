@@ -3917,6 +3917,8 @@
       "taskId": "Aufgaben-ID",
       "taskBoard": "Aufgabenboard",
       "realtimeCommandCockpit": "Echtzeit-Befehlszentrale",
+      "taskBoardAccessDenied": "Kein Zugriff auf das Aufgabenboard",
+      "taskBoardAccessDeniedDescription": "Dein Konto darf die Aufgaben nicht lesen. Bitte einen Admin, dir Zugriff zu geben.",
       "noTemplatesFoundMatchingYourCriteria": "Keine Vorlagen gefunden, die deinen Kriterien entsprechen",
       "searchTemplates": "Vorlagen durchsuchen...",
       "liveTicker": "Live-Ticker",
