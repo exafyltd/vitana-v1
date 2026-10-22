@@ -151,7 +151,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
               <span className="text-sm text-muted-foreground line-through">
                 {formatCents(pkg.original_price_cents, pkg.currency)}
               </span>
-              <Badge variant="secondary" className="text-xs bg-emerald-500/10 text-emerald-600">
+              <Badge variant="secondary" className="text-xs bg-status-success/10 text-status-success">
                 {translate('packages.save', 'Save {percent}%').replace('{percent}', String(savings))}
               </Badge>
             </>

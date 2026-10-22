@@ -165,6 +165,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent 
         side="bottom" 
+        // design-allow-next-line: viewport-relative sheet height; the contract has no viewport-height token
         className="h-[90vh] rounded-t-3xl p-0 overflow-hidden"
       >
         {/* Header */}
@@ -174,10 +175,10 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
               <div className="flex items-center gap-3">
                 <div className={cn(
                   "w-10 h-10 rounded-xl flex items-center justify-center",
-                  order.type === 'ticket' && "bg-blue-100 dark:bg-blue-900/30 text-blue-600",
-                  order.type === 'voucher' && "bg-purple-100 dark:bg-purple-900/30 text-purple-600",
-                  order.type === 'product' && "bg-green-100 dark:bg-green-900/30 text-green-600",
-                  order.type === 'service' && "bg-orange-100 dark:bg-orange-900/30 text-orange-600"
+                  order.type === 'ticket' && "bg-category-3/15 text-category-3",
+                  order.type === 'voucher' && "bg-category-2/15 text-category-2",
+                  order.type === 'product' && "bg-status-success-subtle text-status-success",
+                  order.type === 'service' && "bg-status-warning-subtle text-status-warning"
                 )}>
                   {getTypeIcon()}
                 </div>
@@ -201,6 +202,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
         </div>
 
         {/* Scrollable content */}
+        {/* design-allow-next-line: viewport-relative height minus fixed header; the contract has no viewport-height token */}
         <div className="overflow-y-auto h-[calc(90vh-140px)] pb-24">
           {/* Order Summary */}
           <div className="p-4 space-y-4">
@@ -216,9 +218,9 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 ) : (
                   <div className={cn(
                     "w-16 h-16 rounded-xl flex items-center justify-center text-2xl",
-                    order.type === 'ticket' && "bg-blue-100 dark:bg-blue-900/30",
-                    order.type === 'voucher' && "bg-purple-100 dark:bg-purple-900/30",
-                    order.type === 'product' && "bg-green-100 dark:bg-green-900/30"
+                    order.type === 'ticket' && "bg-category-3/15",
+                    order.type === 'voucher' && "bg-category-2/15",
+                    order.type === 'product' && "bg-status-success-subtle"
                   )}>
                     {order.type === 'ticket' ? '🎫' : order.type === 'voucher' ? '🎁' : '📦'}
                   </div>
@@ -309,12 +311,12 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
 
             {/* Voucher info for gift vouchers */}
             {order.type === 'voucher' && order.voucherOrder && (
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200/50 dark:border-purple-800/50 rounded-xl p-4">
+              <div className="bg-gradient-to-br from-category-2/10 to-category-4/10 border border-category-2/15 rounded-xl p-4">
                 <div className="text-center mb-4">
                   <div className="text-4xl mb-2">🎁</div>
                   <h4 className="font-semibold text-lg">{translate('orders.detailSheet.giftVoucher')}</h4>
                   {order.voucherOrder.voucher_code && (
-                    <div className="bg-white/80 dark:bg-background/80 rounded-lg px-4 py-2 mt-2 inline-block">
+                    <div className="bg-card/80 rounded-lg px-4 py-2 mt-2 inline-block">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider">{translate('orders.detailSheet.code')}</p>
                       <p className="font-mono font-bold text-lg tracking-widest">{order.voucherOrder.voucher_code}</p>
                     </div>

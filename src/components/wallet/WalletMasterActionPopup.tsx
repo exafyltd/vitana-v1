@@ -115,15 +115,15 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             
             <Button 
               variant="outline" 
-              className="justify-start gap-3 h-auto py-3 bg-gradient-to-r from-purple-50/30 to-blue-50/30 border-purple-200/50"
+              className="justify-start gap-3 h-auto py-3 bg-gradient-to-r from-category-2/5 to-category-3/5 border-category-2/15"
               onClick={() => handleStepNavigation('exchange-and-send')}
             >
-              <Zap className="h-4 w-4 text-purple-600" />
+              <Zap className="h-4 w-4 text-category-2" />
               <div className="text-start">
-                <div className="font-medium text-purple-700">{t('screens.wallet.exchangeSend')}</div>
+                <div className="font-medium text-category-2">{t('screens.wallet.exchangeSend')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.convertCurrencySendOneStep')}</div>
               </div>
-              <Badge variant="secondary" className="ms-auto bg-purple-100 text-purple-700">{t('screens.wallet.quick')}</Badge>
+              <Badge variant="secondary" className="ms-auto bg-category-2/15 text-category-2">{t('screens.wallet.quick')}</Badge>
             </Button>
           </div>
         </div>

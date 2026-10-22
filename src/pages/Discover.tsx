@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
+import { Panel as Card, PanelContent as CardContent } from '@/components/layout/spotlight/Panel';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -304,7 +304,7 @@ function DiscoverInner() {
       {!isMobile && <SubNavigation items={discoverNavigation} />}
       
       <div className={cn(
-        "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen",
+        "p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen",
         isMobile && "px-4 pb-32"
       )}>
         <div className={cn("max-w-7xl mx-auto", isMobile ? "space-y-3" : "space-y-6")}>
@@ -317,7 +317,7 @@ function DiscoverInner() {
           {/* Guest CTA — signed-out visitors can browse but must sign in to buy
               and earn rewards. */}
           {isGuest && (
-            <Card className="border-primary/30 bg-gradient-to-r from-primary/10 via-purple-500/5 to-pink-500/10">
+            <Card className="border-primary/30 bg-gradient-to-r from-primary/10 via-category-2/5 to-category-4/10">
               <CardContent className={cn(
                 "flex items-center gap-3 p-4",
                 isMobile ? "flex-col text-center" : "flex-row"
@@ -443,10 +443,10 @@ function DiscoverInner() {
 
             {/* Tab 1: Suggested for You */}
             <SplitBarContent value="suggested" className="space-y-6">
-              <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-white/20 dark:border-border/20">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                 <CardContent className={cn("p-6", isMobile && "p-4")}>
                   <div className="flex items-center gap-2 mb-4">
-                    <Brain className="h-6 w-6 text-purple-500" />
+                    <Brain className="h-6 w-6 text-category-2" />
                     <h2 className={cn("font-semibold", isMobile ? "text-lg" : "text-2xl")}>
                       {isMobile ? "AI Picks" : "AI-Powered Recommendations"}
                     </h2>
@@ -487,7 +487,7 @@ function DiscoverInner() {
                         key={rec.id}
                         data-match-id={rec.id}
                         className={cn(
-                          "group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 dark:border-purple-800",
+                          "group hover:shadow-lg transition-all duration-300 cursor-pointer border-category-2/25",
                           highlightedMatchId === String(rec.id) && "ring-2 ring-primary animate-pulse"
                         )}
                       >
@@ -497,11 +497,11 @@ function DiscoverInner() {
                             alt={rec.title}
                             className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
-                          <Badge className="absolute top-2 start-2 bg-purple-500 text-white">
+                          <Badge className="absolute top-2 start-2 bg-category-2 text-primary-foreground">
                             {rec.badge}
                           </Badge>
-                          <div className="absolute top-2 end-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
-                            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
+                          <div className="absolute top-2 end-2 bg-card/90 rounded-full px-2 py-1">
+                            <span className="text-xs font-bold text-category-2">{rec.match}%</span>
                           </div>
                         </div>
                         <CardContent className={cn("p-4", isMobile && "p-3")}>
@@ -511,10 +511,10 @@ function DiscoverInner() {
                           {!isMobile && (
                             <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
                           )}
-                          <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
+                          <div className="bg-category-2/10 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
-                              <Brain className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
+                              <Brain className="h-3 w-3 text-category-2" />
+                              <span className="text-xs text-category-2 line-clamp-1">{rec.reason}</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between mb-2">
@@ -555,10 +555,10 @@ function DiscoverInner() {
 
             {/* Tab 2: Categories */}
             <SplitBarContent value="categories" className="space-y-6">
-              <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-white/20 dark:border-border/20">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                 <CardContent className={cn("p-6", isMobile && "p-4")}>
                   <div className="flex items-center gap-2 mb-4">
-                    <Grid3X3 className="h-6 w-6 text-blue-500" />
+                    <Grid3X3 className="h-6 w-6 text-category-3" />
                     <h2 className={cn("font-semibold", isMobile ? "text-lg" : "text-2xl")}>
                       {isMobile ? "Categories" : "Browse by Category"}
                     </h2>
@@ -609,10 +609,10 @@ function DiscoverInner() {
 
             {/* Tab 3: Share & Earn */}
             <SplitBarContent value="share" className="space-y-6">
-              <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-white/20 dark:border-border/20">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                 <CardContent className={cn("p-6", isMobile && "p-4")}>
                   <div className="flex items-center gap-2 mb-4">
-                    <Share2 className="h-6 w-6 text-green-500" />
+                    <Share2 className="h-6 w-6 text-status-success" />
                     <h2 className={cn("font-semibold", isMobile ? "text-lg" : "text-2xl")}>
                       {isMobile ? "Share & Earn" : "Share & Earn Commissions"}
                     </h2>
@@ -627,37 +627,37 @@ function DiscoverInner() {
                     "grid gap-4 mb-6",
                     isMobile ? "grid-cols-3" : "grid-cols-1 md:grid-cols-3"
                   )}>
-                    <Card className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30">
+                    <Card className="bg-gradient-to-br from-status-success-subtle to-category-3/10">
                       <CardContent className={cn("p-4", isMobile && "p-3")}>
                         <div className={cn("flex items-center gap-2 mb-2", isMobile && "flex-col items-start gap-1")}>
-                          <DollarSign className={cn("text-green-600", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+                          <DollarSign className={cn("text-status-success", isMobile ? "h-4 w-4" : "h-5 w-5")} />
                           <span className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-sm")}>
                             {isMobile ? "Earned" : "Total Earnings"}
                           </span>
                         </div>
-                        <p className={cn("font-bold text-green-600", isMobile ? "text-lg" : "text-2xl")}>$2,693</p>
+                        <p className={cn("font-bold text-status-success", isMobile ? "text-lg" : "text-2xl")}>$2,693</p>
                       </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30">
+                    <Card className="bg-gradient-to-br from-category-2/10 to-category-4/10">
                       <CardContent className={cn("p-4", isMobile && "p-3")}>
                         <div className={cn("flex items-center gap-2 mb-2", isMobile && "flex-col items-start gap-1")}>
-                          <Users className={cn("text-purple-600", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+                          <Users className={cn("text-category-2", isMobile ? "h-4 w-4" : "h-5 w-5")} />
                           <span className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-sm")}>
                             {isMobile ? "Shares" : "Community Shares"}
                           </span>
                         </div>
-                        <p className={cn("font-bold text-purple-600", isMobile ? "text-lg" : "text-2xl")}>424</p>
+                        <p className={cn("font-bold text-category-2", isMobile ? "text-lg" : "text-2xl")}>424</p>
                       </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-950/30 dark:to-yellow-950/30">
+                    <Card className="bg-gradient-to-br from-status-warning-subtle to-status-warning-subtle">
                       <CardContent className={cn("p-4", isMobile && "p-3")}>
                         <div className={cn("flex items-center gap-2 mb-2", isMobile && "flex-col items-start gap-1")}>
-                          <Award className={cn("text-orange-600", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+                          <Award className={cn("text-status-warning", isMobile ? "h-4 w-4" : "h-5 w-5")} />
                           <span className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-sm")}>
                             {isMobile ? "Rank" : "Top Performer"}
                           </span>
                         </div>
-                        <p className={cn("font-bold text-orange-600", isMobile ? "text-lg" : "text-2xl")}>{t('screens.discover.top5')}</p>
+                        <p className={cn("font-bold text-status-warning", isMobile ? "text-lg" : "text-2xl")}>{t('screens.discover.top5')}</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -675,7 +675,7 @@ function DiscoverInner() {
                             alt={item.title}
                             className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
-                          <Badge className="absolute top-2 start-2 bg-green-500 text-white">{t('screens.discover.earnCommission', { commission: item.commission })}</Badge>
+                          <Badge className="absolute top-2 start-2 bg-status-success text-primary-foreground">{t('screens.discover.earnCommission', { commission: item.commission })}</Badge>
                         </div>
                         <CardContent className={cn("p-4", isMobile && "p-3")}>
                           <h3 className={cn("font-semibold mb-2 group-hover:text-primary transition-colors", isMobile && "text-sm")}>
@@ -692,8 +692,8 @@ function DiscoverInner() {
                               <Users className="h-3 w-3 inline me-1" />{t('screens.discover.sharesShares', { shares: item.shares })}
                             </div>
                           </div>
-                          <div className="bg-green-50 dark:bg-green-950/30 p-2 rounded-lg mb-3">
-                            <p className="text-xs text-green-700 dark:text-green-300">
+                          <div className="bg-status-success-subtle p-2 rounded-lg mb-3">
+                            <p className="text-xs text-status-success">
                               {t('screens.discover.communityEarned')} <span className="font-bold">{item.earnings}</span>
                             </p>
                           </div>

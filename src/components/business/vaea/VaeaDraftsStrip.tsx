@@ -70,7 +70,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
 }) {
   const q = draft.vaea_detected_questions;
   return (
-    <div className="rounded-lg border border-white/30 bg-white/70 p-3 space-y-2">
+    <div className="rounded-lg border border-border/30 bg-card/70 p-3 space-y-2">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap">
           <Badge variant="outline" className="capitalize">{draft.status}</Badge>

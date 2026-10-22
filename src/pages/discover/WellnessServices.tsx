@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { discoverNavigation } from "@/config/navigation";
@@ -281,7 +281,7 @@ function WellnessServicesLegacy() {
     <AppLayout>
       <SEO title={t('screens.discover.wellnessServicesDiscover')} description="Browse wellness categories organized by health verticals" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title={t('screens.discover.wellnessServices')}
@@ -326,7 +326,7 @@ function WellnessServicesLegacy() {
               {/* Categories Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {categories.map((category) => (
-              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20 relative">
+              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-card/80 backdrop-blur-sm border-border/20 relative">
                 <BookmarkButton
                   item={{
                     item_type: 'wellness_service',
@@ -341,7 +341,7 @@ function WellnessServicesLegacy() {
                 <CardContent className="p-4 md:p-5 lg:p-6 flex-1 flex flex-col">
                   <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className={`${category.color} p-2 md:p-3 rounded-lg`}>
-                      <category.icon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-white" />
+                      <category.icon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-primary-foreground" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
@@ -380,35 +380,35 @@ function WellnessServicesLegacy() {
             </SplitBarContent>
 
             <SplitBarContent value="recommended" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Brain className="h-6 w-6 text-purple-500" />
+                    <Brain className="h-6 w-6 text-category-2" />
                     <h2 className="text-2xl font-semibold">{t('screens.discover.airecommendedServices')}</h2>
                   </div>
                   <p className="text-muted-foreground mb-6">{t('screens.discover.personalizedWellnessServiceRecommendationsBasedYou')}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categories.slice(0, 6).map((category, index) => (
-                      <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
+                      <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-category-2/25">
                         <CardContent className="p-4">
                           <div className="flex items-start gap-3 mb-3">
                             <div className={`${category.color} p-2 rounded-lg`}>
-                              <category.icon className="h-5 w-5 text-white" />
+                              <category.icon className="h-5 w-5 text-primary-foreground" />
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center justify-between mb-1">
                                 <h3 className="font-semibold text-sm">{category.name}</h3>
-                                <div className="bg-white rounded-full px-2 py-1">
-                                  <span className="text-xs font-bold text-purple-600">{92 - index * 2}%</span>
+                                <div className="bg-card rounded-full px-2 py-1">
+                                  <span className="text-xs font-bold text-category-2">{92 - index * 2}%</span>
                                 </div>
                               </div>
                               <p className="text-xs text-muted-foreground">{category.description}</p>
                             </div>
                           </div>
-                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                          <div className="bg-category-2/10 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
-                              <Sparkles className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">{t('screens.discover.basedYourHealthGoals')}</span>
+                              <Sparkles className="h-3 w-3 text-category-2" />
+                              <span className="text-xs text-category-2">{t('screens.discover.basedYourHealthGoals')}</span>
                             </div>
                           </div>
                           <Button 
@@ -431,9 +431,9 @@ function WellnessServicesLegacy() {
                   <p className="text-muted-foreground">{t('screens.discover.loadingBookmarks')}</p>
                 </div>
               ) : getBookmarksByType('wellness_service').length === 0 ? (
-                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                   <CardContent className="p-12 text-center">
-                    <Bookmark className="h-16 w-16 mx-auto mb-4 text-yellow-400" />
+                    <Bookmark className="h-16 w-16 mx-auto mb-4 text-status-warning" />
                     <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noBookmarkedServicesYet')}</h3>
                     <p className="text-muted-foreground mb-4">
                       {t('screens.discover.browseWellnessServicesBookmarkYourFavorites')}
@@ -446,12 +446,12 @@ function WellnessServicesLegacy() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {getBookmarksByType('wellness_service').map((bookmark) => (
-                    <Card key={bookmark.id} className="group hover:shadow-lg transition-all bg-white/90 relative">
+                    <Card key={bookmark.id} className="group hover:shadow-lg transition-all bg-card/90 relative">
                       <button
                         onClick={() => removeBookmark('wellness_service', bookmark.item_id)}
-                        className="absolute top-2 end-2 bg-yellow-400 p-2 rounded-full hover:bg-yellow-500 transition-colors z-10"
+                        className="absolute top-2 end-2 bg-status-warning/80 p-2 rounded-full hover:bg-status-warning transition-colors z-10"
                       >
-                        <Bookmark className="h-4 w-4 fill-white text-white" />
+                        <Bookmark className="h-4 w-4 fill-primary-foreground text-primary-foreground" />
                       </button>
                       <CardContent className="p-4">
                         <h3 className="font-semibold text-lg mb-2">{bookmark.item_name}</h3>
@@ -497,7 +497,7 @@ function WellnessServicesLegacy() {
               <SheetHeader>
                 <div className="flex items-center gap-3 mb-2">
                   <div className={`${selectedCategory.color} p-3 rounded-lg`}>
-                    <selectedCategory.icon className="h-6 w-6 text-white" />
+                    <selectedCategory.icon className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <div>
                     <SheetTitle className="text-2xl">{selectedCategory.name}</SheetTitle>

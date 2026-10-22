@@ -32,7 +32,7 @@ export function AnalyticsSubTabs() {
 
       <SplitBarContent value="performance" className="space-y-4 mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+          <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <BarChart3 className="w-5 h-5" />
@@ -46,7 +46,7 @@ export function AnalyticsSubTabs() {
             </CardContent>
           </Card>
           
-          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+          <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Users className="w-5 h-5" />
@@ -66,11 +66,11 @@ export function AnalyticsSubTabs() {
 
       <SplitBarContent value="earnings" className="space-y-4 mt-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+          <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
             <CardContent className="p-5">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-500/20">
-                  <DollarSign className="w-5 h-5 text-green-600" />
+                <div className="p-3 rounded-xl bg-gradient-to-br from-status-success/15 to-status-success/20">
+                  <DollarSign className="w-5 h-5 text-status-success" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">{t('screens.business.servicesEvents')}</p>
@@ -81,11 +81,11 @@ export function AnalyticsSubTabs() {
           </Card>
           
           {isReseller && resellerSales && (
-            <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+            <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
               <CardContent className="p-5">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-purple-400/20 to-fuchsia-500/20">
-                    <TrendingUp className="w-5 h-5 text-purple-600" />
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-category-2/15 to-category-4/20">
+                    <TrendingUp className="w-5 h-5 text-category-2" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">{t('screens.business.resellerCommission')}</p>
@@ -96,11 +96,11 @@ export function AnalyticsSubTabs() {
             </Card>
           )}
           
-          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+          <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
             <CardContent className="p-5">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-blue-400/20 to-cyan-500/20">
-                  <Wallet className="w-5 h-5 text-blue-600" />
+                <div className="p-3 rounded-xl bg-gradient-to-br from-category-3/15 to-category-1/20">
+                  <Wallet className="w-5 h-5 text-category-3" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">{t('screens.business.walletBalance')}</p>
@@ -119,7 +119,7 @@ export function AnalyticsSubTabs() {
       </SplitBarContent>
 
       <SplitBarContent value="growth" className="space-y-4 mt-4">
-        <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+        <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <TrendingUp className="w-5 h-5" />

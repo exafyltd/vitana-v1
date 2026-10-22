@@ -60,15 +60,15 @@ export function Disclosure({ id, title, summary, tone = "normal", defaultOpen = 
         onClick={toggle}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex w-full items-center gap-3 rounded-3xl px-5 py-4 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+        className="flex w-full items-center gap-3 rounded-3xl px-5 py-4 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1"
       >
         <span className="flex min-w-0 flex-1 items-baseline gap-2">
-          <span className="shrink-0 text-base font-bold text-slate-900">{title}</span>
+          <span className="shrink-0 text-base font-bold text-foreground">{title}</span>
           <span className="truncate text-sm" style={{ color: tone === "attention" ? "#A3322C" : SURFACE.muted }}>
             {summary}
           </span>
         </span>
-        <ChevronDown aria-hidden className={`h-5 w-5 shrink-0 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown aria-hidden className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <div id={panelId} className="flex flex-col gap-3 px-5 pb-5">

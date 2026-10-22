@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -260,7 +260,7 @@ function DoctorsCoachesLegacy() {
     <AppLayout>
       <SEO title={t('screens.discover.doctorsCoachesDiscover')} description="Find verified wellness providers and longevity specialists" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title={t('screens.discover.doctorsCoaches')}
@@ -303,10 +303,10 @@ function DoctorsCoachesLegacy() {
 
             <SplitBarContent value="find" className="space-y-6">
               {/* Filters */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-white/20 mb-8">
+          <div className="bg-card/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-border/20 mb-8">
             <div className="flex flex-wrap gap-3">
               <Select>
-                <SelectTrigger className="w-[160px] bg-background">
+                <SelectTrigger className="w-40 bg-background">
                   <SelectValue placeholder={t('screens.discover.specialty')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
@@ -320,6 +320,7 @@ function DoctorsCoachesLegacy() {
                 </SelectContent>
               </Select>
               <Select>
+                {/* design-allow-next-line: measured control width off the scale (>2px) */}
                 <SelectTrigger className="w-[120px] bg-background">
                   <SelectValue placeholder={t('screens.discover.location')} />
                 </SelectTrigger>
@@ -331,6 +332,7 @@ function DoctorsCoachesLegacy() {
                 </SelectContent>
               </Select>
               <Select>
+                {/* design-allow-next-line: measured control width off the scale (>2px) */}
                 <SelectTrigger className="w-[120px] bg-background">
                   <SelectValue placeholder={t('screens.discover.priceRange2')} />
                 </SelectTrigger>
@@ -342,6 +344,7 @@ function DoctorsCoachesLegacy() {
                 </SelectContent>
               </Select>
               <Select>
+                {/* design-allow-next-line: measured control width off the scale (>2px) */}
                 <SelectTrigger className="w-[120px] bg-background">
                   <SelectValue placeholder={t('screens.discover.availability')} />
                 </SelectTrigger>
@@ -353,6 +356,7 @@ function DoctorsCoachesLegacy() {
                 </SelectContent>
               </Select>
               <Select>
+                {/* design-allow-next-line: measured control width off the scale (>2px) */}
                 <SelectTrigger className="w-[100px] bg-background">
                   <SelectValue placeholder={t('screens.discover.rating')} />
                 </SelectTrigger>
@@ -368,7 +372,7 @@ function DoctorsCoachesLegacy() {
           {/* Provider Results */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {providers.map((provider) => (
-              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20 relative">
+              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-card/80 backdrop-blur-sm border-border/20 relative">
                 <BookmarkButton
                   item={{
                     item_type: 'provider',
@@ -392,8 +396,8 @@ function DoctorsCoachesLegacy() {
                         className="w-12 h-12 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full object-cover"
                       />
                       {provider.badges.includes("Verified") && (
-                        <div className="absolute -bottom-1 -end-1 bg-blue-500 rounded-full p-1">
-                          <Verified className="h-2 w-2 md:h-3 md:w-3 text-white" />
+                        <div className="absolute -bottom-1 -end-1 bg-category-3 rounded-full p-1">
+                          <Verified className="h-2 w-2 md:h-3 md:w-3 text-primary-foreground" />
                         </div>
                       )}
                     </div>
@@ -404,7 +408,7 @@ function DoctorsCoachesLegacy() {
                       <p className="text-xs md:text-sm text-muted-foreground">{provider.title}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-status-warning text-status-warning" />
                           <span className="text-xs md:text-sm font-medium">{provider.rating}</span>
                           <span className="text-xs md:text-sm text-muted-foreground">({provider.reviews})</span>
                         </div>
@@ -418,10 +422,10 @@ function DoctorsCoachesLegacy() {
                         key={badge} 
                         variant="secondary" 
                         className={`text-xs ${
-                          badge === "Top Rated" ? "bg-green-100 text-green-700" :
-                          badge === "Trending" ? "bg-orange-100 text-orange-700" :
-                          badge === "New" ? "bg-blue-100 text-blue-700" :
-                          "bg-gray-100 text-gray-700"
+                          badge === "Top Rated" ? "bg-status-success-subtle text-status-success" :
+                          badge === "Trending" ? "bg-status-warning-subtle text-status-warning" :
+                          badge === "New" ? "bg-category-3/15 text-category-3" :
+                          "bg-muted text-muted-foreground"
                         }`}
                       >
                         {badge === "Trending" && <TrendingUp className="h-3 w-3 me-1" />}
@@ -449,8 +453,8 @@ function DoctorsCoachesLegacy() {
                       <span className="text-xs md:text-sm text-muted-foreground">{provider.location}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
-                      <span className="text-xs md:text-sm text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
+                      <Clock className="h-3 w-3 md:h-4 md:w-4 text-status-success" />
+                      <span className="text-xs md:text-sm text-status-success">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                     </div>
                   </div>
 
@@ -476,16 +480,16 @@ function DoctorsCoachesLegacy() {
             </SplitBarContent>
 
             <SplitBarContent value="matches" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Brain className="h-6 w-6 text-purple-500" />
+                    <Brain className="h-6 w-6 text-category-2" />
                     <h2 className="text-2xl font-semibold">{t('screens.discover.aimatchedProviders')}</h2>
                   </div>
                   <p className="text-muted-foreground mb-6">{t('screens.discover.providersMatchedYourHealthNeedsPreferences')}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {providers.slice(0, 6).map((provider, index) => (
-                      <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
+                      <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 border-category-2/25">
                         <CardContent className="p-4">
                           <div className="flex items-start gap-3 mb-3">
                             <div className="relative">
@@ -495,25 +499,25 @@ function DoctorsCoachesLegacy() {
                                 className="w-12 h-12 rounded-full object-cover"
                               />
                               {provider.badges.includes("Verified") && (
-                                <div className="absolute -bottom-1 -end-1 bg-blue-500 rounded-full p-1">
-                                  <Verified className="h-2 w-2 text-white" />
+                                <div className="absolute -bottom-1 -end-1 bg-category-3 rounded-full p-1">
+                                  <Verified className="h-2 w-2 text-primary-foreground" />
                                 </div>
                               )}
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center justify-between mb-1">
                                 <h3 className="font-semibold text-sm">{provider.name}</h3>
-                                <div className="bg-white rounded-full px-2 py-1">
-                                  <span className="text-xs font-bold text-purple-600">{94 - index * 2}%</span>
+                                <div className="bg-card rounded-full px-2 py-1">
+                                  <span className="text-xs font-bold text-category-2">{94 - index * 2}%</span>
                                 </div>
                               </div>
                               <p className="text-xs text-muted-foreground">{provider.title}</p>
                             </div>
                           </div>
-                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                          <div className="bg-category-2/10 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
-                              <Sparkles className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">{t('screens.discover.perfectForYourHealthGoals')}</span>
+                              <Sparkles className="h-3 w-3 text-category-2" />
+                              <span className="text-xs text-category-2">{t('screens.discover.perfectForYourHealthGoals')}</span>
                             </div>
                           </div>
                           <div className="space-y-1 mb-3">
@@ -522,8 +526,8 @@ function DoctorsCoachesLegacy() {
                               <span className="text-xs text-muted-foreground">{provider.location}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Clock className="h-3 w-3 text-green-500" />
-                              <span className="text-xs text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
+                              <Clock className="h-3 w-3 text-status-success" />
+                              <span className="text-xs text-status-success">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                             </div>
                           </div>
                     <Button 
@@ -544,21 +548,21 @@ function DoctorsCoachesLegacy() {
             <SplitBarContent value="myproviders" className="space-y-6">
               {/* Stats Dashboard */}
               <div className="grid grid-cols-3 gap-4 mb-6">
-                <Card className="bg-blue-500/10 border-blue-500/20">
+                <Card className="bg-category-3/10 border-category-3/20">
                   <CardContent className="p-4 text-center">
-                    <div className="text-3xl font-bold text-blue-600">{upcomingAppointments.length}</div>
+                    <div className="text-3xl font-bold text-category-3">{upcomingAppointments.length}</div>
                     <div className="text-sm text-muted-foreground">{t('screens.discover.upcoming')}</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-green-500/10 border-green-500/20">
+                <Card className="bg-status-success/10 border-status-success/20">
                   <CardContent className="p-4 text-center">
-                    <div className="text-3xl font-bold text-green-600">{visitHistory.length}</div>
+                    <div className="text-3xl font-bold text-status-success">{visitHistory.length}</div>
                     <div className="text-sm text-muted-foreground">{t('screens.discover.pastVisits')}</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-purple-500/10 border-purple-500/20">
+                <Card className="bg-category-2/10 border-category-2/20">
                   <CardContent className="p-4 text-center">
-                    <div className="text-3xl font-bold text-purple-600">{getBookmarksByType('provider').length}</div>
+                    <div className="text-3xl font-bold text-category-2">{getBookmarksByType('provider').length}</div>
                     <div className="text-sm text-muted-foreground">{t('screens.discover.bookmarked')}</div>
                   </CardContent>
                 </Card>
@@ -578,7 +582,7 @@ function DoctorsCoachesLegacy() {
                     
                     if (bookmarkedProviders.length === 0) {
                       return (
-                        <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                        <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                           <CardContent className="p-12 text-center">
                             <div className="text-6xl mb-4">💛</div>
                             <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noSavedProvidersYet')}</h3>
@@ -597,7 +601,7 @@ function DoctorsCoachesLegacy() {
                           if (!provider) return null;
 
                           return (
-                            <Card key={bookmark.id} className="bg-white/80 backdrop-blur-sm border-white/20 overflow-hidden hover:shadow-lg transition-shadow relative">
+                            <Card key={bookmark.id} className="bg-card/80 backdrop-blur-sm border-border/20 overflow-hidden hover:shadow-lg transition-shadow relative">
                               <BookmarkButton
                                 item={{
                                   item_type: 'provider',
@@ -616,13 +620,13 @@ function DoctorsCoachesLegacy() {
                                   <img 
                                     src={provider.image} 
                                     alt={provider.name}
-                                    className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-border shadow-md"
                                   />
                                   <div className="flex-1 min-w-0">
                                     <h3 className="font-semibold text-lg mb-1 truncate">{provider.name}</h3>
                                     <p className="text-sm text-muted-foreground mb-2">{provider.title}</p>
                                     <div className="flex items-center gap-1 text-sm">
-                                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                      <Star className="h-4 w-4 fill-status-warning text-status-warning" />
                                       <span className="font-semibold">{provider.rating}</span>
                                       <span className="text-muted-foreground">({provider.reviews})</span>
                                     </div>
@@ -634,8 +638,8 @@ function DoctorsCoachesLegacy() {
                                     <span>{provider.location}</span>
                                   </div>
                                   <div className="flex items-center gap-2 text-sm">
-                                    <Clock className="h-4 w-4 text-green-500" />
-                                    <span className="text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
+                                    <Clock className="h-4 w-4 text-status-success" />
+                                    <span className="text-status-success">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                                   </div>
                                 </div>
                                 <div className="flex gap-2">
@@ -656,7 +660,7 @@ function DoctorsCoachesLegacy() {
                 {/* Upcoming Tab */}
                 <TabsContent value="upcoming" className="space-y-4">
                   {upcomingAppointments.length === 0 ? (
-                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                    <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                       <CardContent className="p-12 text-center">
                         <div className="text-6xl mb-4">📅</div>
                         <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noUpcomingAppointments')}</h3>
@@ -677,15 +681,15 @@ function DoctorsCoachesLegacy() {
                         if (daysUntil > 7) {
                           countdownBadge = <Badge variant="outline">{formatDate(appointmentDate, 'MMM dd, yyyy')}</Badge>;
                         } else if (daysUntil > 0) {
-                          countdownBadge = <Badge className="bg-blue-500">{t('screens.discover.daysuntilDaysAway', { daysUntil })}</Badge>;
+                          countdownBadge = <Badge className="bg-category-3">{t('screens.discover.daysuntilDaysAway', { daysUntil })}</Badge>;
                         } else if (hoursUntil > 0) {
-                          countdownBadge = <Badge className="bg-orange-500">{t('screens.discover.todayHoursuntilHAway', { hoursUntil })}</Badge>;
+                          countdownBadge = <Badge className="bg-status-warning">{t('screens.discover.todayHoursuntilHAway', { hoursUntil })}</Badge>;
                         } else {
-                          countdownBadge = <Badge className="bg-red-500">{t('screens.discover.startingSoon')}</Badge>;
+                          countdownBadge = <Badge className="bg-status-error">{t('screens.discover.startingSoon')}</Badge>;
                         }
 
                         return (
-                          <Card key={appointment.id} className="bg-white/80 backdrop-blur-sm border-white/20">
+                          <Card key={appointment.id} className="bg-card/80 backdrop-blur-sm border-border/20">
                             <CardContent className="p-6">
                               <div className="flex justify-between items-start mb-4">
                                 <div className="flex gap-4">
@@ -736,7 +740,7 @@ function DoctorsCoachesLegacy() {
                 {/* History Tab */}
                 <TabsContent value="history" className="space-y-4">
                   {visitHistory.length === 0 ? (
-                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                    <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                       <CardContent className="p-12 text-center">
                         <div className="text-6xl mb-4">📋</div>
                         <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noVisitHistoryYet')}</h3>
