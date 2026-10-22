@@ -1,0 +1,70 @@
+{
+  "verdicts": {
+    "spotlightFeed.header.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.tabs.ariaLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.stage.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.post.commentsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.post.openComments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.rail.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.rail.upNext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.rail.today": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.rail.journey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.rail.people": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.rail.goodToKnow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.today.timeAndPlace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "spotlightFeed.index.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-10-22T09:30:26.586Z"
+}
