@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05160",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Account deletion erases the member's raw health batches through the gateway erase-raw and keeps the account unless they are verified gone",
+      "ref": "npx vitest run src/lib/erase-health-raw.test.ts src/lib/erase-user-storage.test.ts src/lib/erase-user-data.test.ts",
+      "cwd": ".",
+      "reason": "The only way to exercise request-account-deletion is to irreversibly delete a real account in the production Supabase project that staging shares, and the health store is forced off on staging, so there is no runtime probe (plan Tests, A3: Vitest only). These suites call the real erase-raw client over a mocked fetch: residual 0 erases, 404 HEALTH_STORE_DISABLED counts as erased, residual > 0, any error status, a 404 without that code, a body without a residual count, a network error and a missing service token all keep the account; and they pin the edge function's order (erase_user_data → erase-raw gate with storage_incomplete → auth user delete) next to the existing table and Storage gates."
+    }
+  ]
+}
