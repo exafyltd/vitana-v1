@@ -103,6 +103,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
     }
 
     return (
+      // design-allow-next-line: viewport-bound screen height
       <div className="flex items-center justify-center min-h-[80vh] px-6">
         <div className="max-w-sm w-full text-center space-y-4">
           <div className="text-4xl">⚠️</div>

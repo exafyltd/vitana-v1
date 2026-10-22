@@ -324,6 +324,7 @@ export function NotificationCategoriesTab() {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {/* design-allow-next-line: viewport-bound sheet height */}
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>

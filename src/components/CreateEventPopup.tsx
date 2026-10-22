@@ -444,6 +444,7 @@ export function CreateEventPopup({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
@@ -627,6 +628,7 @@ export function CreateEventPopup({
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={translate('createEventPopup.selectEndTime')} />
                     </SelectTrigger>
+                    {/* design-allow-next-line: no scale value within 2px of 200px */}
                     <SelectContent className="max-h-[200px]">
                       {generateTimeOptions().map((time) => (
                         <SelectItem key={time} value={time}>{time}</SelectItem>
@@ -715,6 +717,7 @@ export function CreateEventPopup({
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={translate('createEventPopup.selectTime')} />
                     </SelectTrigger>
+                    {/* design-allow-next-line: no scale value within 2px of 200px */}
                     <SelectContent className="max-h-[200px]">
                       {generateTimeOptions().map((time) => (
                         <SelectItem key={time} value={time}>{time}</SelectItem>

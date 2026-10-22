@@ -100,6 +100,7 @@ export function TemplatesLibrary() {
     <div className="space-y-4">
       {/* Filters */}
       <div className="flex gap-3 flex-wrap items-center">
+        {/* design-allow-next-line: no scale value within 2px of 250px */}
         <div className="relative flex-1 min-w-[250px]">
           <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input

@@ -144,6 +144,7 @@ export function BarListCard({
         <CardTitle className="text-base">{title}</CardTitle>
         {action}
       </CardHeader>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <CardContent className="max-h-[60vh] overflow-y-auto">
         {shown.length === 0 ? (
           <p className="text-sm italic text-muted-foreground">{emptyLabel}</p>
@@ -161,7 +162,7 @@ export function BarListCard({
                   />
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
-                  <span className="min-w-[2.5rem] text-end text-xs font-medium tabular-nums">
+                  <span className="min-w-10 text-end text-xs font-medium tabular-nums">
                     {fmtNumber(row.count)}
                   </span>
                   {row.extra}
@@ -281,6 +282,7 @@ export function DonutCard({
           <p className="text-sm italic text-muted-foreground">{emptyLabel}</p>
         ) : (
           <div className="flex items-center gap-4">
+            {/* design-allow-next-line: no scale value within 2px of 140px */}
             <div className="relative h-[140px] w-[140px] shrink-0">
               <ResponsiveContainer>
                 <PieChart>
@@ -358,6 +360,7 @@ export function StackedBarListCard({
       <CardHeader>
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <CardContent className="max-h-[60vh] overflow-y-auto">
         {shown.length === 0 ? (
           <p className="text-sm italic text-muted-foreground">{emptyLabel}</p>
@@ -388,7 +391,7 @@ export function StackedBarListCard({
                         ) : null,
                       )}
                     </span>
-                    <span className="min-w-[2.5rem] text-end text-xs font-medium tabular-nums">
+                    <span className="min-w-10 text-end text-xs font-medium tabular-nums">
                       {fmtNumber(total)}
                     </span>
                   </div>
