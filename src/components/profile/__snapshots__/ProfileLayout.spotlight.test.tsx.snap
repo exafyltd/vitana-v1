@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProfileLayout — Spotlight detail frame > phones: the mobile tree is unchanged 1`] = `"<div class="min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32"><div data-testid="mobile-id-card"></div><div data-testid="mobile-tabs"></div><div class="flex-1"><div data-testid="posts-tab"></div></div><div data-testid="share-sheet"></div><div data-testid="qr-screen"></div><div data-testid="message-modal"></div><div data-testid="credential-upload"></div><div data-testid="go-live"></div></div>"`;

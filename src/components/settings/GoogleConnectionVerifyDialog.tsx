@@ -123,6 +123,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: calc against viewport gutter; viewport-bound sheet height */}
       <DialogContent className="w-[calc(100vw-2rem)] max-w-xl max-h-[85vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>{t('screens.settings.googleConnectionLiveCheck')}</DialogTitle>

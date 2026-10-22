@@ -71,12 +71,12 @@ const CommercePortalLogin = () => {
   }
 
   const card = (
-        <div className="w-full max-w-md rounded-xl border border-amber-500/30 bg-card p-8 shadow-2xl">
+        <div className="w-full max-w-md rounded-xl border border-primary/15 bg-card p-8 shadow-2xl">
           <div className="text-center">
             <div className="flex justify-center mb-3">
-              <ShoppingBag className="h-10 w-10 text-amber-400" />
+              <ShoppingBag className="h-10 w-10 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold text-amber-400">VITANALAND</h1>
+            <h1 className="text-3xl font-bold text-primary">VITANALAND</h1>
             <p className="text-muted-foreground">{t('screens.commerceportal.loginSubtitle')}</p>
           </div>
 
@@ -104,7 +104,7 @@ const CommercePortalLogin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={loading}
-                className="bg-background border-amber-500/40 text-foreground focus-visible:ring-amber-500"
+                className="bg-background border-primary/20 text-foreground focus-visible:ring-ring"
               />
             </div>
 
@@ -120,7 +120,7 @@ const CommercePortalLogin = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
-                  className="bg-background border-amber-500/40 text-foreground focus-visible:ring-amber-500 pe-10"
+                  className="bg-background border-primary/20 text-foreground focus-visible:ring-ring pe-10"
                 />
                 <button
                   type="button"
@@ -136,7 +136,7 @@ const CommercePortalLogin = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
             >
               {loading ? (
                 <>
@@ -150,7 +150,7 @@ const CommercePortalLogin = () => {
           </form>
 
           <div className="text-center mt-6">
-            <Link to="/" className="text-sm text-muted-foreground hover:text-amber-400">
+            <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
               {t('screens.portals.backPublicPortal')}
             </Link>
           </div>

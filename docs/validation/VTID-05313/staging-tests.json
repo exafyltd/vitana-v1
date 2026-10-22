@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05313",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx",
+      "reason": "test-only change: the VTID-05201 deep-link test runs again with its assertion unchanged; nothing user-visible ships"
+    }
+  ]
+}

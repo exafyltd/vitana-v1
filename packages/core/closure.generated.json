@@ -3,6 +3,7 @@
   "files": [
     "src/integrations/supabase/data-routing.ts",
     "src/integrations/supabase/types.ts",
+    "src/lib/news-images.ts",
     "src/lib/orb-view-profile.ts",
     "src/lib/permissions.ts",
     "src/navigation/orb-navigation.ts",

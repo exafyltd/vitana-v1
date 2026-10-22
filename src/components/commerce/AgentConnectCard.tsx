@@ -73,17 +73,17 @@ export function AgentConnectCard() {
       {!reduce && (
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-amber-300/25 blur-2xl"
+          className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-accent/25 blur-2xl"
           animate={{ opacity: [0.35, 0.6, 0.35] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         />
       )}
 
-      <div className="relative rounded-3xl border border-amber-200 bg-card p-5 shadow-xl shadow-amber-900/5 md:p-7">
+      <div className="relative rounded-3xl border border-primary/20 bg-card p-5 shadow-xl shadow-primary/5 md:p-7">
         <div className="flex flex-wrap items-center gap-2">
           {/* VTID-04795: "In development", never "Recommended", until an AI
               assistant can really register a business end to end. */}
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-accent px-3 py-1 text-xs font-semibold text-primary">
             <Sparkles className="h-3.5 w-3.5" />
             {t('screens.commerceportal.setupChooser.inDevelopment')}
           </span>
@@ -91,7 +91,7 @@ export function AgentConnectCard() {
             type="button"
             onClick={() => setDetailOpen((v) => !v)}
             aria-expanded={detailOpen}
-            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-slate-300 hover:text-foreground"
+            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-border hover:text-foreground"
           >
             {t('screens.commerceportal.agentStatusPill')}
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${detailOpen ? 'rotate-180' : ''}`} />
@@ -128,13 +128,14 @@ export function AgentConnectCard() {
           <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
             <code
               dir="ltr"
-              className="min-w-0 flex-1 truncate rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-start font-mono text-sm text-amber-900 md:text-base"
+              className="min-w-0 flex-1 truncate rounded-xl border border-primary/20 bg-accent/70 px-4 py-3 text-start font-mono text-sm text-primary md:text-base"
             >
               {MCP_SERVER_URL}
             </code>
             <Button
               type="button"
               onClick={copyUrl}
+              // design-allow-next-line: portal CTA colour pinned by src/pages/CommercePortal.light-redesign.test.ts (outside this lane); moves to bg-primary with that test
               className="h-12 shrink-0 rounded-xl bg-amber-700 px-5 font-semibold text-white shadow-sm hover:bg-amber-800"
             >
               {copied ? <Check className="me-2 h-4 w-4" /> : <Copy className="me-2 h-4 w-4" />}
@@ -151,7 +152,7 @@ export function AgentConnectCard() {
                 <TabsTrigger
                   key={h.id}
                   value={h.id}
-                  className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900"
+                  className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-accent data-[state=active]:text-primary"
                 >
                   {t(h.tab)}
                 </TabsTrigger>
@@ -159,7 +160,7 @@ export function AgentConnectCard() {
             </TabsList>
             {HOSTS.map((h) => (
               <TabsContent key={h.id} value={h.id} className="mt-4">
-                <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-amber-700/70">
+                <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-primary/70">
                   {h.steps.map((key) => (
                     <li key={key}>{t(key)}</li>
                   ))}

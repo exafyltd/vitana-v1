@@ -19,7 +19,7 @@ import { PhotoDiaryUploader } from "@/components/diary/PhotoDiaryUploader";
 import { TextDiaryEditor } from "@/components/diary/TextDiaryEditor";
 import { DiaryEntryList } from "@/components/diary/DiaryEntryList";
 import { FeedbackReportList } from "@/components/feedback/FeedbackReportList";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { UnifiedCaptureCard, type CaptureMode } from "@/components/capture/UnifiedCaptureCard";
 
 type CategoryTab = "health" | "bugs";
@@ -75,7 +75,7 @@ export default function MobileDailyDiary() {
 
   return (
     <MobileAppShell>
-      <div className="px-4 pt-2 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
+      <div className="px-4 pt-2 pb-0 h-dvh overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         {/* Standard header with subtitle */}
         <StandardHeader
           title={translate('diary.title', 'Daily Diary')}

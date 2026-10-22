@@ -289,6 +289,7 @@ const generateImageUrl = (title: string, description: string) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
@@ -483,6 +484,7 @@ const generateImageUrl = (title: string, description: string) => {
                     <SelectTrigger className={`mt-1 ${errors.time ? 'border-destructive' : ''}`}>
                       <SelectValue placeholder={t('screens.common.selectTime')} />
                     </SelectTrigger>
+                    {/* design-allow-next-line: no scale value within 2px of 200px */}
                     <SelectContent className="max-h-[200px]">
                       {generateTimeOptions().map((time) => (
                         <SelectItem key={time} value={time}>

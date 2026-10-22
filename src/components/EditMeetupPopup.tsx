@@ -457,6 +457,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">

@@ -105,6 +105,7 @@ export function ExecutionLogsList() {
       {/* Filters */}
       <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex flex-wrap gap-4 items-center">
+          {/* design-allow-next-line: no scale value within 2px of 200px */}
           <div className="flex-1 min-w-[200px]">
             <label className="text-sm font-medium mb-2 block">{t('screens.dev.status')}</label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -121,6 +122,7 @@ export function ExecutionLogsList() {
             </Select>
           </div>
 
+          {/* design-allow-next-line: no scale value within 2px of 200px */}
           <div className="flex-1 min-w-[200px]">
             <label className="text-sm font-medium mb-2 block">{t('screens.dev.agent')}</label>
             <Select value={agentFilter} onValueChange={setAgentFilter}>

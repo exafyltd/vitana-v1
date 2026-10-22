@@ -129,15 +129,20 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
                 muted
               />
               {/* Play icon overlay */}
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                {/* design-allow-next-line: on-media scrim, theme-independent */}
                 <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
                   <Play className="h-5 w-5 text-foreground fill-current ms-0.5" />
                 </div>
               </div>
               {/* Title & duration */}
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <div className="absolute bottom-0 start-0 end-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                {/* design-allow-next-line: on-media scrim, theme-independent */}
                 <p className="text-xs text-white font-medium line-clamp-1">{video.title}</p>
                 {video.duration && (
+                  // design-allow-next-line: on-media scrim, theme-independent
                   <p className="text-[10px] text-white/70">{formatDuration(video.duration)}</p>
                 )}
               </div>

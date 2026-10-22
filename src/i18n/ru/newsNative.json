@@ -1,0 +1,14 @@
+{
+  "newsNative": {
+    "article": {
+      "unavailableTitle": "Статья недоступна",
+      "unavailableBody": "Эту статью нельзя открыть здесь. Вернись в ленту, чтобы открыть её снова.",
+      "backToFeed": "Назад в ленту"
+    },
+    "post": {
+      "video": "Видео",
+      "likes": "Лайков: {count}",
+      "comments": "Комментариев: {count}"
+    }
+  }
+}

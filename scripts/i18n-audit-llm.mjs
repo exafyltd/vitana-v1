@@ -37,7 +37,8 @@
 //
 // Flags:
 //   --locale=de               (required, target locale code)
-//   --provider=gemini         (gemini | anthropic | deepseek; default gemini)
+//   --provider=deepseek       (gemini | anthropic | deepseek; default deepseek — Gemini key is out of
+//                              quota and the direct Anthropic API has no credit; see VTID-05284)
 //   --shard=screens           (limit to one shard)
 //   --batch=30                (keys per LLM call)
 //   --threshold=10            (pct EDIT_SUGGESTED+LOW_CONF that fails the run)
@@ -64,7 +65,7 @@ const args = Object.fromEntries(
 );
 
 const TARGET_LOCALE = args.locale;
-const PROVIDER = args.provider || 'gemini';
+const PROVIDER = args.provider || 'deepseek';
 const SHARD_FILTER = args.shard || null;
 const BATCH_SIZE = parseInt(args.batch || '30', 10);
 const THRESHOLD_PCT = parseFloat(args.threshold || '10');
@@ -72,7 +73,7 @@ const RESUME = !!args.resume;
 const DRY = !!args['dry-run'];
 
 if (!TARGET_LOCALE) {
-  console.error('Usage: node scripts/i18n-audit-llm.mjs --locale=<code> [--provider=gemini|anthropic|deepseek]');
+  console.error('Usage: node scripts/i18n-audit-llm.mjs --locale=<code> [--provider=deepseek|gemini|anthropic]');
   process.exit(2);
 }
 

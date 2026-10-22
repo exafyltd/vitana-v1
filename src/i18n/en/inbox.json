@@ -131,7 +131,33 @@
       "today": "Today",
       "yesterday": "Yesterday"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "Sending",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "read": "Read",
+      "failed": "Not sent",
+      "retry": "Retry",
+      "retryLabel": "Send this message again",
+      "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "Jump to latest",
+      "one": "1 new message",
+      "other": "{count} new messages",
+      "unread": "Unread messages",
+      "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Original message not available",
+      "loading": "Original message…",
+      "jumpToOriginal": "Go to the original message",
+      "jumpTo": "Go to the original message from {name}",
+      "unknownSender": "Member",
+      "noText": "Attachment",
+      "_pending_review": {}
+    }
   },
   "_pending_review": {}
 }

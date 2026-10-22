@@ -31,13 +31,13 @@ export function ProfessionalCTAs({
       <CardContent className="p-4">
         {/* Live Status */}
         {isCurrentlyLive && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <div className="mb-4 p-3 bg-status-error/10 border border-status-error/20 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-semibold text-red-700">{t('screens.profile.liveNow')}</span>
+              <div className="w-2 h-2 bg-status-error rounded-full animate-pulse"></div>
+              <span className="text-sm font-semibold text-status-error">{t('screens.profile.liveNow')}</span>
             </div>
-            <p className="text-sm text-red-700 mb-2">{credentials.liveSessionTitle}</p>
-            <div className="flex items-center gap-1 text-xs text-red-600">
+            <p className="text-sm text-status-error mb-2">{credentials.liveSessionTitle}</p>
+            <div className="flex items-center gap-1 text-xs text-status-error">
               <Users className="h-3 w-3" />
               <span>{t('screens.profile.value0Watching', { value0: credentials.liveViewerCount || 0 })}</span>
             </div>
@@ -52,7 +52,7 @@ export function ProfessionalCTAs({
               {canGoLive && (
                 <Button 
                   onClick={onGoLive}
-                  className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white"
+                  className="w-full bg-gradient-to-r from-status-error to-category-4 hover:from-status-error hover:to-category-4 text-primary-foreground"
                   size="lg"
                 >
                   {isCurrentlyLive ? (
@@ -78,7 +78,7 @@ export function ProfessionalCTAs({
               {isCurrentlyLive && (
                 <Button 
                   onClick={onJoinLive}
-                  className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white"
+                  className="w-full bg-gradient-to-r from-status-error to-category-4 hover:from-status-error hover:to-category-4 text-primary-foreground"
                   size="lg"
                 >
                   <Play className="h-4 w-4 me-2" />

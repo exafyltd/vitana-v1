@@ -9,7 +9,7 @@ const PER_KIND_SLOT_CAP = 20; // VTID-02719: must mirror MATURE_MAX_OPEN_PER_KIN
 
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Loader2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { listMyIntents, type UserIntent, type IntentKind } from "@/lib/intentApi";
@@ -18,7 +18,7 @@ import { IntentComposer } from "@/components/intents/IntentComposer";
 import { notifyError, t } from '@/lib/i18n-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AppLayout from "@/components/AppLayout";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { TierBEmpty, TierBListSkeleton } from "@/components/spotlight/tier-b/TierBKit";
 
@@ -182,24 +182,24 @@ export default function MyIntents() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
+        <SpotlightLoading rows={4} />
       ) : intents.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
           {t('screens.myintents.noIntentsThisView')}
         </div>
       ) : (
-        <div className="space-y-3">
-          {intents.map((intent) => (
-            <IntentCard
-              key={intent.intent_id}
-              intent={intent}
-              to={`/intents/match/${intent.intent_id}`}
-              variant="my-posts"
-            />
-          ))}
-        </div>
+        <SpotlightLoading loading={false}>
+          <div className="space-y-3">
+            {intents.map((intent) => (
+              <IntentCard
+                key={intent.intent_id}
+                intent={intent}
+                to={`/intents/match/${intent.intent_id}`}
+                variant="my-posts"
+              />
+            ))}
+          </div>
+        </SpotlightLoading>
       )}
 
       <IntentComposer

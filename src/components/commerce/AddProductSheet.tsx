@@ -110,7 +110,7 @@ export function AddProductSheet({
             <button
               type="button"
               onClick={back}
-              className="-ms-1 flex min-h-11 items-center gap-1 text-sm text-muted-foreground hover:text-amber-700"
+              className="-ms-1 flex min-h-11 items-center gap-1 text-sm text-muted-foreground hover:text-primary"
             >
               <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
               {t('screens.commerceportal.orgOnboarding.wizardBack')}
@@ -123,7 +123,7 @@ export function AddProductSheet({
               <select
                 value={org.id}
                 onChange={(e) => onSelectOrg?.(e.target.value)}
-                className="h-11 max-w-56 truncate rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                className="h-11 max-w-56 truncate rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {orgs.map((o) => (
                   <option key={o.id} value={o.id}>
@@ -148,7 +148,7 @@ export function AddProductSheet({
                   close();
                   onRegister?.();
                 }}
-                className="mt-4 h-12 bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                className="mt-4 h-12 bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
               >
                 {t('screens.commerceportal.orgOnboarding.registerCta')}
               </Button>
@@ -161,9 +161,9 @@ export function AddProductSheet({
                   type="button"
                   onClick={() => chooseKind(k)}
                   data-testid={`add-kind-${k}`}
-                  className="flex min-h-16 w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-600/50 hover:bg-amber-50/60"
+                  className="flex min-h-16 w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/30 hover:bg-accent/60"
                 >
-                  <Icon className="h-6 w-6 shrink-0 text-amber-700" />
+                  <Icon className="h-6 w-6 shrink-0 text-primary" />
                   <span className="min-w-0">
                     <span className="block font-semibold text-foreground">{t(kt)}</span>
                     <span className="block text-sm text-muted-foreground">{t(body)}</span>
@@ -177,7 +177,7 @@ export function AddProductSheet({
                     close();
                     onImportFile();
                   }}
-                  className="flex min-h-11 w-full items-center justify-center gap-2 pt-2 text-sm font-medium text-amber-800 hover:underline"
+                  className="flex min-h-11 w-full items-center justify-center gap-2 pt-2 text-sm font-medium text-primary hover:underline"
                 >
                   <FileUp className="h-4 w-4" />
                   {t('screens.commerceportal.addOffer.importFile')}
@@ -221,7 +221,7 @@ export function AddProductSheet({
                     <button
                       type="button"
                       onClick={() => setPicked(v)}
-                      className="h-full min-h-14 w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-600/50 hover:bg-amber-50/60 dark:hover:bg-amber-950/20"
+                      className="h-full min-h-14 w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/30 hover:bg-accent/60"
                     >
                       <p className="font-medium text-foreground">{v.display_label}</p>
                       {v.description && (

@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05298",
+  "service": "community-app",
+  "_note": "Native Wave 2 news lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 7). It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/news", "cwd": "apps/mobile",
+      "reason": "news / post reader unit tests: article loaded / not-found / error, post loaded / deleted / error, NewsArticleCard image fallback, deep-link resolution — fake-gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the two readers and the card type-check against @vitana/core, @vitana/tokens and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the new routes and the news-images core re-export (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "NEWS.DETAIL and /post/:source/:id are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/news/01-news-detail.yaml", "target": "/news/:id", "next_actor": "owner",
+      "reason": "open a feed card -> reader renders; back returns; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment" },
+    { "flow": "apps/mobile/maestro/news/02-post-detail.yaml", "target": "/post/:source/:id", "next_actor": "owner",
+      "reason": "like/comment push deep-link -> single post / video renders; not-found for a deleted post; screenshot parity; needs G1" }
+  ]
+}

@@ -42,6 +42,7 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-3 p-4">
       <Skeleton className="h-5 w-48" />
+      {/* design-allow-next-line: no scale value within 2px of 250px */}
       <div className="flex items-end gap-3 h-[250px] pt-4">
         {Array.from({ length: 6 }).map((_, i) => (
           <Skeleton

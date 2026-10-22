@@ -407,6 +407,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('titleCreate', 'Go Live')}</DialogTitle>
@@ -660,6 +661,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                         }
                       </Button>
                     </PopoverTrigger>
+                    {/* design-allow-next-line: viewport-bound sheet height */}
                     <PopoverContent className="w-auto max-h-[60vh] overflow-y-auto p-0" align="start">
                       <Calendar
                         mode="single"
@@ -702,7 +704,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                         <SelectTrigger id="schedule-time">
                           <SelectValue placeholder={t('selectTime', 'Select time')} />
                         </SelectTrigger>
-                        <SelectContent className="max-h-[240px]">
+                        <SelectContent className="max-h-60">
                           {generateTimeOptions().map((time) => (
                             <SelectItem key={time} value={time}>{time}</SelectItem>
                           ))}
