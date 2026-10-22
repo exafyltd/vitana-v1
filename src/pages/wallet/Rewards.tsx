@@ -94,7 +94,7 @@ function Rewards() {
       {/* VTID-05024: on a phone, a back link to the mobile Wallet instead of the desktop tab bar. */}
       {isMobile ? null : <SubNavigation items={walletNavigation} />}
       
-      <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className={isMobile ? "p-4 pb-32 space-y-4" : "max-w-7xl mx-auto p-6 space-y-8"}>
         {isMobile && (
           <Link

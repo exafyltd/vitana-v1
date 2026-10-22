@@ -206,6 +206,7 @@ export function IntentShareSheet({
               placeholder={t('screens.intents.dragan1Maria3Daniel4PasteTypeUp')}
               value={recipientText}
               onChange={(e) => setRecipientText(e.target.value)}
+              // design-allow-next-line: measured textarea min-height off the scale (>2px)
               className="min-h-[60px] font-mono text-sm"
               aria-label={t('screens.intents.recipientVitana_ids')}
             />

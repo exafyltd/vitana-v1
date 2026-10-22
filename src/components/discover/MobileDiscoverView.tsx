@@ -188,7 +188,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
                 "w-5 h-5 rounded-full flex items-center justify-center bg-gradient-to-br",
                 category.color
               )}>
-                <category.icon className="h-3 w-3 text-white" />
+                <category.icon className="h-3 w-3 text-primary-foreground" />
               </span>
               {category.title}
             </button>
@@ -202,10 +202,10 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
   if (activeTab === 'share') {
     return (
       <div className="space-y-3">
-        <div className="rounded-[20px] overflow-hidden bg-gradient-to-br from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 border border-purple-200/30 dark:border-purple-800/30 p-5">
+        <div className="rounded-[20px] overflow-hidden bg-gradient-to-br from-category-2/10 to-category-4/10 border border-category-2/10 p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-              <Sparkles className="h-6 w-6 text-white" />
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-category-2 to-category-4 flex items-center justify-center">
+              <Sparkles className="h-6 w-6 text-primary-foreground" />
             </div>
             <div>
               <h3 className="font-semibold text-base">{translate('discover.shareAndEarn')}</h3>

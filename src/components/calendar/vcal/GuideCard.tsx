@@ -47,7 +47,7 @@ function Action({ label, onClick, primary }: { label: string; onClick: () => voi
       {label}
     </button>
   ) : (
-    <button type="button" onClick={onClick} className="h-10 rounded-full px-3 text-[15px] font-semibold text-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500">
+    <button type="button" onClick={onClick} className="h-10 rounded-full px-3 text-[15px] font-semibold text-category-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1">
       {label}
     </button>
   );
@@ -63,8 +63,8 @@ export function GuideCard({ guidance, actions }: { guidance: Guidance; actions: 
             <Sparkles className="h-3 w-3" aria-hidden />
             {t("vcal.guide.eyebrow")}
           </span>
-          <span className="mt-1.5 text-[15px] font-semibold leading-snug text-slate-900">{text}</span>
-          {sub && <span className="text-sm leading-snug text-slate-600">{sub}</span>}
+          <span className="mt-1.5 text-[15px] font-semibold leading-snug text-foreground">{text}</span>
+          {sub && <span className="text-sm leading-snug text-muted-foreground">{sub}</span>}
         </div>
         {actions.onDismiss && (
           <button

@@ -27,7 +27,7 @@ import { fmtNumber } from '@/lib/locale-format';
 function RewardBadge({ reward_preview }: { reward_preview: MarketplaceProduct["reward_preview"] }) {
   if (!reward_preview?.points_estimate) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 rounded-full px-1.5 py-0.5">
+    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-status-success bg-status-success-subtle rounded-full px-1.5 py-0.5">
       <Gift className="w-3 h-3" />{t('screens.discover.points_estimatePts', { points_estimate: reward_preview.points_estimate })}
     </span>
   );
@@ -167,7 +167,7 @@ export function MarketplaceProductCard({
         {/* Rating */}
         {p.rating !== null && p.rating > 0 && (
           <div className="flex items-center gap-1">
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            <Star className="w-3.5 h-3.5 fill-status-warning text-status-warning" />
             <span className="text-xs font-medium">{p.rating.toFixed(1)}</span>
             {p.review_count !== null && p.review_count > 0 && (
               <span className="text-xs text-muted-foreground">
@@ -190,7 +190,7 @@ export function MarketplaceProductCard({
 
         {/* Match reasons (compact) */}
         {showMatchReasons && matchReasons.length > 0 && (
-          <div className="text-xs text-emerald-700 line-clamp-1">
+          <div className="text-xs text-status-success line-clamp-1">
             {matchReasons[0].text}
           </div>
         )}

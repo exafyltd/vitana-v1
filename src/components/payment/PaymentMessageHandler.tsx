@@ -359,10 +359,10 @@ export function PaymentMessageHandler({
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="w-4 h-4 text-green-600" />;
-      case 'declined': return <XCircle className="w-4 h-4 text-red-600" />;
-      case 'pending': return <Clock className="w-4 h-4 text-yellow-600" />;
-      default: return <Clock className="w-4 h-4 text-gray-400" />;
+      case 'completed': return <CheckCircle className="w-4 h-4 text-status-success" />;
+      case 'declined': return <XCircle className="w-4 h-4 text-status-error" />;
+      case 'pending': return <Clock className="w-4 h-4 text-status-warning" />;
+      default: return <Clock className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -422,12 +422,12 @@ export function PaymentMessageHandler({
                 </div>
               </div>
               {walletError && walletError.includes('authenticated') && (
-                <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
+                <div className="text-xs text-status-error bg-status-error-subtle p-2 rounded">
                   {t('screens.payment.authenticationRequiredPleaseSignViewBalance')}
                 </div>
               )}
               {walletError && walletError.includes('permission') && (
-                <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
+                <div className="text-xs text-status-error bg-status-error-subtle p-2 rounded">
                   {t('screens.payment.permissionErrorUnableAccessWalletData')}
                 </div>
               )}
@@ -473,7 +473,7 @@ export function PaymentMessageHandler({
 
           {/* Insufficient balance warning */}
           {!isCurrentUser && effectiveStatus === 'pending' && typeof balanceVal === 'number' && balanceVal < amount && (
-            <div className="flex items-center gap-1 mt-2 text-xs text-red-600">
+            <div className="flex items-center gap-1 mt-2 text-xs text-status-error">
               <AlertTriangle className="w-3 h-3" />
               <span>{t('screens.payment.insufficientCurrencyBalance', { currency })}</span>
             </div>
@@ -559,20 +559,20 @@ export function PaymentMessageHandler({
     const { amount, currency, description, transactionId } = paymentData;
 
     return (
-      <Card className="bg-green-50 border-green-200 max-w-sm">
+      <Card className="bg-status-success-subtle border-status-success/25 max-w-sm">
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
-            <CheckCircle className="w-5 h-5 text-green-600" />
-            <span className="font-medium text-green-800">{t('screens.payment.paymentCompleted')}</span>
+            <CheckCircle className="w-5 h-5 text-status-success" />
+            <span className="font-medium text-status-success">{t('screens.payment.paymentCompleted')}</span>
           </div>
           <div className="flex items-center gap-2 mb-2">
             {getCurrencyIcon(currency)}
-            <span className="font-semibold text-lg text-green-700">
+            <span className="font-semibold text-lg text-status-success">
               {formatCurrency(amount, currency)}
             </span>
           </div>
-          <p className="text-sm text-green-700 mb-2">{description}</p>
-          <div className="flex items-center gap-1 text-xs text-green-600">
+          <p className="text-sm text-status-success mb-2">{description}</p>
+          <div className="flex items-center gap-1 text-xs text-status-success">
             <Receipt className="w-3 h-3" />
             <span>{t('screens.payment.idTransactionid', { transactionId })}</span>
           </div>

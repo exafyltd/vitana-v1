@@ -123,6 +123,7 @@ export function WalletBalanceCard({
               alt={title}
               className="w-full h-full object-cover"
             />
+            {/* design-allow-next-line: on-media scrim, theme-independent */}
             <div className="absolute inset-0 bg-black/20" />
           </div>
         )}

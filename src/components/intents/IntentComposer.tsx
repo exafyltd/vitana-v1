@@ -321,7 +321,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
                   </p>
                 )}
                 {!hasCoverFallback && (
-                  <div className="mt-2 rounded-lg border border-amber-300/60 bg-amber-50 dark:bg-amber-900/20 p-3 space-y-2">
+                  <div className="mt-2 rounded-lg border border-status-warning/25 bg-status-warning-subtle p-3 space-y-2">
                     <p className="text-xs font-medium">
                       {t('screens.intents.noCoverYetBannerTitle')}
                     </p>

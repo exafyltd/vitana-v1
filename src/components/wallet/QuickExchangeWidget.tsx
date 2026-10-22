@@ -87,10 +87,10 @@ export function QuickExchangeWidget({
   };
 
   return (
-    <Card className={cn("bg-gradient-to-br from-blue-50/30 to-purple-50/30 border border-blue-200/50", className)}>
+    <Card className={cn("bg-gradient-to-br from-category-3/5 to-category-2/5 border border-category-3/15", className)}>
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
-          <ArrowUpDown className="w-5 h-5 text-blue-600" />
+          <ArrowUpDown className="w-5 h-5 text-category-3" />
           {t('screens.wallet.quickExchange')}
         </CardTitle>
       </CardHeader>
@@ -188,19 +188,19 @@ export function QuickExchangeWidget({
 
         {/* Exchange Preview */}
         {calculation && parseFloat(fromAmount) > 0 && (
-          <Card className="bg-white/50 border border-blue-200/50">
+          <Card className="bg-card/50 border border-category-3/15">
             <CardContent className="p-3">
               <div className="flex items-center justify-center gap-3 text-sm">
                 <div className="text-center">
                   <p className="text-muted-foreground">{t('screens.wallet.youSend')}</p>
-                  <p className="font-bold text-blue-600">
+                  <p className="font-bold text-category-3">
                     {formatCurrency(calculation.fromAmount, fromCurrency)}
                   </p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-blue-500" />
+                <ArrowRight className="w-4 h-4 text-category-3" />
                 <div className="text-center">
                   <p className="text-muted-foreground">{t('screens.wallet.youReceive')}</p>
-                  <p className="font-bold text-green-600">
+                  <p className="font-bold text-status-success">
                     {formatCurrency(calculation.total, toCurrency)}
                   </p>
                 </div>
@@ -227,7 +227,7 @@ export function QuickExchangeWidget({
           <Button 
             onClick={handleExchangeAndSend}
             disabled={!calculation || parseFloat(fromAmount) <= 0 || isProcessing}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-gradient-to-r from-category-3 to-category-2 hover:from-category-3 hover:to-category-2"
           >
             <Zap className="w-4 h-4 me-1" />
             {t('screens.wallet.exchangeSend')}

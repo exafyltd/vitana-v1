@@ -35,13 +35,13 @@ export function MobileWalletBalanceCard({
   const getIcon = () => {
     switch (type) {
       case 'tokens':
-        return <Coins className="h-5 w-5 text-amber-500" />;
+        return <Coins className="h-5 w-5 text-status-warning" />;
       case 'cash': {
         const CashIcon = icon ?? DollarSign;
-        return <CashIcon className="h-5 w-5 text-emerald-500" />;
+        return <CashIcon className="h-5 w-5 text-status-success" />;
       }
       case 'credits':
-        return <CreditCard className="h-5 w-5 text-purple-500" />;
+        return <CreditCard className="h-5 w-5 text-category-2" />;
     }
   };
 

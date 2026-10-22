@@ -139,6 +139,7 @@ function RedeemDialog({ item, shop, currency, locale, money, onClose }: {
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
+      {/* design-allow-next-line: viewport-relative dialog height; the contract has no viewport-height token */}
       <DialogContent className="max-h-[90vh] overflow-y-auto" data-testid="reward-shop-dialog">
         <DialogHeader>
           <DialogTitle className="text-start">{title}</DialogTitle>

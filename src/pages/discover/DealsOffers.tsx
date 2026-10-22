@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { discoverNavigation } from "@/config/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
@@ -419,7 +419,7 @@ function DealsOffersInner() {
     <AppLayout>
       <SEO title={t('screens.discover.dealsOffersDiscover')} description="Limited-time deals, trending services, AI recommendations, and saved items" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title={t('screens.discover.dealsOffers')}
@@ -463,8 +463,8 @@ function DealsOffersInner() {
 
             <SplitBarContent value="flash" className="space-y-6">
               {flashDeals.length === 0 && (
-                <Card className="p-8 text-center bg-white/70 backdrop-blur-sm">
-                  <Flame className="h-10 w-10 text-red-500 mx-auto mb-3" />
+                <Card className="p-8 text-center bg-card/70 backdrop-blur-sm">
+                  <Flame className="h-10 w-10 text-status-error mx-auto mb-3" />
                   <h3 className="font-semibold mb-1">{t('screens.discover.noFlashDealsRightNow')}</h3>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.discover.whenMerchantsRunPromotionsTheyRsquo')}
@@ -476,7 +476,7 @@ function DealsOffersInner() {
                   <Card
                     key={deal.id}
                     onClick={() => deal._product && selectProduct(deal._product)}
-                    className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col cursor-pointer">
+                    className="relative group hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm flex flex-col cursor-pointer">
                     <BookmarkButton
                       item={{
                         item_type: 'product',
@@ -500,10 +500,11 @@ function DealsOffersInner() {
                         sizeClass="w-full h-48"
                         className="rounded-t-lg"
                       />
-                      <div className="absolute top-2 end-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.discountOff', { discount: deal.discount })}
+                      <div className="absolute top-2 end-12 bg-status-error text-primary-foreground px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.discountOff', { discount: deal.discount })}
                       </div>
                       {deal.timeLeft && (
-                        <div className="absolute bottom-2 start-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                        // design-allow-next-line: on-media scrim, theme-independent
+                        <div className="absolute bottom-2 start-2 bg-black/70 text-primary-foreground px-2 py-1 rounded text-xs flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {deal.timeLeft}
                         </div>
@@ -525,8 +526,8 @@ function DealsOffersInner() {
                               key={i}
                               className={`h-4 w-4 ${
                                 i < Math.floor(deal.rating)
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "fill-gray-200 text-gray-200"
+                                  ? "fill-status-warning text-status-warning"
+                                  : "fill-muted-foreground text-muted-foreground"
                               }`}
                             />
                           ))}
@@ -537,14 +538,14 @@ function DealsOffersInner() {
                       </div>
 
                       {deal.claimed != null && deal.total != null && deal.total > 0 && (
-                        <div className="bg-gray-100 rounded-lg p-2">
+                        <div className="bg-muted rounded-lg p-2">
                           <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>{t('screens.discover.claimedTotalClaimed', { claimed: deal.claimed, total: deal.total })}</span>
                             <span>{Math.round((deal.claimed / deal.total) * 100)}%</span>
                           </div>
-                          <div className="w-full bg-gray-300 rounded-full h-2">
+                          <div className="w-full bg-muted rounded-full h-2">
                             <div
-                              className="bg-red-600 h-2 rounded-full transition-all"
+                              className="bg-status-error h-2 rounded-full transition-all"
                               style={{ width: `${(deal.claimed / deal.total) * 100}%` }}
                             />
                           </div>
@@ -552,11 +553,11 @@ function DealsOffersInner() {
                       )}
 
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold text-red-600">${deal.price}</span>
+                        <span className="text-2xl font-bold text-status-error">${deal.price}</span>
                         <span className="text-muted-foreground line-through text-sm">
                           ${deal.originalPrice}
                         </span>
-                        <span className="text-green-600 font-semibold text-sm ms-auto">{t('screens.discover.saveValue0', { value0: deal.originalPrice - deal.price })}</span>
+                        <span className="text-status-success font-semibold text-sm ms-auto">{t('screens.discover.saveValue0', { value0: deal.originalPrice - deal.price })}</span>
                       </div>
                       
                       <div className="flex gap-2 mt-auto pt-2" onClick={(e) => e.stopPropagation()}>
@@ -592,7 +593,7 @@ function DealsOffersInner() {
             <SplitBarContent value="trending" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {trendingServices.map((service) => (
-                  <Card key={service.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                  <Card key={service.id} className="relative group hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm flex flex-col">
                     <BookmarkButton
                       item={{
                         item_type: 'wellness_service',
@@ -613,7 +614,7 @@ function DealsOffersInner() {
                         alt={service.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 end-12 bg-orange-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
+                      <div className="absolute top-2 end-12 bg-status-warning text-primary-foreground px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                         <TrendingUp className="h-3 w-3" />
                         {service.trend}
                       </div>
@@ -634,8 +635,8 @@ function DealsOffersInner() {
                               key={i}
                               className={`h-4 w-4 ${
                                 i < Math.floor(service.rating)
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "fill-gray-200 text-gray-200"
+                                  ? "fill-status-warning text-status-warning"
+                                  : "fill-muted-foreground text-muted-foreground"
                               }`}
                             />
                           ))}
@@ -694,7 +695,7 @@ function DealsOffersInner() {
             <SplitBarContent value="ai" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {personalizedMatches.map((match) => (
-                  <Card key={match.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col border-purple-200">
+                  <Card key={match.id} className="relative group hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm flex flex-col border-category-2/25">
                     <BookmarkButton
                       item={{
                         item_type: 'wellness_service',
@@ -715,7 +716,7 @@ function DealsOffersInner() {
                         alt={match.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 end-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.matchMatch', { match: match.match })}
+                      <div className="absolute top-2 end-12 bg-category-2 text-primary-foreground px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.matchMatch', { match: match.match })}
                       </div>
                     </div>
                     
@@ -728,10 +729,10 @@ function DealsOffersInner() {
                         <p className="text-xs text-muted-foreground">{match.credentials}</p>
                       </div>
                       
-                      <div className="bg-purple-50 p-3 rounded-lg">
+                      <div className="bg-category-2/10 p-3 rounded-lg">
                         <div className="flex items-start gap-2">
-                          <Brain className="h-4 w-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-purple-700 font-medium">{match.reason}</span>
+                          <Brain className="h-4 w-4 text-category-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-category-2 font-medium">{match.reason}</span>
                         </div>
                       </div>
 
@@ -749,7 +750,7 @@ function DealsOffersInner() {
                       <div className="space-y-2">
                         {match.benefits.map((benefit, idx) => (
                           <div key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                            <div className="h-1.5 w-1.5 rounded-full bg-status-success" />
                             <span>{benefit}</span>
                           </div>
                         ))}
@@ -790,7 +791,7 @@ function DealsOffersInner() {
             <SplitBarContent value="saved" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {savedProducts.map((product) => (
-                  <Card key={product.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                  <Card key={product.id} className="relative group hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm flex flex-col">
                     <BookmarkButton
                       item={{
                         item_type: 'deal',
@@ -811,7 +812,7 @@ function DealsOffersInner() {
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
                       {product.priceChange < 0 && (
-                        <div className="absolute top-2 start-2 bg-green-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
+                        <div className="absolute top-2 start-2 bg-status-success text-primary-foreground px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                           <TrendingDown className="h-3 w-3" />
                           {t('screens.discover.priceDrop')}
                         </div>
@@ -833,8 +834,8 @@ function DealsOffersInner() {
                               key={i}
                               className={`h-4 w-4 ${
                                 i < Math.floor(product.rating)
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "fill-gray-200 text-gray-200"
+                                  ? "fill-status-warning text-status-warning"
+                                  : "fill-muted-foreground text-muted-foreground"
                               }`}
                             />
                           ))}
@@ -847,12 +848,12 @@ function DealsOffersInner() {
                       <div className="text-xs text-muted-foreground space-y-1">
                         <div className="flex justify-between">
                           <span>{t('screens.discover.savedSaveddate', { savedDate: product.savedDate })}</span>
-                          <span className={product.stock === "In Stock" ? "text-green-600" : "text-orange-600"}>
+                          <span className={product.stock === "In Stock" ? "text-status-success" : "text-status-warning"}>
                             {product.stock}
                           </span>
                         </div>
                         {product.priceChange < 0 && (
-                          <div className="text-green-600 font-semibold">{t('screens.discover.priceDroppedValue0', { value0: Math.abs(product.priceChange).toFixed(2) })}
+                          <div className="text-status-success font-semibold">{t('screens.discover.priceDroppedValue0', { value0: Math.abs(product.priceChange).toFixed(2) })}
                           </div>
                         )}
                         {product.priceChange === 0 && (
@@ -862,7 +863,7 @@ function DealsOffersInner() {
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <span className={`text-2xl font-bold ${product.priceChange < 0 ? 'text-green-600' : ''}`}>
+                        <span className={`text-2xl font-bold ${product.priceChange < 0 ? 'text-status-success' : ''}`}>
                           ${product.price}
                         </span>
                         {product.priceChange < 0 && (

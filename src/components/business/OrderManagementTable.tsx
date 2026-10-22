@@ -37,6 +37,7 @@ export function OrderManagementTable({
     return (
       <div className="space-y-4">
         <Skeleton className="h-10 w-full" />
+        {/* design-allow-next-line: measured skeleton height off the 4px scale (>2px) */}
         <Skeleton className="h-[300px] w-full" />
       </div>
     );
@@ -54,7 +55,7 @@ export function OrderManagementTable({
     switch (status) {
       case "completed":
         return (
-          <Badge variant="default" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+          <Badge variant="default" className="bg-status-success-subtle text-status-success">
             <Check className="w-3 h-3 me-1" />
             {t('screens.business.paid')}
           </Badge>
@@ -104,7 +105,7 @@ export function OrderManagementTable({
                 <TableHead className="font-semibold">{t('screens.business.date')}</TableHead>
                 <TableHead className="font-semibold text-end">{t('screens.business.total')}</TableHead>
                 <TableHead className="font-semibold">{t('screens.business.status')}</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

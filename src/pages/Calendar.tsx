@@ -371,7 +371,7 @@ export default function CalendarPage() {
     <>
       <header className={INDEX_HERO_CLASS} style={INDEX_HERO_STYLE} data-testid="vcal-header">
         <p className={INDEX_EYEBROW}>{heroEyebrow}</p>
-        <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-slate-900" data-testid="vcal-date">
+        <h1 className="mt-2 break-words text-center text-2xl font-bold leading-tight text-foreground" data-testid="vcal-date">
           {view === "day"
             ? dayTitleParts.map((part, i) =>
                 i % 2 === 1 ? (
@@ -528,7 +528,7 @@ export default function CalendarPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-slate-50/60 px-4 pb-40 pt-4 sm:px-6 sm:pt-6" style={{ color: SURFACE.ink }} data-testid="vcal-page">
+      <div className="min-h-screen bg-surface-sunken/60 px-4 pb-40 pt-4 sm:px-6 sm:pt-6" style={{ color: SURFACE.ink }} data-testid="vcal-page">
         <div className={`mx-auto flex w-full flex-col gap-4 ${view === "week" ? "max-w-6xl" : "max-w-2xl"}`}>
           {vcalHero}
 
@@ -542,7 +542,7 @@ export default function CalendarPage() {
           {query.isLoading ? (
             <div className="flex flex-col gap-2" aria-busy="true" aria-label={t("vcal.loading")}>
               {[0, 1, 2].map((i) => (
-                <div key={i} className="h-16 animate-pulse rounded-2xl border border-slate-100 bg-white" />
+                <div key={i} className="h-16 animate-pulse rounded-2xl border border-border bg-card" />
               ))}
             </div>
           ) : query.isError ? (
@@ -574,7 +574,8 @@ export default function CalendarPage() {
             type="button"
             onClick={() => setAddFor(anchor)}
             aria-label={t("vcal.add.title")}
-            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            // design-allow-next-line: measured round FAB size off the scale (>2px)
+            className="pointer-events-auto flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full text-3xl text-primary-foreground shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1 focus-visible:ring-offset-2"
             style={{ background: SURFACE.ink }}
             data-testid="vcal-add"
           >
