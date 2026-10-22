@@ -141,6 +141,7 @@ export function MobileQRShareScreen({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           style={{
+            // design-allow-next-line: theme-independent dark share screen
             background: "linear-gradient(160deg, hsl(216, 53%, 6%) 0%, hsl(222, 47%, 14%) 50%, hsl(260, 40%, 12%) 100%)",
           }}
         >
@@ -148,6 +149,7 @@ export function MobileQRShareScreen({
           <Button
             variant="ghost"
             size="icon"
+            // design-allow-next-line: theme-independent dark share screen
             className="absolute top-safe-top end-4 mt-4 h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 text-white z-10"
             onClick={onClose}
           >
@@ -163,6 +165,7 @@ export function MobileQRShareScreen({
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             {/* Mode toggle: My Profile / Get MAXINA */}
+            {/* design-allow-next-line: theme-independent dark share screen */}
             <div className="flex bg-white/10 rounded-full p-1 mb-6" role="tablist">
               <button
                 type="button"
@@ -170,6 +173,7 @@ export function MobileQRShareScreen({
                 aria-selected={!isInvite}
                 onClick={() => setMode("profile")}
                 className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                  // design-allow-next-line: theme-independent dark share screen
                   !isInvite ? "bg-white text-slate-900" : "text-white/60 hover:text-white/90"
                 }`}
               >
@@ -181,6 +185,7 @@ export function MobileQRShareScreen({
                 aria-selected={isInvite}
                 onClick={() => setMode("invite")}
                 className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                  // design-allow-next-line: theme-independent dark share screen
                   isInvite ? "bg-white text-slate-900" : "text-white/60 hover:text-white/90"
                 }`}
               >
@@ -194,6 +199,7 @@ export function MobileQRShareScreen({
                     pre-padded to a square (maxina-logo-avatar.png) so it
                     fills the circle edge-to-edge like the profile Avatar,
                     instead of floating with visible square corners. */}
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <div className="h-20 w-20 rounded-full bg-white shadow-xl mb-4 overflow-hidden">
                   <img
                     src="/images/maxina-logo-avatar.png"
@@ -202,9 +208,11 @@ export function MobileQRShareScreen({
                     className="h-full w-full object-cover"
                   />
                 </div>
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <h2 className="text-xl font-bold text-white mb-1">
                   {translate('qrShare.appName', 'MAXINA')}
                 </h2>
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <p className="text-sm text-white/50 mb-6">
                   {translate('qrShare.appTagline', 'Longevity Community')}
                 </p>
@@ -212,26 +220,31 @@ export function MobileQRShareScreen({
             ) : (
               <>
                 {/* Avatar */}
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <Avatar className="h-20 w-20 border-[3px] border-white/20 shadow-xl mb-4">
                   <AvatarImage
                     src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(profileHandle ?? profileName ?? "vitana")}
                     alt={profileName}
                     style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
                   />
+                  {/* design-allow-next-line: theme-independent dark share screen */}
                   <AvatarFallback className="text-lg font-bold bg-white/10 text-white">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
 
                 {/* Name */}
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <h2 className="text-xl font-bold text-white mb-1">{profileName}</h2>
                 {profileHandle && (
+                  // design-allow-next-line: theme-independent dark share screen
                   <p className="text-sm text-white/50 mb-6">@{profileHandle}</p>
                 )}
               </>
             )}
 
             {/* QR Code Card */}
+            {/* design-allow-next-line: theme-independent dark share screen */}
             <div className="bg-white rounded-3xl p-6 shadow-2xl mb-3">
               <QRCodeSVG
                 id="mobile-qr-code"
@@ -245,6 +258,7 @@ export function MobileQRShareScreen({
             </div>
 
             {/* Scan label */}
+            {/* design-allow-next-line: theme-independent dark share screen */}
             <p className="text-xs text-white/40 mb-10">
               {isInvite
                 ? translate('qrShare.scanToDownload', 'Scan to download MAXINA')
@@ -257,9 +271,12 @@ export function MobileQRShareScreen({
                 onClick={handleNativeShare}
                 className="flex flex-col items-center gap-2"
               >
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <div className="h-14 w-14 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                  {/* design-allow-next-line: theme-independent dark share screen */}
                   <Share2 className="h-5 w-5 text-white" />
                 </div>
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <span className="text-[11px] text-white/60 font-medium">
                   {isInvite
                     ? translate('qrShare.shareApp', 'Share MAXINA')
@@ -271,13 +288,17 @@ export function MobileQRShareScreen({
                 onClick={handleCopyLink}
                 className="flex flex-col items-center gap-2"
               >
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <div className="h-14 w-14 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
                   {copied ? (
+                    // design-allow-next-line: theme-independent dark share screen
                     <Check className="h-5 w-5 text-green-400" />
                   ) : (
+                    // design-allow-next-line: theme-independent dark share screen
                     <Copy className="h-5 w-5 text-white" />
                   )}
                 </div>
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <span className="text-[11px] text-white/60 font-medium">
                   {translate('qrShare.copyLink', 'Copy Link')}
                 </span>
@@ -287,9 +308,12 @@ export function MobileQRShareScreen({
                 onClick={handleDownloadQR}
                 className="flex flex-col items-center gap-2"
               >
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <div className="h-14 w-14 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                  {/* design-allow-next-line: theme-independent dark share screen */}
                   <Download className="h-5 w-5 text-white" />
                 </div>
+                {/* design-allow-next-line: theme-independent dark share screen */}
                 <span className="text-[11px] text-white/60 font-medium">
                   {translate('qrShare.download', 'Download')}
                 </span>

@@ -2,12 +2,12 @@
 
 Owner request 2026-10-22: on the profile Posts tab (phone), avatar + name on top and the post full width below it.
 Plan: vitana-platform `.kiro/specs/profile-posts-full-width/` (converged, policy-approved). Base: vitana-v1
-origin/main `60c18aee4`.
+origin/main `60c18aee4`, re-verified after merging origin/main `b8a4efbd3` (colour-token migration on the same lines kept).
 
 ## Red → green
 `src/components/profile/shared/tabs/ProfilePostsTab.layout.test.tsx` (committed before the fix):
 - origin/main: **4 failed / 4** (no header/body split; image classes `mt-4 rounded-xl shadow-md`).
-- this branch: **4 passed / 4**; `npx vitest run src/components/profile` 14 files / 81 tests passed.
+- this branch: **4 passed / 4**; `npx vitest run src/components/profile` 16 files / 87 tests passed (after the main merge).
 
 ## Checks (local, this branch)
 - `npm run build` ✓ · `npm run test:design-contract` ✓ (fail 0).

@@ -114,6 +114,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('screens.profile.partnerPreferences')}</DialogTitle>
