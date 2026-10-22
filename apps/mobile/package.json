@@ -15,6 +15,7 @@
     "bundle": "expo export --platform ios --platform android --output-dir dist",
     "bundle:core-probe": "mkdir -p probe-dist && expo export:embed --entry-file probe/core-probe.ts --platform ios --dev false --minify false --bundle-output probe-dist/ios.js --sourcemap-output probe-dist/ios.js.map --assets-dest probe-dist/ios-assets && expo export:embed --entry-file probe/core-probe.ts --platform android --dev false --minify false --bundle-output probe-dist/android.js --sourcemap-output probe-dist/android.js.map --assets-dest probe-dist/android-assets && node probe/check-probe.js probe-dist/ios.js probe-dist/android.js",
     "deps:check": "expo install --check",
+    "parity:check": "node ../../scripts/native/parity-ledger.mjs --check",
     "gen:core": "node ../../scripts/native/gen-core-extract.mjs && node ../../scripts/native/core-closure.mjs --write",
     "gen:tokens": "node ../../scripts/native/gen-tokens.mjs"
   },

@@ -1,0 +1,239 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Back",
+      "loading": "Loading …",
+      "loadMore": "Load more",
+      "retry": "Try again",
+      "errorBody": "We couldn't load that just now. Please try again."
+    },
+    "groups": {
+      "title": "Groups",
+      "subtitle": "Join groups with shared interests or create your own.",
+      "tabsLabel": "Groups view",
+      "tabMine": "My groups",
+      "tabDiscover": "Discover",
+      "memberCount": "{count} members",
+      "public": "Public",
+      "private": "Private",
+      "join": "Join",
+      "joining": "Joining …",
+      "leave": "Leave",
+      "leaving": "Leaving …",
+      "emptyMineTitle": "No groups yet",
+      "emptyMineDesc": "Join your first group to get started.",
+      "emptyDiscoverTitle": "No groups to discover",
+      "emptyDiscoverDesc": "Be the first to start a community group.",
+      "create": "Create",
+      "searchPlaceholder": "Search groups",
+      "searchLabel": "Search groups"
+    },
+    "createGroup": {
+      "title": "Create a new group",
+      "namePlaceholder": "e.g. Morning Runners or Healthy Cooking",
+      "nameLabel": "Group name",
+      "descriptionPlaceholder": "Describe your group's purpose and activities",
+      "descriptionLabel": "Description",
+      "categoryLabel": "Category",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Nutrition",
+        "mental-health": "Mental health",
+        "support": "Support",
+        "learning": "Learning",
+        "social": "Social"
+      },
+      "privacyLabel": "Visibility",
+      "privacy": {
+        "public": "Public",
+        "private": "Private"
+      },
+      "cancel": "Cancel",
+      "submit": "Create group",
+      "creating": "Creating …",
+      "created": "Group created.",
+      "nameRequired": "Please enter a group name."
+    },
+    "composer": {
+      "title": "Post to the community",
+      "kindLabel": "Kind",
+      "kind": {
+        "commercial_buy": "Buying",
+        "commercial_sell": "Selling",
+        "activity_seek": "Activity",
+        "social_seek": "Social",
+        "mutual_aid": "Mutual aid",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Short headline",
+      "titleLabel": "Title",
+      "scopePlaceholder": "Describe what you need or offer",
+      "scopeLabel": "Description",
+      "budgetMin": "Budget min.",
+      "budgetMax": "Budget max.",
+      "cancel": "Cancel",
+      "submit": "Post",
+      "posting": "Posting …",
+      "posted": "Posted to the community.",
+      "titleRequired": "Please enter a title of at least 3 characters.",
+      "scopeTooShort": "Please describe it in at least 20 characters."
+    },
+    "groupDetail": {
+      "title": "Group",
+      "memberCount": "{count} members",
+      "membersWithCount": "Members ({count})",
+      "plusMore": "+{count}",
+      "join": "Join group",
+      "leave": "Leave group",
+      "notFoundTitle": "Group not found",
+      "notFoundDesc": "This group may have been removed or doesn't exist.",
+      "browse": "Browse groups"
+    },
+    "members": {
+      "title": "Community members",
+      "subtitle": "Meet everyone in the Vitana community — tap a card.",
+      "searchPlaceholder": "Search by name or Vitana ID",
+      "searchLabel": "Search members",
+      "sortLabel": "Sort",
+      "sort": {
+        "newest": "Newest",
+        "oldest": "Founders first",
+        "name": "By name"
+      },
+      "danceLabel": "Dance",
+      "dance": {
+        "all": "All",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Ballroom",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Member",
+      "empty": "No members yet.",
+      "emptyDance": "Nobody has set this dance as a preference yet — be the first!",
+      "viewProfile": "View profile"
+    },
+    "openAsks": {
+      "title": "Open asks",
+      "summaryLoading": "Loading asks …",
+      "summaryEmpty": "No open asks yet.",
+      "summaryCount": "{n} open asks",
+      "kindLabel": "Kind",
+      "filterAll": "All",
+      "topicLabel": "Topic",
+      "topic": {
+        "everything": "Everything",
+        "dance": "Dance only"
+      },
+      "kind": {
+        "commercial_buy": "Buying",
+        "commercial_sell": "Selling",
+        "activity_seek": "Activity",
+        "partner_seek": "Partner",
+        "social_seek": "Social",
+        "mutual_aid": "Mutual aid",
+        "learning_seek": "Learning",
+        "mentor_seek": "Mentoring"
+      },
+      "time": {
+        "justNow": "Just now",
+        "minutes": "{n}m ago",
+        "hours": "{n}h ago",
+        "days": "{n}d ago"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "No open asks in this view.",
+      "emptyDance": "No open dance asks yet — post yours and be the first!"
+    },
+    "findPartner": {
+      "title": "Find a partner",
+      "subtitle": "Find people who match your open wishes.",
+      "viewLabel": "View",
+      "view": {
+        "matches": "Matches",
+        "board": "Board",
+        "posts": "My posts",
+        "members": "Members"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "Match",
+      "emptyMatches": "No matches yet. Post a wish and we'll keep an eye out.",
+      "newWish": "New wish",
+      "searchPlaceholder": "Search posts & matches",
+      "searchLabel": "Search posts and matches",
+      "filter": "Filter",
+      "filterActive": "Filter ({count})",
+      "noMatchesForFilters": "No matches for these filters. Reset to see more.",
+      "showingOfTotal": "Showing {shown} of {total}",
+      "filterTitle": "Filter matches",
+      "filterMinScore": "Minimum score",
+      "filterClear": "Reset",
+      "filterShowResults": "Show {count} matches"
+    },
+    "matches": {
+      "title": "People who match you",
+      "subtitle": "Your matches from the community.",
+      "empty": "No matches yet. Check back soon.",
+      "fallbackName": "Community member",
+      "reasonDefault": "Shared interests",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "Community board",
+      "boardSubtitle": "What others are looking for right now.",
+      "filtersLabel": "Filters",
+      "filter": {
+        "all": "All",
+        "dance": "Dance"
+      },
+      "kind": {
+        "commercial_buy": "Buying",
+        "commercial_sell": "Selling",
+        "activity_seek": "Activity",
+        "partner_seek": "Partner",
+        "social_seek": "Social",
+        "mutual_aid": "Mutual aid",
+        "learning_seek": "Learning",
+        "mentor_seek": "Mentoring"
+      },
+      "post": "Post",
+      "styleLabel": "Style",
+      "variety": {
+        "any": "Any",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Ballroom",
+        "hiphop": "Hip-hop"
+      },
+      "viewMine": "View my intents",
+      "emptyBoard": "No open intents in this view. Be the first.",
+      "emptyDance": "No open dance posts yet — post yours and be the first!",
+      "emptyMine": "No posts in this view."
+    },
+    "intentMatch": {
+      "title": "Match details",
+      "backMine": "Back to my intents",
+      "notFound": "Intent not found.",
+      "matchesCount": "Matches ({count})",
+      "noMatches": "No matches yet — we'll keep looking for you."
+    },
+    "search": {
+      "title": "Search",
+      "subtitle": "Find members in the Vitana community.",
+      "placeholder": "Search members",
+      "inputLabel": "Search term",
+      "submit": "Search",
+      "memberMeta": "Community member",
+      "fallbackName": "Member",
+      "emptyTitle": "No results",
+      "emptyDesc": "Adjust your search term and try again."
+    }
+  }
+}

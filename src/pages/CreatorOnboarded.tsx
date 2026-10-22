@@ -119,14 +119,12 @@ export default function CreatorOnboarded() {
 
       <Panel className="max-w-2xl w-full">
         <PanelContent className="pt-12 pb-8 px-8">
-          {/* Loading State */}
+          {/* Loading State — the creator status is being fetched (isLoading || isRefetching),
+              a data load, so show the form skeleton like the Spotlight branch, never a spinner (SR-20). */}
           {(isLoading || isRefetching) && (
-            <div className="text-center space-y-6">
-              <div className="flex justify-center">
-                {/* design-allow-next-line: action in progress, not a data load */}
-                <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-              </div>
-              <div>
+            <div className="space-y-6">
+              <ArchetypeSkeleton archetype="form" />
+              <div className="text-center">
                 <h1 className="text-2xl font-bold">{t('screens.creatoronboarded.checkingYourPaymentStatus')}</h1>
                 <p className="text-muted-foreground mt-2">
                   {t('screens.creatoronboarded.thisShouldOnlyTakeMoment')}
