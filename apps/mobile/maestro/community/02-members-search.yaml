@@ -1,0 +1,14 @@
+# VTID-05296 (N-W2 community-hub) — Members directory + profile-preview overlay,
+# and global search. G1 only (device runtime, deferred to the owner gate).
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- extendedWaitUntil: { visible: { id: bottom-nav }, timeout: 20000 }
+- openLink: maxina:///comm/members
+- extendedWaitUntil: { visible: { id: screen-members }, timeout: 20000 }
+- takeScreenshot: members-list
+- openLink: maxina:///search
+- extendedWaitUntil: { visible: { id: screen-search }, timeout: 20000 }
+- inputText: { id: search-input, text: "a" }
+- tapOn: { id: search-submit }
+- takeScreenshot: search-results

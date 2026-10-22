@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -170,14 +170,14 @@ export default function Inspiration() {
             <SplitBarContent value="templates">
               <div className="space-y-6">
                 {inspirationTemplates.map((category, categoryIdx) => (
-                  <Card key={categoryIdx}>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                  <Panel key={categoryIdx}>
+                    <PanelHeader>
+                      <PanelTitle className="flex items-center gap-2">
                         <Lightbulb className="w-5 h-5 text-status-warning" />
                         {t(category.categoryKey)}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
+                      </PanelTitle>
+                    </PanelHeader>
+                    <PanelContent className="space-y-3">
                       {category.templates.map((template, templateIdx) => {
                         const text = t(template.textKey);
                         return (
@@ -207,55 +207,55 @@ export default function Inspiration() {
                         </div>
                         );
                       })}
-                    </CardContent>
-                  </Card>
+                    </PanelContent>
+                  </Panel>
                 ))}
               </div>
             </SplitBarContent>
 
             <SplitBarContent value="favorites">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel>
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <Heart className="w-5 h-5 text-status-error" />
                     {t('screens.messages.myFavoriteTemplates')}
                     <Badge variant="secondary">0</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-muted-foreground text-center py-8">{t('screens.messages.yourSavedFavoriteTemplatesWillAppear')}</p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </SplitBarContent>
 
             <SplitBarContent value="recent">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel>
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <Clock className="w-5 h-5 text-status-info" />
                     {t('screens.messages.recentlyUsedTemplates')}
                     <Badge variant="secondary">0</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-muted-foreground text-center py-8">{t('screens.messages.templatesYouVeUsedRecentlyWill')}</p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </SplitBarContent>
 
             <SplitBarContent value="custom">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel>
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <Edit className="w-5 h-5 text-status-success" />
                     {t('screens.messages.customMessages2')}
                     <Badge variant="secondary">0</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-muted-foreground text-center py-8">{t('screens.messages.yourCustomCreatedMessagesWillAppear')}</p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </SplitBarContent>
           </SplitBar>
         </div>

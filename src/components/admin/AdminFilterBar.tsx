@@ -41,6 +41,7 @@ export default function AdminFilterBar({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
+      {/* design-allow-next-line: no scale value within 2px of 200px */}
       <div className="relative flex-1 min-w-[200px] max-w-sm">
         <Search className="absolute start-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -53,6 +54,7 @@ export default function AdminFilterBar({
 
       {filters?.map((filter, i) => (
         <Select key={i} value={filter.value} onValueChange={filter.onChange}>
+          {/* design-allow-next-line: no scale value within 2px of 140px */}
           <SelectTrigger className="w-[140px] h-9 text-sm">
             <SelectValue placeholder={filter.placeholder} />
           </SelectTrigger>

@@ -108,7 +108,7 @@ export function OAuthBouncePendingOverlay() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" onClick={checkNow} className="flex-1 min-w-[8rem]">
+            <Button size="sm" onClick={checkNow} className="flex-1 min-w-32">
               {t('screens.settings.iMBackCheckNow')}
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>
@@ -140,7 +140,7 @@ export function OAuthBouncePendingOverlay() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" onClick={checkNow} className="flex-1 min-w-[8rem]">
+            <Button size="sm" onClick={checkNow} className="flex-1 min-w-32">
               {t('screens.settings.checkNow')}
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>

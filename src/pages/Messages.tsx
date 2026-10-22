@@ -34,7 +34,7 @@ import { useProgressiveCount } from "@/hooks/useProgressiveCount";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { Card } from "@/components/ui/card";
+import { Panel } from "@/components/layout/spotlight/Panel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { MessageSquare } from "lucide-react";
@@ -63,7 +63,7 @@ import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
-import { ScreenFrame } from '@/components/layout/spotlight';
+import { ScreenFrame, SpotlightLoading } from '@/components/layout/spotlight';
 import { MessagesSpotlight } from '@/components/messages/spotlight/MessagesSpotlight';
 import { compareInboxThreads } from '@/lib/inboxThreadOrder';
 
@@ -567,7 +567,11 @@ export default function Messages() {
                 title={translate('inbox.title')}
                 description={translate('inbox.description')}
               />
-              <MobileConversationSkeleton count={6} />
+              {/* The row skeleton already has the loaded rows' exact shape; it only gains the busy region. */}
+              <div aria-busy="true" data-archetype-skeleton="conversation" data-spotlight-loading="mobile">
+                <span className="sr-only">{t('loading.default')}</span>
+                <MobileConversationSkeleton count={6} />
+              </div>
             </div>
           </div>
         </AppLayout>
@@ -579,9 +583,9 @@ export default function Messages() {
       <>
         <SEO title={translate('inbox.desktopTitle', 'Messages')} description={translate('inbox.description')} canonical={window.location.href} />
         <AppLayout>
-          <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
+          <div className="flex h-dvh min-h-0 flex-col overflow-hidden">
             <SubNavigation items={messagesNavigation} />
-            <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+            <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
               <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-2">
                 <div className="pt-1">
                   <h1 className="text-2xl font-bold tracking-tight text-foreground">{translate('inbox.desktopTitle', 'Messages')}</h1>
@@ -591,11 +595,8 @@ export default function Messages() {
                   <div className="w-80 border-e overflow-hidden">
                     <ConversationListSkeleton />
                   </div>
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                      <p className="text-muted-foreground">{translate('inbox.loading')}</p>
-                    </div>
+                  <div className="flex-1 p-6">
+                    <SpotlightLoading rows={5} />
                   </div>
                 </div>
               </div>
@@ -691,7 +692,7 @@ export default function Messages() {
                   const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
                   
                   return (
-                    <Card
+                    <Panel
                       key={thread.id}
                       className={`${cardHeight} me-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                         isActive 
@@ -763,7 +764,7 @@ export default function Messages() {
                               {thread.unread_count > 0 && (
                                 <Badge 
                                   variant="secondary" 
-                                  className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                                  className="bg-domain-messages-accent text-primary-foreground animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-5 h-5 flex items-center justify-center"
                                 >
                                   {thread.unread_count > 99 ? '99+' : thread.unread_count}
                                 </Badge>
@@ -772,7 +773,7 @@ export default function Messages() {
                           </div>
                         </div>
                       </div>
-                    </Card>
+                    </Panel>
                   );
                 })
             )}
@@ -829,7 +830,7 @@ export default function Messages() {
                   const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
                   
                   return (
-                    <Card
+                    <Panel
                       key={thread.id}
                       className={`${cardHeight} me-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                         isActive 
@@ -899,7 +900,7 @@ export default function Messages() {
                               {thread.unread_count > 0 && (
                                 <Badge 
                                   variant="secondary" 
-                                  className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                                  className="bg-domain-messages-accent text-primary-foreground animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-5 h-5 flex items-center justify-center"
                                 >
                                   {thread.unread_count > 99 ? '99+' : thread.unread_count}
                                 </Badge>
@@ -908,7 +909,7 @@ export default function Messages() {
                           </div>
                         </div>
                       </div>
-                    </Card>
+                    </Panel>
                   );
                 })
             )}
@@ -947,7 +948,7 @@ export default function Messages() {
                   const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
                   
                   return (
-                    <Card
+                    <Panel
                       key={thread.id}
                       className={`${cardHeight} me-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                         isActive 
@@ -1007,7 +1008,7 @@ export default function Messages() {
                               {thread.unread_count > 0 && (
                                 <Badge 
                                   variant="secondary" 
-                                  className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                                  className="bg-domain-messages-accent text-primary-foreground animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-5 h-5 flex items-center justify-center"
                                 >
                                   {thread.unread_count > 99 ? '99+' : thread.unread_count}
                                 </Badge>
@@ -1016,7 +1017,7 @@ export default function Messages() {
                           </div>
                         </div>
                       </div>
-                    </Card>
+                    </Panel>
                   );
                 })
             )}
@@ -1472,9 +1473,9 @@ export default function Messages() {
     <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
       <AppLayout>
         <SEO title={t('screens.messages.messages')} description="Your messages and conversations" canonical={window.location.href} />
-        <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
+        <div className="flex h-dvh min-h-0 flex-col overflow-hidden">
           <SubNavigation items={messagesNavigation} />
-          <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+          <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
             <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-2">
           <div className="pt-1">
             <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('screens.messages.messages')}</h1>

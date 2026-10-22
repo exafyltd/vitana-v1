@@ -112,7 +112,7 @@ export function AnalyticsDashboard() {
             <CardTitle className="text-sm font-medium">{t('screens.sharing.deliveryRate')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-green-600">{deliveryRate}%</p>
+            <p className="text-3xl font-bold text-status-success">{deliveryRate}%</p>
             <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.totaldeliveredTotalsentSent', { totalDelivered: metrics.totalDelivered, totalSent: metrics.totalSent })}
             </p>
           </CardContent>
@@ -123,7 +123,7 @@ export function AnalyticsDashboard() {
             <CardTitle className="text-sm font-medium">{t('screens.sharing.openRate')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-purple-600">{openRate}%</p>
+            <p className="text-3xl font-bold text-category-2">{openRate}%</p>
             <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.totalopenedTotaldeliveredDelivered', { totalOpened: metrics.totalOpened, totalDelivered: metrics.totalDelivered })}
             </p>
           </CardContent>
@@ -134,7 +134,7 @@ export function AnalyticsDashboard() {
             <CardTitle className="text-sm font-medium">{t('screens.sharing.clickRate')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-orange-600">{clickRate}%</p>
+            <p className="text-3xl font-bold text-status-warning">{clickRate}%</p>
             <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.totalclickedTotalopenedOpened', { totalClicked: metrics.totalClicked, totalOpened: metrics.totalOpened })}
             </p>
           </CardContent>

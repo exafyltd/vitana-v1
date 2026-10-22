@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import SEO from '@/components/SEO';
 import {
@@ -15,7 +14,7 @@ import { EventGameCelebration } from '@/components/event-game/EventGameCelebrati
 import { EventGameLeaderboardView } from '@/components/event-game/EventGameLeaderboardView';
 import { Trophy } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
-import { ArchetypeSkeleton, ScreenFrame } from '@/components/layout/spotlight';
+import { ScreenFrame, SpotlightLoading } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { communityNavigation } from '@/config/navigation';
 import { SpotlightEmpty } from '@/components/spotlight/member/MemberSpotlight';
@@ -43,7 +42,7 @@ export default function EventGamePage() {
         {game && <SEO title={game.name} description={game.description ?? undefined} />}
         <ScreenFrame archetype="collection" subNav={{ items: communityNavigation }}>
           {loading ? (
-            <ArchetypeSkeleton archetype="collection" />
+            <SpotlightLoading archetype="collection" />
           ) : !flagQuery.data || !game ? (
             <SpotlightEmpty Icon={Trophy} titleKey="eventGame.landing.disabled" />
           ) : (
@@ -89,8 +88,8 @@ export default function EventGamePage() {
 
   if (flagQuery.isLoading || gameQuery.isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen px-4 py-6">
+        <SpotlightLoading archetype="collection" />
       </div>
     );
   }

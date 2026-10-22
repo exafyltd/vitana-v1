@@ -218,7 +218,7 @@ export function CampaignCard({
         "group relative overflow-visible cursor-pointer",
         "p-5 max-md:p-4 rounded-2xl border-2",
         // Frosted glass background
-        "bg-white/85 backdrop-blur-xl",
+        "bg-card/85 backdrop-blur-xl",
         // Dynamic gradient border
         getStatusBorderGradient(campaign.status),
         // Inner glow
@@ -241,9 +241,9 @@ export function CampaignCard({
           <div
             className={cn(
               "w-6 h-6 rounded-md flex items-center justify-center",
-              "bg-white/90 backdrop-blur-sm border-2 border-gray-300",
-              "hover:border-teal-500 transition-all cursor-pointer",
-              isSelected && "bg-teal-100 border-teal-500"
+              "bg-card/90 backdrop-blur-sm border-2 border-border",
+              "hover:border-category-1 transition-all cursor-pointer",
+              isSelected && "bg-category-1/15 border-category-1"
             )}
             onClick={(e) => {
               e.stopPropagation();
@@ -251,7 +251,7 @@ export function CampaignCard({
             }}
           >
             {isSelected && (
-              <Check className="w-4 h-4 text-teal-600" />
+              <Check className="w-4 h-4 text-category-1" />
             )}
           </div>
         </div>
@@ -262,7 +262,7 @@ export function CampaignCard({
         <h3
           className={cn(
             "text-lg max-md:text-base font-semibold leading-tight tracking-tight flex-1",
-            "text-gray-900",
+            "text-foreground",
             "group-hover:bg-gradient-to-r group-hover:from-gradient-join-start group-hover:to-gradient-join-end",
             "group-hover:bg-clip-text group-hover:text-transparent",
             "transition-all duration-200"
@@ -303,9 +303,9 @@ export function CampaignCard({
                   <Badge
                     className={cn(
                       "px-2 py-0.5 text-xs font-medium gap-1 rounded-full",
-                      "bg-gradient-to-r from-teal-400/20 to-green-400/20",
-                      "border-teal-300 text-teal-700",
-                      "hover:shadow-lg hover:shadow-teal-200/50",
+                      "bg-gradient-to-r from-category-1/15 to-status-success/15",
+                      "border-category-1/40 text-category-1",
+                      "hover:shadow-lg hover:shadow-category-1/15",
                       "transition-all duration-300"
                     )}
                   >
@@ -332,7 +332,7 @@ export function CampaignCard({
                   {campaign.description}
                 </p>
                 {/* Fade mask after 2 lines */}
-                <div className="absolute bottom-0 start-0 end-0 h-4 bg-gradient-to-t from-white/85 to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 start-0 end-0 h-4 bg-gradient-to-t from-card/85 to-transparent pointer-events-none" />
               </div>
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
@@ -373,7 +373,7 @@ export function CampaignCard({
       {/* Publishing To (Channels) */}
       {selectedChannels.length > 0 && (
         <div className="mb-4">
-          <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-gray-500/80 mb-2">
+          <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-muted-foreground/80 mb-2">
             {t('screens.sharing.publishing')}
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -388,14 +388,14 @@ export function CampaignCard({
                   <div
                     className={cn(
                       "w-8 h-8 rounded-full flex items-center justify-center",
-                      "ring-2 ring-white shadow-md",
+                      "ring-2 ring-border shadow-md",
                       "transition-all duration-200",
                       "hover:scale-110 hover:shadow-lg",
                       "hover:shadow-[0_0_16px_rgba(0,0,0,0.15)]",
                       channelInfo.color
                     )}
                   >
-                    <Icon className="w-4 h-4 text-white" />
+                    <Icon className="w-4 h-4 text-primary-foreground" />
                   </div>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -422,12 +422,12 @@ export function CampaignCard({
       {hasBestTimes && (
         <div className="mb-4">
           <div className="flex items-center gap-1.5 mb-2">
-            <Clock className="w-3.5 h-3.5 text-gray-500/70" />
-            <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-gray-500/80">
+            <Clock className="w-3.5 h-3.5 text-muted-foreground/70" />
+            <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-muted-foreground/80">
               {t('screens.sharing.scheduledSweetSpots')}
             </h4>
           </div>
-          <p className="text-[10px] text-gray-500/70 mb-2 ms-5">
+          <p className="text-[10px] text-muted-foreground/70 mb-2 ms-5">
             {t('screens.sharing.airecommendedPostingTimes')}
           </p>
           <TooltipProvider>
@@ -446,11 +446,11 @@ export function CampaignCard({
                           <div
                             className={cn(
                               "flex items-center gap-2 text-xs px-2.5 py-1.5 rounded-lg",
-                              "bg-gradient-to-r from-blue-50 to-purple-50",
-                              "border border-blue-100",
+                              "bg-gradient-to-r from-category-3/10 to-category-2/10",
+                              "border border-category-3/15",
                               "transition-all duration-200",
-                              "hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50",
-                              "hover:border-teal-200 hover:shadow-md"
+                              "hover:bg-gradient-to-r hover:from-category-1/10 hover:to-category-1/10",
+                              "hover:border-category-1/25 hover:shadow-md"
                             )}
                           >
                             <div
@@ -459,13 +459,13 @@ export function CampaignCard({
                                 channelInfo.color
                               )}
                             >
-                              <Icon className="w-3 h-3 text-white" />
+                              <Icon className="w-3 h-3 text-primary-foreground" />
                             </div>
-                            <Clock className="w-3 h-3 text-gray-600" />
-                            <span className="font-medium text-gray-700">
+                            <Clock className="w-3 h-3 text-muted-foreground" />
+                            <span className="font-medium text-muted-foreground">
                               {channelInfo.name}:
                             </span>
-                            <span className="text-gray-600">
+                            <span className="text-muted-foreground">
                               {timeArray.slice(0, 2).join(", ")}
                             </span>
                           </div>
@@ -473,7 +473,7 @@ export function CampaignCard({
                           {/* Divider between rows */}
                           {index <
                             Math.min(Object.keys(bestTimes).length, 3) - 1 && (
-                            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-1" />
+                            <div className="h-px bg-gradient-to-r from-transparent via-muted to-transparent my-1" />
                           )}
                         </div>
                       ) : null;
@@ -487,8 +487,8 @@ export function CampaignCard({
                       }}
                       className={cn(
                         "text-xs font-medium ms-2 px-2 py-1 rounded-md",
-                        "text-teal-600 hover:text-teal-700",
-                        "hover:bg-teal-50 transition-all duration-200",
+                        "text-category-1 hover:text-category-1",
+                        "hover:bg-category-1/10 transition-all duration-200",
                         "flex items-center gap-1"
                       )}
                     >
@@ -514,7 +514,7 @@ export function CampaignCard({
 
       {/* Date Range */}
       {(campaign.start_date || campaign.end_date) && (
-        <div className="flex items-center gap-2 text-xs text-gray-500 mb-4 px-2 py-1.5 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4 px-2 py-1.5 bg-surface-sunken rounded-lg">
           <Calendar className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate">
             {campaign.start_date &&
@@ -530,7 +530,7 @@ export function CampaignCard({
       <div
         className={cn(
           "flex items-center justify-between gap-4 pt-4 mt-4",
-          "border-t border-teal-100/10"
+          "border-t border-category-1/0"
         )}
       >
         {/* Posts */}
@@ -538,12 +538,12 @@ export function CampaignCard({
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex items-center gap-2">
-                <FileText className="w-3.5 h-3.5 text-gray-500" />
+                <FileText className="w-3.5 h-3.5 text-muted-foreground" />
                 <div className="flex flex-col">
-                  <span className="text-base font-bold text-gray-900 leading-none">
+                  <span className="text-base font-bold text-foreground leading-none">
                     {stats.total}
                   </span>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
+                  <span className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">
                     {t('screens.sharing.posts')}
                   </span>
                 </div>
@@ -561,14 +561,14 @@ export function CampaignCard({
             <TooltipTrigger asChild>
               <div className="flex items-center gap-2">
                 <div className="relative">
-                  <Radio className="w-3.5 h-3.5 text-green-600" />
-                  <div className="absolute -top-1 -end-1 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                  <Radio className="w-3.5 h-3.5 text-status-success" />
+                  <div className="absolute -top-1 -end-1 w-1.5 h-1.5 bg-status-success rounded-full animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-base font-bold text-green-600 leading-none">
+                  <span className="text-base font-bold text-status-success leading-none">
                     {stats.published}
                   </span>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
+                  <span className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">
                     {t('screens.sharing.live')}
                   </span>
                 </div>
@@ -585,12 +585,12 @@ export function CampaignCard({
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
+                <TrendingUp className="w-3.5 h-3.5 text-category-3" />
                 <div className="flex flex-col">
-                  <span className="text-base font-bold text-blue-600 leading-none">
+                  <span className="text-base font-bold text-category-3 leading-none">
                     2.4K
                   </span>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
+                  <span className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">
                     {t('screens.sharing.reach')}
                   </span>
                 </div>
@@ -607,7 +607,7 @@ export function CampaignCard({
       <div
         className={cn(
           "absolute bottom-0 start-0 end-0 p-3",
-          "bg-gradient-to-t from-white/95 via-white/90 to-transparent backdrop-blur-sm",
+          "bg-gradient-to-t from-card/95 via-card/90 to-transparent backdrop-blur-sm",
           "opacity-0 group-hover:opacity-100",
           "translate-y-2 group-hover:translate-y-0",
           "transition-all duration-300 ease-out",
@@ -624,13 +624,13 @@ export function CampaignCard({
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-teal-100 shadow-sm"
+                    className="h-7 w-7 p-0 rounded-lg bg-card/80 backdrop-blur-sm hover:bg-category-1/15 shadow-sm"
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowActivateDialog(true);
                     }}
                   >
-                    <Rocket className="w-3.5 h-3.5 text-teal-600" />
+                    <Rocket className="w-3.5 h-3.5 text-category-1" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -646,7 +646,7 @@ export function CampaignCard({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-blue-100 shadow-sm"
+                  className="h-7 w-7 p-0 rounded-lg bg-card/80 backdrop-blur-sm hover:bg-category-3/15 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowAnalytics(!showAnalytics);
@@ -667,7 +667,7 @@ export function CampaignCard({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-green-100 shadow-sm"
+                  className="h-7 w-7 p-0 rounded-lg bg-card/80 backdrop-blur-sm hover:bg-status-success-subtle shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onClick?.();
@@ -688,7 +688,7 @@ export function CampaignCard({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-teal-100 shadow-sm"
+                  className="h-7 w-7 p-0 rounded-lg bg-card/80 backdrop-blur-sm hover:bg-category-1/15 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowShareModal(true);
@@ -709,7 +709,7 @@ export function CampaignCard({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-purple-100 shadow-sm"
+                  className="h-7 w-7 p-0 rounded-lg bg-card/80 backdrop-blur-sm hover:bg-category-2/15 shadow-sm"
                   onClick={handleDuplicate}
                   disabled={duplicateCampaign.isPending}
                 >
@@ -730,7 +730,7 @@ export function CampaignCard({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-red-100 shadow-sm"
+                  className="h-7 w-7 p-0 rounded-lg bg-card/80 backdrop-blur-sm hover:bg-status-error-subtle shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDelete();

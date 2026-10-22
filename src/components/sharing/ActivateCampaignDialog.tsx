@@ -176,6 +176,7 @@ export function ActivateCampaignDialog({
                     type="time"
                     value={scheduledTime}
                     onChange={(e) => setScheduledTime(e.target.value)}
+                    // design-allow-next-line: no scale value within 2px of 120px
                     className="w-[120px]"
                   />
                 </div>

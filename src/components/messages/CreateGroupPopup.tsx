@@ -218,6 +218,7 @@ export default function CreateGroupPopup({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="sm:max-w-md max-h-[90dvh] overflow-y-auto z-[60]" overlayClassName="z-[60]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

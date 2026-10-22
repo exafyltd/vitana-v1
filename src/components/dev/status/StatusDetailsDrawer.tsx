@@ -73,6 +73,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
 
   return (
     <Sheet open={open} onOpenChange={onClose}>
+      {/* design-allow-next-line: no scale value within 2px of 500px */}
       <SheetContent className="w-[500px] sm:max-w-[500px]">
         <SheetHeader>
           <SheetTitle>{t('screens.dev.systemStatusDetails')}</SheetTitle>
@@ -81,6 +82,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
           </SheetDescription>
         </SheetHeader>
 
+        {/* design-allow-next-line: calc against fixed chrome */}
         <ScrollArea className="h-[calc(100vh-150px)] mt-6">
           <div className="space-y-6">
             {/* Service Matrix */}

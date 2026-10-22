@@ -27,7 +27,7 @@ export function EnhancedStepIndicator({ currentStep, totalSteps, onStepClick }: 
       {/* Vitana gradient progress bar */}
       <div className="absolute top-1/2 start-0 end-0 h-1 bg-muted rounded-full">
         <div 
-          className="h-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] rounded-full transition-all duration-500"
+          className="h-full bg-gradient-to-r from-gradient-join-start to-gradient-join-end rounded-full transition-all duration-500"
           style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
         />
       </div>
@@ -46,8 +46,8 @@ export function EnhancedStepIndicator({ currentStep, totalSteps, onStepClick }: 
           >
             <div className={cn(
               "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300",
-              step.number < currentStep && "bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white shadow-lg",
-              step.number === currentStep && "bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white shadow-xl ring-4 ring-[hsl(var(--gradient-join-start))]/20 scale-110",
+              step.number < currentStep && "bg-gradient-to-r from-gradient-join-start to-gradient-join-end text-primary-foreground shadow-lg",
+              step.number === currentStep && "bg-gradient-to-r from-gradient-join-start to-gradient-join-end text-primary-foreground shadow-xl ring-4 ring-gradient-join-start/20 scale-110",
               step.number > currentStep && "bg-background border-2 border-border text-muted-foreground"
             )}>
               {step.number < currentStep ? (

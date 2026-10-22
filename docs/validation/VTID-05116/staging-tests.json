@@ -4,7 +4,7 @@
   "tests": [
     {
       "kind": "playwright",
-      "name": "desktop 1440x900, signed in: /professional/dashboard, /staff/dashboard, /staff/queue — for an account with the roles: ?spotlight=1 renders the page inside [data-archetype=\"workspace\"] (full width, no rail, no horizontal scroll) and ?spotlight=0 renders today's tree without [data-archetype]; for the test user without the roles: every route still renders NotAuthorized in place (no workspace frame) and the role-only part is skipped with that reason",
+      "name": "desktop 1440x900, signed in: /professional/dashboard, /staff/dashboard, /staff/queue — for an account with the roles: ?spotlight=1 renders the page inside [data-archetype=\"workspace\"] (full width, no rail, no horizontal scroll) and ?spotlight=0 renders today's tree without [data-archetype]; for the test user without the roles: every route stays gated (NotAuthorized in place or redirected to /home, no workspace frame) and the role-only part is skipped with that reason",
       "spec": "tests/e2e/staging/vtid-05116-role-workspace.staging.spec.ts",
       "cwd": "."
     },

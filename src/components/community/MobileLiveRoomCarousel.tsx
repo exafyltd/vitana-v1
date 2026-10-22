@@ -160,7 +160,7 @@ export function MobileLiveRoomCarousel({
     const actionButton = room.isLive || canStart ? (
       <Button
         size="sm"
-        className="rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg font-bold"
+        className="rounded-full bg-gradient-to-r from-gradient-join-start to-gradient-join-end text-primary-foreground border-0 hover:shadow-lg font-bold"
         onClick={(e) => {
           e.stopPropagation();
           onJoinRoom(room.id);
@@ -176,7 +176,7 @@ export function MobileLiveRoomCarousel({
         variant={notifyingRooms.has(room.id) ? 'secondary' : 'ghost'}
         className={cn(
           'rounded-full gap-1.5 font-bold',
-          !notifyingRooms.has(room.id) && 'text-white hover:bg-white/20 hover:text-white'
+          !notifyingRooms.has(room.id) && 'text-primary-foreground hover:bg-card/20 hover:text-primary-foreground'
         )}
         onClick={(e) => {
           e.stopPropagation();
@@ -215,7 +215,7 @@ export function MobileLiveRoomCarousel({
             size="sm"
           />
           {isCreator && (
-            <KebabMenu className="bg-transparent hover:bg-white/20 text-white">
+            <KebabMenu className="bg-transparent hover:bg-card/20 text-primary-foreground">
               <DropdownMenuItem
                 onSelect={(e) => {
                   onEdit?.(e as any, room.id);
@@ -244,6 +244,7 @@ export function MobileLiveRoomCarousel({
   // Empty state
   if (rooms.length === 0) {
     return (
+      // design-allow-next-line: viewport-bound screen height
       <div className="flex items-center justify-center min-h-[60vh] px-6">
         {emptyState || (
           <div className="text-center">
@@ -290,6 +291,7 @@ export function MobileLiveRoomCarousel({
           >
             <NewsCard
               {...transformRoomToCard(room)}
+              // design-allow-next-line: on-media scrim, theme-independent
               className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
             />
           </div>

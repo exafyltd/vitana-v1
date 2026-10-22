@@ -21,7 +21,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Loader2, ShoppingBag, Plus } from "lucide-react";
+import { ShoppingBag, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
@@ -33,10 +33,10 @@ import {
 } from "@/lib/intentApi";
 import { t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { discoverNavigation } from "@/config/navigation";
-import { SpotlightEmpty, SpotlightError, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
+import { SpotlightEmpty, SpotlightError } from "@/components/spotlight/member/MemberSpotlight";
 
 type View = "open" | "mine";
 
@@ -131,7 +131,7 @@ export default function Marketplace() {
           }}
         >
           {loading ? (
-            <SpotlightRowsSkeleton />
+            <SpotlightLoading rows={6} />
           ) : error ? (
             <SpotlightError onRetry={() => void refresh()} />
           ) : items.length === 0 ? (
@@ -207,11 +207,7 @@ export default function Marketplace() {
         )}
 
         <div className="mt-4">
-          {loading && (
-            <div className="flex justify-center py-10 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin" />
-            </div>
-          )}
+          {loading && <SpotlightLoading rows={4} />}
 
           {error && !loading && (
             <div className="text-sm text-destructive py-4">{t('screens.discover.couldnTLoadError', { error })}</div>

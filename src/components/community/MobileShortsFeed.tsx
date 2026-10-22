@@ -151,8 +151,9 @@ export function MobileShortsFeed({
 
   if (shorts.length === 0) {
     return (
+      // design-allow-next-line: on-media scrim, theme-independent
       <div className="fixed inset-0 bg-black z-[60] flex items-center justify-center">
-        <div className="text-center text-white">
+        <div className="text-center text-primary-foreground">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>{t('screens.community.loadingShorts')}</p>
         </div>
@@ -163,6 +164,7 @@ export function MobileShortsFeed({
   return (
     <div
       ref={containerRef}
+      // design-allow-next-line: on-media scrim, theme-independent
       className="fixed inset-0 bg-black z-[60] overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
       style={{
         scrollSnapType: 'y mandatory',
@@ -194,8 +196,8 @@ export function MobileShortsFeed({
             key={index}
             className={`h-1 rounded-full transition-all ${
               index === activeIndex
-                ? 'w-6 bg-white'
-                : 'w-1.5 bg-white/40'
+                ? 'w-6 bg-card'
+                : 'w-1.5 bg-card/40'
             }`}
           />
         ))}

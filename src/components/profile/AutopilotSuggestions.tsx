@@ -108,11 +108,11 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
 
   if (type === 'archetype') {
     return (
-      <Card className="border-dashed border-amber-300/30 bg-amber-50/50 p-3 mb-4">
+      <Card className="border-dashed border-status-warning/10 bg-status-warning-subtle/50 p-3 mb-4">
         <div className="flex items-center gap-2 mb-3">
-          <Star className="h-4 w-4 text-amber-600" />
+          <Star className="h-4 w-4 text-status-warning" />
           <span className="text-sm font-medium">{translate('autopilot.suggestions.archetypeTitle')}</span>
-          <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-700">{translate('autopilot.suggestions.archetypeBadge')}</Badge>
+          <Badge variant="secondary" className="text-xs bg-status-warning-subtle text-status-warning">{translate('autopilot.suggestions.archetypeBadge')}</Badge>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
           {translate('autopilot.suggestions.archetypeDesc')}
@@ -132,7 +132,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
 
   if (type === 'profile-section') {
     return (
-      <Card className="bg-gradient-to-r from-slate-50/50 to-blue-50/30 border border-slate-200/50 shadow-sm">
+      <Card className="bg-gradient-to-r from-surface-sunken/50 to-category-3/5 border border-border/50 shadow-sm">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">

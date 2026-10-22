@@ -32,7 +32,7 @@ import { fmtDate } from '@/lib/locale-format';
 const panelClass = 'rounded-2xl border border-border bg-card p-4';
 const cardClass = 'rounded-xl border border-border bg-muted/40 p-3';
 // VTID-03999: inputs use the theme's own field styles; the amber focus ring is kept.
-const fieldClass = 'focus-visible:ring-amber-500';
+const fieldClass = 'focus-visible:ring-ring';
 
 // `org_admin` → `roleOrgAdmin`: split on the underscore, same as MyOrgCard's
 // toPascal — the previous charAt/slice version produced `roleOrg_admin`, a
@@ -175,12 +175,13 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
                 type="email"
                 inputMode="email"
                 autoCapitalize="none"
+                // design-allow-next-line: field minimum width; the nearest spacing class is 8 px away
                 className={`w-full md:min-w-[200px] md:flex-1 ${fieldClass}`}
               />
               <Select value={role} onValueChange={(v) => setRole(v as OrgInviteRow['role'])}>
                 <SelectTrigger
                   aria-label={t('screens.commerceportal.orgOnboarding.inviteRole')}
-                  className="w-full focus-visible:ring-amber-500 md:w-40"
+                  className="w-full focus-visible:ring-ring md:w-40"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -193,7 +194,7 @@ export function PartnerOrgRoster({ orgId, orgName, onClose }: { orgId: string; o
                 </SelectContent>
               </Select>
               <Button
-                className="w-full bg-amber-700 font-semibold text-white hover:bg-amber-800 md:w-auto"
+                className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 md:w-auto"
                 disabled={createInvite.isPending || !email.trim()}
                 onClick={() => void invite()}
               >

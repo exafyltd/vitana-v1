@@ -62,7 +62,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
     <div className="w-full space-y-8">
       {/* About Section */}
       {profile.bio && (
-        <Card className="rounded-2xl bg-white/70 dark:bg-black/30 backdrop-blur-xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition-all px-5 py-4 md:px-6 md:py-5">
+        <Card className="rounded-2xl bg-card/70 backdrop-blur-xl border border-border/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition-all px-5 py-4 md:px-6 md:py-5">
           <div className="flex items-start justify-between mb-4">
             <h3 className="text-lg font-semibold">{translate('editProfile.about', 'About')}</h3>
             {editMode && onEditAbout && (
@@ -72,7 +72,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
               </Button>
             )}
           </div>
-          <p className="text-gray-800 dark:text-gray-100 mb-4 leading-[1.75] tracking-wide">{profile.bio}</p>
+          <p className="text-foreground mb-4 leading-[1.75] tracking-wide">{profile.bio}</p>
           {profile.location && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
               <MapPin className="h-4 w-4" />
@@ -201,26 +201,30 @@ function PostCardWithInteractions({
 
   return (
     <Card
-      className="rounded-2xl bg-white/70 dark:bg-black/30 backdrop-blur-xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:translate-y-[-2px] transition-all duration-300 ease-out animate-fade-in-up overflow-hidden motion-reduce:hover:translate-y-0"
+      className="rounded-2xl bg-card/70 backdrop-blur-xl border border-border/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:translate-y-[-2px] transition-all duration-300 ease-out animate-fade-in-up overflow-hidden motion-reduce:hover:translate-y-0"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <div className="absolute top-0 start-0 end-0 h-0.5 bg-gradient-to-r from-violet-200/10 via-violet-300/20 to-transparent" />
+      <div className="absolute top-0 start-0 end-0 h-0.5 bg-gradient-to-r from-category-2/5 via-category-2/10 to-transparent" />
       <div className="space-y-4 relative px-5 py-4 md:px-6 md:py-5">
-        <div className="flex items-start gap-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Avatar className="h-11 w-11 ring-1 ring-violet-200/50 dark:ring-violet-400/20 transition-all duration-300 cursor-pointer">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
-                <AvatarFallback>{profile.name[0]}</AvatarFallback>
-              </Avatar>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="font-medium">{profile.name}</p>
-            </TooltipContent>
-          </Tooltip>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-semibold text-base tracking-wide text-gray-800 dark:text-gray-100">{profile.name}</span>
+        {/* profile-posts-full-width: phones show the avatar + name as one
+            header line and the post full width below it (Facebook-style);
+            from md up the avatar spans both rows, so desktop keeps its
+            avatar column exactly as before. */}
+        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 items-center md:items-start">
+          <div data-testid="profile-post-header" className="contents">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Avatar className="h-11 w-11 md:row-span-2 ring-1 ring-category-2/15 transition-all duration-300 cursor-pointer">
+                  <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
+                  <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                </Avatar>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="font-medium">{profile.name}</p>
+              </TooltipContent>
+            </Tooltip>
+            <div className="flex items-center gap-2 flex-wrap min-w-0">
+              <span className="font-semibold text-base tracking-wide text-foreground">{profile.name}</span>
               <span className="text-muted-foreground/70 text-sm">@{profile.handle} • {formatDate(post.created_at)}</span>
               {isOwner && (
                 <button
@@ -232,15 +236,17 @@ function PostCardWithInteractions({
                 </button>
               )}
             </div>
+          </div>
+          <div data-testid="profile-post-body" className="col-span-2 min-w-0 md:col-span-1 md:col-start-2">
             {post.content &&
               (background ? (
-                <div className={cn("mt-2.5 flex min-h-40 items-center justify-center rounded-xl px-5 py-8 text-center", background.fillClass)}>
+                <div className={cn("-mx-5 mt-2.5 flex min-h-40 items-center justify-center px-5 py-8 text-center md:mx-0 md:rounded-xl", background.fillClass)}>
                   <p className={cn("whitespace-pre-wrap break-words text-lg font-semibold leading-snug", background.textClass)}>
                     {renderMentions(post.content, post.mentions)}
                   </p>
                 </div>
               ) : (
-                <p className="mt-2.5 text-gray-800 dark:text-gray-100 leading-[1.75] tracking-wide whitespace-pre-wrap break-words">
+                <p className="mt-2.5 text-foreground leading-[1.75] tracking-wide whitespace-pre-wrap break-words">
                   {renderMentions(post.content, post.mentions)}
                 </p>
               ))}
@@ -248,11 +254,12 @@ function PostCardWithInteractions({
               <FeedMedia
                 imageUrl={post.image_url}
                 alt={t('screens.profile.postImage')}
-                className="mt-4 rounded-xl shadow-md"
+                className="-mx-5 mt-4 w-auto md:mx-0 md:w-full md:rounded-xl md:shadow-md"
               />
             )}
             {post.video_url && (
-              <div className="mt-4 rounded-xl overflow-hidden shadow-md bg-black">
+              // design-allow-next-line: on-media scrim, theme-independent
+              <div className="-mx-5 mt-4 overflow-hidden bg-black md:mx-0 md:rounded-xl md:shadow-md">
                 <video
                   src={post.video_url}
                   controls
@@ -266,14 +273,14 @@ function PostCardWithInteractions({
           </div>
         </div>
 
-        <div className="border-t border-white/20 my-3" />
+        <div className="border-t border-border/20 my-3" />
 
-        <div className="flex items-center gap-6 px-3 py-2 rounded-full bg-gradient-to-r from-violet-50/70 to-sky-50/70 dark:from-white/5 dark:to-white/10">
+        <div className="flex items-center gap-6 px-3 py-2 rounded-full bg-gradient-to-r from-category-2/5 to-category-7/5">
           <button
             onClick={() => toggleLike()}
             className={cn(
               "flex items-center gap-2 transition-all duration-200 group",
-              isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500"
+              isLiked ? "text-category-4" : "text-muted-foreground hover:text-category-4"
             )}
             aria-label={t('screens.profile.likePost')}
           >
@@ -284,7 +291,7 @@ function PostCardWithInteractions({
             onClick={() => setShowComments(!showComments)}
             className={cn(
               "flex items-center gap-2 transition-all duration-200 group",
-              showComments ? "text-blue-500" : "text-muted-foreground hover:text-blue-500"
+              showComments ? "text-category-3" : "text-muted-foreground hover:text-category-3"
             )}
             aria-label={t('screens.profile.comment')}
           >
@@ -293,7 +300,7 @@ function PostCardWithInteractions({
           </button>
           <button
             onClick={handleShare}
-            className="flex items-center gap-2 text-muted-foreground hover:text-violet-500 transition-all duration-200 group"
+            className="flex items-center gap-2 text-muted-foreground hover:text-category-2 transition-all duration-200 group"
             aria-label={t('screens.profile.share')}
           >
             <Share className="h-4 w-4 group-hover:scale-[1.05] transition-all" />

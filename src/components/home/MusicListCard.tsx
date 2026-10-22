@@ -56,11 +56,11 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
   if (!tracks || tracks.length === 0) {
     return (
       <Card className={cn(
-        "relative overflow-hidden border-2 border-purple-400/30 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-500/10",
+        "relative overflow-hidden border-2 border-category-2/25 bg-gradient-to-br from-category-2/5 via-category-4/5 to-category-2/10",
         className
       )}>
         <CardContent className="flex flex-col items-center justify-center h-full py-12">
-          <Music className="w-12 h-12 text-purple-400/40 mb-4" />
+          <Music className="w-12 h-12 text-category-2/40 mb-4" />
           <h3 className="text-lg font-semibold mb-2 text-muted-foreground">
             {t('screens.home.noMusicAvailableYet')}
           </h3>
@@ -70,7 +70,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
           <Button 
             variant="outline" 
             onClick={() => navigate('/comm/media-hub?tab=music')}
-            className="border-purple-400/50 hover:border-purple-400"
+            className="border-category-2/40 hover:border-category-2/80"
           >
             <Plus className="w-4 h-4 me-2" />
             {t('screens.home.uploadMusic')}
@@ -82,26 +82,26 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
 
   return (
     <Card className={cn(
-      "relative overflow-hidden border-2 border-purple-400/50 hover:border-purple-400 transition-all group",
+      "relative overflow-hidden border-2 border-category-2/40 hover:border-category-2/80 transition-all group",
       className
     )}>
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-category-2/10 via-category-4/10 to-category-2/10 -z-10" />
       
       {/* Music note watermark */}
-      <Music className="absolute top-4 end-4 w-16 h-16 text-purple-400/10 pointer-events-none z-0" />
+      <Music className="absolute top-4 end-4 w-16 h-16 text-category-2/10 pointer-events-none z-0" />
       
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <Music className="w-5 h-5 text-purple-500" />
+            <Music className="w-5 h-5 text-category-2" />
             {title}
           </CardTitle>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=music')}
-            className="text-xs hover:text-purple-600 px-4 py-2 min-h-10 cursor-pointer"
+            className="text-xs hover:text-category-2 px-4 py-2 min-h-10 cursor-pointer"
           >{t('screens.home.viewAll')}
           </Button>
         </div>
@@ -131,19 +131,20 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
                     className="w-12 h-12 rounded-lg object-cover"
                   />
                 ) : (
-                  <div className="w-12 h-12 rounded-lg bg-purple-400/20 flex items-center justify-center">
-                    <Music className="w-6 h-6 text-purple-500" />
+                  <div className="w-12 h-12 rounded-lg bg-category-2/15 flex items-center justify-center">
+                    <Music className="w-6 h-6 text-category-2" />
                   </div>
                 )}
                 
                 {/* Animated equalizer overlay when playing */}
                 {isCurrentlyPlaying && (
+                  // design-allow-next-line: on-media scrim, theme-independent
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg">
                     <div className="flex gap-0.5">
                       {[1, 2, 3].map((i) => (
                         <div
                           key={i}
-                          className="w-1 bg-white animate-pulse rounded-full"
+                          className="w-1 bg-card animate-pulse rounded-full"
                           style={{
                             height: `${8 + Math.random() * 8}px`,
                             animationDelay: `${i * 0.1}s`,

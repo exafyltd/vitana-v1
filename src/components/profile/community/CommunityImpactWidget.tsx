@@ -32,9 +32,9 @@ export function CommunityImpactWidget({
   return (
     <Card className={`rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition-all duration-300 ${className}`}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 bg-gradient-to-r from-violet-600 via-purple-600 to-sky-600 bg-clip-text text-transparent">
-          <div className="bg-gradient-to-br from-violet-400 to-sky-400 rounded-full p-2">
-            <Users className="h-4 w-4 text-white" />
+        <CardTitle className="flex items-center gap-2 bg-gradient-to-r from-category-2 via-category-2 to-category-7 bg-clip-text text-transparent">
+          <div className="bg-gradient-to-br from-category-2/80 to-category-7/80 rounded-full p-2">
+            <Users className="h-4 w-4 text-primary-foreground" />
           </div>{t('screens.profile.communityImpact')}
         </CardTitle>
         <CardDescription>{t('screens.profile.yourInfluenceVitanaCommunity')}</CardDescription>
@@ -53,7 +53,7 @@ export function CommunityImpactWidget({
               <span className="text-2xl font-bold text-foreground">{vitanaIndex}</span>
               <Badge 
                 variant="outline" 
-                className="text-xs bg-[hsl(var(--sys-vitana-accent)/0.1)] border-[hsl(var(--sys-vitana-accent)/0.2)] text-[hsl(var(--sys-vitana-accent))]"
+                className="text-xs bg-sys-vitana-accent/10 border-sys-vitana-accent/20 text-sys-vitana-accent"
               >{t('screens.profile.text3ThisWeek')}
               </Badge>
             </div>
@@ -83,7 +83,7 @@ export function CommunityImpactWidget({
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <Heart className="h-3 w-3 text-[hsl(var(--domain-community-accent))]" />
+              <Heart className="h-3 w-3 text-domain-community-accent" />
               <span className="text-lg font-bold text-foreground">{communityStats.helpedUsers}</span>
             </div>
             <div className="text-xs text-muted-foreground">{t('screens.profile.peopleHelped')}</div>
@@ -91,7 +91,7 @@ export function CommunityImpactWidget({
           
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <Zap className="h-3 w-3 text-[hsl(var(--pill-sleep-accent))]" />
+              <Zap className="h-3 w-3 text-pill-sleep-accent" />
               <span className="text-lg font-bold text-foreground">{communityStats.featuredStories}</span>
             </div>
             <div className="text-xs text-muted-foreground">{t('screens.profile.featuredStories')}</div>
@@ -99,7 +99,7 @@ export function CommunityImpactWidget({
           
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <Users className="h-3 w-3 text-[hsl(var(--util-profile-accent))]" />
+              <Users className="h-3 w-3 text-util-profile-accent" />
               <span className="text-lg font-bold text-foreground">{communityStats.posts}</span>
             </div>
             <div className="text-xs text-muted-foreground">{t('screens.profile.postsShared')}</div>
@@ -109,7 +109,7 @@ export function CommunityImpactWidget({
         {/* CTA */}
         <Button 
           size="sm" 
-          className="w-full bg-gradient-to-r from-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--pill-mental-accent)/0.9)] hover:to-[hsl(var(--pill-nutrition-accent)/0.9)] text-white border-0"
+          className="w-full bg-gradient-to-r from-pill-mental-accent to-pill-nutrition-accent hover:from-pill-mental-accent/90 hover:to-pill-nutrition-accent/90 text-primary-foreground border-0"
         >{t('screens.profile.shareYourSuccessStory')}
         </Button>
       </CardContent>

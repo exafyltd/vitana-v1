@@ -408,6 +408,7 @@ export default function LiveConsole() {
       {/* Filters */}
       <div className="flex gap-2 p-2 border-b bg-muted/50">
         <Select value={filters.layer || "ALL"} onValueChange={(v) => setFilters({ layer: v as Layer | "ALL" })}>
+          {/* design-allow-next-line: no scale value within 2px of 140px */}
           <SelectTrigger className="w-[140px] h-8">
             <SelectValue placeholder={t('screens.dev.layer')} />
           </SelectTrigger>
@@ -422,6 +423,7 @@ export default function LiveConsole() {
         </Select>
 
         <Select value={filters.status || "ALL"} onValueChange={(v) => setFilters({ status: v as Status | "ALL" })}>
+          {/* design-allow-next-line: no scale value within 2px of 140px */}
           <SelectTrigger className="w-[140px] h-8">
             <SelectValue placeholder={t('screens.dev.status')} />
           </SelectTrigger>

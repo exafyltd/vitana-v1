@@ -57,8 +57,8 @@ const TOTAL_STEPS = 2;
 export const REGISTER_DRAFT_KEY = 'vitana.commerce.registerDraft';
 
 // VTID-03999: inputs use the theme's own field styles; the amber focus ring is kept.
-const fieldClass = 'h-12 text-base focus-visible:ring-amber-500';
-const primaryClass = 'h-12 flex-1 text-base bg-amber-700 font-semibold text-white hover:bg-amber-800';
+const fieldClass = 'h-12 text-base focus-visible:ring-ring';
+const primaryClass = 'h-12 flex-1 text-base bg-primary font-semibold text-primary-foreground hover:bg-primary/90';
 
 function readDraft(): { step: number; form: Form } | null {
   try {
@@ -222,13 +222,13 @@ export function RegisterOrgDialog({
         {created ? (
           <>
             <ResponsiveDialogHeader className="text-start">
-              <PartyPopper aria-hidden className="h-8 w-8 text-amber-600" />
+              <PartyPopper aria-hidden className="h-8 w-8 text-primary" />
               <ResponsiveDialogTitle className="text-2xl font-bold">
                 {t('screens.commerceportal.orgOnboarding.successTitle')}
               </ResponsiveDialogTitle>
             </ResponsiveDialogHeader>
             <ResponsiveDialogBody className="space-y-4 md:mt-4">
-              <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4">
+              <div className="rounded-2xl border border-primary/20 bg-accent/60 p-4">
                 <p className="text-lg font-semibold text-foreground">{created.display_name}</p>
                 <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   {t('screens.commerceportal.orgOnboarding.successBusinessId')}
@@ -267,12 +267,12 @@ export function RegisterOrgDialog({
                       data-testid={`register-category-${cat.key}`}
                       className={`flex min-h-12 items-center justify-between rounded-xl border p-3 text-start text-base font-medium transition-colors ${
                         form.category === cat.key
-                          ? 'border-amber-500 bg-amber-500/10 text-foreground'
-                          : 'border-border text-foreground hover:border-amber-500/50'
+                          ? 'border-primary/50 bg-primary/10 text-foreground'
+                          : 'border-border text-foreground hover:border-primary/25'
                       }`}
                     >
                       {t(cat.labelKey)}
-                      {form.category === cat.key && <Check className="h-4 w-4 shrink-0 text-amber-600" />}
+                      {form.category === cat.key && <Check className="h-4 w-4 shrink-0 text-primary" />}
                     </button>
                   ))}
                 </div>
@@ -353,7 +353,7 @@ export function RegisterOrgDialog({
                       }}
                       autoComplete="country"
                       data-testid="register-country-select"
-                      className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                      className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <option value="" disabled>
                         {t('screens.commerceportal.orgOnboarding.countryPlaceholder')}

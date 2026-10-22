@@ -16,7 +16,7 @@ import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel, PanelContent } from '@/components/layout/spotlight/Panel';
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -137,8 +137,8 @@ function Support() {
       <SplitBarContent value="contact">
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 lg:col-span-8">
-            <Card>
-              <CardContent className="space-y-4 p-5">
+            <Panel>
+              <PanelContent className="space-y-4 p-5">
                 {created ? (
                   <div className="flex flex-col items-center gap-3 py-6 text-center" data-testid="ticket-created">
                     <CheckCircle2 className="h-10 w-10 text-status-success" />
@@ -195,13 +195,13 @@ function Support() {
                     </Button>
                   </>
                 )}
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           </div>
 
           <div className="col-span-12 space-y-4 lg:col-span-4">
-            <Card>
-              <CardContent className="space-y-3 p-5">
+            <Panel>
+              <PanelContent className="space-y-3 p-5">
                 <h3 className="flex items-center gap-2 font-semibold">
                   <Mic className="h-4 w-4 text-primary" />
                   {t("supportTickets.support.voiceTitle")}
@@ -211,10 +211,10 @@ function Support() {
                   <Mic className="me-2 h-4 w-4" />
                   {t("supportTickets.support.voiceButton")}
                 </Button>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="space-y-3 p-5">
+              </PanelContent>
+            </Panel>
+            <Panel>
+              <PanelContent className="space-y-3 p-5">
                 <h3 className="flex items-center gap-2 font-semibold">
                   <Mail className="h-4 w-4 text-primary" />
                   {t("supportTickets.support.emailTitle")}
@@ -223,8 +223,8 @@ function Support() {
                 <Button variant="ghost" className="w-full" onClick={() => { window.location.href = "mailto:support@exafy.io"; }}>
                   <span dir="ltr">{t("mobilesupport.quickContactEmailSub")}</span>
                 </Button>
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           </div>
 
           <div className="col-span-12">
@@ -239,8 +239,8 @@ function Support() {
       </SplitBarContent>
 
       <SplitBarContent value="knowledge">
-        <Card>
-          <CardContent className="space-y-3 p-5">
+        <Panel>
+          <PanelContent className="space-y-3 p-5">
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-primary" />
               <div>
@@ -259,13 +259,13 @@ function Support() {
             <Button variant="outline" onClick={() => navigate("/maxina_support")}>
               {t("mobilesupport.faqsOpenHelpCenter")}
             </Button>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </SplitBarContent>
 
       <SplitBarContent value="community">
-        <Card>
-          <CardContent className="space-y-4 p-5">
+        <Panel>
+          <PanelContent className="space-y-4 p-5">
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" />
               <div>
@@ -285,8 +285,8 @@ function Support() {
                 <Button size="sm" variant="outline" onClick={() => navigate("/comm/groups")}>{t("mobilesupport.communityForumCta")}</Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </SplitBarContent>
     </>
   );

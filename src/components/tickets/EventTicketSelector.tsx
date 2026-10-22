@@ -204,14 +204,14 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
 
       {/* Auto-detected discount banner */}
       {!discountLoading && discountCode && !appliedCode && (
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-pink-50 to-violet-50 border border-pink-200 dark:from-pink-950/30 dark:to-violet-950/30 dark:border-pink-800">
-          <Gift className="h-5 w-5 text-pink-500 shrink-0" />
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-category-4/10 to-category-2/10 border border-category-4/30">
+          <Gift className="h-5 w-5 text-category-4 shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-foreground">
               {translate('discount.bannerAvailable', 'Welcome discount available')}
             </p>
             <p className="text-xs text-muted-foreground">
-              <code className="font-mono text-pink-600 dark:text-pink-400">{discountCode.code}</code>
+              <code className="font-mono text-category-4">{discountCode.code}</code>
               {' '}({discountCode.discount_percent}%)
             </p>
           </div>
@@ -223,13 +223,13 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
 
       {/* Applied discount badge */}
       {appliedCode && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 dark:bg-green-950/30 dark:border-green-800">
-          <Check className="h-4 w-4 text-green-600 shrink-0" />
-          <span className="text-sm text-green-700 dark:text-green-400 font-medium flex-1">
+        <div className="flex items-center gap-2 p-3 rounded-lg bg-status-success-subtle border border-status-success/30">
+          <Check className="h-4 w-4 text-status-success shrink-0" />
+          <span className="text-sm text-status-success font-medium flex-1">
             {translate('discount.discountAppliedAmount', '{percent}% discount applied').replace('{percent}', String(appliedPercent))}
             {' '}<code className="font-mono">{appliedCode}</code>
           </span>
-          <button onClick={handleClearCode} className="text-green-600 hover:text-green-800">
+          <button onClick={handleClearCode} className="text-status-success hover:text-status-success/80">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -311,7 +311,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
               appliedCode && discountedTotal !== totalAmount ? (
                 <>
                   <span className="line-through text-muted-foreground me-2">{formatPrice(totalAmount, summaryCurrency)}</span>
-                  <span className="text-green-600">{formatPrice(discountedTotal, summaryCurrency)}</span>
+                  <span className="text-status-success">{formatPrice(discountedTotal, summaryCurrency)}</span>
                 </>
               ) : formatPrice(totalAmount, summaryCurrency)
             )}
@@ -373,7 +373,7 @@ function TicketTypeCard({ ticketType, quantity, onQuantityChange, discountPercen
               </span>
             )}
             {isLowStock && !isSoldOut && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-status-warning/10 text-status-warning">
                 {translate('discount.left', '{count} left').replace('{count}', String(available))}
               </span>
             )}
@@ -399,7 +399,7 @@ function TicketTypeCard({ ticketType, quantity, onQuantityChange, discountPercen
             {discountPercent > 0 && ticketType.price > 0 ? (
               <>
                 <span className="text-sm line-through text-muted-foreground">{formatPrice(ticketType.price, ticketType.currency)}</span>
-                <span className="text-lg font-semibold text-green-600">{formatPrice(discountedPrice, ticketType.currency)}</span>
+                <span className="text-lg font-semibold text-status-success">{formatPrice(discountedPrice, ticketType.currency)}</span>
               </>
             ) : (
               <span className="text-lg font-semibold text-primary">

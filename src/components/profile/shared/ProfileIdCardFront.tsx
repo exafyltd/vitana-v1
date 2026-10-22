@@ -142,9 +142,10 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
            }}>
         {/* Avatar-centered gradient glow (Serenity & Expression only) */}
         {(themeConfig.name === 'serenity' || themeConfig.name === 'expression') && (
+          // design-allow-next-line: decorative glow box; centring (left-1/2 -translate-x-1/2)
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] pointer-events-none" 
                style={{ 
-                 background: 'radial-gradient(circle at top center, rgba(255,255,255,0.3), transparent 80%)',
+                 background: 'radial-gradient(circle at top center, hsl(var(--card) / 0.3), transparent 80%)',
                }} />
         )}
         
@@ -154,7 +155,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         {/* Top Right Corner - ID Chip (Theme Switcher Disabled - Focus is Exclusive) */}
         <div className="absolute top-4 end-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
           {/* User ID Chip */}
-          <div className="px-3 py-1.5 rounded-full bg-gradient-to-br from-white/30 to-white/10 dark:from-gray-800/30 dark:to-gray-800/10 backdrop-blur-md border border-white/40 dark:border-gray-700/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
+          <div className="px-3 py-1.5 rounded-full bg-gradient-to-br from-card/30 to-card/10 backdrop-blur-md border border-border/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
             <span className="text-xs font-mono font-semibold text-foreground/70 tracking-wide">🆔 {profile.id.slice(0, 8)}</span>
           </div>
         </div>
@@ -171,6 +172,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           {/* Static elegant ring */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div
+              // design-allow-next-line: measured avatar ring, no scale class within 2 px
               className={`w-[168px] h-[168px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`}
               style={{
                 boxShadow: '0 0 20px hsl(var(--sys-vitana-accent) / 0.15)'
@@ -187,7 +189,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
             {/* VTID-02806i: fall back to a deterministic playful
                 auto-avatar when the user hasn't uploaded one yet. */}
             <AvatarImage src={getDisplayAvatarUrl(profile)} alt={profile.name} className="object-cover" style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
-            <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(199,36%,48%)] to-[hsl(239,36%,67%)] text-white">
+            <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-sys-vitana-accent to-sys-feature-tip-accent text-primary-foreground">
               {profile.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
@@ -209,6 +211,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                 <div className={`absolute inset-0 w-20 h-20 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-2xl opacity-40 transition-all duration-300`}></div>
                 
                 {/* Glass orb with premium depth */}
+                {/* design-allow-next-line: measured avatar ring, no scale class within 2 px */}
                 <div className={`relative w-[68px] h-[68px] rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.12),0_2px_10px_rgba(0,0,0,0.06),0_0_30px_hsl(var(--sys-vitana-accent)/0.2),inset_0_2px_8px_rgba(255,255,255,0.25),inset_0_-2px_6px_rgba(0,0,0,0.08)] border-[3px] flex flex-col items-center justify-center transition-transform duration-150 ease-out hover:scale-[1.02] cursor-pointer group focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none`}
                      style={{
                        background: themeConfig.vitanaOrb.background,
@@ -226,7 +229,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                      }}
                 >
                   {/* Inner glass reflection */}
-                  <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-card/20 via-transparent to-transparent pointer-events-none" />
                   
                   <div className="flex flex-col items-center justify-center text-center relative z-10">
                     <div className={`text-2xl font-extrabold leading-none ${themeConfig.vitanaOrb.text} drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)] transition-colors duration-300`}>{profile.vitanaIndex}</div>
@@ -238,7 +241,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   {/* Rotating gradient border effect */}
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                        style={{
-                         background: 'conic-gradient(from 0deg, hsl(199,36%,48%), hsl(239,36%,67%), hsl(219,36%,58%), hsl(199,36%,48%))',
+                         background: 'conic-gradient(from 0deg, hsl(var(--sys-vitana-accent)), hsl(var(--sys-feature-tip-accent)), hsl(var(--pill-exercise-accent)), hsl(var(--sys-vitana-accent)))',
                          mask: 'radial-gradient(circle, transparent 95%, black 98%)',
                          WebkitMask: 'radial-gradient(circle, transparent 95%, black 98%)',
                        }} />
@@ -250,7 +253,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                     <div 
                       className="relative h-5 px-2.5 py-0.5 rounded-full
                                  bg-[color-mix(in_oklab,hsl(var(--accent))_20%,hsl(var(--background)))]
-                                 ring-1 ring-[hsl(var(--accent))/40]
+                                 ring-1 ring-accent/40
                                  shadow-[0_2px_8px_rgba(0,0,0,0.15)]
                                  flex items-center justify-center
                                  transition-transform duration-150 ease-out hover:scale-[1.02]
@@ -293,14 +296,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
             <div className="flex items-center justify-center mb-4 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
               <div className="relative group/tier">
                 {/* Glowing halo effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(199,36%,48%)]/20 via-[hsl(239,36%,67%)]/15 to-[hsl(219,36%,58%)]/10 rounded-full blur-xl group-hover/tier:blur-2xl transition-all duration-500 opacity-60 group-hover/tier:opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-r from-sys-vitana-accent/20 via-sys-feature-tip-accent/15 to-pill-exercise-accent/10 rounded-full blur-xl group-hover/tier:blur-2xl transition-all duration-500 opacity-60 group-hover/tier:opacity-80" />
                 
                 {/* Metallic gradient capsule */}
-                <div className="relative px-6 py-2.5 rounded-full bg-gradient-to-br from-[hsl(199,36%,48%)]/10 via-[hsl(239,36%,67%)]/8 to-[hsl(199,36%,48%)]/5 backdrop-blur-md border-2 border-[hsl(199,36%,48%)]/25 shadow-[0_6px_20px_rgba(0,0,0,0.12),inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.16),inset_0_2px_6px_rgba(255,255,255,0.4)]">
+                <div className="relative px-6 py-2.5 rounded-full bg-gradient-to-br from-sys-vitana-accent/10 via-sys-feature-tip-accent/10 to-sys-vitana-accent/5 backdrop-blur-md border-2 border-sys-vitana-accent/25 shadow-[0_6px_20px_rgba(0,0,0,0.12),inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.16),inset_0_2px_6px_rgba(255,255,255,0.4)]">
                   {/* Inner shine reflection */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-card/20 via-transparent to-transparent pointer-events-none" />
                   
-                  <span className="relative text-sm font-bold bg-gradient-to-r from-[hsl(199,36%,48%)] via-[hsl(239,36%,67%)] to-[hsl(199,36%,48%)] bg-clip-text text-transparent tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
+                  <span className="relative text-sm font-bold bg-gradient-to-r from-sys-vitana-accent via-sys-feature-tip-accent to-sys-vitana-accent bg-clip-text text-transparent tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
                     {profile.membershipTier || profile.roles[0] || 'Community Member'}
                   </span>
                 </div>
@@ -325,7 +328,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
               <>
                 <Button 
                   variant="default"
-                  className={`rounded-full ${themeConfig.buttons.primary} hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)] border-0 text-white font-semibold active:scale-100 ease-out`}
+                  className={`rounded-full ${themeConfig.buttons.primary} hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)] border-0 text-primary-foreground font-semibold active:scale-100 ease-out`}
                   onClick={handleFollowClick}
                   disabled={followLoading}
                 >

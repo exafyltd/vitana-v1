@@ -56,11 +56,11 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
   if (!episodes || episodes.length === 0) {
     return (
       <Card className={cn(
-        "relative overflow-hidden border-2 border-orange-400/30 bg-gradient-to-br from-orange-500/5 via-amber-500/5 to-orange-500/10",
+        "relative overflow-hidden border-2 border-status-warning/25 bg-gradient-to-br from-status-warning/5 via-status-warning/5 to-status-warning/10",
         className
       )}>
         <CardContent className="flex flex-col items-center justify-center h-full py-12">
-          <Radio className="w-12 h-12 text-orange-400/40 mb-4" />
+          <Radio className="w-12 h-12 text-status-warning/40 mb-4" />
           <h3 className="text-lg font-semibold mb-2 text-muted-foreground">
             {t('screens.home.noPodcastsAvailableYet')}
           </h3>
@@ -70,7 +70,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
           <Button 
             variant="outline" 
             onClick={() => navigate('/comm/media-hub?tab=podcasts')}
-            className="border-orange-400/50 hover:border-orange-400"
+            className="border-status-warning/40 hover:border-status-warning/80"
           >
             <Plus className="w-4 h-4 me-2" />
             {t('screens.home.uploadPodcast')}
@@ -82,26 +82,26 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
 
   return (
     <Card className={cn(
-      "relative overflow-hidden border-2 border-orange-400/50 hover:border-orange-400 transition-all group",
+      "relative overflow-hidden border-2 border-status-warning/40 hover:border-status-warning/80 transition-all group",
       className
     )}>
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/10 to-orange-500/10 -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-status-warning/10 via-status-warning/10 to-status-warning/10 -z-10" />
       
       {/* Radio icon watermark */}
-      <Radio className="absolute top-4 end-4 w-16 h-16 text-orange-400/10 pointer-events-none z-0" />
+      <Radio className="absolute top-4 end-4 w-16 h-16 text-status-warning/10 pointer-events-none z-0" />
       
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <Radio className="w-5 h-5 text-orange-500" />
+            <Radio className="w-5 h-5 text-status-warning" />
             {title}
           </CardTitle>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=podcasts')}
-            className="text-xs hover:text-orange-600 px-4 py-2 min-h-10 cursor-pointer"
+            className="text-xs hover:text-status-warning px-4 py-2 min-h-10 cursor-pointer"
           >{t('screens.home.viewAll')}
           </Button>
         </div>
@@ -116,10 +116,10 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
               key={episode.id}
               className={cn(
                 "flex items-center gap-3 p-3 rounded-xl transition-all duration-300 group/episode border-b border-border/30 last:border-b-0",
-                "bg-gradient-to-r from-orange-500/5 to-transparent",
-                "hover:from-orange-500/8 hover:to-orange-500/3",
-                "hover:shadow-sm hover:shadow-orange-400/15 hover:scale-[1.01]",
-                isCurrentlyPlaying && "from-orange-500/12 to-orange-500/6 shadow-sm"
+                "bg-gradient-to-r from-status-warning/5 to-transparent",
+                "hover:from-status-warning/10 hover:to-status-warning/5",
+                "hover:shadow-sm hover:shadow-status-warning/10 hover:scale-[1.01]",
+                isCurrentlyPlaying && "from-status-warning/10 to-status-warning/5 shadow-sm"
               )}
             >
               {/* Thumbnail or radio icon */}
@@ -131,19 +131,20 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
                     className="w-12 h-12 rounded-lg object-cover"
                   />
                 ) : (
-                  <div className="w-12 h-12 rounded-lg bg-orange-400/20 flex items-center justify-center">
-                    <Radio className="w-6 h-6 text-orange-500" />
+                  <div className="w-12 h-12 rounded-lg bg-status-warning/15 flex items-center justify-center">
+                    <Radio className="w-6 h-6 text-status-warning" />
                   </div>
                 )}
                 
                 {/* Animated sound waves overlay when playing */}
                 {isCurrentlyPlaying && (
+                  // design-allow-next-line: on-media scrim, theme-independent
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg">
                     <div className="flex gap-0.5">
                       {[1, 2, 3].map((i) => (
                         <div
                           key={i}
-                          className="w-1 bg-white animate-pulse rounded-full"
+                          className="w-1 bg-card animate-pulse rounded-full"
                           style={{
                             height: `${8 + Math.random() * 8}px`,
                             animationDelay: `${i * 0.1}s`,
@@ -179,14 +180,14 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
                 className={cn(
                   "rounded-full w-9 h-9 p-0 transition-all duration-300 flex-shrink-0",
                   "opacity-0 group-hover/episode:opacity-100",
-                  "hover:bg-orange-500/15 hover:scale-110 hover:shadow-md hover:shadow-orange-400/25",
-                  isCurrentlyPlaying && "opacity-100 bg-orange-500/12 shadow-sm"
+                  "hover:bg-status-warning/15 hover:scale-110 hover:shadow-md hover:shadow-status-warning/20",
+                  isCurrentlyPlaying && "opacity-100 bg-status-warning/10 shadow-sm"
                 )}
               >
                 {isCurrentlyPlaying ? (
-                  <Pause className="w-4 h-4 text-orange-600" />
+                  <Pause className="w-4 h-4 text-status-warning" />
                 ) : (
-                  <Play className="w-4 h-4 text-orange-600" />
+                  <Play className="w-4 h-4 text-status-warning" />
                 )}
               </Button>
             </div>
