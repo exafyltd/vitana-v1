@@ -29,7 +29,7 @@ import { ListingStrength } from './ListingStrength';
 import { ProductImageField } from './ProductImageField';
 
 const fieldClass =
-  'focus-visible:ring-amber-600';
+  'focus-visible:ring-ring';
 
 /** Kept short on purpose — a long dropdown is a worse default than typing. */
 const CURRENCIES = ['EUR', 'CHF', 'GBP', 'USD'] as const;
@@ -303,7 +303,7 @@ export function ProductForm({
               type="button"
               variant="ghost"
               onClick={() => setShowAll(true)}
-              className="h-auto px-0 text-sm text-amber-400 hover:bg-transparent hover:text-amber-700"
+              className="h-auto px-0 text-sm text-primary hover:bg-transparent hover:text-primary/80"
             >
               {t('screens.commerceportal.productForm.moreDetails', { count: rest.length })}
             </Button>
@@ -328,7 +328,7 @@ export function ProductForm({
         <Button
           onClick={() => void save()}
           disabled={!canSave || saving}
-          className="bg-amber-700 font-semibold text-white hover:bg-amber-800"
+          className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
         >
           {saving && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
           {t('screens.commerceportal.productForm.submit')}

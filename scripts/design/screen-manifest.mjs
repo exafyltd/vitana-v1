@@ -15,9 +15,42 @@
  * archetype and status are hand-owned data once a route is in the manifest.
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import { buildInventory } from './desktop-screen-inventory.mjs';
 
 export const MANIFEST = 'src/design/screen-manifest.json';
+
+/**
+ * Components that only redirect (they render a <Navigate> or call navigate()
+ * on mount and show no screen of their own). A route whose whole element is
+ * one of these — optionally inside <AuthGuard> — is treated like a
+ * <Navigate> route: it is not a screen and has no manifest entry.
+ */
+export const REDIRECT_COMPONENTS = new Set([
+  'RedirectPreservingSearch',
+  'LegacyProfileRedirect',
+  'RetiredTenantRedirect',
+  'CommerceConnectionRedirect',
+  'InviteLanding',
+]);
+
+const REDIRECT_ROUTE_RX =
+  /<Route\s+path="([^"]+)"\s+element=\{\s*(?:<AuthGuard>\s*)?<([A-Z][A-Za-z0-9]*)\b[^>]*?\/>\s*(?:<\/AuthGuard>\s*)?\}\s*\/>/g;
+
+/** Paths of the routes in App.tsx whose whole element is a redirect component. */
+export function redirectComponentPaths(appSource) {
+  const out = new Set();
+  for (const m of appSource.matchAll(REDIRECT_ROUTE_RX)) {
+    if (REDIRECT_COMPONENTS.has(m[2])) out.add(m[1]);
+  }
+  return out;
+}
+
+/** The screen routes the manifest lists: the inventory minus redirect-component routes. */
+export function screenRoutes(appSource) {
+  const redirects = redirectComponentPaths(appSource);
+  return buildInventory(appSource).screens.filter((s) => !redirects.has(s.path));
+}
 
 const PHASE_BY_TIER = { A: '2-4', B: '5', C: '7', P: '7' };
 
@@ -36,7 +69,7 @@ export function guessArchetype(path, tier) {
 }
 
 export function syncManifest(current, appSource) {
-  const { screens } = buildInventory(appSource);
+  const screens = screenRoutes(appSource);
   const byPath = new Map((current?.screens ?? []).map((s) => [s.path, s]));
   const out = screens.map(({ path, tier, area }) => {
     const prev = byPath.get(path);
@@ -50,7 +83,8 @@ export function syncManifest(current, appSource) {
   };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// pathToFileURL so the CLI guard also matches on Windows (C:\… → file:///C:/…).
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const current = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, 'utf8')) : null;
   const next = syncManifest(current, readFileSync('src/App.tsx', 'utf8'));
   writeFileSync(MANIFEST, `${JSON.stringify(next, null, 2)}\n`);

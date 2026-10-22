@@ -77,26 +77,26 @@ export function ViewModeIntelligence({
       <Card className={`rounded-xl shadow-sm ${className}`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Eye className="h-5 w-5 text-[hsl(var(--util-profile-accent))]" />
+            <Eye className="h-5 w-5 text-util-profile-accent" />
             {t('screens.profile.profileAnalytics')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-6 mb-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-[hsl(var(--sys-vitana-accent))]">
+              <div className="text-2xl font-bold text-sys-vitana-accent">
                 {insights.viewsThisWeek}
               </div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.viewsThisWeek')}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-[hsl(var(--domain-community-accent))]">
+              <div className="text-2xl font-bold text-domain-community-accent">
                 {insights.profileCompleteness}%
               </div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.complete')}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-[hsl(var(--pill-mental-accent))]">
+              <div className="text-2xl font-bold text-pill-mental-accent">
                 {insights.engagementRate}%
               </div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.engagement')}</div>
@@ -104,7 +104,7 @@ export function ViewModeIntelligence({
           </div>
           
           <Button 
-            className="w-full bg-gradient-to-r from-[hsl(var(--util-profile-accent))] to-[hsl(var(--domain-community-accent))] hover:from-[hsl(var(--util-profile-accent)/0.9)] hover:to-[hsl(var(--domain-community-accent)/0.9)] text-white border-0"
+            className="w-full bg-gradient-to-r from-util-profile-accent to-domain-community-accent hover:from-util-profile-accent/90 hover:to-domain-community-accent/90 text-primary-foreground border-0"
           >
             <TrendingUp className="h-4 w-4 me-2" />
             {t('screens.profile.boostProfileVisibility')}
@@ -119,11 +119,11 @@ export function ViewModeIntelligence({
     <Card className={`rounded-xl shadow-sm ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Sparkles className="h-5 w-5 text-[hsl(var(--pill-mental-accent))]" />
+          <Sparkles className="h-5 w-5 text-pill-mental-accent" />
           {t('screens.profile.peopleYouMightLike')}
         </CardTitle>
         {viewerCompatibility >= 70 && (
-          <Badge className="w-fit bg-gradient-to-r from-[hsl(var(--domain-community-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white border-0">
+          <Badge className="w-fit bg-gradient-to-r from-domain-community-accent to-pill-nutrition-accent text-primary-foreground border-0">
             {t('screens.profile.basedYourCompatibilityWithSarah')}
           </Badge>
         )}
@@ -162,7 +162,7 @@ export function ViewModeIntelligence({
         
         <Button 
           variant="ghost" 
-          className="w-full mt-4 text-[hsl(var(--pill-mental-accent))] hover:bg-[hsl(var(--pill-mental-accent)/0.1)]"
+          className="w-full mt-4 text-pill-mental-accent hover:bg-pill-mental-accent/10"
         >
           {t('screens.profile.seeMoreRecommendations')}
           <ArrowRight className="h-4 w-4 ms-2" />

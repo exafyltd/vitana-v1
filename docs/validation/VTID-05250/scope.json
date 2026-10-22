@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05250",
+  "lane": "native-g1-wiring/fixture-gateway",
+  "summary": "Local, loopback-only CommonJS fixture gateway that answers the native app's plain-HTTP G1 contract (app-config, auth/me, notifications/token) and serves the .dev AASA / assetlinks documents. Tools-only; no app-code change, no deployed surface, never proxies out.",
+  "paths": [
+    "apps/mobile/tools/fixture-gateway/**",
+    "apps/mobile/tests/fixture-gateway/**",
+    "docs/validation/VTID-05250/**"
+  ]
+}

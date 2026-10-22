@@ -54,7 +54,7 @@ export function ProfileHealthTabReal({ userId }: ProfileHealthTabRealProps) {
   }
 
   return (
-    <div className="w-full space-y-6 rounded-2xl bg-gradient-to-b from-white to-emerald-50/60 p-6 dark:from-slate-900 dark:to-emerald-950" data-testid="health-real">
+    <div className="w-full space-y-6 rounded-2xl bg-gradient-to-b from-card to-status-success-subtle/60 p-6" data-testid="health-real">
       {data.isOwner && <ShareControl />}
       <OverallCard summary={data} />
       <StandingCard summary={data} />
@@ -68,28 +68,28 @@ export function ProfileHealthTabReal({ userId }: ProfileHealthTabRealProps) {
 function OverallCard({ summary }: { summary: ProfileHealthSummary }) {
   const score = summary.score ?? 0;
   return (
-    <Card className="rounded-3xl border-0 bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/60 shadow-[0_8px_24px_rgba(0,0,0,0.08)] dark:from-emerald-950/40 dark:via-slate-900 dark:to-teal-950/30">
+    <Card className="rounded-3xl border-0 bg-gradient-to-br from-status-success-subtle/80 via-card to-category-1/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
       <CardContent className="px-8 py-10 text-center">
         <div className="mb-3 inline-flex items-center gap-3">
-          <Activity className="h-6 w-6 text-emerald-600" aria-hidden />
+          <Activity className="h-6 w-6 text-status-success" aria-hidden />
           <h3 className="text-lg font-semibold text-foreground">{t("screens.profile.overallHealthScore")}</h3>
         </div>
-        <div className="bg-gradient-to-br from-emerald-600 to-teal-600 bg-clip-text text-7xl font-bold tabular-nums text-transparent" data-testid="health-real-score">
+        <div className="bg-gradient-to-br from-status-success to-category-1 bg-clip-text text-7xl font-bold tabular-nums text-transparent" data-testid="health-real-score">
           {score}
         </div>
         <p className="mt-1 text-sm text-muted-foreground">{t("profile.indexHero.ofMax", { max: VITANA_INDEX_MAX })}</p>
         {summary.standing?.available && summary.standing.topPercent !== null && (
-          <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-1.5 text-sm font-semibold text-white shadow">
+          <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-status-success to-category-1 px-4 py-1.5 text-sm font-semibold text-primary-foreground shadow">
             <Trophy className="h-3.5 w-3.5" aria-hidden />
             {t("profile.healthReal.topPercent", { percent: summary.standing.topPercent })}
           </span>
         )}
         <div className="mx-auto mt-6 max-w-md">
           <div className="h-3 w-full overflow-hidden rounded-full bg-muted/40">
-            <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500" style={{ width: `${Math.min(100, (score / VITANA_INDEX_MAX) * 100)}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-status-success to-category-1" style={{ width: `${Math.min(100, (score / VITANA_INDEX_MAX) * 100)}%` }} />
           </div>
           {summary.weekDelta !== null && summary.weekDelta > 0 && (
-            <p className="mt-3 text-sm text-emerald-700">{t("profile.indexHero.momentumRisingFast", { delta: summary.weekDelta })}</p>
+            <p className="mt-3 text-sm text-status-success">{t("profile.indexHero.momentumRisingFast", { delta: summary.weekDelta })}</p>
           )}
         </div>
       </CardContent>
@@ -136,14 +136,14 @@ function StandingCard({ summary }: { summary: ProfileHealthSummary }) {
 
 function AchievementsCard({ achievements }: { achievements: HealthAchievement[] }) {
   return (
-    <Card className="rounded-2xl border-violet-200/40 bg-gradient-to-r from-violet-50/80 to-purple-50/80 dark:from-violet-950/40 dark:to-purple-950/40" data-testid="health-real-achievements">
+    <Card className="rounded-2xl border-category-2/10 bg-gradient-to-r from-category-2/10 to-category-2/10" data-testid="health-real-achievements">
       <CardContent className="space-y-2 p-5">
         <div className="text-sm font-medium text-foreground">{t("profile.healthReal.achievements")}</div>
         {achievements.map((a) => (
           <div key={a.type} className="flex items-center gap-2 text-sm text-muted-foreground">
-            {a.type === "personal_best" && <><Award className="h-4 w-4 text-violet-600" aria-hidden />{t("profile.healthReal.personalBest", { score: a.score })}</>}
-            {a.type === "rising_week" && <><TrendingUp className="h-4 w-4 text-emerald-600" aria-hidden />{t("profile.indexHero.momentumRisingFast", { delta: a.delta })}</>}
-            {a.type === "logging_streak" && <><Flame className="h-4 w-4 text-orange-500" aria-hidden />{t("profile.indexHero.streak", { count: a.days })}</>}
+            {a.type === "personal_best" && <><Award className="h-4 w-4 text-category-2" aria-hidden />{t("profile.healthReal.personalBest", { score: a.score })}</>}
+            {a.type === "rising_week" && <><TrendingUp className="h-4 w-4 text-status-success" aria-hidden />{t("profile.indexHero.momentumRisingFast", { delta: a.delta })}</>}
+            {a.type === "logging_streak" && <><Flame className="h-4 w-4 text-status-warning" aria-hidden />{t("profile.indexHero.streak", { count: a.days })}</>}
           </div>
         ))}
       </CardContent>
@@ -167,13 +167,13 @@ function PillarsGrid({ summary }: { summary: ProfileHealthSummary }) {
               <CardContent className="space-y-3 p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 p-2.5 text-white shadow-md">
+                    <div className="rounded-xl bg-gradient-to-br from-status-success to-category-1 p-2.5 text-primary-foreground shadow-md">
                       <Icon className="h-5 w-5" aria-hidden />
                     </div>
                     <span className="font-semibold text-foreground">{pillarLabel(key)}</span>
                   </div>
                   {p.delta7d !== null && p.delta7d !== 0 && (
-                    <span className={`rounded-full border px-2 py-0.5 text-xs ${p.delta7d > 0 ? "text-emerald-700" : "text-rose-600"}`}>
+                    <span className={`rounded-full border px-2 py-0.5 text-xs ${p.delta7d > 0 ? "text-status-success" : "text-status-error"}`}>
                       {t("profile.healthReal.deltaThisWeek", { delta: `${p.delta7d > 0 ? "+" : ""}${p.delta7d}` })}
                     </span>
                   )}
@@ -183,7 +183,7 @@ function PillarsGrid({ summary }: { summary: ProfileHealthSummary }) {
                   <span className="text-base font-normal text-muted-foreground">/{PILLAR_MAX}</span>
                 </div>
                 <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted/40">
-                  <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500" style={{ width: `${Math.min(100, (p.score / PILLAR_MAX) * 100)}%` }} />
+                  <div className="h-full rounded-full bg-gradient-to-r from-status-success to-category-1" style={{ width: `${Math.min(100, (p.score / PILLAR_MAX) * 100)}%` }} />
                 </div>
               </CardContent>
             </Card>
@@ -225,7 +225,7 @@ function ActivityCard({ summary }: { summary: ProfileHealthSummary }) {
             <p className="text-muted-foreground">{t("profile.healthReal.daysLogged", { days: a.daysLogged7d })}</p>
             {rows.map((r, i) => (
               <div key={i} className="flex items-center gap-2 text-foreground">
-                <r.icon className="h-4 w-4 text-emerald-600" aria-hidden />
+                <r.icon className="h-4 w-4 text-status-success" aria-hidden />
                 {r.text}
               </div>
             ))}

@@ -11,7 +11,7 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { getIncomingMatches, type IntentMatch } from "@/lib/intentApi";
@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { Briefcase, Lock } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { businessHubNavigation } from "@/config/navigation";
 import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
@@ -114,24 +114,24 @@ export default function BusinessOpportunities() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
+        <SpotlightLoading rows={4} />
       ) : matches.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
           {t('screens.businessopportunities.noLeadsYetWeLlNotify')} <Link to="/business/listings" className="underline">{t('screens.businessopportunities.myListings')}</Link>.
         </div>
       ) : (
-        <div className="space-y-3">
-          {matches.map((m) => (
-            <IntentMatchCard
-              key={m.match_id}
-              match={m}
-              perspective="incoming"
-              onAction={() => load()}
-            />
-          ))}
-        </div>
+        <SpotlightLoading loading={false}>
+          <div className="space-y-3">
+            {matches.map((m) => (
+              <IntentMatchCard
+                key={m.match_id}
+                match={m}
+                perspective="incoming"
+                onAction={() => load()}
+              />
+            ))}
+          </div>
+        </SpotlightLoading>
       )}
     </div>
   );

@@ -1,0 +1,12 @@
+{
+    "vtid":  "VTID-05292",
+    "service":  "community-app",
+    "tests":  [
+                  {
+                      "kind":  "playwright",
+                      "name":  "desktop-spotlight-finish/remaining-screens on staging: ?spotlight=1 renders the Spotlight archetype/skeleton contract and intact sidebar chrome, no page-level spinner after settle, read-only",
+                      "spec":  "tests/e2e/staging/vtid-05292-remaining-screens.staging.spec.ts",
+                      "cwd":  "."
+                  }
+              ]
+}

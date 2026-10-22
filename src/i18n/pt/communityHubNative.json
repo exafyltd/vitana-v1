@@ -1,0 +1,239 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Voltar",
+      "loading": "Carregando …",
+      "loadMore": "Carregar mais",
+      "retry": "Tentar novamente",
+      "errorBody": "Não conseguimos carregar isso agora. Tente novamente."
+    },
+    "groups": {
+      "title": "Grupos",
+      "subtitle": "Entre em grupos com interesses em comum ou crie o seu.",
+      "tabsLabel": "Visualização de grupos",
+      "tabMine": "Meus grupos",
+      "tabDiscover": "Descobrir",
+      "memberCount": "{count} membros",
+      "public": "Público",
+      "private": "Privado",
+      "join": "Entrar",
+      "joining": "Entrando …",
+      "leave": "Sair",
+      "leaving": "Saindo …",
+      "emptyMineTitle": "Ainda sem grupos",
+      "emptyMineDesc": "Entre no seu primeiro grupo para começar.",
+      "emptyDiscoverTitle": "Nenhum grupo para descobrir",
+      "emptyDiscoverDesc": "Seja a primeira pessoa a criar um grupo da comunidade.",
+      "create": "Criar",
+      "searchPlaceholder": "Procurar grupos",
+      "searchLabel": "Procurar grupos"
+    },
+    "groupDetail": {
+      "title": "Grupo",
+      "memberCount": "{count} membros",
+      "membersWithCount": "Membros ({count})",
+      "plusMore": "+{count}",
+      "join": "Entrar no grupo",
+      "leave": "Sair do grupo",
+      "notFoundTitle": "Grupo não encontrado",
+      "notFoundDesc": "Este grupo pode ter sido removido ou não existe.",
+      "browse": "Explorar grupos"
+    },
+    "members": {
+      "title": "Membros da comunidade",
+      "subtitle": "Conheça toda a comunidade Vitana — toque num cartão.",
+      "searchPlaceholder": "Buscar por nome ou ID Vitana",
+      "searchLabel": "Buscar membros",
+      "sortLabel": "Ordenar",
+      "sort": {
+        "newest": "Mais recentes",
+        "oldest": "Fundadores primeiro",
+        "name": "Por nome"
+      },
+      "danceLabel": "Dança",
+      "dance": {
+        "all": "Todos",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "De salão",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Membro",
+      "empty": "Ainda sem membros.",
+      "emptyDance": "Ninguém definiu esta dança como preferência ainda — seja a primeira pessoa!",
+      "viewProfile": "Ver perfil"
+    },
+    "openAsks": {
+      "title": "Pedidos abertos",
+      "summaryLoading": "Carregando pedidos …",
+      "summaryEmpty": "Ainda sem pedidos abertos.",
+      "summaryCount": "{n} pedidos abertos",
+      "kindLabel": "Tipo",
+      "filterAll": "Todos",
+      "topicLabel": "Tema",
+      "topic": {
+        "everything": "Tudo",
+        "dance": "Só dança"
+      },
+      "kind": {
+        "commercial_buy": "Comprar",
+        "commercial_sell": "Vender",
+        "activity_seek": "Atividade",
+        "partner_seek": "Parceiro(a)",
+        "social_seek": "Social",
+        "mutual_aid": "Ajuda mútua",
+        "learning_seek": "Aprender",
+        "mentor_seek": "Mentoria"
+      },
+      "time": {
+        "justNow": "Agora mesmo",
+        "minutes": "há {n} min",
+        "hours": "há {n} h",
+        "days": "há {n} d"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "Nenhum pedido aberto nesta visualização.",
+      "emptyDance": "Ainda sem pedidos de dança abertos — publique o seu e seja a primeira pessoa!"
+    },
+    "findPartner": {
+      "title": "Encontrar parceiro(a)",
+      "subtitle": "Encontre pessoas que combinam com os seus desejos abertos.",
+      "viewLabel": "Visualização",
+      "view": {
+        "matches": "Combinações",
+        "board": "Mural",
+        "posts": "Minhas publicações",
+        "members": "Membros"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "Combinação",
+      "emptyMatches": "Ainda sem combinações. Publique um desejo e ficaremos de olho.",
+      "newWish": "Novo desejo",
+      "searchPlaceholder": "Procurar publicações e correspondências",
+      "searchLabel": "Procurar publicações e correspondências",
+      "filter": "Filtrar",
+      "filterActive": "Filtro ({count})",
+      "noMatchesForFilters": "Sem correspondências para estes filtros. Repõe para ver mais.",
+      "showingOfTotal": "A mostrar {shown} de {total}",
+      "filterTitle": "Filtrar correspondências",
+      "filterMinScore": "Pontuação mínima",
+      "filterClear": "Repor",
+      "filterShowResults": "Mostrar {count} correspondências"
+    },
+    "matches": {
+      "title": "Pessoas que combinam com você",
+      "subtitle": "Suas combinações da comunidade.",
+      "empty": "Ainda sem combinações. Volte em breve.",
+      "fallbackName": "Membro da comunidade",
+      "reasonDefault": "Interesses em comum",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "Mural da comunidade",
+      "boardSubtitle": "O que as outras pessoas estão procurando agora.",
+      "filtersLabel": "Filtros",
+      "filter": {
+        "all": "Todos",
+        "dance": "Dança"
+      },
+      "kind": {
+        "commercial_buy": "Comprar",
+        "commercial_sell": "Vender",
+        "activity_seek": "Atividade",
+        "partner_seek": "Parceiro(a)",
+        "social_seek": "Social",
+        "mutual_aid": "Ajuda mútua",
+        "learning_seek": "Aprendizagem",
+        "mentor_seek": "Mentoria"
+      },
+      "viewMine": "Ver minhas intenções",
+      "emptyBoard": "Nenhuma intenção aberta nesta visualização. Seja a primeira pessoa.",
+      "emptyDance": "Ainda sem publicações de dança abertas — publique a sua e seja a primeira pessoa!",
+      "emptyMine": "Nenhuma publicação nesta visualização.",
+      "post": "Publicar",
+      "styleLabel": "Estilo",
+      "variety": {
+        "any": "Qualquer",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Dança de salão",
+        "hiphop": "Hip-hop"
+      }
+    },
+    "intentMatch": {
+      "title": "Detalhes da combinação",
+      "backMine": "Voltar às minhas intenções",
+      "notFound": "Intenção não encontrada.",
+      "matchesCount": "Combinações ({count})",
+      "noMatches": "Ainda sem combinações — continuaremos procurando para você."
+    },
+    "search": {
+      "title": "Buscar",
+      "subtitle": "Encontre membros da comunidade Vitana.",
+      "placeholder": "Buscar membros",
+      "inputLabel": "Termo de busca",
+      "submit": "Buscar",
+      "memberMeta": "Membro da comunidade",
+      "fallbackName": "Membro",
+      "emptyTitle": "Sem resultados",
+      "emptyDesc": "Ajuste o termo de busca e tente novamente."
+    },
+    "createGroup": {
+      "title": "Criar um novo grupo",
+      "namePlaceholder": "ex.: Corredores da manhã ou Cozinha saudável",
+      "nameLabel": "Nome do grupo",
+      "descriptionPlaceholder": "Descreve o objetivo e as atividades do seu grupo",
+      "descriptionLabel": "Descrição",
+      "categoryLabel": "Categoria",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Nutrição",
+        "mental-health": "Saúde mental",
+        "support": "Apoio",
+        "learning": "Aprendizagem",
+        "social": "Social"
+      },
+      "privacyLabel": "Visibilidade",
+      "privacy": {
+        "public": "Público",
+        "private": "Privado"
+      },
+      "cancel": "Cancelar",
+      "submit": "Criar grupo",
+      "creating": "A criar …",
+      "created": "Grupo criado.",
+      "nameRequired": "Indica um nome de grupo."
+    },
+    "composer": {
+      "title": "Publicar na comunidade",
+      "kindLabel": "Tipo",
+      "kind": {
+        "commercial_buy": "Compra",
+        "commercial_sell": "Venda",
+        "activity_seek": "Atividade",
+        "social_seek": "Social",
+        "mutual_aid": "Ajuda mútua",
+        "partner_seek": "Parceiro"
+      },
+      "titlePlaceholder": "Título curto",
+      "titleLabel": "Título",
+      "scopePlaceholder": "Descreve o que precisas ou ofereces",
+      "scopeLabel": "Descrição",
+      "budgetMin": "Orçamento mín.",
+      "budgetMax": "Orçamento máx.",
+      "cancel": "Cancelar",
+      "submit": "Publicar",
+      "posting": "A publicar …",
+      "posted": "Publicado na comunidade.",
+      "titleRequired": "Indica um título com pelo menos 3 caracteres.",
+      "scopeTooShort": "Descreve com pelo menos 20 caracteres."
+    }
+  }
+}

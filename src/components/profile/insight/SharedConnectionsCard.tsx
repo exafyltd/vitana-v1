@@ -34,7 +34,7 @@ export function SharedConnectionsCard({
     <Card className={`rounded-2xl shadow-sm border-muted/40 ${className}`}>
       <CardHeader className="pb-3">
         <CardTitle className="text-sm font-semibold flex items-center gap-2">
-          <Users className="h-4 w-4 text-[hsl(var(--domain-community-accent))]" />
+          <Users className="h-4 w-4 text-domain-community-accent" />
           {t('screens.profile.sharedConnections')}
         </CardTitle>
       </CardHeader>
@@ -80,7 +80,7 @@ export function SharedConnectionsCard({
               {defaultCommonInterests.map((interest, index) => (
                 <Badge 
                   key={index} 
-                  className="text-xs bg-gradient-to-r from-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-mental-accent)/0.7)] text-white border-0"
+                  className="text-xs bg-gradient-to-r from-pill-mental-accent to-pill-mental-accent/70 text-primary-foreground border-0"
                 >
                   {interest}
                 </Badge>
@@ -92,7 +92,7 @@ export function SharedConnectionsCard({
         {/* AI Suggestion */}
         <div className="pt-2 border-t border-muted/30">
           <div className="flex items-start gap-2">
-            <Sparkles className="h-4 w-4 text-[hsl(var(--pill-mental-accent))] flex-shrink-0 mt-0.5" />
+            <Sparkles className="h-4 w-4 text-pill-mental-accent flex-shrink-0 mt-0.5" />
             <p className="text-xs text-muted-foreground leading-relaxed">
               {defaultAISuggestion}
             </p>

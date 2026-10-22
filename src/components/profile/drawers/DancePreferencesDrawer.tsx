@@ -201,6 +201,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
           <DrawerDescription>{summaryLine}</DrawerDescription>
         </DrawerHeader>
 
+        {/* design-allow-next-line: viewport-bound height */}
         <div className="px-4 pb-4 space-y-5 max-h-[70vh] overflow-y-auto">
           {loading ? (
             <div className="flex justify-center py-12">
