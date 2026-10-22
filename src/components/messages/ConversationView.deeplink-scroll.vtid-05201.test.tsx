@@ -35,7 +35,13 @@ vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'me' } 
 vi.mock('@/hooks/use-mobile', () => ({ useIsMobile: () => false }));
 vi.mock('@/hooks/use-toast', () => ({ useToast: () => ({ toast: vi.fn() }) }));
 vi.mock('@/lib/messageStatus', () => ({ autoMarkAsDelivered: vi.fn(), markMessagesAsRead: vi.fn() }));
-vi.mock('@/lib/i18n-toast', () => ({ t: (k: string) => k, notify: vi.fn(), notifyError: vi.fn() }));
+// VTID-05313: keep the real module (getI18nLocale etc., used by the date divider) and stub only the toasts.
+vi.mock('@/lib/i18n-toast', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/i18n-toast')>()),
+  t: (k: string) => k,
+  notify: vi.fn(),
+  notifyError: vi.fn(),
+}));
 vi.mock('./MessageInput', () => ({ default: () => null }));
 vi.mock('./MessageBubble', () => ({ default: () => null }));
 vi.mock('./GroupMembersModal', () => ({ default: () => null }));
@@ -67,6 +73,9 @@ vi.mock('@/integrations/supabase/client', () => ({
 
 import ConversationView from './ConversationView';
 
+// VTID-05313: fixture timestamps are relative to now, so the day divider never ages into another code path.
+const NOW_ISO = new Date().toISOString();
+
 describe('ConversationView — deep-link scroll (VTID-05201)', () => {
   it('scrolls the target message into view without smooth animation', () => {
     const scrollIntoView = vi.fn();
@@ -83,12 +92,12 @@ describe('ConversationView — deep-link scroll (VTID-05201)', () => {
     threads = [
       {
         id: 'alice', type: 'direct', created_by: 'alice',
-        created_at: '2026-10-15T00:00:00Z', updated_at: '2026-10-15T00:00:00Z', unread_count: 0,
+        created_at: NOW_ISO, updated_at: NOW_ISO, unread_count: 0,
         participants: [{ user_id: 'me', role: 'member' }, { user_id: 'alice', display_name: 'Alice', role: 'member' }],
       },
     ];
     messages = [
-      { id: 'm1', thread_id: 'alice', sender_id: 'alice', receiver_id: 'me', content: 'hi', created_at: '2026-10-15T00:00:00Z' },
+      { id: 'm1', thread_id: 'alice', sender_id: 'alice', receiver_id: 'me', content: 'hi', created_at: NOW_ISO },
     ];
     render(<ConversationView threadId="alice" context="global" initialScrollMessageId="m1" />);
     expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'center' });

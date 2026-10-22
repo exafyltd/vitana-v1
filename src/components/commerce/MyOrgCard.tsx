@@ -25,9 +25,9 @@ function toPascal(snake: string): string {
 }
 
 const statusTone = (status: string) => {
-  if (status === 'active') return 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300';
-  if (status === 'rejected' || status === 'suspended') return 'border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-300';
-  return 'border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300';
+  if (status === 'active') return 'border-status-success/40 bg-status-success/10 text-status-success';
+  if (status === 'rejected' || status === 'suspended') return 'border-status-error/40 bg-status-error/10 text-status-error';
+  return 'border-status-warning/40 bg-status-warning/10 text-status-warning';
 };
 
 export function MyOrgCard({ org, onManage }: { org: MyOrgRow; onManage: (id: string) => void }) {
@@ -38,7 +38,7 @@ export function MyOrgCard({ org, onManage }: { org: MyOrgRow; onManage: (id: str
       onClick={() => canManage && onManage(org.id)}
       disabled={!canManage}
       aria-label={canManage ? `${org.display_name} — ${t('screens.commerceportal.orgOnboarding.manageRoster')}` : org.display_name}
-      className="group w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors enabled:hover:border-amber-500/40 enabled:hover:bg-card disabled:cursor-default"
+      className="group w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors enabled:hover:border-primary/20 enabled:hover:bg-card disabled:cursor-default"
     >
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
@@ -51,7 +51,7 @@ export function MyOrgCard({ org, onManage }: { org: MyOrgRow; onManage: (id: str
           {statusLabel(org.status)}
         </Badge>
         {canManage && (
-          <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-amber-500 rtl:rotate-180" />
+          <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary rtl:rotate-180" />
         )}
       </div>
     </button>

@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05332",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/pages/MatchesPage.bottom-clearance.test.tsx src/pages/vtid-05117-leftovers-2.test.tsx",
+      "reason": "phone /me/matches renders every match and its wrapper carries bottom padding of bottom-nav height + safe area + 90px (reset on md), so the last card scrolls fully above the fixed bar and Orb; flag-off/flag-on Matches trees unchanged. Pure render, no network, no writes."
+    }
+  ]
+}

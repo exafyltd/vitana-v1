@@ -104,12 +104,15 @@ export function MobileMediaTabContent({
             />
             {/* Video play indicator */}
             {item.type === 'video' && (
+              // design-allow-next-line: on-media scrim, theme-independent
               <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                {/* design-allow-next-line: on-media scrim, theme-independent */}
                 <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                   <Play className="h-4 w-4 text-foreground ms-0.5" />
                 </div>
               </div>
             )}
+            {/* design-allow-next-line: on-media scrim, theme-independent */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
           </button>
         ))}

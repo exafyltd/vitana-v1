@@ -40,7 +40,7 @@ import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 const EMPTY_FORM = { name: '', connector_id: '', provider_id: '', jurisdiction: '', openapi: '' };
 
-const fieldClass = 'h-12 text-base focus-visible:ring-amber-700';
+const fieldClass = 'h-12 text-base focus-visible:ring-ring';
 
 type Detection = { connector_id: string; provider_id: string | null; name_hint: string | null };
 
@@ -188,6 +188,7 @@ export function ManualConnectDialog({
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <ResponsiveDialogContent fullscreenOnMobile className="max-h-[90vh] overflow-y-auto border-border bg-card text-foreground">
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="text-2xl font-bold">{t('screens.commerceportal.connect.title')}</ResponsiveDialogTitle>
@@ -220,16 +221,16 @@ export function ManualConnectDialog({
             onClick={() => void detect()}
             disabled={detecting || !storeUrl.trim()}
             data-testid="connect-check"
-            className="h-12 w-full bg-amber-700 text-base font-semibold text-white hover:bg-amber-800"
+            className="h-12 w-full bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
           >
             {detecting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Search className="me-2 h-4 w-4" />}
             {t('screens.commerceportal.connect.check')}
           </Button>
 
           {detected && (
-            <div className="rounded-2xl border border-emerald-300 bg-emerald-50/60 p-4" data-testid="connect-detected">
+            <div className="rounded-2xl border border-status-success/40 bg-status-success-subtle/60 p-4" data-testid="connect-detected">
               <p className="flex items-center gap-2 font-semibold text-foreground">
-                <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                <CheckCircle2 className="h-5 w-5 text-status-success" />
                 {t('screens.commerceportal.connect.detected', { platform: detected.name_hint ?? detected.connector_id })}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -243,7 +244,7 @@ export function ManualConnectDialog({
                   onClick={connectDetected}
                   disabled={creating}
                   data-testid="connect-detected-go"
-                  className="mt-3 h-12 w-full bg-amber-700 text-base font-semibold text-white hover:bg-amber-800"
+                  className="mt-3 h-12 w-full bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
                 >
                   {creating && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
                   {t('screens.commerceportal.connect.connect')}
@@ -258,17 +259,17 @@ export function ManualConnectDialog({
               <button
                 type="button"
                 onClick={() => setDevOpen(true)}
-                className="flex min-h-12 w-full items-center gap-3 rounded-2xl border border-border p-3 text-start font-medium text-foreground hover:border-amber-500/60"
+                className="flex min-h-12 w-full items-center gap-3 rounded-2xl border border-border p-3 text-start font-medium text-foreground hover:border-primary/30"
               >
-                <FileUp className="h-5 w-5 shrink-0 text-amber-700" />
+                <FileUp className="h-5 w-5 shrink-0 text-primary" />
                 {t('screens.commerceportal.connect.haveDocs')}
               </button>
               <Link
                 to="/support"
                 onClick={() => onOpenChange(false)}
-                className="flex min-h-12 w-full items-center gap-3 rounded-2xl border border-border p-3 font-medium text-foreground hover:border-amber-500/60"
+                className="flex min-h-12 w-full items-center gap-3 rounded-2xl border border-border p-3 font-medium text-foreground hover:border-primary/30"
               >
-                <LifeBuoy className="h-5 w-5 shrink-0 text-amber-700" />
+                <LifeBuoy className="h-5 w-5 shrink-0 text-primary" />
                 {t('screens.commerceportal.connect.needHelp')}
               </Link>
             </div>
@@ -353,7 +354,7 @@ export function ManualConnectDialog({
                     aria-label={t('screens.commerceportal.connect.pasteOpenapi')}
                     rows={4}
                     dir="ltr"
-                    className="font-mono text-xs focus-visible:ring-amber-700"
+                    className="font-mono text-xs focus-visible:ring-ring"
                   />
                   <p className={`text-xs ${openapiError ? 'text-destructive' : 'text-muted-foreground'}`}>
                     {openapiError
@@ -362,7 +363,7 @@ export function ManualConnectDialog({
                   </p>
                 </div>
                 <Button
-                  className="h-12 w-full bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                  className="h-12 w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                   onClick={createFromDeveloper}
                   disabled={creating || !devValid}
                 >

@@ -94,7 +94,7 @@ export default function CommerceAcceptInvite() {
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
         <Button
           onClick={() => navigate('/commerce')}
-          className="mt-4 bg-amber-500 font-semibold text-slate-950 hover:bg-amber-400"
+          className="mt-4 bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
         >
           <CheckCircle2 className="me-2 h-4 w-4" />
           {t('screens.commerceportal.orgOnboarding.goToPortal')}

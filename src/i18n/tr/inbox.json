@@ -131,6 +131,32 @@
       "composerPlaceholder": "Mesaj…",
       "today": "Bugün",
       "yesterday": "Dün"
+    },
+    "messageStatus": {
+      "sending": "Gönderiliyor",
+      "sent": "Gönderildi",
+      "delivered": "İletildi",
+      "read": "Okundu",
+      "failed": "Gönderilemedi",
+      "retry": "Tekrar dene",
+      "retryLabel": "Bu mesajı tekrar gönder",
+      "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "En yeniye git",
+      "one": "1 yeni mesaj",
+      "other": "{count} yeni mesaj",
+      "unread": "Okunmamış mesajlar",
+      "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Orijinal mesaj kullanılamıyor",
+      "loading": "Orijinal mesaj…",
+      "jumpToOriginal": "Orijinal mesaja git",
+      "jumpTo": "Orijinal mesaja git: {name}",
+      "unknownSender": "Üye",
+      "noText": "Ek",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

@@ -29,18 +29,30 @@ import { LogOut, ShoppingBag } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import AppLayout from '@/components/AppLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { isCommerceHost } from '@/lib/commerce-host';
 import { t } from '@/lib/i18n-toast';
 
-/** Which skin the commerce screens are rendered in right now. */
+/**
+ * Which skin the commerce screens are rendered in right now.
+ *
+ * Desktop Spotlight: a signed-in member on the app host gets the app's own
+ * chrome too (sidebar + ORB), the same way the phone app already does. Guests
+ * and `commerce.vitanaland.com` keep the standalone portal. No new step,
+ * field or dialog either way — only the frame around the same screens.
+ */
 export function useCommerceSkin(): { inApp: boolean; portalClass: string } {
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
+  const { user } = useAuth();
+  if (spotlight && !!user && !isCommerceHost()) return { inApp: true, portalClass: '' };
   const inApp = isMobile && !isCommerceHost();
   return { inApp, portalClass: '' };
 }
 
 export function CommerceShell({ children }: { children: ReactNode }) {
   const { inApp } = useCommerceSkin();
+  const isMobile = useIsMobile();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -53,9 +65,10 @@ export function CommerceShell({ children }: { children: ReactNode }) {
   };
 
   if (inApp) {
+    // Desktop Spotlight: each screen's own ScreenFrame sets width and padding.
     return (
       <AppLayout>
-        <div className="mx-auto w-full max-w-5xl px-4 pb-24">{children}</div>
+        {isMobile ? <div className="mx-auto w-full max-w-5xl px-4 pb-24">{children}</div> : children}
       </AppLayout>
     );
   }
@@ -66,21 +79,23 @@ export function CommerceShell({ children }: { children: ReactNode }) {
           horizontally — hence the clipping wrapper. A light echo of the
           brand color, not a background element the eye should notice. */}
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 inset-x-0 mx-auto h-[36rem] w-[36rem] rounded-full bg-amber-200/40 blur-[120px]" />
-        <div className="absolute bottom-0 start-0 h-[28rem] w-[28rem] rounded-full bg-amber-100/50 blur-[120px]" />
+        {/* design-allow-next-line: decorative glow larger than the spacing scale; no size token */}
+        <div className="absolute -top-40 inset-x-0 mx-auto h-[36rem] w-[36rem] rounded-full bg-accent/40 blur-[120px]" />
+        {/* design-allow-next-line: decorative glow larger than the spacing scale; no size token */}
+        <div className="absolute bottom-0 start-0 h-[28rem] w-[28rem] rounded-full bg-accent/50 blur-[120px]" />
       </div>
 
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex w-full max-w-7xl items-center gap-2.5 px-4 py-3.5">
-          <ShoppingBag className="h-5 w-5 shrink-0 text-amber-700" />
-          <span className="text-sm font-bold tracking-[0.2em] text-amber-700">VITANALAND</span>
+          <ShoppingBag className="h-5 w-5 shrink-0 text-primary" />
+          <span className="text-sm font-bold tracking-[0.2em] text-primary">VITANALAND</span>
           <span aria-hidden className="h-4 w-px bg-border" />
           <span className="truncate text-xs text-muted-foreground">{t('screens.commerceportal.portalEyebrow')}</span>
           {user && (
             <button
               type="button"
               onClick={onSignOut}
-              className="ms-auto inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-800"
+              className="ms-auto inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-primary"
             >
               <LogOut className="h-4 w-4 rtl:rotate-180" />
               {t('screens.commerceportal.signOut')}

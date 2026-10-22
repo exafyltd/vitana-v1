@@ -1,0 +1,22 @@
+# VTID-05296 (N-W2 community-hub) — Find a Partner view switch, Open Asks,
+# /me/matches and the intent board. G1 only (device runtime, deferred to owner).
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- extendedWaitUntil: { visible: { id: bottom-nav }, timeout: 20000 }
+- openLink: maxina:///comm/find-partner
+- extendedWaitUntil: { visible: { id: screen-find-partner }, timeout: 20000 }
+- takeScreenshot: find-partner-matches
+- tapOn: { id: find-partner-view-board }
+- takeScreenshot: find-partner-board
+- tapOn: { id: find-partner-view-posts }
+- takeScreenshot: find-partner-posts
+- openLink: maxina:///comm/open-asks
+- extendedWaitUntil: { visible: { id: screen-open-asks }, timeout: 20000 }
+- takeScreenshot: open-asks
+- openLink: maxina:///me/matches
+- extendedWaitUntil: { visible: { id: screen-matches }, timeout: 20000 }
+- takeScreenshot: matches
+- openLink: maxina:///intents/board
+- extendedWaitUntil: { visible: { id: screen-intent-board }, timeout: 20000 }
+- takeScreenshot: intent-board

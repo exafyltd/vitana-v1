@@ -7,7 +7,7 @@ import { ScreenFrame } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import SubNavigation from '@/components/SubNavigation';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Panel } from '@/components/layout/spotlight/Panel';
 import { Badge } from '@/components/ui/badge';
 import {
   ResponsiveConfirmDialog,
@@ -236,8 +236,9 @@ export default function LiveRoomViewer() {
         <SEO title={t('screens.community.roomEnded')} />
         <AppLayout>
           {!isMobile && <SubNavigation items={communityNavigation} />}
+          {/* design-allow-next-line: calc against fixed chrome (header + sub navigation) */}
           <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
-            <Card className="p-8 text-center max-w-md">
+            <Panel className="p-8 text-center max-w-md">
               <h2 className="text-2xl font-bold mb-4">{t('screens.community.thisRoomHasEnded')}</h2>
               <p className="text-muted-foreground mb-6">{t('screens.community.sessionStreamtitleHasConcluded', { streamTitle })}
               </p>
@@ -251,7 +252,7 @@ export default function LiveRoomViewer() {
                 <ArrowLeft className="h-4 w-4 me-2 rtl:rotate-180" />
                 {t('screens.community.backRooms')}
               </Button>
-            </Card>
+            </Panel>
           </div>
         </AppLayout>
       </>
@@ -282,9 +283,11 @@ export default function LiveRoomViewer() {
             "flex flex-col",
             roomMode
               ? cn(
-                  isMobile ? "h-[100dvh]" : "h-[calc(100vh-3rem)]",
+                  // design-allow-next-line: calc against fixed chrome (desktop top bar)
+                  isMobile ? "h-dvh" : "h-[calc(100vh-3rem)]",
                   "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
                 )
+              // design-allow-next-line: calc against fixed chrome (header + sub navigation)
               : "h-[calc(100vh-8rem)]"
           )}
         >
@@ -292,7 +295,7 @@ export default function LiveRoomViewer() {
               (also while connecting, on errors, or over a black iframe). */}
           <header
             data-testid="live-room-header"
-            className="flex items-center gap-2 px-2 py-1 min-h-[56px] border-b shrink-0 bg-background"
+            className="flex items-center gap-2 px-2 py-1 min-h-14 border-b shrink-0 bg-background"
           >
             <Button
               variant="ghost"
@@ -343,11 +346,11 @@ export default function LiveRoomViewer() {
               /* Entry Screen */
               <div className="flex-1 flex items-center justify-center bg-muted/50 p-4">
                 {isHostResolving ? (
-                  <Card className="p-8 text-center max-w-md">
+                  <Panel className="p-8 text-center max-w-md">
                     <div className="animate-pulse text-muted-foreground">{t('screens.community.loading')}</div>
-                  </Card>
+                  </Panel>
                 ) : (
-                  <Card className="p-8 text-center max-w-md w-full">
+                  <Panel className="p-8 text-center max-w-md w-full">
                     <h2 className="text-2xl font-bold mb-4">
                       {effectiveIsHost ? t('screens.liveRoom.readyToStart') : t('screens.liveRoom.readyToJoin')}
                     </h2>
@@ -357,10 +360,11 @@ export default function LiveRoomViewer() {
                     <Button size="lg" onClick={handleEnter} className="w-full min-h-11" data-testid="live-room-enter">
                       {effectiveIsHost ? t('screens.liveRoom.startStream') : t('screens.liveRoom.joinStream')}
                     </Button>
-                  </Card>
+                  </Panel>
                 )}
               </div>
             ) : entry ? (
+              // design-allow-next-line: on-media scrim, theme-independent (video stage behind the Daily iframe)
               <div className="flex-1 min-h-0 flex flex-col bg-black relative">
                 <DailyVideoRoom
                   roomUrl={entry.daily_room_url}
@@ -404,6 +408,7 @@ export default function LiveRoomViewer() {
             ) : (
               <div className="flex-1 flex items-center justify-center" data-testid="live-room-entering">
                 <div className="text-center text-muted-foreground">
+                  {/* design-allow-next-line: action in progress, not a data load */}
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
                   <p>{t('screens.community.settingUpVideoRoom')}</p>
                 </div>

@@ -13,6 +13,7 @@ export function ShowcaseDrawer({ open, onOpenChange }: ShowcaseDrawerProps) {
   const { translate } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{translate('editProfile.autopilot.editHighlights')}</DialogTitle>

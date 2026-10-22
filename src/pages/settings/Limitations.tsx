@@ -20,14 +20,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from "@/components/layout/spotlight/Panel";
 import { useToast } from '@/hooks/use-toast';
 import { settingsNavigation } from "@/config/navigation";
-import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility, Loader2 } from "lucide-react";
+import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDate, fmtDateTime, fmtNumber } from '@/lib/locale-format';
-import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 // VTID-05155: bare gateway origin — every call below spells out /api/v1 itself,
 // so VITE_GATEWAY_URL (which already ends in /api/v1) must not be used here.
@@ -238,28 +238,18 @@ export default function Limitations() {
     }
   }
 
-  if (loading) {
-    // VTID-05111 — Spotlight: the form skeleton inside the frame instead of a spinner line (SR-20).
-    if (spotlight) {
-      return (
-        <AppLayout>
-          <ScreenFrame
-            archetype="form"
-            subNav={{ items: settingsNavigation }}
-            header={{ title: t('screens.settings.preferencesLimitations'), description: t('spotlightTierB.settings.limitationsDescription'), emoji: '🛡️' }}
-          >
-            <ArchetypeSkeleton archetype="form" />
-          </ScreenFrame>
-        </AppLayout>
-      );
-    }
+  // VTID-05111 — Spotlight: the form skeleton inside the frame instead of a spinner line (SR-20).
+  // Phones and flag-off show the same skeleton inside the page's own frame (below).
+  if (loading && spotlight) {
     return (
       <AppLayout>
-        <SubNavigation items={settingsNavigation} />
-        <div className="p-8 flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          {t('screens.settings.loadingYourPreferences')}
-        </div>
+        <ScreenFrame
+          archetype="form"
+          subNav={{ items: settingsNavigation }}
+          header={{ title: t('screens.settings.preferencesLimitations'), description: t('spotlightTierB.settings.limitationsDescription'), emoji: '🛡️' }}
+        >
+          <SpotlightLoading archetype="form" />
+        </ScreenFrame>
       </AppLayout>
     );
   }
@@ -270,8 +260,8 @@ export default function Limitations() {
   const limitationsForm = (
     <>
       {/* Live counter */}
-      <Card>
-        <CardContent className="pt-6 flex items-center justify-between">
+      <Panel>
+        <PanelContent className="pt-6 flex items-center justify-between">
           <div>
             <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
             <div className="text-2xl font-semibold">
@@ -280,22 +270,22 @@ export default function Limitations() {
               </span>
             </div>
           </div>
-          <ShieldCheck className="w-10 h-10 text-emerald-600" />
-        </CardContent>
-      </Card>
+          <ShieldCheck className="w-10 h-10 text-status-success" />
+        </PanelContent>
+      </Panel>
 
       {/* Allergies */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-600" />
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-status-error" />
             {t('screens.settings.allergies')}
             <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
-          </CardTitle>
-          <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? fmtDate(new Date(lastVerified.allergies)) : "never" })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </PanelTitle>
+          <PanelDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? fmtDate(new Date(lastVerified.allergies)) : "never" })}
+          </PanelDescription>
+        </PanelHeader>
+        <PanelContent>
           <TagEditor
             label="Allergens"
             icon={AlertTriangle}
@@ -308,19 +298,19 @@ export default function Limitations() {
           <Button className="mt-4" onClick={() => save({ allergies: state.allergies })} disabled={saving}>
             {t('screens.settings.saveAllergies')}
           </Button>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       {/* Dietary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Utensils className="w-5 h-5 text-orange-600" />
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
+            <Utensils className="w-5 h-5 text-category-5" />
             {t('screens.settings.dietaryRestrictions')}
-          </CardTitle>
-          <CardDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </PanelTitle>
+          <PanelDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</PanelDescription>
+        </PanelHeader>
+        <PanelContent className="space-y-4">
           <DietaryPicker
             values={state.dietary_restrictions}
             onChange={(next) => setState((s) => ({ ...s, dietary_restrictions: next }))}
@@ -328,21 +318,21 @@ export default function Limitations() {
           <Button onClick={() => save({ dietary_restrictions: state.dietary_restrictions })} disabled={saving}>
             {t('screens.settings.saveDietary')}
           </Button>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       {/* Medications */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Pill className="w-5 h-5 text-indigo-600" />
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
+            <Pill className="w-5 h-5 text-category-3" />
             {t('screens.settings.currentMedications')}
             <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
-          </CardTitle>
-          <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? fmtDate(new Date(lastVerified.current_medications)) : "never" })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </PanelTitle>
+          <PanelDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? fmtDate(new Date(lastVerified.current_medications)) : "never" })}
+          </PanelDescription>
+        </PanelHeader>
+        <PanelContent>
           <TagEditor
             label="Medications (generic or class, e.g. SSRI, blood-thinner)"
             icon={Pill}
@@ -353,19 +343,19 @@ export default function Limitations() {
           <Button className="mt-4" onClick={() => save({ current_medications: state.current_medications })} disabled={saving}>
             {t('screens.settings.saveMedications')}
           </Button>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       {/* Pregnancy */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Baby className="w-5 h-5 text-pink-600" />
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
+            <Baby className="w-5 h-5 text-category-4" />
             {t('screens.settings.pregnancyNursing')}
-          </CardTitle>
-          <CardDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </PanelTitle>
+          <PanelDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</PanelDescription>
+        </PanelHeader>
+        <PanelContent className="space-y-4">
           <div className="max-w-sm space-y-2">
             <Label>{t('screens.settings.status')}</Label>
             <Select
@@ -384,19 +374,19 @@ export default function Limitations() {
           <Button onClick={() => save({ pregnancy_status: state.pregnancy_status as Limitations["pregnancy_status"] })} disabled={saving}>
             {t('screens.settings.savePregnancyStatus')}
           </Button>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       {/* Budget */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-emerald-600" />
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
+            <Wallet className="w-5 h-5 text-category-6" />
             {t('screens.settings.budget')}
-          </CardTitle>
-          <CardDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </PanelTitle>
+          <PanelDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</PanelDescription>
+        </PanelHeader>
+        <PanelContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label>{t('screens.settings.maxPerProductEur')}</Label>
@@ -451,19 +441,19 @@ export default function Limitations() {
             disabled={saving}
           >{t('screens.settings.saveBudget')}
           </Button>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       {/* Accessibility */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Accessibility className="w-5 h-5 text-sky-600" />
+      <Panel>
+        <PanelHeader>
+          <PanelTitle className="flex items-center gap-2">
+            <Accessibility className="w-5 h-5 text-category-7" />
             {t('screens.settings.accessibility')}
-          </CardTitle>
-          <CardDescription>{t('screens.settings.preferencesForFormFactorUsability')}</CardDescription>
-        </CardHeader>
-        <CardContent>
+          </PanelTitle>
+          <PanelDescription>{t('screens.settings.preferencesForFormFactorUsability')}</PanelDescription>
+        </PanelHeader>
+        <PanelContent>
           <TagEditor
             label="Accessibility needs"
             icon={Accessibility}
@@ -474,8 +464,8 @@ export default function Limitations() {
           <Button className="mt-4" onClick={() => save({ physical_accessibility_needs: state.physical_accessibility_needs })} disabled={saving}>
             {t('screens.settings.saveAccessibility')}
           </Button>
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
 
       <p className="text-xs text-muted-foreground text-center pt-4">{t('screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR')}
       </p>
@@ -502,14 +492,14 @@ export default function Limitations() {
     <AppLayout>
       <SEO title={t('screens.settings.limitationsVitana')} description="Edit the non-negotiable filters that shape your Discover marketplace." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+      <div className="p-6 min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
         <div className="max-w-4xl mx-auto space-y-6">
           <StandardHeader
             title={t('screens.settings.preferencesLimitations')}
             description="These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable."
           />
 
-          {limitationsForm}
+          {loading ? <SpotlightLoading archetype="form" /> : <SpotlightLoading loading={false}><div className="space-y-6">{limitationsForm}</div></SpotlightLoading>}
         </div>
       </div>
     </AppLayout>
