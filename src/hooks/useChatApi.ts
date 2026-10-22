@@ -103,6 +103,30 @@ export async function fetchConversation(
   return json.data || [];
 }
 
+/** VTID-05318: a window of a DM around one message (I3). 404 → null. */
+export interface MessageWindow<T> { data: T[]; has_older: boolean; has_newer: boolean }
+export async function fetchConversationAround(
+  peerId: string,
+  messageId: string,
+  limit = 40
+): Promise<MessageWindow<ChatMessage> | null> {
+  const params = new URLSearchParams({ limit: String(limit), around: messageId });
+  try {
+    const json = await gatewayFetch(`/conversation/${peerId}?${params}`);
+    return { data: json.data || [], has_older: !!json.has_older, has_newer: !!json.has_newer };
+  } catch (err) {
+    if (err instanceof Error && /message_not_found|Gateway 404/.test(err.message)) return null;
+    throw err;
+  }
+}
+
+/** VTID-05318: forward paging of a DM — messages newer than `after`, ascending. */
+export async function fetchConversationAfter(peerId: string, after: string, limit = 100): Promise<ChatMessage[]> {
+  const params = new URLSearchParams({ limit: String(limit), after });
+  const json = await gatewayFetch(`/conversation/${peerId}?${params}`);
+  return json.data || [];
+}
+
 /** Send a direct message. Returns the created message. */
 export async function sendChatMessage(
   receiverId: string,
@@ -254,6 +278,29 @@ export async function fetchGroupMessages(
 ): Promise<ChatGroupMessage[]> {
   const params = new URLSearchParams({ limit: String(limit) });
   if (before) params.set("before", before);
+  const json = await gatewayGroupFetch(`/${groupId}/messages?${params}`);
+  return json.data || [];
+}
+
+/** VTID-05318: a window of a group around one message (I3). 404 → null. */
+export async function fetchGroupMessagesAround(
+  groupId: string,
+  messageId: string,
+  limit = 40,
+): Promise<MessageWindow<ChatGroupMessage> | null> {
+  const params = new URLSearchParams({ limit: String(limit), around: messageId });
+  try {
+    const json = await gatewayGroupFetch(`/${groupId}/messages?${params}`);
+    return { data: json.data || [], has_older: !!json.has_older, has_newer: !!json.has_newer };
+  } catch (err) {
+    if (err instanceof Error && /message_not_found|Gateway 404/.test(err.message)) return null;
+    throw err;
+  }
+}
+
+/** VTID-05318: forward paging of a group — messages newer than `after`, ascending. */
+export async function fetchGroupMessagesAfter(groupId: string, after: string, limit = 100): Promise<ChatGroupMessage[]> {
+  const params = new URLSearchParams({ limit: String(limit), after });
   const json = await gatewayGroupFetch(`/${groupId}/messages?${params}`);
   return json.data || [];
 }

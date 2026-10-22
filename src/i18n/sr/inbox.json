@@ -148,6 +148,15 @@
       "other": "Nove poruke: {count}",
       "unread": "Nepročitane poruke",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Originalna poruka nije dostupna",
+      "loading": "Originalna poruka…",
+      "jumpToOriginal": "Idi na originalnu poruku",
+      "jumpTo": "Idi na originalnu poruku: {name}",
+      "unknownSender": "Član",
+      "noText": "Prilog",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

@@ -148,6 +148,15 @@
       "other": "{count} yeni mesaj",
       "unread": "Okunmamış mesajlar",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Orijinal mesaj kullanılamıyor",
+      "loading": "Orijinal mesaj…",
+      "jumpToOriginal": "Orijinal mesaja git",
+      "jumpTo": "Orijinal mesaja git: {name}",
+      "unknownSender": "Üye",
+      "noText": "Ek",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

@@ -148,6 +148,15 @@
       "other": "{count} new messages",
       "unread": "Unread messages",
       "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Original message not available",
+      "loading": "Original message…",
+      "jumpToOriginal": "Go to the original message",
+      "jumpTo": "Go to the original message from {name}",
+      "unknownSender": "Member",
+      "noText": "Attachment",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
