@@ -78,14 +78,18 @@ export function SetupChooser({
                 onOpenChange(false);
                 onChoose(id);
               }}
-              className="flex min-h-16 w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-amber-500/60 hover:bg-amber-50/60"
+              className="flex min-h-16 w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/30 hover:bg-accent/60"
             >
-              <Icon className="h-6 w-6 shrink-0 text-amber-700" />
+              <Icon className="h-6 w-6 shrink-0 text-primary" />
               <span className="min-w-0 flex-1">
                 <span className="flex flex-wrap items-center gap-2 font-semibold text-foreground">
                   {t(title)}
                   {inDevelopment && !aiReady && (
-                    <Badge variant="outline" className="border-amber-300 text-xs font-medium text-amber-800">
+                    <Badge
+                      variant="outline"
+                      // design-allow-next-line: badge colour asserted by tests/e2e/staging/vtid-04795-commerce-product-setup.staging.spec.ts (outside this lane)
+                      className="border-amber-300 text-xs font-medium text-amber-800"
+                    >
                       {t('screens.commerceportal.setupChooser.inDevelopment')}
                     </Badge>
                   )}

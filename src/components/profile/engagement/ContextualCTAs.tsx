@@ -103,7 +103,7 @@ export function ContextualCTAs({
       {compatibilityScore >= 70 && (
         <div className="flex justify-center">
           <Badge 
-            className="bg-gradient-to-r from-[hsl(var(--domain-community-accent))] to-[hsl(var(--pill-mental-accent))] text-white border-0"
+            className="bg-gradient-to-r from-domain-community-accent to-pill-mental-accent text-primary-foreground border-0"
           >
             <Users className="h-3 w-3 me-1" />{t('screens.profile.compatibilityscoreCompatible', { compatibilityScore })}
           </Badge>

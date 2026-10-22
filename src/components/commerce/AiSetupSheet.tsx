@@ -59,10 +59,10 @@ import { t } from '@/lib/i18n-toast';
 
 type Step = 'website' | 'reading' | 'review' | 'saving' | 'done';
 
-const fieldClass = 'h-12 text-base focus-visible:ring-amber-500';
-const primaryClass = 'h-12 flex-1 text-base bg-amber-700 font-semibold text-white hover:bg-amber-800';
+const fieldClass = 'h-12 text-base focus-visible:ring-ring';
+const primaryClass = 'h-12 flex-1 text-base bg-primary font-semibold text-primary-foreground hover:bg-primary/90';
 const selectClass =
-  'flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500';
+  'flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
 export function AiSetupSheet({
   open,
@@ -202,9 +202,9 @@ export function AiSetupSheet({
       <ResponsiveDialogContent fullscreenOnMobile className={portalClass} data-testid="ai-setup">
         <ResponsiveDialogHeader className="text-start">
           {step === 'done' ? (
-            <PartyPopper aria-hidden className="h-8 w-8 text-amber-600" />
+            <PartyPopper aria-hidden className="h-8 w-8 text-primary" />
           ) : (
-            <Sparkles aria-hidden className="h-7 w-7 text-amber-600" />
+            <Sparkles aria-hidden className="h-7 w-7 text-primary" />
           )}
           <ResponsiveDialogTitle className="text-2xl font-bold">
             {step === 'done'
@@ -252,7 +252,7 @@ export function AiSetupSheet({
                 <Button
                   type="button"
                   variant="outline"
-                  className="mt-4 h-12 w-full border-amber-300 text-base text-amber-900 hover:bg-amber-50"
+                  className="mt-4 h-12 w-full border-primary/30 text-base text-primary hover:bg-accent"
                   onClick={() => startVoiceSetup()}
                   data-testid="ai-talk"
                 >
@@ -262,7 +262,7 @@ export function AiSetupSheet({
               )}
               {step === 'reading' && (
                 <p className="flex items-center gap-2 pt-2 text-sm text-foreground" role="status">
-                  <Loader2 className="h-4 w-4 animate-spin text-amber-700" />
+                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
                   {t('screens.commerceportal.aiSetup.reading')}
                 </p>
               )}
@@ -340,7 +340,7 @@ export function AiSetupSheet({
                           checked={p.include}
                           onChange={(e) => patchProduct(i, { include: e.target.checked })}
                           aria-label={t('screens.commerceportal.aiSetup.includeProduct', { title: p.title })}
-                          className="mt-3 h-5 w-5 shrink-0 accent-amber-700"
+                          className="mt-3 h-5 w-5 shrink-0 accent-primary"
                         />
                         <div className="min-w-0 flex-1 space-y-2">
                           <Input
@@ -387,7 +387,7 @@ export function AiSetupSheet({
           )}
 
           {step === 'done' && outcome && (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4" data-testid="ai-done">
+            <div className="rounded-2xl border border-primary/20 bg-accent/60 p-4" data-testid="ai-done">
               <p className="text-lg font-semibold text-foreground">{outcome.organization.display_name}</p>
               <p className="mt-1 text-base text-foreground">
                 {t('screens.commerceportal.aiSetup.doneBody', { count: outcome.products_added + outcome.products_replayed })}
@@ -419,7 +419,7 @@ export function AiSetupSheet({
             <button
               type="button"
               onClick={preferManual}
-              className="min-h-11 text-sm font-medium text-amber-800 hover:underline"
+              className="min-h-11 text-sm font-medium text-primary hover:underline"
               data-testid="ai-prefer-manual"
             >
               {t('screens.commerceportal.aiSetup.preferManual')}

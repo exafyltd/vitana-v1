@@ -222,9 +222,9 @@ const SUBMIT_RESULT_COPY: Record<SubmitResult, string> = {
 };
 
 function StateIcon({ state }: { state: StepState }) {
-  if (state === 'done') return <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-600" />;
-  if (state === 'in_progress') return <Clock className="h-6 w-6 shrink-0 text-amber-600" />;
-  if (state === 'attention') return <TriangleAlert className="h-6 w-6 shrink-0 text-red-600" />;
+  if (state === 'done') return <CheckCircle2 className="h-6 w-6 shrink-0 text-status-success" />;
+  if (state === 'in_progress') return <Clock className="h-6 w-6 shrink-0 text-status-warning" />;
+  if (state === 'attention') return <TriangleAlert className="h-6 w-6 shrink-0 text-status-error" />;
   return <Circle className="h-6 w-6 shrink-0 text-muted-foreground/60" />;
 }
 
@@ -353,7 +353,7 @@ export function SetupHub({
   };
 
   return (
-    <section className="mt-8 rounded-3xl border border-amber-200 bg-card p-5 shadow-sm md:mt-10 md:p-7" data-testid="setup-hub">
+    <section className="mt-8 rounded-3xl border border-primary/20 bg-card p-5 shadow-sm md:mt-10 md:p-7" data-testid="setup-hub">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 className="text-2xl font-bold text-foreground">{t('screens.commerceportal.setupHub.title')}</h2>
@@ -363,7 +363,7 @@ export function SetupHub({
               <select
                 value={org.id}
                 onChange={(e) => onSelectOrg(e.target.value)}
-                className="h-11 max-w-56 truncate rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                className="h-11 max-w-56 truncate rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {orgs.map((o) => (
                   <option key={o.id} value={o.id}>
@@ -395,7 +395,7 @@ export function SetupHub({
             <p className="text-sm font-semibold text-foreground" data-testid="setup-hub-percent">
               {t('screens.commerceportal.setupHub.readiness', { percent: readinessPercent(steps) })}
             </p>
-            <Progress value={readinessPercent(steps)} className="mt-2 h-2 bg-amber-100 [&>div]:bg-amber-600" />
+            <Progress value={readinessPercent(steps)} className="mt-2 h-2 bg-accent [&>div]:bg-primary" />
           </div>
           <ol className="mt-5 space-y-2">
             {steps.map(({ id, state }) => {
@@ -416,7 +416,7 @@ export function SetupHub({
                     ) : null}
                   </div>
                   {a ? (
-                    <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
+                    <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-primary">
                       {t(a.label)}
                       <ChevronRight className="h-4 w-4 rtl:rotate-180" />
                     </span>
@@ -431,7 +431,7 @@ export function SetupHub({
                     <button
                       type="button"
                       onClick={a.run}
-                      className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-border p-3 text-start transition-colors hover:border-amber-400 hover:bg-amber-50/50"
+                      className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-border p-3 text-start transition-colors hover:border-primary/40 hover:bg-accent/50"
                     >
                       {content}
                     </button>
@@ -542,12 +542,12 @@ function TermsRow({ status, onOpen }: { status: Exclude<TermsStatus, { kind: 'no
   if (status.kind === 'accepted') {
     return (
       <div className="mt-2 flex min-h-14 items-center gap-3 rounded-2xl border border-border p-3" data-testid="setup-terms" data-state="done">
-        <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-600" />
+        <CheckCircle2 className="h-6 w-6 shrink-0 text-status-success" />
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-foreground">{t(`${K}.rowTitle`)}</p>
           <p className="text-sm text-muted-foreground">{t(`${K}.rowAccepted`, { version: status.terms.version })}</p>
         </div>
-        <button type="button" onClick={onOpen} className="min-h-11 shrink-0 text-sm font-semibold text-amber-800">
+        <button type="button" onClick={onOpen} className="min-h-11 shrink-0 text-sm font-semibold text-primary">
           {t(`${K}.view`)}
         </button>
       </div>
@@ -561,17 +561,17 @@ function TermsRow({ status, onOpen }: { status: Exclude<TermsStatus, { kind: 'no
       data-testid="setup-terms"
       data-state={reaccept ? 'reaccept' : 'todo'}
       className={`mt-2 flex min-h-14 w-full items-center gap-3 rounded-2xl border p-3 text-start transition-colors ${
-        reaccept ? 'border-amber-400 bg-amber-50 hover:bg-amber-100' : 'border-border hover:border-amber-400 hover:bg-amber-50/50'
+        reaccept ? 'border-status-warning/40 bg-status-warning-subtle hover:bg-status-warning-subtle/80' : 'border-border hover:border-primary/40 hover:bg-accent/50'
       }`}
     >
-      {reaccept ? <TriangleAlert className="h-6 w-6 shrink-0 text-amber-700" /> : <ShieldCheck className="h-6 w-6 shrink-0 text-muted-foreground/70" />}
+      {reaccept ? <TriangleAlert className="h-6 w-6 shrink-0 text-status-warning" /> : <ShieldCheck className="h-6 w-6 shrink-0 text-muted-foreground/70" />}
       <div className="min-w-0 flex-1">
         <p className="font-semibold text-foreground">{t(reaccept ? `${K}.rowReacceptTitle` : `${K}.rowTitle`)}</p>
         <p className="text-sm text-muted-foreground">
           {t(reaccept ? `${K}.rowReacceptBody` : `${K}.rowBody`, { version: status.terms.version })}
         </p>
       </div>
-      <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800">
+      <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-primary">
         {t(`${K}.rowCta`)}
         <ChevronRight className="h-4 w-4 rtl:rotate-180" />
       </span>
@@ -696,7 +696,7 @@ function ProfileSheet({
                     setEditing(true);
                     setWebsite(e.target.value);
                   }}
-                  className="h-12 text-base focus-visible:ring-amber-500"
+                  className="h-12 text-base focus-visible:ring-ring"
                   data-testid="profile-website"
                 />
                 {websiteSourceKey && <p className="text-xs text-muted-foreground">{t(websiteSourceKey)}</p>}
@@ -711,7 +711,7 @@ function ProfileSheet({
                     setCountry(e.target.value);
                   }}
                   data-testid="profile-country"
-                  className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                  className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <option value="" disabled>
                     {t('screens.commerceportal.orgOnboarding.countryPlaceholder')}
@@ -730,7 +730,7 @@ function ProfileSheet({
         <ResponsiveDialogFooter className="flex-row gap-2 md:mt-4">
           <Button
             type="button"
-            className="h-12 flex-1 bg-amber-700 text-base font-semibold text-white hover:bg-amber-800"
+            className="h-12 flex-1 bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
             disabled={saving || !country || !isValidWebsite(website)}
             onClick={() => void save()}
             data-testid="profile-save"

@@ -22,7 +22,7 @@ export function SplitDetailPanel({
       {/* Main content area */}
       <div
         className={`transition-all duration-300 ease-in-out overflow-auto ${
-          isOpen ? "w-[60%]" : "w-full"
+          isOpen ? "w-3/5" : "w-full"
         }`}
       >
         {children}
@@ -31,7 +31,7 @@ export function SplitDetailPanel({
       {/* Detail panel */}
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden border-s bg-card ${
-          isOpen ? "w-[40%] opacity-100" : "w-0 opacity-0 border-s-0"
+          isOpen ? "w-2/5 opacity-100" : "w-0 opacity-0 border-s-0"
         }`}
       >
         {isOpen && (

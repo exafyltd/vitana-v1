@@ -17,7 +17,7 @@ export function MobileAutopilotBanner({
   return (
     <div className={cn(
       "mx-4 my-3 px-3 py-2.5 rounded-xl",
-      "bg-gradient-to-r from-primary/10 to-[hsl(var(--domain-community-accent))]/10",
+      "bg-gradient-to-r from-primary/10 to-domain-community-accent/10",
       "border border-primary/20",
       "flex items-center gap-3",
       className

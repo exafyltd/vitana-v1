@@ -1,0 +1,42 @@
+{
+  "vtid": "VTID-05296",
+  "service": "community-app",
+  "notes": "The native Maxina app (apps/mobile) has no staging/production web host and no production profile (collaboration §7a). Parity for this lane is proven by the fixture / fake-gateway Jest suites below, each rendering the ported screens in their loaded / empty / error states with no network. The suites and the exact states they cover are listed per-file so this file does not overstate coverage. Device-runtime parity (plan §8) is deferred to the G1 owner gate and is NOT a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "the ported screens, data hooks and routes type-check under React 19 (ReactElement, not global JSX)" },
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/community", "cwd": "apps/mobile",
+      "reason": "8 suites / 49 tests — see suites[] below for the exact states each proves" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 16 community-hub ledger rows are native and each has a concrete native route file under apps/mobile/app (check reports 435 rows, 20 native routes) — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "the development bundle exports for iOS and Android, proving the routes and screens bundle in the native app (run with APP_PROFILE=development)" }
+  ],
+  "suites": [
+    { "file": "tests/community/groups.test.tsx",
+      "covers": "Groups: my-groups loaded, my-groups empty, Discover tab switch + join action, initialTab=recommended, Discover directory ERROR state, search-box filtering of my-groups, create-group sheet open + insert. GroupDetail: member leave action, not-found (missing), not-found on query ERROR." },
+    { "file": "tests/community/members.test.tsx",
+      "covers": "Members: loaded, empty, gateway ERROR, profile-preview overlay open on card tap, profile-preview DISMISS, Load-more (second page appended, not replaced)." },
+    { "file": "tests/community/find-partner.test.tsx",
+      "covers": "Find a Partner: matches loaded, matches empty, board view switch, posts empty, members loaded, matches ERROR, members ERROR, min-score filter narrows + Showing-of-total line, composer open from New wish." },
+    { "file": "tests/community/intents.test.tsx",
+      "covers": "Intent board: loaded, empty, ERROR, dance meta-tab prefix filter, dance-variety chips narrowing, learning_seek filter forwarded as kind, composer open from Post. Intent match detail: loaded, no-matches, not-found." },
+    { "file": "tests/community/composer.test.tsx",
+      "covers": "IntentComposer: title-too-short validation toast, valid POST /intents → onPosted. CreateGroupSheet: name-required validation (no insert), insert group + creator-admin membership." },
+    { "file": "tests/community/search.test.tsx",
+      "covers": "Global search: results (current user excluded), empty, submit-button search, profile-query ERROR state." },
+    { "file": "tests/community/matches.test.tsx",
+      "covers": "/me/matches full list: loaded, empty, error, score badge." },
+    { "file": "tests/community/open-asks.test.tsx",
+      "covers": "Open asks: loaded, empty, error, kind + topic filter chips, load-more pager." }
+  ],
+  "deferred": {
+    "task": "Device-runtime parity (plan §8): run the Maestro community flows on a device/emulator build",
+    "gate": "G1",
+    "next_actor": "owner",
+    "reason": "the native app has no production profile and device runtime needs an owner-provisioned G1 build; read-only Jest parity stands until then",
+    "maestro_flows": "apps/mobile/maestro/community/**"
+  }
+}

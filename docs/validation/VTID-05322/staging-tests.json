@@ -1,0 +1,7 @@
+{
+  "vtid": "VTID-05322",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/hooks/useChatViewingPresence.test.ts src/components/messages src/pages/messages", "reason": "heartbeat at once and every 20 s only while visible+focused (app shell: visible), active:false on blur/hide/leave/switch, keepalive on pagehide with the auth header, one device id per tab; the heartbeat is a write, proven in CI" }
+  ]
+}

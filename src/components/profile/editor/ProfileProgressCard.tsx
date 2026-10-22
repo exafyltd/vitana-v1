@@ -29,7 +29,7 @@ export function ProfileProgressCard({
     <Card className={`rounded-xl shadow-sm ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Sparkles className="h-5 w-5 text-[hsl(var(--util-profile-accent))]" />
+          <Sparkles className="h-5 w-5 text-util-profile-accent" />
           {t('screens.profile.profileCompletion')}
           <Badge 
             variant={isComplete ? "default" : "secondary"}
@@ -54,7 +54,7 @@ export function ProfileProgressCard({
         </div>
 
         {nextSuggestion && (
-          <div className="p-3 rounded-lg bg-gradient-to-r from-[hsl(var(--util-profile-accent)/0.1)] to-[hsl(var(--domain-community-accent)/0.1)] border">
+          <div className="p-3 rounded-lg bg-gradient-to-r from-util-profile-accent/10 to-domain-community-accent/10 border">
             <div className="flex items-start justify-between gap-3">
               <div className="space-y-1">
                 <div className="font-medium text-sm">{t('screens.profile.nextName', { name: nextSuggestion.name })}</div>
@@ -84,7 +84,7 @@ export function ProfileProgressCard({
                 onClick={() => onSectionClick(section.id)}
               >
                 {section.completed ? (
-                  <CheckCircle className="h-4 w-4 text-[hsl(var(--domain-community-accent))]" />
+                  <CheckCircle className="h-4 w-4 text-domain-community-accent" />
                 ) : (
                   <Circle className="h-4 w-4 text-muted-foreground" />
                 )}

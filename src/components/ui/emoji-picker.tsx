@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Smile } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AuthContext } from '@/context/AuthContext';
 
 interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void;
@@ -13,6 +14,12 @@ interface EmojiPickerProps {
 // How many recents to keep (and show). grid-cols-8 → 16 fills exactly two
 // rows, the minimum the design asks for; up to RECENT_MAX = 24 lets it grow
 // to three rows before the oldest fall off.
+//
+// VTID-05315 (messenger-ux-v2/ui-emoji-recents): recents are per member —
+// `vitana:emoji:recent:v1:<userId>` — so two members on one device never see
+// each other's. The device-wide key of VTID-05202 is copied into the first
+// signed-in member's list once and then removed; it stays the key when nobody
+// is signed in. If storage fails, the list lives in memory for the session.
 const RECENT_STORAGE_KEY = 'vitana:emoji:recent:v1';
 const RECENT_MAX = 24;
 // Seeded so the "recent" tab is never emptier than two rows for a new user.
@@ -21,36 +28,88 @@ const RECENT_SEED = [
   '🔥', '😍', '🥰', '😎', '👏', '🙌', '💯', '✨',
 ];
 
-function loadRecentEmojis(): string[] {
+export function recentEmojiKey(userId?: string | null): string {
+  return userId ? `${RECENT_STORAGE_KEY}:${userId}` : RECENT_STORAGE_KEY;
+}
+
+/** Session copy, used when storage cannot be read or written. */
+const memoryRecents = new Map<string, string[]>();
+// Set once the device list was handed over, so later signed-out picks are
+// never handed to another member.
+const MIGRATED_KEY = `${RECENT_STORAGE_KEY}:migrated`;
+
+/** Test-only: forget the session copies. */
+export function __resetRecentEmojiMemoryForTests(): void {
+  memoryRecents.clear();
+}
+
+function withSeed(list: string[]): string[] {
+  // Backfill from the seed so the tab always shows at least two rows, even
+  // if the user has only picked a couple of emojis so far.
+  const merged = [...list];
+  for (const e of RECENT_SEED) {
+    if (merged.length >= 16) break;
+    if (!merged.includes(e)) merged.push(e);
+  }
+  return merged.slice(0, RECENT_MAX);
+}
+
+function readStored(key: string): string[] | null {
+  const raw = localStorage.getItem(key);
+  if (!raw) return null;
+  const parsed = JSON.parse(raw);
+  if (!Array.isArray(parsed) || parsed.length === 0) return null;
+  return parsed.filter((e): e is string => typeof e === 'string');
+}
+
+/** The member's own picks, most recent first (no seed). */
+function loadOwnRecents(userId?: string | null): string[] {
+  const key = recentEmojiKey(userId);
+  // A session copy exists only after a write failed (e.g. quota full); then it
+  // is newer than storage and wins. Otherwise storage is read every time, so
+  // picks made in another tab are kept.
+  const remembered = memoryRecents.get(key);
+  if (remembered) return remembered;
   try {
-    const raw = localStorage.getItem(RECENT_STORAGE_KEY);
-    if (!raw) return [...RECENT_SEED];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) return [...RECENT_SEED];
-    const cleaned = parsed.filter((e): e is string => typeof e === 'string');
-    // Backfill from the seed so the tab always shows at least two rows, even
-    // if the user has only picked a couple of emojis so far.
-    const merged = [...cleaned];
-    for (const e of RECENT_SEED) {
-      if (merged.length >= 16) break;
-      if (!merged.includes(e)) merged.push(e);
+    let own = readStored(key);
+    if (!own && userId && localStorage.getItem(MIGRATED_KEY) !== '1') {
+      // Once per device: the device-wide list of VTID-05202 becomes the first
+      // signed-in member's. The marker is set by that first check whether or
+      // not there was a list, so later signed-out picks (device key) are never
+      // handed to anyone.
+      const legacy = readStored(RECENT_STORAGE_KEY);
+      if (legacy) {
+        localStorage.setItem(key, JSON.stringify(legacy.slice(0, RECENT_MAX)));
+        localStorage.removeItem(RECENT_STORAGE_KEY);
+        own = legacy;
+      }
+      localStorage.setItem(MIGRATED_KEY, '1');
     }
-    return merged.slice(0, RECENT_MAX);
+    return own ?? [];
   } catch {
-    return [...RECENT_SEED];
+    return [];
   }
 }
 
-function recordRecentEmoji(emoji: string): string[] {
-  const current = loadRecentEmojis();
-  // Most-recently-used first, de-duplicated.
-  const next = [emoji, ...current.filter((e) => e !== emoji)].slice(0, RECENT_MAX);
+export function loadRecentEmojis(userId?: string | null): string[] {
+  const own = loadOwnRecents(userId);
+  return own.length === 0 ? [...RECENT_SEED] : withSeed(own);
+}
+
+/** Records a pick and returns the new recents list (composer picker; exported for reaction paths). */
+export function recordRecentEmoji(emoji: string, userId?: string | null): string[] {
+  const key = recentEmojiKey(userId);
+  // Most-recently-used first, de-duplicated — built from the member's own
+  // picks, never from the seed.
+  const own = [emoji, ...loadOwnRecents(userId).filter((e) => e !== emoji)].slice(0, RECENT_MAX);
   try {
-    localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(next));
+    localStorage.setItem(key, JSON.stringify(own));
+    memoryRecents.delete(key);
   } catch {
-    /* storage unavailable (private mode / quota) — recents just won't persist */
+    /* storage unavailable (private mode / quota) — kept in memory for this session */
+    memoryRecents.set(key, own);
   }
-  return next;
+  return withSeed(own);
 }
 
 const EMOJI_CATEGORIES = {
@@ -67,12 +126,15 @@ type CategoryKey = 'recent' | keyof typeof EMOJI_CATEGORIES;
 
 export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerProps) {
   const [activeCategory, setActiveCategory] = React.useState<CategoryKey>('recent');
-  const [recent, setRecent] = React.useState<string[]>(() => loadRecentEmojis());
+  // VTID-05315: the signed-in member, if any (no provider = nobody signed in).
+  const userId = React.useContext(AuthContext)?.user?.id ?? null;
+  const [recent, setRecent] = React.useState<string[]>(() => loadRecentEmojis(userId));
+  React.useEffect(() => { setRecent(loadRecentEmojis(userId)); }, [userId]);
 
   // Re-read recents whenever the picker is opened, so a selection made in one
   // picker instance (e.g. the composer) is reflected the next time any picker
   // opens — not only after a reload.
-  const refreshRecent = () => setRecent(loadRecentEmojis());
+  const refreshRecent = () => setRecent(loadRecentEmojis(userId));
 
   const categories: Record<CategoryKey, string[]> = {
     recent,
@@ -80,7 +142,7 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
   };
 
   const handleEmojiClick = (emoji: string) => {
-    setRecent(recordRecentEmoji(emoji));
+    setRecent(recordRecentEmoji(emoji, userId));
     onEmojiSelect(emoji);
   };
 

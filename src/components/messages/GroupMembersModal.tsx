@@ -427,6 +427,7 @@ export default function GroupMembersModal({
       <DialogContent
         // VTID-04959: the phone chat view is a fixed z-[55] layer; at the default
         // z-50 this panel opened BEHIND it and looked like nothing happened.
+        // design-allow-next-line: viewport-bound sheet height
         className="sm:max-w-md max-h-[90dvh] overflow-y-auto z-[60]"
         overlayClassName="z-[60]"
       >

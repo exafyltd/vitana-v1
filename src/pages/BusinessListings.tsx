@@ -8,7 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Loader2, Plus, ArrowLeft } from "lucide-react";
+import { Plus, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { useIsReseller } from "@/hooks/useIsReseller";
@@ -19,7 +19,7 @@ import { notifyError, t } from '@/lib/i18n-toast';
 import { Lock, Store } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { businessHubNavigation } from "@/config/navigation";
 import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/member/MemberSpotlight";
@@ -123,23 +123,23 @@ export default function BusinessListings() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
+        <SpotlightLoading rows={4} />
       ) : listings.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
           {t('screens.businesslistings.noListingsYetClick')} <span className="font-medium">{t('screens.businesslistings.newListing')}</span>{t('screens.businesslistings.addOneOpenOrbJustSay')} <em>{t('screens.businesslistings.iMOfferingX')}</em>.
         </div>
       ) : (
-        <div className="space-y-3">
-          {listings.map((intent) => (
-            <IntentCard
-              key={intent.intent_id}
-              intent={intent}
-              to={`/intents/match/${intent.intent_id}`}
-            />
-          ))}
-        </div>
+        <SpotlightLoading loading={false}>
+          <div className="space-y-3">
+            {listings.map((intent) => (
+              <IntentCard
+                key={intent.intent_id}
+                intent={intent}
+                to={`/intents/match/${intent.intent_id}`}
+              />
+            ))}
+          </div>
+        </SpotlightLoading>
       )}
 
       <IntentComposer

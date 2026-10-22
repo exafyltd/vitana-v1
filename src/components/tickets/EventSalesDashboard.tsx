@@ -157,8 +157,8 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-500/10">
-                <Ticket className="h-5 w-5 text-green-600" />
+              <div className="p-2 rounded-lg bg-status-success/10">
+                <Ticket className="h-5 w-5 text-status-success" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">{t('screens.tickets.ticketsSold')}</p>
@@ -171,8 +171,8 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-blue-500/10">
-                <Users className="h-5 w-5 text-blue-600" />
+              <div className="p-2 rounded-lg bg-status-info/10">
+                <Users className="h-5 w-5 text-status-info" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">{t('screens.tickets.buyers')}</p>
@@ -185,8 +185,8 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-orange-500/10">
-                <CheckCircle className="h-5 w-5 text-orange-600" />
+              <div className="p-2 rounded-lg bg-status-warning/10">
+                <CheckCircle className="h-5 w-5 text-status-warning" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">{t('screens.tickets.checked')}</p>
@@ -250,6 +250,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
           </div>
         </CardHeader>
         <CardContent>
+          {/* design-allow-next-line: measured scroll box, no scale class within 2 px */}
           <ScrollArea className="h-[300px]">
             <div className="space-y-3">
               {completedSales.map((sale) => (
@@ -261,7 +262,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                     <div className="flex items-center gap-2">
                       <p className="font-medium truncate">{sale.buyer_name}</p>
                       {sale.checked_in_at && (
-                        <Badge variant="secondary" className="text-xs bg-green-500/10 text-green-600">
+                        <Badge variant="secondary" className="text-xs bg-status-success/10 text-status-success">
                           <CheckCircle className="h-3 w-3 me-1" />
                           {t('screens.tickets.checked')}
                         </Badge>

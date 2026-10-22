@@ -1,0 +1,29 @@
+# VTID-05284 red -> green (lane i18n-audit-nightly-off/workflow-off)
+# check: node docs/validation/VTID-05284/check-workflow-off.cjs <rev>
+# run 2026-10-21 by session kiro-202610181950-f0b7 (Kiro IDE, Windows, node v24.11.1)
+
+## base origin/main 1a553367ff6622cc746c4720c6e3558e691b34dc (exit 1)
+FAIL T1 workflow triggers are workflow_dispatch only -- ["workflow_dispatch","schedule"]
+FAIL T1 no audit-nightly job -- ["audit-single","audit-nightly"]
+FAIL T1 permissions are contents: write only -- {"contents":"write","pull-requests":"write"}
+FAIL T2 provider input default deepseek -- gemini
+PASS T2 provider options unchanged -- ["gemini","anthropic","deepseek"]
+FAIL T3 CLAUDE.md audit command uses provider=deepseek
+FAIL T3 CLAUDE.md names the Bedrock follow-up
+FAIL T4 script fallback provider 'deepseek'
+FAIL T4 usage comment says default deepseek
+PASS T4 node --check scripts/i18n-audit-llm.mjs
+rev 1a553367ff6622cc746c4720c6e3558e691b34dc: 2 passed, 8 failed
+
+## lane head c6131fef7f3e774e0acc6bd53ba4ff60e2ee87ee (exit 0)
+PASS T1 workflow triggers are workflow_dispatch only -- ["workflow_dispatch"]
+PASS T1 no audit-nightly job -- ["audit-single"]
+PASS T1 permissions are contents: write only -- {"contents":"write"}
+PASS T2 provider input default deepseek -- deepseek
+PASS T2 provider options unchanged -- ["gemini","anthropic","deepseek"]
+PASS T3 CLAUDE.md audit command uses provider=deepseek
+PASS T3 CLAUDE.md names the Bedrock follow-up
+PASS T4 script fallback provider 'deepseek'
+PASS T4 usage comment says default deepseek
+PASS T4 node --check scripts/i18n-audit-llm.mjs
+rev c6131fef7f3e774e0acc6bd53ba4ff60e2ee87ee: 10 passed, 0 failed

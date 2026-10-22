@@ -202,6 +202,7 @@ export function VisibilityForm() {
 
       {/* Consent Dialog */}
       {showConsentDialog && (
+        // design-allow-next-line: modal backdrop scrim, theme-independent
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <Card className="p-6 max-w-md mx-4">
             <div className="space-y-4">
