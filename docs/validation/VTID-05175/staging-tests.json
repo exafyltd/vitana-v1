@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05175",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "Account deletion erases the member's health residue (vendor links, webhook log, partner inbox) through the gateway member-residue endpoint before any table, and keeps the account unless it is verified gone",
+      "ref": "npx vitest run src/lib/erase-health-residue.test.ts src/lib/erase-user-storage.test.ts src/lib/erase-user-data.test.ts",
+      "cwd": ".",
+      "reason": "The only way to exercise request-account-deletion is to irreversibly delete a real account in the production Supabase project that staging shares, and the gateway endpoint answers 409 STAGING_READ_ONLY on staging by design, so there is no runtime probe (plan Tests, V1-D5R: Vitest only, same reason as VTID-05053). These suites call the real member-residue client over a mocked fetch on a .invalid host: only a 200 with complete === true and numeric zero residuals erases; complete:false, residual > 0, missing or non-numeric residuals, 404, 409, 401, 5xx, a non-JSON body, a network error, a timeout and a missing service token all keep the account; a failed vendor revoke is reported, never blocking; and they pin the edge function's order (Step 0b member-residue gate with storage_incomplete → Step 1 tables → erase_user_data → Storage → auth user delete) next to the existing table and Storage gates."
+    }
+  ]
+}
