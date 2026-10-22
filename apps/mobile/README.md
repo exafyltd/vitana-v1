@@ -213,3 +213,32 @@ Found while mirroring the web primitives. Reported to the owner; each gets its o
 
 The editorial font Cormorant is licensed under the SIL Open Font License 1.1 (Google Fonts), which permits embedding
 in app binaries. It is bundled in Wave 1 (program decision 8).
+
+## Health Sync (VTID-05184, Wave 1 N5a)
+
+`src/health-sync/` reads Apple Health (HealthKit) and Health Connect and sends to the Health Sync ingest, **contract
+v1**. Read-only, Vitana consent before any OS permission, dark behind the N4 `health_sync` flag. It builds no screen:
+`createHealthSync(ports)` and `useHealthSyncState()` (`src/health-sync/index.ts`) are the only public entry for the
+Wave 2 Health lane, which maps state to catalogue keys.
+
+| | |
+|---|---|
+| Contract | `src/health-sync/contract/v1/` — `contract-v1.schema.json`, `contract-v1.lock.json`, `golden.json` vendored byte for byte from vitana-platform, sha256 in `VENDOR.json` (tests fail on any drift) |
+| Re-vendor | `node scripts/native/vendor-health-sync-contract.mjs --from <vitana-platform checkout> --commit <C1 merge commit>` — a contract change reaches the app only through a re-vendor PR |
+| Flag | N4 app config `health_sync` per platform; the shipped stub is always off, and the N3 auth stub is always signed out, so nothing runs until both land |
+| Libraries | `@kingstinct/react-native-healthkit@16.0.0` (+ `@react-native-healthkit/core@16.0.0`), `react-native-nitro-modules@0.37.1`, `react-native-health-connect@4.1.3`, `expo-sqlite@57.0.3` (SQLCipher), `expo-secure-store@57.0.4`, `expo-crypto@57.0.3`, `expo-background-task@57.0.20`, `expo-task-manager@57.0.20`, `expo-build-properties@57.0.22`, `expo-file-system@57.0.7`, `pako@2.1.0`; dev `ajv@8.17.1` |
+| Config | `app.config.ts` `HEALTH_SYNC_PLUGINS` + `plugins/`: HealthKit read-only (no update string, background delivery, no clinical access), purpose string from `screens.nativeHealthSync.osPermission.iosShareUsage` in all 11 locales (N5b, VTID-05185 — prebuild **fails closed** without it), Health Connect READ permissions only, **Android minSdk 26 for the native build** (Health Connect library minimum), SQLCipher |
+| Local data | queue, anchors, ledger and indexes in one SQLCipher database in the cache directory (outside iCloud and Auto Backup), key in the keychain/keystore `AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY`; purged on withdrawal, sign-out, member switch and every "not consented" answer; logs carry codes and counts only |
+| Tests | `tests/health-sync/` — golden serializer, ajv schema validation, 500 random cases, every response code, consent before permission, anchors, purge scope, sleep grouping, config plugins. No test makes a network call |
+
+**Waits for:** G1 (device tests: simulator/emulator with Health data, background wakes, the pako gzip round trip on
+Hermes, the SQLCipher store against the same conformance suite), G3 (HealthKit capability on a real App ID), N3/N4
+(real auth and flag instead of the stubs), and the legal lane's native `/privacy` screen (the Health Connect
+rationale link opens `/privacy`, which is not-found until then).
+
+**Store review (Wave 3):** Apple — HealthKit capability, `NSHealthShareUsageDescription` in 11 locales, no update
+string, privacy policy URL, App Privacy labels (Health & Fitness, linked, not tracking), guideline 5.1.3 (no
+advertising use, no health data in iCloud), reviewer notes on consent-before-permission with a non-production demo
+account. Google Play — Health Connect declaration for every READ permission plus `READ_HEALTH_DATA_HISTORY` and
+`READ_HEALTH_DATA_IN_BACKGROUND`, Health apps declaration, Data safety form, the rationale screen, and the minSdk 26
+decision (owner item at the store-release Gate 2, with the API 24–25 install share as evidence).

@@ -1,0 +1,16 @@
+// VTID-05184 — local Expo module: hands the Health Connect privacy-policy intent to Expo Router.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.healthconnectrationale'
+version = '0.1.0'
+
+android {
+  namespace "expo.modules.healthconnectrationale"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+}

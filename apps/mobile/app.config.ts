@@ -17,6 +17,13 @@
  * AASA / assetlinks.json for the .dev identifiers. `development` never
  * associates. A production or staging host (`isBlockedHost`, shared with env.ts) fails
  * the build. Production `public/.well-known/*` is not touched (Change 14).
+ *
+ * VTID-05184 (N5a) — Health Sync config plugins, both profiles: HealthKit
+ * read-only (no update string, background delivery on, no clinical-records
+ * access) with the purpose string from the catalogue in all 11 locales;
+ * Health Connect READ permissions; Android minSdk 26 for the native build only
+ * (the Health Connect library's minimum; owner item at the Wave 3 store-release
+ * Gate 2); SQLCipher for the encrypted queue; background task.
  */
 import type { ExpoConfig } from 'expo/config';
 import { isBlockedHost } from './src/config/blocked-hosts';
@@ -57,10 +64,27 @@ export function googleIosUrlScheme(iosClientId: string | undefined): string | nu
 
 type PluginEntry = string | [string, Record<string, unknown>];
 
+/**
+ * VTID-05184 — Health Sync (N5a plan change 4). The module itself stays dark behind the N4 flag.
+ * Listed BEFORE the VitanaVoice plugin: both add iOS `locales`, and the health
+ * locales mod merges into the voice one's entries, so it has to run after it
+ * (a later plugin's mod runs first).
+ */
+export const HEALTH_SYNC_PLUGINS: PluginEntry[] = [
+  ['@kingstinct/react-native-healthkit', { NSHealthShareUsageDescription: true, NSHealthUpdateUsageDescription: false, background: true }],
+  './plugins/with-ios-health-locales.js',
+  'react-native-health-connect',
+  './plugins/with-health-connect-permissions.js',
+  ['expo-build-properties', { android: { minSdkVersion: 26 } }],
+  ['expo-sqlite', { useSQLCipher: true }],
+  'expo-background-task',
+];
+
 export function buildPlugins(env: Record<string, string | undefined>, profile: Profile): PluginEntry[] {
   const plugins: PluginEntry[] = [
     'expo-router',
     'expo-localization',
+    ...HEALTH_SYNC_PLUGINS,
     // VTID-05180: the native ORB voice module. Its microphone usage string comes
     // from the i18n catalog at prebuild (fails closed without the keys); dev-only
     // local networking for the fake gateway.
