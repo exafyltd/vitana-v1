@@ -1,0 +1,23 @@
+{
+  "homeNative": {
+    "title": "Neuigkeiten",
+    "selectFeed": "Feed wählen",
+    "newMember": {
+      "badge": "Neu in der Community",
+      "fallbackName": "Neues Mitglied"
+    },
+    "card": {
+      "dismiss": "Karte ausblenden",
+      "open": "Öffnen"
+    },
+    "feature": {
+      "brandNew": "Brandneue Funktion",
+      "didYouKnow": "Schon gewusst?",
+      "tryIt": "Jetzt ausprobieren"
+    },
+    "performer": {
+      "badge": "Spotlight der Community",
+      "improvement": "+{value} beim Vitana Index"
+    }
+  }
+}

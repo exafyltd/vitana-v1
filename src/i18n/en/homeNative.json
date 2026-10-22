@@ -1,0 +1,23 @@
+{
+  "homeNative": {
+    "title": "News",
+    "selectFeed": "Choose feed",
+    "newMember": {
+      "badge": "New to the community",
+      "fallbackName": "New member"
+    },
+    "card": {
+      "dismiss": "Dismiss card",
+      "open": "Open"
+    },
+    "feature": {
+      "brandNew": "Brand-new feature",
+      "didYouKnow": "Did you know?",
+      "tryIt": "Try it now"
+    },
+    "performer": {
+      "badge": "Community spotlight",
+      "improvement": "+{value} on the Vitana Index"
+    }
+  }
+}
