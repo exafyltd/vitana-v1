@@ -45,12 +45,14 @@ export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string 
   });
 
   return (
+    // design-allow-next-line: modal backdrop scrim, theme-independent
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 md:items-center" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="vcal-add-title"
         aria-busy={create.isPending}
+        // design-allow-next-line: viewport-relative sheet height; the contract has no viewport-height token
         className="flex max-h-[92vh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-t-[28px] bg-background p-6 pb-28 md:rounded-[28px] md:pb-6"
         style={{ color: SURFACE.ink }}
         onClick={(e) => e.stopPropagation()}
@@ -65,7 +67,7 @@ export function AddEntrySheet({ day, role, onClose }: { day: Date; role: string 
             type="button"
             onClick={onClose}
             aria-label={t("vcal.entry.close")}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-lg shadow-sm"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-lg shadow-sm"
           >
             ✕
           </button>

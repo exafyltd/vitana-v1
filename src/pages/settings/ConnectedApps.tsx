@@ -2140,7 +2140,7 @@ function ConnectedApps() {
   return (
     <AppLayout>
       <SEO title={t('screens.settings.connectedAppsSettings')} description="Manage your connected apps and integrations" canonical={window.location.href} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.settings.connectedApps2')}
@@ -2155,7 +2155,7 @@ function ConnectedApps() {
                 icon={Link}
                 content={
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-purple-600">3</div>
+                    <div className="text-2xl font-bold text-category-2">3</div>
                     <div className="text-xs text-muted-foreground">{t('screens.settings.activeConnections')}</div>
                   </div>
                 }
@@ -2178,7 +2178,7 @@ function ConnectedApps() {
 
           {/* Vertical-scrolling horizontal lists organized by category */}
       <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <SplitBarList className="w-full bg-white/50 backdrop-blur-sm rounded-lg mb-6 gap-1 overflow-x-auto">
+        <SplitBarList className="w-full bg-card/50 backdrop-blur-sm rounded-lg mb-6 gap-1 overflow-x-auto">
           <SplitBarTrigger value="connected" className="flex-1 flex items-center justify-center gap-1.5">
             <Link className="w-4 h-4" />
             {t('screens.settings.connectedApps')}

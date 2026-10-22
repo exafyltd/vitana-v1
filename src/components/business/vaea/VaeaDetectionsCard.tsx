@@ -7,7 +7,7 @@ export function VaeaDetectionsCard() {
   const { data, loading, error } = useVaeaSummary();
 
   return (
-    <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+    <Card className="bg-card/70 backdrop-blur-sm border border-border/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Radio className="w-5 h-5" />

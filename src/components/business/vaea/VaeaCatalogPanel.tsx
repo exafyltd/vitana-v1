@@ -57,7 +57,7 @@ export function VaeaCatalogPanel() {
       )}
 
       {items.length === 0 && !showForm ? (
-        <Card className="bg-white/50 backdrop-blur-sm border-white/20 border-dashed">
+        <Card className="bg-card/50 backdrop-blur-sm border-border/20 border-dashed">
           <CardContent className="py-8 text-center space-y-1">
             <div className="font-medium">{t('screens.business.yourCatalogEmpty')}</div>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
@@ -67,7 +67,7 @@ export function VaeaCatalogPanel() {
         </Card>
       ) : (
         items.map((item) => (
-          <Card key={item.id} className="bg-white/70 backdrop-blur-sm border-white/20">
+          <Card key={item.id} className="bg-card/70 backdrop-blur-sm border-border/20">
             <CardContent className="pt-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
@@ -122,7 +122,7 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
   const [err, setErr] = useState<string | null>(null);
 
   return (
-    <Card className="bg-white/70 backdrop-blur-sm border-white/20">
+    <Card className="bg-card/70 backdrop-blur-sm border-border/20">
       <CardContent className="pt-4 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-xs space-y-1">

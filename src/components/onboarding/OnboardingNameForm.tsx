@@ -187,22 +187,22 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full max-w-md mx-auto px-4"
     >
-      <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6">
+      <div className="bg-card/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#C084FC] flex items-center justify-center shadow-md">
-            <span className="text-white text-lg font-bold">V</span>
+          <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md">
+            <span className="text-primary-foreground text-lg font-bold">V</span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-foreground">
             {translate('onboarding.nameForm.title', "Let's get to know you")}
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             {translate('onboarding.nameForm.subtitle', 'This is how others will see you in the community')}
           </p>
         </div>
 
         {/* Display Name */}
         <div className="space-y-2">
-          <Label htmlFor="onb-display-name" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="onb-display-name" className="text-sm font-medium text-muted-foreground">
             {translate('onboarding.nameForm.displayNameLabel', 'What should I call you?')}
           </Label>
           <Input
@@ -211,57 +211,57 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
             value={displayName}
             onChange={e => setDisplayName(e.target.value)}
             maxLength={100}
-            className="rounded-xl border-gray-200 focus:border-[#FF7BAC] focus:ring-[#FF7BAC]/20"
+            className="rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"
             autoFocus
           />
         </div>
 
         {/* Handle / Username */}
         <div className="space-y-2">
-          <Label htmlFor="onb-handle" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="onb-handle" className="text-sm font-medium text-muted-foreground">
             {translate('onboarding.nameForm.handleLabel', 'Choose your Vitanaland username')}
           </Label>
           <div className="relative">
-            <span className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
+            <span className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">@</span>
             <Input
               id="onb-handle"
               placeholder={translate('onboarding.nameForm.handlePlaceholder', 'your_username')}
               value={handle}
               onChange={e => handleHandleChange(e.target.value)}
               maxLength={HANDLE_MAX}
-              className="ps-8 rounded-xl border-gray-200 focus:border-[#FF7BAC] focus:ring-[#FF7BAC]/20"
+              className="ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"
             />
             {/* Status icon */}
             <div className="absolute end-3 top-1/2 -translate-y-1/2">
               {handleStatus === 'checking' && (
-                <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
               )}
               {handleStatus === 'available' && (
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <CheckCircle2 className="w-4 h-4 text-status-success" />
               )}
               {(handleStatus === 'taken' || handleStatus === 'invalid') && (
-                <XCircle className="w-4 h-4 text-red-500" />
+                <XCircle className="w-4 h-4 text-status-error" />
               )}
             </div>
           </div>
           {/* Status messages */}
           {handleStatus === 'taken' && (
-            <p className="text-xs text-red-500">
+            <p className="text-xs text-status-error">
               {translate('onboarding.nameForm.handleTaken', 'This username is already taken')}
             </p>
           )}
           {handleStatus === 'invalid' && (
-            <p className="text-xs text-red-500">
+            <p className="text-xs text-status-error">
               {translate('onboarding.nameForm.handleInvalid', 'Only letters, numbers, and underscores allowed')}
             </p>
           )}
           {handleStatus === 'available' && (
-            <p className="text-xs text-green-600">
+            <p className="text-xs text-status-success">
               {translate('onboarding.nameForm.handleAvailable', 'Username is available!')}
             </p>
           )}
           {handle.length > 0 && handle.length < HANDLE_MIN && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-muted-foreground">
               {translate('onboarding.nameForm.handleMinLength', 'At least 3 characters')}
             </p>
           )}
@@ -290,14 +290,14 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
 
         {/* Error */}
         {error && (
-          <p className="text-sm text-red-500 text-center">{error}</p>
+          <p className="text-sm text-status-error text-center">{error}</p>
         )}
 
         {/* Submit */}
         <Button
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="w-full rounded-xl bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white font-medium py-3 h-auto transition-all duration-200"
+          className="w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"
         >
           {saving ? (
             <>

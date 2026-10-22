@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader } from "@/components/layout/spotlight/Panel";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,7 +63,7 @@ export default function Archived() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to overflow-x-hidden">
       <SEO title={t('screens.messages.archivedMessages2')} description="View archived conversations and messages" canonical={window.location.href} />
       <AppLayout>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -104,6 +104,7 @@ export default function Archived() {
               </SplitBarList>
 
               <SplitBarContent value="all">
+                {/* design-allow-next-line: calc against fixed chrome */}
                 <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
                   {/* Left Sidebar - Archive Categories */}
                   <Card className="w-80 flex flex-col">

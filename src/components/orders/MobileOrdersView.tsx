@@ -141,11 +141,11 @@ export function MobileOrdersView({
     const iconClass = "w-6 h-6 text-muted-foreground";
     switch (order.type) {
       case 'ticket':
-        return <div className="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">🎫</div>;
+        return <div className="w-14 h-14 rounded-xl bg-category-3/15 flex items-center justify-center">🎫</div>;
       case 'voucher':
-        return <div className="w-14 h-14 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">🎁</div>;
+        return <div className="w-14 h-14 rounded-xl bg-category-2/15 flex items-center justify-center">🎁</div>;
       case 'product':
-        return <div className="w-14 h-14 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">📦</div>;
+        return <div className="w-14 h-14 rounded-xl bg-status-success-subtle flex items-center justify-center">📦</div>;
       default:
         return <div className="w-14 h-14 rounded-xl bg-muted flex items-center justify-center">🩺</div>;
     }
@@ -242,6 +242,7 @@ export function MobileOrdersView({
   const LoadingSkeleton = () => (
     <div className="space-y-3">
       {[1, 2, 3].map(i => (
+        // design-allow-next-line: measured skeleton box height off the scale (>2px)
         <div key={i} className="h-[100px] rounded-xl bg-muted/20 animate-pulse" />
       ))}
     </div>
@@ -287,11 +288,11 @@ export function MobileOrdersView({
         </div>
       </div>
       {isShowingMockData && (
-        <div className="mx-4 mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
-          <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700 text-[10px]">
+        <div className="mx-4 mt-4 bg-status-warning-subtle border border-status-warning/25 rounded-lg p-3 flex items-center gap-2">
+          <Badge variant="outline" className="bg-status-warning-subtle text-status-warning border-status-warning/40 text-[10px]">
             {translate('orders.sampleData')}
           </Badge>
-          <span className="text-xs text-amber-700 dark:text-amber-400">
+          <span className="text-xs text-status-warning">
             {translate('orders.previewNotice')}
           </span>
         </div>

@@ -227,6 +227,7 @@ export const ReminderInterruptOverlay: React.FC = () => {
       // sets `pointer-events: none` on <body>. Without an explicit override the
       // overlay's buttons inherit that and become unclickable. z-[9999] keeps
       // it above the calendar dialog (z-50).
+      // design-allow-next-line: modal backdrop scrim, theme-independent
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4 pointer-events-auto"
       // Stop pointerdown from bubbling to document, where an underlying Radix
       // dialog's DismissableLayer listens (bubble phase) for "outside"

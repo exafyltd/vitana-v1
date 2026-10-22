@@ -102,7 +102,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         {/* Top Earning Opportunities */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-purple-500" />
+            <Target className="h-4 w-4 text-category-2" />
             {t('screens.wallet.predictedEarnings')}
           </h4>
           
@@ -129,18 +129,18 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         </div>
 
         {/* Weekly Goal Progress */}
-        <div className="p-3 rounded-lg border bg-gradient-to-r from-emerald-500/5 to-green-500/5 border-emerald-200/50">
+        <div className="p-3 rounded-lg border bg-gradient-to-r from-status-success/5 to-status-success/5 border-status-success/15">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-4 w-4 text-emerald-600" />
+            <Calendar className="h-4 w-4 text-status-success" />
             <span className="text-sm font-medium">{t('screens.wallet.weeklyEarningGoal')}</span>
           </div>
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs text-muted-foreground">{t('screens.wallet.text425500Credits')}</span>
-            <span className="text-xs text-emerald-600">{t('screens.wallet.text85Complete')}</span>
+            <span className="text-xs text-status-success">{t('screens.wallet.text85Complete')}</span>
           </div>
           <Progress value={85} className="h-1.5 mb-2" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">{t('screens.wallet.text75Credits')}</span>{t('screens.wallet.neededReachGoal')}
+            <span className="font-semibold text-status-success">{t('screens.wallet.text75Credits')}</span>{t('screens.wallet.neededReachGoal')}
           </p>
         </div>
 

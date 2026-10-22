@@ -50,11 +50,11 @@ export function ActiveRunsList() {
               <CardTitle className="text-base">{run.name}</CardTitle>
               {run.status === "running" ? (
                 <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">{t('screens.dev.running')}</span>
+                  <div className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
+                  <span className="text-xs text-status-success font-medium">{t('screens.dev.running')}</span>
                 </div>
               ) : (
-                <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">{t('screens.dev.queued')}</span>
+                <span className="text-xs text-status-warning font-medium">{t('screens.dev.queued')}</span>
               )}
             </div>
             <p className="text-xs text-muted-foreground font-mono">{run.id}</p>

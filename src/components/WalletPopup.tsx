@@ -86,9 +86,9 @@ const getTransactionIcon = (type: Transaction['type']) => {
   switch (type) {
     case 'earned':
     case 'bonus':
-      return <ArrowUpRight className="h-3 w-3 text-green-500" />;
+      return <ArrowUpRight className="h-3 w-3 text-status-success" />;
     case 'redeemed':
-      return <ArrowDownLeft className="h-3 w-3 text-red-500" />;
+      return <ArrowDownLeft className="h-3 w-3 text-status-error" />;
     default:
       return null;
   }
@@ -137,14 +137,15 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="sm:max-w-md max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader className="space-y-3">
           <DialogTitle className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400/20 to-emerald-500/20 flex items-center justify-center">
-              <Wallet className="w-4 h-4 text-green-500" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-status-success/15 to-status-success/20 flex items-center justify-center">
+              <Wallet className="w-4 h-4 text-status-success" />
             </div>
             <span>{t('screens.common.digitalWallet')}</span>
-            <Badge variant="outline" className="ms-auto text-green-600 border-green-200">{t('screens.common.value0Vtna', { value0: loading ? '...' : fmtNumber(currentBalance) })}
+            <Badge variant="outline" className="ms-auto text-status-success border-status-success/25">{t('screens.common.value0Vtna', { value0: loading ? '...' : fmtNumber(currentBalance) })}
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -152,6 +153,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
           </DialogDescription>
         </DialogHeader>
 
+        {/* design-allow-next-line: viewport-bound dialog height */}
         <ScrollArea className="flex-1 max-h-[400px]">
           <div className="space-y-4 pe-4">
             {/* Exchange Rates */}
@@ -161,26 +163,26 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             <div className="grid grid-cols-2 gap-3">
               <Card>
                 <CardContent className="p-3 text-center">
-                  <div className="text-lg font-bold text-green-600">
+                  <div className="text-lg font-bold text-status-success">
                     {loading ? '...' : fmtNumber(currentBalance)}
                   </div>
                   <div className="text-xs text-muted-foreground">{t('screens.common.vtnaBalance')}</div>
                   <div className="flex items-center justify-center gap-1 mt-1">
-                    <TrendingUp className="h-3 w-3 text-green-500" />
-                    <span className="text-xs text-green-600">+{monthlyTrend}%</span>
+                    <TrendingUp className="h-3 w-3 text-status-success" />
+                    <span className="text-xs text-status-success">+{monthlyTrend}%</span>
                   </div>
                 </CardContent>
               </Card>
               
               <Card>
                 <CardContent className="p-3 text-center">
-                  <div className="text-lg font-bold text-blue-600">
+                  <div className="text-lg font-bold text-category-3">
                     {pendingRewards}
                   </div>
                   <div className="text-xs text-muted-foreground">{t('screens.common.pending')}</div>
                   <div className="flex items-center justify-center gap-1 mt-1">
-                    <Gift className="h-3 w-3 text-blue-500" />
-                    <span className="text-xs text-blue-600">{t('screens.common.rewards')}</span>
+                    <Gift className="h-3 w-3 text-category-3" />
+                    <span className="text-xs text-category-3">{t('screens.common.rewards')}</span>
                   </div>
                 </CardContent>
               </Card>

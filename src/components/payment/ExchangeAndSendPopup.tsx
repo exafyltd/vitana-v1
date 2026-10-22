@@ -157,7 +157,7 @@ export default function ExchangeAndSendPopup({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-purple-600" />
+            <Zap className="w-5 h-5 text-category-2" />
             {t('screens.payment.exchangeSend')}
           </DialogTitle>
         </DialogHeader>
@@ -262,19 +262,19 @@ export default function ExchangeAndSendPopup({
 
           {/* Exchange Preview */}
           {calculation && parseFloat(amount) > 0 && (
-            <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+            <Card className="bg-gradient-to-r from-category-2/10 to-category-3/10 border-category-2/25">
               <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-3 text-sm mb-3">
                   <div className="text-center">
                     <p className="text-muted-foreground">{t('screens.payment.youSend')}</p>
-                    <p className="font-bold text-purple-600">
+                    <p className="font-bold text-category-2">
                       {formatCurrency(calculation.fromAmount, fromCurrency)}
                     </p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-purple-500" />
+                  <ArrowRight className="w-4 h-4 text-category-2" />
                   <div className="text-center">
                     <p className="text-muted-foreground">{t('screens.payment.theyReceive2')}</p>
-                    <p className="font-bold text-green-600">
+                    <p className="font-bold text-status-success">
                       {formatCurrency(calculation.total, toCurrency)}
                     </p>
                   </div>
@@ -304,12 +304,12 @@ export default function ExchangeAndSendPopup({
             </Button>
             <Button 
               onClick={handleExchangeAndSend} 
-              className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              className="flex-1 bg-gradient-to-r from-category-2 to-category-3 hover:from-category-2 hover:to-category-3"
               disabled={!canAfford() || !calculation || parseFloat(amount) <= 0 || isProcessing}
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2"></div>{t('screens.payment.processing')}
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-border me-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>

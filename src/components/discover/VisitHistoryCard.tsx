@@ -22,7 +22,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
   const [notesExpanded, setNotesExpanded] = useState(false);
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+    <Card className="bg-card/80 backdrop-blur-sm border-border/20">
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-3">
           <div className="flex gap-4">

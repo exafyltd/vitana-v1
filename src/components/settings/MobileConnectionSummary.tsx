@@ -14,7 +14,7 @@ export function MobileConnectionSummary({
   return (
     <div className="flex items-center justify-between p-3 bg-card/80 rounded-xl border border-border/50">
       <div className="flex items-center gap-2">
-        <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="h-2 w-2 rounded-full bg-status-success animate-pulse" />
         <span className="text-sm font-medium">
           {connectedCount} {translate('connectedApps.connected')}
         </span>

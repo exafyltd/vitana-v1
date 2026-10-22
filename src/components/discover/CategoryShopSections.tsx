@@ -141,7 +141,7 @@ export function CategoryShopSections({ category = "supplements", title }: Catego
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center bg-gradient-to-br", meta.gradient)}>
-                <meta.icon className="h-3.5 w-3.5 text-white" strokeWidth={2} />
+                <meta.icon className="h-3.5 w-3.5 text-primary-foreground" strokeWidth={2} />
               </div>
               <h3 className="text-sm font-semibold">
                 {translate(`discover.subcategories.${meta.i18nKey}`)}

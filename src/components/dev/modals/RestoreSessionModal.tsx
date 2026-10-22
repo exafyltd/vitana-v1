@@ -56,7 +56,8 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 dark:border-white/10 rounded-2xl">
+      {/* design-allow-next-line: measured dialog width / scroll height */}
+      <DialogContent className="max-w-[600px] bg-card/95 backdrop-blur-xl border-border/20 rounded-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Clock className="h-5 w-5" />
@@ -67,6 +68,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
           </DialogDescription>
         </DialogHeader>
 
+        {/* design-allow-next-line: measured dialog width / scroll height */}
         <ScrollArea className="max-h-[400px] pe-4">
           {sessions.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
@@ -79,7 +81,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
               {sessions.map((session) => (
                 <div
                   key={session.id}
-                  className="p-4 rounded-xl bg-gradient-to-br from-white/50 to-white/30 dark:from-card/50 dark:to-card/30 border border-white/20 dark:border-white/10 backdrop-blur-sm hover:border-primary/30 hover:shadow-lg transition-all duration-200 cursor-pointer group"
+                  className="p-4 rounded-xl bg-gradient-to-br from-card/50 to-card/30 border border-border/20 backdrop-blur-sm hover:border-primary/30 hover:shadow-lg transition-all duration-200 cursor-pointer group"
                   onClick={() => handleRestore(session.id)}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -112,7 +114,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
 
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span>{formatDuration(session.duration)}</span>
-                        <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 dark:text-green-400">
+                        <span className="px-2 py-0.5 rounded-full bg-status-success/10 text-status-success">
                           {t('screens.dev.saved')}
                         </span>
                       </div>

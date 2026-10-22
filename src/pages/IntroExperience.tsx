@@ -257,7 +257,7 @@ export default function IntroExperience() {
 
   return (
     <div 
-      className={`fixed inset-0 bg-foreground dark:bg-background overflow-hidden transition-opacity duration-[800ms] ${
+      className={`fixed inset-0 bg-foreground overflow-hidden transition-opacity duration-[800ms] ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -321,6 +321,7 @@ export default function IntroExperience() {
           <div className="relative">
             {/* Primary Title - MAXINA in ALL CAPS, champagne/ivory gradient for contrast + brand presence */}
             <h1
+              // design-allow-next-line: immersive intro theme, theme-independent
               className="relative text-3xl md:text-4xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
               style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
             >
@@ -344,13 +345,16 @@ export default function IntroExperience() {
               <div
                 className="pointer-events-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
                 style={{
+                  // design-allow-next-line: immersive intro theme, theme-independent
                   background:
                     'radial-gradient(circle, rgba(250,230,180,0.6) 0%, rgba(224,170,82,0.28) 50%, transparent 75%)',
                 }}
               />
               {/* Thin champagne-gold streak, strongest at center fading to transparent at both ends */}
+              {/* design-allow-next-line: immersive intro theme, theme-independent */}
               <div className="pointer-events-none absolute inset-y-0 start-0 end-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
               {/* Small bright luminous point */}
+              {/* design-allow-next-line: immersive intro theme, theme-independent */}
               <div className="pointer-events-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
             </div>
           </div>
@@ -427,6 +431,7 @@ export default function IntroExperience() {
           <div className="grid grid-cols-2 gap-3 w-full">
             <button
               onClick={handleLogin}
+              // design-allow-next-line: immersive intro theme, theme-independent
               className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 bg-gradient-to-b from-[#F3E2B0] to-[#D9B873] text-[#241c11] shadow-[0_8px_24px_rgba(224,170,82,0.35)] hover:brightness-105 transition-[filter] duration-200"
             >
               <LogIn className="w-5 h-5 shrink-0" aria-hidden="true" />

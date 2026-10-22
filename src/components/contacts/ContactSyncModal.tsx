@@ -165,7 +165,7 @@ export function ContactSyncModal({
                 <Button
                   data-testid="find-friends-file"
                   onClick={() => fileInput.current?.click()}
-                  className="w-full min-h-12 bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
+                  className="w-full min-h-12 bg-gradient-to-r from-category-4 to-category-4/80 text-primary-foreground hover:opacity-90"
                 >
                   <FileUp className="w-5 h-5 me-2" aria-hidden />
                   {t('mailhub.findFriends.import.file')}
@@ -181,7 +181,7 @@ export function ContactSyncModal({
                 <Button
                   data-testid="find-friends-phone"
                   onClick={() => void importFrom(["phonebook"])}
-                  className="w-full min-h-12 bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
+                  className="w-full min-h-12 bg-gradient-to-r from-category-4 to-category-4/80 text-primary-foreground hover:opacity-90"
                 >
                   <Smartphone className="w-5 h-5 me-2" aria-hidden />
                   {t('mailhub.findFriends.import.phone')}
@@ -210,9 +210,9 @@ export function ContactSyncModal({
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] flex items-center justify-center"
+              className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-category-4 to-category-4/80 flex items-center justify-center"
             >
-              <Loader2 className="w-8 h-8 text-white" />
+              <Loader2 className="w-8 h-8 text-primary-foreground" />
             </motion.div>
 
             <div className="space-y-2">
@@ -244,6 +244,7 @@ export function ContactSyncModal({
                 <p className="text-xs text-muted-foreground">{t('mailhub.findFriends.results.overLimit', { limit: MAX_DEVICE_CONTACTS })}</p>
               )}
             </div>
+            {/* design-allow-next-line: viewport-bound dialog height */}
             <div className="max-h-[55vh] overflow-y-auto overflow-x-hidden pe-1 min-w-0">
               <DedupePreviewList matches={matches} nonMatches={nonMatches} onMessage={handleMessage} />
             </div>
@@ -268,8 +269,8 @@ export function ContactSyncModal({
         const app = connectApp ? t(`mailhub.apps.${connectApp}.name`) : "";
         return (
           <div className="text-center space-y-5 py-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
-              <Link2 className="w-8 h-8 text-[hsl(var(--contact-sync-accent))]" />
+            <div className="w-16 h-16 mx-auto rounded-full bg-category-4/10 flex items-center justify-center">
+              <Link2 className="w-8 h-8 text-category-4" />
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-foreground">{t("mailhub.findFriends.connect.title", { app })}</h3>
@@ -282,7 +283,7 @@ export function ContactSyncModal({
                   onOpenChange(false);
                   navigate("/connectors");
                 }}
-                className="w-full min-h-11 bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
+                className="w-full min-h-11 bg-gradient-to-r from-category-4 to-category-4/80 text-primary-foreground hover:opacity-90"
               >
                 {t("mailhub.findFriends.connect.open")}
               </Button>
@@ -301,11 +302,12 @@ export function ContactSyncModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-md max-h-[92vh] overflow-y-auto overflow-x-hidden [&>*]:min-w-0">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] flex items-center justify-center">
-              <Users className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-category-4 to-category-4/80 flex items-center justify-center">
+              <Users className="w-4 h-4 text-primary-foreground" />
             </div>{t('screens.contacts.findFriendsFromYourContacts')}
           </DialogTitle>
         </DialogHeader>

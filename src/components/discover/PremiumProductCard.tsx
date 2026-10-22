@@ -72,16 +72,16 @@ export function FeaturedProductCard({ product, badgeText, reasonText, onClick }:
           subcategory={product.subcategory}
           sizeClass="w-full h-full"
         />
-        <span className="absolute top-3 start-3 inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-card/95 backdrop-blur px-3 py-1.5 text-xs font-semibold text-violet-700 dark:text-violet-300 shadow-sm">
+        <span className="absolute top-3 start-3 inline-flex items-center gap-1 rounded-full bg-card/95 backdrop-blur px-3 py-1.5 text-xs font-semibold text-category-2 shadow-sm">
           <Sparkles className="h-3 w-3" /> {badgeText}
         </span>
         <BookmarkButton
           item={bookmarkItem(product)}
-          className="bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+          className="bg-card/70 backdrop-blur hover:bg-card/90"
         />
         <RecommendButton
           productId={product.id}
-          className="bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+          className="bg-card/70 backdrop-blur hover:bg-card/90"
         />
       </div>
 
@@ -93,9 +93,9 @@ export function FeaturedProductCard({ product, badgeText, reasonText, onClick }:
           )}
         </div>
 
-        <div className="flex items-start gap-2 rounded-xl bg-violet-50 dark:bg-violet-500/10 px-3 py-2.5">
-          <Sparkles className="h-3.5 w-3.5 text-violet-500 shrink-0 mt-0.5" />
-          <span className="text-sm font-medium text-violet-700 dark:text-violet-300 leading-snug">
+        <div className="flex items-start gap-2 rounded-xl bg-category-2/10 px-3 py-2.5">
+          <Sparkles className="h-3.5 w-3.5 text-category-2 shrink-0 mt-0.5" />
+          <span className="text-sm font-medium text-category-2 leading-snug">
             {reasonText}
           </span>
         </div>
@@ -107,7 +107,7 @@ export function FeaturedProductCard({ product, badgeText, reasonText, onClick }:
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white px-4 py-2.5 text-sm font-semibold transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 rounded-full bg-category-2 hover:bg-category-2 text-primary-foreground px-4 py-2.5 text-sm font-semibold transition-colors shrink-0"
           >
             {t("discover.viewProduct")} <ExternalLink className="h-3.5 w-3.5" />
           </a>
@@ -125,8 +125,10 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
       aria-label={product.title}
       onClick={onClick}
       onKeyDown={(e) => cardKeyDown(e, onClick)}
+      // design-allow-next-line: measured carousel item width off the scale (>2px)
       className="snap-start shrink-0 w-[168px] flex flex-col rounded-2xl bg-card border border-border/40 shadow-sm cursor-pointer overflow-hidden active:scale-[0.97] transition-transform"
     >
+      {/* design-allow-next-line: measured media box height off the scale (>2px) */}
       <div className="relative h-[124px] shrink-0">
         <ProductImage
           src={product.images?.[0]}
@@ -137,11 +139,11 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
         />
         <BookmarkButton
           item={bookmarkItem(product)}
-          className="h-7 w-7 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+          className="h-7 w-7 bg-card/70 backdrop-blur hover:bg-card/90"
         />
         <RecommendButton
           productId={product.id}
-          className="h-7 w-7 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+          className="h-7 w-7 bg-card/70 backdrop-blur hover:bg-card/90"
         />
       </div>
 
@@ -150,7 +152,7 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
           this keeps every price/CTA row flush with the bottom regardless of
           how many text lines (brand present/absent, reason length) sit above it. */}
       <div className="flex flex-col flex-1 p-2.5 space-y-1.5">
-        <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 dark:bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-700 dark:text-violet-300">
+        <span className="inline-flex items-center gap-1 rounded-full bg-category-2/10 px-2 py-0.5 text-[10px] font-semibold text-category-2">
           <Sparkles className="h-2.5 w-2.5" /> {badgeText}
         </span>
         <h4 className="text-sm font-medium leading-snug line-clamp-2 min-h-10">{product.title}</h4>
@@ -166,7 +168,7 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             aria-label={t("discover.viewProduct")}
-            className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300 shrink-0"
+            className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-category-2/15 text-category-2 shrink-0"
           >
             <ExternalLink className="h-3.5 w-3.5" />
           </a>

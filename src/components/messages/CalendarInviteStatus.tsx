@@ -97,21 +97,21 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
     switch (resp) {
       case 'accepted':
         return (
-          <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+          <Badge variant="secondary" className="bg-status-success-subtle text-status-success border-status-success/25">
             <CheckCircle className="w-3 h-3 me-1" />
             {t('screens.messages.accepted')}
           </Badge>
         );
       case 'declined':
         return (
-          <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">
+          <Badge variant="secondary" className="bg-status-error-subtle text-status-error border-status-error/25">
             <X className="w-3 h-3 me-1" />
             {t('screens.messages.declined')}
           </Badge>
         );
       case 'maybe':
         return (
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+          <Badge variant="secondary" className="bg-status-warning-subtle text-status-warning border-status-warning/25">
             <Clock className="w-3 h-3 me-1" />
             {t('screens.messages.maybe')}
           </Badge>
@@ -131,7 +131,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
     if (isMessageSender) {
       return (
         <div className="mt-3">
-          <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+          <Badge variant="secondary" className="bg-category-3/15 text-category-3 border-category-3/25">
             {t('screens.messages.invitationSent')}
           </Badge>
         </div>
@@ -152,8 +152,8 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
               button.variant || 'default'
             }
             className={
-              button.action === 'calendar_accept' ? 'bg-green-600 hover:bg-green-700' :
-              button.action === 'calendar_decline' ? 'text-red-600 border-red-200 hover:bg-red-50' :
+              button.action === 'calendar_accept' ? 'bg-status-success hover:bg-status-success' :
+              button.action === 'calendar_decline' ? 'text-status-error border-status-error/25 hover:bg-status-error-subtle' :
               ''
             }
             onClick={async () => {

@@ -19,14 +19,14 @@ export function MobileIntegrationRow({ integration, onTap }: MobileIntegrationRo
       className={cn(
         "flex items-center gap-3 p-3 rounded-xl transition-all active:scale-[0.98]",
         "bg-card/60 border border-border/50",
-        integration.connected && "border-l-2 border-l-emerald-500"
+        integration.connected && "border-s-2 border-s-status-success"
       )}
     >
       {/* Icon */}
       <div
         className={cn(
           "h-10 w-10 rounded-full flex items-center justify-center shrink-0",
-          integration.connected ? "bg-emerald-500/10" : "bg-muted/50"
+          integration.connected ? "bg-status-success/10" : "bg-muted/50"
         )}
       >
         <Icon className="h-5 w-5" />
@@ -49,7 +49,7 @@ export function MobileIntegrationRow({ integration, onTap }: MobileIntegrationRo
       {/* Status/Action */}
       <div className="shrink-0">
         {integration.connected ? (
-          <CheckCircle className="h-5 w-5 text-emerald-500" />
+          <CheckCircle className="h-5 w-5 text-status-success" />
         ) : integration.comingSoon ? (
           <Badge variant="secondary" className="text-xs">
             {translate('connectedApps.status.soon')}

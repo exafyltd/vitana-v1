@@ -53,8 +53,8 @@ export function RecommendButton({ productId, className, variant = "badge", size 
         className={cn(
           "justify-between rounded-full disabled:opacity-100",
           isRecommended
-            ? "bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700"
-            : "bg-white dark:bg-background border-2 border-emerald-500 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30",
+            ? "bg-status-success border-status-success text-primary-foreground hover:bg-status-success"
+            : "bg-card border-2 border-status-success text-status-success hover:bg-status-success-subtle",
           isRecommending && "opacity-70",
           className
         )}
@@ -63,13 +63,13 @@ export function RecommendButton({ productId, className, variant = "badge", size 
           <span
             className={cn(
               "flex h-6 w-6 items-center justify-center rounded-full",
-              isRecommended ? "bg-white/20" : "bg-emerald-100 dark:bg-emerald-900/40"
+              isRecommended ? "bg-card/20" : "bg-status-success-subtle"
             )}
           >
             <Star
               className={cn(
                 "h-3.5 w-3.5",
-                isRecommended ? "fill-white text-white" : "fill-emerald-600 text-emerald-600"
+                isRecommended ? "fill-primary-foreground text-primary-foreground" : "fill-status-success text-status-success"
               )}
             />
           </span>
@@ -89,16 +89,16 @@ export function RecommendButton({ productId, className, variant = "badge", size 
       className={cn(
         "absolute top-1 start-1 z-10 rounded-full border shadow-sm",
         "transition-all duration-300 hover:scale-110",
-        !isRecommended && "border-white/50 dark:border-white/15",
+        !isRecommended && "border-border/50",
         className,
-        isRecommended && "bg-emerald-500 border-emerald-500 disabled:opacity-100"
+        isRecommended && "bg-status-success border-status-success disabled:opacity-100"
       )}
       aria-label={label}
       title={label}
     >
       <BadgeCheck
         className={cn(
-          "h-4 w-4 text-white transition-all duration-300 stroke-[2]",
+          "h-4 w-4 text-primary-foreground transition-all duration-300 stroke-[2]",
           "drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]",
           isRecommending && "opacity-50"
         )}
