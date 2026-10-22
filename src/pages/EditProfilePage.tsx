@@ -51,6 +51,9 @@ import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import { PROFILE_ENRICHMENT_CARDS } from "@/components/vitana/vitana-card-catalog";
 import { InterestsPicker } from "@/components/profile/InterestsPicker";
 import { useProfileEditorDeepLink } from "@/hooks/useProfileEditorDeepLink";
+import { ScreenFrame } from "@/components/layout/spotlight";
+import { ProfileSpotlightRail } from "@/components/profile/shared/ProfileSpotlightRail";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -402,6 +405,7 @@ export default function EditProfilePage() {
   }, [viewAs, hasUnsavedChanges]);
 
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   const [searchParams] = useSearchParams();
   const isBusinessTab = getActiveCardSide(searchParams) === "business";
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
@@ -675,14 +679,10 @@ export default function EditProfilePage() {
     );
   }
 
-  // Desktop layout (unchanged)
-  return (
-    <AppLayout>
-      <SEO 
-        title={t('screens.editprofilepage.editProfileVitana')} 
-        description="Edit your VITANA profile and customize your public presence" 
-      />
-      
+  // Desktop layout. Flag off: unchanged. Spotlight on: the same content as the
+  // stage of a `detail` ScreenFrame (desktop-spotlight-finish / public-profile).
+  const desktopBody = (
+    <>
       <ProfileLayout
         profile={profile}
         scope={scope}
@@ -699,7 +699,7 @@ export default function EditProfilePage() {
 
       {/* VTID-05210: the enrich-your-profile zone below the profile — G1, the
           open profile-enrichment cards, then the VTID-02806 Cover Library tile. */}
-      <div className="container mx-auto px-4 mt-4 space-y-4">
+      <div className={spotlight ? "mt-4 space-y-4" : "container mx-auto px-4 mt-4 space-y-4"}>
         <EnrichmentCardStrip screen="profile" layout="stacked" only="features" />
         <EnrichmentCardStrip screen="profile" layout="carousel" maxCards={PROFILE_ENRICHMENT_CARDS.length} only="server" />
         <button
@@ -723,6 +723,23 @@ export default function EditProfilePage() {
           </p>
         </button>
       </div>
+    </>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title={t('screens.editprofilepage.editProfileVitana')} 
+        description="Edit your VITANA profile and customize your public presence" 
+      />
+      
+      {spotlight ? (
+        <ScreenFrame archetype="detail" rail={<ProfileSpotlightRail profile={profile} profileUserId={user?.id} />}>
+          {desktopBody}
+        </ScreenFrame>
+      ) : (
+        desktopBody
+      )}
 
       <IdentityDrawer
         open={identityDrawerOpen}

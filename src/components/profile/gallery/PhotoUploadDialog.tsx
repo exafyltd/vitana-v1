@@ -94,6 +94,7 @@ export function PhotoUploadDialog({ open, onOpenChange, onUpload, isUploading }:
                       {!isWorking && (
                         <button
                           type="button"
+                          // design-allow-next-line: on-media scrim, theme-independent
                           className="absolute top-1 end-1 bg-black/60 text-white rounded-full p-0.5 hover:bg-black/80"
                           onClick={(e) => { e.stopPropagation(); removeFile(i); }}
                         >
