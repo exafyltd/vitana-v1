@@ -39,11 +39,11 @@ export function CampaignSuccessModal({
         <div className="text-center space-y-6 py-4">
           {/* Celebration Animation */}
           <div className="relative">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] rounded-full flex items-center justify-center animate-in zoom-in duration-500">
-              <CheckCircle className="w-12 h-12 text-white" />
+            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-gradient-join-start to-gradient-join-end rounded-full flex items-center justify-center animate-in zoom-in duration-500">
+              <CheckCircle className="w-12 h-12 text-primary-foreground" />
             </div>
             <div className="absolute inset-0 animate-ping opacity-30">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] rounded-full" />
+              <div className="w-24 h-24 mx-auto bg-gradient-to-r from-gradient-join-start to-gradient-join-end rounded-full" />
             </div>
           </div>
 
@@ -87,8 +87,8 @@ export function CampaignSuccessModal({
           </Card>
 
           {/* Reassurance */}
-          <div className="flex items-start gap-2 p-3 bg-[hsl(var(--pill-hydration-tint))] rounded-lg text-start border border-[hsl(var(--pill-hydration-accent))]/20">
-            <Info className="w-4 h-4 text-[hsl(var(--pill-hydration-accent))] shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2 p-3 bg-pill-hydration-tint rounded-lg text-start border border-pill-hydration-accent/20">
+            <Info className="w-4 h-4 text-pill-hydration-accent shrink-0 mt-0.5" />
             <p className="text-xs text-foreground">
               {t('screens.sharing.campaignCreatedAsDraftYouCan')}
             </p>
@@ -102,7 +102,7 @@ export function CampaignSuccessModal({
                   onClick={() => {
                     setShowShareModal(true);
                   }}
-                  className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
+                  className="w-full bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:opacity-90"
                   size="lg"
                 >
                   <Share2 className="w-4 h-4 me-2" />
@@ -126,7 +126,7 @@ export function CampaignSuccessModal({
                     navigate(`/sharing/campaigns/${campaign.id}`);
                     onOpenChange(false);
                   }}
-                  className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
+                  className="w-full bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:opacity-90"
                   size="lg"
                 >
                   <LayoutGrid className="w-4 h-4 me-2" />

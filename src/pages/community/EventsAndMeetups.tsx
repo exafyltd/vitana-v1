@@ -141,7 +141,7 @@ const transformEventToNewsCardBase = (event: any, onClick?: (event: any) => void
         onEdit={onEdit ? () => onEdit() : undefined}
         onDelete={onDeleteEvent}
         onShare={onShareEvent}
-        className="text-white hover:bg-white/20"
+        className="text-primary-foreground hover:bg-card/20"
       />
     ),
     actionButton: (
@@ -258,6 +258,7 @@ const renderEventGrid = (
             <div className="col-span-6">
               {isLiveRoomEvent(rowEvents[0]) ? (
 <EventLiveRoomCard key={`${i}-0`} event={rowEvents[0]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                  // design-allow-next-line: no scale value within 2px of 320px; no scale value within 2px of 360px
                   "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                   onClick && "hover:ring-2 hover:ring-primary"
                 )} />
@@ -266,6 +267,7 @@ const renderEventGrid = (
                 key={`${i}-0`}
                 {...mkProps(rowEvents[0], 0)}
                 className={cn(
+                  // design-allow-next-line: no scale value within 2px of 320px; no scale value within 2px of 360px
                   "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                   onClick && "hover:ring-2 hover:ring-primary"
                 )}
@@ -276,6 +278,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 {isLiveRoomEvent(rowEvents[1]) ? (
 <EventLiveRoomCard key={`${i}-1`} event={rowEvents[1]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )} />
@@ -284,6 +287,7 @@ const renderEventGrid = (
                   key={`${i}-1`}
                   {...mkProps(rowEvents[1], 1)}
                   className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
@@ -295,6 +299,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 {isLiveRoomEvent(rowEvents[2]) ? (
 <EventLiveRoomCard key={`${i}-2`} event={rowEvents[2]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )} />
@@ -303,6 +308,7 @@ const renderEventGrid = (
                   key={`${i}-2`}
                   {...mkProps(rowEvents[2], 2)}
                   className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
@@ -317,6 +323,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 {isLiveRoomEvent(rowEvents[0]) ? (
 <EventLiveRoomCard key={`${i}-0`} event={rowEvents[0]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )} />
@@ -325,6 +332,7 @@ const renderEventGrid = (
                   key={`${i}-0`}
                   {...mkProps(rowEvents[0], 0)}
                   className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
@@ -336,6 +344,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 {isLiveRoomEvent(rowEvents[1]) ? (
 <EventLiveRoomCard key={`${i}-1`} event={rowEvents[1]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )} />
@@ -344,6 +353,7 @@ const renderEventGrid = (
                   key={`${i}-1`}
                   {...mkProps(rowEvents[1], 1)}
                   className={cn(
+                    // design-allow-next-line: no scale value within 2px of 280px
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
@@ -355,6 +365,7 @@ const renderEventGrid = (
               <div className="col-span-6">
                 {isLiveRoomEvent(rowEvents[2]) ? (
 <EventLiveRoomCard key={`${i}-2`} event={rowEvents[2]} onOpenDrawer={(e) => onClick?.(e)} className={cn(
+                    // design-allow-next-line: no scale value within 2px of 320px; no scale value within 2px of 360px
                     "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )} />
@@ -363,6 +374,7 @@ const renderEventGrid = (
                   key={`${i}-2`}
                   {...mkProps(rowEvents[2], 2)}
                   className={cn(
+                    // design-allow-next-line: no scale value within 2px of 320px; no scale value within 2px of 360px
                     "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
@@ -964,14 +976,15 @@ const EventsAndMeetups = () => {
         <div 
           ref={mobileContainerRef}
           className={cn(
-            "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background",
+            "bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to",
+            // design-allow-next-line: viewport-bound sheet height
             isMobile ? "px-4 pt-2 pb-0 h-[100dvh] flex flex-col overflow-hidden" : "p-6 min-h-screen"
           )}
         >
           <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab} className={isMobile ? "flex flex-col flex-1 overflow-hidden" : ""}>
             {/* Sticky header block on mobile: title + actions + tabs */}
             <div className={cn(
-              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background pb-0"
+              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to pb-0"
             )}>
               <StandardHeader
                 title={isMobile ? translate('events.titleShort', 'Events & MeetUps') : translate('events.title', 'Events & MeetUps')}

@@ -87,6 +87,7 @@ export function MobileShortsCarousel({
   // Empty state
   if (shorts.length === 0) {
     return (
+      // design-allow-next-line: viewport-bound screen height
       <div className="flex items-center justify-center min-h-[60vh] px-6">
         {emptyState || (
           <div className="text-center">
@@ -144,6 +145,7 @@ export function MobileShortsCarousel({
                   avatar: short.creatorAvatar || undefined,
                 }}
                 onClick={() => onShortClick(index)}
+                // design-allow-next-line: on-media scrim, theme-independent
                 className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
                 utilityTopRight={
                   currentUserId && short.user_id === currentUserId && (onEdit || onDelete) ? (

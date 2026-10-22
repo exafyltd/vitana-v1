@@ -174,14 +174,15 @@ export function LiveRoomCard({
           )}
 
           {/* Stronger gradient overlay for text readability */}
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
           {/* Top-left badges */}
           <div className="absolute top-3 start-3 end-12 flex flex-wrap items-center gap-1.5 z-10">
             {room.isLive ? (
               <>
-                <Badge data-testid="live-room-badge" className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <Badge data-testid="live-room-badge" className="bg-status-error text-primary-foreground border-0 gap-1.5 px-2.5 py-1 shadow-lg">
+                  <div className="w-2 h-2 rounded-full bg-card animate-pulse" />
                   {t('screens.liverooms.live')}
                 </Badge>
                 {/* Start-time chip — when the session went live */}
@@ -229,12 +230,12 @@ export function LiveRoomCard({
             {room.isPremium ? (
               <Badge
                 variant="outline"
-                className="bg-yellow-500/20 border-yellow-500/50 text-yellow-100 backdrop-blur-sm shadow-lg"
+                className="bg-status-warning/20 border-status-warning/50 text-status-warning backdrop-blur-sm shadow-lg"
               >
                 {t('screens.liverooms.premium')}
               </Badge>
             ) : (
-              <Badge className="bg-emerald-500 text-white border-0 px-2.5 py-1 shadow-lg">
+              <Badge className="bg-status-success text-primary-foreground border-0 px-2.5 py-1 shadow-lg">
                 {t('screens.liverooms.free')}
               </Badge>
             )}
@@ -306,6 +307,7 @@ export function LiveRoomCard({
             className={cn(
               "absolute start-0 end-0 bottom-0 z-10",
               "grid gap-2 p-4",
+              // design-allow-next-line: no scale value within 2px of 184px
               isFeatured ? "min-h-[184px]" : "min-h-40"
             )}
             style={{
@@ -316,13 +318,13 @@ export function LiveRoomCard({
             <div />
             
             {/* Title - Fixed height for 2 lines */}
-            <h3 className="font-bold text-white text-base line-clamp-2 h-10 drop-shadow-lg pointer-events-none">
+            <h3 className="font-bold text-primary-foreground text-base line-clamp-2 h-10 drop-shadow-lg pointer-events-none">
               {room.title}
             </h3>
 
             {/* Short blurb - Fixed height for 1 line */}
             {room.description ? (
-              <p className="text-white/90 text-xs line-clamp-1 h-5 drop-shadow pointer-events-none">
+              <p className="text-primary-foreground/90 text-xs line-clamp-1 h-5 drop-shadow pointer-events-none">
                 {room.description}
               </p>
             ) : (
@@ -338,18 +340,18 @@ export function LiveRoomCard({
                     src={room.host.avatar}
                     fallback={room.host.name[0]}
                     alt={room.host.name}
-                    className="h-6 w-6 ring-2 ring-white/50"
+                    className="h-6 w-6 ring-2 ring-border/50"
                     disabled={room.host.id.startsWith('demo-')}
                   />
                   {room.participants > 1 &&
                     Array.from({ length: Math.min(room.participants - 1, 2) }).map((_, i) => (
-                      <Avatar key={i} className="h-6 w-6 ring-2 ring-white/50">
+                      <Avatar key={i} className="h-6 w-6 ring-2 ring-border/50">
                         <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
                       </Avatar>
                     ))}
                 </div>
                 {room.participants > 3 && (
-                  <span className="text-xs text-white/90 font-medium drop-shadow">
+                  <span className="text-xs text-primary-foreground/90 font-medium drop-shadow">
                     +{room.participants - 3}
                   </span>
                 )}
@@ -357,7 +359,7 @@ export function LiveRoomCard({
 
               {/* Location/Virtual chip */}
               {room.location && (
-                <Badge variant="secondary" className="bg-white/20 backdrop-blur-sm text-white border-0">
+                <Badge variant="secondary" className="bg-card/20 backdrop-blur-sm text-primary-foreground border-0">
                   <MapPin className="w-3 h-3 me-1" />
                   {t('screens.liverooms.virtual')}
                 </Badge>
@@ -372,7 +374,7 @@ export function LiveRoomCard({
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
+                      className="h-10 w-10 rounded-full text-primary-foreground hover:bg-card/20 hover:text-primary-foreground p-0"
                       onClick={(e) => {
                         e.stopPropagation();
                         onShareClick?.(e);
@@ -381,12 +383,13 @@ export function LiveRoomCard({
                       aria-label={t('screens.liverooms.shareRoom')}
                       title={t('screens.liverooms.share')}
                     >
-                      <Share2 className="w-[18px] h-[18px]" />
+                      <Share2 className="w-4 h-4" />
                     </Button>
                   )}
                   <Button
                     size="sm"
-                    className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
+                    // design-allow-next-line: no scale value within 2px of 88px
+                    className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-gradient-join-start to-gradient-join-end text-primary-foreground border-0 hover:shadow-lg"
                     onClick={(e) => {
                       e.stopPropagation();
                       onJoinClick?.(e);
@@ -400,7 +403,8 @@ export function LiveRoomCard({
               ) : isScheduled && room.startingSoon && isCreator ? (
                 <Button
                   size="sm"
-                  className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
+                  // design-allow-next-line: no scale value within 2px of 88px
+                  className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-gradient-join-start to-gradient-join-end text-primary-foreground border-0 hover:shadow-lg"
                   onClick={(e) => {
                     e.stopPropagation();
                     onJoinClick?.(e);
@@ -415,7 +419,7 @@ export function LiveRoomCard({
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
+                      className="h-10 w-10 rounded-full text-primary-foreground hover:bg-card/20 hover:text-primary-foreground p-0"
                       onClick={(e) => {
                         e.stopPropagation();
                         onShareClick?.(e);
@@ -424,15 +428,16 @@ export function LiveRoomCard({
                       aria-label={t('screens.liverooms.shareRoom')}
                       title={t('screens.liverooms.share')}
                     >
-                      <Share2 className="w-[18px] h-[18px]" />
+                      <Share2 className="w-4 h-4" />
                     </Button>
                   )}
                   <Button
                     size="sm"
                     variant={isNotifying ? "secondary" : "ghost"}
                     className={cn(
+                      // design-allow-next-line: no scale value within 2px of 88px
                       "h-10 min-w-[88px] gap-1.5 rounded-full",
-                      !isNotifying && "text-white hover:bg-white/20 hover:text-white"
+                      !isNotifying && "text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                     )}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -441,7 +446,7 @@ export function LiveRoomCard({
                     data-testid="live-room-card-notify"
                     aria-label={isNotifying ? t('screens.liverooms.notifyAriaOn') : t('screens.liverooms.notifyAriaOff')}
                   >
-                    <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
+                    <Bell className={cn("w-4 h-4", isNotifying && "fill-current")} />
                     {isNotifying ? t('screens.liverooms.notifying') : t('screens.liverooms.notifyMe')}
                   </Button>
                 </>

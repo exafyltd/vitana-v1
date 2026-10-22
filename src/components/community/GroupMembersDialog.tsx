@@ -87,11 +87,13 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl px-0">
         <SheetHeader className="px-4 pb-3 border-b border-border">
           <SheetTitle className="text-center">{t('screens.community.membersMembercount', { memberCount })}</SheetTitle>
         </SheetHeader>
 
+        {/* design-allow-next-line: kept calc(70vh-80px) */}
         <ScrollArea className="h-[calc(70vh-80px)]">
           <div className="px-4 py-2">
             {loading ? (

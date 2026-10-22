@@ -7,7 +7,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -160,67 +160,67 @@ export default withScreenId(function DataConsent() {
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
             {/* Top Row */}
             <div className="lg:col-span-3">
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel className="h-full">
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <Shield className="w-5 h-5" />
                     {t('screens.sharing.activePermissions')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.sharing.comingSoonViewManageGrantedPermissions')}
                   </p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </div>
 
             <div className="lg:col-span-3">
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel className="h-full">
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <AlertCircle className="w-5 h-5" />
                     {t('screens.sharing.pendingRequests')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.sharing.comingSoonReviewPendingConsentRequests')}
                   </p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </div>
 
             <div className="lg:col-span-2">
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel className="h-full">
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <Database className="w-5 h-5" />
                     {t('screens.sharing.privacy')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.sharing.statusOverview')}
                   </p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </div>
 
             <div className="lg:col-span-2">
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+              <Panel className="h-full">
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
                     <Package className="w-5 h-5" />
                     {t('screens.sharing.packages')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </PanelTitle>
+                </PanelHeader>
+                <PanelContent>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.sharing.dataPackages')}
                   </p>
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
             </div>
           </div>
         </div>
