@@ -44,6 +44,8 @@ import {
 import { notify, notifyError } from "@/lib/i18n-toast";
 import type { MentionCandidate } from "@/hooks/useMentionCandidates";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
+import { groupPositions, isGroupStart, type GroupPosition } from "@/lib/messaging/grouping";
+import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
 import { MessageSquareOff } from "lucide-react";
@@ -193,6 +195,20 @@ export default function GroupChat() {
       },
     );
   }, [shownMessages, translate]);
+
+  // VTID-05314: one sender's messages within 5 min of each other form a group.
+  const groupPositionById = useMemo(() => {
+    const positions = groupPositions(shownMessages);
+    return new Map<string, GroupPosition>(shownMessages.map((m, i) => [m.id, positions[i]]));
+  }, [shownMessages]);
+  // Spotlight layout (was a flex `gap-2`): 2 px inside a group, otherwise the
+  // same 8 px as the gap was (dividers keep their own margins on top, as on main).
+  const itemGapClass = (index: number, position?: GroupPosition) =>
+    index === 0 ? undefined : position && !isGroupStart(position) ? "mt-0.5" : "mt-2";
+  // Standalone layout keeps main's `space-y-2` (it also sets the divider and
+  // notice spacing); only a bubble that continues a group moves up to 2 px.
+  const inGroupClass = (position?: GroupPosition) =>
+    position && !isGroupStart(position) ? "!mt-0.5" : undefined;
 
   const loadMessages = useCallback(async () => {
     if (!groupId) return;
@@ -682,16 +698,21 @@ export default function GroupChat() {
                     {messages.length === 0 ? (
                       <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
                     ) : (
-                      <div className="flex flex-col gap-2">
-                        {messageItems.map(item => {
+                      <div className="flex flex-col">
+                        {messageItems.map((item, index) => {
                           if (item.type === "date") {
-                            return <MessageDivider key={item.id} type="date" text={item.text} />;
+                            return (
+                              <div key={item.id} className={itemGapClass(index)}>
+                                <MessageDivider type="date" text={item.text} />
+                              </div>
+                            );
                           }
                           const msg = item.message;
                           const isOwn = msg.sender_id === userId;
                           const sender = memberById.get(msg.sender_id);
+                          const groupPosition = groupPositionById.get(msg.id);
                           return (
-                            <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-150">
+                            <div key={msg.id} id={`msg-${msg.id}`} className={cn("transition-colors duration-150", itemGapClass(index, groupPosition))}>
                               <SwipeableMessage onReply={() => handleReply(replyTargetFor(msg))} isOwnMessage={isOwn} enabled={isMobile}>
                                 <MessageBubble
                                   message={{
@@ -702,6 +723,7 @@ export default function GroupChat() {
                                   }}
                                   isOwnMessage={isOwn}
                                   showAvatar={!isOwn}
+                                  groupPosition={groupPosition}
                                   onUpdateMessage={handleUpdateMessage}
                                   onDeleteMessage={handleDeleteMessage}
                                   onRetry={handleRetry}
@@ -822,8 +844,9 @@ export default function GroupChat() {
               const msg = item.message;
               const isOwn = msg.sender_id === userId;
               const sender = memberById.get(msg.sender_id);
+              const groupPosition = groupPositionById.get(msg.id);
               return (
-                <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-500">
+                <div key={msg.id} id={`msg-${msg.id}`} className={cn("transition-colors duration-500", inGroupClass(groupPosition))}>
                   <SwipeableMessage onReply={() => handleReply(replyTargetFor(msg))} isOwnMessage={isOwn} enabled={isMobile}>
                     <MessageBubble
                       message={{
@@ -838,6 +861,7 @@ export default function GroupChat() {
                       }}
                       isOwnMessage={isOwn}
                       showAvatar={!isOwn}
+                      groupPosition={groupPosition}
                       onUpdateMessage={handleUpdateMessage}
                       onDeleteMessage={handleDeleteMessage}
                       onRetry={handleRetry}
