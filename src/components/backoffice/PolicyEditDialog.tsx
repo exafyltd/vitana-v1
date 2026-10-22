@@ -60,7 +60,7 @@ export function PolicyEditDialog({ current, open, onOpenChange }: { current: Bac
               <p className="text-xs text-muted-foreground">{t("screens.backoffice.policyEdit.audited")}</p>
             </div>
           )}
-          {edit.phase === "done" && <div role="status" className="rounded-md border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm" data-testid="policy-done">{t("screens.backoffice.policyEdit.doneLine")}</div>}
+          {edit.phase === "done" && <div role="status" className="rounded-md border border-status-success/30 bg-status-success/5 px-4 py-3 text-sm" data-testid="policy-done">{t("screens.backoffice.policyEdit.doneLine")}</div>}
           {edit.phase === "failed" && <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm" data-testid="policy-failed"><div className="font-medium">{edit.error === "FORBIDDEN" ? t("screens.backoffice.errors.noCapability") : t("screens.backoffice.errors.generic")}</div>{edit.error && <p className="text-xs text-muted-foreground mt-1">{t("screens.backoffice.draft.reason")} <code className="font-mono" dir="ltr">{edit.error}</code></p>}</div>}
         </ResponsiveDialogBody>
         <ResponsiveDialogFooter>
