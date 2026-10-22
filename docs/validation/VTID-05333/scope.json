@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05333",
+  "kind": "infra",
+  "paths": [
+    "docs/validation/VTID-05298/staging-tests.json",
+    "docs/validation/VTID-05296/staging-tests.json",
+    "docs/validation/VTID-05333/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05333/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
