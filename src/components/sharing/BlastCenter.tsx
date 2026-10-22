@@ -278,7 +278,7 @@ export function BlastCenter() {
               .map(([key]) => key);
             
             return (
-              <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 space-y-2">
+              <div className="p-3 bg-category-3/10 rounded-lg border border-category-3/25 space-y-2">
                 <p className="text-sm font-medium">{t('screens.sharing.campaignName', { name: campaign.name })}</p>
                 {distributionConfig?.frequency && (
                   <p className="text-xs text-muted-foreground">{t('screens.sharing.frequencyFrequency', { frequency: distributionConfig.frequency })}</p>
@@ -350,9 +350,9 @@ export function BlastCenter() {
                     <Icon className="w-4 h-4" />
                     <span className="text-sm font-medium flex-1 text-start">{channel.channel_name}</span>
                     {isConnected ? (
-                      <CheckCircle className="w-4 h-4 text-green-600" />
+                      <CheckCircle className="w-4 h-4 text-status-success" />
                     ) : (
-                      <AlertCircle className="w-4 h-4 text-yellow-600" />
+                      <AlertCircle className="w-4 h-4 text-status-warning" />
                     )}
                   </button>
                 );
@@ -370,9 +370,9 @@ export function BlastCenter() {
         </div>
 
         {/* Earn Credits Badge */}
-        <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
-          <Coins className="w-4 h-4 text-green-600" />
-          <span className="text-sm text-green-800 dark:text-green-200">
+        <div className="flex items-center gap-2 p-3 bg-status-success-subtle border border-status-success/25 rounded-lg">
+          <Coins className="w-4 h-4 text-status-success" />
+          <span className="text-sm text-status-success">
             {t('screens.sharing.postNowEarn5Credits')}
           </span>
         </div>

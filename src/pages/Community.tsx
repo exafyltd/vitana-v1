@@ -20,7 +20,7 @@ import { NewsCard } from '@/components/crossover/NewsCard';
 import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Panel, PanelHeader, PanelTitle, PanelContent } from '@/components/layout/spotlight/Panel';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
@@ -826,6 +826,7 @@ const renderEventGrid = (
                 timestamp={rowEvents[0]?.timestamp}
                 rewardPoints={rowEvents[0]?.rewardPoints}
                 rewardDescription={rowEvents[0]?.rewardDescription}
+                // design-allow-next-line: no scale value within 2px of 320px; no scale value within 2px of 360px
                 className={`h-full min-h-[320px] md:min-h-[360px] ${getAISpotlightStyling(rowEvents[0])}`}
                 showSmartAction={true}
                 onActionClick={() => handleActionClick(rowEvents[0])}
@@ -852,6 +853,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[1].timestamp}
                   rewardPoints={rowEvents[1]?.rewardPoints}
                   rewardDescription={rowEvents[1]?.rewardDescription}
+                  // design-allow-next-line: no scale value within 2px of 280px
                   className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
@@ -879,6 +881,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[2].timestamp}
                   rewardPoints={rowEvents[2]?.rewardPoints}
                   rewardDescription={rowEvents[2]?.rewardDescription}
+                  // design-allow-next-line: no scale value within 2px of 280px
                   className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
@@ -910,6 +913,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[0].timestamp}
                   rewardPoints={rowEvents[0]?.rewardPoints}
                   rewardDescription={rowEvents[0]?.rewardDescription}
+                  // design-allow-next-line: no scale value within 2px of 280px
                   className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[0])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[0])}
@@ -937,6 +941,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[1].timestamp}
                   rewardPoints={rowEvents[1]?.rewardPoints}
                   rewardDescription={rowEvents[1]?.rewardDescription}
+                  // design-allow-next-line: no scale value within 2px of 280px
                   className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
@@ -964,6 +969,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[2].timestamp}
                   rewardPoints={rowEvents[2]?.rewardPoints}
                   rewardDescription={rowEvents[2]?.rewardDescription}
+                  // design-allow-next-line: no scale value within 2px of 320px; no scale value within 2px of 360px
                   className={`h-full min-h-[320px] md:min-h-[360px] ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
@@ -1323,7 +1329,7 @@ function CommunityLegacy() {
             <h1 className="text-xl font-bold text-foreground">{t('screens.community.community')}</h1>
             <p className="text-sm text-muted-foreground">{t('screens.community.connectShareGrowTogether')}</p>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1">{t('screens.community.vitanaValue0', { value0: activityMetrics.totalMembers || 742 })}<span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>{t('screens.community.live2')}
+              <span className="inline-flex items-center gap-1">{t('screens.community.vitanaValue0', { value0: activityMetrics.totalMembers || 742 })}<span className="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>{t('screens.community.live2')}
               </span>
             </div>
           </div>
@@ -1383,7 +1389,7 @@ function CommunityLegacy() {
     <AppLayout>
       <SEO title={t('screens.community.community')} description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.community.yourCommunityHub')}
@@ -1433,10 +1439,10 @@ function CommunityLegacy() {
 
         <SplitBarContent value="overview">
           {/* Live Activity Metrics */}
-          <Card className="p-4 mb-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+          <Panel className="p-4 mb-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
             <div className="flex items-center justify-center gap-6 text-sm flex-wrap">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span className="w-2 h-2 bg-status-success rounded-full animate-pulse"></span>
                 <span className="font-medium">{t('screens.community.totalmembersCommunityMembers', { totalMembers: activityMetrics.totalMembers })}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -1448,7 +1454,7 @@ function CommunityLegacy() {
                 <span>{t('screens.community.value0UpcomingActivities', { value0: todayEvents.length + upcomingEvents.length })}</span>
               </div>
             </div>
-          </Card>
+          </Panel>
 
           {/* Today Highlights */}
               <div className="mb-8">
@@ -1581,6 +1587,7 @@ function CommunityLegacy() {
                     <MusicListCard 
                       tracks={communityMusic || []}
                       title={t('screens.community.trendingYourCommunity')}
+                      // design-allow-next-line: no scale value within 2px of 280px
                       className="h-[280px]"
                     />
                   </div>
@@ -1595,6 +1602,7 @@ function CommunityLegacy() {
                     <PodcastListCard 
                       episodes={communityPodcasts || []}
                       title={t('screens.community.trendingPodcastEpisodes')}
+                      // design-allow-next-line: no scale value within 2px of 280px
                       className="h-[280px]"
                     />
                   </div>
@@ -1607,7 +1615,7 @@ function CommunityLegacy() {
               <div className={cn(
                 "flex flex-wrap items-center rounded-lg mx-6",
                 "gap-4 xl:gap-2 p-4 xl:p-3 mb-6 xl:mb-4",
-                "bg-white/50"
+                "bg-card/50"
               )}>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">{t('screens.community.timeframe')}</span>
@@ -1752,21 +1760,21 @@ function CommunityLegacy() {
               <div className="px-6 mb-8">
                 <h3 className="text-xl font-bold mb-4">{t('screens.community.communityBadges')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card className="p-4 text-center border-2 border-orange-200">
-                    <Trophy className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+                  <Panel className="p-4 text-center border-2 border-status-warning/25">
+                    <Trophy className="w-8 h-8 text-status-warning mx-auto mb-2" />
                     <h4 className="font-bold">{t('screens.community.risingStar')}</h4>
                     <p className="text-sm text-muted-foreground">{t('screens.community.drRoberts')}</p>
-                  </Card>
-                  <Card className="p-4 text-center border-2 border-yellow-200">
-                    <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
+                  </Panel>
+                  <Panel className="p-4 text-center border-2 border-status-warning/25">
+                    <Star className="w-8 h-8 text-status-warning mx-auto mb-2" />
                     <h4 className="font-bold">{t('screens.community.topHost')}</h4>
                     <p className="text-sm text-muted-foreground">{t('screens.community.lisaChen')}</p>
-                  </Card>
-                  <Card className="p-4 text-center border-2 border-purple-200">
-                    <Heart className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  </Panel>
+                  <Panel className="p-4 text-center border-2 border-category-2/25">
+                    <Heart className="w-8 h-8 text-category-2 mx-auto mb-2" />
                     <h4 className="font-bold">{t('screens.community.mostInspiring')}</h4>
                     <p className="text-sm text-muted-foreground">{t('screens.community.sarahMiller')}</p>
-                  </Card>
+                  </Panel>
                 </div>
               </div>
             </SplitBarContent>
@@ -1775,8 +1783,8 @@ function CommunityLegacy() {
               {/* Phase 2: AI-Powered Recommendations */}
               {recommendations.length === 0 && !recsLoading && (
                 <div className="px-6 mb-8">
-                  <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-purple-50">
-                    <Sparkles className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+                  <Panel className="p-6 text-center bg-gradient-to-br from-category-3/10 to-category-2/10">
+                    <Sparkles className="w-12 h-12 mx-auto mb-3 text-category-3" />
                     <h3 className="text-lg font-semibold mb-2">{t('screens.community.getPersonalizedAiRecommendations')}</h3>
                     <p className="text-sm text-muted-foreground mb-4">
                       {t('screens.community.letAiAnalyzeYourWellnessGoals')}
@@ -1784,7 +1792,7 @@ function CommunityLegacy() {
                     <Button 
                       onClick={() => generateRecommendations('events')} 
                       disabled={generating}
-                      className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                      className="bg-gradient-to-r from-category-3 to-category-2 hover:from-category-3 hover:to-category-2"
                     >
                       {generating ? (
                         <>
@@ -1797,7 +1805,7 @@ function CommunityLegacy() {
                         </>
                       )}
                     </Button>
-                  </Card>
+                  </Panel>
                 </div>
               )}
 
@@ -1807,7 +1815,7 @@ function CommunityLegacy() {
                   <div className="flex items-center justify-between mb-4 px-6">
                     <div className="flex items-center gap-2">
                       <h3 className="text-xl font-bold">{t('screens.community.aiRecommendedForYou')}</h3>
-                      <Badge className="bg-gradient-to-r from-blue-500 to-purple-500">
+                      <Badge className="bg-gradient-to-r from-category-3 to-category-2">
                         <Sparkles className="w-3 h-3 me-1" />
                         {t('screens.community.aiPowered')}
                       </Badge>

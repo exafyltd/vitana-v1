@@ -153,7 +153,7 @@ export function MobileEventCarousel({
           onEdit={onEdit ? () => onEdit(event) : undefined}
           onDelete={onDelete}
           onShare={onShare}
-          className="text-white hover:bg-white/20"
+          className="text-primary-foreground hover:bg-card/20"
         />
       ),
     };
@@ -162,6 +162,7 @@ export function MobileEventCarousel({
   // Empty state
   if (events.length === 0) {
     return (
+      // design-allow-next-line: viewport-bound screen height
       <div className="flex items-center justify-center min-h-[60vh] px-6">
         {emptyState || (
           <div className="text-center">
@@ -210,11 +211,13 @@ export function MobileEventCarousel({
               <EventLiveRoomCard
                 event={event}
                 onOpenDrawer={onCardClick}
+                // design-allow-next-line: on-media scrim, theme-independent
                 className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
               />
             ) : (
               <NewsCard
                 {...transformEventToCard(event, index)}
+                // design-allow-next-line: on-media scrim, theme-independent
                 className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
               />
             )}

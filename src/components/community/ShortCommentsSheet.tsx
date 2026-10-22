@@ -116,7 +116,7 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
               aria-label={translate('mediaHub.comments.like', 'Like comment')}
               className={cn(
                 'flex items-center gap-1 text-[10px] transition-colors',
-                comment.liked_by_me ? 'text-pink-500' : 'text-muted-foreground hover:text-pink-500',
+                comment.liked_by_me ? 'text-category-4' : 'text-muted-foreground hover:text-category-4',
                 !user && 'opacity-50 cursor-not-allowed',
               )}
             >
@@ -148,13 +148,16 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
   return (
     <div className="fixed inset-0 z-[90]">
       {/* Backdrop */}
+      {/* design-allow-next-line: on-media scrim, theme-independent */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
 
       {/* Panel: bottom sheet on mobile, right drawer on desktop */}
       <div
         className={cn(
           'absolute z-[91] flex flex-col bg-background shadow-2xl',
+          // design-allow-next-line: viewport-bound sheet height
           'inset-x-0 bottom-0 max-h-[75vh] rounded-t-2xl',
+          // design-allow-next-line: no scale value within 2px of 420px
           'sm:inset-y-0 sm:end-0 sm:start-auto sm:bottom-auto sm:h-full sm:w-[420px] sm:max-h-none sm:rounded-none sm:border-s',
         )}
         onClick={(e) => e.stopPropagation()}
@@ -168,6 +171,7 @@ export function ShortCommentsSheet({ open, onOpenChange, videoId, videoTitle }: 
                 <span className="ms-2 text-sm font-normal text-muted-foreground">{comments.length}</span>
               )}
             </h2>
+            {/* design-allow-next-line: no scale value within 2px of 300px */}
             {videoTitle && <p className="text-xs text-muted-foreground truncate max-w-[300px]">{videoTitle}</p>}
           </div>
           <button
