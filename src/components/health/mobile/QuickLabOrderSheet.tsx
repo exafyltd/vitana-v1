@@ -46,6 +46,7 @@ export function QuickLabOrderSheet({ open, onOpenChange }: QuickLabOrderSheetPro
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <SheetContent side="bottom" className="h-[75dvh] overflow-y-auto rounded-t-2xl">
         <SheetHeader className="pb-4">
           <SheetTitle className="flex items-center gap-2">

@@ -33,7 +33,7 @@ export function VitanaScoreTooltip({ score, children }: VitanaScoreTooltipProps)
         >
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-3">
-              <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <Brain className="w-5 h-5 text-category-3" />
               <h4 className="font-semibold text-foreground">{t('screens.health.yourVitanaScoreBreakdown')}</h4>
             </div>
             
@@ -59,7 +59,7 @@ export function VitanaScoreTooltip({ score, children }: VitanaScoreTooltipProps)
                     </div>
                     <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full"
+                        className="h-full bg-gradient-to-r from-category-3 to-category-1 rounded-full"
                         style={{ width: `${pillar.percentage}%` }}
                       />
                     </div>

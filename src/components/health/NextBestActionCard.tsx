@@ -67,15 +67,15 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
 
   if (isLoading && !focus) {
     return (
-      <Card className="h-full bg-gradient-to-br from-orange-50 to-yellow-50 border-s-4 border-orange-400">
+      <Card className="h-full bg-gradient-to-br from-status-warning-subtle to-status-warning-subtle border-s-4 border-status-warning/80">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <Target className="w-5 h-5 text-orange-500" />
+            <Target className="w-5 h-5 text-status-warning" />
             {t('screens.health.priorityAction')}
           </CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center py-8">
-          <Loader2 className="w-5 h-5 animate-spin text-orange-500" />
+          <Loader2 className="w-5 h-5 animate-spin text-status-warning" />
         </CardContent>
       </Card>
     );
@@ -84,11 +84,11 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
   if (!focus) return null;
 
   return (
-    <Card className="h-full bg-gradient-to-br from-orange-50 to-yellow-50 border-s-4 border-orange-400">
+    <Card className="h-full bg-gradient-to-br from-status-warning-subtle to-status-warning-subtle border-s-4 border-status-warning/80">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg flex items-center gap-2">
-            <Target className="w-5 h-5 text-orange-500" />
+            <Target className="w-5 h-5 text-status-warning" />
             {t('screens.health.priorityAction')}
           </CardTitle>
           <Badge variant="destructive" className="gap-1">
@@ -98,7 +98,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="bg-white/80 rounded-lg p-4 space-y-3">
+        <div className="bg-card/80 rounded-lg p-4 space-y-3">
           <div className="flex items-center gap-3">
             <div className="text-4xl">{focus.icon}</div>
             <div className="flex-1">
@@ -106,7 +106,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
               <div className="text-lg font-bold text-foreground">{focus.name}</div>
             </div>
             <div className="text-end">
-              <div className="text-2xl font-bold text-orange-600">{focus.score}</div>
+              <div className="text-2xl font-bold text-status-warning">{focus.score}</div>
               <div className="text-xs text-muted-foreground">/ 200</div>
             </div>
           </div>
@@ -114,12 +114,12 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
 
         <div className="space-y-2">
           <div className="text-sm font-medium text-muted-foreground mb-2">
-            <Zap className="w-4 h-4 inline me-1 text-orange-500" />
+            <Zap className="w-4 h-4 inline me-1 text-status-warning" />
             {t('screens.health.recommendedAction')}
           </div>
 
           {targetedAction ? (
-            <div className="bg-white/60 rounded-lg p-3 text-sm space-y-2">
+            <div className="bg-card/60 rounded-lg p-3 text-sm space-y-2">
               <div className="flex items-start gap-2">
                 <div className="text-xl flex-shrink-0">{targetedAction.icon}</div>
                 <div className="flex-1 min-w-0">
@@ -132,7 +132,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
               )}
             </div>
           ) : (
-            <div className="bg-white/60 rounded-lg p-3 text-sm">
+            <div className="bg-card/60 rounded-lg p-3 text-sm">
               <div className="font-medium mb-1">{t('screens.health.logActivityLiftName', { name: focus.name })}</div>
               <div className="text-xs text-muted-foreground">
                 {t('screens.health.openIndexDetailLogDataComplete')}
@@ -142,7 +142,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
         </div>
 
         <Button
-          className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
+          className="w-full bg-gradient-to-r from-status-warning to-status-warning hover:from-status-warning hover:to-status-warning"
           onClick={() => navigate(targetedAction ? "/dashboard/actions" : "/health/vitana-index")}
         >
           {targetedAction ? "Take action now" : "Open Vitana Index"}

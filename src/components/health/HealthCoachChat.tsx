@@ -69,7 +69,9 @@ function HealthCoachChatBase({
           dir="auto"
           className={
             turn.role === 'user'
+              // design-allow-next-line: viewport-bound chat bubble width
               ? 'ms-auto max-w-[85%] rounded-lg bg-calendar-primary/10 px-3 py-2 text-sm text-start text-foreground'
+              // design-allow-next-line: viewport-bound chat bubble width
               : 'me-auto max-w-[85%] rounded-lg bg-muted px-3 py-2 text-sm text-start text-foreground whitespace-pre-wrap'
           }
         >
@@ -112,7 +114,7 @@ function HealthCoachChatBase({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-                    <Brain className="w-4 h-4 text-white" />
+                    <Brain className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <div>
                     <CardTitle className="text-sm">{t('screens.health.aiHealthCoach')}</CardTitle>
@@ -170,7 +172,7 @@ function HealthCoachChatBase({
       <div className="p-4 rounded-lg bg-gradient-to-r from-calendar-primary/5 to-calendar-secondary/5 border border-calendar-primary/10">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-            <Brain className="w-4 h-4 text-white" />
+            <Brain className="w-4 h-4 text-primary-foreground" />
           </div>
           <div>
             <h3 className="font-semibold text-foreground">{t('screens.health.askAiCoach')}</h3>
@@ -202,7 +204,7 @@ function HealthCoachChatBase({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-              <Brain className="w-4 h-4 text-white" />
+              <Brain className="w-4 h-4 text-primary-foreground" />
             </div>
             <div>
               <CardTitle className="text-lg">{t('screens.health.aiHealthCoach')}</CardTitle>

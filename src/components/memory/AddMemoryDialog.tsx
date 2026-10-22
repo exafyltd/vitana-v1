@@ -152,6 +152,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{t('screens.memory.addMemory')}</DialogTitle>

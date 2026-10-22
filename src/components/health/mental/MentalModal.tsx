@@ -20,7 +20,7 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-gradient-to-br from-[#FDE2E4]/95 via-[#FAD4C0]/95 to-[#CDEDF6]/95 dark:from-[#1A1013]/95 dark:via-[#1E1C1B]/95 dark:to-[#122025]/95 backdrop-blur-xl">
+      <DialogContent className="max-w-lg bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to backdrop-blur-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
             <span className="text-3xl">{data.moodEmoji}</span>{t('screens.health.dayValue0Dayname2', { value0: data.dayId.split('-')[1], dayName: data.dayName })}</DialogTitle>
@@ -28,42 +28,42 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
 
         <div className="space-y-6 mt-4">
           {/* Mood */}
-          <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-border/60">
+          <div className="bg-card/60 rounded-xl p-4 backdrop-blur-sm border border-border/60">
             <div className="flex items-center gap-2 mb-2">
-              <Heart className="w-4 h-4 text-rose-500" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.mood')}</span>
+              <Heart className="w-4 h-4 text-category-4" />
+              <span className="text-sm font-medium text-muted-foreground">{t('screens.health.mood')}</span>
             </div>
             <p className="text-xl font-semibold">{data.mood}</p>
           </div>
 
           {/* Metrics Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-border/60">
+            <div className="bg-card/60 rounded-xl p-4 backdrop-blur-sm border border-border/60">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="w-4 h-4 text-teal-500" />
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.focus')}</span>
+                <Target className="w-4 h-4 text-category-1" />
+                <span className="text-sm font-medium text-muted-foreground">{t('screens.health.focus')}</span>
               </div>
-              <p className="text-2xl font-bold">{data.focusScore}<span className="text-sm text-slate-500">/100</span></p>
+              <p className="text-2xl font-bold">{data.focusScore}<span className="text-sm text-muted-foreground">/100</span></p>
             </div>
 
-            <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-border/60">
+            <div className="bg-card/60 rounded-xl p-4 backdrop-blur-sm border border-border/60">
               <div className="flex items-center gap-2 mb-2">
-                <Brain className="w-4 h-4 text-orange-500" />
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.stress')}</span>
+                <Brain className="w-4 h-4 text-status-warning" />
+                <span className="text-sm font-medium text-muted-foreground">{t('screens.health.stress')}</span>
               </div>
-              <p className="text-2xl font-bold">{data.stressLevel}<span className="text-sm text-slate-500">/100</span></p>
+              <p className="text-2xl font-bold">{data.stressLevel}<span className="text-sm text-muted-foreground">/100</span></p>
             </div>
           </div>
 
           {/* Mindfulness */}
-          <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-border/60">
+          <div className="bg-card/60 rounded-xl p-4 backdrop-blur-sm border border-border/60">
             <div className="flex items-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-teal-500" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.mindfulnessDuration')}</span>
+              <Clock className="w-4 h-4 text-category-1" />
+              <span className="text-sm font-medium text-muted-foreground">{t('screens.health.mindfulnessDuration')}</span>
             </div>
             <p className="text-xl font-semibold">🧘 {data.mindfulnessDuration}</p>
             <div className="mt-3 pt-3 border-t border-border/60">
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-muted-foreground">
                 {t('screens.health.target10MinDaily')}
               </p>
             </div>
@@ -72,12 +72,12 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
           {/* Tags */}
           {data.tags.length > 0 && (
             <div className="space-y-2">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.activitiesCompleted')}</p>
+              <p className="text-sm font-medium text-muted-foreground">{t('screens.health.activitiesCompleted')}</p>
               <div className="flex flex-wrap gap-2">
                 {data.tags.map((tag, idx) => (
                   <Badge 
                     key={idx}
-                    className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white text-xs font-semibold px-3 py-1"
+                    className="bg-gradient-to-r from-status-success/80 to-category-1/80 text-primary-foreground text-xs font-semibold px-3 py-1"
                   >
                     ✓ {tag}
                   </Badge>
@@ -87,12 +87,12 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
           )}
 
           {/* AI Note */}
-          <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-border/60">
+          <div className="bg-card/60 rounded-xl p-4 backdrop-blur-sm border border-border/60">
             <div className="flex items-start gap-3">
-              <Brain className="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" />
+              <Brain className="w-5 h-5 text-category-4 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">{t('screens.health.aiInsight')}</p>
-                <p className="text-sm italic text-slate-700 dark:text-slate-300">{data.aiNote}</p>
+                <p className="text-sm font-medium text-muted-foreground mb-1">{t('screens.health.aiInsight')}</p>
+                <p className="text-sm italic text-muted-foreground">{data.aiNote}</p>
               </div>
             </div>
           </div>

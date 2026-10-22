@@ -73,10 +73,21 @@ describe("calendar typography", () => {
       const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
       return (hi + 0.05) / (lo + 0.05);
     };
-    const stops = [
-      ...String(INDEX_HERO_STYLE.backgroundColor).matchAll(/hsl\((\d+), (\d+)%, (\d+)%\)/g),
-      ...String(INDEX_HERO_STYLE.backgroundImage).matchAll(/hsl\((\d+), (\d+)%, (\d+)%\)/g),
-    ].map((m) => hsl(Number(m[1]), Number(m[2]), Number(m[3])));
+    // VTID-05286: the hero now uses Spotlight surface tokens (hsl(var(--surface-page*)))
+    // instead of raw hsl() literals, so resolve each referenced token to its light-theme
+    // "H S% L%" value in src/index.css and run the SAME contrast check on the real colours.
+    const css = fs.readFileSync(path.resolve(DIR, "../../../index.css"), "utf8");
+    const resolveToken = (name: string) => {
+      // first definition wins = the :root / light-theme value
+      const m = css.match(new RegExp(`--${name}\\s*:\\s*(\\d+)\\s+(\\d+)%\\s+(\\d+)%`));
+      if (!m) throw new Error(`token --${name} not found in index.css`);
+      return hsl(Number(m[1]), Number(m[2]), Number(m[3]));
+    };
+    const heroTokens = [
+      ...String(INDEX_HERO_STYLE.backgroundColor).matchAll(/hsl\(var\(--([a-z0-9-]+)\)\)/g),
+      ...String(INDEX_HERO_STYLE.backgroundImage).matchAll(/hsl\(var\(--([a-z0-9-]+)\)\)/g),
+    ].map((m) => m[1]);
+    const stops = heroTokens.map(resolveToken);
     expect(stops.length).toBe(4);
     for (const colour of CALENDAR_NUMBER_STOPS) {
       for (const bg of stops) expect(ratio(hex(colour), bg), `${colour} on the hero`).toBeGreaterThanOrEqual(3);

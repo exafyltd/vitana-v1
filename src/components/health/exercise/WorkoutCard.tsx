@@ -15,16 +15,16 @@ export function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
   const hasAIUpdate = workout.status === 'updated';
   
   const difficultyColors = {
-    Beginner: 'bg-green-500/10 text-green-700 dark:text-green-400',
-    Intermediate: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
-    Advanced: 'bg-red-500/10 text-red-700 dark:text-red-400'
+    Beginner: 'bg-green-500/10 text-green-700',
+    Intermediate: 'bg-amber-500/10 text-amber-700',
+    Advanced: 'bg-red-500/10 text-red-700'
   };
   
   return (
     <Card 
       className={cn(
         "group cursor-pointer overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1",
-        hasAIUpdate && "ring-2 ring-blue-500/50 ring-offset-2"
+        hasAIUpdate && "ring-2 ring-category-3/50 ring-offset-2"
       )}
       onClick={onClick}
     >
@@ -36,23 +36,24 @@ export function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
           className="w-full h-full object-cover transition-transform group-hover:scale-105"
         />
         
+        {/* design-allow-next-line: on-media scrim, theme-independent (gradient over the workout photo) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         
         {hasAIUpdate && (
           <div className="absolute top-3 start-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full 
-            bg-blue-500/90 backdrop-blur-sm animate-pulse">
-            <Brain className="w-3.5 h-3.5 text-white" />
-            <span className="text-xs font-medium text-white">{t('screens.health.aiUpdated')}</span>
+            bg-status-info/90 backdrop-blur-sm animate-pulse">
+            <Brain className="w-3.5 h-3.5 text-primary-foreground" />
+            <span className="text-xs font-medium text-primary-foreground">{t('screens.health.aiUpdated')}</span>
           </div>
         )}
         
         <div className="absolute top-3 end-3">
-          <Badge variant="secondary" className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
+          <Badge variant="secondary" className="bg-card/90 backdrop-blur-sm">
             {workout.day}
           </Badge>
         </div>
         
-        <div className="absolute bottom-0 start-0 end-0 p-4 text-white">
+        <div className="absolute bottom-0 start-0 end-0 p-4 text-primary-foreground">
           <h4 className="font-bold text-lg mb-2 line-clamp-1">{workout.title}</h4>
           
           <div className="flex items-center gap-3 flex-wrap">
@@ -109,7 +110,7 @@ export function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
         {workout.aiNote && (
           <div className="mt-3 pt-3 border-t border-border">
             <div className="flex items-start gap-2">
-              <Brain className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
+              <Brain className="w-3.5 h-3.5 text-category-3 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-muted-foreground italic">
                 {workout.aiNote}
               </p>
