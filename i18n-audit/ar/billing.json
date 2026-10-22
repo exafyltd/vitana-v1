@@ -506,10 +506,8 @@
       "phase": "llm"
     },
     "billing.launchGrant.dismissAria": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The word 'اللافتة' is long and could be split, but more importantly, 'Dismiss banner' is a UI action; 'إغلاق اللافتة' is acceptable but 'إغلاق الإشعار' might be more common. However, the compound rule flags 'اللافتة' as 7 characters, so no issue. Actually, the translation is fine.",
-      "suggested": "إغلاق اللافتة",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "billing.mobileBilling.rootIntro": {
@@ -891,7 +889,52 @@
       "verdict": "OK",
       "confidence": 0.95,
       "phase": "llm"
+    },
+    "billing.founding.celebration.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.bodyFree": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.bodyPaid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.valueLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.value": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.until": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.ctaPremium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.founding.celebration.ctaContinue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-24T08:37:18.984Z"
+  "generatedAt": "2026-10-22T08:50:53.675Z"
 }
