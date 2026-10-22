@@ -206,20 +206,24 @@ function PostCardWithInteractions({
     >
       <div className="absolute top-0 start-0 end-0 h-0.5 bg-gradient-to-r from-violet-200/10 via-violet-300/20 to-transparent" />
       <div className="space-y-4 relative px-5 py-4 md:px-6 md:py-5">
-        <div className="flex items-start gap-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Avatar className="h-11 w-11 ring-1 ring-violet-200/50 dark:ring-violet-400/20 transition-all duration-300 cursor-pointer">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
-                <AvatarFallback>{profile.name[0]}</AvatarFallback>
-              </Avatar>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="font-medium">{profile.name}</p>
-            </TooltipContent>
-          </Tooltip>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
+        {/* profile-posts-full-width: phones show the avatar + name as one
+            header line and the post full width below it (Facebook-style);
+            from md up the avatar spans both rows, so desktop keeps its
+            avatar column exactly as before. */}
+        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 items-center md:items-start">
+          <div data-testid="profile-post-header" className="contents">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Avatar className="h-11 w-11 md:row-span-2 ring-1 ring-violet-200/50 dark:ring-violet-400/20 transition-all duration-300 cursor-pointer">
+                  <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
+                  <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                </Avatar>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="font-medium">{profile.name}</p>
+              </TooltipContent>
+            </Tooltip>
+            <div className="flex items-center gap-2 flex-wrap min-w-0">
               <span className="font-semibold text-base tracking-wide text-gray-800 dark:text-gray-100">{profile.name}</span>
               <span className="text-muted-foreground/70 text-sm">@{profile.handle} • {formatDate(post.created_at)}</span>
               {isOwner && (
@@ -232,9 +236,11 @@ function PostCardWithInteractions({
                 </button>
               )}
             </div>
+          </div>
+          <div data-testid="profile-post-body" className="col-span-2 min-w-0 md:col-span-1 md:col-start-2">
             {post.content &&
               (background ? (
-                <div className={cn("mt-2.5 flex min-h-40 items-center justify-center rounded-xl px-5 py-8 text-center", background.fillClass)}>
+                <div className={cn("-mx-5 mt-2.5 flex min-h-40 items-center justify-center px-5 py-8 text-center md:mx-0 md:rounded-xl", background.fillClass)}>
                   <p className={cn("whitespace-pre-wrap break-words text-lg font-semibold leading-snug", background.textClass)}>
                     {renderMentions(post.content, post.mentions)}
                   </p>
@@ -248,11 +254,11 @@ function PostCardWithInteractions({
               <FeedMedia
                 imageUrl={post.image_url}
                 alt={t('screens.profile.postImage')}
-                className="mt-4 rounded-xl shadow-md"
+                className="-mx-5 mt-4 w-auto md:mx-0 md:w-full md:rounded-xl md:shadow-md"
               />
             )}
             {post.video_url && (
-              <div className="mt-4 rounded-xl overflow-hidden shadow-md bg-black">
+              <div className="-mx-5 mt-4 overflow-hidden bg-black md:mx-0 md:rounded-xl md:shadow-md">
                 <video
                   src={post.video_url}
                   controls
