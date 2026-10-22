@@ -3,9 +3,6 @@
   "note": "VTID-04948 ratchet: per-file error counts may only go down",
   "counts": {
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\AppLayout.tsx": 15,
-    "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\backoffice\\ApprovalDecisionDialog.tsx": 1,
-    "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\backoffice\\DraftCommandDialog.tsx": 4,
-    "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\backoffice\\PolicyEditDialog.tsx": 1,
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\business\\AnalyticsSubTabs.tsx": 12,
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\business\\BusinessTypeSelector.tsx": 3,
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\v1-colours-batch-5\\src\\components\\business\\EarningsHistoryLedger.tsx": 2,

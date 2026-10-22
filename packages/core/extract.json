@@ -81,6 +81,47 @@
         { "file": "src/components/language/locale-presentation.ts", "take": ["LocalePresentation", "LOCALE_PRESENTATION"] },
         { "file": "src/components/RTLProvider.tsx", "take": ["RTL_BASE_LANGUAGES", "isRtlLanguage"] }
       ]
+    },
+    "news-feed-ranker": {
+      "sources": [
+        {
+          "file": "src/lib/news-feed-ranker.ts",
+          "take": [
+            "FeedItemKind", "PostMention",
+            { "name": "FeedItemBase", "export": false },
+            "MatchFeedItem", "PerformerFeedItem", "PostFeedItem", "ArticleFeedItem",
+            "FeatureAnnouncementFeedItem", "NewMemberFeedItem", "FeedItem", "RankOptions",
+            { "name": "ts", "export": false },
+            { "name": "downrankPenalty", "export": false },
+            "rankFeed",
+            { "name": "POSITIVE_STEM_RE", "export": false },
+            { "name": "NEGATION_RE", "export": false },
+            { "name": "MOTIVATION_RULES", "export": false },
+            "motivationKeyFor"
+          ],
+          "stubs": {
+            "MatchReason": {
+              "expression": "string | { code: string; params?: Record<string, string | number> }",
+              "reason": "VTID-05297: MatchReason is `import type`-only from the class-B src/lib/matchReason.ts (it has a runtime `import { t }` reaching import.meta-using web files). The native feed only needs its shape, which is reproduced here verbatim (string | { code; params? }) so no web class-B file enters the native strict TS program. matchReason/post-attachment are deliberately not in the core closure (core-closure --check)."
+            },
+            "PostAttachedRef": {
+              "expression": "{ type: 'community_event' | 'live_room_session' | 'calendar_entry'; id: string; snapshot?: { title: string; start_time: string; end_time: string | null; location: string | null; emoji: string | null; status: string } }",
+              "reason": "VTID-05297: PostAttachedRef is `import type`-only from the class-B src/lib/post-attachment.ts (runtime supabase import). Its shape is reproduced here verbatim (PostAttachedRef + AttachedSnapshot inlined) so the ranker's PostFeedItem.attached_ref keeps correct typing without pulling the web class-B file into the native strict TS program."
+            }
+          }
+        }
+      ]
+    },
+    "feed-compose": {
+      "sources": [
+        {
+          "file": "src/lib/feed-compose.ts",
+          "take": [
+            "FeedPlacement", "ComposedEntry", "RAIL_KINDS", "placementOf", "splitByPlacement",
+            "composeFeed", "HOME_NEW_CARD_CAP", "withHomeNewCards"
+          ]
+        }
+      ]
     }
   }
 }

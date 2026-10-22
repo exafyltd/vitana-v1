@@ -1472,10 +1472,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "HOME.NEWS_ALL",
@@ -1484,10 +1484,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "HOME.NEWS_COMMUNITY",
@@ -1496,10 +1496,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "HOME.OVERVIEW",
@@ -1508,10 +1508,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "INBOX.ARCHIVED",
@@ -1616,10 +1616,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "MEMORY.DAILY_DIARY",
@@ -1736,10 +1736,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "OVERLAY.MEETUP_DRAWER",
@@ -2588,10 +2588,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "/home/compose",
@@ -2600,10 +2600,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "/home/notif",
@@ -2612,10 +2612,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "home-feed",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-10-21"
     },
     {
       "key": "/i/:code",
