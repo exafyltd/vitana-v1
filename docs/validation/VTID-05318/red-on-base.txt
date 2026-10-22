@@ -1,0 +1,11 @@
+# red on base: origin/main 610b7270a, the new test files copied in
+Error: Failed to resolve import "./useJumpToMessage" from "src/hooks/useJumpToMessage.test.ts". Does the file exist?
+ FAIL  src/components/messages/ConversationView.reply-jump.vtid-05318.test.tsx > reply quotes in a DM (VTID-05318) > a loaded original: the quote shows it and a tap jumps there
+ FAIL  src/components/messages/ConversationView.reply-jump.vtid-05318.test.tsx > reply quotes in a DM (VTID-05318) > an original that is not loaded is fetched once and shown in the quote
+ FAIL  src/components/messages/ConversationView.reply-jump.vtid-05318.test.tsx > reply quotes in a DM (VTID-05318) > an original the conversation does not have reads "not available"; a tap shows a toast
+ FAIL  src/components/messages/ConversationView.reply-jump.vtid-05318.test.tsx > reply quotes in a DM (VTID-05318) > tapping the quote of a far-back original loads the window around it, connects it and jumps
+ FAIL  src/hooks/useJumpToMessage.test.ts [ src/hooks/useJumpToMessage.test.ts ]
+ FAIL  src/pages/messages/GroupChat.reply.vtid-05318.test.tsx > GroupChat replies (VTID-05318) > a quote whose original is not loaded fetches it once; one that is gone reads unavailable
+ FAIL  src/pages/messages/GroupChat.reply.vtid-05318.test.tsx > GroupChat replies (VTID-05318) > Reply puts the message in the composer and the send carries reply_to_message_id
+ Test Files  3 failed (3)
+      Tests  6 failed (6)

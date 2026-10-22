@@ -20,7 +20,7 @@ import AppLayout from '@/components/AppLayout';
 import SubNavigation from '@/components/SubNavigation';
 import StandardHeader from '@/components/StandardHeader';
 import { settingsNavigation } from '@/config/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CreatorPaymentsSection } from '@/components/creator/CreatorPaymentsSection';
@@ -65,14 +65,14 @@ export default function Billing() {
           <SubscriptionStateCard data={data} />
 
           {/* Quick actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
+          <Panel>
+            <PanelHeader>
+              <PanelTitle className="text-base flex items-center gap-2">
                 <CreditCard className="h-4 w-4" aria-hidden="true" />
                 {t('billing.state.manage')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
+              </PanelTitle>
+            </PanelHeader>
+            <PanelContent className="space-y-3">
               <Button
                 variant="outline"
                 onClick={() => navigate('/wallet/subscriptions')}
@@ -99,8 +99,8 @@ export default function Billing() {
                   <span aria-hidden="true">↗</span>
                 </Button>
               )}
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
 
           {/* Creator payouts (Stripe Connect — VTID-01230, already wired) */}
           <CreatorPaymentsSection />
@@ -147,13 +147,13 @@ export default function Billing() {
         {isLoading && <BillingLoading />}
 
         {isError && (
-          <Card>
-            <CardContent className="p-6 text-center">
+          <Panel>
+            <PanelContent className="p-6 text-center">
               <p className="text-sm text-destructive">
                 {error instanceof Error ? error.message : t('billing.checkoutErrors.checkoutFailed')}
               </p>
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
         )}
 
         {billingBody}

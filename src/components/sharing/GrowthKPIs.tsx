@@ -44,8 +44,8 @@ export function GrowthKPIs() {
                     variant="secondary"
                     className={
                       kpi.trend === "up"
-                        ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200"
-                        : "bg-gray-100 text-gray-800"
+                        ? "bg-status-success-subtle text-status-success"
+                        : "bg-muted text-foreground"
                     }
                   >
                     {kpi.change}
@@ -56,14 +56,14 @@ export function GrowthKPIs() {
           })}
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <div className="mt-6 p-4 bg-category-3/10 border border-category-3/25 rounded-lg">
           <div className="flex items-start gap-3">
-            <Share2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <Share2 className="w-5 h-5 text-category-3 flex-shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+              <p className="text-sm font-medium text-category-3">
                 {t('screens.sharing.bestTimePostToday')}
               </p>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
+              <p className="text-sm text-category-3">
                 {t('screens.sharing.text900Am1100')}
               </p>
             </div>

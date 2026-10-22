@@ -45,15 +45,15 @@ export function DeleteCampaignDialog({
     <ResponsiveConfirmDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveConfirmDialogContent className={cn(
         "rounded-2xl border-2",
-        "bg-white/85 backdrop-blur-xl",
-        "shadow-xl shadow-red-100/50",
+        "bg-card/85 backdrop-blur-xl",
+        "shadow-xl shadow-status-error/10",
         "max-w-md"
       )}>
         <ResponsiveConfirmDialogHeader>
-          <ResponsiveConfirmDialogTitle className="text-xl font-bold text-gray-900">
+          <ResponsiveConfirmDialogTitle className="text-xl font-bold text-foreground">
             {translate('campaigns.delete.title', 'Delete Campaign?')}
           </ResponsiveConfirmDialogTitle>
-          <ResponsiveConfirmDialogDescription className="text-sm text-gray-600 leading-relaxed">
+          <ResponsiveConfirmDialogDescription className="text-sm text-muted-foreground leading-relaxed">
             {applyReplacements(translate('campaigns.delete.description', 'Deleting "{name}" will permanently remove all related drafts and analytics. This action can\'t be undone.'), { name: campaignName })}
           </ResponsiveConfirmDialogDescription>
         </ResponsiveConfirmDialogHeader>
@@ -67,7 +67,7 @@ export function DeleteCampaignDialog({
             />
             <Label 
               htmlFor="dont-ask" 
-              className="text-xs text-gray-600 cursor-pointer"
+              className="text-xs text-muted-foreground cursor-pointer"
             >
               {translate('campaigns.delete.dontAskAgain', "Don't ask me again for draft campaigns")}
             </Label>
@@ -77,8 +77,8 @@ export function DeleteCampaignDialog({
         <ResponsiveConfirmDialogFooter className="gap-3 sm:gap-3">
           <ResponsiveConfirmDialogCancel className={cn(
             "rounded-lg px-4",
-            "bg-gray-100 hover:bg-gray-200",
-            "text-gray-700 border-gray-300"
+            "bg-muted hover:bg-muted",
+            "text-muted-foreground border-border"
           )}>
             {translate('buttons.cancel', 'Cancel')}
           </ResponsiveConfirmDialogCancel>
@@ -86,9 +86,9 @@ export function DeleteCampaignDialog({
             onClick={handleConfirm}
             className={cn(
               "rounded-lg px-4",
-              "bg-red-600 hover:bg-red-700",
-              "text-white shadow-lg shadow-red-200/50",
-              "hover:shadow-xl hover:shadow-red-300/50",
+              "bg-status-error hover:bg-status-error",
+              "text-primary-foreground shadow-lg shadow-status-error/15",
+              "hover:shadow-xl hover:shadow-status-error/20",
               "transition-all duration-200"
             )}
           >

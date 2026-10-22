@@ -20,6 +20,7 @@ interface EventDetailDrawerProps {
 export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerProps) {
   return (
     <Sheet open={open} onOpenChange={onClose}>
+      {/* design-allow-next-line: no scale value within 2px of 400px; no scale value within 2px of 540px */}
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
@@ -71,6 +72,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
           {event.data && Object.keys(event.data).length > 0 && (
             <div>
               <h4 className="text-sm font-semibold mb-1">{t('screens.dev.data')}</h4>
+              {/* design-allow-next-line: no scale value within 2px of 200px */}
               <pre className="text-xs bg-muted p-3 rounded overflow-auto max-h-[200px]">
                 {JSON.stringify(event.data, null, 2)}
               </pre>

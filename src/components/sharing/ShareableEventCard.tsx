@@ -71,6 +71,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
                 className="absolute inset-0 w-full h-full object-cover"
                 crossOrigin="anonymous"
               />
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
             </>
           )}
@@ -79,11 +80,11 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
           <div className={`relative h-full flex flex-col ${isStory ? "justify-end pb-32" : "justify-end pb-16"} px-12`}>
             {/* VITANA Badge */}
             <div className="absolute top-12 start-12">
-              <div className="flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+              <div className="flex items-center gap-3 bg-card/20 backdrop-blur-md px-6 py-3 rounded-full">
+                <div className="w-8 h-8 rounded-full bg-card flex items-center justify-center">
                   <span className="text-primary font-bold text-lg">V</span>
                 </div>
-                <span className="text-white font-semibold text-2xl tracking-wide">VITANA</span>
+                <span className="text-primary-foreground font-semibold text-2xl tracking-wide">VITANA</span>
               </div>
             </div>
 
@@ -91,7 +92,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
             <div className="space-y-8">
               {/* Title */}
               <h1 
-                className="text-white font-bold leading-tight"
+                className="text-primary-foreground font-bold leading-tight"
                 style={{ fontSize: isStory ? "72px" : "64px" }}
               >
                 {event.title}
@@ -99,20 +100,20 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
 
               {/* Date & Time */}
               <div className="space-y-4">
-                <div className="flex items-center gap-4 text-white/90">
+                <div className="flex items-center gap-4 text-primary-foreground/90">
                   <Calendar className="w-10 h-10" strokeWidth={1.5} />
                   <span className="text-3xl font-medium">{formatEventDate()}</span>
                 </div>
                 
                 {formatEventTime() && (
-                  <div className="flex items-center gap-4 text-white/90">
+                  <div className="flex items-center gap-4 text-primary-foreground/90">
                     <Clock className="w-10 h-10" strokeWidth={1.5} />
                     <span className="text-3xl font-medium">{formatEventTime()}</span>
                   </div>
                 )}
 
                 {event.location && (
-                  <div className="flex items-center gap-4 text-white/90">
+                  <div className="flex items-center gap-4 text-primary-foreground/90">
                     <MapPin className="w-10 h-10" strokeWidth={1.5} />
                     <span className="text-3xl font-medium">{event.location}</span>
                   </div>
@@ -121,7 +122,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
 
               {/* CTA hint */}
               <div className="pt-8">
-                <div className="inline-flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-full">
+                <div className="inline-flex items-center gap-3 bg-card text-primary px-8 py-4 rounded-full">
                   <span className="text-2xl font-bold">{t('screens.sharing.tapLinkBioJoin')}</span>
                 </div>
               </div>
@@ -129,6 +130,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
           </div>
 
           {/* Bottom gradient fade */}
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="absolute bottom-0 start-0 end-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
       </div>

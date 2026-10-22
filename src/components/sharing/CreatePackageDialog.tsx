@@ -251,6 +251,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
+      {/* design-allow-next-line: no scale value within 2px of 560px; viewport-bound sheet height */}
       <DialogContent className="sm:max-w-[560px] max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -380,6 +381,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                 </Button>
               </div>
             ) : (
+              // design-allow-next-line: no scale value within 2px of 300px
               <div className="space-y-3 max-h-[300px] overflow-y-auto">
                 {items.map((item, index) => (
                   <div key={index} className="border rounded-lg p-3 space-y-3">

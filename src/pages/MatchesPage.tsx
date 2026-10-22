@@ -112,7 +112,16 @@ export default function MatchesPage() {
         description={t("screens.autopilotdashboard.matchesPageDescription")}
       />
       <AppLayout>
-        <div className="p-4 md:p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
+        {/* matches-scroll-end: the page scrolls with the document and the
+            bottom bar (+ safe area) and the Orb are fixed over its bottom
+            edge. This padding lets the last card scroll fully above them; it
+            uses the same CSS variable as the Orb's position. The +90px matches
+            .maxina-signin-page (index.css): the Orb is Appilix-injected (no
+            height in this repo) and overhangs the bar by ~36px, so 90px leaves
+            headroom if it grows. md+ has no bar. */}
+        <div
+          data-testid="matches-page"
+          className="p-4 md:p-6 pb-[calc(var(--appilix-bottom-nav-height,72px)_+_env(safe-area-inset-bottom,0px)_+_90px)] md:pb-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
           <div className="max-w-2xl mx-auto">
             <StandardHeader
               title={t("screens.autopilotdashboard.matchesTitle")}

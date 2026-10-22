@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Settings as SettingsIcon } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
@@ -39,13 +39,14 @@ export default function MobileSubscriptions() {
     data?.plan.status === "past_due" || data?.plan.status === "unpaid";
 
   return (
+    // design-allow-next-line: phone-only screen: App.tsx routes desktop to /wallet/subscriptions, so Spotlight never frames it
     <AppLayout>
       <SEO
         title={t("billing.subscriptionsPage.title")}
         description={t("billing.subscriptionsPage.subtitle")}
       />
 
-      <div className="bg-gradient-to-br from-purple-50/40 via-blue-50/30 to-pink-50/30 min-h-screen">
+      <div className="bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-3xl mx-auto p-4 space-y-4">
           {/* Header with back button */}
           <div className="flex items-center gap-2">

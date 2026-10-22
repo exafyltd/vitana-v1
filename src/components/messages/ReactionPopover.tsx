@@ -38,6 +38,7 @@ export function ReactionPopover({
         align="start"
         side="top"
       >
+        {/* design-allow-next-line: viewport-bound sheet height */}
         <div className="space-y-3 max-h-[50vh] overflow-y-auto">
           {groups.map((group) => (
             <div key={group.emoji} className="space-y-1">

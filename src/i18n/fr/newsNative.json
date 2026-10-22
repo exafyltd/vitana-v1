@@ -1,0 +1,14 @@
+{
+  "newsNative": {
+    "article": {
+      "unavailableTitle": "Article indisponible",
+      "unavailableBody": "Cet article ne peut pas être ouvert ici. Reviens au fil pour l'ouvrir à nouveau.",
+      "backToFeed": "Retour au fil"
+    },
+    "post": {
+      "video": "Vidéo",
+      "likes": "{count} j'aime",
+      "comments": "{count} commentaires"
+    }
+  }
+}

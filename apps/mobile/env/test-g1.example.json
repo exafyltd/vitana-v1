@@ -1,0 +1,10 @@
+{
+  "_comment": "VTID-05249 — PLACEHOLDER G1 test profile. Every host below is a non-resolving placeholder (the reserved .invalid TLD, RFC 2606) and the key is a placeholder sb_publishable_ value: never a real, production or staging endpoint, never a committed secret. The real G1 endpoints are supplied by the owner at build time via EXPO_PUBLIC_* and are never committed (lane real-g1-switch, apps/mobile/env/test-g1.g1.example.json documents their shape). loadConfig still runs assertNotProduction / assertNotProductionKey on every value here. Keys mirror URL_KEYS + VALUE_KEYS in src/config/env.ts; dataApiUrl is optional and omitted.",
+  "gatewayUrl": "https://gateway.g1.invalid",
+  "supabaseUrl": "https://supabase.g1.invalid",
+  "authRedirectUrl": "https://app.g1.invalid",
+  "webBaseUrl": "https://web.g1.invalid",
+  "supabasePublishableKey": "sb_publishable_g1PlaceholderDoNotUse",
+  "googleWebClientId": "g1-placeholder-web.apps.googleusercontent.com",
+  "googleIosClientId": "g1-placeholder-ios.apps.googleusercontent.com"
+}

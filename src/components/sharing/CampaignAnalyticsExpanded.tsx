@@ -186,22 +186,22 @@ export function CampaignAnalyticsExpanded({
     )}>
       <Card className={cn(
         "border-2 rounded-2xl p-6",
-        "bg-gradient-to-br from-white/95 to-gray-50/95 backdrop-blur-xl",
-        "border-teal-200/50 shadow-2xl shadow-teal-100/30"
+        "bg-gradient-to-br from-card/95 to-surface-sunken/95 backdrop-blur-xl",
+        "border-category-1/15 shadow-2xl shadow-category-1/5"
       )}>
         {/* Top Bar */}
-        <div className="flex items-start justify-between mb-6 pb-4 border-b border-gray-200/50">
+        <div className="flex items-start justify-between mb-6 pb-4 border-b border-border/50">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h3 className="text-xl font-bold text-gray-900">
+              <h3 className="text-xl font-bold text-foreground">
                 {campaign.name}
               </h3>
-              <Badge className="text-xs px-2 py-0.5 bg-teal-100 text-teal-700 border-teal-300">
+              <Badge className="text-xs px-2 py-0.5 bg-category-1/15 text-category-1 border-category-1/40">
                 {t('screens.sharing.analytics')}
               </Badge>
             </div>
             {campaign.start_date && campaign.end_date && (
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4" />
                 <span>
                   {formatDate(new Date(campaign.start_date), "MMM d")} - {formatDate(new Date(campaign.end_date), "MMM d, yyyy")}
@@ -214,7 +214,7 @@ export function CampaignAnalyticsExpanded({
             size="sm"
             variant="ghost"
             onClick={onClose}
-            className="h-8 w-8 p-0 rounded-full hover:bg-gray-200"
+            className="h-8 w-8 p-0 rounded-full hover:bg-muted"
           >
             <X className="w-4 h-4" />
           </Button>
@@ -223,74 +223,74 @@ export function CampaignAnalyticsExpanded({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Summary Metrics */}
           <div className="lg:col-span-1 space-y-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               {t('screens.sharing.performanceSummary')}
             </h4>
             
             {/* Delivered Card */}
-            <Card className="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200">
+            <Card className="p-4 bg-gradient-to-br from-category-1/10 to-category-1/10 border-category-1/25">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.delivered')}</p>
-                  <p className="text-2xl font-bold text-teal-700">
+                  <p className="text-xs text-muted-foreground mb-1">{t('screens.sharing.delivered')}</p>
+                  <p className="text-2xl font-bold text-category-1">
                     {fmtDateTime(displayData.reach)}
                   </p>
                   {hasRealData && (
-                    <p className="text-xs text-gray-500 mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.deliveryRate.toFixed(1) })}
+                    <p className="text-xs text-muted-foreground mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.deliveryRate.toFixed(1) })}
                     </p>
                   )}
                 </div>
-                <div className="w-10 h-10 rounded-full bg-teal-200/50 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-teal-700" />
+                <div className="w-10 h-10 rounded-full bg-category-1/15 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-category-1" />
                 </div>
               </div>
             </Card>
 
             {/* Opened Card */}
-            <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+            <Card className="p-4 bg-gradient-to-br from-category-3/10 to-category-3/10 border-category-3/25">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.opened')}</p>
-                  <p className="text-2xl font-bold text-blue-700">
+                  <p className="text-xs text-muted-foreground mb-1">{t('screens.sharing.opened')}</p>
+                  <p className="text-2xl font-bold text-category-3">
                     {fmtDateTime(displayData.engagement)}
                   </p>
                   {hasRealData && (
-                    <p className="text-xs text-gray-500 mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.openRate.toFixed(1) })}
+                    <p className="text-xs text-muted-foreground mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.openRate.toFixed(1) })}
                     </p>
                   )}
                 </div>
-                <div className="w-10 h-10 rounded-full bg-blue-200/50 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-blue-700" />
+                <div className="w-10 h-10 rounded-full bg-category-3/15 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-category-3" />
                 </div>
               </div>
             </Card>
 
             {/* Click Rate Card */}
-            <Card className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+            <Card className="p-4 bg-gradient-to-br from-category-2/10 to-category-4/10 border-category-2/25">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.clickRate')}</p>
-                  <p className="text-2xl font-bold text-purple-700">
+                  <p className="text-xs text-muted-foreground mb-1">{t('screens.sharing.clickRate')}</p>
+                  <p className="text-2xl font-bold text-category-2">
                     {displayData.ctr.toFixed(1)}%
                   </p>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-purple-200/50 flex items-center justify-center">
-                  <MousePointerClick className="w-5 h-5 text-purple-700" />
+                <div className="w-10 h-10 rounded-full bg-category-2/15 flex items-center justify-center">
+                  <MousePointerClick className="w-5 h-5 text-category-2" />
                 </div>
               </div>
             </Card>
 
             {/* Clicks Card */}
-            <Card className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+            <Card className="p-4 bg-gradient-to-br from-status-success-subtle to-status-success-subtle border-status-success/25">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.totalClicks')}</p>
-                  <p className="text-2xl font-bold text-green-700">
+                  <p className="text-xs text-muted-foreground mb-1">{t('screens.sharing.totalClicks')}</p>
+                  <p className="text-2xl font-bold text-status-success">
                     {displayData.conversions}
                   </p>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-green-200/50 flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 text-green-700" />
+                <div className="w-10 h-10 rounded-full bg-status-success/15 flex items-center justify-center">
+                  <DollarSign className="w-5 h-5 text-status-success" />
                 </div>
               </div>
             </Card>
@@ -300,7 +300,7 @@ export function CampaignAnalyticsExpanded({
           <div className="lg:col-span-2 space-y-6">
             {/* Channel Breakdown */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
                 {t('screens.sharing.channelPerformance')}
               </h4>
               <div className="space-y-3">
@@ -319,38 +319,38 @@ export function CampaignAnalyticsExpanded({
                     return (
                       <div
                         key={channel.channel}
-                        className="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-gray-200 hover:bg-white/80 transition-all"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-card/60 border border-border hover:bg-card/80 transition-all"
                       >
                         <div className={cn(
                           "w-10 h-10 rounded-full flex items-center justify-center",
                           channel.color
                         )}>
-                          <Icon className="w-5 h-5 text-white" />
+                          <Icon className="w-5 h-5 text-primary-foreground" />
                         </div>
                         
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="text-sm font-semibold text-foreground">
                               {channel.name}
                             </span>
-                            <span className="text-sm font-bold text-gray-700">
+                            <span className="text-sm font-bold text-muted-foreground">
                               {fmtDateTime(channel.reach)}
                             </span>
                           </div>
                           
                           {/* Progress Bar */}
-                          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="h-2 bg-muted rounded-full overflow-hidden">
                             <div
                               className={cn(
                                 "h-full rounded-full transition-all duration-500",
-                                "bg-gradient-to-r from-teal-400 to-blue-500"
+                                "bg-gradient-to-r from-category-1/80 to-category-3"
                               )}
                               style={{ width: `${reachPercent}%` }}
                             />
                           </div>
                           
                           <div className="flex items-center gap-4 mt-1">
-                            <span className="text-xs text-gray-500">{t('screens.sharing.value0Opened', { value0: fmtDateTime(channel.engagement) })}
+                            <span className="text-xs text-muted-foreground">{t('screens.sharing.value0Opened', { value0: fmtDateTime(channel.engagement) })}
                             </span>
                           </div>
                         </div>
@@ -363,10 +363,10 @@ export function CampaignAnalyticsExpanded({
 
             {/* Trend Chart (Simple Bar Chart) */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
                 {t('screens.sharing.reachTrend')}
               </h4>
-              <div className="p-4 bg-white/60 rounded-xl border border-gray-200">
+              <div className="p-4 bg-card/60 rounded-xl border border-border">
                 {/* Chart Area */}
                 <div className="flex items-end justify-between gap-3 h-32 mb-3">
                   {displayData.trendData.map((data, index) => {
@@ -381,9 +381,10 @@ export function CampaignAnalyticsExpanded({
                       >
                         {/* Tooltip on hover */}
                         <div className={cn(
+                          // design-allow-next-line: centring with -translate-x-1/2
                           "absolute -top-8 left-1/2 -translate-x-1/2",
                           "opacity-0 group-hover:opacity-100 transition-opacity",
-                          "bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+                          "bg-muted-foreground text-primary-foreground text-xs px-2 py-1 rounded whitespace-nowrap"
                         )}>
                           {fmtDateTime(data.reach)}
                         </div>
@@ -392,8 +393,8 @@ export function CampaignAnalyticsExpanded({
                         <div
                           className={cn(
                             "w-full rounded-t-lg transition-all duration-500 cursor-pointer",
-                            "bg-gradient-to-t from-teal-400 to-pink-400",
-                            "hover:from-teal-500 hover:to-pink-500 hover:shadow-lg"
+                            "bg-gradient-to-t from-category-1/80 to-category-4/80",
+                            "hover:from-category-1 hover:to-category-4 hover:shadow-lg"
                           )}
                           style={{ 
                             height: `${Math.max(heightPercent, minHeight)}%`
@@ -408,7 +409,7 @@ export function CampaignAnalyticsExpanded({
                 <div className="flex items-center justify-between gap-3">
                   {displayData.trendData.map((data, index) => (
                     <div key={index} className="flex-1 text-center">
-                      <span className="text-xs text-gray-600 font-medium">
+                      <span className="text-xs text-muted-foreground font-medium">
                         {data.date}
                       </span>
                     </div>
@@ -420,7 +421,7 @@ export function CampaignAnalyticsExpanded({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-gray-200/50">
+        <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-border/50">
           <Button
             variant="outline"
             size="sm"
@@ -433,7 +434,7 @@ export function CampaignAnalyticsExpanded({
           
           <Button
             size="sm"
-            className="gap-2 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700"
+            className="gap-2 bg-gradient-to-r from-category-1 to-category-3 hover:from-category-1 hover:to-category-3"
             onClick={handleOpenFullDashboard}
           >
             {t('screens.sharing.openFullDashboard')}

@@ -1,0 +1,239 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Geri",
+      "loading": "Yükleniyor …",
+      "loadMore": "Daha fazla yükle",
+      "retry": "Tekrar dene",
+      "errorBody": "Bunu şu an yükleyemedik. Lütfen tekrar dene."
+    },
+    "groups": {
+      "title": "Gruplar",
+      "subtitle": "Ortak ilgi alanlarına sahip gruplara katıl ya da kendininkini oluştur.",
+      "tabsLabel": "Grup görünümü",
+      "tabMine": "Gruplarım",
+      "tabDiscover": "Keşfet",
+      "memberCount": "{count} üye",
+      "public": "Herkese açık",
+      "private": "Özel",
+      "join": "Katıl",
+      "joining": "Katılıyor …",
+      "leave": "Ayrıl",
+      "leaving": "Ayrılıyor …",
+      "emptyMineTitle": "Henüz grup yok",
+      "emptyMineDesc": "Başlamak için ilk gruba katıl.",
+      "emptyDiscoverTitle": "Keşfedilecek grup yok",
+      "emptyDiscoverDesc": "Bir topluluk grubu oluşturan ilk kişi ol.",
+      "create": "Oluştur",
+      "searchPlaceholder": "Grup ara",
+      "searchLabel": "Grup ara"
+    },
+    "groupDetail": {
+      "title": "Grup",
+      "memberCount": "{count} üye",
+      "membersWithCount": "Üyeler ({count})",
+      "plusMore": "+{count}",
+      "join": "Gruba katıl",
+      "leave": "Gruptan ayrıl",
+      "notFoundTitle": "Grup bulunamadı",
+      "notFoundDesc": "Bu grup kaldırılmış ya da mevcut olmayabilir.",
+      "browse": "Gruplara göz at"
+    },
+    "members": {
+      "title": "Topluluk üyeleri",
+      "subtitle": "Vitana topluluğundaki herkesle tanış — bir karta dokun.",
+      "searchPlaceholder": "İsme veya Vitana ID'ye göre ara",
+      "searchLabel": "Üyeleri ara",
+      "sortLabel": "Sırala",
+      "sort": {
+        "newest": "En yeni",
+        "oldest": "Önce kurucular",
+        "name": "İsme göre"
+      },
+      "danceLabel": "Dans",
+      "dance": {
+        "all": "Tümü",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Balo salonu",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Üye",
+      "empty": "Henüz üye yok.",
+      "emptyDance": "Bu dansı henüz kimse tercih olarak belirtmedi — ilk kişi sen ol!",
+      "viewProfile": "Profili gör"
+    },
+    "openAsks": {
+      "title": "Açık istekler",
+      "summaryLoading": "İstekler yükleniyor …",
+      "summaryEmpty": "Henüz açık istek yok.",
+      "summaryCount": "{n} açık istek",
+      "kindLabel": "Tür",
+      "filterAll": "Tümü",
+      "topicLabel": "Konu",
+      "topic": {
+        "everything": "Her şey",
+        "dance": "Yalnızca dans"
+      },
+      "kind": {
+        "commercial_buy": "Satın alma",
+        "commercial_sell": "Satış",
+        "activity_seek": "Etkinlik",
+        "partner_seek": "Partner",
+        "social_seek": "Sosyal",
+        "mutual_aid": "Karşılıklı yardım",
+        "learning_seek": "Öğrenme",
+        "mentor_seek": "Mentorluk"
+      },
+      "time": {
+        "justNow": "Az önce",
+        "minutes": "{n} dk önce",
+        "hours": "{n} sa önce",
+        "days": "{n} g önce"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "Bu görünümde açık istek yok.",
+      "emptyDance": "Henüz açık dans isteği yok — kendininkini paylaş ve ilk kişi ol!"
+    },
+    "findPartner": {
+      "title": "Partner bul",
+      "subtitle": "Açık dileklerine uyan kişileri bul.",
+      "viewLabel": "Görünüm",
+      "view": {
+        "matches": "Eşleşmeler",
+        "board": "Pano",
+        "posts": "Gönderilerim",
+        "members": "Üyeler"
+      },
+      "scorePercent": "%{score}",
+      "matchFallback": "Eşleşme",
+      "emptyMatches": "Henüz eşleşme yok. Bir dilek paylaş, gözümüz üzerinde olsun.",
+      "newWish": "Yeni istek",
+      "searchPlaceholder": "Gönderi ve eşleşme ara",
+      "searchLabel": "Gönderi ve eşleşme ara",
+      "filter": "Filtrele",
+      "filterActive": "Filtre ({count})",
+      "noMatchesForFilters": "Bu filtreler için eşleşme yok. Daha fazlası için sıfırla.",
+      "showingOfTotal": "{total} içinden {shown} gösteriliyor",
+      "filterTitle": "Eşleşmeleri filtrele",
+      "filterMinScore": "Minimum puan",
+      "filterClear": "Sıfırla",
+      "filterShowResults": "{count} eşleşme göster"
+    },
+    "matches": {
+      "title": "Seninle eşleşen kişiler",
+      "subtitle": "Topluluktan eşleşmelerin.",
+      "empty": "Henüz eşleşme yok. Yakında tekrar bak.",
+      "fallbackName": "Topluluk üyesi",
+      "reasonDefault": "Ortak ilgi alanları",
+      "score": "%{score}"
+    },
+    "intents": {
+      "boardTitle": "Topluluk panosu",
+      "boardSubtitle": "Başkalarının şu an aradıkları.",
+      "filtersLabel": "Filtreler",
+      "filter": {
+        "all": "Tümü",
+        "dance": "Dans"
+      },
+      "kind": {
+        "commercial_buy": "Satın alma",
+        "commercial_sell": "Satış",
+        "activity_seek": "Etkinlik",
+        "partner_seek": "Partner",
+        "social_seek": "Sosyal",
+        "mutual_aid": "Karşılıklı yardım",
+        "learning_seek": "Öğrenme",
+        "mentor_seek": "Mentorluk"
+      },
+      "viewMine": "Niyetlerimi gör",
+      "emptyBoard": "Bu görünümde açık niyet yok. İlk kişi sen ol.",
+      "emptyDance": "Henüz açık dans gönderisi yok — kendininkini paylaş ve ilk kişi ol!",
+      "emptyMine": "Bu görünümde gönderi yok.",
+      "post": "Gönder",
+      "styleLabel": "Stil",
+      "variety": {
+        "any": "Herhangi",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bachata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Balo dansı",
+        "hiphop": "Hip-hop"
+      }
+    },
+    "intentMatch": {
+      "title": "Eşleşme ayrıntıları",
+      "backMine": "Niyetlerime dön",
+      "notFound": "Niyet bulunamadı.",
+      "matchesCount": "Eşleşmeler ({count})",
+      "noMatches": "Henüz eşleşme yok — senin için aramayı sürdürüyoruz."
+    },
+    "search": {
+      "title": "Ara",
+      "subtitle": "Vitana topluluğundaki üyeleri bul.",
+      "placeholder": "Üyeleri ara",
+      "inputLabel": "Arama terimi",
+      "submit": "Ara",
+      "memberMeta": "Topluluk üyesi",
+      "fallbackName": "Üye",
+      "emptyTitle": "Sonuç yok",
+      "emptyDesc": "Arama terimini değiştir ve tekrar dene."
+    },
+    "createGroup": {
+      "title": "Yeni bir grup oluştur",
+      "namePlaceholder": "örn. Sabah Koşucuları ya da Sağlıklı Yemek",
+      "nameLabel": "Grup adı",
+      "descriptionPlaceholder": "Grubunun amacını ve etkinliklerini anlat",
+      "descriptionLabel": "Açıklama",
+      "categoryLabel": "Kategori",
+      "category": {
+        "fitness": "Fitness",
+        "nutrition": "Beslenme",
+        "mental-health": "Ruh sağlığı",
+        "support": "Destek",
+        "learning": "Öğrenme",
+        "social": "Sosyal"
+      },
+      "privacyLabel": "Görünürlük",
+      "privacy": {
+        "public": "Herkese açık",
+        "private": "Özel"
+      },
+      "cancel": "İptal",
+      "submit": "Grup oluştur",
+      "creating": "Oluşturuluyor …",
+      "created": "Grup oluşturuldu.",
+      "nameRequired": "Bir grup adı gir."
+    },
+    "composer": {
+      "title": "Topluluğa gönder",
+      "kindLabel": "Tür",
+      "kind": {
+        "commercial_buy": "Alım",
+        "commercial_sell": "Satım",
+        "activity_seek": "Etkinlik",
+        "social_seek": "Sosyal",
+        "mutual_aid": "Karşılıklı yardım",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Kısa başlık",
+      "titleLabel": "Başlık",
+      "scopePlaceholder": "Neye ihtiyacın olduğunu veya ne sunduğunu anlat",
+      "scopeLabel": "Açıklama",
+      "budgetMin": "Bütçe min.",
+      "budgetMax": "Bütçe maks.",
+      "cancel": "İptal",
+      "submit": "Gönder",
+      "posting": "Gönderiliyor …",
+      "posted": "Topluluğa gönderildi.",
+      "titleRequired": "En az 3 karakterlik bir başlık gir.",
+      "scopeTooShort": "En az 20 karakterle anlat."
+    }
+  }
+}

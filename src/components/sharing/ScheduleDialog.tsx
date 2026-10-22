@@ -42,6 +42,7 @@ export function ScheduleDialog({
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: no scale value within 2px of 500px */}
       <ResponsiveDialogContent className="sm:max-w-[500px]">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t('screens.sharing.schedulePost')}</ResponsiveDialogTitle>
