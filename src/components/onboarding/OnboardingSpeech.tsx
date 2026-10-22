@@ -86,6 +86,7 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
   };
 
   return (
+    // design-allow-next-line: viewport-bound sheet height / measured bubble width
     <div className="flex flex-col h-full max-h-[70vh] relative">
       {/* Message area */}
       <div
@@ -103,13 +104,14 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
             >
               {/* Orb avatar */}
               <div className="flex-shrink-0 mt-1">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#C084FC] flex items-center justify-center shadow-md">
-                  <span className="text-white text-xs font-bold">V</span>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md">
+                  <span className="text-primary-foreground text-xs font-bold">V</span>
                 </div>
               </div>
               {/* Message bubble */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl rounded-ss-md px-4 py-3 shadow-sm max-w-[85%]">
-                <p className="text-sm text-gray-800 leading-relaxed">{msg}</p>
+              {/* design-allow-next-line: viewport-bound sheet height / measured bubble width */}
+              <div className="bg-card/90 backdrop-blur-sm rounded-2xl rounded-ss-md px-4 py-3 shadow-sm max-w-[85%]">
+                <p className="text-sm text-foreground leading-relaxed">{msg}</p>
               </div>
             </motion.div>
           ))}
@@ -123,15 +125,15 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
             className="flex items-start gap-3"
           >
             <div className="flex-shrink-0 mt-1">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#C084FC] flex items-center justify-center shadow-md">
-                <span className="text-white text-xs font-bold">V</span>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md">
+                <span className="text-primary-foreground text-xs font-bold">V</span>
               </div>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl rounded-ss-md px-4 py-3 shadow-sm">
+            <div className="bg-card/90 backdrop-blur-sm rounded-2xl rounded-ss-md px-4 py-3 shadow-sm">
               <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           </motion.div>
@@ -143,7 +145,7 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
         <div className="px-4 pb-4 pt-2">
           <button
             onClick={handleSkip}
-            className="text-sm text-white/70 hover:text-white transition-colors"
+            className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
           >
             {translate('onboarding.skipIntro', 'Skip intro')}
           </button>

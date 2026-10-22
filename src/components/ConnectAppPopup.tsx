@@ -93,6 +93,7 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
       {/* Apps List */}
       <div className={cn(
         "space-y-2",
+        // design-allow-next-line: viewport-bound sheet height
         isMobile ? "max-h-[40vh] overflow-y-auto" : "max-h-[50vh] overflow-y-auto"
       )}>
         <p className="text-sm font-medium text-muted-foreground px-1">
@@ -107,7 +108,7 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
             >
               <div className={cn(
                 "h-10 w-10 rounded-full flex items-center justify-center shrink-0",
-                app.connected ? "bg-emerald-500/10" : "bg-muted"
+                app.connected ? "bg-status-success/10" : "bg-muted"
               )}>
                 <Icon className="h-5 w-5" />
               </div>
@@ -127,7 +128,7 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
 
               <div className="shrink-0">
                 {app.connected ? (
-                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                  <span className="inline-flex items-center gap-1 text-xs text-status-success font-medium">
                     <Check className="w-3.5 h-3.5" />
                     {translate('connectedApps.popup.connected')}
                   </span>
@@ -169,6 +170,7 @@ export function ConnectAppPopup({ isOpen, onClose, onConnect }: ConnectAppPopupP
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
+        {/* design-allow-next-line: viewport-bound sheet height */}
         <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-hidden">
           <SheetHeader className="pb-2">
             <SheetTitle className="flex items-center gap-2 text-start">

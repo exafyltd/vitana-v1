@@ -67,21 +67,21 @@ export function AudiobookReminderControl({ className }: { className?: string }) 
   return (
     <label
       className={cn(
-        'flex items-center gap-3 rounded-2xl border border-purple-100 bg-white/80 px-4 py-3 shadow-sm',
+        'flex items-center gap-3 rounded-2xl border border-category-2/15 bg-card/80 px-4 py-3 shadow-sm',
         className,
       )}
       data-testid="audiobook-reminder-control"
     >
-      <Bell className="h-5 w-5 shrink-0 text-purple-600" aria-hidden="true" />
+      <Bell className="h-5 w-5 shrink-0 text-category-2" aria-hidden="true" />
       <span className="min-w-0 flex-1">
-        <span className="block text-sm font-semibold text-gray-900">{t('screens.audiobook.reminderTitle')}</span>
-        <span className="block text-xs text-gray-600">{t('screens.audiobook.reminderBody')}</span>
+        <span className="block text-sm font-semibold text-foreground">{t('screens.audiobook.reminderTitle')}</span>
+        <span className="block text-xs text-muted-foreground">{t('screens.audiobook.reminderBody')}</span>
       </span>
       <select
         value={current}
         disabled={saving || !user}
         onChange={(e) => void onChange(e.target.value)}
-        className="h-11 shrink-0 rounded-xl border border-purple-200 bg-white px-3 text-sm font-medium text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+        className="h-11 shrink-0 rounded-xl border border-category-2/25 bg-card px-3 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-2"
         aria-label={t('screens.audiobook.reminderTitle')}
         data-testid="audiobook-reminder-select"
       >

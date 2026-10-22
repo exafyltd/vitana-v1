@@ -327,9 +327,9 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
   if (showConfirmation) {
     return (
       <div className="flex flex-col items-center justify-center py-8 space-y-4">
-        <div className="p-4 rounded-full bg-green-100 dark:bg-green-950/30">
-          <div className="p-3 rounded-full bg-green-200 dark:bg-green-900/40">
-            <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+        <div className="p-4 rounded-full bg-status-success-subtle">
+          <div className="p-3 rounded-full bg-status-success/25">
+            <CheckCircle2 className="h-8 w-8 text-status-success" />
           </div>
         </div>
         <h3 className="text-lg font-semibold">{t('screens.feedback.reportSent')}</h3>
@@ -361,7 +361,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           <Button
             onClick={startRecording}
             size="lg"
-            className="h-16 w-16 rounded-full bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/40 dark:hover:bg-orange-900/60 text-orange-700 dark:text-orange-300"
+            className="h-16 w-16 rounded-full bg-status-warning-subtle hover:bg-status-warning/25 text-status-warning"
           >
             <Mic className="h-8 w-8" />
           </Button>
@@ -397,7 +397,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="absolute end-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
+          className="absolute end-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-status-warning text-primary-foreground flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
           aria-label={t('screens.feedback.attachScreenshots')}
         >
           <Plus className="h-5 w-5" />

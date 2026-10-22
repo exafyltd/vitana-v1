@@ -22,7 +22,7 @@ const MessageDivider: React.FC<MessageDividerProps> = ({
         variant={type === 'unread' ? 'secondary' : 'outline'}
         className={cn(
           "text-xs font-medium px-3 py-0.5 rounded-full border-border/60 bg-muted/70 text-muted-foreground",
-          type === 'unread' && "bg-domain-messages-accent text-white border-transparent"
+          type === 'unread' && "bg-domain-messages-accent text-primary-foreground border-transparent"
         )}
       >
         {text}

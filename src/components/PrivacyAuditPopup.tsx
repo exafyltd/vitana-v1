@@ -20,10 +20,11 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-blue-500" />
+            <Shield className="w-5 h-5 text-category-3" />
             {t('screens.common.privacyAuditReport')}
           </DialogTitle>
         </DialogHeader>
@@ -33,7 +34,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-status-success" />
                 {t('screens.common.privacyScore')}
               </CardTitle>
             </CardHeader>
@@ -46,7 +47,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
                   </div>
                   <Progress value={70} className="h-3" />
                 </div>
-                <Badge className="bg-green-500 text-white">{t('screens.common.good')}</Badge>
+                <Badge className="bg-status-success text-primary-foreground">{t('screens.common.good')}</Badge>
               </div>
               <p className="text-sm text-muted-foreground mt-3">
                 {t('screens.common.yourPrivacySettingsMostlySecureBut')}
@@ -58,39 +59,39 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-orange-500" />
+                <AlertCircle className="w-5 h-5 text-status-warning" />
                 {t('screens.common.issuesFound2')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-lg">
-                <XCircle className="w-5 h-5 text-orange-600 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 bg-status-warning-subtle rounded-lg">
+                <XCircle className="w-5 h-5 text-status-warning mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-medium text-orange-900">{t('screens.common.publicProfileVisibility')}</h4>
-                  <p className="text-sm text-orange-800 mb-3">
+                  <h4 className="font-medium text-status-warning">{t('screens.common.publicProfileVisibility')}</h4>
+                  <p className="text-sm text-status-warning mb-3">
                     {t('screens.common.yourProfileCurrentlyVisibleAllUsers')}
                   </p>
                   <Button size="sm" onClick={() => handleFixIssue('profile-visibility')}>
                     {t('screens.common.fixNow')}
                   </Button>
                 </div>
-                <Badge variant="outline" className="text-orange-600 border-orange-600">
+                <Badge variant="outline" className="text-status-warning border-status-warning">
                   {t('screens.common.mediumRisk')}
                 </Badge>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 bg-status-warning-subtle rounded-lg">
+                <AlertCircle className="w-5 h-5 text-status-warning mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-medium text-yellow-900">{t('screens.common.locationDataSharing')}</h4>
-                  <p className="text-sm text-yellow-800 mb-3">
+                  <h4 className="font-medium text-status-warning">{t('screens.common.locationDataSharing')}</h4>
+                  <p className="text-sm text-status-warning mb-3">
                     {t('screens.common.locationDataSharedWithThirdpartyServices')}
                   </p>
                   <Button size="sm" variant="outline" onClick={() => handleFixIssue('location-sharing')}>
                     {t('screens.common.reviewSettings')}
                   </Button>
                 </div>
-                <Badge variant="outline" className="text-yellow-600 border-yellow-600">
+                <Badge variant="outline" className="text-status-warning border-status-warning">
                   {t('screens.common.lowRisk')}
                 </Badge>
               </div>
@@ -109,7 +110,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
-                  <Badge variant="outline" className="text-orange-600 border-orange-600">
+                  <Badge variant="outline" className="text-status-warning border-status-warning">
                     {t('screens.common.needsReview')}
                   </Badge>
                 </div>
@@ -126,7 +127,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
-                  <Badge className="bg-green-500 text-white">{t('screens.common.secure')}</Badge>
+                  <Badge className="bg-status-success text-primary-foreground">{t('screens.common.secure')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -141,7 +142,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
-                  <Badge className="bg-green-500 text-white">{t('screens.common.protected')}</Badge>
+                  <Badge className="bg-status-success text-primary-foreground">{t('screens.common.protected')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -156,7 +157,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
-                  <Badge variant="outline" className="text-yellow-600 border-yellow-600">
+                  <Badge variant="outline" className="text-status-warning border-status-warning">
                     {t('screens.common.reviewNeeded')}
                   </Badge>
                 </div>
@@ -168,21 +169,21 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-500" />
+                <CheckCircle className="w-5 h-5 text-category-3" />
                 {t('screens.common.recommendations')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-status-success mt-0.5" />
                 <p className="text-sm">{t('screens.common.enableTwofactorAuthenticationForAddedSecurity')}</p>
               </div>
               <div className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-status-success mt-0.5" />
                 <p className="text-sm">{t('screens.common.reviewUpdateYourConnectedAppsPermissions')}</p>
               </div>
               <div className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-status-success mt-0.5" />
                 <p className="text-sm">{t('screens.common.considerUsingVpnForAdditionalPrivacy')}</p>
               </div>
             </CardContent>

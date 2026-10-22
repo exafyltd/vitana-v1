@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelDescription as CardDescription, PanelHeader as CardHeader, PanelTitle as CardTitle } from "@/components/layout/spotlight/Panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, TrendingUp, Calendar } from "lucide-react";
@@ -35,7 +35,7 @@ export default function PatientHealth() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Heart className="h-5 w-5 text-red-500" />
+              <Heart className="h-5 w-5 text-status-error" />
               {t('screens.patient.vitalSigns')}
             </CardTitle>
           </CardHeader>
@@ -60,7 +60,7 @@ export default function PatientHealth() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5 text-blue-500" />
+              <Activity className="h-5 w-5 text-category-3" />
               {t('screens.patient.activity')}
             </CardTitle>
           </CardHeader>
@@ -85,7 +85,7 @@ export default function PatientHealth() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-green-500" />
+              <TrendingUp className="h-5 w-5 text-status-success" />
               {t('screens.patient.progress')}
             </CardTitle>
           </CardHeader>
@@ -116,21 +116,21 @@ export default function PatientHealth() {
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-status-success rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.bloodPressureRecorded')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.patient.todayAt830Am')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-category-3 rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.completedWorkout')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.patient.yesterday45MinCardioSession')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-status-warning rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.medicationTaken')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.patient.text2DaysAgoDailyVitamins')}</p>
