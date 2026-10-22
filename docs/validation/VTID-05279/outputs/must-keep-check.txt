@@ -1,0 +1,62 @@
+# MUST-KEEP check — lane claude-md-cleanup/rules-trim-v1 (VTID-05279)
+base: origin/main 05cca220904d427f394b490fac19fc5a8190b1cc   head: working tree of kiro/claude-md-cleanup/rules-trim-v1
+files: CLAUDE.md, .kiro/steering/vitana-kiro-notes.md, .kiro/steering/vitana-load-project-rules.md
+
+## VERIFICATION tokens (brief) — count in the three lane files, before -> after
+inmkhvwdcuyhnxkgfvsb                       1 ->   1  OK
+notification_test_actors                   1 ->   1  OK
+service_bot_accounts                       0 ->   0  n/a (not in v1 lane files on origin/main)
+provider: 'bedrock'                        0 ->   0  n/a (not in v1 lane files on origin/main)
+BEDROCK_ROLE_ARN                           0 ->   0  n/a (not in v1 lane files on origin/main)
+VERTEX_SERBIAN_BRIDGE_ENABLED              0 ->   0  n/a (not in v1 lane files on origin/main)
+AUDIOBOOK_GOOGLE_RU_ENABLED                0 ->   0  n/a (not in v1 lane files on origin/main)
+472838866351                               0 ->   0  n/a (not in v1 lane files on origin/main)
+/alive                                     0 ->   0  n/a (not in v1 lane files on origin/main)
+8080                                       1 ->   1  OK
+converged-auto-v1                          0 ->   1  added
+STAGING-VERIFY                             7 ->   7  OK
+expected_commit                            0 ->   0  n/a (not in v1 lane files on origin/main)
+build-info                                 1 ->   1  OK
+isAutonomousExecutionTask                  0 ->   0  n/a (not in v1 lane files on origin/main)
+EXECUTION_DISARMED                         0 ->   0  n/a (not in v1 lane files on origin/main)
+X-BYPASS-ORCHESTRATOR                      0 ->   0  n/a (not in v1 lane files on origin/main)
+test:support                               0 ->   0  n/a (not in v1 lane files on origin/main)
+test:operator                              0 ->   0  n/a (not in v1 lane files on origin/main)
+test:roles                                 0 ->   0  n/a (not in v1 lane files on origin/main)
+persona-voice-gender                       0 ->   0  n/a (not in v1 lane files on origin/main)
+a27552a3-0257-4305-8ed0-351a80fd3701       1 ->   1  OK
+20260805160000                             1 ->   1  OK
+
+## v1 keep-list (brief) — anchor present before -> after
+absolute prod rule                           1 ->   1  OK   [ABSOLUTE RULE — NEVER TEST AGAINST PRODUCTION]
+autonomy contract                            1 ->   1  OK   [AUTONOMY CONTRACT — TWO OWNER GATES]
+collaboration                                1 ->   1  OK   [CLAUDE CODE ↔ KIRO COLLABORATION]
+staging gate                                 1 ->   1  OK   [Staging Verification Gate — STANDING RULE (VTID-04610)]
+sparring gate                                1 ->   1  OK   [Plan Sparring Gate — STANDING RULE (VTID-04868)]
+deploy scoping                               1 ->   1  OK   [Scoping a production deploy to what was actually approved]
+What's New                                   1 ->   1  OK   [What's New cards — automatic (VTID-04733)]
+Spotlight contract                           1 ->   1  OK   [Spotlight Design Contract — every screen (VTID-05107)]
+nav registry                                 1 ->   1  OK   [Voice navigation — the screen registry (VTID-04502)]
+parity ledger                                1 ->   1  OK   [Native parity ledger (VTID-05157)]
+native tokens                                1 ->   1  OK   [Native core and tokens (VTID-05183)]
+Commerce UX contract                         1 ->   1  OK   [Commerce UX contract — supplier onboarding (VTID-05204)]
+i18n rules                                   1 ->   1  OK   [i18n Hard Rule (must follow)]
+dates & numbers                              1 ->   1  OK   [never `toLocaleX` / `date-fns format` directly]
+catalog register                             1 ->   1  OK   [Catalog quality — register matters]
+RTL                                          1 ->   1  OK   [Active locales & RTL]
+AI locale rule                               1 ->   1  OK   [AI-generated content — must respect user locale]
+no host exempt                               1 ->   1  OK   [Why no host is exempt from the absolute rule above (VTID-03506)]
+sink guard                                   1 ->   1  OK   [_notif_is_test_actor()]
+test account registration                    1 ->   1  OK   [Register any new test account in]
+never test against production (steering)     1 ->   1  OK   [Never test against production.]
+access NOT read-only (steering)              1 ->   1  OK   [is **NOT read-only**]
+session id step (steering)                   1 ->   1  OK   [queue.mjs session-id --agent kiro]
+claim step (steering)                        1 ->   1  OK   [queue.mjs claim <slug>/<lane-id>]
+roles source of truth (steering)             0 ->   3  OK   [§7–§7b]
+
+## Line counts (before = origin/main, after = head)
+CLAUDE.md                                       574 ->  471
+.kiro/steering/vitana-kiro-notes.md              23 ->   19
+.kiro/steering/vitana-load-project-rules.md      26 ->   26
+
+RESULT: PASS — every token present before is present after; every keep-list anchor present

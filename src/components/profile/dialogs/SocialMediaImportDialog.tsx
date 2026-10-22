@@ -164,6 +164,7 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: dialog width, no scale class within 2 px */}
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

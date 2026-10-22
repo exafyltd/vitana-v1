@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05320",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/messaging/outbox.test.ts src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx src/components/messages src/pages/messages",
+      "reason": "outbox persistence per member, failed→Retry with the same client_message_id, duplicate answers, send order, reload re-post, fallback-insert reconcile, delivered/read from realtime, /chat/delivered receipts, status icons + labels, GroupChat unsent rows; every case needs a send (a write), so it is proven in CI, never on staging"
+    }
+  ]
+}

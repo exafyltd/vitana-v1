@@ -23,8 +23,9 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
 
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case 'admin': return <Crown className="h-4 w-4 text-yellow-400" />;
-      case 'moderator': return <Shield className="h-4 w-4 text-blue-400" />;
+      case 'admin': return <Crown className="h-4 w-4 text-status-warning" />;
+      case 'moderator': return <Shield className="h-4 w-4 text-category-3" />;
+      // design-allow-next-line: on-media scrim, theme-independent
       default: return <Users className="h-4 w-4 text-white/70" />;
     }
   };
@@ -91,10 +92,13 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                 style={{ backgroundImage: `url(${coverImage})` }}
               />
               
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
               
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
               <div className="relative h-full p-6 flex flex-col justify-between text-white">
                 <div className="flex justify-end">
+                  {/* design-allow-next-line: on-media scrim, theme-independent */}
                   <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-white hover:bg-white/30">
                     <div className="flex items-center gap-1">
                       {getRoleIcon(group.role)}
@@ -108,12 +112,14 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                     <h3 className="font-bold text-2xl mb-1 drop-shadow-lg">
                       {group.name}
                     </h3>
+                    {/* design-allow-next-line: on-media scrim, theme-independent */}
                     <p className="text-sm text-white/90 flex items-center gap-1">
                       <Users className="w-4 h-4" />{t('screens.profile.value0Members', { value0: fmtNumber(group.member_count) })}
                     </p>
                   </div>
                   
                   {group.description && (
+                    // design-allow-next-line: on-media scrim, theme-independent
                     <p className="text-sm text-white/80 line-clamp-2 drop-shadow">
                       {group.description}
                     </p>
@@ -121,12 +127,14 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                   
                   <div className="flex items-center justify-between pt-2">
                     {group.category && (
+                      // design-allow-next-line: on-media scrim, theme-independent
                       <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-white capitalize text-xs hover:bg-white/30">
                         {group.category}
                       </Badge>
                     )}
                     <Button 
                       size="sm"
+                      // design-allow-next-line: on-media scrim, theme-independent
                       className="bg-white/90 hover:bg-white text-gray-900"
                       onClick={(e) => {
                         e.stopPropagation();

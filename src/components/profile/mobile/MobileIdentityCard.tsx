@@ -243,7 +243,7 @@ export function MobileIdentityCard({
     if (boost && boostSentence) {
       return (
         <>
-          <span className="font-semibold text-teal-700">
+          <span className="font-semibold text-category-1">
             {boost.kind === "boost" ? t("profile.indexHero.boostPrefix") : t("profile.indexBoost.mostActivePrefix")}
           </span>{" "}
           {t(boostSentence.key, boostSentence.params)}
@@ -258,14 +258,14 @@ export function MobileIdentityCard({
         : pillarLabel(a.pillar);
       return (
         <>
-          <span className="font-semibold text-teal-700">{t("profile.indexHero.boostPrefix")}</span> {names}
+          <span className="font-semibold text-category-1">{t("profile.indexHero.boostPrefix")}</span> {names}
         </>
       );
     }
     if (highlights.kind === "strongest" && highlights.strongest) {
       return (
         <>
-          <span className="font-semibold text-teal-700">{t("profile.indexHero.strongestPrefix")}</span>{" "}
+          <span className="font-semibold text-category-1">{t("profile.indexHero.strongestPrefix")}</span>{" "}
           {pillarLabel(highlights.strongest)}
         </>
       );
@@ -277,14 +277,14 @@ export function MobileIdentityCard({
     <div className={cn("px-4 pb-2", className)} style={scaleVars}>
       {/* ── Profile header ─────────────────────────────────────────── */}
       <section
-        className="relative rounded-3xl border border-white/70"
+        className="relative rounded-3xl border border-border/70"
         style={{
           padding: lerpPx(16, 20, "--hx"),
           // Solid fallback + own compositing layer: Android WebView (Appilix)
           // can drop a gradient background under blurred descendants.
-          backgroundColor: "hsl(208, 72%, 93%)",
-          backgroundImage: "linear-gradient(165deg, hsl(200, 80%, 91%) 0%, hsl(212, 72%, 94%) 55%, hsl(225, 65%, 95%) 100%)",
-          boxShadow: "0 6px 22px rgba(56, 132, 214, 0.12)",
+          backgroundColor: "hsl(var(--status-info-subtle))",
+          backgroundImage: "linear-gradient(165deg, hsl(var(--status-info-subtle)) 0%, hsl(var(--sys-vitana-tint)) 55%, hsl(var(--sys-vitana-card)) 100%)",
+          boxShadow: "0 6px 22px hsl(var(--category-3) / 0.12)",
           isolation: "isolate",
           transform: "translateZ(0)",
         }}
@@ -296,11 +296,11 @@ export function MobileIdentityCard({
             onClick={onShare}
             data-testid="profile-share-icon"
             className={cn(
-              "absolute end-2 top-2 flex h-10 w-10 items-center justify-center rounded-full text-slate-800 active:opacity-60",
+              "absolute end-2 top-2 flex h-10 w-10 items-center justify-center rounded-full text-foreground active:opacity-60",
               ICON_BUTTON_FOCUS,
             )}
           >
-            <Share2 className="h-[22px] w-[22px]" strokeWidth={2} />
+            <Share2 className="h-6 w-6" strokeWidth={2} />
           </button>
         )}
 
@@ -308,7 +308,7 @@ export function MobileIdentityCard({
           {/* Avatar (+ owner-only edit pencil) */}
           <div className="relative shrink-0">
             <Avatar
-              className="border-[3px] border-white shadow-md"
+              className="border-[3px] border-border shadow-md"
               style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
             >
               <AvatarImage
@@ -316,7 +316,7 @@ export function MobileIdentityCard({
                 alt={displayName}
                 style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
               />
-              <AvatarFallback className="bg-white/70 text-xl font-semibold text-slate-600">{initials}</AvatarFallback>
+              <AvatarFallback className="bg-card/70 text-xl font-semibold text-muted-foreground">{initials}</AvatarFallback>
             </Avatar>
             {isOwner && onEditIdentity && (
               <button
@@ -325,7 +325,7 @@ export function MobileIdentityCard({
                 onClick={onEditIdentity}
                 data-testid="profile-edit-photo"
                 className={cn(
-                  "absolute -bottom-0.5 -end-0.5 flex h-8 w-8 items-center justify-center rounded-full border border-slate-100 bg-white text-slate-700 shadow-md active:opacity-70",
+                  "absolute -bottom-0.5 -end-0.5 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-md active:opacity-70",
                   ICON_BUTTON_FOCUS,
                 )}
               >
@@ -337,14 +337,14 @@ export function MobileIdentityCard({
           {/* Name, handle, follow counts */}
           <div className={cn("min-w-0 flex-1", onShare && "pe-8")}>
             <h1
-              className="line-clamp-2 break-words font-bold leading-tight text-slate-900"
+              className="line-clamp-2 break-words font-bold leading-tight text-foreground"
               style={{ fontSize: lerpPx(21, 24, "--hx") }}
             >
               {displayName}
             </h1>
             {(shownHandle || archetype) && (
               <p
-                className="mt-0.5 line-clamp-2 break-words leading-snug text-slate-600"
+                className="mt-0.5 line-clamp-2 break-words leading-snug text-muted-foreground"
                 style={{ fontSize: lerpPx(13, 14, "--hx") }}
               >
                 {shownHandle && <span dir="ltr">@{shownHandle}</span>}
@@ -359,17 +359,17 @@ export function MobileIdentityCard({
                   className="flex items-baseline gap-1 rounded active:opacity-70"
                   onClick={() => openFollowList("followers")}
                 >
-                  <span className="font-bold text-slate-900" style={{ fontSize: lerpPx(15, 16, "--hx") }}>{followersCount}</span>
-                  <span className="text-slate-600" style={{ fontSize: lerpPx(13, 14, "--hx") }}>{translate("profileStats.followers", "Followers")}</span>
+                  <span className="font-bold text-foreground" style={{ fontSize: lerpPx(15, 16, "--hx") }}>{followersCount}</span>
+                  <span className="text-muted-foreground" style={{ fontSize: lerpPx(13, 14, "--hx") }}>{translate("profileStats.followers", "Followers")}</span>
                 </button>
-                <span className="h-3.5 w-px bg-slate-400/40 max-[359px]:hidden" aria-hidden />
+                <span className="h-3.5 w-px bg-muted-foreground/40 max-[359px]:hidden" aria-hidden />
                 <button
                   type="button"
                   className="flex items-baseline gap-1 rounded active:opacity-70"
                   onClick={() => openFollowList("following")}
                 >
-                  <span className="font-bold text-slate-900" style={{ fontSize: lerpPx(15, 16, "--hx") }}>{followingCount}</span>
-                  <span className="text-slate-600" style={{ fontSize: lerpPx(13, 14, "--hx") }}>{translate("profileStats.following", "Following")}</span>
+                  <span className="font-bold text-foreground" style={{ fontSize: lerpPx(15, 16, "--hx") }}>{followingCount}</span>
+                  <span className="text-muted-foreground" style={{ fontSize: lerpPx(13, 14, "--hx") }}>{translate("profileStats.following", "Following")}</span>
                 </button>
               </div>
             )}
@@ -388,8 +388,8 @@ export function MobileIdentityCard({
                 className={cn(
                   "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-2 font-semibold transition-colors disabled:opacity-60 min-[375px]:gap-2 min-[375px]:px-3",
                   isFollowing
-                    ? "bg-sky-100 text-slate-900 hover:bg-sky-200"
-                    : "bg-gradient-to-r from-teal-300 to-emerald-300 text-teal-950 shadow-[0_4px_12px_rgba(16,185,129,0.22)]",
+                    ? "bg-category-7/15 text-foreground hover:bg-category-7/25"
+                    : "bg-gradient-to-r from-category-1/40 to-status-success/40 text-category-1 shadow-[0_4px_12px_rgba(16,185,129,0.22)]",
                   ICON_BUTTON_FOCUS,
                 )}
               >
@@ -407,7 +407,7 @@ export function MobileIdentityCard({
                 onClick={onMessage}
                 style={ACTION_BUTTON_STYLE}
                 className={cn(
-                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-white/85 px-2 font-semibold text-slate-900 shadow-sm hover:bg-white min-[375px]:gap-2 min-[375px]:px-3",
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-card/85 px-2 font-semibold text-foreground shadow-sm hover:bg-card min-[375px]:gap-2 min-[375px]:px-3",
                   ICON_BUTTON_FOCUS,
                 )}
               >
@@ -421,7 +421,7 @@ export function MobileIdentityCard({
                 onClick={onEditIdentity}
                 style={ACTION_BUTTON_STYLE}
                 className={cn(
-                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-white/85 px-3 font-semibold text-slate-900 shadow-sm hover:bg-white",
+                  "flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-card/85 px-3 font-semibold text-foreground shadow-sm hover:bg-card",
                   ICON_BUTTON_FOCUS,
                 )}
               >
@@ -437,7 +437,7 @@ export function MobileIdentityCard({
                 style={{ height: ACTION_BUTTON_STYLE.height }}
                 data-testid="profile-qr"
                 className={cn(
-                  "flex h-11 w-12 shrink-0 items-center justify-center rounded-full bg-white/85 text-slate-900 shadow-sm hover:bg-white min-[375px]:w-14",
+                  "flex h-11 w-12 shrink-0 items-center justify-center rounded-full bg-card/85 text-foreground shadow-sm hover:bg-card min-[375px]:w-14",
                   ICON_BUTTON_FOCUS,
                 )}
               >
@@ -451,7 +451,7 @@ export function MobileIdentityCard({
       {/* ── VITANA INDEX hero ──────────────────────────────────────── */}
       <section
         ref={indexCardRef}
-        className="relative mt-3 flex flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white px-4 pb-1 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
+        className="relative mt-3 flex flex-col overflow-hidden rounded-3xl border border-border bg-card px-4 pb-1 shadow-[0_6px_24px_rgba(15,23,42,0.06)]"
         style={{
           isolation: "isolate",
           transform: "translateZ(0)",
@@ -460,7 +460,7 @@ export function MobileIdentityCard({
           // A soft mint wash behind the score so the card does not read as a
           // blank white sheet on tall phones.
           backgroundImage:
-            "radial-gradient(ellipse 85% 55% at 50% 42%, hsla(165, 75%, 90%, 0.75) 0%, hsla(190, 80%, 94%, 0.45) 45%, transparent 75%)",
+            "radial-gradient(ellipse 85% 55% at 50% 42%, hsl(var(--util-profile-tint) / 0.75) 0%, hsl(var(--sys-vitana-tint) / 0.45) 45%, transparent 75%)",
         }}
         data-testid="profile-vitana-index-card"
       >
@@ -470,11 +470,11 @@ export function MobileIdentityCard({
           onClick={() => setAchievementOpen(true)}
           data-testid="profile-index-info"
           className={cn(
-            "absolute end-2 top-2 z-10 flex h-10 w-10 items-center justify-center rounded-full text-sky-600 active:opacity-60",
+            "absolute end-2 top-2 z-10 flex h-10 w-10 items-center justify-center rounded-full text-category-7 active:opacity-60",
             ICON_BUTTON_FOCUS,
           )}
         >
-          <Info className="h-[22px] w-[22px]" />
+          <Info className="h-6 w-6" />
         </button>
 
         {/* Label stays at the top; the score block is centred in whatever
@@ -482,7 +482,7 @@ export function MobileIdentityCard({
             (--ix) so a short phone gets the compact sizes and a tall one
             fills the card. */}
         <span
-          className="self-center font-semibold uppercase tracking-[0.28em] text-teal-800"
+          className="self-center font-semibold uppercase tracking-[0.28em] text-category-1"
           style={{ fontSize: lerpPx(12, 15, "--ix") }}
         >
           {translate("profile.identity.vitanaIndex")}
@@ -495,8 +495,9 @@ export function MobileIdentityCard({
               <>
                 <span
                   aria-hidden
+                  // design-allow-next-line: centring (left-1/2 -translate-x-1/2)
                   className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-2xl"
-                  style={{ width: lerpPx(150, 250, "--ix"), height: lerpPx(150, 250, "--ix"), background: "radial-gradient(circle, hsl(165, 80%, 70%), hsl(200, 80%, 80%) 55%, transparent 72%)" }}
+                  style={{ width: lerpPx(150, 250, "--ix"), height: lerpPx(150, 250, "--ix"), background: "radial-gradient(circle, hsl(var(--category-1)), hsl(var(--category-7)) 55%, transparent 72%)" }}
                 />
                 {scoreLoading ? (
                   <Skeleton className="my-2 h-14 w-32 rounded-xl" />
@@ -505,7 +506,7 @@ export function MobileIdentityCard({
                     className="font-extrabold leading-none tabular-nums"
                     style={{
                       fontSize: lerpPx(48, 104, "--ix"),
-                      background: "linear-gradient(170deg, hsl(152, 70%, 42%) 0%, hsl(168, 72%, 30%) 55%, hsl(180, 75%, 22%) 100%)",
+                      background: "linear-gradient(170deg, hsl(var(--status-success)) 0%, hsl(var(--category-1)) 55%, hsl(var(--category-1)) 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                     }}
@@ -514,7 +515,7 @@ export function MobileIdentityCard({
                     {score ?? "—"}
                   </span>
                 )}
-                <span className="text-slate-500" style={{ fontSize: lerpPx(14, 18, "--ix"), marginTop: lerpPx(0, 6, "--ix") }}>
+                <span className="text-muted-foreground" style={{ fontSize: lerpPx(14, 18, "--ix"), marginTop: lerpPx(0, 6, "--ix") }}>
                   {t("profile.indexHero.ofMax", { max: VITANA_INDEX_MAX })}
                 </span>
               </>
@@ -539,14 +540,14 @@ export function MobileIdentityCard({
           {tier && (
             <div className="flex flex-wrap items-center justify-center gap-2" style={{ marginTop: lerpPx(6, 16, "--ix") }}>
               <span
-                className="rounded-full px-4 font-semibold text-slate-900"
+                className="rounded-full px-4 font-semibold text-foreground"
                 style={{ ...PILL_STYLE, backgroundColor: `${tier.color}55` }}
               >
                 {t(tier.labelKey)}
               </span>
               {standing && (
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 font-semibold text-amber-800 ring-1 ring-amber-200"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-status-warning-subtle px-3 font-semibold text-status-warning ring-1 ring-status-warning/25"
                   style={PILL_STYLE}
                   aria-label={t("profile.indexHero.topPercentAria", { percent: standing.topPercent, count: standing.cohortSize })}
                   data-testid="profile-index-top-percent"
@@ -556,7 +557,7 @@ export function MobileIdentityCard({
                 </span>
               )}
               {highlights.momentum && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 font-semibold text-emerald-700" style={PILL_STYLE}>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-status-success-subtle px-3 font-semibold text-status-success" style={PILL_STYLE}>
                   <TrendingUp className="h-4 w-4" aria-hidden />
                   {highlights.momentum === "rising_fast"
                     ? t("profile.indexHero.risingFast")
@@ -568,7 +569,7 @@ export function MobileIdentityCard({
 
           {/* Personalised line (owner) / public-safe line (visitor) */}
           <p
-            className="line-clamp-3 px-2 text-center leading-snug text-slate-700"
+            className="line-clamp-3 px-2 text-center leading-snug text-muted-foreground"
             style={{ fontSize: lerpPx(14, 17, "--ix"), marginTop: lerpPx(6, 16, "--ix") }}
             data-testid="profile-index-line"
           >
@@ -578,7 +579,7 @@ export function MobileIdentityCard({
           <button
             type="button"
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-1 font-semibold text-teal-800 hover:text-teal-900 active:opacity-70",
+              "inline-flex items-center gap-1 rounded-md px-2 py-1 font-semibold text-category-1 hover:text-category-1 active:opacity-70",
               ICON_BUTTON_FOCUS,
             )}
             style={{ fontSize: lerpPx(14, 17, "--ix"), marginTop: lerpPx(2, 8, "--ix") }}
@@ -590,7 +591,7 @@ export function MobileIdentityCard({
         </div>
 
         {/* Posts · Media · Groups — the card's (and the first screen's) last row */}
-        <div className="mt-auto border-t border-slate-100 pt-0.5" data-testid="profile-index-stats">
+        <div className="mt-auto border-t border-border pt-0.5" data-testid="profile-index-stats">
           <MobileProfileStats
             userId={userId}
             profileId={profileId}

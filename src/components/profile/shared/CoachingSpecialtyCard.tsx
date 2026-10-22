@@ -32,13 +32,13 @@ export function CoachingSpecialtyCard({ specialty }: CoachingSpecialtyCardProps)
     <Card className={`bg-gradient-to-br ${colorClasses} hover:shadow-md transition-all duration-200`}>
       <CardContent className="p-4">
         <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 rounded-full bg-white/80">
+          <div className="p-2 rounded-full bg-card/80">
             <Icon className="h-4 w-4 text-foreground" />
           </div>
           <div className="flex-1">
             <h4 className="font-semibold text-sm">{specialty.title}</h4>
             <div className="flex items-center gap-1 mt-1">
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+              <Star className="h-3 w-3 fill-status-warning text-status-warning" />
               <span className="text-xs font-medium">{specialty.rating.toFixed(1)}</span>
               <span className="text-xs text-muted-foreground">({specialty.totalRatings})</span>
             </div>

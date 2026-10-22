@@ -53,13 +53,14 @@ export function MessageComposeModal({
     <ResponsiveDialog open={isOpen} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent
         overlayClassName="z-[60]"
-        className="z-[60] sm:max-w-[520px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] sm:rounded-3xl overflow-hidden"
+        // design-allow-next-line: dialog width, no scale class within 2 px
+        className="z-[60] sm:max-w-[520px] p-0 gap-0 bg-card/95 backdrop-blur-xl border border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] sm:rounded-3xl overflow-hidden"
       >
-        <ResponsiveDialogHeader className="p-4 sm:p-6 sm:pb-4 border-b border-white/20 dark:border-gray-800/20">
+        <ResponsiveDialogHeader className="p-4 sm:p-6 sm:pb-4 border-b border-border/20">
           <ResponsiveDialogTitle className="flex items-center gap-3">
-            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-white/80 dark:border-gray-800/80 shadow-lg">
+            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-border/80 shadow-lg">
               <AvatarImage src={recipient.avatarUrl} alt={recipient.name} />
-              <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white font-semibold">
+              <AvatarFallback className="bg-gradient-to-br from-sys-vitana-accent to-pill-nutrition-accent text-primary-foreground font-semibold">
                 {recipient.name.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
@@ -76,15 +77,16 @@ export function MessageComposeModal({
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="min-h-[120px] sm:min-h-[140px] resize-none bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-white/40 dark:border-gray-700/40 rounded-2xl focus:ring-2 focus:ring-[hsl(var(--sys-vitana-accent))]/30 transition-all"
+            // design-allow-next-line: measured box, no scale class within 2 px
+            className="min-h-[120px] sm:min-h-[140px] resize-none bg-card/50 backdrop-blur-sm border-border/40 rounded-2xl focus:ring-2 focus:ring-sys-vitana-accent/30 transition-all"
             autoFocus
           />
           <p className="text-xs text-muted-foreground text-center">
-            {t('screens.profile.press')} <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">⌘</kbd> + <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">↵</kbd>{t('screens.profile.send')}
+            {t('screens.profile.press')} <kbd className="px-2 py-1 rounded-lg bg-card/40 backdrop-blur-sm border border-border/30 font-mono text-[10px]">⌘</kbd> + <kbd className="px-2 py-1 rounded-lg bg-card/40 backdrop-blur-sm border border-border/30 font-mono text-[10px]">↵</kbd>{t('screens.profile.send')}
           </p>
         </ResponsiveDialogBody>
 
-        <ResponsiveDialogFooter className="p-4 sm:p-6 sm:pt-0 border-t sm:border-t-0 border-white/20 dark:border-gray-800/20">
+        <ResponsiveDialogFooter className="p-4 sm:p-6 sm:pt-0 border-t sm:border-t-0 border-border/20">
           <div className="flex items-center justify-between w-full sm:w-auto sm:gap-2 sm:ms-auto">
             <Button
               variant="ghost"
@@ -99,13 +101,13 @@ export function MessageComposeModal({
                 variant="outline"
                 onClick={() => onOpenChange(false)}
                 disabled={isSending}
-                className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
+                className="rounded-full bg-card/40 backdrop-blur-sm border-border/40 hover:bg-card/60 transition-all"
               >{t('screens.profile.cancel')}
               </Button>
               <Button
                 onClick={handleSend}
                 disabled={!message.trim() || isSending}
-                className="rounded-full bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--sys-vitana-accent))]/90 hover:to-[hsl(var(--pill-nutrition-accent))]/90 shadow-[0_4px_16px_hsl(var(--sys-vitana-accent)/0.3)] hover:shadow-[0_6px_24px_hsl(var(--sys-vitana-accent)/0.4)] transition-all text-white border-0"
+                className="rounded-full bg-gradient-to-r from-sys-vitana-accent to-pill-nutrition-accent hover:from-sys-vitana-accent/90 hover:to-pill-nutrition-accent/90 shadow-[0_4px_16px_hsl(var(--sys-vitana-accent)/0.3)] hover:shadow-[0_6px_24px_hsl(var(--sys-vitana-accent)/0.4)] transition-all text-primary-foreground border-0"
               >
                 <Send className="h-4 w-4 me-2" />
                 {isSending ? "Sending..." : "Send"}

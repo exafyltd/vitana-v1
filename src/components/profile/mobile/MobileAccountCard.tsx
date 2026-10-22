@@ -35,7 +35,7 @@ export function MobileAccountCard({
   return (
     <div className={cn("px-4 pb-2", className)}>
       <div
-        className="relative rounded-2xl border border-white/60 overflow-hidden"
+        className="relative rounded-2xl border border-border/60 overflow-hidden"
         style={{
           // Android WebView (Appilix) can drop a card's gradient `background`
           // when the card paints on its own compositing layer, washing it out
@@ -44,9 +44,9 @@ export function MobileAccountCard({
           // fallback so the card still renders on-brand even if the gradient
           // layer fails to paint, and promote the card onto its own stable
           // compositing layer so descendants can't knock out its background.
-          backgroundColor: "hsl(218, 65%, 92%)",
-          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
-          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
+          backgroundColor: "hsl(var(--status-info-subtle))",
+          backgroundImage: "linear-gradient(170deg, hsl(var(--status-info-subtle)) 0%, hsl(var(--sys-vitana-card)) 40%, hsl(var(--sys-feature-new-card)) 72%, hsl(var(--pill-mental-tint)) 100%)",
+          boxShadow: "0 8px 28px hsl(var(--category-3) / 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)",
         }}
@@ -55,7 +55,7 @@ export function MobileAccountCard({
           <button
             onClick={onEdit}
             aria-label={t('screens.profile.editAccountDetails')}
-            className="absolute top-3 end-3 h-8 w-8 rounded-full bg-white/60 hover:bg-white/90 text-slate-500 hover:text-slate-800 z-10 flex items-center justify-center transition-colors"
+            className="absolute top-3 end-3 h-8 w-8 rounded-full bg-card/60 hover:bg-card/90 text-muted-foreground hover:text-foreground z-10 flex items-center justify-center transition-colors"
           >
             <Pencil className="h-4 w-4" />
           </button>
@@ -64,14 +64,14 @@ export function MobileAccountCard({
         <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/75 border border-white/80 mb-3 shadow-sm">
-              <ShieldCheck className="h-3.5 w-3.5 text-teal-700 me-1.5" />
-              <span className="text-[11px] font-semibold tracking-[0.2em] text-teal-700 uppercase">
+            <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-gradient-to-b from-card/95 to-card/75 border border-border/80 mb-3 shadow-sm">
+              <ShieldCheck className="h-3.5 w-3.5 text-category-1 me-1.5" />
+              <span className="text-[11px] font-semibold tracking-[0.2em] text-category-1 uppercase">
                 {t('screens.profile.account')}
               </span>
             </div>
-            <h2 className="text-lg font-semibold text-slate-900">{t('screens.profile.personalDataVault')}</h2>
-            <p className="text-xs text-slate-600 mt-1">
+            <h2 className="text-lg font-semibold text-foreground">{t('screens.profile.personalDataVault')}</h2>
+            <p className="text-xs text-muted-foreground mt-1">
               {t('screens.profile.eachFieldHasValueVisibilityRule')}
             </p>
           </div>
@@ -92,10 +92,10 @@ export function MobileAccountCard({
             </div>
           ) : (
             <div className="text-center py-6">
-              <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
-                <Lock className="h-5 w-5 text-slate-600" />
+              <div className="w-12 h-12 rounded-full bg-card/60 flex items-center justify-center mx-auto mb-3">
+                <Lock className="h-5 w-5 text-muted-foreground" />
               </div>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-muted-foreground">
                 {t('screens.profile.thisUserKeepsAccountDetailsPrivate')}
               </p>
             </div>
@@ -103,14 +103,14 @@ export function MobileAccountCard({
 
           {/* Sensitive data notice */}
           <div
-            className="mt-6 rounded-xl p-4 border border-white/70"
+            className="mt-6 rounded-xl p-4 border border-border/70"
             style={{
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(14, 165, 233, 0.06))",
+              background: "linear-gradient(135deg, hsl(var(--category-3) / 0.08), hsl(var(--category-7) / 0.06))",
             }}
           >
             <div className="flex gap-3">
-              <Info className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs leading-relaxed text-slate-700">{t('screens.profile.somePersonalInformationUsedPersonalizeYour2')}
+              <Info className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <p className="text-xs leading-relaxed text-muted-foreground">{t('screens.profile.somePersonalInformationUsedPersonalizeYour2')}
               </p>
             </div>
           </div>
@@ -138,15 +138,15 @@ function AccountSection({
   return (
     <div>
       <div className="flex items-baseline justify-between mb-2 px-1">
-        <h3 className="text-[11px] font-semibold tracking-[0.15em] text-slate-700 uppercase">
+        <h3 className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase">
           {section.title}
         </h3>
         {section.subtitle && (
-          <span className="text-[11px] text-slate-600">{section.subtitle}</span>
+          <span className="text-[11px] text-muted-foreground">{section.subtitle}</span>
         )}
       </div>
 
-      <div className="rounded-xl border border-white/80 bg-gradient-to-b from-white/85 to-white/65 overflow-hidden">
+      <div className="rounded-xl border border-border/80 bg-gradient-to-b from-card/85 to-card/65 overflow-hidden">
         {section.fields.map((field, idx) => (
           <AccountRow
             key={field.key}
@@ -193,17 +193,17 @@ function AccountRow({
     <div
       className={cn(
         "flex items-center gap-3 px-3 py-3",
-        !isLast && "border-b border-black/5",
+        !isLast && "border-b border-border/50",
       )}
     >
       <div className="flex-1 min-w-0">
-        <p className="text-[11px] font-medium tracking-wide text-slate-600 uppercase">
+        <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
           {field.label}
         </p>
         {hasValue ? (
-          <p className="text-sm text-slate-900 truncate mt-0.5">{field.value}</p>
+          <p className="text-sm text-foreground truncate mt-0.5">{field.value}</p>
         ) : (
-          <p className="text-sm italic text-slate-500 mt-0.5">
+          <p className="text-sm italic text-muted-foreground mt-0.5">
             {isOwner ? translate('profile.account.notSet', 'Not set') : "—"}
           </p>
         )}
@@ -213,7 +213,7 @@ function AccountRow({
         <button
           onClick={onEditField}
           aria-label={t('profile.account.editField', { field: field.label })}
-          className="h-7 w-7 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-black/5 transition-colors"
+          className="h-7 w-7 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
           <Pencil className="h-3 w-3" />
         </button>
@@ -235,8 +235,7 @@ function AccountRow({
         </button>
       ) : visibility === "private" ? (
         <div
-          className="flex items-center gap-1 h-7 px-2 rounded-full"
-          style={{ color: "hsl(0, 0%, 50%)" }}
+          className="flex items-center gap-1 h-7 px-2 rounded-full text-muted-foreground"
           title={t('screens.profile.private')}
         >
           <EyeOff className="h-3 w-3" />

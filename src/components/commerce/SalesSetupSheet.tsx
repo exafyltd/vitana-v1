@@ -46,7 +46,7 @@ import {
 import type { MyOrgRow } from '@/components/commerce/MyOrgCard';
 import { t, notify, notifyError } from '@/lib/i18n-toast';
 
-const fieldClass = 'h-12 text-base focus-visible:ring-amber-500';
+const fieldClass = 'h-12 text-base focus-visible:ring-ring';
 /** Company names, not copy — the only two networks with a real conversion path. */
 const NETWORK_NAMES = { awin: 'Awin', admitad: 'Admitad' } as const;
 const REGION_CHOICES: ReadonlyArray<{ key: DeliveryKey | 'world'; labelKey: string }> = [
@@ -134,6 +134,7 @@ export function SalesSetupSheet({
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <ResponsiveDialogContent fullscreenOnMobile className="max-h-[90vh] overflow-y-auto">
         <ResponsiveDialogHeader className="text-start">
           <ResponsiveDialogTitle className="text-2xl font-bold">{t('screens.commerceportal.salesSetup.title')}</ResponsiveDialogTitle>
@@ -144,7 +145,7 @@ export function SalesSetupSheet({
           {/* HOW PURCHASES WORK */}
           <section className="space-y-2">
             <h3 className="font-semibold text-foreground">{t('screens.commerceportal.salesSetup.purchasesTitle')}</h3>
-            <div className="rounded-2xl border border-amber-500 bg-amber-500/10 p-3" aria-current="true">
+            <div className="rounded-2xl border border-primary/50 bg-primary/10 p-3" aria-current="true">
               <p className="font-medium text-foreground">{t('screens.commerceportal.salesSetup.referral')}</p>
               <p className="mt-0.5 text-sm text-muted-foreground">{t('screens.commerceportal.salesSetup.referralHint')}</p>
             </div>
@@ -184,8 +185,8 @@ export function SalesSetupSheet({
                     data-testid={`sales-region-${key}`}
                     className={`min-h-11 rounded-full border px-4 text-sm font-medium transition-colors ${
                       regions.includes(key)
-                        ? 'border-amber-500 bg-amber-500/10 text-foreground'
-                        : 'border-border text-foreground hover:border-amber-500/50'
+                        ? 'border-primary/50 bg-primary/10 text-foreground'
+                        : 'border-border text-foreground hover:border-primary/25'
                     }`}
                   >
                     {t(labelKey)}
@@ -258,7 +259,7 @@ export function SalesSetupSheet({
                     id="ss-network"
                     value={network ?? ''}
                     onChange={(e) => setNetwork((e.target.value || null) as AffiliateNetwork | null)}
-                    className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                    className="flex h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <option value="">{t('screens.commerceportal.salesSetup.keepCurrent')}</option>
                     <option value="other">{t('screens.commerceportal.productForm.networkOther')}</option>
@@ -291,7 +292,7 @@ export function SalesSetupSheet({
         <ResponsiveDialogFooter className="flex-row gap-2 md:mt-4">
           <Button
             type="button"
-            className="h-12 flex-1 text-base bg-amber-700 font-semibold text-white hover:bg-amber-800"
+            className="h-12 flex-1 text-base bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
             disabled={!canSave}
             onClick={() => void save()}
             data-testid="sales-save"

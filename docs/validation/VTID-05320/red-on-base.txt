@@ -1,0 +1,13 @@
+# red on base: origin/main 69d39ef34, the three new test files copied in
+Error: Failed to resolve import "@/lib/messaging/outbox" from "src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx". Does the file exist?
+Error: Failed to resolve import "./outbox" from "src/lib/messaging/outbox.test.ts". Does the file exist?
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > GroupChat mergeGroupRows (VTID-05320) > a group message never shows Delivered or Read (no per-message receipts)
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > GroupChat mergeGroupRows (VTID-05320) > a refetch keeps unsent rows (sending / failed) and drops one whose id arrived
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > MessageBubble send status (VTID-05320) > a failed message keeps its text and Retry passes its client_message_id
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > MessageBubble send status (VTID-05320) > { delivered_at: '2026-10-21T10:00:05Z', read_at: '2026-10-21T10:01:00Z' } shows read with a spoken label
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > MessageBubble send status (VTID-05320) > { delivered_at: '2026-10-21T10:00:05Z' } shows delivered with a spoken label
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > MessageBubble send status (VTID-05320) > { id: 'temp-9a6b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d', send_status: 'failed', client_message_id: '9a6b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d' } shows failed with a spoken label
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > MessageBubble send status (VTID-05320) > { id: 'temp-9a6b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d', send_status: 'sending', client_message_id: '9a6b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d' } shows sending with a spoken label
+ FAIL  src/components/messages/MessageBubble.send-status.vtid-05320.test.tsx > MessageBubble send status (VTID-05320) > {} shows sent with a spoken label
+ FAIL  src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx [ src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx ]
+ FAIL  src/lib/messaging/outbox.test.ts [ src/lib/messaging/outbox.test.ts ]

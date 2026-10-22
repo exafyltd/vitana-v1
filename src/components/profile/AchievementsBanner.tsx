@@ -24,10 +24,10 @@ const achievements: Achievement[] = [
 
 export function AchievementsBanner() {
   return (
-    <div className="rounded-3xl bg-gradient-to-r from-white/60 via-white/40 to-white/60 dark:from-gray-900/60 dark:via-gray-900/40 dark:to-gray-900/60 backdrop-blur-xl border border-white/30 dark:border-gray-800/30 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.04)]">
+    <div className="rounded-3xl bg-gradient-to-r from-card/60 via-card/40 to-card/60 backdrop-blur-xl border border-border/30 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.04)]">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[hsl(var(--pill-sleep-accent))]/20 to-[hsl(var(--pill-nutrition-accent))]/20 flex items-center justify-center">
-          <Award className="w-4 h-4 text-[hsl(var(--pill-sleep-accent))]" />
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-pill-sleep-accent/20 to-pill-nutrition-accent/20 flex items-center justify-center">
+          <Award className="w-4 h-4 text-pill-sleep-accent" />
         </div>
         <div>
           <h3 className="text-sm font-bold text-foreground">{t('screens.profile.achievements')}</h3>
@@ -56,8 +56,8 @@ export function AchievementsBanner() {
               
               <div className={`relative w-20 h-24 rounded-2xl border shadow-sm flex flex-col items-center justify-center gap-2 transition-all ${
                 achievement.unlocked
-                  ? 'bg-white dark:bg-gray-800 border-gray-200/50 dark:border-gray-700/50 group-hover:shadow-lg group-hover:-translate-y-1'
-                  : 'bg-gray-100 dark:bg-gray-900 border-gray-200/30 dark:border-gray-800/30'
+                  ? 'bg-card border-border/50 group-hover:shadow-lg group-hover:-translate-y-1'
+                  : 'bg-muted border-border/30'
               }`}>
                 <div
                   className={`w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${

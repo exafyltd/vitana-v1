@@ -1,0 +1,28 @@
+{
+  "vtid": "VTID-05249",
+  "service": "community-app",
+  "note": "Lane native-g1-wiring/env-profiles is apps/mobile/** only (no src/** web change, no deploy path), so it ships nothing to a staging frontend and has no Gate 2. The native app has no staging host of its own in Wave 0/1 (G1 does not exist yet, program NATIVE-APP-PLAN.md §2a; the real-G1 switch is the owner-gated real-g1-switch lane). Verification is therefore the offline native suite plus both profile bundles building offline — read-only, no network, no production or staging host ever configured.",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "env suite: development resolves to {} (no network); the test-g1 placeholder set loads with every URL passing assertNotProduction; a production/staging host or the production publishable key in a profile throws; a missing required value is a ConfigMissingError naming the keys",
+      "ref": "npm test -- tests/env.test.ts",
+      "cwd": "apps/mobile",
+      "reason": "The per-profile loader (resolveProfileConfig) is pure and offline; the suite proves the four acceptance cases against the committed env/development.json and env/test-g1.example.json without reaching any network."
+    },
+    {
+      "kind": "existing",
+      "name": "development profile bundles offline (no network, no production/staging endpoint resolved)",
+      "ref": "APP_PROFILE=development EXPO_OFFLINE=1 npm run bundle",
+      "cwd": "apps/mobile",
+      "reason": "Proves the profile JSON is statically bundled (development resolves to {}) and the Metro/Hermes export succeeds with no network access."
+    },
+    {
+      "kind": "existing",
+      "name": "test-g1 profile bundles offline against the committed placeholder hosts (every host *.g1.invalid, a non-resolving placeholder)",
+      "ref": "APP_PROFILE=test-g1 EXPO_OFFLINE=1 npm run bundle",
+      "cwd": "apps/mobile",
+      "reason": "Proves the test-g1 placeholder profile bundles offline; the only endpoint literals in the resolved config are the non-resolving g1.invalid placeholders (the blocked-host denylist literals in blocked-hosts.js are the guard, not a configured endpoint)."
+    }
+  ]
+}

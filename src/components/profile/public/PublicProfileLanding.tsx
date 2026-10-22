@@ -83,8 +83,8 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
             {/* Vitana Index */}
             {profile.vitanaIndex && (
               <div className="mt-3 flex items-center gap-2">
-                <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30">
-                  <span className="text-sm font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-status-success/20 to-category-1/20 border border-status-success/30">
+                  <span className="text-sm font-bold bg-gradient-to-r from-status-success to-category-1 bg-clip-text text-transparent">
                     VITANA {profile.vitanaIndex}
                   </span>
                 </div>

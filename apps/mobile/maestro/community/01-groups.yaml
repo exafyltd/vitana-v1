@@ -1,0 +1,13 @@
+# VTID-05296 (N-W2 community-hub) — Groups list, tab switch, and detail. G1 only
+# (device runtime, deferred to the owner gate; not run in CI).
+appId: com.exafy.maxina.dev
+---
+- launchApp
+- extendedWaitUntil: { visible: { id: bottom-nav }, timeout: 20000 }
+- openLink: maxina:///comm/groups
+- extendedWaitUntil: { visible: { id: screen-groups }, timeout: 20000 }
+- takeScreenshot: groups-mine
+- tapOn: { id: groups-tab-recommended }
+- takeScreenshot: groups-discover
+- openLink: maxina:///comm/groups?tab=recommended
+- assertVisible: { id: screen-groups }

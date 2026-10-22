@@ -36,11 +36,12 @@ describe('commerce drawers and cards use light theme tokens (VTID-04752)', () =>
     expect(src).not.toContain('bg-slate-950');
   });
 
-  it('primary actions use the portal amber-700 button, not the old dark-theme amber-500', () => {
+  it('primary actions use the app primary token button (Spotlight colour mapping), not a raw amber literal', () => {
     for (const file of ['ProductForm', 'PartnerOrgRoster', 'RegisterOrgDialog']) {
       const src = read(`src/components/commerce/${file}.tsx`);
       expect(src).not.toContain('bg-amber-500 font-semibold text-slate-950');
-      expect(src).toContain('bg-amber-700 font-semibold text-white hover:bg-amber-800');
+      expect(src).not.toContain('bg-amber-700 font-semibold text-white');
+      expect(src).toContain('bg-primary font-semibold text-primary-foreground hover:bg-primary/90');
     }
   });
 });

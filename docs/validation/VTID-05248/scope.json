@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05248",
+  "lane": "native-g1-wiring/deep-link-push-smoke",
+  "summary": "Prove the Wave 1 exit path OFFLINE against the loopback fixture gateway: remote-config push_enabled + updateRequired, a G1TestPushProvider that posts its token to the fixture and a push data.url that resolves through resolveLink, and every LINK_PATHS universal link resolving through resolve-link / link-router / auth-port. Adds only the test provider plus the g1-smoke suites; no existing module is modified and the production default push provider stays Noop.",
+  "paths": [
+    "apps/mobile/tests/g1-smoke/**",
+    "apps/mobile/src/push/g1-test-provider.ts",
+    "docs/validation/VTID-05248/**"
+  ]
+}
