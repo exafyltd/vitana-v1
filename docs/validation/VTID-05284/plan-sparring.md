@@ -13,3 +13,9 @@ CI record: `.kiro/specs/i18n-audit-nightly-off/sparring/` (`round-1.md`, `respon
 - Findings and answers: R1-F1 (code after VTID: draft #1463 closed, this is a fresh lane PR), R1-F2 (script
   fallback provider), R1-F3 (drop `pull-requests: write`), all accepted. R2-F1 [minor] (Secrets header comment) is
   addressed in this PR: the header lists DeepSeek as the default and gives Gemini's and Anthropic's current status.
+- Protected gate file `CLAUDE.md` (`scripts/collab/protected-gate-files.json`): changed on the **owner's
+  instruction** covering this plan's protected files (collaboration.md §3a/§7b; reviewer checklist item 9):
+  2026-10-19 "ok, execute" (on the recommendation to stop the nightly audit and update the `CLAUDE.md` audit
+  command); 2026-10-21 "now you can run fully end to end without stopping" and "yes, execute your recommendation";
+  2026-10-21 the owner's authorization of the §7b merges of exafyltd/vitana-platform#4250 and exafyltd/vitana-v1#1470.
+  The `CLAUDE.md` change is the one-line audit command (`--provider=deepseek`) and nothing else.
