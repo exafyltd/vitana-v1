@@ -73,7 +73,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
               {displayItems.map((item) => (
                 <div 
                   key={item.id}
-                  className="flex-shrink-0 p-3 bg-background/80 backdrop-blur-sm rounded-xl border cursor-pointer hover:shadow-md transition-all min-w-[240px]"
+                  className="flex-shrink-0 p-3 bg-background/80 backdrop-blur-sm rounded-xl border cursor-pointer hover:shadow-md transition-all min-w-60"
                   onClick={() => onItemClick?.(item)}
                 >
                   <div className="flex items-start justify-between mb-2">

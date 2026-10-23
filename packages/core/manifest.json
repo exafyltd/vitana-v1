@@ -31,6 +31,21 @@
       ],
       "reason": "Role/tenant switch permissions from the session; pure."
     },
+    "src/lib/news-images.ts": {
+      "entry": "news-images.ts",
+      "lanes": [
+        "news",
+        "home"
+      ],
+      "reason": "News cover-image selection and longevity-pillar mapping (getNewsImage, getArticlePillar, LONGEVITY_PILLARS). Imports nothing; pure. Used by the native NewsArticleCard twin and the news reader."
+    },
+    "src/components/vitana/vitana-card-catalog.ts": {
+      "entry": "vitana-card-catalog.ts",
+      "lanes": [
+        "home"
+      ],
+      "reason": "Pure Unified-Card-System catalog (pickHomeServerCards, isVitanaCardType, cardCategory, CARD_SCREENS, CARD_DEEP_LINKS); no imports."
+    },
     "src/integrations/supabase/types.ts": {
       "entry": "database.ts",
       "lanes": [

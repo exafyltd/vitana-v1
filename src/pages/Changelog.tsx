@@ -10,7 +10,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Panel, PanelContent } from '@/components/layout/spotlight/Panel';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -114,8 +114,8 @@ export default function Changelog() {
         <section key={surface} className="space-y-3">
           <h2 className="text-lg font-semibold">{surface}</h2>
           {list.map((entry, i) => (
-            <Card key={`${entry.component_slug}-${entry.version}-${i}`}>
-              <CardContent className="p-5">
+            <Panel key={`${entry.component_slug}-${entry.version}-${i}`}>
+              <PanelContent className="p-5">
                 <div className="flex items-baseline justify-between gap-3 mb-3">
                   <div className="font-mono text-lg font-bold">v{entry.version}</div>
                   <div className="text-xs text-muted-foreground">{formatDate(entry.released_at)}</div>
@@ -127,8 +127,8 @@ export default function Changelog() {
                 ) : (
                   <span className="text-sm text-muted-foreground italic">No release notes.</span>
                 )}
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           ))}
         </section>
       ))}

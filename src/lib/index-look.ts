@@ -16,16 +16,16 @@ export const INDEX_SOFT_BTN =
   "inline-flex h-11 items-center justify-center gap-2 rounded-full bg-white px-4 text-[15px] font-semibold text-slate-800 ring-1 ring-slate-200 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500";
 
 /** The pale blue hero card at the top of the page. */
-export const INDEX_HERO_CLASS = "relative overflow-hidden rounded-3xl border border-white/70 p-5";
+export const INDEX_HERO_CLASS = "relative overflow-hidden rounded-3xl border border-border/70 p-5";
 export const INDEX_HERO_STYLE: CSSProperties = {
-  backgroundColor: "hsl(208, 72%, 93%)",
-  backgroundImage: "linear-gradient(165deg, hsl(200, 80%, 91%) 0%, hsl(212, 72%, 94%) 55%, hsl(225, 65%, 95%) 100%)",
-  boxShadow: "0 6px 22px rgba(56, 132, 214, 0.12)",
+  backgroundColor: "hsl(var(--surface-page))",
+  backgroundImage: "linear-gradient(165deg, hsl(var(--surface-page-from)) 0%, hsl(var(--surface-page-via)) 55%, hsl(var(--surface-page-to)) 100%)",
+  boxShadow: "0 6px 22px hsl(var(--category-3) / 0.12)",
   isolation: "isolate",
 };
-export const INDEX_EYEBROW = "text-center text-xs font-semibold uppercase tracking-[0.28em] text-teal-800";
+export const INDEX_EYEBROW = "text-center text-xs font-semibold uppercase tracking-[0.28em] text-category-1";
 /** Rounded icon tile and the "next up" box used inside cards. */
-export const INDEX_TILE = "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-700";
-export const INDEX_NEXT_UP = "rounded-2xl bg-gradient-to-br from-teal-50 to-sky-50 p-4 ring-1 ring-teal-100";
+export const INDEX_TILE = "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-category-1/10 text-category-1";
+export const INDEX_NEXT_UP = "rounded-2xl bg-gradient-to-br from-category-1/10 to-category-7/10 p-4 ring-1 ring-category-1/15";
 export const INDEX_NEXT_UP_CHIP =
-  "inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-teal-800 ring-1 ring-teal-100";
+  "inline-flex items-center gap-1 rounded-full bg-card px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-category-1 ring-1 ring-category-1/15";

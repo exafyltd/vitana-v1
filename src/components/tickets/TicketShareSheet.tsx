@@ -164,7 +164,9 @@ export function TicketShareSheet({
       label: "WhatsApp",
       onClick: handleWhatsApp,
       icon: (
+        // design-allow-next-line: third-party brand colour (WhatsApp / Viber mark)
         <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center">
+          {/* design-allow-next-line: third-party brand colour (WhatsApp / Viber mark) */}
           <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-white">
             <path d={siWhatsapp.path} />
           </svg>
@@ -176,7 +178,9 @@ export function TicketShareSheet({
       label: "Viber",
       onClick: handleViber,
       icon: (
+        // design-allow-next-line: third-party brand colour (WhatsApp / Viber mark)
         <div className="w-8 h-8 rounded-full bg-[#7360F2] flex items-center justify-center">
+          {/* design-allow-next-line: third-party brand colour (WhatsApp / Viber mark) */}
           <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-white">
             <path d={siViber.path} />
           </svg>
@@ -198,8 +202,8 @@ export function TicketShareSheet({
       label: "SMS",
       onClick: handleSMS,
       icon: (
-        <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center">
-          <MessageSquare className="w-5 h-5 text-white" />
+        <div className="w-8 h-8 rounded-full bg-status-success flex items-center justify-center">
+          <MessageSquare className="w-5 h-5 text-primary-foreground" />
         </div>
       ),
     },
@@ -220,10 +224,10 @@ export function TicketShareSheet({
       icon: (
         <div className={cn(
           "w-8 h-8 rounded-full flex items-center justify-center",
-          copied ? "bg-green-600" : "bg-muted"
+          copied ? "bg-status-success" : "bg-muted"
         )}>
           {copied ? (
-            <Check className="w-5 h-5 text-white" />
+            <Check className="w-5 h-5 text-primary-foreground" />
           ) : (
             <Link2 className="w-5 h-5 text-muted-foreground" />
           )}

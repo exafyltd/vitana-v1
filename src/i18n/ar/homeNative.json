@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "الأخبار",
+    "selectFeed": "اختر التغذية",
+    "newMember": {
+      "badge": "عضو جديد في المجتمع",
+      "fallbackName": "عضو جديد"
+    },
+    "card": {
+      "dismiss": "إخفاء البطاقة",
+      "open": "فتح"
+    },
+    "feature": {
+      "brandNew": "ميزة جديدة كليًا",
+      "didYouKnow": "هل كنت تعلم؟",
+      "tryIt": "جرّبها الآن"
+    },
+    "performer": {
+      "badge": "في دائرة الضوء بالمجتمع",
+      "improvement": "+{value} في مؤشر Vitana"
+    },
+    "compose": {
+      "cancel": "إلغاء",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "التعليقات",
+      "open": "فتح التعليقات",
+      "openPost": "فتح المنشور"
+    }
+  }
+}

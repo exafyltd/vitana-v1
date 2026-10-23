@@ -140,7 +140,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           <Button variant="ghost" size="sm" onClick={onBack} className="p-1 h-8 w-8">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <Zap className="h-5 w-5 text-purple-600" />
+          <Zap className="h-5 w-5 text-category-2" />
           {t('screens.wallet.exchangeSend')}
         </DialogTitle>
       </DialogHeader>
@@ -299,7 +299,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
 
         {/* Transaction Preview */}
         {calculation && (
-          <Card className="bg-gradient-to-r from-purple-50/30 to-blue-50/30 border-purple-200/50">
+          <Card className="bg-gradient-to-r from-category-2/5 to-category-3/5 border-category-2/15">
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span>{t('screens.wallet.youSend2')}</span>
@@ -307,7 +307,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
               </div>
               <div className="flex justify-between text-sm">
                 <span>{t('screens.wallet.theyReceive')}</span>
-                <span className="font-medium text-purple-700">{calculation.toAmount.toFixed(2)} {toCurrency}</span>
+                <span className="font-medium text-category-2">{calculation.toAmount.toFixed(2)} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>{t('screens.wallet.exchangeRate')}</span>
@@ -329,7 +329,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           <Button 
             onClick={handleExchangeAndSend}
             disabled={!isValidAmount || !selectedRecipient || isProcessing || fromCurrency === toCurrency}
-            className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+            className="flex-1 bg-gradient-to-r from-category-2 to-category-3 hover:from-category-2 hover:to-category-3"
           >
             {isProcessing ? (
               <>

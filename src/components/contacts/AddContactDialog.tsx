@@ -265,6 +265,7 @@ export default function AddContactDialog({
                   
                   {/* Search Results Dropdown */}
                   {searchResults.length > 0 && !selectedUser && (
+                    // design-allow-next-line: calc against parent padding
                     <Card className="absolute z-50 w-[calc(100%-2rem)] max-h-60 overflow-auto">
                       {searchResults.map((result) => (
                         <Button

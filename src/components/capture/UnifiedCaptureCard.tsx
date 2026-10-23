@@ -502,10 +502,11 @@ export function UnifiedCaptureCard({
   // ---- Bug: Confirmation state ----
   if (isBugMode && showConfirmation) {
     return (
+      // design-allow-next-line: measured capture card min height
       <div className="rounded-2xl border border-border/50 bg-card shadow-sm min-h-[340px] flex flex-col items-center justify-center p-6 space-y-4">
-        <div className="p-4 rounded-full bg-green-100 dark:bg-green-950/30">
-          <div className="p-3 rounded-full bg-green-200 dark:bg-green-900/40">
-            <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+        <div className="p-4 rounded-full bg-status-success-subtle">
+          <div className="p-3 rounded-full bg-status-success/25">
+            <CheckCircle2 className="h-8 w-8 text-status-success" />
           </div>
         </div>
         <h3 className="text-lg font-semibold text-foreground">{translate('capture.reportSent')}</h3>
@@ -530,6 +531,7 @@ export function UnifiedCaptureCard({
   }
 
   return (
+    // design-allow-next-line: measured capture card min height
     <div className="rounded-2xl border border-border/50 bg-card shadow-sm min-h-[340px] flex flex-col">
       {/* ---- Hero Mic Area ---- */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 pt-8 pb-4">
@@ -549,8 +551,8 @@ export function UnifiedCaptureCard({
               isRecording
                 ? "bg-destructive text-destructive-foreground scale-110"
                 : isHealthMode
-                  ? "bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30"
-                  : "bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:hover:bg-orange-900/60 dark:text-orange-300"
+                  ? "bg-primary/10 text-primary hover:bg-primary/20"
+                  : "bg-status-warning-subtle text-status-warning hover:bg-status-warning/25"
             )}
             aria-label={isRecording ? "Stop recording" : "Start recording"}
           >
@@ -621,7 +623,7 @@ export function UnifiedCaptureCard({
             </div>
 
             {isRecording && useBackendSTT && (
-              <div className="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+              <div className="rounded-md border border-status-warning/40 bg-status-warning-subtle px-3 py-2 text-xs text-status-warning">
                 {translate('capture.backendRecordingHint', 'Recording — your transcription will appear after you tap Stop.')}
               </div>
             )}

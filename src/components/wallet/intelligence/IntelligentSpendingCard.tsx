@@ -101,7 +101,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
             <Brain className="h-5 w-5 text-primary" />
             {t('screens.wallet.spendingIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.totalsavingsVtnaSavingsAvailable', { totalSavings })}
+          <Badge variant="secondary" className="bg-status-success/10 text-status-success">{t('screens.wallet.totalsavingsVtnaSavingsAvailable', { totalSavings })}
           </Badge>
         </div>
       </CardHeader>
@@ -115,14 +115,14 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
           </div>
           <Progress value={spendingEfficiency} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">{t('screens.wallet.text22Improvement')}</span>{t('screens.wallet.fromLastMonth')}
+            <span className="font-semibold text-status-success">{t('screens.wallet.text22Improvement')}</span>{t('screens.wallet.fromLastMonth')}
           </p>
         </div>
 
         {/* AI Insights */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Brain className="h-4 w-4 text-purple-500" />
+            <Brain className="h-4 w-4 text-category-2" />
             {t('screens.wallet.smartInsights')}
           </h4>
           
@@ -149,7 +149,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
                     {config.label}
                   </Badge>
                   {insight.savings && (
-                    <div className="flex items-center gap-1 text-xs text-emerald-600">
+                    <div className="flex items-center gap-1 text-xs text-status-success">
                       <DollarSign className="h-3 w-3" />{t('screens.wallet.saveSavingsVtna', { savings: insight.savings })}
                     </div>
                   )}
@@ -160,9 +160,9 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         </div>
 
         {/* Market Timing */}
-        <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
+        <div className="p-3 rounded-lg border bg-gradient-to-r from-status-warning/5 to-status-warning/5 border-status-warning/15">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-4 w-4 text-amber-600" />
+            <Calendar className="h-4 w-4 text-status-warning" />
             <span className="text-sm font-medium">{t('screens.wallet.marketTimingAlert')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">

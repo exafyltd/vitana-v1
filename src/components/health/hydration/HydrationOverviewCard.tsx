@@ -13,9 +13,8 @@ interface HydrationOverviewCardProps {
 
 export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOverviewCardProps) {
   return (
-    <Card className="relative p-6 pt-10 mb-6 overflow-hidden bg-gradient-to-br from-[#f9fdff] to-[#f1faff]
-      dark:from-slate-900 dark:to-slate-800
-      border-slate-200/60 dark:border-slate-700/60 rounded-2xl
+    <Card className="relative p-6 pt-10 mb-6 overflow-hidden bg-gradient-to-br from-surface-page-from to-surface-page-via
+      border-border/60 rounded-2xl
       before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,100,0.05)_0%,transparent_60%)]
       before:pointer-events-none">
       
@@ -23,7 +22,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+            <Brain className="w-5 h-5 text-category-1" />
             <h2 className="text-xl font-bold">{t('screens.health.yourHydrationPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
@@ -39,35 +38,35 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         {/* Goal Focus */}
-        <div className="p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="p-4 rounded-xl bg-card/70 backdrop-blur-md">
           <div className="flex items-center gap-2 mb-2">
-            <Droplets className="w-4 h-4 text-cyan-600 dark:text-cyan-400 transition-all duration-900" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.goalFocus')}</span>
+            <Droplets className="w-4 h-4 text-category-1 transition-all duration-900" />
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus}</p>
         </div>
         
         {/* Schedule */}
-        <div className="p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="p-4 rounded-xl bg-card/70 backdrop-blur-md">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="w-4 h-4 text-sky-600 dark:text-sky-400 transition-all duration-900" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.schedule')}</span>
+            <Clock className="w-4 h-4 text-category-7 transition-all duration-900" />
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">
             {planData.schedule}
           </p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.value0LDailyTarget', { value0: (planData.dailyTargetMl / 1000).toFixed(1) })}
+          <p className="text-xs text-muted-foreground">{t('screens.health.value0LDailyTarget', { value0: (planData.dailyTargetMl / 1000).toFixed(1) })}
           </p>
         </div>
         
         {/* Program Progress */}
-        <div className="p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="p-4 rounded-xl bg-card/70 backdrop-blur-md">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-900" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.progress')}</span>
+            <Calendar className="w-4 h-4 text-category-3 transition-all duration-900" />
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
           <p className="text-lg font-bold">{t('screens.health.weekCurrentweekTotalweeks', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.completionpercentageComplete', { completionPercentage: planData.completionPercentage })}
+          <p className="text-xs text-muted-foreground">{t('screens.health.completionpercentageComplete', { completionPercentage: planData.completionPercentage })}
           </p>
         </div>
       </div>
@@ -75,17 +74,17 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
       {/* Progress Bar */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-slate-700 dark:text-slate-300 tracking-tight">
+          <span className="text-sm font-medium text-muted-foreground tracking-tight">
             {t('screens.health.trackingYourWeeklyConsistency')}
           </span>
-          <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
+          <span className="text-sm font-bold text-category-1">
             {planData.completionPercentage}%
           </span>
         </div>
-        <div className="relative h-3 w-full overflow-hidden rounded-full bg-slate-200/50 dark:bg-slate-800/50">
+        <div className="relative h-3 w-full overflow-hidden rounded-full bg-muted/50">
           <div 
-            className="h-full bg-gradient-to-r from-sky-400 to-cyan-500 transition-all ease-in-out duration-1200 rounded-full relative overflow-hidden
-              before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent
+            className="h-full bg-gradient-to-r from-category-7/80 to-category-1 transition-all ease-in-out duration-1200 rounded-full relative overflow-hidden
+              before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-card/40 before:to-transparent
               before:animate-[shimmer_2s_ease-in-out_infinite] before:translate-x-[-100%]"
             style={{ width: `${planData.completionPercentage}%` }}
           />
@@ -93,15 +92,15 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
       </div>
       
       {/* AI Insight */}
-      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 
-        dark:from-cyan-500/20 dark:to-blue-500/20 border border-slate-200/60 dark:border-slate-700/60 mb-4">
-        <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5 animate-pulse" />
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-category-1/10 to-category-3/10 
+ border border-border60 mb-4">
+        <Brain className="w-5 h-5 text-category-1 flex-shrink-0 mt-0.5 animate-pulse" />
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
             <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
             <span className="text-xs text-muted-foreground whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
           </div>
-          <p className="text-sm font-medium italic text-slate-700/90 dark:text-slate-300/90">
+          <p className="text-sm font-medium italic text-muted-foreground/90">
             "{planData.aiInsight}"
           </p>
         </div>

@@ -148,7 +148,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
         <DialogHeader>
           <div className="flex items-center gap-2 mb-1">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-              <Icon className="w-5 h-5 text-white" />
+              <Icon className="w-5 h-5 text-primary-foreground" />
             </div>
             <DialogTitle>{current.title}</DialogTitle>
           </div>
@@ -168,7 +168,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
                   onClick={() => handlePick(n as Rating)}
                   className={`h-12 rounded-lg border text-lg font-semibold transition ${
                     active
-                      ? "bg-calendar-primary text-white border-calendar-primary"
+                      ? "bg-calendar-primary text-primary-foreground border-calendar-primary"
                       : "bg-background text-foreground border-border hover:bg-muted"
                   }`}
                   aria-pressed={active}

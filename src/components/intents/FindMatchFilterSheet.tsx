@@ -132,6 +132,7 @@ export function FindMatchFilterSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-relative sheet height; the contract has no viewport-height token */}
       <SheetContent side="bottom" className="rounded-t-2xl max-h-[88vh] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{t('screens.community.filterMatches')}</SheetTitle>

@@ -162,7 +162,7 @@ function HorizonChart({ points }: { points: ProjectedPoint[] }) {
             cx={toX(lastSolid.day)}
             cy={toY(lastSolid.score)}
             r={1.1}
-            className="fill-green-600 stroke-background"
+            className="fill-status-success stroke-background"
             strokeWidth={0.3}
           />
         )}
@@ -330,14 +330,14 @@ export function VitanaIndexSheet() {
               aria-live="polite"
               className={`rounded-xl border p-3 shadow-sm animate-in fade-in slide-in-from-top-2 duration-500 ${
                 hasGrowth
-                  ? "border-green-500/30 bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10"
-                  : "border-blue-500/30 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10"
+                  ? "border-status-success/30 bg-gradient-to-r from-status-success/10 via-status-success/10 to-category-1/10"
+                  : "border-category-3/30 bg-gradient-to-r from-category-3/10 via-category-3/10 to-category-2/10"
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`rounded-full bg-background/60 p-2 motion-safe:animate-bounce ${
-                    hasGrowth ? "text-green-600" : "text-blue-600"
+                    hasGrowth ? "text-status-success" : "text-category-3"
                   }`}
                 >
                   <PartyPopper className="w-5 h-5" />
@@ -359,7 +359,7 @@ export function VitanaIndexSheet() {
 
             <div className="flex items-center justify-center">
               <div
-                className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg"
+                className="w-32 h-32 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg"
                 role="img"
                 aria-label={
                   isLoading || total === null
@@ -368,7 +368,7 @@ export function VitanaIndexSheet() {
                 }
               >
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-green-600">
+                  <div className="text-4xl font-bold text-status-success">
                     {isLoading || total === null ? "…" : total}
                   </div>
                   <div className="text-xs text-muted-foreground">{t('screens.health.text999')}</div>
@@ -391,7 +391,7 @@ export function VitanaIndexSheet() {
                 </Badge>
               )}
               {streakDays > 0 && (
-                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">{t('screens.health.streakdaysdayStreak', { streakDays })}
+                <Badge variant="outline" className="text-xs gap-1 border-status-warning/40 text-status-warning bg-status-warning-subtle">{t('screens.health.streakdaysdayStreak', { streakDays })}
                 </Badge>
               )}
             </div>
@@ -415,7 +415,7 @@ export function VitanaIndexSheet() {
             <button
               type="button"
               onClick={handleUnderstandIndex}
-              className="flex w-full items-center justify-center gap-1 rounded-full bg-teal-50 px-4 py-2.5 text-sm font-semibold text-teal-800 ring-1 ring-teal-100 hover:bg-teal-100 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+              className="flex w-full items-center justify-center gap-1 rounded-full bg-category-1/10 px-4 py-2.5 text-sm font-semibold text-category-1 ring-1 ring-category-1/15 hover:bg-category-1/15 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1"
               data-testid="vitana-index-sheet-understand"
             >
               {t("profile.identity.understandIndex")}
@@ -440,7 +440,7 @@ export function VitanaIndexSheet() {
                 <p className="text-sm">{t('screens.health.completeLengthActionValue1AutopilotSuggests', { length: pendingActions.length, value1: pendingActions.length === 1 ? "" : "s" })}
                   {nextDaysTotal > 0 ? (
                     <>
-                      {" "}→ <strong className="text-green-600">+{nextDaysTotal}</strong>
+                      {" "}→ <strong className="text-status-success">+{nextDaysTotal}</strong>
                     </>
                   ) : null}
                   .
@@ -450,7 +450,7 @@ export function VitanaIndexSheet() {
                 )}
                 <Button
                   onClick={handleOpenAutopilot}
-                  className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
+                  className="w-full bg-gradient-to-r from-status-error to-status-warning hover:from-status-error hover:to-status-warning text-primary-foreground"
                 >
                   <Zap className="w-4 h-4 me-2" />{t('screens.health.openAutopilot')}
                 </Button>

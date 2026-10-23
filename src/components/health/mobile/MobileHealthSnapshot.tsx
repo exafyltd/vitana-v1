@@ -68,12 +68,12 @@ export function MobileHealthSnapshot({
         {/* Vitana Index — circle, mirroring the Index drawer */}
         <div className="flex flex-col items-center mb-3">
           <div
-            className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg"
+            className="w-32 h-32 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg"
             role="img"
             aria-label={`Vitana Index ${vitanaIndex} of 999`}
           >
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 leading-none">
+              <div className="text-4xl font-bold text-status-success leading-none">
                 {vitanaIndex}
               </div>
               <div className="text-xs text-muted-foreground mt-1">{t('screens.health.text999')}</div>
@@ -92,13 +92,13 @@ export function MobileHealthSnapshot({
             )}
             <div className="flex items-center gap-1">
               <TrendIcon className={`w-4 h-4 ${
-                trend === 'up' ? 'text-emerald-600' :
-                trend === 'down' ? 'text-red-500' :
+                trend === 'up' ? 'text-status-success' :
+                trend === 'down' ? 'text-status-error' :
                 'text-muted-foreground'
               }`} />
               <span className={`text-sm ${
-                trend === 'up' ? 'text-emerald-600' :
-                trend === 'down' ? 'text-red-500' :
+                trend === 'up' ? 'text-status-success' :
+                trend === 'down' ? 'text-status-error' :
                 'text-muted-foreground'
               }`}>
                 {trendLabel}

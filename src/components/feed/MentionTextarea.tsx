@@ -123,10 +123,12 @@ export function MentionTextarea({
           "w-full resize-none border-0 bg-transparent outline-none focus-visible:ring-0 placeholder:opacity-70",
           onSurface
             ? cn(
+                // design-allow-next-line: no scale value within 2px of 200px
                 "min-h-[200px] px-6 py-10 text-center text-2xl font-semibold leading-snug",
                 background.textClass,
                 "placeholder:text-current",
               )
+            // design-allow-next-line: no scale value within 2px of 160px
             : "min-h-[160px] p-0 text-base text-foreground placeholder:text-muted-foreground",
           className,
         )}

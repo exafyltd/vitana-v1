@@ -36,16 +36,19 @@ function AppleCalendarLogo({ size }: { size: number }) {
   return (
     <span
       aria-hidden
-      className="flex shrink-0 flex-col items-center justify-center bg-white"
+      className="flex shrink-0 flex-col items-center justify-center bg-card"
       style={{
         width: size,
         height: size,
         borderRadius: size * 0.225,
+        // design-allow-next-line: third-party brand colour (Apple Calendar icon)
         boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.12)",
         lineHeight: 1,
       }}
     >
+      {/* design-allow-next-line: third-party brand colour (Apple Calendar icon) */}
       <span style={{ color: "#FF3B30", fontSize: size * 0.2, fontWeight: 500, letterSpacing: "0.02em" }}>{weekday}</span>
+      {/* design-allow-next-line: third-party brand colour (Apple Calendar icon) */}
       <span style={{ color: "#1D1D1F", fontSize: size * 0.52, fontWeight: 400, marginTop: size * 0.02 }}>{day}</span>
     </span>
   );

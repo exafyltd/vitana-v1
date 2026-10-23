@@ -80,12 +80,13 @@ export function ProfileTimeline({ milestones, className }: ProfileTimelineProps)
     <Card className={`rounded-2xl shadow-sm ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Calendar className="h-5 w-5 text-[hsl(var(--util-profile-accent))]" />
+          <Calendar className="h-5 w-5 text-util-profile-accent" />
           {t('screens.profile.communityJourney')}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="relative space-y-4 before:absolute before:start-[15px] before:top-2 before:h-[calc(100%-2rem)] before:w-0.5 before:bg-gradient-to-b before:from-[hsl(var(--domain-community-accent))] before:to-transparent">
+        {/* design-allow-next-line: calc against fixed chrome */}
+        <div className="relative space-y-4 before:absolute before:start-[15px] before:top-2 before:h-[calc(100%-2rem)] before:w-0.5 before:bg-gradient-to-b before:from-domain-community-accent before:to-transparent">
           {displayMilestones.map((milestone, index) => {
             const IconComponent = getTimelineIcon(milestone.type);
             const color = getTimelineColor(milestone.type);
@@ -93,7 +94,7 @@ export function ProfileTimeline({ milestones, className }: ProfileTimelineProps)
             return (
               <div key={index} className="relative flex gap-4 items-start ps-2">
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${color} flex items-center justify-center shadow-md z-10`}>
-                  <IconComponent className="h-4 w-4 text-white" />
+                  <IconComponent className="h-4 w-4 text-primary-foreground" />
                 </div>
                 <div className="flex-1 pt-1">
                   <p className="text-sm font-medium text-foreground">

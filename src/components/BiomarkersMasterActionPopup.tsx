@@ -50,9 +50,9 @@ export function BiomarkersMasterActionPopup({ open, onOpenChange }: BiomarkersMa
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
-        <DialogHeader className="bg-gradient-to-r from-blue-500/10 via-green-500/10 to-purple-500/10 -m-6 p-6 mb-0">
+        <DialogHeader className="bg-gradient-to-r from-category-3/10 via-status-success/10 to-category-2/10 -m-6 p-6 mb-0">
           <DialogTitle className="flex items-center gap-2 text-xl">
-            <FileText className="w-6 h-6 text-blue-500" />
+            <FileText className="w-6 h-6 text-category-3" />
             {t('screens.common.biomarkerActions')}
           </DialogTitle>
         </DialogHeader>

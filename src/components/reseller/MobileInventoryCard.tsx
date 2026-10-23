@@ -87,9 +87,9 @@ export function MobileInventoryCard({
           <div className="flex flex-col items-end gap-1.5 shrink-0">
             {/* Earnings badge */}
             {earningFormatted && (
-              <div className="inline-flex flex-col items-center px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
-                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">{t('screens.reseller.earnEarningformatted', { earningFormatted })}</span>
-                <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70">
+              <div className="inline-flex flex-col items-center px-3 py-1.5 rounded-lg bg-status-success-subtle">
+                <span className="text-sm font-semibold text-status-success">{t('screens.reseller.earnEarningformatted', { earningFormatted })}</span>
+                <span className="text-[10px] text-status-success/70">
                   {t('screens.reseller.ticket')}
                 </span>
               </div>

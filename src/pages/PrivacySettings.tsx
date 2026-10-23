@@ -87,7 +87,7 @@ const SECTIONS: SectionDef[] = [
     key: "dancePreferences",
     label: "Dance preferences",
     description: "Styles, level, role, what you're looking for.",
-    icon: <Sparkles className="h-4 w-4 text-pink-500" />,
+    icon: <Sparkles className="h-4 w-4 text-category-4" />,
     subFields: [
       { key: "dancePreferences.varieties", label: "My styles" },
       { key: "dancePreferences.level", label: "My level" },
@@ -98,7 +98,7 @@ const SECTIONS: SectionDef[] = [
     key: "partnerPreferences",
     label: "Partner preferences",
     description: "Who you're looking for. Private by default. Sub-fields stay private even if the section opens.",
-    icon: <Heart className="h-4 w-4 text-rose-500" />,
+    icon: <Heart className="h-4 w-4 text-category-4" />,
     subFields: [
       { key: "partnerPreferences.gender", label: "Gender preference" },
       { key: "partnerPreferences.ageRange", label: "Age range" },
@@ -110,7 +110,7 @@ const SECTIONS: SectionDef[] = [
     key: "serviceOfferings",
     label: "Service offerings",
     description: "What you offer. Public by default — hiding defeats the purpose.",
-    icon: <Briefcase className="h-4 w-4 text-emerald-600" />,
+    icon: <Briefcase className="h-4 w-4 text-status-success" />,
     subFields: [
       { key: "serviceOfferings.priceRange", label: "Price range" },
     ],
@@ -119,7 +119,7 @@ const SECTIONS: SectionDef[] = [
     key: "myPosts",
     label: "My posts",
     description: "Open intents you've dictated. Partner-search posts NEVER appear here regardless of toggle.",
-    icon: <FileText className="h-4 w-4 text-blue-600" />,
+    icon: <FileText className="h-4 w-4 text-category-3" />,
     subFields: [
       { key: "myPosts.commercial", label: "Marketplace posts" },
     ],
@@ -128,7 +128,7 @@ const SECTIONS: SectionDef[] = [
     key: "derivedAgeBand",
     label: "Age band",
     description: "Show only your age band (e.g. 30s) instead of exact age. Default: connections only.",
-    icon: <Cake className="h-4 w-4 text-amber-600" />,
+    icon: <Cake className="h-4 w-4 text-status-warning" />,
   },
 ];
 

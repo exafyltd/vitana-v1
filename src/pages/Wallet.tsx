@@ -684,7 +684,7 @@ export default function Wallet() {
       <SEO title={t('screens.wallet.vitanaWalletVitana')} description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader
           title={t('screens.wallet.vitanaWallet')}

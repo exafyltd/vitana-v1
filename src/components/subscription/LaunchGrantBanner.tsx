@@ -82,10 +82,10 @@ export function LaunchGrantBanner({ data }: Props) {
   };
 
   return (
-    <Card className="border-emerald-400/40 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-transparent dark:from-emerald-950/30 dark:via-teal-950/20">
+    <Card className="border-status-success/30 bg-gradient-to-br from-status-success-subtle/80 via-category-1/5 to-transparent">
       <CardContent className="p-4 flex items-start gap-3">
-        <div className="flex-shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-900/40 p-2">
-          <Gift className="h-5 w-5 text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
+        <div className="flex-shrink-0 rounded-full bg-status-success-subtle p-2">
+          <Gift className="h-5 w-5 text-status-success" aria-hidden="true" />
         </div>
         <div className="flex-1 min-w-0 space-y-1">
           <p className="text-sm font-semibold leading-tight">

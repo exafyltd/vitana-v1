@@ -134,7 +134,7 @@ export function SellEventModal({
                 className="flex-shrink-0"
               >
                 {copied ? (
-                  <Check className="h-4 w-4 text-green-500" />
+                  <Check className="h-4 w-4 text-status-success" />
                 ) : (
                   <Copy className="h-4 w-4" />
                 )}
@@ -148,7 +148,7 @@ export function SellEventModal({
             <div className="grid grid-cols-2 gap-2">
               <Button 
                 variant="outline" 
-                className="h-12 gap-2 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:bg-green-100 dark:from-green-950/30 dark:to-emerald-950/30 dark:border-green-800"
+                className="h-12 gap-2 bg-gradient-to-br from-status-success-subtle to-status-success-subtle border-status-success/25 hover:bg-status-success-subtle"
                 onClick={handleWhatsAppShare}
               >
                 <svg 
@@ -159,12 +159,12 @@ export function SellEventModal({
                 >
                   <path d={siWhatsapp.path} />
                 </svg>
-                <span className="text-green-700 dark:text-green-300">{t('screens.reseller.whatsapp')}</span>
+                <span className="text-status-success">{t('screens.reseller.whatsapp')}</span>
               </Button>
               
               <Button 
                 variant="outline" 
-                className="h-12 gap-2 bg-gradient-to-br from-pink-50 to-purple-50 border-pink-200 hover:bg-pink-100 dark:from-pink-950/30 dark:to-purple-950/30 dark:border-pink-800"
+                className="h-12 gap-2 bg-gradient-to-br from-category-4/10 to-category-2/10 border-category-4/25 hover:bg-category-4/15"
                 onClick={handleInstagramShare}
               >
                 <svg 
@@ -175,7 +175,7 @@ export function SellEventModal({
                 >
                   <path d={siInstagram.path} />
                 </svg>
-                <span className="text-pink-700 dark:text-pink-300">{t('screens.reseller.instagram')}</span>
+                <span className="text-category-4">{t('screens.reseller.instagram')}</span>
               </Button>
             </div>
           </div>

@@ -28,7 +28,7 @@ export function DesktopVitanaIndexChip() {
           <div className="relative shrink-0 transition-all duration-200">
             <Button
               variant="ghost"
-              className="hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg p-0 text-white"
+              className="hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg p-0 text-primary-foreground"
               onClick={handleClick}
               aria-label={
                 score !== null
@@ -42,7 +42,7 @@ export function DesktopVitanaIndexChip() {
             </Button>
             {score !== null && !showStreak && (
               <span
-                className="absolute -top-1.5 -end-1.5 min-w-5 h-4 px-1 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
+                className="absolute -top-1.5 -end-1.5 min-w-5 h-4 px-1 rounded-full bg-category-3 text-primary-foreground text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
                 aria-hidden="true"
               >
                 {score}
@@ -50,7 +50,7 @@ export function DesktopVitanaIndexChip() {
             )}
             {showStreak && (
               <span
-                className="absolute -top-1 -end-1 h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
+                className="absolute -top-1 -end-1 h-4 px-1 rounded-full bg-status-warning text-primary-foreground text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
                 aria-hidden="true"
               >
                 🔥{streakDays}

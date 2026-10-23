@@ -42,14 +42,14 @@ function StepRow({
       onClick={() => onToggle(step)}
       className={`w-full flex items-start gap-3 rounded-xl border p-3 text-start shadow-sm transition-colors ${
         done
-          ? "border-emerald-500/30 bg-gradient-to-r from-green-500/5 via-emerald-500/5 to-teal-500/5"
+          ? "border-status-success/30 bg-gradient-to-r from-status-success/5 via-status-success/5 to-category-1/5"
           : highlight
-          ? "border-indigo-400/40 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5"
+          ? "border-category-3/30 bg-gradient-to-r from-category-3/5 via-category-3/5 to-category-2/5"
           : "border-border/60 hover:bg-muted/30"
       }`}
     >
       {done ? (
-        <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+        <CheckCircle2 className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
       ) : (
         <Circle className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
       )}
@@ -80,7 +80,7 @@ function CadenceRow({ step, dates }: { step: GoalPlanStep; dates: string[] }) {
         onClick={() => hasDates && setOpen((o) => !o)}
         className={`w-full flex items-start gap-3 p-3 text-start ${hasDates ? "hover:bg-muted/30 transition-colors" : ""}`}
       >
-        <Flag className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <Flag className="w-4 h-4 text-category-3 shrink-0 mt-0.5" />
         <div className="min-w-0 flex-1">
           <span className="text-sm font-medium">{step.title}</span>
           {step.description && (
@@ -236,8 +236,8 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
           ) : clarifyMode ? (
             <div className="space-y-5">
               <div className="flex flex-col items-center text-center gap-2">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow">
-                  <Sparkles className="w-6 h-6 text-emerald-600" />
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow">
+                  <Sparkles className="w-6 h-6 text-status-success" />
                 </div>
                 <h3 className="text-base font-semibold">{t("screens.autopilotdashboard.planClarifyTitle")}</h3>
                 <p className="text-sm text-muted-foreground max-w-xs">
@@ -271,14 +271,14 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
             </div>
           ) : !plan ? (
             <div className="flex flex-col items-center text-center gap-3 py-10">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
-                <Sparkles className="w-7 h-7 text-emerald-600" />
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg">
+                <Sparkles className="w-7 h-7 text-status-success" />
               </div>
               <p className="text-sm text-muted-foreground max-w-xs">
                 {t("screens.autopilotdashboard.planSheetEmpty")}
               </p>
               {genError && !generate.isPending && (
-                <p className="text-xs text-red-500 max-w-xs">
+                <p className="text-xs text-status-error max-w-xs">
                   {t("screens.autopilotdashboard.planError", { error: genError })}
                 </p>
               )}
@@ -326,7 +326,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       {t("screens.autopilotdashboard.planNextUp")}
                     </h3>
-                    <div className="rounded-xl border border-indigo-400/40 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 p-3 space-y-3">
+                    <div className="rounded-xl border border-category-3/30 bg-gradient-to-r from-category-3/5 via-category-3/5 to-category-2/5 p-3 space-y-3">
                       {habitsTotal > 0 && (
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
@@ -334,12 +334,12 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                               {t("screens.autopilotdashboard.planDailyProgress", { done: habitsDone, total: habitsTotal })}
                             </span>
                             {habitsDone >= habitsTotal && (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                              <CheckCircle2 className="w-4 h-4 text-status-success" />
                             )}
                           </div>
                           <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
                             <div
-                              className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-indigo-500 transition-all"
+                              className="h-full rounded-full bg-gradient-to-r from-status-success/80 to-category-3 transition-all"
                               style={{ width: `${Math.round((habitsDone / Math.max(1, habitsTotal)) * 100)}%` }}
                             />
                           </div>
@@ -347,7 +347,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                       )}
                       {nextMilestone && (
                         <div className="flex items-start gap-2">
-                          <Trophy className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                          <Trophy className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
                           <div className="min-w-0">
                             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
                               {t("screens.autopilotdashboard.planNextMilestone")}
@@ -412,7 +412,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                               </p>
                             )}
                             {isNext && (
-                              <span className="text-[10px] font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-2 py-0.5">
+                              <span className="text-[10px] font-semibold uppercase tracking-wide text-category-3 bg-category-3/10 border border-category-3/20 rounded-full px-2 py-0.5">
                                 {t("screens.autopilotdashboard.planNextUp")}
                               </span>
                             )}

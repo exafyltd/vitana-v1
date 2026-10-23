@@ -65,7 +65,7 @@ function AutopilotWidgetBase({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-              <Plane className="w-4 h-4 text-white" />
+              <Plane className="w-4 h-4 text-primary-foreground" />
             </div>
             <div>
               <CardTitle className="text-lg">{widgetTitle}</CardTitle>

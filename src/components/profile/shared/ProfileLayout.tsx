@@ -25,6 +25,8 @@ import { useAutoSave } from "@/hooks/useAutoSave";
 import { useState, useCallback } from "react";
 import { shouldShowField } from "@/lib/profileScope";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
+import { VCard } from "@/components/ui/vcard";
 import { MobileIdCardSwitcher, getActiveCardSide } from "../mobile/MobileIdCardSwitcher";
 import { DesktopCardSide } from "../desktop/DesktopIdCardSwitcher";
 import { MobileProfileStats } from "../mobile/MobileProfileStats";
@@ -128,6 +130,7 @@ export function ProfileLayout({
   const effectiveEditMode = editMode;
 
   const isMobile = useIsMobile();
+  const spotlight = useSpotlightEnabled();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
   const { user } = useAuth();
 
@@ -351,6 +354,99 @@ export function ProfileLayout({
         )}
 
         {/* Popups still work on mobile */}
+        <CredentialUploadPopup
+          open={showCredentialUpload}
+          onOpenChange={setShowCredentialUpload}
+          existingCredentials={profile.professionalCredentials?.coachingSpecialties}
+          onSave={(credentials) => {
+            console.log('Saving credentials:', credentials);
+          }}
+        />
+
+        <GoLivePopup
+          open={showGoLive}
+          onOpenChange={setShowGoLive}
+        />
+      </div>
+    );
+  }
+
+  // Desktop Spotlight (desktop-spotlight-finish / public-profile): the stage of
+  // the `detail` screen. The page wraps it in <ScreenFrame archetype="detail">
+  // with <ProfileSpotlightRail> as the rail. The ID card is the one spotlight
+  // VCard; the tabs and their content follow in the stage. The stats strip
+  // moves to the rail. Edit affordances are the same as the flag-off branch.
+  if (spotlight) {
+    return (
+      <div className="flex flex-col gap-4" data-profile-stage="">
+        <VCard
+          as="article"
+          size="spotlight"
+          aria-label={profile.name}
+          title={<span className="sr-only">{profile.name}</span>}
+          body={
+            <div className="text-base text-foreground">
+              <DesktopIdCardSwitcher
+                profile={profile}
+                scope={scope}
+                editMode={effectiveEditMode}
+                isOwner={isOwner}
+                onEditIdentity={onEditIdentity}
+                onEditSocial={onEditAbout}
+                onEditAccount={onEditAccount}
+                activeSide={activeDesktopSide}
+                onActiveSideChange={setActiveDesktopSide}
+                className="pt-0"
+              />
+            </div>
+          }
+        />
+
+        {/* Business shows its own card inside the ID card switcher above
+            (VTID-02950 round 2), so the tab system is hidden there. */}
+        {!isDesktopBusinessTab && (
+          <SplitBar defaultValue="posts" className="w-full">
+            <ProfileSplitNavigationTriggers profile={profile} scope={scope} />
+            <ProfileSplitNavigationContent
+              profile={profile}
+              scope={scope}
+              editMode={effectiveEditMode}
+              isOwnProfile={isOwnProfile}
+              onEditAbout={onEditAbout}
+              onEditServices={onEditServices}
+              onEditCompliance={onEditCompliance}
+              onEditVisibility={onEditVisibility}
+              onSectionClick={handleSectionClick}
+              onGoLive={() => setShowGoLive(true)}
+              onUploadCredentials={() => setShowCredentialUpload(true)}
+            />
+          </SplitBar>
+        )}
+
+        {!isDesktopBusinessTab && effectiveEditMode && onEditShowcase && (
+          <div className="bg-background rounded-lg border p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">{t('screens.profile.showcase')}</h3>
+              <Button variant="outline" size="sm" onClick={onEditShowcase}>
+                <Star className="h-4 w-4 me-2" />
+                {t('screens.profile.manageFeaturedContent')}
+              </Button>
+            </div>
+            <p className="text-muted-foreground">
+              {t('screens.profile.selectPostsContentFeatureAtTop')}
+            </p>
+          </div>
+        )}
+
+        {!isDesktopBusinessTab && effectiveEditMode && (
+          <AutopilotSuggestions
+            type="profile-section"
+            onSuggestionClick={(suggestion) => {
+              console.log('Autopilot suggestion clicked:', suggestion);
+            }}
+          />
+        )}
+
         <CredentialUploadPopup
           open={showCredentialUpload}
           onOpenChange={setShowCredentialUpload}

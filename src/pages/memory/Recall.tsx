@@ -6,7 +6,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -171,14 +171,14 @@ function Recall() {
         </UtilityActionButton>
 
         {/* AI Memory Search Section */}
-        <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200 mt-6 mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5 text-blue-600" />
+        <Panel className="bg-gradient-to-br from-category-3/10 to-category-2/10 border-category-3/25 mt-6 mb-6">
+          <PanelHeader>
+            <PanelTitle className="flex items-center gap-2">
+              <Search className="h-5 w-5 text-category-3" />
               {t('screens.memory.aiMemorySearch')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex gap-3">
+            </PanelTitle>
+          </PanelHeader>
+          <PanelContent className="flex gap-3">
             <Input
               placeholder={t('screens.memory.askAiWhatHelpedImproveMy')}
               value={searchQuery}
@@ -189,8 +189,8 @@ function Recall() {
               <Search className="h-4 w-4 me-2" />
               {t('screens.memory.searchMemories')}
             </Button>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>

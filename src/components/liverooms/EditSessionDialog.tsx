@@ -137,6 +137,7 @@ export function EditSessionDialog({ open, onOpenChange, room, onSaved }: EditSes
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t("liveRooms.editSession.title")}</DialogTitle>
@@ -181,7 +182,8 @@ export function EditSessionDialog({ open, onOpenChange, room, onSaved }: EditSes
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-2 end-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
+                  // design-allow-next-line: on-media scrim, theme-independent
+                  className="absolute top-2 end-2 bg-black/60 text-primary-foreground rounded-full p-1 hover:bg-black/80"
                   aria-label={t("liveRooms.editSession.changeCover")}
                 >
                   <X className="h-4 w-4" />

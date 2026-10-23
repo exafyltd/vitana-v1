@@ -233,6 +233,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
@@ -323,15 +324,15 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
 
           {/* Smart Upload — video only. Three states: loading, auto-applied, error. */}
           {mediaType === 'video' && file && autoMetadata.loading && (
-            <div className="rounded-lg border border-violet-200 bg-gradient-to-br from-violet-50 to-sky-50 p-4 space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-violet-700">
+            <div className="rounded-lg border border-category-2/25 bg-gradient-to-br from-category-2/10 to-category-7/10 p-4 space-y-2">
+              <div className="flex items-center gap-2 text-sm font-medium text-category-2">
                 <Sparkles className="w-4 h-4" />
                 {t('screens.community.analyzingYourVideo')}
               </div>
               <div className="space-y-2">
-                <div className="h-3 w-3/4 rounded bg-violet-200/60 animate-pulse" />
-                <div className="h-3 w-1/2 rounded bg-violet-200/60 animate-pulse" />
-                <div className="h-3 w-2/3 rounded bg-violet-200/60 animate-pulse" />
+                <div className="h-3 w-3/4 rounded bg-category-2/15 animate-pulse" />
+                <div className="h-3 w-1/2 rounded bg-category-2/15 animate-pulse" />
+                <div className="h-3 w-2/3 rounded bg-category-2/15 animate-pulse" />
               </div>
               <div className="flex items-center justify-between pt-1">
                 <p className="text-xs text-muted-foreground">{t('screens.community.usually25Seconds')}</p>
@@ -348,8 +349,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
           )}
 
           {mediaType === 'video' && file && autoMetadata.error && !autoMetadata.loading && (
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 flex items-start gap-2">
-              <div className="flex-1 text-sm text-amber-900">
+            <div className="rounded-lg border border-status-warning/25 bg-status-warning-subtle p-3 flex items-start gap-2">
+              <div className="flex-1 text-sm text-status-warning">
                 {autoMetadataErrorCopy(autoMetadata.error)}
               </div>
               <Button
@@ -358,7 +359,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                 size="sm"
                 onClick={handleRegenerate}
                 disabled={isUploading || autoMetadata.loading}
-                className="text-amber-900 hover:text-amber-950"
+                className="text-status-warning hover:text-status-warning"
               >
                 <RotateCw className="w-3.5 h-3.5 me-1" />
                 {t('screens.community.retry')}
@@ -371,9 +372,9 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
             autoApplied &&
             !detailsExpanded &&
             !autoMetadata.loading && (
-              <div className="rounded-lg border border-violet-200 bg-gradient-to-br from-violet-50 to-sky-50 p-4 space-y-3">
+              <div className="rounded-lg border border-category-2/25 bg-gradient-to-br from-category-2/10 to-category-7/10 p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-medium text-violet-700">
+                  <div className="flex items-center gap-2 text-sm font-medium text-category-2">
                     <Sparkles className="w-4 h-4" />{t('screens.community.smartfilledFromYourVideo')}
                   </div>
                   <Button
@@ -382,7 +383,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                     size="sm"
                     onClick={handleRegenerate}
                     disabled={isUploading || autoMetadata.loading}
-                    className="text-violet-700 hover:text-violet-800 h-7 px-2"
+                    className="text-category-2 hover:text-category-2 h-7 px-2"
                   >
                     {autoMetadata.loading ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -645,7 +646,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
               <Button
                 type="submit"
                 disabled={!isFormValid || isUploading}
-                className="w-full bg-gradient-to-r from-violet-500 to-sky-400 hover:from-violet-600 hover:to-sky-500"
+                className="w-full bg-gradient-to-r from-category-2 to-category-7/80 hover:from-category-2 hover:to-category-7"
               >
                 {isUploading ? translate('mediaHub.upload.uploading').replace('{progress}', String(progress)) : translate('mediaHub.upload.submit')}
               </Button>

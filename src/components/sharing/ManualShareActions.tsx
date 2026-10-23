@@ -158,7 +158,7 @@ export function ManualShareActions({
           >
             <div className="flex items-center gap-3 p-4">
               <div className={cn(
-                "w-12 h-12 rounded-full flex items-center justify-center text-white shrink-0",
+                "w-12 h-12 rounded-full flex items-center justify-center text-primary-foreground shrink-0",
                 "shadow-md group-hover:scale-110 transition-transform duration-200",
                 option.color
               )}>
@@ -171,7 +171,7 @@ export function ManualShareActions({
                   {option.recommended && (
                     <Badge 
                       variant="secondary" 
-                      className="text-[10px] px-1.5 py-0 bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
+                      className="text-[10px] px-1.5 py-0 bg-status-success/10 text-status-success border-status-success/20"
                     >
                       {t('screens.sharing.recommended')}
                     </Badge>

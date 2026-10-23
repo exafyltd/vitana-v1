@@ -188,6 +188,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
   return (
     <>
     <Dialog open={open} onOpenChange={handleClose}>
+      {/* design-allow-next-line: dialog width, no scale class within 2 px */}
       <DialogContent className="sm:max-w-[520px] p-0">
         <div className="p-6">
           <DialogHeader className="text-center mb-6">
@@ -357,7 +358,7 @@ function SuggestionCard({
   translate: (key: string) => string;
 }) {
   return (
-    <Card className={`p-4 ${accepted ? 'border-green-500 bg-green-500/5' : 'border-border'}`}>
+    <Card className={`p-4 ${accepted ? 'border-status-success bg-status-success/5' : 'border-border'}`}>
       <h4 className="font-medium text-sm mb-3">{label}</h4>
       <div className="space-y-2 mb-3">
         <div className="text-xs text-muted-foreground">
@@ -381,7 +382,7 @@ function SuggestionCard({
           </Button>
         </div>
       ) : (
-        <p className="text-xs text-green-600 font-medium flex items-center gap-1">
+        <p className="text-xs text-status-success font-medium flex items-center gap-1">
           <Check className="h-3 w-3" /> {translate("autopilot.profilePopup.applied")}
         </p>
       )}

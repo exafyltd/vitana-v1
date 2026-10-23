@@ -119,7 +119,7 @@ export function UserDetailPanel({ user, onInvite, onRepair }: UserDetailPanelPro
       <div className="flex items-center gap-3">
         <Avatar className="h-14 w-14">
           {user.avatar_url && <AvatarImage src={user.avatar_url} alt={user.display_name || user.email} />}
-          <AvatarFallback className="text-lg font-semibold bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300">
+          <AvatarFallback className="text-lg font-semibold bg-category-2/15 text-category-2">
             {initials}
           </AvatarFallback>
         </Avatar>

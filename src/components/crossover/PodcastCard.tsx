@@ -124,17 +124,17 @@ export function PodcastCard({
         group relative rounded-2xl border-2 shadow-md p-5
         transition-all duration-300
         flex items-start gap-4
-        bg-white/70 backdrop-blur-sm
-        hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60
+        bg-card/70 backdrop-blur-sm
+        hover:shadow-xl hover:shadow-category-2/15 hover:-translate-y-1 hover:border-category-2/40
         ${isThisPodcastPlaying 
-          ? "border-purple-300/70 bg-white/80 shadow-lg shadow-purple-100/30" 
-          : "border-white/40 hover:border-purple-200/60"
+          ? "border-category-2/30 bg-card/80 shadow-lg shadow-category-2/5" 
+          : "border-border/40 hover:border-category-2/15"
         }
       `}
     >
       {/* Now Playing Accent Bar */}
       {isThisPodcastPlaying && (
-        <div className="absolute start-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-pink-500 rounded-s-2xl" />
+        <div className="absolute start-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-category-2 to-category-4 rounded-s-2xl" />
       )}
 
       {/* Cover Image */}
@@ -146,8 +146,8 @@ export function PodcastCard({
             className="w-16 h-16 rounded-lg object-cover shadow-md"
           />
         ) : (
-          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-400 to-pink-400 shadow-md flex items-center justify-center">
-            <Pause className="w-6 h-6 text-white/80" />
+          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-category-2/80 to-category-4/80 shadow-md flex items-center justify-center">
+            <Pause className="w-6 h-6 text-primary-foreground/80" />
           </div>
         )}
       </div>
@@ -158,9 +158,9 @@ export function PodcastCard({
         <div className="flex items-center gap-2">
           {isThisPodcastPlaying && (
             <div className="flex items-center gap-0.5 h-3 flex-shrink-0" aria-label={t('screens.crossover.nowPlaying')}>
-              <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0s' }}></div>
-              <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.2s' }}></div>
-              <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.4s' }}></div>
+              <div className="w-0.5 bg-category-2 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0s' }}></div>
+              <div className="w-0.5 bg-category-2 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.2s' }}></div>
+              <div className="w-0.5 bg-category-2 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.4s' }}></div>
             </div>
           )}
           <h3 className="text-lg font-bold text-foreground line-clamp-1 leading-tight flex-1">
@@ -200,39 +200,39 @@ export function PodcastCard({
           onClick={handlePlayToggle}
           className={`
             relative w-12 h-12 rounded-full flex items-center justify-center
-            bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md
+            bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-md
             transition-all duration-300
-            hover:shadow-lg hover:shadow-purple-400/50 hover:scale-105
+            hover:shadow-lg hover:shadow-primary/50 hover:scale-105
             active:scale-95
             ${isThisPodcastPlaying ? 'animate-pulse-subtle' : ''}
           `}
           aria-label={isThisPodcastPlaying ? "Pause episode" : "Play episode"}
         >
           {isThisPodcastPlaying ? (
-            <Pause className="h-5 w-5 fill-white" />
+            <Pause className="h-5 w-5 fill-primary-foreground" />
           ) : (
-            <Play className="h-5 w-5 fill-white" />
+            <Play className="h-5 w-5 fill-primary-foreground" />
           )}
           
           {/* Ripple effect on click */}
-          <span className="absolute inset-0 rounded-full animate-ping opacity-0 group-active:opacity-75 bg-purple-400"></span>
+          <span className="absolute inset-0 rounded-full animate-ping opacity-0 group-active:opacity-75 bg-category-2/80"></span>
         </button>
       </div>
 
       {/* Bottom Interaction Bar */}
-      <div className="absolute bottom-0 start-0 end-0 px-5 pb-3 pt-2 bg-gradient-to-t from-white/60 to-transparent backdrop-blur-sm rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute bottom-0 start-0 end-0 px-5 pb-3 pt-2 bg-gradient-to-t from-card/60 to-transparent backdrop-blur-sm rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="flex items-center justify-end gap-2">
           <Button
             size="icon"
             variant="ghost"
             onClick={() => toggleFavorite()}
             disabled={isToggling || !user}
-            className="h-7 w-7 hover:bg-purple-50/80"
+            className="h-7 w-7 hover:bg-category-2/10"
             aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
           >
             <Heart
               className={`h-3.5 w-3.5 transition-colors ${
-                isFavorited ? "fill-pink-500 text-pink-500" : "text-muted-foreground/60 hover:text-pink-500"
+                isFavorited ? "fill-category-4 text-category-4" : "text-muted-foreground/60 hover:text-category-4"
               }`}
             />
           </Button>
@@ -243,10 +243,10 @@ export function PodcastCard({
             size="icon"
             variant="ghost"
             onClick={handleShare}
-            className="h-7 w-7 hover:bg-purple-50/80"
+            className="h-7 w-7 hover:bg-category-2/10"
             aria-label={t('screens.crossover.shareEpisode')}
           >
-            <Share2 className="h-3.5 w-3.5 text-muted-foreground/60 hover:text-purple-500" />
+            <Share2 className="h-3.5 w-3.5 text-muted-foreground/60 hover:text-category-2" />
           </Button>
 
           {isCreator && onDelete && (

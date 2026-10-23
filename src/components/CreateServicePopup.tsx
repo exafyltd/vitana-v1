@@ -197,10 +197,11 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="text-center pb-6">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
-            <Sparkles className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-category-2 to-category-3 flex items-center justify-center">
+            <Sparkles className="w-8 h-8 text-primary-foreground" />
           </div>
           <DialogTitle className="text-2xl font-bold">{t('screens.common.startNewBusinessOffering')}</DialogTitle>
           <p className="text-muted-foreground">{t('screens.common.turnYourSkillsIntoIncomeToday')}</p>
@@ -458,7 +459,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                   {t('screens.common.saveDraft')}
                 </Button>
                 <Button 
-                  className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
+                  className="bg-gradient-to-r from-category-2 to-category-3 hover:from-category-2 hover:to-category-3"
                   onClick={handlePublish}
                 >
                   <Sparkles className="w-4 h-4 me-2" />

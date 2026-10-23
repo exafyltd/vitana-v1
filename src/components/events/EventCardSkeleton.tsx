@@ -20,8 +20,9 @@ export function EventCardSkeleton({ count = 4, className }: EventCardSkeletonPro
           className={cn(
             "relative overflow-hidden rounded-2xl",
             "bg-gradient-to-br from-muted/60 via-muted/40 to-muted/20",
-            "backdrop-blur-sm border border-white/10",
+            "backdrop-blur-sm border border-border/10",
             "shadow-[0_4px_20px_rgba(0,0,0,0.08)]",
+            // design-allow-next-line: no scale value within 2px of 280px
             "min-h-[280px]"
           )}
           style={{
@@ -33,6 +34,7 @@ export function EventCardSkeleton({ count = 4, className }: EventCardSkeletonPro
           <div 
             className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite]"
             style={{
+              // design-allow-next-line: on-media scrim, theme-independent
               background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)'
             }}
           />
@@ -42,10 +44,10 @@ export function EventCardSkeleton({ count = 4, className }: EventCardSkeletonPro
             {/* Top row - category badge + timestamp */}
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
-                <Skeleton className="h-6 w-20 rounded-md bg-white/10" />
-                <Skeleton className="h-6 w-14 rounded-md bg-white/10" />
+                <Skeleton className="h-6 w-20 rounded-md bg-card/10" />
+                <Skeleton className="h-6 w-14 rounded-md bg-card/10" />
               </div>
-              <Skeleton className="h-6 w-24 rounded-md bg-white/10" />
+              <Skeleton className="h-6 w-24 rounded-md bg-card/10" />
             </div>
             
             {/* Spacer to push content to bottom */}
@@ -54,30 +56,30 @@ export function EventCardSkeleton({ count = 4, className }: EventCardSkeletonPro
             {/* Bottom content - title, description, meta */}
             <div className="space-y-3">
               {/* Title */}
-              <Skeleton className="h-6 w-4/5 rounded bg-white/15" />
+              <Skeleton className="h-6 w-4/5 rounded bg-card/15" />
               
               {/* Description lines */}
               <div className="space-y-2">
-                <Skeleton className="h-4 w-full rounded bg-white/10" />
-                <Skeleton className="h-4 w-3/4 rounded bg-white/10" />
+                <Skeleton className="h-4 w-full rounded bg-card/10" />
+                <Skeleton className="h-4 w-3/4 rounded bg-card/10" />
               </div>
               
               {/* Meta row - author + location/attendees */}
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-2">
-                  <Skeleton className="h-7 w-7 rounded-full bg-white/15" />
-                  <Skeleton className="h-3 w-20 rounded bg-white/10" />
+                  <Skeleton className="h-7 w-7 rounded-full bg-card/15" />
+                  <Skeleton className="h-3 w-20 rounded bg-card/10" />
                 </div>
                 <div className="flex items-center gap-3">
-                  <Skeleton className="h-3 w-16 rounded bg-white/10" />
-                  <Skeleton className="h-3 w-10 rounded bg-white/10" />
+                  <Skeleton className="h-3 w-16 rounded bg-card/10" />
+                  <Skeleton className="h-3 w-10 rounded bg-card/10" />
                 </div>
               </div>
             </div>
             
             {/* Action button skeleton - bottom right */}
             <div className="absolute bottom-6 end-6">
-              <Skeleton className="h-9 w-24 rounded-full bg-white/15" />
+              <Skeleton className="h-9 w-24 rounded-full bg-card/15" />
             </div>
           </div>
         </div>

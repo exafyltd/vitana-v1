@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader, PanelTitle as CardTitle } from "@/components/layout/spotlight/Panel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -134,12 +134,12 @@ export default function TenantRole() {
     }
     return (
       <AppLayout>
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
           <div className="max-w-7xl mx-auto">
             <div className="animate-pulse space-y-6">
-              <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-48 bg-gray-200 rounded"></div>
+              <div className="h-8 bg-muted rounded w-1/3"></div>
+              <div className="h-32 bg-muted rounded"></div>
+              <div className="h-48 bg-muted rounded"></div>
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@ export default function TenantRole() {
                 <p className="text-sm text-muted-foreground">{tenant?.name || "No Organization"}</p>
               </div>
             </div>
-            <Badge className="bg-green-100 text-green-700">{t('screens.settings.active')}</Badge>
+            <Badge className="bg-status-success-subtle text-status-success">{t('screens.settings.active')}</Badge>
           </div>
         </CardContent>
       </Card>
@@ -220,10 +220,10 @@ export default function TenantRole() {
                   >
                     <div className="flex items-center gap-3 mb-2">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        currentRole === role ? 'bg-primary text-primary-foreground' : 'bg-blue-100'
+                        currentRole === role ? 'bg-primary text-primary-foreground' : 'bg-category-3/15'
                       }`}>
                         <Users className={`w-4 h-4 ${
-                          currentRole === role ? 'text-primary-foreground' : 'text-blue-600'
+                          currentRole === role ? 'text-primary-foreground' : 'text-category-3'
                         }`} />
                       </div>
                       <h4 className="font-medium">{getRoleDisplayName(role)}</h4>
@@ -231,8 +231,8 @@ export default function TenantRole() {
                     <p className="text-sm text-muted-foreground">{getRoleDescription(role)}</p>
                     <Badge className={`mt-2 ${
                       currentRole === role 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-blue-100 text-blue-700'
+                        ? 'bg-status-success-subtle text-status-success' 
+                        : 'bg-category-3/15 text-category-3'
                     }`}>
                       {currentRole === role ? 'Current' : 'Available'}
                     </Badge>
@@ -297,10 +297,10 @@ export default function TenantRole() {
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          activeTenantId === membership.tenant_id ? 'bg-primary' : 'bg-blue-100'
+                          activeTenantId === membership.tenant_id ? 'bg-primary' : 'bg-category-3/15'
                         }`}>
                           <Building2 className={`w-4 h-4 ${
-                            activeTenantId === membership.tenant_id ? 'text-primary-foreground' : 'text-blue-600'
+                            activeTenantId === membership.tenant_id ? 'text-primary-foreground' : 'text-category-3'
                           }`} />
                         </div>
                         <div>
@@ -310,8 +310,8 @@ export default function TenantRole() {
                       </div>
                       <Badge className={
                         activeTenantId === membership.tenant_id
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-700"
+                          ? "bg-status-success-subtle text-status-success"
+                          : "bg-muted text-muted-foreground"
                       }>
                         {activeTenantId === membership.tenant_id ? 'Active' : 'Available'}
                       </Badge>
@@ -354,13 +354,13 @@ export default function TenantRole() {
                   <div className="flex items-center gap-2">
                     {status === "granted" ? (
                       <>
-                        <CheckCircle2 className="w-4 h-4 text-green-600" />
-                        <Badge className="bg-green-100 text-green-700">{t('screens.settings.granted')}</Badge>
+                        <CheckCircle2 className="w-4 h-4 text-status-success" />
+                        <Badge className="bg-status-success-subtle text-status-success">{t('screens.settings.granted')}</Badge>
                       </>
                     ) : (
                       <>
-                        <XCircle className="w-4 h-4 text-gray-400" />
-                        <Badge className="bg-gray-100 text-gray-700">{t('screens.settings.notAvailable')}</Badge>
+                        <XCircle className="w-4 h-4 text-muted-foreground" />
+                        <Badge className="bg-muted text-muted-foreground">{t('screens.settings.notAvailable')}</Badge>
                       </>
                     )}
                   </div>
@@ -393,7 +393,7 @@ export default function TenantRole() {
     <AppLayout>
       <SEO title={t('screens.settings.tenantRoleSwitcherSettings')} description="Switch between roles and tenants" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader 
             title={t('screens.settings.switchRolesTenants')}

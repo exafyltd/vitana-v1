@@ -31,7 +31,7 @@ export default function EmptyStateIllustration({
               <Users className="w-10 h-10 text-primary/60" />
             </div>
             <div className="absolute -top-1 -end-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center">
-              <Plus className="w-4 h-4 text-white" />
+              <Plus className="w-4 h-4 text-primary-foreground" />
             </div>
           </div>
           
@@ -57,7 +57,7 @@ export default function EmptyStateIllustration({
             <MessageSquare className="w-10 h-10 text-primary/60" />
           </div>
           <div className="absolute -top-1 -end-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center">
-            <Plus className="w-4 h-4 text-white" />
+            <Plus className="w-4 h-4 text-primary-foreground" />
           </div>
         </div>
         

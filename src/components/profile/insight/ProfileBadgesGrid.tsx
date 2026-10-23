@@ -99,7 +99,7 @@ export function ProfileBadgesGrid({ badges, className }: ProfileBadgesGridProps)
     <Card className={`rounded-2xl shadow-sm ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Trophy className="h-5 w-5 text-[hsl(var(--pill-mental-accent))]" />
+          <Trophy className="h-5 w-5 text-pill-mental-accent" />
           {t('screens.profile.badgesAchievements')}
         </CardTitle>
       </CardHeader>
@@ -113,7 +113,7 @@ export function ProfileBadgesGrid({ badges, className }: ProfileBadgesGridProps)
                   <TooltipTrigger asChild>
                     <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-background/50 border border-muted/30 hover:shadow-md transition-all cursor-pointer group">
                       <div className={`p-3 rounded-full bg-gradient-to-br ${badge.color} group-hover:scale-110 transition-transform`}>
-                        <IconComponent className="h-5 w-5 text-white" />
+                        <IconComponent className="h-5 w-5 text-primary-foreground" />
                       </div>
                       <span className="text-xs font-medium text-center line-clamp-2">
                         {badge.name}

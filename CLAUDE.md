@@ -106,8 +106,9 @@ converged plan by policy (`converged-auto-v1`) and allocates the VTIDs; the Proj
 rule §7b (the plan driver applies it while the PM is not live) and sends Gate 2. Claude Code is optional and handles
 exceptions; `executor: claude` lanes go to the exceptions seat while it is unavailable (§7). A protected gate file
 (§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs a legacy Claude or owner review on the
-current head. Kiro merges to `main`/staging only under §7b, never deploys to production and never writes a live system
-from session tools. See `.claude/rules/collaboration.md` §7–§8b.
+current head. Kiro merges to `main`/staging only under §7b, deploys to production only on the owner's explicit command
+in the conversation (§7c: a full publish, or only one session's changes) and never writes a live system from session
+tools. See `.claude/rules/collaboration.md` §7–§8b.
 
 ## Overview
 
@@ -405,7 +406,10 @@ line (e.g. a fixed timestamp shown to the user *in their own data*), use:
 DE is the source of truth. Brand voice is **du-form** (informal) throughout.
 Never write `Sie/Ihr/Ihnen` — even when translators emit it, the LLM audit
 will flag it. After bulk translation, always run the audit workflow:
-`gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=gemini`.
+`gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=deepseek`.
+It runs on demand only; there is no nightly audit. `deepseek` is the default because the Gemini key is out of quota
+and the direct Anthropic API has no credit. DeepSeek also translates, so treat its verdicts as a weaker cross-check
+until a Bedrock auditor exists (follow-up).
 Apply the auto-confidence suggestions via:
 `node scripts/apply-audit-suggestions.mjs --locale=<code>` (≥0.80 by default).
 

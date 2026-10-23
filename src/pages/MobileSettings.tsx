@@ -22,7 +22,7 @@ import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/
 import { Switch } from "@/components/ui/switch";
 import PushDiagnostics from "@/components/PushDiagnostics";
 import { VitanaMessagesSettings } from "@/components/settings/VitanaMessagesSettings";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -374,9 +374,9 @@ export default function MobileSettings() {
                   <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.dataExportControl')}</h3>
                 </div>
                 <div className="text-sm space-y-2">
-                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-blue-500 rounded-full" /><span>{t('screens.mobilesettings.requestDataExportAnytime')}</span></div>
-                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-500 rounded-full" /><span>{t('screens.mobilesettings.deleteAccountAllData')}</span></div>
-                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-purple-500 rounded-full" /><span>{t('screens.mobilesettings.viewAllDataSharingActivities')}</span></div>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-status-info rounded-full" /><span>{t('screens.mobilesettings.requestDataExportAnytime')}</span></div>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-status-success rounded-full" /><span>{t('screens.mobilesettings.deleteAccountAllData')}</span></div>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-category-2 rounded-full" /><span>{t('screens.mobilesettings.viewAllDataSharingActivities')}</span></div>
                 </div>
                 {/* VTID-05173: no export job exists yet (STATUS follow-up) — disabled, as on desktop. */}
                 <Button variant="outline" size="sm" className="mt-2" disabled>{t('screens.mobilesettings.requestDataExport')}</Button>
@@ -435,7 +435,7 @@ export default function MobileSettings() {
                         <p className="text-xs text-muted-foreground">{s.location}</p>
                       </div>
                       {s.current ? (
-                        <span className="text-xs text-green-600 font-medium">{t('screens.mobilesettings.current')}</span>
+                        <span className="text-xs text-status-success font-medium">{t('screens.mobilesettings.current')}</span>
                       ) : (
                         <Button variant="ghost" size="sm" className="text-xs text-destructive">{t('screens.mobilesettings.revoke')}</Button>
                       )}
@@ -469,10 +469,10 @@ export default function MobileSettings() {
               <div>
                 <label className="text-sm font-medium mb-2 block">{t('screens.mobilesettings.primaryColor')}</label>
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple-500 border-2 border-primary cursor-pointer" />
-                  <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-transparent cursor-pointer" />
-                  <div className="w-8 h-8 rounded-full bg-green-500 border-2 border-transparent cursor-pointer" />
-                  <div className="w-8 h-8 rounded-full bg-orange-500 border-2 border-transparent cursor-pointer" />
+                  <div className="w-8 h-8 rounded-full bg-category-2 border-2 border-primary cursor-pointer" />
+                  <div className="w-8 h-8 rounded-full bg-category-3 border-2 border-transparent cursor-pointer" />
+                  <div className="w-8 h-8 rounded-full bg-status-success border-2 border-transparent cursor-pointer" />
+                  <div className="w-8 h-8 rounded-full bg-status-warning border-2 border-transparent cursor-pointer" />
                 </div>
               </div>
               <Separator className="bg-border/30" />
@@ -574,6 +574,7 @@ export default function MobileSettings() {
   };
 
   return (
+    // design-allow-next-line: phone-only screen: returns null on desktop (redirects to /settings), so Spotlight never frames it
     <AppLayout>
       <div className="px-4 pt-4 pb-0 h-full overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader

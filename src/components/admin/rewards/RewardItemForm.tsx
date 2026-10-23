@@ -145,6 +145,7 @@ export function RewardItemForm({ open, item, onClose }: { open: boolean; item: A
 
   return (
     <ResponsiveDialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <ResponsiveDialogContent className="sm:max-w-2xl lg:max-h-[90vh] lg:overflow-y-auto" data-testid="reward-item-form">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>

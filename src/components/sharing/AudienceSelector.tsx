@@ -123,10 +123,10 @@ export function AudienceSelector({
     <div className="space-y-6">
       {/* Event-Based Audiences (if event context is provided) */}
       {eventContext && (
-        <Card className="border-2 border-[hsl(var(--sys-ai-accent))]/20 bg-[hsl(var(--sys-ai-tint))]">
+        <Card className="border-2 border-sys-ai-accent/20 bg-sys-ai-tint">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
+              <Calendar className="w-4 h-4 text-sys-ai-accent" />
               {t('screens.sharing.eventbasedAudiences')}
             </CardTitle>
           </CardHeader>

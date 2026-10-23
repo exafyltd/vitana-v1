@@ -9,14 +9,18 @@ name: i18n LLM audit
 #   docs/i18n-audit-<locale>.md           (human summary)
 #   src/i18n/<locale>/<shard>._audit.json (machine-readable verdicts)
 #
-# Triggers:
-#   - workflow_dispatch (manual, with locale + provider inputs)
-#   - schedule (nightly cron — drains the audit queue across all GA + draft locales)
+# Trigger: workflow_dispatch only (manual, with locale + provider inputs).
+# The nightly schedule was removed (i18n-audit-nightly-off): it ran on an
+# out-of-quota Gemini key (HTTP 429 on almost every batch), still showed green,
+# pushed 9 auto/i18n-audit-* branches a night that were never merged, and
+# nothing from it reached main.
 #
 # Secrets needed (in repo Settings → Secrets):
-#   GOOGLE_GEMINI_API_KEY  — preferred auditor (different from DeepSeek translator)
-#   ANTHROPIC_API_KEY      — fallback
-#   DEEPSEEK_API_KEY       — only as a last resort (correlated-error risk)
+#   DEEPSEEK_API_KEY       — default today; DeepSeek also translated, so
+#                            correlated errors are possible (the script warns)
+#   GOOGLE_GEMINI_API_KEY  — independent auditor, but currently out of quota
+#   ANTHROPIC_API_KEY      — direct Anthropic API; that account has no credit
+# Follow-up: a Bedrock (Claude) auditor, independent of the translator.
 
 on:
   workflow_dispatch:
@@ -28,7 +32,7 @@ on:
       provider:
         description: 'Auditor LLM provider'
         required: true
-        default: 'gemini'
+        default: 'deepseek'
         type: choice
         options:
           - gemini
@@ -50,15 +54,9 @@ on:
         options:
           - 'true'
           - 'false'
-  schedule:
-    # Nightly at 03:30 UTC — runs the audit for every GA + draft locale that
-    # has a target dir under src/i18n/. The matrix below picks them up
-    # automatically.
-    - cron: '30 3 * * *'
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: i18n-audit-llm-${{ github.event.inputs.locale || 'all' }}
@@ -131,61 +129,3 @@ jobs:
           done
           echo "push failed after 5 attempts"
           exit 1
-
-  audit-nightly:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        locale: [de, sr, ar, es, ru, zh, fr, pt, pl]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install
-        run: npm ci
-
-      - name: Skip if locale dir absent
-        id: precheck
-        run: |
-          if [ ! -d "src/i18n/${{ matrix.locale }}" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "Skipping ${{ matrix.locale }} (no shards)"
-          fi
-
-      - name: Run audit
-        if: steps.precheck.outputs.skip != 'true'
-        env:
-          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-        run: |
-          set +e
-          node scripts/i18n-audit-llm.mjs --locale=${{ matrix.locale }} --provider=gemini --resume --threshold=10
-          exit 0
-
-      - name: Open auto-PR with audit results
-        if: steps.precheck.outputs.skip != 'true'
-        run: |
-          BRANCH="auto/i18n-audit-${{ matrix.locale }}-$(date +%Y%m%d)"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
-          # i18n-audit/ carries the MACHINE-READABLE verdicts that
-          # scripts/apply-audit-suggestions.mjs consumes (VTID-03524). Staging
-          # only src/i18n/ and docs/ left the markdown report committed and its
-          # companion JSON discarded with the runner, so the documented
-          # "apply the >=0.80 suggestions" step could never actually run — the
-          # audit produced advice nothing could act on.
-          git add src/i18n/ docs/ i18n-audit/
-          if git diff --cached --quiet; then
-            echo "No new audit findings for ${{ matrix.locale }}."
-            exit 0
-          fi
-          git commit -m "chore(i18n): nightly audit ${{ matrix.locale }}"
-          git push -u origin "$BRANCH" || true

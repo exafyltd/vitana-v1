@@ -127,7 +127,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
             <Gift className="h-5 w-5 text-primary" />
             {t('screens.wallet.liveOpportunities')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">{t('screens.wallet.totalpotentialVtnAvailable', { totalPotential })}
+          <Badge variant="secondary" className="bg-gradient-to-r from-primary to-category-2 text-primary-foreground">{t('screens.wallet.totalpotentialVtnAvailable', { totalPotential })}
           </Badge>
         </div>
       </CardHeader>
@@ -150,7 +150,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
               
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="p-1 rounded bg-white/20">
+                  <div className="p-1 rounded bg-card/20">
                     <IconComponent className="h-4 w-4" />
                   </div>
                   <div>
@@ -216,7 +216,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
             <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
-            <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
+            <div className="text-lg font-bold text-status-success">{totalPotential}</div>
             <div className="text-xs text-muted-foreground">{t('screens.wallet.totalVtn')}</div>
           </div>
         </div>

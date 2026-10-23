@@ -78,6 +78,7 @@ export function PromoteToKnowledgeDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('screens.memory.saveAsKnowledge')}</DialogTitle>
