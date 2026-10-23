@@ -7,7 +7,7 @@
       "reason": "Home feed + deep-link unit tests: loaded / empty / error, per-kind card mapping, error-boundary isolation, All/Community tab switch, pull-to-refresh refetch, and the compose / comments / notif deep links — fake-gateway / fixtures, no network (run with APP_PROFILE=development)" },
     { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
       "reason": "React 19 ReactElement typing; the Home screen, cards, data layer and feed / news-card ports type-check against @vitana/core, @vitana/tokens and the shell ports (run with APP_PROFILE=development)" },
-    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile",
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
       "reason": "Metro + Hermes bundle for iOS and Android includes the new /home routes and the feed core re-exports (run with APP_PROFILE=development)" },
     { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
       "reason": "the 9 home rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check` (run with APP_PROFILE=development)" }
