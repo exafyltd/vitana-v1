@@ -161,7 +161,7 @@
     "search": {
       "title": "Pretraži poruke",
       "titleConversation": "Pretraži ovaj razgovor",
-      "hint": "Unesite najmanje {min} znaka",
+      "hint": "Unesi najmanje {min} znaka",
       "placeholder": "Pretraži poruke…",
       "olderHit": "Stariji rezultat",
       "newerHit": "Noviji rezultat",
@@ -177,7 +177,7 @@
         "link": "Linkovi"
       },
       "searching": "Pretraga…",
-      "error": "Pretraga nije uspela. Pokušajte ponovo.",
+      "error": "Pretraga nije uspela. Pokušaj ponovo.",
       "empty": "Nema pronađenih poruka",
       "results": "Rezultati pretrage",
       "conversation": "Razgovor",

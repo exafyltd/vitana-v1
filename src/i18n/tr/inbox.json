@@ -161,7 +161,7 @@
     "search": {
       "title": "Mesajlarda ara",
       "titleConversation": "Bu sohbette ara",
-      "hint": "En az {min} karakter yazın",
+      "hint": "En az {min} karakter yaz",
       "placeholder": "Mesajlarda ara…",
       "olderHit": "Önceki eşleşme",
       "newerHit": "Sonraki eşleşme",
@@ -177,7 +177,7 @@
         "link": "Bağlantılar"
       },
       "searching": "Aranıyor…",
-      "error": "Arama başarısız oldu. Lütfen tekrar deneyin.",
+      "error": "Arama başarısız oldu. Tekrar dene.",
       "empty": "Mesaj bulunamadı",
       "results": "Arama sonuçları",
       "conversation": "Sohbet",
