@@ -1,0 +1,6 @@
+## base = origin/main (77cb11280) with the lane's new tests
+ ❯ src/hooks/useMessageSearch.test.ts (0 test)
+ ❯ src/components/messages/MessageSearchPanel.vtid-05317.test.tsx (0 test)
+Error: Failed to resolve import "./useMessageSearch" from "src/hooks/useMessageSearch.test.ts". Does the file exist?
+Error: Failed to resolve import "./MessageSearchPanel" from "src/components/messages/MessageSearchPanel.vtid-05317.test.tsx". Does the file exist?
+Head: 10 + 8 = 18 passed.

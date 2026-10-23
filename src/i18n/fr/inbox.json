@@ -157,6 +157,31 @@
       "unknownSender": "Membre",
       "noText": "Pièce jointe",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Rechercher des messages",
+      "titleConversation": "Rechercher dans cette conversation",
+      "hint": "Saisissez au moins {min} caractères",
+      "placeholder": "Rechercher des messages…",
+      "olderHit": "Résultat précédent",
+      "newerHit": "Résultat suivant",
+      "type": "Type",
+      "from": "Du",
+      "to": "Au",
+      "types": {
+        "any": "Tous",
+        "image": "Photos",
+        "video": "Vidéos",
+        "file": "Fichiers",
+        "voice": "Messages vocaux",
+        "link": "Liens"
+      },
+      "searching": "Recherche…",
+      "error": "La recherche a échoué. Veuillez réessayer.",
+      "empty": "Aucun message trouvé",
+      "results": "Résultats de recherche",
+      "conversation": "Conversation",
+      "more": "Afficher plus"
     }
   },
   "_pending_review": {}

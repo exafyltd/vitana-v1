@@ -1,0 +1,7 @@
+{
+  "vtid": "VTID-05317",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/hooks/useMessageSearch.test.ts src/components/messages/MessageSearchPanel.vtid-05317.test.tsx", "reason": "filters map to the I5 query, debounce and stale-answer cancel, too-short / empty / error, paging, keyboard, global result routing and in-conversation older/newer; the panel's look and the jump on real data are the owner's check on staging (gateway VTID-05309 search needs its migration applied for the trigram index; it works without it, slower)" }
+  ]
+}

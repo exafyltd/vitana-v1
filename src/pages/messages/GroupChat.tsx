@@ -13,7 +13,8 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
+import MessageSearchPanel from "@/components/messages/MessageSearchPanel";
 import { useAuth } from "@/context/AuthProvider";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useTranslation } from "@/hooks/useTranslation";
@@ -505,6 +506,38 @@ export default function GroupChat() {
     markGroupAway();
   }, [markGroupAway]);
   const jumpToMessage = useJumpToMessage({ loadAround, onJump: onGroupJump });
+
+  // VTID-05317: a deep link / search result older than the loaded page — once
+  // the page is there and the message is not, load the window around it (I8).
+  const deepJumpTriedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!ready || !groupId || !initialScrollMessageId) return;
+    const key = `${groupId}|${initialScrollMessageId}`;
+    if (deepJumpTriedRef.current === key) return;
+    if (messages.some((m) => m.id === initialScrollMessageId)) return; // the pin handles it
+    deepJumpTriedRef.current = key;
+    void jumpToMessage(initialScrollMessageId);
+  }, [ready, groupId, initialScrollMessageId, messages, jumpToMessage]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchButton = (
+    <button
+      type="button"
+      data-testid="group-search-button"
+      aria-label={translate("inbox.search.titleConversation")}
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:bg-muted active:bg-muted"
+      onClick={() => setSearchOpen(true)}
+    >
+      <Search className="h-5 w-5" aria-hidden="true" />
+    </button>
+  );
+  const searchPanel = groupId ? (
+    <MessageSearchPanel
+      open={searchOpen}
+      onOpenChange={setSearchOpen}
+      scope={`group:${groupId}`}
+      onSelect={(r) => { void jumpToMessage(r.message_id); }}
+    />
+  ) : null;
   // VTID-05322: while this group is on screen, no push for it (gateway VTID-05312).
   useChatViewingPresence(groupId ? `group:${groupId}` : null);
   const rowById = useMemo(() => new Map(shownMessages.map((m) => [m.id, m])), [shownMessages]);
@@ -670,6 +703,7 @@ export default function GroupChat() {
                   <AvatarFallback>{group.name?.[0] ?? "#"}</AvatarFallback>
                 </Avatar>
               )}
+              {group && loaded && <div className="ms-auto">{searchButton}</div>}
             </div>
             {failed ? (
               <SpotlightEmpty Icon={MessageSquareOff} titleKey="inbox.group.cantOpen" actionKey="inbox.group.backToInbox" onAction={goBack} />
@@ -737,6 +771,7 @@ export default function GroupChat() {
             )}
           </div>
         </ScreenFrame>
+        {searchPanel}
       </AppLayout>
     );
   }
@@ -801,7 +836,9 @@ export default function GroupChat() {
             {group.is_system ? ` · ${translate("inbox.group.officialBadge")}` : ""}
           </div>
         </div>
+        {searchButton}
       </header>
+      {searchPanel}
 
       <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none">
         <div ref={contentRef}>

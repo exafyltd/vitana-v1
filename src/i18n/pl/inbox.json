@@ -157,6 +157,31 @@
       "unknownSender": "Członek",
       "noText": "Załącznik",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Szukaj wiadomości",
+      "titleConversation": "Szukaj w tej rozmowie",
+      "hint": "Wpisz co najmniej {min} znaki",
+      "placeholder": "Szukaj wiadomości…",
+      "olderHit": "Starsze trafienie",
+      "newerHit": "Nowsze trafienie",
+      "type": "Typ",
+      "from": "Od",
+      "to": "Do",
+      "types": {
+        "any": "Wszystkie",
+        "image": "Zdjęcia",
+        "video": "Filmy",
+        "file": "Pliki",
+        "voice": "Wiadomości głosowe",
+        "link": "Linki"
+      },
+      "searching": "Wyszukiwanie…",
+      "error": "Wyszukiwanie nie powiodło się. Spróbuj ponownie.",
+      "empty": "Nie znaleziono wiadomości",
+      "results": "Wyniki wyszukiwania",
+      "conversation": "Rozmowa",
+      "more": "Pokaż więcej"
     }
   },
   "_pending_review": {}

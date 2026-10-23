@@ -157,6 +157,31 @@
       "unknownSender": "عضو",
       "noText": "مرفق",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "البحث في الرسائل",
+      "titleConversation": "البحث في هذه المحادثة",
+      "hint": "اكتب {min} أحرف على الأقل",
+      "placeholder": "ابحث في الرسائل…",
+      "olderHit": "النتيجة الأقدم",
+      "newerHit": "النتيجة الأحدث",
+      "type": "النوع",
+      "from": "من",
+      "to": "إلى",
+      "types": {
+        "any": "الكل",
+        "image": "الصور",
+        "video": "الفيديوهات",
+        "file": "الملفات",
+        "voice": "الرسائل الصوتية",
+        "link": "الروابط"
+      },
+      "searching": "جارٍ البحث…",
+      "error": "فشل البحث. حاول مرة أخرى.",
+      "empty": "لم يتم العثور على رسائل",
+      "results": "نتائج البحث",
+      "conversation": "المحادثة",
+      "more": "عرض المزيد"
     }
   },
   "_pending_review": {}
