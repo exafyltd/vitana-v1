@@ -16,6 +16,7 @@ import {
   validateFile, 
   uploadChatAttachment, 
   uploadVoiceMessage,
+  deleteChatAttachment,
   formatFileSize, 
   isValidFileType,
   type AttachmentData, 
@@ -27,7 +28,9 @@ import {
   X,
   Loader2,
   Mic,
-  Paperclip
+  Paperclip,
+  RotateCw,
+  AlertCircle
 } from 'lucide-react';
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
@@ -86,6 +89,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const [attachments, setAttachments] = useState<AttachmentData[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: UploadProgress }>({});
+  // VTID-05316: an upload that failed stays in the strip (with its file) until
+  // it is retried or removed; nothing is sent while one is there.
+  const [failedUploads, setFailedUploads] = useState<Array<{ id: string; file: File }>>([]);
+  const activeUploadsRef = useRef(0);
   const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -187,7 +194,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
     
     // Guard conditions - allow sending if we have either threadId or recipientId
-    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || isSending || sendingLockRef.current) {
+    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || failedUploads.length > 0 || isSending || sendingLockRef.current) {
       return;
     }
 
@@ -377,87 +384,104 @@ const MessageInput: React.FC<MessageInputProps> = ({
       return;
     }
 
-    setIsUploading(true);
-
     for (const file of files) {
-      const uploadId = Date.now().toString() + '_' + file.name;
-      setUploadProgress(prev => ({
-        ...prev,
-        [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
-      }));
-      console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
+      await uploadOne(file);
+    }
+  };
 
-      try {
-        const attachmentResult = await uploadChatAttachment(
-          file,
-          (progress) => {
-            setUploadProgress(prev => ({
-              ...prev,
-              [uploadId]: progress
-            }));
-          },
-          threadId
-        );
+  /**
+   * VTID-05316: one file — real progress in the strip; on failure the file
+   * stays as a failed chip with Retry (the caption in the text box is kept).
+   */
+  const uploadOne = async (file: File) => {
+    if (!threadId) return;
+    const uploadId = Date.now().toString() + '_' + Math.random().toString(36).slice(2, 7) + '_' + file.name;
+    activeUploadsRef.current += 1;
+    setIsUploading(true);
+    setUploadProgress(prev => ({
+      ...prev,
+      [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
+    }));
+    console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
 
-        console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
-        // Detect images for inline preview. Mime check covers desktops and
-        // most Android pickers; the extension fallback handles cases where
-        // the OS file picker delivers an empty mime (Samsung's SAF on
-        // screenshots, some iOS variants) so a `.png` screenshot still
-        // renders as an image instead of a "download" file chip.
-        const previewableImageMimes = new Set([
-          'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
-          'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
-          'image/bmp', 'image/tiff', 'image/avif',
-        ]);
-        const previewableExts = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
-        const mime = (attachmentResult.type || '').toLowerCase();
-        const isPreviewImage =
-          previewableImageMimes.has(mime)
-          || mime.startsWith('image/')
-          || previewableExts.test(attachmentResult.name || '');
-        const attachmentData: AttachmentData = {
-          type: isPreviewImage ? 'image' : 'file',
-          url: attachmentResult.url,
-          path: attachmentResult.path,
-          name: attachmentResult.name,
-          size: attachmentResult.size,
-          mime: attachmentResult.type,
-          filename: attachmentResult.name
-        };
+    try {
+      const attachmentResult = await uploadChatAttachment(
+        file,
+        (progress) => {
+          setUploadProgress(prev => (prev[uploadId] ? { ...prev, [uploadId]: progress } : prev));
+        },
+        threadId
+      );
 
-        setAttachments(prev => [...prev, attachmentData]);
+      console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
+      // Detect images for inline preview. Mime check covers desktops and
+      // most Android pickers; the extension fallback handles cases where
+      // the OS file picker delivers an empty mime (Samsung's SAF on
+      // screenshots, some iOS variants) so a `.png` screenshot still
+      // renders as an image instead of a "download" file chip.
+      const previewableImageMimes = new Set([
+        'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
+        'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
+        'image/bmp', 'image/tiff', 'image/avif',
+      ]);
+      const previewableExts = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
+      const videoExts = /\.(mp4|webm|mov|m4v)$/i;
+      const mime = (attachmentResult.type || '').toLowerCase();
+      const isPreviewImage =
+        previewableImageMimes.has(mime)
+        || mime.startsWith('image/')
+        || previewableExts.test(attachmentResult.name || '');
+      // VTID-05316: videos are albums' members too (played in the viewer).
+      const isVideo = !isPreviewImage && (mime.startsWith('video/') || videoExts.test(attachmentResult.name || ''));
+      const attachmentData: AttachmentData = {
+        type: isPreviewImage ? 'image' : isVideo ? 'video' : 'file',
+        url: attachmentResult.url,
+        path: attachmentResult.path,
+        name: attachmentResult.name,
+        size: attachmentResult.size,
+        mime: attachmentResult.type,
+        filename: attachmentResult.name
+      };
 
-        setUploadProgress(prev => {
-          const newProgress = { ...prev };
-          delete newProgress[uploadId];
-          return newProgress;
-        });
-      } catch (error) {
-        console.error('Upload error:', error);
-        notifyError('toasts.messages.uploadFailed');
-        setUploadProgress(prev => {
-          const newProgress = { ...prev };
-          delete newProgress[uploadId];
-          return newProgress;
-        });
+      setAttachments(prev => [...prev, attachmentData]);
+    } catch (error) {
+      console.error('Upload error:', error);
+      notifyError('toasts.messages.uploadFailed');
+      setFailedUploads(prev => [...prev, { id: uploadId, file }]);
+    } finally {
+      setUploadProgress(prev => {
+        const newProgress = { ...prev };
+        delete newProgress[uploadId];
+        return newProgress;
+      });
+      activeUploadsRef.current -= 1;
+      if (activeUploadsRef.current <= 0) {
+        activeUploadsRef.current = 0;
+        setIsUploading(false);
       }
     }
+  };
 
-    setIsUploading(false);
+  const retryUpload = (id: string) => {
+    const failed = failedUploads.find((f) => f.id === id);
+    if (!failed) return;
+    setFailedUploads(prev => prev.filter((f) => f.id !== id));
+    void uploadOne(failed.file);
+  };
+
+  const removeFailedUpload = (id: string) => {
+    setFailedUploads(prev => prev.filter((f) => f.id !== id));
   };
 
   const removeAttachment = (index: number) => {
     const file = attachments[index];
-    if (file) {
-      const fileId = `${file.name}-${file.size}`;
-      setUploadProgress(prev => {
-        const newProgress = { ...prev };
-        delete newProgress[fileId];
-        return newProgress;
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+    // VTID-05316: an uploaded file that will not be sent is deleted again.
+    if (file?.path) {
+      deleteChatAttachment(file.path).catch((err) => {
+        console.warn('[Attachment] Could not delete the removed upload:', err);
       });
     }
-    setAttachments(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleVoiceRecording = async (audioBlob: Blob, duration: number) => {
@@ -559,7 +583,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const quickReactions = ['❤️', '👍', '😊', '🎉', '💪', '🙏'];
-  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && !disabled && !isSending;
+  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && failedUploads.length === 0 && !disabled && !isSending;
 
   return (
     <form 
@@ -577,7 +601,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       )}
 
       {/* File Attachments Preview */}
-      {(attachments.length > 0 || Object.keys(uploadProgress).length > 0) && (
+      {(attachments.length > 0 || Object.keys(uploadProgress).length > 0 || failedUploads.length > 0) && (
         <div className="px-4 pb-2" id="attachment-status">
           <div className="flex flex-wrap gap-2">
             {attachments.map((attachment, index) => (
@@ -616,15 +640,55 @@ const MessageInput: React.FC<MessageInputProps> = ({
               </div>
             ))}
 
-            {/* Show upload progress */}
+            {/* Show upload progress (VTID-05316: real progress events) */}
             {Object.entries(uploadProgress).map(([id, progress]) => (
               <div
                 key={id}
                 className="flex items-center gap-2 bg-secondary/50 rounded-lg px-3 py-2 text-sm"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress.percentage}
+                data-testid="upload-progress"
               >
                 <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                 <span className="text-muted-foreground">{t('screens.messages.uploadingPercentage', { percentage: progress.percentage })}
                 </span>
+              </div>
+            ))}
+
+            {/* VTID-05316: a failed upload keeps its place; Retry re-uploads it. */}
+            {failedUploads.map(({ id, file }) => (
+              <div
+                key={id}
+                className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm"
+                data-testid="upload-failed"
+              >
+                <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" aria-hidden />
+                <div className="flex-1 min-w-0">
+                  <div className="truncate max-w-32 font-medium">{file.name}</div>
+                  <div className="text-destructive text-xs">{t('inbox.media.uploadFailed')}</div>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="h-8 px-2 flex-shrink-0 text-xs"
+                  onClick={() => retryUpload(id)}
+                  aria-label={t('inbox.media.retryUpload', { name: file.name })}
+                  data-testid="upload-retry"
+                >
+                  <RotateCw className="w-3 h-3 me-1" aria-hidden />
+                  {t('inbox.media.retry')}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="h-6 w-6 p-0 flex-shrink-0"
+                  onClick={() => removeFailedUpload(id)}
+                  aria-label={`Remove ${file.name}`}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
               </div>
             ))}
           </div>

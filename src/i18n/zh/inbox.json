@@ -157,6 +157,16 @@
       "unknownSender": "成员",
       "noText": "附件",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "上传失败",
+      "retry": "重试",
+      "retryUpload": "重新上传 {name}",
+      "video": "视频",
+      "moreItems": "还有 {count} 个",
+      "openImage": "打开图片 {name}",
+      "openVideo": "播放视频 {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

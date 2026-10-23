@@ -157,6 +157,16 @@
       "unknownSender": "Członek",
       "noText": "Załącznik",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Przesyłanie nie powiodło się",
+      "retry": "Ponów",
+      "retryUpload": "Prześlij ponownie {name}",
+      "video": "Wideo",
+      "moreItems": "Jeszcze {count}",
+      "openImage": "Otwórz obraz {name}",
+      "openVideo": "Odtwórz wideo {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

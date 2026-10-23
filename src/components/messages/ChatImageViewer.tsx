@@ -27,6 +27,8 @@ import {
 export interface ChatViewerImage {
   url: string;
   filename: string;
+  /** VTID-05316: a video plays with native controls (no zoom / copy). */
+  kind?: 'image' | 'video';
 }
 
 interface ChatImageViewerProps {
@@ -175,7 +177,8 @@ export function ChatImageViewer({
   };
 
   const onPointerDown = (ev: React.PointerEvent<HTMLDivElement>) => {
-    if ((ev.target as HTMLElement).closest('button')) return;
+    // Buttons and the video's own controls handle their pointers themselves.
+    if ((ev.target as HTMLElement).closest('button, video')) return;
     ev.currentTarget.setPointerCapture?.(ev.pointerId);
     pointers.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
     const pinching = pointers.current.size >= 2;
@@ -242,6 +245,7 @@ export function ChatImageViewer({
   };
 
   if (!open || count === 0 || typeof document === 'undefined') return null;
+  const isVideo = current?.kind === 'video';
 
   const iconButton = 'h-11 w-11 rounded-full text-foreground hover:bg-muted';
 
@@ -275,17 +279,19 @@ export function ChatImageViewer({
         >
           <Download className="h-5 w-5" />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className={iconButton}
-          onClick={() => current && copyImageAndNotify(current.url)}
-          aria-label={t('screens.messages.copyImage')}
-          data-testid="chat-image-viewer-copy"
-        >
-          <Copy className="h-5 w-5" />
-        </Button>
-        {canShare && (
+        {!isVideo && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className={iconButton}
+            onClick={() => current && copyImageAndNotify(current.url)}
+            aria-label={t('screens.messages.copyImage')}
+            data-testid="chat-image-viewer-copy"
+          >
+            <Copy className="h-5 w-5" />
+          </Button>
+        )}
+        {canShare && !isVideo && (
           <Button
             variant="ghost"
             size="icon"
@@ -318,10 +324,21 @@ export function ChatImageViewer({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerCancel}
-        onDoubleClick={toggleZoomAt}
+        onDoubleClick={isVideo ? undefined : toggleZoomAt}
         data-testid="chat-image-viewer-stage"
       >
-        {current?.url ? (
+        {current?.url && isVideo ? (
+          <video
+            key={current.url}
+            src={current.url}
+            controls
+            playsInline
+            preload="metadata"
+            className="max-h-full max-w-full"
+            aria-label={current.filename || t('inbox.media.video')}
+            data-testid="chat-image-viewer-video"
+          />
+        ) : current?.url ? (
           <img
             key={current.url}
             src={current.url}

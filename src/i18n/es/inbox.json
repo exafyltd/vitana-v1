@@ -157,6 +157,16 @@
       "unknownSender": "Miembro",
       "noText": "Adjunto",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Error al subir",
+      "retry": "Reintentar",
+      "retryUpload": "Volver a subir {name}",
+      "video": "Vídeo",
+      "moreItems": "{count} más",
+      "openImage": "Abrir imagen {name}",
+      "openVideo": "Reproducir vídeo {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

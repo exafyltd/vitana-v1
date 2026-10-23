@@ -157,6 +157,16 @@
       "unknownSender": "Član",
       "noText": "Prilog",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Otpremanje nije uspelo",
+      "retry": "Pokušaj ponovo",
+      "retryUpload": "Ponovo otpremi {name}",
+      "video": "Video",
+      "moreItems": "Još {count}",
+      "openImage": "Otvori sliku {name}",
+      "openVideo": "Pusti video {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

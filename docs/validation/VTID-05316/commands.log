@@ -1,0 +1,10 @@
+# VTID-05316 (messenger-ux-v2/ui-media-album) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/lib/fileUpload.vtid-05316.test.ts src/components/messages/MediaAlbum.vtid-05316.test.tsx src/components/messages/MessageInput.media-upload.vtid-05316.test.tsx   # base: 9 failed + album module missing (red-on-base.txt); head: 23 passed
+$ npx vitest run src/components/messages src/pages/messages src/hooks src/lib src/components/ui src/i18n   # 231 files / 1648 tests passed (existing MessageInput.*, ChatImageViewer.vtid-05138, MessageBubble.image-attachment.vtid-05138, emoji-picker suites green unchanged)
+$ npx tsc --noEmit -p tsconfig.app.json   # no errors in touched files
+$ npx eslint <touched files>   # MessageBubble 19 → 18, MessageInput 4 = 4, ChatImageViewer / fileUpload 0; new files 0
+Upload: createSignedUploadUrl (same bucket and {me}/{thread}/{ts}_{rand}.{ext} path) + XMLHttpRequest PUT (FormData, x-upsert:false, apikey) for real progress events; capped at 99 % until the server answers; a network-level XHR failure falls back to storage.uploadToSignedUrl (no progress); a refused PUT fails.
+Composer: a failed upload stays as a chip with Retry and Remove (the caption in the box is kept; nothing is sent while a failed or running upload is there); removing an uploaded file deletes it from storage; videos are type 'video'.
+Bubble: 2+ pictures/videos → MediaAlbum (2: 1×2, 3: 1+2, 4: 2×2, 5+: 2×2 with "+N" = items not fully visible); files stay chips below; a single picture renders exactly as before; a single video shows a play tile. Viewer: videos play with native controls (no zoom/copy/share for them).
+Plan amendment (from ui-emoji-recents, recorded at Gate 2): reactions now move the emoji to the front of the member's recent list at both MessageBubble call sites (quick reactions via handleReactionSelect, ReactionCluster chips) — test in MediaAlbum.vtid-05316.test.tsx.
+Not done here: a staging spec (the test user has no multi-image message known to this session; Vitest covers the layouts) and screenshots (owner's check on staging).

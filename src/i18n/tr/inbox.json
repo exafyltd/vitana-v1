@@ -157,6 +157,16 @@
       "unknownSender": "Üye",
       "noText": "Ek",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Yükleme başarısız",
+      "retry": "Tekrar dene",
+      "retryUpload": "{name} dosyasını tekrar yükle",
+      "video": "Video",
+      "moreItems": "{count} tane daha",
+      "openImage": "{name} resmini aç",
+      "openVideo": "{name} videosunu oynat",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
