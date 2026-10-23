@@ -86,6 +86,9 @@ export function ChatImageViewer({
 
   const count = images.length;
   const current = images[clamp(index, 0, Math.max(0, count - 1))];
+  // VTID-05316: read by the wheel / double-tap handlers.
+  const isVideoRef = useRef(false);
+  isVideoRef.current = current?.kind === 'video';
 
   const resetZoom = useCallback(() => {
     setScale(1);
@@ -120,6 +123,8 @@ export function ChatImageViewer({
         ev.preventDefault();
         onCloseRef.current();
       } else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+        // A focused video keeps its own seek keys.
+        if ((document.activeElement as HTMLElement | null)?.tagName === 'VIDEO') return;
         ev.preventDefault();
         const forward = ev.key === 'ArrowRight' ? 1 : -1;
         go(isRtl() ? -forward : forward);
@@ -156,6 +161,7 @@ export function ChatImageViewer({
     if (!open || !el) return;
     const onWheel = (ev: WheelEvent) => {
       ev.preventDefault();
+      if (isVideoRef.current) return; // no zoom for videos
       setScale((s) => {
         const next = clamp(s * Math.exp(-ev.deltaY * 0.002), MIN_SCALE, MAX_SCALE);
         if (next === MIN_SCALE) setOffset({ x: 0, y: 0 });
@@ -167,6 +173,7 @@ export function ChatImageViewer({
   }, [open]);
 
   const toggleZoomAt = useCallback(() => {
+    if (isVideoRef.current) return;
     if (scale > 1) resetZoom();
     else setScale(DOUBLE_TAP_SCALE);
   }, [scale, resetZoom]);
@@ -364,7 +371,8 @@ export function ChatImageViewer({
           <Button
             variant="ghost"
             size="icon"
-            className={cn(iconButton, 'absolute start-2 top-1/2 hidden -translate-y-1/2 md:inline-flex')}
+            // A video takes the pointer for its controls: show the arrows on phones too.
+            className={cn(iconButton, 'absolute start-2 top-1/2 -translate-y-1/2', isVideo ? 'inline-flex' : 'hidden md:inline-flex')}
             onClick={() => go(-1)}
             aria-label={t('screens.messages.previousImage')}
             data-testid="chat-image-viewer-prev"
@@ -376,7 +384,7 @@ export function ChatImageViewer({
           <Button
             variant="ghost"
             size="icon"
-            className={cn(iconButton, 'absolute end-2 top-1/2 hidden -translate-y-1/2 md:inline-flex')}
+            className={cn(iconButton, 'absolute end-2 top-1/2 -translate-y-1/2', isVideo ? 'inline-flex' : 'hidden md:inline-flex')}
             onClick={() => go(1)}
             aria-label={t('screens.messages.nextImage')}
             data-testid="chat-image-viewer-next"

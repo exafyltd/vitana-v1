@@ -107,6 +107,7 @@ export function putToSignedUploadUrl(
       : reject(new Error(`Upload failed (${xhr.status})`)));
     xhr.onerror = () => reject(new Error('Upload failed (network)'));
     xhr.onabort = () => reject(new DOMException('Upload cancelled', 'AbortError'));
+    if (signal?.aborted) { reject(new DOMException('Upload cancelled', 'AbortError')); return; }
     signal?.addEventListener('abort', () => xhr.abort(), { once: true });
     const body = new FormData();
     body.append('cacheControl', '3600');
@@ -120,9 +121,10 @@ export function putToSignedUploadUrl(
  *
  * VTID-05316: real progress — the file goes to a signed upload URL
  * (`createSignedUploadUrl`, same bucket and path rule as before) via
- * XMLHttpRequest. If that request cannot be made (no XHR, a CORS / network
- * refusal of the PUT itself), the client library's `uploadToSignedUrl` is used
- * instead (no progress events, same result).
+ * XMLHttpRequest. Without XMLHttpRequest the client library's
+ * `uploadToSignedUrl` is used (no progress events, same result). A failed PUT
+ * is a failed upload — the composer offers Retry (a second PUT with the same
+ * one-time token could hit a 409 and orphan the first object).
  */
 export async function uploadChatAttachment(
   file: File,
@@ -161,17 +163,7 @@ export async function uploadChatAttachment(
 
     let storedPath = signed.path || filePath;
     if (typeof XMLHttpRequest !== 'undefined') {
-      try {
-        await putToSignedUploadUrl(signed.signedUrl, file, onProgress, opts.signal);
-      } catch (err) {
-        if ((err as Error)?.name === 'AbortError') throw err;
-        // A refused PUT (status) is final; only a network-level failure of the
-        // XHR itself falls back to the library call.
-        if (!/network/.test(String((err as Error)?.message))) throw err;
-        const { data, error } = await bucket.uploadToSignedUrl(signed.path || filePath, signed.token, file);
-        if (error) throw error;
-        storedPath = data?.path || storedPath;
-      }
+      await putToSignedUploadUrl(signed.signedUrl, file, onProgress, opts.signal);
     } else {
       const { data, error } = await bucket.uploadToSignedUrl(signed.path || filePath, signed.token, file);
       if (error) throw error;

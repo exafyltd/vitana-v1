@@ -847,6 +847,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     const displayUrl = displayUrlFor(attachment);
     const isResigning = !!attachment.path && resigningPaths.has(attachment.path);
     // VTID-05316: a single video shows its first frame; a tap plays it in the viewer.
+    if (!isImage && isVideoAttachment(attachment) && displayUrl === undefined) {
+      return (
+        <div key={key} className="h-48 w-64 max-w-full animate-pulse rounded-lg bg-muted" role="status" aria-label={t('screens.messages.imageLoading')} data-testid="chat-image-skeleton" />
+      );
+    }
     if (!isImage && isVideoAttachment(attachment) && displayUrl) {
       return (
         <button

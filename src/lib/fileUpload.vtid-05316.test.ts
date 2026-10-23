@@ -80,11 +80,24 @@ describe('uploadChatAttachment (VTID-05316)', () => {
     expect(uploadToSignedUrl).not.toHaveBeenCalled();
   });
 
-  it('a network failure of the XHR falls back to the client library (no progress, same result)', async () => {
+  it('a network failure fails the upload (Retry in the composer; no second PUT with the one-time token)', async () => {
     FakeXHR.mode = 'network';
+    await expect(uploadChatAttachment(file(), undefined, 'peer-1')).rejects.toThrow('Upload failed (network)');
+    expect(uploadToSignedUrl).not.toHaveBeenCalled();
+  });
+
+  it('without XMLHttpRequest the client library uploads to the same signed URL', async () => {
+    vi.stubGlobal('XMLHttpRequest', undefined);
     const result = await uploadChatAttachment(file(), undefined, 'peer-1');
     expect(uploadToSignedUrl).toHaveBeenCalledTimes(1);
+    expect(uploadToSignedUrl.mock.calls[0][1]).toBe('tok');
     expect(result.url).toBe('https://sb.test/signed/read');
+  });
+
+  it('the request carries the library\'s form fields and x-upsert:false', async () => {
+    await uploadChatAttachment(file(), undefined, 'peer-1');
+    expect(FakeXHR.last!.headers['x-upsert']).toBe('false');
+    expect(FakeXHR.last!.body!.get('cacheControl')).toBe('3600');
   });
 
   it('cancelling aborts the request', async () => {

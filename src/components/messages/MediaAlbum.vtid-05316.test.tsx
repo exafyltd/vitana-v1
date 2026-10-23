@@ -149,4 +149,29 @@ describe('MessageBubble albums (VTID-05316)', () => {
     expect(h.addReaction).toHaveBeenCalledWith('🔥');
     expect(h.record).toHaveBeenCalledWith('🔥', 'me');
   });
+
+  it('a quick reaction (context menu path) records the emoji too', async () => {
+    renderBubble([pic(1), pic(2)]);
+    const bubble = await screen.findByTestId('media-album');
+    fireEvent.contextMenu(bubble);
+    const item = (await screen.findAllByRole('menuitem')).find((el) => el.textContent?.includes('👍'))
+      ?? screen.queryAllByText('👍')[0];
+    if (!item) throw new Error('no quick reaction 👍 in the context menu');
+    await act(async () => { fireEvent.click(item); });
+    expect(h.record).toHaveBeenCalledWith('👍', 'me');
+  });
+
+  it('viewer: a video shows prev/next on phones, and the wheel never zooms it', async () => {
+    renderBubble([vid(1), pic(2)]);
+    await waitFor(() => expect(screen.getAllByTestId('media-album-tile')).toHaveLength(2));
+    fireEvent.click(screen.getAllByTestId('media-album-tile')[0]);
+    await screen.findByTestId('chat-image-viewer-video');
+    expect(screen.getByTestId('chat-image-viewer-next').className).not.toContain('hidden');
+    const stage = screen.getByTestId('chat-image-viewer-stage');
+    await act(async () => { stage.dispatchEvent(new WheelEvent('wheel', { deltaY: -500, bubbles: true, cancelable: true })); });
+    fireEvent.click(screen.getByTestId('chat-image-viewer-next'));
+    expect(screen.getByTestId('chat-image-viewer-image').getAttribute('data-scale')).toBe('1');
+    expect(screen.getByTestId('chat-image-viewer-prev').className).toContain('hidden'); // a picture: arrows only from md up
+  });
 });
+

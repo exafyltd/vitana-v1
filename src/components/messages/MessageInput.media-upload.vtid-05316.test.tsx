@@ -144,4 +144,41 @@ describe("composer uploads (VTID-05316)", () => {
     await enter();
     expect(onSendMessage.mock.calls[0][2].attachments.map((a: { type: string }) => a.type)).toEqual(["image", "video"]);
   });
+
+  it("removing a failed upload deletes nothing; switching conversation drops it", async () => {
+    uploadChatAttachment.mockRejectedValue(new Error("x"));
+    const onSendMessage = vi.fn().mockResolvedValue(undefined);
+    const { rerender } = render(
+      <MessageInput onSendMessage={onSendMessage} threadId="peer-1" activeThread={{ id: "peer-1", type: "direct" }} conversationType="direct" />,
+    );
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await act(async () => { fireEvent.change(input, { target: { files: [jpg("f.jpg")] } }); });
+    await screen.findByTestId("upload-failed");
+    rerender(<MessageInput onSendMessage={onSendMessage} threadId="peer-2" activeThread={{ id: "peer-2", type: "direct" }} conversationType="direct" />);
+    expect(screen.queryByTestId("upload-failed")).toBeNull();
+    await act(async () => { fireEvent.change(input, { target: { files: [jpg("g.jpg")] } }); });
+    await act(async () => { fireEvent.click(await screen.findByLabelText("Remove g.jpg")); });
+    expect(deleteChatAttachment).not.toHaveBeenCalled();
+  });
+
+  it("a Retry while another upload runs keeps sending blocked until both are done", async () => {
+    const pending: Array<() => void> = [];
+    uploadChatAttachment.mockRejectedValueOnce(new Error("x"));
+    const { pick, type, enter, onSendMessage } = setup();
+    type("both");
+    await pick([jpg("h.jpg")]);
+    await screen.findByTestId("upload-failed");
+    uploadChatAttachment.mockImplementation((f: File) => new Promise((resolve) => { pending.push(() => resolve(stored(f))); }));
+    await pick([jpg("i.jpg")]);
+    await act(async () => { fireEvent.click(screen.getByTestId("upload-retry")); });
+    expect(screen.getAllByTestId("upload-progress")).toHaveLength(2);
+    await act(async () => { pending[0](); });
+    await enter();
+    expect(onSendMessage).not.toHaveBeenCalled(); // one is still running
+    await act(async () => { pending[1](); });
+    await enter();
+    expect(onSendMessage).toHaveBeenCalledTimes(1);
+    expect(onSendMessage.mock.calls[0][2].attachments).toHaveLength(2);
+  });
 });
+

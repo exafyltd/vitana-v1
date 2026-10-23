@@ -93,6 +93,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
   // it is retried or removed; nothing is sent while one is there.
   const [failedUploads, setFailedUploads] = useState<Array<{ id: string; file: File }>>([]);
   const activeUploadsRef = useRef(0);
+  // Another conversation: a failed upload of this one neither blocks it nor retries into it.
+  useEffect(() => { setFailedUploads([]); }, [threadId]);
   const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
