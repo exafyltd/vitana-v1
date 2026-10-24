@@ -41,8 +41,10 @@ import {
   Loader2,
   Mic,
   Settings2,
-  UserPlus
+  UserPlus,
+  Search
 } from 'lucide-react';
+import MessageSearchPanel from './MessageSearchPanel';
 import { cn } from '@/lib/utils';
 import MessageSkeleton from './MessageSkeleton';
 import EmptyStateIllustration from './EmptyStateIllustration';
@@ -698,6 +700,21 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return () => clearTimeout(timer);
   }, [initialScrollMessageId, threadId, messages, onInitialMessageScrolled]);
 
+  // VTID-05317: a deep link / search result whose message is not in the loaded
+  // page — once the conversation has its rows, load the window around it (I8).
+  const deepJumpTriedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!initialScrollMessageId || !threadId || !isDirectThread) return;
+    if (messages.length === 0 || isMessagesFetching || positionedThread !== threadId) return;
+    const key = `${threadId}|${initialScrollMessageId}`;
+    if (deepJumpTriedRef.current === key) return;
+    if (document.getElementById(`msg-${initialScrollMessageId}`)) return; // the effect above handles it
+    deepJumpTriedRef.current = key;
+    void jumpToMessage(initialScrollMessageId).then(() => onInitialMessageScrolled?.());
+  }, [initialScrollMessageId, threadId, isDirectThread, messages, isMessagesFetching, positionedThread, jumpToMessage, onInitialMessageScrolled]);
+
+  const [searchOpen, setSearchOpen] = useState(false);
+
   // ResizeObserver to keep pinned at bottom when content resizes (images loading, etc.)
   useEffect(() => {
     const content = contentRef.current;
@@ -1216,6 +1233,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </div>
           
             <div className="flex items-center gap-1 shrink-0">
+              {/* VTID-05317: search this conversation (DMs; groups have their own screen). */}
+              {isDirectThread && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-11 w-11 p-0"
+                  onClick={() => setSearchOpen(true)}
+                  aria-label={t('inbox.search.titleConversation')}
+                  data-testid="conversation-search-button"
+                >
+                  <Search className="w-4 h-4" />
+                </Button>
+              )}
               {isGroupChat() && (
                 // VTID-04959: the members/rename panel was only reachable by tapping the title.
                 <Button
@@ -1527,6 +1557,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </ComposerDock>
       </div>
 
+      {isDirectThread && threadId && (
+        <MessageSearchPanel
+          open={searchOpen}
+          onOpenChange={setSearchOpen}
+          scope={`dm:${threadId}`}
+          onSelect={(r) => { void jumpToMessage(r.message_id); }}
+        />
+      )}
       <GroupMembersModal
         open={showMembersModal}
         onOpenChange={setShowMembersModal}

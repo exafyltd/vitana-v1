@@ -157,6 +157,31 @@
       "unknownSender": "成员",
       "noText": "附件",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "搜索消息",
+      "titleConversation": "在此对话中搜索",
+      "hint": "请至少输入 {min} 个字符",
+      "placeholder": "搜索消息…",
+      "olderHit": "上一个匹配",
+      "newerHit": "下一个匹配",
+      "type": "类型",
+      "from": "从",
+      "to": "至",
+      "types": {
+        "any": "全部",
+        "image": "照片",
+        "video": "视频",
+        "file": "文件",
+        "voice": "语音消息",
+        "link": "链接"
+      },
+      "searching": "正在搜索…",
+      "error": "搜索失败，请重试。",
+      "empty": "未找到消息",
+      "results": "搜索结果",
+      "conversation": "对话",
+      "more": "显示更多"
     }
   },
   "_pending_review": {}

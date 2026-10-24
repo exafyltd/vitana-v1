@@ -1,0 +1,11 @@
+# VTID-05317 (messenger-ux-v2/ui-message-search, R12) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/hooks/useMessageSearch.test.ts src/components/messages/MessageSearchPanel.vtid-05317.test.tsx   # base: both modules missing (red-on-base.txt); head: 18 passed
+$ npx vitest run src/components/messages src/pages src/hooks   # 170 files / 1212 tests passed (ConversationView, GroupChat, Messages, reply-jump suites unchanged)
+$ npx vitest run src/i18n   # 25 passed (locale registration with the new inbox.search.* keys in all 11 locales)
+$ npx tsc --noEmit -p tsconfig.app.json   # 176 errors = base 176, none in touched files
+$ npx eslint <touched files>   # ConversationView / Messages / GroupChat 0 = 0; new files 0
+Hook: GET {GATEWAY_API_URL}/chat/search (I5) with the session token; 300 ms debounce; ≥ 3 characters; a newer query aborts the one in flight and an older answer is dropped; dates (yyyy-mm-dd) become the day's start / end; loadMore follows next_cursor (short pages are expected) and skips duplicates.
+Global (inbox header, mobile and desktop): results from every DM and group with the conversation's name, snippet (query highlighted) and time; ↑/↓ + Enter or a click opens /inbox/u|g/<id>/msg/<messageId>.
+In a conversation (DM header, group header): scope dm:<peer> / group:<id>; choosing a hit, or older / newer, jumps to it in place (I8 loads the window when it is not loaded); a deep link to a message outside the loaded page now also loads its window (DM and group).
+Filters: attachment type (any / photos / videos / files / voice / links) and a from–to date range. No sender filter in the UI (the hook supports it).
+Not done here: a staging spec and screenshots (owner's check on staging).

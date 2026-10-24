@@ -157,6 +157,31 @@
       "unknownSender": "Miembro",
       "noText": "Adjunto",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Buscar mensajes",
+      "titleConversation": "Buscar en esta conversación",
+      "hint": "Escribe al menos {min} caracteres",
+      "placeholder": "Buscar mensajes…",
+      "olderHit": "Coincidencia anterior",
+      "newerHit": "Coincidencia más reciente",
+      "type": "Tipo",
+      "from": "Desde",
+      "to": "Hasta",
+      "types": {
+        "any": "Todos",
+        "image": "Fotos",
+        "video": "Vídeos",
+        "file": "Archivos",
+        "voice": "Mensajes de voz",
+        "link": "Enlaces"
+      },
+      "searching": "Buscando…",
+      "error": "La búsqueda falló. Inténtalo de nuevo.",
+      "empty": "No se encontraron mensajes",
+      "results": "Resultados de búsqueda",
+      "conversation": "Conversación",
+      "more": "Mostrar más"
     }
   },
   "_pending_review": {}

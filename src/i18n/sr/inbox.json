@@ -157,6 +157,31 @@
       "unknownSender": "Član",
       "noText": "Prilog",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Pretraži poruke",
+      "titleConversation": "Pretraži ovaj razgovor",
+      "hint": "Unesi najmanje {min} znaka",
+      "placeholder": "Pretraži poruke…",
+      "olderHit": "Stariji rezultat",
+      "newerHit": "Noviji rezultat",
+      "type": "Tip",
+      "from": "Od",
+      "to": "Do",
+      "types": {
+        "any": "Sve",
+        "image": "Fotografije",
+        "video": "Video snimci",
+        "file": "Datoteke",
+        "voice": "Glasovne poruke",
+        "link": "Linkovi"
+      },
+      "searching": "Pretraga…",
+      "error": "Pretraga nije uspela. Pokušaj ponovo.",
+      "empty": "Nema pronađenih poruka",
+      "results": "Rezultati pretrage",
+      "conversation": "Razgovor",
+      "more": "Prikaži još"
     }
   },
   "_pending_review": {}

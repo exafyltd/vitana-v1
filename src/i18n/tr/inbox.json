@@ -157,6 +157,31 @@
       "unknownSender": "Üye",
       "noText": "Ek",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Mesajlarda ara",
+      "titleConversation": "Bu sohbette ara",
+      "hint": "En az {min} karakter yaz",
+      "placeholder": "Mesajlarda ara…",
+      "olderHit": "Önceki eşleşme",
+      "newerHit": "Sonraki eşleşme",
+      "type": "Tür",
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "types": {
+        "any": "Tümü",
+        "image": "Fotoğraflar",
+        "video": "Videolar",
+        "file": "Dosyalar",
+        "voice": "Sesli mesajlar",
+        "link": "Bağlantılar"
+      },
+      "searching": "Aranıyor…",
+      "error": "Arama başarısız oldu. Tekrar dene.",
+      "empty": "Mesaj bulunamadı",
+      "results": "Arama sonuçları",
+      "conversation": "Sohbet",
+      "more": "Daha fazla göster"
     }
   },
   "_pending_review": {}
