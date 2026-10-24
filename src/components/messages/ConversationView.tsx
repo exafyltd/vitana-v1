@@ -53,6 +53,7 @@ import GroupAvatarStack from './GroupAvatarStack';
 import CreateGroupPopup from '@/components/messages/CreateGroupPopup';
 
 import { isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
+import { groupPositions, isGroupEnd } from '@/lib/messaging/grouping';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { composerPlaceholder, getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
@@ -1314,25 +1315,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   if (!isDirectThread && !document.getElementById(`msg-${messageId}`)) return;
                   void jumpToMessage(messageId);
                 };
+
+                // VTID-05314: runs of one sender (≤ 5 min, same day, no system
+                // notice or unread divider between) form a group.
+                const positions = groupPositions(messages, {
+                  breakBefore: (m) => unreadAnchor?.threadId === threadId && unreadAnchor.messageId === m.id,
+                });
                 
                 return messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
                 const previousMessage = index > 0 ? messages[index - 1] : null;
+                const groupPosition = positions[index];
 
-                // Smart avatar display logic
-                const showAvatar = !previousMessage || previousMessage.sender_id !== message.sender_id;
-
-                // Smart spacing logic - group consecutive messages from same sender
-                const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
-
-                // Time-based grouping (within 5 minutes)
-                const timeDiff = previousMessage
-                  ? new Date(message.created_at).getTime() - new Date(previousMessage.created_at).getTime()
-                  : Infinity;
-                const isWithinTimeWindow = timeDiff < 5 * 60 * 1000; // 5 minutes
-
-                // Determine spacing
-                const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
+                // Small gap inside a group, the usual gap after its last bubble.
+                const shouldUseSmallSpacing = !isGroupEnd(groupPosition);
 
                 // Day separator between dates (WhatsApp-style centered chip)
                 const messageDate = new Date(message.created_at);
@@ -1383,7 +1379,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         onScrollToMessage={handleScrollToMessage}
                         parentMessage={resolvedParentMessage}
                         parentUnavailable={parentUnavailable}
-                        showAvatar={showAvatar}
+                        groupPosition={groupPosition}
                         onUpdateMessage={async (messageId: string, updates: any) => {
                           try {
                             // Route to correct table based on thread type
