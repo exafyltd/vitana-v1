@@ -1,0 +1,22 @@
+## base = origin/main (77cb11280) with the lane's new tests
+ ❯ src/components/messages/MediaAlbum.vtid-05316.test.tsx (0 test)
+ ❯ src/lib/fileUpload.vtid-05316.test.ts (4 tests | 4 failed) 16ms
+ ❯ src/components/messages/MessageInput.media-upload.vtid-05316.test.tsx (5 tests | 5 failed) 2109ms
+Error: Failed to resolve import "./MediaAlbum" from "src/components/messages/MediaAlbum.vtid-05316.test.tsx". Does the file exist?
+ ❯ TransformPluginContext._formatLog ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:30366:39
+ ❯ TransformPluginContext.error ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:30363:14
+ ❯ normalizeUrl ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:27393:18
+ ❯ ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:27456:30
+ ❯ TransformPluginContext.transform ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:27424:4
+ ❯ EnvironmentPluginContainer.transform ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:30151:14
+ ❯ loadAndTransform ../vitana-v1/node_modules/vitest/node_modules/vite/dist/node/chunks/node.js:20098:26
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+ ❯ Module.uploadChatAttachment src/lib/fileUpload.ts:119:8
+ ❯ src/lib/fileUpload.vtid-05316.test.ts:65:20
+ ❯ src/lib/fileUpload.vtid-05316.test.ts:79:58
+ ❯ Module.uploadChatAttachment src/lib/fileUpload.ts:119:8
+ ❯ src/lib/fileUpload.vtid-05316.test.ts:85:20
+ ❯ src/lib/fileUpload.vtid-05316.test.ts:95:18
+ ❯ Object.getElementError ../vitana-v1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+Head: 4 + 14 + 5 = 23 passed.

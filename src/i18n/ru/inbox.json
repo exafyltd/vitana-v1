@@ -157,6 +157,16 @@
       "unknownSender": "Участник",
       "noText": "Вложение",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Не удалось загрузить",
+      "retry": "Повторить",
+      "retryUpload": "Загрузить {name} снова",
+      "video": "Видео",
+      "moreItems": "Ещё {count}",
+      "openImage": "Открыть изображение {name}",
+      "openVideo": "Воспроизвести видео {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
