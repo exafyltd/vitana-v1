@@ -6,3 +6,15 @@ $ grep -n "^## Verification" .github/PULL_REQUEST_TEMPLATE.md
 $ git diff --stat origin/main -- .github/PULL_REQUEST_TEMPLATE.md
  .github/PULL_REQUEST_TEMPLATE.md | 30 +++++++++++++++++++++++++++++-
  1 file changed, 29 insertions(+), 1 deletion(-)
+
+$ node <vitana-platform>/scripts/collab/preflight.mjs --repo . --base origin/main --head HEAD (head f72a3aa9a)
+PASS  Collab handoff [report-only in CI (vitana-v1 Collab handoff step)]
+PASS  Lane scope [required]
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE sparring [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE weakening [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE red-green [report-only in CI (until config.enforce=true)]
+PASS  Kiro steering [report-only in CI (until config.enforce=true)]
+preflight: every check passed
+exit 0
