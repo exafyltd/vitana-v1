@@ -28,3 +28,9 @@ exit=0
 55aa6e3d6ab718a2628705e939bacd947c577d58dbabac67208f52f25dccec5d  .kiro/steering/vitana-owner-autonomy.md
 faf56b37de09495704e66adfdeadf76a8de584143b365cf0738357be7a28eb07  .kiro/steering/vitana-pipeline.md
 b49edbd900f5eebe50b39d560a59283b9b5d083229b802d496b840cad274ec8d  .claude/rules/collaboration.md
+
+## CI on head 2a2bd9f8
+pr-gate run 40497664872 attempt 1: failed in "Initialize containers" (public.ecr.aws postgres:16 pull, "Data limit exceeded"),
+an infra failure. Re-run once (failed jobs only, collaboration.md §7d / lane-land.md re-run allowlist).
+Attempt 2 result: success. Head 2a2bd9f8 with every check green: Edge data client, Lane scope, Realtime helper, Vitest (jsdom),
+change-suite, pr-gate, preview-e2e.
