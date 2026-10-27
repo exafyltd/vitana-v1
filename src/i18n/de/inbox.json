@@ -146,6 +146,16 @@
       "unknownSender": "Mitglied",
       "noText": "Anhang",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Hochladen fehlgeschlagen",
+      "retry": "Erneut",
+      "retryUpload": "{name} erneut hochladen",
+      "video": "Video",
+      "moreItems": "{count} weitere",
+      "openImage": "Bild {name} öffnen",
+      "openVideo": "Video {name} abspielen",
+      "_pending_review": {}
     }
   }
 }

@@ -54,6 +54,8 @@ import {
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
+import MediaAlbum, { type AlbumItem, isVideoAttachment } from './MediaAlbum';
+import { recordRecentEmoji } from '@/components/ui/emoji-picker';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
@@ -355,8 +357,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     setFailedUrls(prev => new Set(prev).add(failedUrl));
   }, []);
 
+  // VTID-05316: pictures and videos open in the viewer (videos with controls).
   const imageAttachments = useMemo(
-    () => allAttachments.filter(isImageAttachment),
+    () => allAttachments.filter((att) => isImageAttachment(att) || isVideoAttachment(att)),
     [allAttachments]
   );
 
@@ -364,6 +367,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     () => imageAttachments.map((att) => ({
       url: displayUrlFor(att) || '',
       filename: att.filename || att.name || '',
+      kind: isVideoAttachment(att) ? 'video' as const : 'image' as const,
     })),
     [imageAttachments, displayUrlFor]
   );
@@ -378,7 +382,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message.body, message.content, message.content_data, allAttachments]);
   // The sheet's "share via other apps" gets the pictures' fresh URLs.
   const sheetPayload = useMemo<ForwardPayload>(
-    () => ({ ...forwardPayload, shareImages: viewerImages.filter((img) => !!img.url) }),
+    () => ({ ...forwardPayload, shareImages: viewerImages.filter((img) => !!img.url && img.kind !== 'video') }),
     [forwardPayload, viewerImages]
   );
   const isForwarded = message.content_data?.forwarded === true;
@@ -554,9 +558,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   };
 
   // Reaction and action handlers
-  const handleReactionSelect = useCallback((emoji: string) => {
+  // VTID-05315/05316: a reaction moves the emoji to the front of the member's
+  // recent list (the composer picker shows it first next time).
+  const reactWith = useCallback((emoji: string) => {
+    recordRecentEmoji(emoji, user?.id ?? null);
     addReaction(emoji);
-  }, [addReaction]);
+  }, [addReaction, user?.id]);
+  const handleReactionSelect = useCallback((emoji: string) => {
+    reactWith(emoji);
+  }, [reactWith]);
 
   const handleReply = useCallback(() => {
     if (onReply) {
@@ -567,8 +577,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const handleCopy = useCallback(() => {
     // VTID-05138: a picture-only message copies the picture itself.
     const text = forwardPayload.body.trim();
-    if (!text && imageAttachments.length > 0) {
-      void copyImageAndNotify(viewerImages[0]?.url || '');
+    const firstPicture = viewerImages.find((img) => img.kind !== 'video');
+    if (!text && firstPicture) {
+      void copyImageAndNotify(firstPicture.url || '');
       return;
     }
     navigator.clipboard.writeText(message.body || message.content || '');
@@ -870,6 +881,31 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     const isImage = isImageAttachment(attachment);
     const displayUrl = displayUrlFor(attachment);
     const isResigning = !!attachment.path && resigningPaths.has(attachment.path);
+    // VTID-05316: a single video shows its first frame; a tap plays it in the viewer.
+    if (!isImage && isVideoAttachment(attachment) && displayUrl === undefined) {
+      return (
+        <div key={key} className="h-48 w-64 max-w-full animate-pulse rounded-lg bg-muted" role="status" aria-label={t('screens.messages.imageLoading')} data-testid="chat-image-skeleton" />
+      );
+    }
+    if (!isImage && isVideoAttachment(attachment) && displayUrl) {
+      return (
+        <button
+          key={key}
+          type="button"
+          className="relative block w-64 max-w-full overflow-hidden rounded-lg bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          onClick={(e) => { e.stopPropagation(); handleImageClick(attachment); }}
+          aria-label={t('inbox.media.openVideo', { name: attachment.filename || attachment.name || '' })}
+          data-testid="chat-video-attachment"
+        >
+          <video src={displayUrl} muted playsInline preload="metadata" className="h-auto max-h-64 w-full object-cover" aria-hidden tabIndex={-1} />
+          <span className="absolute inset-0 flex items-center justify-center" aria-hidden>
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground/60 text-background">
+              <Play className="h-6 w-6 ms-0.5" />
+            </span>
+          </span>
+        </button>
+      );
+    }
     // VTID-05138: until the fresh signed URL is there, hold the place with a
     // fixed-size skeleton — never try the stale stored URL first.
     if (isImage && (displayUrl === undefined || isResigning)) {
@@ -1140,14 +1176,42 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             {message.body && !isLegacySharedPlaceholder(message.body, message.content_data) &&
               renderLinkedText(message.body)}
 
-            {/* New attachment format with proper rendering */}
-            {message.content_data?.attachments && (
-              <div className="space-y-2">
-                {message.content_data.attachments.map((attachment: any, index: number) => 
-                  renderAttachment(attachment, `att-${index}`)
-                )}
-              </div>
-            )}
+            {/* New attachment format with proper rendering. VTID-05316: two or
+                more pictures / videos form an album; files stay chips below. */}
+            {message.content_data?.attachments && (() => {
+              const list = message.content_data.attachments as ChatAttachmentLike[];
+              const media = list.filter((a) => isImageAttachment(a) || isVideoAttachment(a));
+              if (media.length < 2) {
+                return (
+                  <div className="space-y-2">
+                    {list.map((attachment, index) => renderAttachment(attachment, `att-${index}`))}
+                  </div>
+                );
+              }
+              const albumItems: AlbumItem[] = media.map((att, i) => {
+                const url = displayUrlFor(att);
+                const resigning = !!att.path && resigningPaths.has(att.path);
+                return {
+                  key: `album-${i}`,
+                  kind: isVideoAttachment(att) ? 'video' : 'image',
+                  url: resigning ? undefined : url,
+                  alt: att.filename || att.name || '',
+                };
+              });
+              return (
+                <div className="space-y-2">
+                  <MediaAlbum
+                    items={albumItems}
+                    onOpen={(i) => handleImageClick(media[i])}
+                    onImageError={(i) => {
+                      const url = displayUrlFor(media[i]);
+                      if (url) handleImageError(media[i], url);
+                    }}
+                  />
+                  {list.filter((a) => !media.includes(a)).map((attachment, index) => renderAttachment(attachment, `att-file-${index}`))}
+                </div>
+              );
+            })()}
             
             {/* Legacy attachment format support — VTID-05138: entries with a
                 link or a storage path render like attachments (pictures inline). */}
@@ -1357,7 +1421,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div>
                 <ReactionCluster
                   reactions={reactionSummary}
-                  onReactionClick={addReaction}
+                  onReactionClick={reactWith}
                   onReactionRemove={removeReaction}
                   onShowPopover={() => setShowReactionPopover(true)}
                   className={cn(

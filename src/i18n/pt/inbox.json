@@ -157,6 +157,16 @@
       "unknownSender": "Membro",
       "noText": "Anexo",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Falha no envio",
+      "retry": "Tentar de novo",
+      "retryUpload": "Enviar {name} de novo",
+      "video": "Vídeo",
+      "moreItems": "Mais {count}",
+      "openImage": "Abrir imagem {name}",
+      "openVideo": "Reproduzir vídeo {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

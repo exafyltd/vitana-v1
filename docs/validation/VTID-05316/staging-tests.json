@@ -1,0 +1,7 @@
+{
+  "vtid": "VTID-05316",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/lib/fileUpload.vtid-05316.test.ts src/components/messages/MediaAlbum.vtid-05316.test.tsx src/components/messages/MessageInput.media-upload.vtid-05316.test.tsx src/components/messages/MessageInput.paste-enter.vtid-05229.test.tsx src/components/messages/ChatImageViewer.vtid-05138.test.tsx src/components/messages/MessageBubble.image-attachment.vtid-05138.test.tsx", "reason": "album layouts 2/3/4/7, viewer with video, real upload progress, failed upload kept with Retry, remove deletes the object, send blocked while uploading; uploads are writes — proven in CI, the look is the owner's check on staging" }
+  ]
+}

@@ -157,6 +157,16 @@
       "unknownSender": "عضو",
       "noText": "مرفق",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "فشل الرفع",
+      "retry": "إعادة المحاولة",
+      "retryUpload": "إعادة رفع {name}",
+      "video": "فيديو",
+      "moreItems": "{count} أخرى",
+      "openImage": "فتح الصورة {name}",
+      "openVideo": "تشغيل الفيديو {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

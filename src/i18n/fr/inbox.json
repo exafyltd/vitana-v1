@@ -157,6 +157,16 @@
       "unknownSender": "Membre",
       "noText": "Pièce jointe",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Échec de l’envoi",
+      "retry": "Réessayer",
+      "retryUpload": "Renvoyer {name}",
+      "video": "Vidéo",
+      "moreItems": "{count} de plus",
+      "openImage": "Ouvrir l’image {name}",
+      "openVideo": "Lire la vidéo {name}",
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
