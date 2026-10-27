@@ -193,6 +193,33 @@
       "conversation": "Sohbet",
       "more": "Daha fazla göster",
       "filters": "Filtreler"
+    },
+    "shared": {
+      "sendInMessage": "Mesajla gönder",
+      "sheetTitle": "Mesajla gönder: {kind}",
+      "captionPlaceholder": "Mesaj ekle (isteğe bağlı)",
+      "sent": "Gönderildi",
+      "notAllowed": "Bunu artık paylaşamazsın.",
+      "kind": {
+        "post": "Gönderi",
+        "event": "Etkinlik",
+        "product": "Ürün",
+        "profile": "Profil"
+      },
+      "loading": "Önizleme yükleniyor…",
+      "loadFailed": "Önizleme yüklenemedi",
+      "retry": "Tekrar dene",
+      "open": "Aç ({kind}): {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}: artık mevcut değil",
+          "body": "Kaldırıldı."
+        },
+        "restricted": {
+          "title": "{kind}: senin için görünür değil",
+          "body": "Gizlilik ayarları görmene izin vermiyor."
+        }
+      }
     }
   },
   "_pending_review": {}

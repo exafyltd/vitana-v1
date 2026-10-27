@@ -1,0 +1,19 @@
+# VTID-05321 (messenger-ux-v2/ui-shared-cards, R11) — session kiro-exafyltd-202610211130-c65e
+$ npx vitest run src/components/messages/SendInMessageSheet.vtid-05321.test.tsx src/components/messages/SharedContentCard.vtid-05321.test.tsx   # base: both modules missing (red-on-base.txt); head: 20 passed
+$ npx vitest run src/components/messages/ForwardMessageSheet.vtid-05138.test.tsx   # green, unchanged (target list extracted into forwardTargets.ts)
+$ npx vitest run src/components src/pages src/hooks src/lib src/i18n   # 440 files / 3516 tests passed
+$ npx tsc --noEmit -p tsconfig.app.json   # 176 = base, none in touched files
+$ npx eslint <touched files> -f json   # errorCount: MessageBubble 19 = 19, EventKebabMenu 3 = 3, others 0 = 0; new files 0
+$ node scripts/i18n-register-check.mjs --all   # no formal-register violations
+Send: one shared_content message per picked chat (≤ 5, DMs and groups, the forward sheet's list), content_data {kind,id} only + optional caption (≤ 1000), client_message_id per send; a failed target stays selected with its name in the error; share_not_allowed (sender can't see the item) stops with one message.
+Card (MessageBubble, shared_content): GET /api/v1/chat/shared-preview as the viewer → skeleton; card (image, kind, title, description; tap opens the in-app url only); unavailable (deleted / not visible to you) with an explanation; load error with Retry. Caption under the card. Malformed content_data falls back to text.
+Entry points: community post (profile_posts posts only, not media uploads), event (visitor button + creator menu, signed in), product quick view (drawer body, also used by the Spotlight quick view) and product page (phone / flag-off layout), profile share sheet (by user id).
+Not done here: the Spotlight product page (ProductDetailSpotlight, outside the lane paths — its quick view has the entry); forwarding a shared card forwards its caption only; staging spec and screenshots (owner's check on staging; sends are writes).
+## Review (/projects/sandbox/reviews/pr1502.md — changes, 6 findings)
+Fixed: 1 a retried target reuses its client_message_id (per target, per item + caption; dropped once sent) — no duplicate card after a lost response. 2 No Forward for a shared card (it would forward only the caption as text). 4 Preview cache key includes the viewer id (account switch). 5 The sheet stops touch events too, and sends the item it was opened for. 6 New buttons 44 px.
+Follow-up (low, outside the lane paths): 3 a share without caption shows an empty last-message line in the conversation list and "Attachment" in a reply quote (Messages.tsx / ReplyQuote.tsx); the gateway's Cache-Control private without Vary: Authorization (platform).
+$ npx vitest run <lane suites> src/components/messages/ForwardMessageSheet.vtid-05138.test.tsx   # 39 passed
+$ npx vitest run src/components src/pages src/hooks src/lib src/i18n   # 440 files green
+## Review round 2 (changes, 3) — fixed
+1 Only touchend is stopped (touchstart/move reach the dialog's scroll lock). 2 Retry ids reset on item change only (the gateway dedups by id; caption edits no longer mint a new id); caption disabled while sending. 3 Visitor Send button size classes after the caller's className (44 px in MeetupDetailsDrawer too).
+$ npx vitest run <lane suites> ForwardMessageSheet.vtid-05138   # 41 passed

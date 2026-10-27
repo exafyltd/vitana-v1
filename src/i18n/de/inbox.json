@@ -182,6 +182,33 @@
       "conversation": "Unterhaltung",
       "more": "Mehr anzeigen",
       "filters": "Filter"
+    },
+    "shared": {
+      "sendInMessage": "Als Nachricht senden",
+      "sheetTitle": "{kind} als Nachricht senden",
+      "captionPlaceholder": "Nachricht hinzufügen (optional)",
+      "sent": "Gesendet",
+      "notAllowed": "Du kannst das nicht mehr teilen.",
+      "kind": {
+        "post": "Beitrag",
+        "event": "Event",
+        "product": "Produkt",
+        "profile": "Profil"
+      },
+      "loading": "Vorschau wird geladen…",
+      "loadFailed": "Vorschau konnte nicht geladen werden",
+      "retry": "Erneut versuchen",
+      "open": "{kind} öffnen: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} nicht mehr verfügbar",
+          "body": "Es wurde entfernt."
+        },
+        "restricted": {
+          "title": "{kind} für dich nicht sichtbar",
+          "body": "Die Privatsphäre-Einstellungen erlauben es dir nicht."
+        }
+      }
     }
   }
 }

@@ -193,6 +193,33 @@
       "conversation": "对话",
       "more": "显示更多",
       "filters": "筛选"
+    },
+    "shared": {
+      "sendInMessage": "通过消息发送",
+      "sheetTitle": "通过消息发送{kind}",
+      "captionPlaceholder": "添加消息（可选）",
+      "sent": "已发送",
+      "notAllowed": "你已无法分享此内容。",
+      "kind": {
+        "post": "帖子",
+        "event": "活动",
+        "product": "商品",
+        "profile": "个人资料"
+      },
+      "loading": "正在加载预览…",
+      "loadFailed": "无法加载预览",
+      "retry": "重试",
+      "open": "打开{kind}：{title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}已不可用",
+          "body": "它已被删除。"
+        },
+        "restricted": {
+          "title": "你无法查看此{kind}",
+          "body": "其隐私设置不允许你查看。"
+        }
+      }
     }
   },
   "_pending_review": {}
