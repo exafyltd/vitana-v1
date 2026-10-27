@@ -1,0 +1,6 @@
+## base = origin/main (57aece53f) with the lane's new tests
+ FAIL src/components/messages/SendInMessageSheet.vtid-05321.test.tsx
+ FAIL src/components/messages/SharedContentCard.vtid-05321.test.tsx
+Error: Failed to resolve import "./SendInMessageSheet" from "src/components/messages/SendInMessageSheet.vtid-05321.test.tsx". Does the file exist?
+Error: Failed to resolve import "./SharedContentCard" from "src/components/messages/SharedContentCard.vtid-05321.test.tsx". Does the file exist?
+Head: 13 + 7 = 20 passed.

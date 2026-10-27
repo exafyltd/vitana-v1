@@ -157,6 +157,33 @@
       "unknownSender": "Członek",
       "noText": "Załącznik",
       "_pending_review": {}
+    },
+    "shared": {
+      "sendInMessage": "Wyślij w wiadomości",
+      "sheetTitle": "Wyślij: {kind} w wiadomości",
+      "captionPlaceholder": "Dodaj wiadomość (opcjonalnie)",
+      "sent": "Wysłano",
+      "notAllowed": "Nie możesz już tego udostępnić.",
+      "kind": {
+        "post": "Post",
+        "event": "Wydarzenie",
+        "product": "Produkt",
+        "profile": "Profil"
+      },
+      "loading": "Ładowanie podglądu…",
+      "loadFailed": "Nie udało się wczytać podglądu",
+      "retry": "Spróbuj ponownie",
+      "open": "Otwórz: {kind} – {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}: już niedostępne",
+          "body": "Zostało usunięte."
+        },
+        "restricted": {
+          "title": "{kind}: niewidoczne dla ciebie",
+          "body": "Ustawienia prywatności nie pozwalają ci tego zobaczyć."
+        }
+      }
     }
   },
   "_pending_review": {}

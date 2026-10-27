@@ -157,6 +157,33 @@
       "unknownSender": "Miembro",
       "noText": "Adjunto",
       "_pending_review": {}
+    },
+    "shared": {
+      "sendInMessage": "Enviar en un mensaje",
+      "sheetTitle": "Enviar {kind} en un mensaje",
+      "captionPlaceholder": "Añade un mensaje (opcional)",
+      "sent": "Enviado",
+      "notAllowed": "Ya no puedes compartir esto.",
+      "kind": {
+        "post": "Publicación",
+        "event": "Evento",
+        "product": "Producto",
+        "profile": "Perfil"
+      },
+      "loading": "Cargando vista previa…",
+      "loadFailed": "No se pudo cargar la vista previa",
+      "retry": "Reintentar",
+      "open": "Abrir {kind}: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} ya no disponible",
+          "body": "Se eliminó."
+        },
+        "restricted": {
+          "title": "{kind} no visible para ti",
+          "body": "Su configuración de privacidad no te permite verlo."
+        }
+      }
     }
   },
   "_pending_review": {}

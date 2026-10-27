@@ -157,6 +157,33 @@
       "unknownSender": "Membro",
       "noText": "Anexo",
       "_pending_review": {}
+    },
+    "shared": {
+      "sendInMessage": "Enviar em mensagem",
+      "sheetTitle": "Enviar {kind} em uma mensagem",
+      "captionPlaceholder": "Adicione uma mensagem (opcional)",
+      "sent": "Enviado",
+      "notAllowed": "Você não pode mais compartilhar isto.",
+      "kind": {
+        "post": "Publicação",
+        "event": "Evento",
+        "product": "Produto",
+        "profile": "Perfil"
+      },
+      "loading": "Carregando prévia…",
+      "loadFailed": "Não foi possível carregar a prévia",
+      "retry": "Tentar novamente",
+      "open": "Abrir {kind}: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} não está mais disponível",
+          "body": "Foi removido."
+        },
+        "restricted": {
+          "title": "{kind} não visível para você",
+          "body": "As configurações de privacidade não permitem que você veja."
+        }
+      }
     }
   },
   "_pending_review": {}

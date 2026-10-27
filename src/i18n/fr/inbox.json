@@ -157,6 +157,33 @@
       "unknownSender": "Membre",
       "noText": "Pièce jointe",
       "_pending_review": {}
+    },
+    "shared": {
+      "sendInMessage": "Envoyer dans un message",
+      "sheetTitle": "Envoyer {kind} dans un message",
+      "captionPlaceholder": "Ajoute un message (facultatif)",
+      "sent": "Envoyé",
+      "notAllowed": "Tu ne peux plus partager ceci.",
+      "kind": {
+        "post": "Publication",
+        "event": "Événement",
+        "product": "Produit",
+        "profile": "Profil"
+      },
+      "loading": "Chargement de l'aperçu…",
+      "loadFailed": "Impossible de charger l'aperçu",
+      "retry": "Réessayer",
+      "open": "Ouvrir {kind} : {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} n'est plus disponible",
+          "body": "Il a été supprimé."
+        },
+        "restricted": {
+          "title": "{kind} non visible pour toi",
+          "body": "Ses paramètres de confidentialité ne te permettent pas de le voir."
+        }
+      }
     }
   },
   "_pending_review": {}

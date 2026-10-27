@@ -157,6 +157,33 @@
       "unknownSender": "Član",
       "noText": "Prilog",
       "_pending_review": {}
+    },
+    "shared": {
+      "sendInMessage": "Pošalji u poruci",
+      "sheetTitle": "Pošalji u poruci: {kind}",
+      "captionPlaceholder": "Dodaj poruku (opciono)",
+      "sent": "Poslato",
+      "notAllowed": "Ovo više ne možeš da deliš.",
+      "kind": {
+        "post": "Objava",
+        "event": "Događaj",
+        "product": "Proizvod",
+        "profile": "Profil"
+      },
+      "loading": "Učitavanje pregleda…",
+      "loadFailed": "Pregled nije moguće učitati",
+      "retry": "Pokušaj ponovo",
+      "open": "Otvori ({kind}): {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}: više nije dostupno",
+          "body": "Uklonjeno je."
+        },
+        "restricted": {
+          "title": "{kind}: nije vidljivo tebi",
+          "body": "Podešavanja privatnosti ti ne dozvoljavaju da ga vidiš."
+        }
+      }
     }
   },
   "_pending_review": {}
