@@ -170,7 +170,8 @@
       "empty": "Keine Nachrichten gefunden",
       "results": "Suchergebnisse",
       "conversation": "Unterhaltung",
-      "more": "Mehr anzeigen"
+      "more": "Mehr anzeigen",
+      "filters": "Filter"
     }
   }
 }

@@ -181,7 +181,8 @@
       "empty": "Nema pronađenih poruka",
       "results": "Rezultati pretrage",
       "conversation": "Razgovor",
-      "more": "Prikaži još"
+      "more": "Prikaži još",
+      "filters": "Filteri"
     }
   },
   "_pending_review": {}

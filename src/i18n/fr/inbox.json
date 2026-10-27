@@ -181,7 +181,8 @@
       "empty": "Aucun message trouvé",
       "results": "Résultats de recherche",
       "conversation": "Conversation",
-      "more": "Afficher plus"
+      "more": "Afficher plus",
+      "filters": "Filtres"
     }
   },
   "_pending_review": {}

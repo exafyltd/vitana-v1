@@ -11,7 +11,7 @@
  * results, Enter opens the selected one, Esc closes.
  */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, ChevronUp, Loader2, Search, SearchX } from 'lucide-react';
+import { ChevronDown, ChevronUp, Loader2, Search, SearchX, SlidersHorizontal, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -56,8 +56,11 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
   const filters = useMemo(() => ({ scope, type, from: from || null, to: to || null }), [scope, type, from, to]);
   const { results, status, error, hasMore, loadMore, tooShort } = useMessageSearch(query, filters, open);
 
-  // A new search starts unselected; "Show more" keeps the position.
-  useEffect(() => { setActive(-1); }, [query, scope, type, from, to]);
+  // A new search starts unselected (and drops a pending "older" step); "Show more" keeps the position.
+  const pendingOlderRef = useRef<number | null>(null);
+  useEffect(() => { setActive(-1); pendingOlderRef.current = null; }, [query, scope, type, from, to]);
+  // In a conversation the filters fold away so the jumped-to message stays visible below the bar.
+  const [showFilters, setShowFilters] = useState(!inConversation);
   useEffect(() => {
     if (!open) { setQuery(''); setActive(-1); }
   }, [open]);
@@ -92,7 +95,6 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
 
   // In a conversation, ↑ goes to an older hit, ↓ to a newer one (results are
   // newest first). Past the last loaded hit, the next page is fetched first.
-  const pendingOlderRef = useRef<number | null>(null);
   const step = (dir: 1 | -1) => {
     if (results.length === 0) return;
     if (dir === 1 && active === results.length - 1 && hasMore) {
@@ -154,11 +156,19 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
                 aria-label={t('inbox.search.newerHit')} data-testid="message-search-newer">
                 <ChevronDown className="h-4 w-4" />
               </Button>
+              <Button type="button" variant="ghost" size="icon" onClick={() => setShowFilters((v) => !v)}
+                aria-label={t('inbox.search.filters')} aria-expanded={showFilters} data-testid="message-search-filters-toggle">
+                <SlidersHorizontal className="h-4 w-4" />
+              </Button>
+              <Button type="button" variant="ghost" size="icon" onClick={() => onOpenChange(false)}
+                aria-label={t('screens.ui.close')} data-testid="message-search-close">
+                <X className="h-4 w-4" />
+              </Button>
             </div>
           )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 text-sm">
+        {showFilters && <div className="flex flex-wrap items-center gap-2 text-sm" data-testid="message-search-filters">
           <label className="flex items-center gap-1">
             <span className="text-muted-foreground">{t('inbox.search.type')}</span>
             <select
@@ -178,7 +188,7 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
             <span className="text-muted-foreground">{t('inbox.search.to')}</span>
             <input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} className="h-9 rounded-md border bg-background px-2" data-testid="message-search-to" />
           </label>
-        </div>
+        </div>}
 
         <p className="sr-only" role="status" aria-live="polite">
           {status === 'done' ? `${t('inbox.search.results')}: ${results.length}` : ''}

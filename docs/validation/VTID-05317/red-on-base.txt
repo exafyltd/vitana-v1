@@ -7,4 +7,4 @@ Error: Failed to resolve import "./MessageSearchPanel" from "src/components/mess
  × phone / legacy desktop / Spotlight desktop: the global search button opens the panel with scope "all"  (Unable to find [data-testid="inbox-message-search-button"])
  × a DM hit opened from the mounted inbox opens that DM at the message
  Also red on the first head without the deepLinkMessageId sync (initialScrollMessageId null).
-Head: 14 + 14 + 4 = 32 passed.
+Head: 14 + 17 + 4 = 35 passed.

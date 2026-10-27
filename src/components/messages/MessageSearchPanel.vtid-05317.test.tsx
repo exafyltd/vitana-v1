@@ -51,6 +51,7 @@ describe('MessageSearchPanel', () => {
   it('passes the query, the scope and every filter to the search', () => {
     renderPanel({ scope: 'group:g1' });
     fireEvent.change(screen.getByTestId('message-search-input'), { target: { value: 'hello' } });
+    fireEvent.click(screen.getByTestId('message-search-filters-toggle')); // folded away in a conversation
     fireEvent.change(screen.getByTestId('message-search-type'), { target: { value: 'image' } });
     fireEvent.change(screen.getByTestId('message-search-from'), { target: { value: '2026-10-01' } });
     fireEvent.change(screen.getByTestId('message-search-to'), { target: { value: '2026-10-05' } });
@@ -117,6 +118,33 @@ describe('MessageSearchPanel', () => {
   it('in a conversation the panel is non-modal: no overlay over the messages', () => {
     renderPanel({ scope: 'dm:peer-1' });
     expect(document.querySelector('.bg-black\\/80')).toBeNull();
+  });
+
+  it('in a conversation: filters start folded, and a visible button closes the panel (touch has no Escape)', () => {
+    const { onOpenChange } = renderPanel({ scope: 'dm:peer-1' });
+    expect(screen.queryByTestId('message-search-filters')).toBeNull();
+    fireEvent.click(screen.getByTestId('message-search-filters-toggle'));
+    expect(screen.getByTestId('message-search-filters')).toBeTruthy();
+    fireEvent.click(screen.getByTestId('message-search-close'));
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('global: the filters are shown', () => {
+    renderPanel();
+    expect(screen.getByTestId('message-search-filters')).toBeTruthy();
+  });
+
+  it('a pending "older" step is dropped when the query changes before the page lands', () => {
+    state = { ...state, status: 'done', results: [row('a')], hasMore: true };
+    const { onSelect, rerender } = renderPanel({ scope: 'dm:peer-1' });
+    fireEvent.click(screen.getByTestId('message-search-older')); // selects a
+    fireEvent.click(screen.getByTestId('message-search-older')); // asks for the next page
+    fireEvent.change(screen.getByTestId('message-search-input'), { target: { value: 'other' } });
+    state = { ...state, status: 'loading' };
+    rerender(<MessageSearchPanel open scope="dm:peer-1" onSelect={onSelect} onOpenChange={vi.fn()} />);
+    state = { ...state, status: 'done', results: [row('x'), row('y'), row('z')], hasMore: false };
+    rerender(<MessageSearchPanel open scope="dm:peer-1" onSelect={onSelect} onOpenChange={vi.fn()} />);
+    expect(onSelect.mock.calls.map(([r]) => r.message_id)).toEqual(['a']);
   });
 
   it('"Show more" keeps the keyboard position', () => {

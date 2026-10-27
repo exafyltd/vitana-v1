@@ -181,7 +181,8 @@
       "empty": "Mesaj bulunamadı",
       "results": "Arama sonuçları",
       "conversation": "Sohbet",
-      "more": "Daha fazla göster"
+      "more": "Daha fazla göster",
+      "filters": "Filtreler"
     }
   },
   "_pending_review": {}
