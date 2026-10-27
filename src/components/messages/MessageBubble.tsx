@@ -352,7 +352,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     [imageAttachments, displayUrlFor]
   );
 
-  const canForward = canForwardMessage(message);
+  // VTID-05321: a shared card is not forwarded as its caption (the card would be lost).
+  const canForward = message.message_type !== 'shared_content' && canForwardMessage(message);
   const forwardPayload = useMemo<ForwardPayload>(() => {
     const body = (message.body || message.content || '') as string;
     return {

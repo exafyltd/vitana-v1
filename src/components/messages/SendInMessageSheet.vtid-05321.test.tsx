@@ -85,7 +85,7 @@ vi.mock('@/hooks/useMarketplace', async (orig) => ({
   useMarketplaceProduct: () => ({ data: { ok: true, product }, isLoading: false, error: null }),
 }));
 
-import { sendSharedToTargets, SendInMessageSheet } from './SendInMessageSheet';
+import { sendSharedToTargets, SendInMessageSheet, useSendInMessage, type SendIds } from './SendInMessageSheet';
 import MessageBubble from './MessageBubble';
 import { CommunityPostCard } from '@/components/home/CommunityPostCard';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
@@ -173,6 +173,71 @@ describe('sendSharedToTargets', () => {
     expect(sendGroupMessage).not.toHaveBeenCalled();
     expect(r.failed).toHaveLength(2);
     expect(notifyError).toHaveBeenCalledWith('inbox.shared.notAllowed');
+  });
+});
+
+describe('retry idempotency', () => {
+  it('a retried target reuses its client_message_id; a sent one gets a new id next time', async () => {
+    const ids: SendIds = new Map();
+    const anna = { kind: 'dm' as const, id: 'u-anna', name: 'Anna' };
+    sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
+    await sendSharedToTargets([anna], { kind: 'post', id: 'p1' }, '', ids);
+    await sendSharedToTargets([anna], { kind: 'post', id: 'p1' }, '', ids);
+    const first = (sendChatMessage.mock.calls[0][2] as { clientMessageId: string }).clientMessageId;
+    const retry = (sendChatMessage.mock.calls[1][2] as { clientMessageId: string }).clientMessageId;
+    expect(retry).toBe(first);
+    expect(ids.size).toBe(0);
+    await sendSharedToTargets([anna], { kind: 'post', id: 'p1' }, '', ids);
+    expect((sendChatMessage.mock.calls[2][2] as { clientMessageId: string }).clientMessageId).not.toBe(first);
+  });
+
+  it('the sheet retries a failed target with the same id', async () => {
+    sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
+    wrap(<SendInMessageSheet open onOpenChange={vi.fn()} item={{ kind: 'post', id: 'p1' }} />);
+    fireEvent.click(screen.getByTestId('forward-target-dm'));
+    fireEvent.click(screen.getByTestId('send-in-message-send'));
+    await waitFor(() => expect(notifyError).toHaveBeenCalled());
+    fireEvent.click(screen.getByTestId('send-in-message-send'));
+    await waitFor(() => expect(sendChatMessage).toHaveBeenCalledTimes(2));
+    const ids = sendChatMessage.mock.calls.map((c) => (c[2] as { clientMessageId: string }).clientMessageId);
+    expect(ids[1]).toBe(ids[0]);
+  });
+});
+
+describe('useSendInMessage', () => {
+  function Host({ id, onCard }: { id: string; onCard: () => void }) {
+    const { openSendInMessage, sendInMessageSheet } = useSendInMessage({ kind: 'event', id });
+    return (
+      <div onClick={onCard} onTouchStart={onCard} onKeyDown={onCard} data-testid="card">
+        <button type="button" onClick={(e) => { e.stopPropagation(); openSendInMessage(); }} data-testid="open">open</button>
+        {sendInMessageSheet}
+      </div>
+    );
+  }
+
+  it('clicks, keys and touches in the sheet never reach the surrounding card', async () => {
+    const onCard = vi.fn();
+    wrap(<Host id="e1" onCard={onCard} />);
+    fireEvent.click(screen.getByTestId('open'));
+    const caption = await screen.findByTestId('send-in-message-caption');
+    fireEvent.keyDown(caption, { key: ' ' });
+    fireEvent.touchStart(caption);
+    fireEvent.click(screen.getByTestId('forward-target-dm'));
+    expect(onCard).not.toHaveBeenCalled();
+  });
+
+  it('sends the item it was opened for, even if the surface changes underneath', async () => {
+    const { rerender } = wrap(<Host id="e1" onCard={vi.fn()} />);
+    fireEvent.click(screen.getByTestId('open'));
+    await screen.findByTestId('send-in-message-sheet');
+    const qc = new QueryClient();
+    rerender(
+      <QueryClientProvider client={qc}>
+        <MemoryRouter><Routes><Route path="*" element={<Host id="e2" onCard={vi.fn()} />} /></Routes></MemoryRouter>
+      </QueryClientProvider>,
+    );
+    await pickBothAndSend();
+    expectSent('event', 'e1');
   });
 });
 
@@ -274,6 +339,29 @@ describe('entry points send shared_content { kind, id }', () => {
 });
 
 describe('MessageBubble renders shared_content as a card', () => {
+  it('offers no Forward for a shared card (it would forward the caption as text)', async () => {
+    const { canForwardMessage } = await import('@/lib/chatImageActions');
+    const msg = { id: 'm1', sender_id: 'peer', body: 'look', content: 'look', message_type: 'shared_content', content_data: { kind: 'post', id: 'p1' } };
+    // the shared helper alone would allow it (it sees a caption) …
+    expect(canForwardMessage(msg as never)).toBe(true);
+    // … the bubble does not: its context menu has no forward item
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ ok: true, available: false, reason: 'deleted' }) })));
+    try {
+      // control: the same bubble as plain text offers Forward in its context menu
+      const { unmount } = wrap(<MessageBubble message={{ ...msg, message_type: 'text', content_data: undefined, created_at: '2026-10-21T10:00:00Z', thread_id: 'peer' } as never} isOwnMessage={false} />);
+      fireEvent.contextMenu(screen.getByText('look'));
+      expect(await screen.findByText('screens.messages.forward')).toBeTruthy();
+      unmount();
+
+      wrap(<MessageBubble message={{ ...msg, created_at: '2026-10-21T10:00:00Z', thread_id: 'peer' } as never} isOwnMessage={false} />);
+      fireEvent.contextMenu(screen.getByText('look'));
+      expect(await screen.findByText('screens.messages.copy')).toBeTruthy();
+      expect(screen.queryByText('screens.messages.forward')).toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('the card plus the caption; a malformed one falls back to text', async () => {
     const fetchMock = vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ ok: true, available: false, reason: 'deleted' }) }));
     vi.stubGlobal('fetch', fetchMock);
@@ -285,6 +373,7 @@ describe('MessageBubble renders shared_content as a card', () => {
       unmount();
 
       wrap(<MessageBubble message={{ ...msg, content_data: { kind: 'nope' } } as never} isOwnMessage={false} />);
+
       expect(screen.queryByTestId('shared-content-message')).toBeNull();
       expect(screen.getByText('look at this')).toBeTruthy();
     } finally {

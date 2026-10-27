@@ -17,6 +17,7 @@ import { GATEWAY_API_URL } from '@/lib/gateway-base';
 import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/context/AuthProvider';
 
 export const SHARED_KINDS = ['post', 'event', 'product', 'profile'] as const;
 export type SharedKind = (typeof SHARED_KINDS)[number];
@@ -35,7 +36,21 @@ export function sharedRefOf(contentData: unknown): SharedRef | null {
   return { kind: kind as SharedKind, id };
 }
 
-export const sharedPreviewKey = (ref: SharedRef) => ['chat-shared-preview', ref.kind, ref.id] as const;
+/** Per viewer: a preview is what THIS member may see (I6), so an account switch never reuses it. */
+export const sharedPreviewKey = (ref: SharedRef, viewerId: string | null) => ['chat-shared-preview', viewerId, ref.kind, ref.id] as const;
+
+/**
+ * The signed-in user, or null — also outside an AuthProvider (tests, embedded
+ * trees). useAuth() reads its context unconditionally before it throws, so
+ * the hook order is stable.
+ */
+export function useOptionalUser() {
+  try {
+    return useAuth().user ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export async function fetchSharedPreview(ref: SharedRef): Promise<SharedPreview> {
   const { data } = await supabase.auth.getSession();
@@ -69,8 +84,9 @@ interface SharedContentCardProps {
 
 export function SharedContentCard({ sharedRef, isOwnMessage = false }: SharedContentCardProps) {
   const navigate = useNavigate();
+  const viewerId = useOptionalUser()?.id ?? null;
   const preview = useQuery({
-    queryKey: sharedPreviewKey(sharedRef),
+    queryKey: sharedPreviewKey(sharedRef, viewerId),
     queryFn: () => fetchSharedPreview(sharedRef),
     staleTime: 60_000,
     retry: false,

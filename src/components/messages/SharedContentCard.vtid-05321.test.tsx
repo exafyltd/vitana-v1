@@ -15,7 +15,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 vi.mock('@/lib/gateway-base', () => ({ GATEWAY_API_URL: 'https://gw.test/api/v1', GATEWAY_BASE: 'https://gw.test' }));
 
-import { SharedContentCard, fetchSharedPreview, sharedRefOf } from './SharedContentCard';
+import { SharedContentCard, fetchSharedPreview, sharedPreviewKey, sharedRefOf, type SharedRef } from './SharedContentCard';
 
 let reply: { status?: number; body: unknown } = { body: {} };
 const fetchMock = vi.fn(async (_url: string) => ({ ok: (reply.status ?? 200) < 400, status: reply.status ?? 200, json: async () => reply.body }));
@@ -31,7 +31,7 @@ function Where() {
   return <p data-testid="where">{loc.pathname}</p>;
 }
 
-function renderCard(ref = { kind: 'event' as const, id: 'e1' }) {
+function renderCard(ref: SharedRef = { kind: 'event', id: 'e1' }) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
     <QueryClientProvider client={qc}>
@@ -51,6 +51,13 @@ describe('sharedRefOf', () => {
     expect(sharedRefOf({ kind: 'article', id: 'x' })).toBeNull();
     expect(sharedRefOf({ kind: 'post', id: '' })).toBeNull();
     expect(sharedRefOf(null)).toBeNull();
+  });
+});
+
+describe('sharedPreviewKey', () => {
+  it('is per viewer, so another account never sees a cached preview', () => {
+    const ref: SharedRef = { kind: 'post', id: 'p1' };
+    expect(sharedPreviewKey(ref, 'u-a')).not.toEqual(sharedPreviewKey(ref, 'u-b'));
   });
 });
 

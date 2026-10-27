@@ -9,44 +9,56 @@
  * (./forwardTargets). Targets are sent one after another; a failed one stays
  * selected for a retry and the member is told which one failed.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Send } from 'lucide-react';
-import { useAuth } from '@/context/AuthProvider';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { notify, notifyError, t, useI18nLocale } from '@/lib/i18n-toast';
 import { sendChatMessage, sendGroupMessage } from '@/hooks/useChatApi';
+import { cn } from '@/lib/utils';
 import { ChatTargetList } from './ForwardMessageSheet';
-import { MAX_FORWARD_TARGETS, useChatTargets, useTargetSelection, type ForwardTarget } from './forwardTargets';
-import type { SharedRef } from './SharedContentCard';
+import { MAX_FORWARD_TARGETS, targetKey, useChatTargets, useTargetSelection, type ForwardTarget } from './forwardTargets';
+import { useOptionalUser, type SharedRef } from './SharedContentCard';
 
 export const SHARED_CAPTION_MAX = 1000;
 
 const newClientId = () =>
   typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : undefined;
 
+/**
+ * The idempotency key of each target's send. The same id is reused on every
+ * retry of that target (the gateway answers a repeat with the stored row, so a
+ * send whose response was lost is never posted twice); it is dropped once the
+ * target succeeds. The caller resets the map when the item or caption changes.
+ */
+export type SendIds = Map<string, string>;
+
 /** One shared_content message to one target. */
-export async function sendSharedToTarget(target: ForwardTarget, item: SharedRef, caption: string): Promise<void> {
+export async function sendSharedToTarget(target: ForwardTarget, item: SharedRef, caption: string, ids?: SendIds): Promise<void> {
+  const key = targetKey(target);
+  const clientMessageId = ids?.get(key) ?? newClientId();
+  if (ids && clientMessageId) ids.set(key, clientMessageId);
   const opts = {
     messageType: 'shared_content',
     contentData: { kind: item.kind, id: item.id },
-    clientMessageId: newClientId(),
+    clientMessageId,
   };
   const body = caption.trim().slice(0, SHARED_CAPTION_MAX);
   if (target.kind === 'dm') await sendChatMessage(target.id, body, opts);
   else await sendGroupMessage(target.id, body, opts);
+  ids?.delete(key);
 }
 
 export interface SendSharedResult { sent: ForwardTarget[]; failed: ForwardTarget[] }
 
 /** Send to each target in turn; one failure never stops the rest. */
-export async function sendSharedToTargets(targets: ForwardTarget[], item: SharedRef, caption: string): Promise<SendSharedResult> {
+export async function sendSharedToTargets(targets: ForwardTarget[], item: SharedRef, caption: string, ids?: SendIds): Promise<SendSharedResult> {
   const result: SendSharedResult = { sent: [], failed: [] };
   for (const target of targets.slice(0, MAX_FORWARD_TARGETS)) {
     try {
-      await sendSharedToTarget(target, item, caption);
+      await sendSharedToTarget(target, item, caption, ids);
       result.sent.push(target);
     } catch (err) {
       const code = String((err as Error)?.message || '');
@@ -79,6 +91,9 @@ export function SendInMessageSheet({ open, onOpenChange, item, itemTitle }: Send
   const { picked, setPicked, pickedKeys, toggle, atLimit } = useTargetSelection();
   const { targets, loading, refreshTargets } = useChatTargets(open, query);
   const [sending, setSending] = useState(false);
+  // Retry ids per target, valid for this item and caption only.
+  const idsRef = useRef<SendIds>(new Map());
+  useEffect(() => { idsRef.current = new Map(); }, [item.kind, item.id, caption]);
 
   useEffect(() => {
     if (!open) {
@@ -92,7 +107,7 @@ export function SendInMessageSheet({ open, onOpenChange, item, itemTitle }: Send
     if (picked.length === 0 || sending) return;
     setSending(true);
     try {
-      const result = await sendSharedToTargets(picked, item, caption);
+      const result = await sendSharedToTargets(picked, item, caption, idsRef.current);
       if (result.sent.length > 0) {
         notify('inbox.shared.sent');
         refreshTargets();
@@ -166,37 +181,35 @@ export function SendInMessageSheet({ open, onOpenChange, item, itemTitle }: Send
  */
 export function useSendInMessage(item: SharedRef | null, itemTitle?: string) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // The item is fixed when the sheet opens: a surface that changes underneath
+  // (e.g. a drawer moving to the next event) never changes what is sent.
+  const [opened, setOpened] = useState<{ item: SharedRef; title?: string } | null>(null);
   const openSendInMessage = () => {
     if (!item) return;
-    setMounted(true);
+    setOpened({ item: { kind: item.kind, id: item.id }, title: itemTitle });
     setOpen(true);
   };
   // Entry points sit inside clickable cards: React bubbles portal events up the
   // component tree, so clicks in the sheet must not reach the card.
   const stop = (e: React.SyntheticEvent) => e.stopPropagation();
-  const sendInMessageSheet = mounted && item
+  const sendInMessageSheet = opened
     ? (
-      <span className="contents" onClick={stop} onPointerDown={stop} onKeyDown={stop}>
-        <SendInMessageSheet open={open} onOpenChange={setOpen} item={item} itemTitle={itemTitle} />
+      <span
+        className="contents"
+        onClick={stop}
+        onPointerDown={stop}
+        onKeyDown={stop}
+        onTouchStart={stop}
+        onTouchMove={stop}
+        onTouchEnd={stop}
+      >
+        <SendInMessageSheet open={open} onOpenChange={setOpen} item={opened.item} itemTitle={opened.title} />
       </span>
     )
     : null;
   return { openSendInMessage, sendInMessageSheet };
 }
 
-/**
- * The signed-in user, or null — also outside an AuthProvider (product
- * surfaces render in public / embedded trees too). useAuth() reads its
- * context unconditionally before it throws, so the hook order is stable.
- */
-function useOptionalUser() {
-  try {
-    return useAuth().user ?? null;
-  } catch {
-    return null;
-  }
-}
 
 interface SendInMessageButtonProps {
   item: SharedRef;
@@ -217,7 +230,7 @@ export function SendInMessageButton({ item, itemTitle, variant = 'outline', size
         type="button"
         variant={variant}
         size={size}
-        className={className}
+        className={cn('h-11 min-w-11', className)}
         onClick={(e) => { e.stopPropagation(); openSendInMessage(); }}
         aria-label={t('inbox.shared.sendInMessage')}
         title={t('inbox.shared.sendInMessage')}

@@ -78,7 +78,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
           <Button
             variant="ghost"
             size="sm"
-            className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
+            className={`h-11 w-11 p-0 hover:bg-sidebar-accent/50 ${className}`}
             aria-label={t('inbox.shared.sendInMessage')}
             onClick={(e) => { e.stopPropagation(); openSendInMessage(); }}
             onPointerDown={(e) => e.stopPropagation()}
