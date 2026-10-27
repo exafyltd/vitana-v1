@@ -167,6 +167,32 @@
       "openImage": "Ouvrir l’image {name}",
       "openVideo": "Lire la vidéo {name}",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Rechercher des messages",
+      "titleConversation": "Rechercher dans cette conversation",
+      "hint": "Saisis au moins {min} caractères",
+      "placeholder": "Rechercher des messages…",
+      "olderHit": "Résultat précédent",
+      "newerHit": "Résultat suivant",
+      "type": "Type",
+      "from": "Du",
+      "to": "Au",
+      "types": {
+        "any": "Tous",
+        "image": "Photos",
+        "video": "Vidéos",
+        "file": "Fichiers",
+        "voice": "Messages vocaux",
+        "link": "Liens"
+      },
+      "searching": "Recherche…",
+      "error": "La recherche a échoué. Réessaie.",
+      "empty": "Aucun message trouvé",
+      "results": "Résultats de recherche",
+      "conversation": "Conversation",
+      "more": "Afficher plus",
+      "filters": "Filtres"
     }
   },
   "_pending_review": {}
