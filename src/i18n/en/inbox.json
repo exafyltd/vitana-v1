@@ -193,6 +193,33 @@
       "conversation": "Conversation",
       "more": "Show more",
       "filters": "Filters"
+    },
+    "shared": {
+      "sendInMessage": "Send in message",
+      "sheetTitle": "Send {kind} in a message",
+      "captionPlaceholder": "Add a message (optional)",
+      "sent": "Sent",
+      "notAllowed": "You can no longer share this.",
+      "kind": {
+        "post": "Post",
+        "event": "Event",
+        "product": "Product",
+        "profile": "Profile"
+      },
+      "loading": "Loading preview…",
+      "loadFailed": "Preview couldn't be loaded",
+      "retry": "Try again",
+      "open": "Open {kind}: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} no longer available",
+          "body": "It was removed."
+        },
+        "restricted": {
+          "title": "{kind} not visible to you",
+          "body": "Its privacy settings don't let you see it."
+        }
+      }
     }
   },
   "_pending_review": {}

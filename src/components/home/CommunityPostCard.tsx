@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "@/lib/locale-format";
 import { t, notify, notifyError } from "@/lib/i18n-toast";
 import { cn } from "@/lib/utils";
+import { useSendInMessage } from "@/components/messages/SendInMessageSheet";
 import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions, type FeedComment } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
@@ -255,6 +256,10 @@ export function CommunityPostCard({
   };
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
+  const { openSendInMessage, sendInMessageSheet } = useSendInMessage(
+    item.source === "post" ? { kind: "post", id: item.post_id } : null,
+    item.content?.slice(0, 80),
+  );
 
   // Coloured backgrounds only apply to text-only posts; media frames itself.
   const hasMedia = !!item.image_url || !!item.video_url;
@@ -355,6 +360,22 @@ export function CommunityPostCard({
                 cards with no kebab at all — an author could not delete their
                 own uploaded video from the feed, and no one could report it.
                 The menu targets the right table via the `source` prop. */}
+            {/* VTID-05321: send this post to a chat (profile_posts only — the gateway's "post" kind). */}
+            {item.source === "post" && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  stop(e);
+                  openSendInMessage();
+                }}
+                aria-label={t("inbox.shared.sendInMessage")}
+                className="flex h-11 w-11 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                data-testid="post-send-in-message"
+              >
+                <Send className="h-3.5 w-3.5" />
+              </button>
+            )}
+            {sendInMessageSheet}
             <NewsPostModerationMenu
               postId={item.post_id}
               authorId={item.user_id}
