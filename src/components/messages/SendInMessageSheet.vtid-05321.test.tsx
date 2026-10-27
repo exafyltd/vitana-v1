@@ -191,6 +191,27 @@ describe('retry idempotency', () => {
     expect((sendChatMessage.mock.calls[2][2] as { clientMessageId: string }).clientMessageId).not.toBe(first);
   });
 
+  it('editing the caption between a failure and the retry keeps the id (no second card)', async () => {
+    sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
+    wrap(<SendInMessageSheet open onOpenChange={vi.fn()} item={{ kind: 'post', id: 'p1' }} />);
+    fireEvent.click(screen.getByTestId('forward-target-dm'));
+    fireEvent.click(screen.getByTestId('send-in-message-send'));
+    await waitFor(() => expect(notifyError).toHaveBeenCalled());
+    fireEvent.change(screen.getByTestId('send-in-message-caption'), { target: { value: 'edited' } });
+    fireEvent.click(screen.getByTestId('send-in-message-send'));
+    await waitFor(() => expect(sendChatMessage).toHaveBeenCalledTimes(2));
+    const ids = sendChatMessage.mock.calls.map((c) => (c[2] as { clientMessageId: string }).clientMessageId);
+    expect(ids[1]).toBe(ids[0]);
+  });
+
+  it('a visitor Send button stays 44 px even when the caller passes a smaller size', () => {
+    wrap(<EventKebabMenu event={{ id: 'e1', created_by: 'x' }} currentUserId="me" className="h-9 w-9" />);
+    const btn = screen.getByTestId('event-send-in-message');
+    expect(btn.className).toMatch(/\bh-11\b/);
+    expect(btn.className).toMatch(/\bw-11\b/);
+    expect(btn.className).not.toMatch(/\bh-9\b/);
+  });
+
   it('the sheet retries a failed target with the same id', async () => {
     sendChatMessage.mockRejectedValueOnce(new Error('Gateway 502'));
     wrap(<SendInMessageSheet open onOpenChange={vi.fn()} item={{ kind: 'post', id: 'p1' }} />);
@@ -208,7 +229,7 @@ describe('useSendInMessage', () => {
   function Host({ id, onCard }: { id: string; onCard: () => void }) {
     const { openSendInMessage, sendInMessageSheet } = useSendInMessage({ kind: 'event', id });
     return (
-      <div onClick={onCard} onTouchStart={onCard} onKeyDown={onCard} data-testid="card">
+      <div onClick={onCard} onTouchEnd={onCard} onKeyDown={onCard} data-testid="card">
         <button type="button" onClick={(e) => { e.stopPropagation(); openSendInMessage(); }} data-testid="open">open</button>
         {sendInMessageSheet}
       </div>
@@ -221,7 +242,7 @@ describe('useSendInMessage', () => {
     fireEvent.click(screen.getByTestId('open'));
     const caption = await screen.findByTestId('send-in-message-caption');
     fireEvent.keyDown(caption, { key: ' ' });
-    fireEvent.touchStart(caption);
+    fireEvent.touchEnd(caption);
     fireEvent.click(screen.getByTestId('forward-target-dm'));
     expect(onCard).not.toHaveBeenCalled();
   });

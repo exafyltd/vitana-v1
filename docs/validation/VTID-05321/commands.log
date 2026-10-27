@@ -14,3 +14,6 @@ Fixed: 1 a retried target reuses its client_message_id (per target, per item + c
 Follow-up (low, outside the lane paths): 3 a share without caption shows an empty last-message line in the conversation list and "Attachment" in a reply quote (Messages.tsx / ReplyQuote.tsx); the gateway's Cache-Control private without Vary: Authorization (platform).
 $ npx vitest run <lane suites> src/components/messages/ForwardMessageSheet.vtid-05138.test.tsx   # 39 passed
 $ npx vitest run src/components src/pages src/hooks src/lib src/i18n   # 440 files green
+## Review round 2 (changes, 3) — fixed
+1 Only touchend is stopped (touchstart/move reach the dialog's scroll lock). 2 Retry ids reset on item change only (the gateway dedups by id; caption edits no longer mint a new id); caption disabled while sending. 3 Visitor Send button size classes after the caller's className (44 px in MeetupDetailsDrawer too).
+$ npx vitest run <lane suites> ForwardMessageSheet.vtid-05138   # 41 passed

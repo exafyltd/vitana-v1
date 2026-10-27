@@ -31,7 +31,7 @@ const newClientId = () =>
  * The idempotency key of each target's send. The same id is reused on every
  * retry of that target (the gateway answers a repeat with the stored row, so a
  * send whose response was lost is never posted twice); it is dropped once the
- * target succeeds. The caller resets the map when the item or caption changes.
+ * target succeeds. The caller resets the map when the item changes.
  */
 export type SendIds = Map<string, string>;
 
@@ -91,9 +91,11 @@ export function SendInMessageSheet({ open, onOpenChange, item, itemTitle }: Send
   const { picked, setPicked, pickedKeys, toggle, atLimit } = useTargetSelection();
   const { targets, loading, refreshTargets } = useChatTargets(open, query);
   const [sending, setSending] = useState(false);
-  // Retry ids per target, valid for this item and caption only.
+  // Retry ids per target, valid for this item. Kept when the caption changes:
+  // the gateway dedups by id alone, so a send whose response was lost is never
+  // posted twice (the stored row wins over an edited caption).
   const idsRef = useRef<SendIds>(new Map());
-  useEffect(() => { idsRef.current = new Map(); }, [item.kind, item.id, caption]);
+  useEffect(() => { idsRef.current = new Map(); }, [item.kind, item.id]);
 
   useEffect(() => {
     if (!open) {
@@ -156,6 +158,7 @@ export function SendInMessageSheet({ open, onOpenChange, item, itemTitle }: Send
           placeholder={t('inbox.shared.captionPlaceholder')}
           aria-label={t('inbox.shared.captionPlaceholder')}
           maxLength={SHARED_CAPTION_MAX}
+          disabled={sending}
           rows={2}
           data-testid="send-in-message-caption"
         />
@@ -199,8 +202,8 @@ export function useSendInMessage(item: SharedRef | null, itemTitle?: string) {
         onClick={stop}
         onPointerDown={stop}
         onKeyDown={stop}
-        onTouchStart={stop}
-        onTouchMove={stop}
+        // Only touchend (where swipe handlers act, e.g. MeetupDetailsDrawer): touchstart /
+        // touchmove must still reach the dialog's scroll lock on document.
         onTouchEnd={stop}
       >
         <SendInMessageSheet open={open} onOpenChange={setOpen} item={opened.item} itemTitle={opened.title} />
