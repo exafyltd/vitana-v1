@@ -51,3 +51,17 @@ test('the Kiro notes say plan sparring is never skipped and how to load context'
   assert.match(notes, /Plan sparring is never skipped/);
   assert.match(notes, /resume-vtid\.sh/);
 });
+
+// plan session-title-stable: the owner's session-title rule ships as an always-included steering file in this repo
+// (byte-identical in vitana-platform and vitana-v1).
+test('steering: the session title is set once and never renamed (vitana-session-title.md)', () => {
+  const file = path.join(__dirname, '..', '..', '..', '.kiro', 'steering', 'vitana-session-title.md');
+  assert.ok(fs.existsSync(file), '.kiro/steering/vitana-session-title.md is missing');
+  const text = fs.readFileSync(file, 'utf8');
+  assert.match(text, /^---\r?\ninclusion: always\r?\n---\r?\n/);
+  assert.match(text, /Set the session title once, at the start, from the owner's original request/);
+  assert.match(text, /Never change it later/);
+  assert.match(text, /Never put a state in the title: no "Blocked:"/);
+  assert.match(text, /Change the title only when the owner explicitly asks/);
+  assert.doesNotMatch(text, /#\[\[file:/);
+});
