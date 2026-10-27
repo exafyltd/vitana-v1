@@ -18,3 +18,5 @@ $ node scripts/i18n-register-check.mjs --all   # no formal-register violations (
 ## Review round 2 (changes, 3 findings) — fixed
 1 In a conversation the bar has a visible close button (touch has no Escape). 2 A pending "older" step is dropped when the query / a filter changes. 3 Filters fold away behind a toggle in a conversation, so the bar is input + list only and the centred hit stays visible.
 $ npx vitest run <3 lane files> src/i18n   # 60 passed (lane 35 + i18n 25); i18n-register-check: no violations
+## Review round 3 — APPROVED (/projects/sandbox/reviews/pr1497.md); low finding fixed
+Folded filters: the toggle is marked while a filter is applied; another conversation (scope change) starts without filters. Panel tests 18 passed.

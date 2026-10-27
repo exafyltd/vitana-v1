@@ -61,6 +61,9 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
   useEffect(() => { setActive(-1); pendingOlderRef.current = null; }, [query, scope, type, from, to]);
   // In a conversation the filters fold away so the jumped-to message stays visible below the bar.
   const [showFilters, setShowFilters] = useState(!inConversation);
+  const filterActive = type !== 'any' || !!from || !!to;
+  // Another conversation starts with no filters.
+  useEffect(() => { setType('any'); setFrom(''); setTo(''); }, [scope]);
   useEffect(() => {
     if (!open) { setQuery(''); setActive(-1); }
   }, [open]);
@@ -156,7 +159,8 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
                 aria-label={t('inbox.search.newerHit')} data-testid="message-search-newer">
                 <ChevronDown className="h-4 w-4" />
               </Button>
-              <Button type="button" variant="ghost" size="icon" onClick={() => setShowFilters((v) => !v)}
+              <Button type="button" variant={filterActive ? 'secondary' : 'ghost'} size="icon" onClick={() => setShowFilters((v) => !v)}
+                data-active={filterActive || undefined}
                 aria-label={t('inbox.search.filters')} aria-expanded={showFilters} data-testid="message-search-filters-toggle">
                 <SlidersHorizontal className="h-4 w-4" />
               </Button>

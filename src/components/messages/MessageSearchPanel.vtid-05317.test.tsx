@@ -129,6 +129,17 @@ describe('MessageSearchPanel', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
+  it('in a conversation: the filters toggle shows an applied filter, and another conversation starts without filters', () => {
+    const { rerender } = renderPanel({ scope: 'dm:peer-1' });
+    fireEvent.click(screen.getByTestId('message-search-filters-toggle'));
+    fireEvent.change(screen.getByTestId('message-search-type'), { target: { value: 'image' } });
+    fireEvent.click(screen.getByTestId('message-search-filters-toggle'));
+    expect(screen.getByTestId('message-search-filters-toggle').getAttribute('data-active')).toBe('true');
+    rerender(<MessageSearchPanel open scope="dm:peer-2" onSelect={vi.fn()} onOpenChange={vi.fn()} />);
+    expect(last().filters.type).toBe('any');
+    expect(screen.getByTestId('message-search-filters-toggle').getAttribute('data-active')).toBeNull();
+  });
+
   it('global: the filters are shown', () => {
     renderPanel();
     expect(screen.getByTestId('message-search-filters')).toBeTruthy();
