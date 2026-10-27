@@ -1,0 +1,8 @@
+# VTID-05348 commands (vitana-v1 base 469cc079c)
+$ grep -c "a.run.app" .github/PULL_REQUEST_TEMPLATE.md
+0
+$ grep -n "^## Verification" .github/PULL_REQUEST_TEMPLATE.md
+15:## Verification
+$ git diff --stat origin/main -- .github/PULL_REQUEST_TEMPLATE.md
+ .github/PULL_REQUEST_TEMPLATE.md | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
