@@ -12,6 +12,8 @@ vi.mock('@/lib/gateway-base', () => ({ GATEWAY_API_URL: 'https://gw.test/api/v1'
 
 import {
   buildSearchQuery,
+  localDayBound,
+  SEARCH_MAX_EMPTY_PAGES,
   parseConversationKey,
   searchResultPath,
   useMessageSearch,
@@ -54,8 +56,20 @@ describe('buildSearchQuery', () => {
     const q = new URLSearchParams(buildSearchQuery('cat', f, '2026-10-04T09:00:00.000Z', 10));
     expect(Object.fromEntries(q)).toEqual({
       q: 'cat', limit: '10', scope: 'group:g1', type: 'image',
-      from: '2026-10-01T00:00:00.000Z', to: '2026-10-05T23:59:59.999Z', sender: 'u2', cursor: '2026-10-04T09:00:00.000Z',
+      from: localDayBound('2026-10-01', 'start'), to: localDayBound('2026-10-05', 'end'), sender: 'u2', cursor: '2026-10-04T09:00:00.000Z',
     });
+  });
+
+  it('a date is the member\'s local day, not the UTC one', () => {
+    const tz = process.env.TZ;
+    process.env.TZ = 'Europe/Berlin';
+    try {
+      const q = new URLSearchParams(buildSearchQuery('cat', { from: '2026-10-01', to: '2026-10-01' }));
+      expect(q.get('from')).toBe('2026-09-30T22:00:00.000Z');
+      expect(q.get('to')).toBe('2026-10-01T21:59:59.999Z');
+    } finally {
+      process.env.TZ = tz;
+    }
   });
 
   it('keeps full timestamps as given', () => {
@@ -147,6 +161,46 @@ describe('useMessageSearch', () => {
     expect(urlOf(1).searchParams.get('cursor')).toBe('2026-10-20T09:00:00.000Z');
     expect(result.current.results.map((r) => r.message_id)).toEqual(['a', 'b', 'c']);
     expect(result.current.hasMore).toBe(false);
+  });
+
+  it('skips empty pages that still have a cursor (bounded), so "no results" is not shown too early', async () => {
+    replies = [
+      { body: { ok: true, results: [], next_cursor: 'c1' } },
+      { body: { ok: true, results: [], next_cursor: 'c2' } },
+      { body: { ok: true, results: [row('x')], next_cursor: 'c3' } },
+    ];
+    const { result } = renderHook(() => useMessageSearch('hello', { type: 'link' }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE_MS); });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(urlOf(2).searchParams.get('cursor')).toBe('c2');
+    expect(result.current.results.map((r) => r.message_id)).toEqual(['x']);
+    expect(result.current.hasMore).toBe(true);
+  });
+
+  it('stops skipping after the bound and keeps "more" available', async () => {
+    replies = Array.from({ length: 10 }, (_, i) => ({ body: { ok: true, results: [], next_cursor: `c${i}` } }));
+    const { result } = renderHook(() => useMessageSearch('hello', {}));
+    await act(async () => { await vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE_MS); });
+    expect(fetchMock).toHaveBeenCalledTimes(SEARCH_MAX_EMPTY_PAGES);
+    expect(result.current.results).toEqual([]);
+    expect(result.current.hasMore).toBe(true);
+  });
+
+  it('a "more" request still running when the query changes never lands in the new results', async () => {
+    let releaseMore!: (v: { body: unknown }) => void;
+    replies = [
+      { body: { ok: true, results: [row('a')], next_cursor: 'c1' } },
+      new Promise((r) => { releaseMore = r; }),
+      { body: { ok: true, results: [row('new')], next_cursor: null } },
+    ];
+    const { result, rerender } = renderHook(({ q }) => useMessageSearch(q, {}), { initialProps: { q: 'first' } });
+    await act(async () => { await vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE_MS); });
+    let more!: Promise<void>;
+    act(() => { more = result.current.loadMore(); });
+    rerender({ q: 'second' });
+    await act(async () => { await vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE_MS); });
+    await act(async () => { releaseMore({ body: { ok: true, results: [row('stale')], next_cursor: null } }); await more; });
+    expect(result.current.results.map((r) => r.message_id)).toEqual(['new']);
   });
 
   it('does nothing while disabled (panel closed)', async () => {

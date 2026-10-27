@@ -92,10 +92,59 @@ describe('MessageSearchPanel', () => {
     fireEvent.click(screen.getByTestId('message-search-older'));
     fireEvent.click(screen.getByTestId('message-search-older'));
     fireEvent.click(screen.getByTestId('message-search-older'));
+    // at the oldest hit with nothing more to load, "older" is disabled
+    expect(screen.getByTestId('message-search-older')).toBeDisabled();
     fireEvent.click(screen.getByTestId('message-search-older'));
     fireEvent.click(screen.getByTestId('message-search-newer'));
-    expect(onSelect.mock.calls.map(([r]) => r.message_id)).toEqual(['newest', 'middle', 'oldest', 'oldest', 'middle']);
+    expect(onSelect.mock.calls.map(([r]) => r.message_id)).toEqual(['newest', 'middle', 'oldest', 'middle']);
     expect(onOpenChange).not.toHaveBeenCalledWith(false);
+  });
+
+  it('in a conversation: older past the last loaded hit fetches the next page, then selects it', () => {
+    state = { ...state, status: 'done', results: [row('newest')], hasMore: true };
+    const { onSelect, rerender } = renderPanel({ scope: 'dm:peer-1' });
+    fireEvent.click(screen.getByTestId('message-search-older'));
+    fireEvent.click(screen.getByTestId('message-search-older'));
+    expect(state.loadMore).toHaveBeenCalledTimes(1);
+    state = { ...state, status: 'loading' };
+    rerender(<MessageSearchPanel open scope="dm:peer-1" onSelect={onSelect} onOpenChange={vi.fn()} />);
+    state = { ...state, status: 'done', results: [row('newest'), row('older')], hasMore: false };
+    rerender(<MessageSearchPanel open scope="dm:peer-1" onSelect={onSelect} onOpenChange={vi.fn()} />);
+    expect(onSelect.mock.calls.map(([r]) => r.message_id)).toEqual(['newest', 'older']);
+    expect(screen.getByTestId('message-search-older')).toBeDisabled();
+  });
+
+  it('in a conversation the panel is non-modal: no overlay over the messages', () => {
+    renderPanel({ scope: 'dm:peer-1' });
+    expect(document.querySelector('.bg-black\\/80')).toBeNull();
+  });
+
+  it('"Show more" keeps the keyboard position', () => {
+    state = { ...state, status: 'done', results: [row('m1'), row('m2')], hasMore: true };
+    const { rerender } = renderPanel();
+    const input = screen.getByTestId('message-search-input');
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    state = { ...state, results: [row('m1'), row('m2'), row('m3')], hasMore: false };
+    rerender(<MessageSearchPanel open scope="all" onSelect={vi.fn()} onOpenChange={vi.fn()} />);
+    expect(screen.getAllByTestId('message-search-result')[1].getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('is a combobox over the result listbox, with a short live count', () => {
+    state = { ...state, status: 'done', results: [row('m1')] };
+    renderPanel();
+    const input = screen.getByTestId('message-search-input');
+    expect(input.getAttribute('role')).toBe('combobox');
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    expect(input.getAttribute('aria-controls')).toBe('message-search-results');
+    expect(screen.getByRole('status').textContent).toMatch(/: 1$/);
+  });
+
+  it('an empty page with more to load shows "Show more", not "no messages"', () => {
+    state = { ...state, status: 'done', results: [], hasMore: true };
+    renderPanel();
+    expect(screen.queryByTestId('message-search-empty')).toBeNull();
+    expect(screen.getByTestId('message-search-more')).toBeTruthy();
   });
 
   it('shows the empty, error and too-short states', () => {
@@ -132,5 +181,11 @@ describe('highlight', () => {
     expect(Array.from(container.querySelectorAll('mark')).map((m) => m.textContent)).toEqual(['Hello', 'hello']);
     const { container: c2 } = render(<p>{highlight('a (b) c', '(b)')}</p>);
     expect(c2.querySelector('mark')?.textContent).toBe('(b)');
+  });
+
+  it('keeps the marks on the original text when lower-casing changes its length (Turkish İ)', () => {
+    const { container } = render(<p>{highlight('İstanbul merhaba', 'merhaba')}</p>);
+    expect(container.querySelector('mark')?.textContent).toBe('merhaba');
+    expect(container.textContent).toBe('İstanbul merhaba');
   });
 });

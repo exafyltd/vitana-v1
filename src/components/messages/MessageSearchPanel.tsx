@@ -4,7 +4,9 @@
  * Global (inbox, scope "all"): results from every DM and group of the member,
  * each with its conversation, snippet and time; a result opens that
  * conversation at the message. In a conversation (scope "dm:<peer>" /
- * "group:<id>"): the same, plus ↑/↓ to step through the hits in place.
+ * "group:<id>"): the same, plus ↑/↓ to step through the hits in place — then
+ * the panel is non-modal and docked at the top (no overlay), so the jumped-to
+ * message stays visible below it.
  * Filters: attachment type and date range. Keyboard: ↑/↓ move through the
  * results, Enter opens the selected one, Esc closes.
  */
@@ -31,23 +33,16 @@ interface MessageSearchPanelProps {
   conversationLabel?: (conversationKey: string) => string | undefined;
 }
 
-/** The snippet with the query marked (case-insensitive, literal). */
+/** The snippet with the query marked (case-insensitive, literal; matched on the original text). */
 export function highlight(snippet: string, query: string): React.ReactNode {
   const q = query.trim();
   if (!q) return snippet;
-  const lower = snippet.toLowerCase();
-  const needle = q.toLowerCase();
-  const out: React.ReactNode[] = [];
-  let from = 0;
-  let at = lower.indexOf(needle, from);
-  while (at >= 0) {
-    if (at > from) out.push(snippet.slice(from, at));
-    out.push(<mark key={at} className="rounded-sm bg-primary/20 text-foreground">{snippet.slice(at, at + q.length)}</mark>);
-    from = at + q.length;
-    at = lower.indexOf(needle, from);
-  }
-  if (from < snippet.length) out.push(snippet.slice(from));
-  return out;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'giu');
+  return snippet.split(re).map((part, i) =>
+    i % 2 === 1
+      ? <mark key={i} className="rounded-sm bg-primary/20 text-foreground">{part}</mark>
+      : part,
+  );
 }
 
 const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenChange, scope, onSelect, conversationLabel }) => {
@@ -61,7 +56,8 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
   const filters = useMemo(() => ({ scope, type, from: from || null, to: to || null }), [scope, type, from, to]);
   const { results, status, error, hasMore, loadMore, tooShort } = useMessageSearch(query, filters, open);
 
-  useEffect(() => { setActive(-1); }, [results]);
+  // A new search starts unselected; "Show more" keeps the position.
+  useEffect(() => { setActive(-1); }, [query, scope, type, from, to]);
   useEffect(() => {
     if (!open) { setQuery(''); setActive(-1); }
   }, [open]);
@@ -94,17 +90,36 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
     el?.scrollIntoView?.({ block: 'nearest' });
   }, [active]);
 
-  // In a conversation, ↑ goes to an older hit, ↓ to a newer one (results are newest first).
+  // In a conversation, ↑ goes to an older hit, ↓ to a newer one (results are
+  // newest first). Past the last loaded hit, the next page is fetched first.
+  const pendingOlderRef = useRef<number | null>(null);
   const step = (dir: 1 | -1) => {
     if (results.length === 0) return;
+    if (dir === 1 && active === results.length - 1 && hasMore) {
+      pendingOlderRef.current = results.length;
+      void loadMore();
+      return;
+    }
     const next = active < 0 ? 0 : Math.max(0, Math.min(results.length - 1, active + dir));
     choose(next);
   };
+  useEffect(() => {
+    const want = pendingOlderRef.current;
+    if (want === null || status === 'loading') return;
+    pendingOlderRef.current = null;
+    if (results[want]) choose(want);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs when the page lands
+  }, [results, status]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg gap-3 p-4" data-testid="message-search-panel">
-        <DialogHeader>
+    <Dialog open={open} onOpenChange={onOpenChange} modal={!inConversation}>
+      <DialogContent
+        className={cn('max-w-lg gap-3 p-4', inConversation && 'top-2 translate-y-0 shadow-xl')}
+        overlayClassName={inConversation ? 'hidden' : undefined}
+        onInteractOutside={inConversation ? (e) => e.preventDefault() : undefined}
+        data-testid="message-search-panel"
+      >
+        <DialogHeader className={cn(inConversation && 'sr-only')}>
           <DialogTitle>{inConversation ? t('inbox.search.titleConversation') : t('inbox.search.title')}</DialogTitle>
           <DialogDescription className="sr-only">{t('inbox.search.hint', { min: SEARCH_MIN_CHARS })}</DialogDescription>
         </DialogHeader>
@@ -119,7 +134,10 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
               onKeyDown={onKeyDown}
               placeholder={t('inbox.search.placeholder')}
               aria-label={t('inbox.search.placeholder')}
-              aria-controls="message-search-results"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={results.length > 0}
+              aria-controls={results.length > 0 ? 'message-search-results' : undefined}
               aria-activedescendant={active >= 0 ? `message-search-result-${active}` : undefined}
               className="ps-9"
               data-testid="message-search-input"
@@ -127,7 +145,8 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
           </div>
           {inConversation && (
             <div className="flex">
-              <Button type="button" variant="ghost" size="icon" onClick={() => step(1)} disabled={results.length === 0}
+              <Button type="button" variant="ghost" size="icon" onClick={() => step(1)}
+                disabled={results.length === 0 || (active === results.length - 1 && !hasMore) || status === 'loading'}
                 aria-label={t('inbox.search.olderHit')} data-testid="message-search-older">
                 <ChevronUp className="h-4 w-4" />
               </Button>
@@ -153,15 +172,18 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
           </label>
           <label className="flex items-center gap-1">
             <span className="text-muted-foreground">{t('inbox.search.from')}</span>
-            <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="h-9 rounded-md border bg-background px-2" data-testid="message-search-from" />
+            <input type="date" value={from} max={to || undefined} onChange={(e) => setFrom(e.target.value)} className="h-9 rounded-md border bg-background px-2" data-testid="message-search-from" />
           </label>
           <label className="flex items-center gap-1">
             <span className="text-muted-foreground">{t('inbox.search.to')}</span>
-            <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="h-9 rounded-md border bg-background px-2" data-testid="message-search-to" />
+            <input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} className="h-9 rounded-md border bg-background px-2" data-testid="message-search-to" />
           </label>
         </div>
 
-        <div className="max-h-[50vh] min-h-24 overflow-y-auto" aria-live="polite">
+        <p className="sr-only" role="status" aria-live="polite">
+          {status === 'done' ? `${t('inbox.search.results')}: ${results.length}` : ''}
+        </p>
+        <div className={cn('min-h-24 overflow-y-auto', inConversation ? 'max-h-32' : 'max-h-96')}>
           {tooShort && <p className="py-6 text-center text-sm text-muted-foreground" data-testid="message-search-too-short">{t('inbox.search.hint', { min: SEARCH_MIN_CHARS })}</p>}
           {status === 'loading' && results.length === 0 && (
             <div className="flex justify-center py-6" role="status" aria-label={t('inbox.search.searching')}>
@@ -171,7 +193,7 @@ const MessageSearchPanel: React.FC<MessageSearchPanelProps> = ({ open, onOpenCha
           {status === 'error' && (
             <p className="py-6 text-center text-sm text-destructive" data-testid="message-search-error">{t('inbox.search.error')}</p>
           )}
-          {status === 'done' && results.length === 0 && (
+          {status === 'done' && results.length === 0 && !hasMore && (
             <div className="flex flex-col items-center gap-2 py-6 text-sm text-muted-foreground" data-testid="message-search-empty">
               <SearchX className="h-6 w-6" aria-hidden />
               {t('inbox.search.empty')}

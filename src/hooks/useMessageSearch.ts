@@ -7,7 +7,9 @@
  * - At least 3 characters (the gateway refuses shorter ones).
  * - Filters map 1:1 to the I5 query: scope, type, from, to, sender.
  * - The gateway may return a short page with a cursor (rows are re-checked
- *   after the query): `loadMore` keeps paging while `hasMore`.
+ *   after the query): empty pages are skipped (up to 5), `loadMore` keeps
+ *   paging while `hasMore`.
+ * - Dates (yyyy-mm-dd) are the member's local days.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -39,13 +41,20 @@ export interface MessageSearchResult {
 
 export type SearchStatus = 'idle' | 'loading' | 'done' | 'error';
 
+const DAY = /^\d{4}-\d{2}-\d{2}$/;
+
+/** A date input's yyyy-mm-dd is the member's local day: its first / last instant, as UTC ISO. */
+export function localDayBound(day: string, edge: 'start' | 'end'): string {
+  return new Date(`${day}T${edge === 'start' ? '00:00:00.000' : '23:59:59.999'}`).toISOString();
+}
+
 /** The I5 query string for a query and filters (exported for tests). */
 export function buildSearchQuery(q: string, f: MessageSearchFilters, cursor?: string | null, limit = 20): string {
   const p = new URLSearchParams({ q: q.trim(), limit: String(limit) });
   if (f.scope && f.scope !== 'all') p.set('scope', f.scope);
   if (f.type && f.type !== 'any') p.set('type', f.type);
-  if (f.from) p.set('from', /^\d{4}-\d{2}-\d{2}$/.test(f.from) ? `${f.from}T00:00:00.000Z` : f.from);
-  if (f.to) p.set('to', /^\d{4}-\d{2}-\d{2}$/.test(f.to) ? `${f.to}T23:59:59.999Z` : f.to);
+  if (f.from) p.set('from', DAY.test(f.from) ? localDayBound(f.from, 'start') : f.from);
+  if (f.to) p.set('to', DAY.test(f.to) ? localDayBound(f.to, 'end') : f.to);
   if (f.sender) p.set('sender', f.sender);
   if (cursor) p.set('cursor', cursor);
   return p.toString();
@@ -81,6 +90,18 @@ async function fetchPage(qs: string, signal: AbortSignal): Promise<{ results: Me
   return { results: Array.isArray(body.results) ? body.results : [], next_cursor: body.next_cursor ?? null };
 }
 
+/** Pages the gateway may answer with nothing while it still has a cursor (rows are filtered after the query). */
+export const SEARCH_MAX_EMPTY_PAGES = 5;
+
+/** One page for the member: skips (bounded) through empty pages that still have a cursor. */
+async function fetchFilled(q: string, f: MessageSearchFilters, cursor: string | null, signal: AbortSignal) {
+  let page = await fetchPage(buildSearchQuery(q, f, cursor), signal);
+  for (let i = 1; page.results.length === 0 && page.next_cursor && i < SEARCH_MAX_EMPTY_PAGES; i++) {
+    page = await fetchPage(buildSearchQuery(q, f, page.next_cursor), signal);
+  }
+  return page;
+}
+
 export function useMessageSearch(query: string, filters: MessageSearchFilters, enabled = true) {
   const [results, setResults] = useState<MessageSearchResult[]>([]);
   const [status, setStatus] = useState<SearchStatus>('idle');
@@ -107,7 +128,7 @@ export function useMessageSearch(query: string, filters: MessageSearchFilters, e
     const ctl = new AbortController();
     ctlRef.current = ctl;
     const timer = setTimeout(() => {
-      fetchPage(buildSearchQuery(q, filters), ctl.signal)
+      fetchFilled(q, filters, null, ctl.signal)
         .then((page) => {
           if (ctl.signal.aborted || keyRef.current !== key) return;
           setResults(page.results);
@@ -137,7 +158,7 @@ export function useMessageSearch(query: string, filters: MessageSearchFilters, e
     ctlRef.current = ctl;
     setStatus('loading');
     try {
-      const page = await fetchPage(buildSearchQuery(q, filters, cursor), ctl.signal);
+      const page = await fetchFilled(q, filters, cursor, ctl.signal);
       if (keyRef.current !== key) return;
       setResults((prev) => {
         const seen = new Set(prev.map((r) => r.message_id));

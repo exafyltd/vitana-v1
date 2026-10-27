@@ -175,6 +175,12 @@ export default function Messages() {
   const [deepLinkMessageId, setDeepLinkMessageId] = useState<string | null>(
     pathParams.messageId || null,
   );
+  // VTID-05317: an in-app navigation to /inbox/u|t/:id/msg/:messageId (a
+  // message-search hit) reuses this mounted page, so pick the id up on change
+  // too — this runs before the effects below strip the URL.
+  useEffect(() => {
+    if (pathParams.messageId) setDeepLinkMessageId(pathParams.messageId);
+  }, [pathParams.messageId]);
 
   // ?thread= param OR /inbox/t/:threadId path (thread UUID)
   useEffect(() => {
@@ -1478,7 +1484,12 @@ export default function Messages() {
             }
           >
             {({ frame, stage }) => (
-              <ScreenFrame archetype="conversation" {...frame}>
+              // VTID-05317: the global message search sits first in the Spotlight utility bar.
+              <ScreenFrame
+                archetype="conversation"
+                {...frame}
+                utility={{ ...frame.utility, children: <>{messageSearchButton}{frame.utility?.children}</> }}
+              >
                 {stage}
               </ScreenFrame>
             )}

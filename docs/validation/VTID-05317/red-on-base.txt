@@ -3,4 +3,8 @@
  ❯ src/components/messages/MessageSearchPanel.vtid-05317.test.tsx (0 test)
 Error: Failed to resolve import "./useMessageSearch" from "src/hooks/useMessageSearch.test.ts". Does the file exist?
 Error: Failed to resolve import "./MessageSearchPanel" from "src/components/messages/MessageSearchPanel.vtid-05317.test.tsx". Does the file exist?
-Head: 10 + 8 = 18 passed.
+## review round 1 — the Messages-level test on base
+ × phone / legacy desktop / Spotlight desktop: the global search button opens the panel with scope "all"  (Unable to find [data-testid="inbox-message-search-button"])
+ × a DM hit opened from the mounted inbox opens that DM at the message
+ Also red on the first head without the deepLinkMessageId sync (initialScrollMessageId null).
+Head: 14 + 14 + 4 = 32 passed.
