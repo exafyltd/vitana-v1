@@ -167,6 +167,32 @@
       "openImage": "Open picture {name}",
       "openVideo": "Play video {name}",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Search messages",
+      "titleConversation": "Search in this conversation",
+      "hint": "Type at least {min} characters",
+      "placeholder": "Search messages…",
+      "olderHit": "Older match",
+      "newerHit": "Newer match",
+      "type": "Type",
+      "from": "From",
+      "to": "To",
+      "types": {
+        "any": "Any",
+        "image": "Photos",
+        "video": "Videos",
+        "file": "Files",
+        "voice": "Voice messages",
+        "link": "Links"
+      },
+      "searching": "Searching…",
+      "error": "Search failed. Please try again.",
+      "empty": "No messages found",
+      "results": "Search results",
+      "conversation": "Conversation",
+      "more": "Show more",
+      "filters": "Filters"
     }
   },
   "_pending_review": {}

@@ -167,6 +167,32 @@
       "openImage": "Abrir imagem {name}",
       "openVideo": "Reproduzir vídeo {name}",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Pesquisar mensagens",
+      "titleConversation": "Pesquisar nesta conversa",
+      "hint": "Digite pelo menos {min} caracteres",
+      "placeholder": "Pesquisar mensagens…",
+      "olderHit": "Resultado anterior",
+      "newerHit": "Resultado mais recente",
+      "type": "Tipo",
+      "from": "De",
+      "to": "Até",
+      "types": {
+        "any": "Todos",
+        "image": "Fotos",
+        "video": "Vídeos",
+        "file": "Arquivos",
+        "voice": "Mensagens de voz",
+        "link": "Links"
+      },
+      "searching": "Pesquisando…",
+      "error": "A pesquisa falhou. Tente novamente.",
+      "empty": "Nenhuma mensagem encontrada",
+      "results": "Resultados da pesquisa",
+      "conversation": "Conversa",
+      "more": "Mostrar mais",
+      "filters": "Filtros"
     }
   },
   "_pending_review": {}
