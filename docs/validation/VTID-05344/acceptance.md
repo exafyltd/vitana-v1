@@ -12,5 +12,5 @@ only the reviewer model-chain text (§3 review entry, §7 pipeline and "Acceptin
 TEST: node --test scripts/ci/kiro-steering/guard.test.cjs
 
 AC-3 `checkOwnerAutonomy` behaves as in the platform lane: a missing file, a non-always inclusion, each of the
-fifteen dropped anchors and a missing pointer all fail; fixtures without `vitana-pipeline.md` stay green.
+sixteen dropped anchors (thirteen checked inside their table row) and a missing pointer all fail; fixtures without `vitana-pipeline.md` stay green.
 TEST: node --test scripts/ci/kiro-steering/guard.test.cjs
