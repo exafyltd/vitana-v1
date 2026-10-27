@@ -1,0 +1,16 @@
+$ node --test scripts/ci/kiro-steering/guard.test.cjs
+# tests 30
+# pass 30
+# fail 0
+# skipped 0
+exit=0
+
+$ node scripts/ci/kiro-steering/guard.cjs .
+kiro-steering: OK
+exit=0
+
+5d7744b8472d9b7bb2f71819169486706f5f8a089fa5b79ddbe8cf36cbef5845  .kiro/steering/vitana-owner-autonomy.md
+5061e62d9385c7611b5f518488b44051d34f1054cd7e9e1211a57a2326442933  .kiro/steering/vitana-pipeline.md
+b49edbd900f5eebe50b39d560a59283b9b5d083229b802d496b840cad274ec8d  .claude/rules/collaboration.md
+5d7744b8472d9b7bb2f71819169486706f5f8a089fa5b79ddbe8cf36cbef5845  platform:.kiro/steering/vitana-owner-autonomy.md
+5061e62d9385c7611b5f518488b44051d34f1054cd7e9e1211a57a2326442933  platform:.kiro/steering/vitana-pipeline.md

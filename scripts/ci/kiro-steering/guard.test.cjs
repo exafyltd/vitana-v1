@@ -51,3 +51,41 @@ test('the Kiro notes say plan sparring is never skipped and how to load context'
   assert.match(notes, /Plan sparring is never skipped/);
   assert.match(notes, /resume-vtid\.sh/);
 });
+
+// Plan owner-autonomy: the standing owner instruction and its stop table stay in place.
+{
+  const { checkOwnerAutonomy } = require('./guard.cjs');
+  const REAL = fs.readFileSync(path.join(__dirname, '..', '..', '..', '.kiro', 'steering', 'vitana-owner-autonomy.md'), 'utf8');
+  const PIPE = '# pipeline\nSee `vitana-owner-autonomy.md`.\n';
+  const withRule = (rule, pipe = PIPE) => repo({ '.kiro/steering/vitana-pipeline.md': pipe, ...(rule === null ? {} : { '.kiro/steering/vitana-owner-autonomy.md': rule }) });
+
+  test('owner-autonomy: the shipped rule file passes', () => {
+    assert.deepStrictEqual(checkOwnerAutonomy(withRule(REAL)), []);
+  });
+  test('owner-autonomy: a missing rule file fails', () => {
+    assert.match(checkOwnerAutonomy(withRule(null)).join('\n'), /vitana-owner-autonomy\.md missing/);
+  });
+  const { OWNER_AUTONOMY_ANCHORS } = require('./guard.cjs');
+  test('owner-autonomy: one anchor per stop row (12) plus end point, stop message and no-trailing-question rule', () => {
+    assert.strictEqual(OWNER_AUTONOMY_ANCHORS.length, 15);
+  });
+  for (const [anchor] of OWNER_AUTONOMY_ANCHORS) {
+    test(`owner-autonomy: dropping "${anchor}" fails`, () => {
+      const e = checkOwnerAutonomy(withRule(REAL.split(anchor).join('x'))).join('\n');
+      assert.ok(e.includes(`no longer names ${anchor}`), e);
+    });
+  }
+  test('owner-autonomy: a rule file that is not always-included fails', () => {
+    assert.match(checkOwnerAutonomy(withRule(REAL.replace('inclusion: always', 'inclusion: manual'))).join('\n'), /inclusion must be always/);
+  });
+  test('owner-autonomy: vitana-pipeline.md without the pointer fails', () => {
+    assert.match(checkOwnerAutonomy(withRule(REAL, '# pipeline\n')).join('\n'), /must point to vitana-owner-autonomy\.md/);
+  });
+  test('owner-autonomy: a repo without the pipeline steering is not checked (fixtures stay green)', () => {
+    assert.deepStrictEqual(checkOwnerAutonomy(repo({ 'CLAUDE.md': 'x' })), []);
+  });
+  test('owner-autonomy: check() runs it', () => {
+    const e = check(repo({ 'CLAUDE.md': 'x', '.kiro/steering/a.md': ALWAYS, '.kiro/steering/vitana-pipeline.md': '# p\n' }));
+    assert.match(e.join('\n'), /vitana-owner-autonomy\.md missing/);
+  });
+}
