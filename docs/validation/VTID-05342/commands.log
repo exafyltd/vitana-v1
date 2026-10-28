@@ -1,0 +1,9 @@
+# VTID-05342 commands (session kiro-exafyltd-202610270811-c79f, base fb9b6d843)
+$ node --test scripts/ci/kiro-steering/guard.test.cjs  (steering file absent = base)
+# tests 9 # pass 8 # fail 1 -> FAIL (expected red)
+$ node --test scripts/ci/kiro-steering/guard.test.cjs  (head)
+# tests 9 # pass 9 # fail 0 -> PASS
+$ node scripts/ci/kiro-steering/guard.cjs .
+kiro-steering: OK
+$ cmp vitana-platform/.kiro/steering/vitana-session-title.md vitana-v1/.kiro/steering/vitana-session-title.md
+identical -> PASS
