@@ -1,0 +1,7 @@
+# red on base: vitana-v1 origin/main fb9b6d843 + the new tests only
+$ node --test scripts/ci/kiro-steering/guard.test.cjs
+# Error: ENOENT: no such file or directory, open '.kiro/steering/vitana-owner-autonomy.md'
+not ok 1 - scripts/ci/kiro-steering/guard.test.cjs
+# tests 1
+# pass 0
+# fail 1

@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05249",
+  "kind": "config",
+  "lane": "native-g1-wiring/env-profiles",
+  "paths": [
+    "apps/mobile/src/config/env.ts",
+    "apps/mobile/env/**",
+    "apps/mobile/tests/env.test.ts",
+    "docs/validation/VTID-05249/scope.json",
+    "docs/validation/VTID-05249/staging-tests.json",
+    "docs/validation/VTID-05249/plan-sparring.md"
+  ],
+  "sparring_record": "docs/validation/VTID-05249/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

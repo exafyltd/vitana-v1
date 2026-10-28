@@ -108,6 +108,7 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{translate('profileEditor.identity.editIdentity')}</DialogTitle>

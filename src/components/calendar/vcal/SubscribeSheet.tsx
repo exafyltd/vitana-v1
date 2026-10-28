@@ -80,11 +80,13 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
   const busy = create.isPending || revoke.isPending;
 
   return (
+    // design-allow-next-line: modal backdrop scrim, theme-independent
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 md:items-center" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="vcal-subscribe-title"
+        // design-allow-next-line: viewport-relative sheet height; the contract has no viewport-height token
         className="flex max-h-[90vh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-t-[28px] p-6 pb-28 md:rounded-[28px] md:pb-6"
         style={{ background: SURFACE.page, color: SURFACE.ink }}
         onClick={(e) => e.stopPropagation()}
@@ -99,14 +101,14 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
             type="button"
             onClick={onClose}
             aria-label={t("vcal.entry.close")}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-lg"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-lg"
           >
             ✕
           </button>
         </div>
 
         <p className="m-0 text-sm leading-relaxed">{provider ? t(`vcal.subscribe.introFor.${provider}`) : t("vcal.subscribe.intro")}</p>
-        <p className="m-0 rounded-2xl bg-white px-4 py-3 text-sm" style={{ color: SURFACE.muted }}>
+        <p className="m-0 rounded-2xl bg-card px-4 py-3 text-sm" style={{ color: SURFACE.muted }}>
           🔒 {t("vcal.subscribe.privacy")}
         </p>
 
@@ -121,7 +123,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
               value={freshUrl}
               dir="ltr"
               onFocus={(e) => e.currentTarget.select()}
-              className="h-12 w-full rounded-2xl bg-white px-3 text-sm"
+              className="h-12 w-full rounded-2xl bg-card px-3 text-sm"
             />
             <span className="text-sm" style={{ color: SURFACE.muted }}>
               {t("vcal.subscribe.onlyOnce")}
@@ -131,7 +133,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
                 href={providerAddUrl(provider, freshUrl)}
                 target={provider === "apple" ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="flex h-14 items-center justify-center rounded-[18px] px-3 text-center text-base font-semibold text-white"
+                className="flex h-14 items-center justify-center rounded-[18px] px-3 text-center text-base font-semibold text-primary-foreground"
                 style={{ background: SURFACE.primary }}
                 data-testid="vcal-subscribe-open-provider"
               >
@@ -139,13 +141,15 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
               </a>
             )}
             <div className="grid grid-cols-2 gap-2.5">
+              {/* design-allow-next-line: measured control height off the scale (>2px) */}
               <button type="button" onClick={copy} className="h-[52px] rounded-2xl text-sm" style={{ background: SURFACE.track }}>
                 {t("vcal.subscribe.copy")}
               </button>
               {!provider && (
                 <a
                   href={webcalUrl(freshUrl)}
-                  className="flex h-[52px] items-center justify-center rounded-2xl px-3 text-center text-sm font-semibold leading-tight text-white"
+                  // design-allow-next-line: measured control height off the scale (>2px)
+                  className="flex h-[52px] items-center justify-center rounded-2xl px-3 text-center text-sm font-semibold leading-tight text-primary-foreground"
                   style={{ background: SURFACE.primary }}
                 >
                   {t("vcal.subscribe.openApp")}
@@ -164,7 +168,7 @@ export function SubscribeSheet({ onClose, provider }: { onClose: () => void; pro
             type="button"
             disabled={busy || status.isLoading}
             onClick={() => create.mutate()}
-            className="h-14 rounded-[18px] text-base font-semibold text-white disabled:opacity-60"
+            className="h-14 rounded-[18px] text-base font-semibold text-primary-foreground disabled:opacity-60"
             style={{ background: SURFACE.primary }}
             data-testid="vcal-subscribe-create"
           >

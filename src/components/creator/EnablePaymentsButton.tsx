@@ -23,7 +23,7 @@ export function EnablePaymentsButton() {
   // Already fully onboarded
   if (status?.charges_enabled && status?.payouts_enabled) {
     return (
-      <div className="flex items-center gap-2 text-green-600 text-sm">
+      <div className="flex items-center gap-2 text-status-success text-sm">
         <CheckCircle className="w-4 h-4" />
         <span className="font-medium">{t('screens.creator.paymentsEnabled')}</span>
       </div>
@@ -37,7 +37,7 @@ export function EnablePaymentsButton() {
       onClick={() => startOnboarding(undefined)}
         disabled={isPending}
         variant="outline"
-        className="border-yellow-500 text-yellow-700"
+        className="border-status-warning text-status-warning"
       >
         <CreditCard className="w-4 h-4 me-2" />
         {isPending ? 'Redirecting...' : 'Complete Setup'}

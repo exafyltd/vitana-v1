@@ -131,6 +131,95 @@
       "composerPlaceholder": "Mesaj…",
       "today": "Bugün",
       "yesterday": "Dün"
+    },
+    "messageStatus": {
+      "sending": "Gönderiliyor",
+      "sent": "Gönderildi",
+      "delivered": "İletildi",
+      "read": "Okundu",
+      "failed": "Gönderilemedi",
+      "retry": "Tekrar dene",
+      "retryLabel": "Bu mesajı tekrar gönder",
+      "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "En yeniye git",
+      "one": "1 yeni mesaj",
+      "other": "{count} yeni mesaj",
+      "unread": "Okunmamış mesajlar",
+      "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Orijinal mesaj kullanılamıyor",
+      "loading": "Orijinal mesaj…",
+      "jumpToOriginal": "Orijinal mesaja git",
+      "jumpTo": "Orijinal mesaja git: {name}",
+      "unknownSender": "Üye",
+      "noText": "Ek",
+      "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Yükleme başarısız",
+      "retry": "Tekrar dene",
+      "retryUpload": "{name} dosyasını tekrar yükle",
+      "video": "Video",
+      "moreItems": "{count} tane daha",
+      "openImage": "{name} resmini aç",
+      "openVideo": "{name} videosunu oynat",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "Mesajlarda ara",
+      "titleConversation": "Bu sohbette ara",
+      "hint": "En az {min} karakter yaz",
+      "placeholder": "Mesajlarda ara…",
+      "olderHit": "Önceki eşleşme",
+      "newerHit": "Sonraki eşleşme",
+      "type": "Tür",
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "types": {
+        "any": "Tümü",
+        "image": "Fotoğraflar",
+        "video": "Videolar",
+        "file": "Dosyalar",
+        "voice": "Sesli mesajlar",
+        "link": "Bağlantılar"
+      },
+      "searching": "Aranıyor…",
+      "error": "Arama başarısız oldu. Tekrar dene.",
+      "empty": "Mesaj bulunamadı",
+      "results": "Arama sonuçları",
+      "conversation": "Sohbet",
+      "more": "Daha fazla göster",
+      "filters": "Filtreler"
+    },
+    "shared": {
+      "sendInMessage": "Mesajla gönder",
+      "sheetTitle": "Mesajla gönder: {kind}",
+      "captionPlaceholder": "Mesaj ekle (isteğe bağlı)",
+      "sent": "Gönderildi",
+      "notAllowed": "Bunu artık paylaşamazsın.",
+      "kind": {
+        "post": "Gönderi",
+        "event": "Etkinlik",
+        "product": "Ürün",
+        "profile": "Profil"
+      },
+      "loading": "Önizleme yükleniyor…",
+      "loadFailed": "Önizleme yüklenemedi",
+      "retry": "Tekrar dene",
+      "open": "Aç ({kind}): {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}: artık mevcut değil",
+          "body": "Kaldırıldı."
+        },
+        "restricted": {
+          "title": "{kind}: senin için görünür değil",
+          "body": "Gizlilik ayarları görmene izin vermiyor."
+        }
+      }
     }
   },
   "_pending_review": {}

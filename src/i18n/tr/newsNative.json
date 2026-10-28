@@ -1,0 +1,14 @@
+{
+  "newsNative": {
+    "article": {
+      "unavailableTitle": "Makale kullanılamıyor",
+      "unavailableBody": "Bu makale burada açılamıyor. Tekrar açmak için akışa geri dön.",
+      "backToFeed": "Akışa dön"
+    },
+    "post": {
+      "video": "Video",
+      "likes": "{count} beğeni",
+      "comments": "{count} yorum"
+    }
+  }
+}

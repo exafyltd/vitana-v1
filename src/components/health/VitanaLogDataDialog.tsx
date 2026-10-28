@@ -139,7 +139,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
                   onClick={() => handlePillarChange(p)}
                   className={`h-9 rounded-md text-xs font-medium transition ${
                     pillar === p
-                      ? "bg-calendar-primary text-white"
+                      ? "bg-calendar-primary text-primary-foreground"
                       : "bg-background text-foreground border border-border hover:bg-muted"
                   }`}
                 >

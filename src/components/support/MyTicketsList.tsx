@@ -211,7 +211,7 @@ export function MyTicketsList({
               <ol className="flex items-center gap-1" aria-label={t("supportTickets.timelineLabel")}>
                 {MEMBER_TIMELINE.map((s, i) => (
                   <li key={s} className="flex min-w-0 flex-1 flex-col gap-1" aria-current={i === step ? "step" : undefined}>
-                    <span className={cn("h-1.5 rounded-full", i <= step ? (status === "fixed" ? "bg-emerald-500" : "bg-primary") : "bg-muted")} />
+                    <span className={cn("h-1.5 rounded-full", i <= step ? (status === "fixed" ? "bg-status-success" : "bg-primary") : "bg-muted")} />
                     <span className={cn("truncate text-[10px]", i === step ? "font-semibold text-foreground" : "text-muted-foreground")}>
                       {t(`supportTickets.status.${s}`)}
                     </span>
@@ -228,7 +228,7 @@ export function MyTicketsList({
             )}
 
             {ticket.status === "user_confirmed" && (
-              <span className="flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-300">
+              <span className="flex items-center gap-1 text-xs text-status-success">
                 <Check className="h-3.5 w-3.5" />
                 {t("supportTickets.confirmed")}
               </span>

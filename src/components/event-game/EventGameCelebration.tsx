@@ -53,31 +53,32 @@ export function EventGameCelebration({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: calc against parent padding */}
       <DialogContent className="sm:max-w-sm w-[calc(100%-2rem)] border-0 p-0 overflow-hidden rounded-3xl bg-transparent shadow-2xl">
         <div
           className="relative flex flex-col items-center text-center px-6 pt-10 pb-8 gap-4 overflow-hidden"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 50% 0%, #FFFFFF 0%, #E3F5FD 35%, #8FD5FA 100%)',
+            background: 'radial-gradient(ellipse 120% 60% at 50% 0%, hsl(var(--card)) 0%, hsl(var(--category-7) / 0.15) 35%, hsl(var(--category-7) / 0.45) 100%)',
           }}
         >
           {/* Decorative glow + footer wave — purely cosmetic */}
-          <div className="pointer-events-none absolute -top-8 -start-8 w-40 h-40 rounded-full bg-white/30 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-6 -end-6 w-32 h-32 rounded-full bg-white/20 blur-2xl" />
-          <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-16 text-white/50" />
+          <div className="pointer-events-none absolute -top-8 -start-8 w-40 h-40 rounded-full bg-card/30 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-6 -end-6 w-32 h-32 rounded-full bg-card/20 blur-2xl" />
+          <DecorativeWave className="pointer-events-none absolute bottom-0 start-0 w-full h-16 text-primary-foreground/50" />
 
-          <div className="relative w-20 h-20 rounded-full bg-white/60 backdrop-blur flex items-center justify-center ring-4 ring-white/50 shadow-[0_0_30px_rgba(31,143,199,0.5)]">
-            <Trophy className="w-10 h-10 text-[#1B8FC7]" />
+          <div className="relative w-20 h-20 rounded-full bg-card/60 backdrop-blur flex items-center justify-center ring-4 ring-border/50 shadow-[0_0_30px_rgba(31,143,199,0.5)]">
+            <Trophy className="w-10 h-10 text-category-7" />
           </div>
 
-          <DialogTitle className="relative text-2xl font-extrabold text-[#0B4F70]">{title}</DialogTitle>
+          <DialogTitle className="relative text-2xl font-extrabold text-foreground">{title}</DialogTitle>
           {points && (
-            <div className="relative text-5xl font-extrabold bg-gradient-to-r from-[#6CC5EC] to-[#1B8FC7] bg-clip-text text-transparent">
+            <div className="relative text-5xl font-extrabold bg-gradient-to-r from-category-7/70 to-category-7 bg-clip-text text-transparent">
               {points}
             </div>
           )}
-          {subtitle && <div className="relative text-sm text-[#0B4F70]/70">{subtitle}</div>}
+          {subtitle && <div className="relative text-sm text-foreground/70">{subtitle}</div>}
           {children && (
-            <div className="relative w-full rounded-2xl bg-white/70 backdrop-blur px-4 py-4 shadow-[0_4px_16px_rgba(31,143,199,0.15)]">
+            <div className="relative w-full rounded-2xl bg-card/70 backdrop-blur px-4 py-4 shadow-[0_4px_16px_rgba(31,143,199,0.15)]">
               {children}
             </div>
           )}

@@ -221,13 +221,13 @@ export function VitanaIndexTrajectoryCard() {
         {/* Header */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
-            <TrendingUp className="w-4 h-4 text-violet-500 shrink-0" />
+            <TrendingUp className="w-4 h-4 text-category-2 shrink-0" />
             <h3 className="text-sm font-semibold truncate">
               {t("screens.health.vitanaIndexTrajectory")}
             </h3>
           </div>
           <div className="flex flex-col items-end leading-none">
-            <span className="text-xl font-serif font-semibold bg-gradient-to-br from-emerald-500 to-blue-500 bg-clip-text text-transparent">
+            <span className="text-xl font-serif font-semibold bg-gradient-to-br from-status-success to-category-3 bg-clip-text text-transparent">
               {index.total}
             </span>
             <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wide mt-1">
@@ -246,8 +246,8 @@ export function VitanaIndexTrajectoryCard() {
               className={cn(
                 "px-3 py-1 rounded-full text-xs font-semibold border transition-colors",
                 range === r.key
-                  ? "bg-gradient-to-r from-indigo-500 to-violet-500 text-white border-transparent shadow-sm"
-                  : "bg-white text-muted-foreground border-border hover:bg-muted/40",
+                  ? "bg-gradient-to-r from-category-3 to-category-2 text-primary-foreground border-transparent shadow-sm"
+                  : "bg-card text-muted-foreground border-border hover:bg-muted/40",
               )}
             >
               {t(r.labelKey)}
@@ -258,28 +258,28 @@ export function VitanaIndexTrajectoryCard() {
         {/* Stats row */}
         {stats && (
           <div className="grid grid-cols-4 gap-1.5">
-            <div className="rounded-lg bg-white/70 border border-border/60 px-2 py-1.5 text-center">
-              <div className="text-sm font-bold leading-none text-emerald-600">{stats.best.score}</div>
+            <div className="rounded-lg bg-card/70 border border-border/60 px-2 py-1.5 text-center">
+              <div className="text-sm font-bold leading-none text-status-success">{stats.best.score}</div>
               <div className="text-[9px] uppercase tracking-wide text-muted-foreground mt-1">
                 {t("screens.health.statBest")}
               </div>
             </div>
-            <div className="rounded-lg bg-white/70 border border-border/60 px-2 py-1.5 text-center">
-              <div className="text-sm font-bold leading-none text-amber-600">{stats.worst.score}</div>
+            <div className="rounded-lg bg-card/70 border border-border/60 px-2 py-1.5 text-center">
+              <div className="text-sm font-bold leading-none text-status-warning">{stats.worst.score}</div>
               <div className="text-[9px] uppercase tracking-wide text-muted-foreground mt-1">
                 {t("screens.health.statWorst")}
               </div>
             </div>
-            <div className="rounded-lg bg-white/70 border border-border/60 px-2 py-1.5 text-center">
+            <div className="rounded-lg bg-card/70 border border-border/60 px-2 py-1.5 text-center">
               <div className="text-sm font-bold leading-none">{stats.avg}</div>
               <div className="text-[9px] uppercase tracking-wide text-muted-foreground mt-1">
                 {t("screens.health.statAverage")}
               </div>
             </div>
-            <div className="rounded-lg bg-white/70 border border-border/60 px-2 py-1.5 text-center">
+            <div className="rounded-lg bg-card/70 border border-border/60 px-2 py-1.5 text-center">
               <div className={cn(
                 "text-sm font-bold leading-none",
-                trend > 0 ? "text-emerald-600" : trend < 0 ? "text-red-500" : "text-muted-foreground",
+                trend > 0 ? "text-status-success" : trend < 0 ? "text-status-error" : "text-muted-foreground",
               )}>
                 {trend > 0 ? "↑ +" : trend < 0 ? "↓ " : "→ "}
                 {fmtNumber(Math.abs(trend))}
@@ -405,15 +405,15 @@ export function VitanaIndexTrajectoryCard() {
         </div>
 
         {/* Insight + CTA */}
-        <div className="rounded-xl bg-gradient-to-r from-emerald-50 via-blue-50 to-violet-50 dark:from-emerald-950/20 dark:via-blue-950/20 dark:to-violet-950/20 border border-emerald-200/40 px-3 py-2 flex items-center gap-2">
+        <div className="rounded-xl bg-gradient-to-r from-surface-page-from via-surface-page-via to-surface-page-to border border-status-success/10 px-3 py-2 flex items-center gap-2">
           <span className="text-base">✨</span>
-          <p className="text-xs leading-snug text-emerald-800 dark:text-emerald-200 m-0">{insight}</p>
+          <p className="text-xs leading-snug text-status-success m-0">{insight}</p>
         </div>
 
         <button
           type="button"
           onClick={openDrawer}
-          className="w-full flex items-center justify-between text-xs font-semibold text-indigo-600 hover:text-indigo-700 px-1 py-1"
+          className="w-full flex items-center justify-between text-xs font-semibold text-category-3 hover:text-category-3 px-1 py-1"
         >
           <span className="text-muted-foreground font-normal">
             {t("screens.health.lastNDays", { days: fetchDays })}

@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05344",
+  "kind": "infra",
+  "paths": [
+    ".kiro/steering/vitana-owner-autonomy.md",
+    ".kiro/steering/vitana-pipeline.md",
+    ".claude/rules/collaboration.md",
+    "scripts/ci/kiro-steering/guard.cjs",
+    "scripts/ci/kiro-steering/guard.test.cjs",
+    "docs/validation/VTID-05344/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05344/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -36,9 +36,9 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
   const isExcellent = data.sleepScore >= 85;
   
   const getQualityColor = () => {
-    if (data.sleepScore >= 85) return 'text-emerald-600 dark:text-emerald-400';
-    if (data.sleepScore >= 70) return 'text-sky-600 dark:text-sky-400';
-    return 'text-amber-600 dark:text-amber-400';
+    if (data.sleepScore >= 85) return 'text-emerald-600';
+    if (data.sleepScore >= 70) return 'text-sky-600';
+    return 'text-amber-600';
   };
   
   return (
@@ -46,29 +46,28 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
       <SheetContent 
         side="right" 
         className="w-full sm:max-w-2xl overflow-y-auto p-0 
-          backdrop-blur-xl bg-white/90 dark:bg-slate-900/90"
+          backdrop-blur-xl bg-card/90"
       >
         {/* Header with Sleep Visualization */}
-        <div className="relative bg-gradient-to-br from-indigo-100 via-purple-50 to-sky-100 
-          dark:from-indigo-950 dark:via-purple-950 dark:to-sky-950 p-8">
+        <div className="relative bg-gradient-to-br from-category-3/15 via-category-2/10 to-category-7/15 p-8">
           
           {/* Close Buttons */}
           <button
             onClick={() => onOpenChange(false)}
             className="absolute top-4 end-4 w-10 h-10 rounded-full 
-              bg-white/30 backdrop-blur-md hover:bg-white/40 
+              bg-card/30 backdrop-blur-md hover:bg-card/40 
               flex items-center justify-center transition-all z-10"
           >
-            <X className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+            <X className="w-5 h-5 text-muted-foreground" />
           </button>
           
           <button
             onClick={() => onOpenChange(false)}
             className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full 
-              bg-white/30 backdrop-blur-md hover:bg-white/40 
+              bg-card/30 backdrop-blur-md hover:bg-card/40 
               flex items-center justify-center transition-all z-10"
           >
-            <ArrowLeft className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+            <ArrowLeft className="w-5 h-5 text-muted-foreground" />
           </button>
           
           {/* Sleep Score Circle */}
@@ -82,7 +81,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                   r="56" 
                   fill="none" 
                   stroke="currentColor" 
-                  className="text-slate-200 dark:text-slate-700" 
+                  className="text-muted-foreground" 
                   strokeWidth="8" 
                 />
                 <circle 
@@ -98,17 +97,17 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold text-indigo-700 dark:text-indigo-300">
+                <span className="text-3xl font-bold text-category-3">
                   {data.sleepScore}
                 </span>
-                <span className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.score')}</span>
+                <span className="text-xs text-muted-foreground">{t('screens.health.score')}</span>
               </div>
             </div>
             
             {/* Title */}
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">{t('screens.health.daySleep', { day: data.day })}
+            <h2 className="text-2xl font-bold text-foreground mb-1">{t('screens.health.daySleep', { day: data.day })}
             </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               {fmtDate(new Date(data.date), { weekday: 'long', month: 'long', day: 'numeric' })}
             </p>
           </div>
@@ -118,48 +117,48 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
         <div className="p-6 space-y-6">
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 
-              dark:from-indigo-950/30 dark:to-purple-950/30 text-center">
-              <Clock className="w-5 h-5 mx-auto mb-1 text-indigo-600 dark:text-indigo-400" />
-              <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.duration')}</p>
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-category-3/10 to-category-2/10 
+ text-center">
+              <Clock className="w-5 h-5 mx-auto mb-1 text-category-3" />
+              <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
               <p className="text-sm font-bold">{data.duration}</p>
             </div>
             
-            <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-50 to-sky-50 
-              dark:from-purple-950/30 dark:to-sky-950/30 text-center">
-              <Bed className="w-5 h-5 mx-auto mb-1 text-purple-600 dark:text-purple-400" />
-              <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.bedtime')}</p>
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-category-2/10 to-category-7/10 
+ text-center">
+              <Bed className="w-5 h-5 mx-auto mb-1 text-category-2" />
+              <p className="text-xs text-muted-foreground">{t('screens.health.bedtime')}</p>
               <p className="text-sm font-bold">{data.bedtime}</p>
             </div>
             
-            <div className="p-3 rounded-2xl bg-gradient-to-br from-sky-50 to-indigo-50 
-              dark:from-sky-950/30 dark:to-indigo-950/30 text-center">
-              <TrendingUp className="w-5 h-5 mx-auto mb-1 text-sky-600 dark:text-sky-400" />
-              <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.wake')}</p>
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-category-7/10 to-category-3/10 
+ text-center">
+              <TrendingUp className="w-5 h-5 mx-auto mb-1 text-category-7" />
+              <p className="text-xs text-muted-foreground">{t('screens.health.wake')}</p>
               <p className="text-sm font-bold">{data.wakeTime}</p>
             </div>
           </div>
           
           {/* AI Suggestion */}
           {isExcellent ? (
-            <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-green-500/10 
-              dark:from-emerald-500/20 dark:to-green-500/20 border border-emerald-200/30 dark:border-emerald-700/30">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-status-success/10 to-status-success/10 
+ border border-border30">
+              <CheckCircle2 className="w-5 h-5 text-status-success flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium mb-1">{t('screens.health.excellentSleep')}</p>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   {t('screens.health.yourSleepQualityOutstandingKeepMaintaining')}
                 </p>
               </div>
             </div>
           ) : (
             data.aiNote && (
-              <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 
-                dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-200/30 dark:border-indigo-700/30">
-                <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-category-3/10 to-category-2/10 
+ border border-border30">
+                <Brain className="w-5 h-5 text-category-3 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 italic">
+                  <p className="text-sm text-muted-foreground italic">
                     {data.aiNote}
                   </p>
                 </div>
@@ -172,16 +171,16 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
           {/* Sleep Stages */}
           <div>
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <Moon className="w-5 h-5 text-indigo-600" />
+              <Moon className="w-5 h-5 text-category-3" />
               {t('screens.health.sleepStages')}
             </h3>
             <div className="space-y-3">
               {data.stages.map((stage, idx) => {
                 const stageColors = {
-                  deep: 'from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 text-indigo-700 dark:text-indigo-300',
-                  light: 'from-sky-100 to-sky-200 dark:from-sky-900/30 dark:to-sky-800/30 text-sky-700 dark:text-sky-300',
-                  rem: 'from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 text-purple-700 dark:text-purple-300',
-                  awake: 'from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 text-amber-700 dark:text-amber-300'
+                  deep: 'from-indigo-100 to-indigo-200 text-indigo-700',
+                  light: 'from-sky-100 to-sky-200 text-sky-700',
+                  rem: 'from-purple-100 to-purple-200 text-purple-700',
+                  awake: 'from-amber-100 to-amber-200 text-amber-700'
                 };
                 
                 return (
@@ -207,7 +206,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                           {stage.percentage}%
                         </Badge>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         {Math.floor(stage.duration / 60)}h {stage.duration % 60}m
                       </p>
                     </div>
@@ -245,8 +244,8 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             </Button>
             
             <Button 
-              className="flex-1 gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 
-                hover:from-indigo-600 hover:to-purple-600"
+              className="flex-1 gap-2 bg-gradient-to-r from-category-3 to-category-2 
+                hover:from-category-3 hover:to-category-2"
               onClick={() => notifySuccess('toasts.health.sleepDataLogged')}
             >
               <Sparkles className="w-4 h-4" />

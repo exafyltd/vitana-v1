@@ -109,6 +109,7 @@ export function AddSupplementDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: measured dialog width + viewport-bound height */}
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('screens.supplements.value0Supplement', { value0: mode === 'add' ? 'Add' : 'Edit' })}</DialogTitle>
@@ -150,7 +151,8 @@ export function AddSupplementDialog({
                         <SelectValue placeholder={t('screens.supplements.selectCategory')} />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="max-h-[300px]">
+                    {/* design-allow-next-line: measured dropdown scroll height */}
+                <SelectContent className="max-h-[300px]">
                       {categoryGroups.map((group) => (
                         <SelectGroup key={group.label}>
                           <SelectLabel>{group.label}</SelectLabel>

@@ -37,7 +37,7 @@ import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab
 import { VaeaDraftsStrip } from "@/components/business/vaea/VaeaDraftsStrip";
 import { VaeaCatalogPanel } from "@/components/business/vaea/VaeaCatalogPanel";
 import { VaeaDetectedList } from "@/components/business/vaea/VaeaDetectedList";
-import { Briefcase, Package, Loader2 as Loader2Icon } from "lucide-react";
+import { Briefcase, Package } from "lucide-react";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 // MobileBusinessNav removed - consolidated into single SplitBar
@@ -53,7 +53,7 @@ import {
 import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
 import { t } from '@/lib/i18n-toast';
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { BusinessOverviewSpotlight } from "@/components/spotlight/member/BusinessSpotlight";
 
@@ -127,7 +127,7 @@ export default function BusinessHub() {
           ...item,
           indicator: (
             <span 
-              className="ms-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/15"
+              className="ms-1.5 w-1.5 h-1.5 rounded-full bg-status-success/15"
               aria-hidden="true"
             />
           )
@@ -326,9 +326,7 @@ export default function BusinessHub() {
               {mobileTab === "services.packages" && (
                 <div className="space-y-4">
                   {isLoadingPackages ? (
-                    <div className="flex items-center justify-center py-12">
-                      <Loader2Icon className="w-6 h-6 animate-spin text-muted-foreground" />
-                    </div>
+                    <SpotlightLoading rows={3} />
                   ) : packages.length === 0 ? (
                     <div className="text-center py-12">
                       <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
@@ -525,12 +523,12 @@ export default function BusinessHub() {
       />
       <SubNavigation items={navigationWithIndicator} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Three Cards Layout */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
             {/* Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+            <div className="flex-1 bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
                   {t('screens.businesshub.businessHub')}
@@ -543,7 +541,7 @@ export default function BusinessHub() {
             
             {/* Autopilot Card */}
             <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+              className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-border/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
               onClick={() => setAutopilotOpen(true)}
               onMouseEnter={() => setShowPreview(true)}
               onMouseLeave={() => setShowPreview(false)}
@@ -558,14 +556,14 @@ export default function BusinessHub() {
               )}
               <div className="flex flex-col items-center justify-center h-full space-y-3">
                 <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                  <Plane className="w-10 h-10 text-sys-autopilot-accent transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                <span className="text-sm font-medium text-sys-autopilot-accent">{translate('actionBar.autopilot', 'Autopilot')}</span>
               </div>
               
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full start-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                <div className="absolute top-full start-0 mt-2 w-64 bg-popover/95 backdrop-blur-sm border border-border/20 rounded-lg shadow-xl p-3 z-10">
                   <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.businesshub.latestActions')}</div>
                   {latestActions.map((action) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
@@ -583,12 +581,12 @@ export default function BusinessHub() {
             
             {/* Vitana Index Card */}
             <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-border/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
               onClick={() => navigate('/health-tracker/vitana-index')}
             >
               <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600"><VitanaIndexValue /></span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg shadow-status-success/20 group-hover:shadow-status-success/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-status-success"><VitanaIndexValue /></span>
                 </div>
               </div>
             </div>

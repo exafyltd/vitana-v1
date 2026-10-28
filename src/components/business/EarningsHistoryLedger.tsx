@@ -125,7 +125,7 @@ export function EarningsHistoryLedger({
           </div>
           <div className="space-y-1">
             <span className="text-muted-foreground text-xs">{translate('business.history.youEarned')}</span>
-            <p className="font-semibold text-emerald-600">{formatCurrency(tx.amount)}</p>
+            <p className="font-semibold text-status-success">{formatCurrency(tx.amount)}</p>
           </div>
           <div className="space-y-1">
             <span className="text-muted-foreground text-xs">{translate('tableHeaders.status')}</span>
@@ -215,7 +215,7 @@ export function EarningsHistoryLedger({
           ))}
         </div>
         {[1, 2, 3].map((i) => (
-          <div key={i} className="p-4 bg-background/60 backdrop-blur-sm rounded-xl border border-white/10">
+          <div key={i} className="p-4 bg-background/60 backdrop-blur-sm rounded-xl border border-border/10">
             <div className="flex items-start gap-3">
               <Skeleton className="h-10 w-10 rounded-lg" />
               <div className="flex-1 space-y-2">

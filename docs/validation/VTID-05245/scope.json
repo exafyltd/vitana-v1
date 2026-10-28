@@ -1,0 +1,75 @@
+{
+  "vtid": "VTID-05245",
+  "lane": "mt-frontend-brand/email-brand-db",
+  "repo": "exafyltd/vitana-v1",
+  "base_commit": "32a82e6b6",
+  "migration": "supabase/migrations/20261101090000_vtid_05245_tenant_email_branding.sql",
+  "migration_range": "20261101090000-20261101095959",
+  "kind": "expand-only",
+  "objects_created": [
+    "table public.tenant_email_branding (RLS on; policies service_role_all, tenant_read)",
+    "function public.fn_tenant_email_branding(uuid) (SQL, STABLE, SECURITY INVOKER, EXECUTE service_role only)"
+  ],
+  "helper_columns": ["sender_name", "sender_email", "logo_url", "brand_name", "site_name", "support_email"],
+  "helper_contract": "One row per call; each field = the tenant's value, else Maxina's. Unknown or NULL tenant id -> Maxina row. site_name is the OG/share-card site name EC1 resolves.",
+  "maxina_tenant_id": "2e7528b8-472a-4356-88da-0280d4639cce",
+  "rollback": "docs/validation/VTID-05245/rollback.sql",
+  "pre_check": "docs/validation/VTID-05245/pre-check.sql",
+  "post_check": "docs/validation/VTID-05245/post-check.sql",
+  "paths_touched": [
+    "supabase/migrations/20261101090000_vtid_05245_tenant_email_branding.sql",
+    "docs/validation/VTID-05245/rollback.sql",
+    "docs/validation/VTID-05245/pre-check.sql",
+    "docs/validation/VTID-05245/post-check.sql",
+    "docs/validation/VTID-05245/scope.json"
+  ],
+  "paths_not_touched": {
+    "docs/multitenancy/MIGRATION-QUEUE.md": "Does not exist in vitana-v1 (origin/main 32a82e6b6). The program's single queue is exafyltd/vitana-platform docs/multitenancy/MIGRATION-QUEUE.md (rows 1-8, row 8 = 20261014000700). The row for this migration must be added there as row 9 by a vitana-platform PR; text in .agents/tasks/email-brand-db/verification.md."
+  },
+  "seed_maxina": {
+    "sender_name": {
+      "value": "Maxina by VITANA",
+      "source": "supabase/functions/send-welcome-discount/index.ts:187",
+      "variants_today": {
+        "Vitana Gifts": "supabase/functions/voucher-send-email/index.ts:359",
+        "Healthcare Appointments": "supabase/functions/send-appointment-email/index.ts:262, supabase/functions/send-appointment-reminder/index.ts:213",
+        "MAXINA": "supabase/functions/send-test-user-confirmation/index.ts:114"
+      }
+    },
+    "sender_email": {
+      "value": "noreply@vitanaland.com",
+      "source": "supabase/functions/send-welcome-discount/index.ts:187, supabase/functions/voucher-send-email/index.ts:359, supabase/functions/send-test-user-confirmation/index.ts:114",
+      "variants_today": {
+        "appointments@resend.dev": "supabase/functions/send-appointment-email/index.ts:262, supabase/functions/send-appointment-reminder/index.ts:213"
+      }
+    },
+    "logo_url": {
+      "value": "https://vitanaland.com/images/maxina-logo.png",
+      "source": "supabase/functions/send-welcome-discount/index.ts:113",
+      "variants_today": {
+        "https://vitana-v1.lovable.app/images/maxina-logo.png": "supabase/functions/voucher-send-email/index.ts:265"
+      }
+    },
+    "brand_name": {
+      "value": "MAXINA",
+      "source": "supabase/functions/send-welcome-discount/index.ts:113 (logo alt), supabase/functions/voucher-send-email/index.ts:265 (logo alt), :344",
+      "variants_today": {}
+    },
+    "site_name": {
+      "value": "VITANA",
+      "source": "supabase/functions/og-share/index.ts:96 (og:site_name), :91 (title suffix), supabase/functions/og-campaign/index.ts:89,148",
+      "variants_today": {
+        "MAXINA": "supabase/functions/og-event/index.ts:85,123, supabase/functions/og-short/index.ts:80,118"
+      }
+    },
+    "support_email": {
+      "value": "hello@vitana.app",
+      "source": "supabase/functions/voucher-send-email/index.ts:347, supabase/functions/process-campaign-queue/index.ts:217",
+      "variants_today": {}
+    }
+  },
+  "notes_for_email_brand_code": [
+    "Literals differ per function today (variants_today). The migration changes no behaviour (nothing reads it yet). To stay byte-identical, email-brand-code must keep each function's own literal on the Maxina path (or the owner accepts unifying them) — that is that lane's decision, not this migration's.",
+    "tenant_settings already carries sender_name/sender_email/support_email (VTID-05150 backfill: 'Maxina by VITANA', 'noreply@vitanaland.com', 'support@vitanaland.com'). This table follows the lane brief (new tenant-keyed table) and seeds the email-path literals; support_email differs from tenant_settings on purpose (hello@vitana.app is what emails print today)."
+  ]
+}

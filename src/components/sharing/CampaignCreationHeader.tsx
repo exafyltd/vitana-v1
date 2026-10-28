@@ -57,7 +57,7 @@ export function CampaignCreationHeader({
               <Badge variant="outline" className="text-xs">
                 {draftsCount} {translate('campaigns.creation.drafts', 'drafts')}
               </Badge>
-              <Badge variant="default" className="text-xs bg-[hsl(var(--pill-nutrition-accent))] hover:bg-[hsl(var(--pill-nutrition-accent))]/90">
+              <Badge variant="default" className="text-xs bg-pill-nutrition-accent hover:bg-pill-nutrition-accent/90">
                 {liveCount} {translate('campaigns.creation.live', 'live')}
               </Badge>
             </div>
@@ -66,10 +66,10 @@ export function CampaignCreationHeader({
       </Card>
 
       {/* Card 3: Quick Tip */}
-      <Card className="bg-gradient-to-br from-[hsl(var(--pill-hydration-tint))] to-[hsl(var(--pill-mental-tint))] backdrop-blur-sm border-2 border-[hsl(var(--pill-hydration-accent))]/30 shadow-lg hover:shadow-xl transition-shadow">
+      <Card className="bg-gradient-to-br from-pill-hydration-tint to-pill-mental-tint backdrop-blur-sm border-2 border-pill-hydration-accent/30 shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-start gap-2">
-            <Sparkles className="w-5 h-5 text-[hsl(var(--pill-hydration-accent))] shrink-0 mt-0.5" />
+            <Sparkles className="w-5 h-5 text-pill-hydration-accent shrink-0 mt-0.5" />
             <div>
               <p className="text-xs font-medium text-foreground">{translate('campaigns.creation.proTip', 'Pro Tip')}</p>
               <p className="text-xs text-muted-foreground">{getStepTip(currentStep)}</p>

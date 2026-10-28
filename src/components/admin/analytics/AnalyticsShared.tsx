@@ -21,6 +21,7 @@ import { t } from "@/lib/i18n-toast";
 export function DaysSelect({ days, onChange }: { days: number; onChange: (days: number) => void }) {
   return (
     <Select value={String(days)} onValueChange={(v) => onChange(parseInt(v))}>
+      {/* design-allow-next-line: no scale value within 2px of 140px */}
       <SelectTrigger className="w-[140px]">
         <SelectValue />
       </SelectTrigger>
@@ -58,6 +59,7 @@ export function CountListCard({
       <CardHeader>
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <CardContent className="max-h-[60vh] overflow-y-auto">
         {rows.length === 0 ? (
           <p className="text-sm italic text-muted-foreground">{emptyLabel}</p>

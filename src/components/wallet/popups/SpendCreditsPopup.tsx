@@ -118,11 +118,11 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
       <ResponsiveDialogContent className="max-w-4xl" fullscreenOnMobile>
         <ResponsiveDialogHeader>
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="p-2 bg-gradient-to-br from-category-2 to-category-4 rounded-lg">
+              <Sparkles className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <ResponsiveDialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <ResponsiveDialogTitle className="text-2xl font-bold bg-gradient-to-r from-category-2 to-category-4 bg-clip-text text-transparent">
                 {t('screens.wallet.spendCredits')}
               </ResponsiveDialogTitle>
               <p className="text-sm text-muted-foreground mt-1">{t('screens.wallet.availableValue0Credits', { value0: fmtNumber(creditsBalance) })}

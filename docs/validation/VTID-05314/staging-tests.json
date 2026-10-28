@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05314",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/messaging/grouping.test.ts src/components/messages/MessageBubble.grouping.vtid-05314.test.tsx src/components/messages src/pages/messages",
+      "reason": "grouping boundaries (sender, >5 min, day, system, unread divider; replies stay grouped), avatar/name once, logical tail corners (RTL), time on the last bubble + hover/long-press; the look itself is the owner's visual check on staging"
+    }
+  ]
+}

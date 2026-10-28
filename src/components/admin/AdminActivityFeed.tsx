@@ -80,6 +80,7 @@ export function AdminActivityFeed() {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        {/* design-allow-next-line: no scale value within 2px of 400px */}
         <ScrollArea className="h-[400px] pe-4">
           {loading ? (
             <div className="space-y-4">

@@ -45,20 +45,20 @@ export function HiddenByLimitationsFooter({ breakdown }: { breakdown?: HiddenBre
     .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0));
 
   return (
-    <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50/60 p-4 text-sm">
+    <div className="mt-6 rounded-lg border border-status-success/25 bg-status-success-subtle/60 p-4 text-sm">
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="flex w-full items-center justify-between gap-2 text-emerald-900"
+        className="flex w-full items-center justify-between gap-2 text-status-success"
       >
         <span className="flex items-center gap-2">
-          <Shield className="w-4 h-4 text-emerald-700" />
+          <Shield className="w-4 h-4 text-status-success" />
           <span><strong>{total}</strong>{t('screens.discover.value0HiddenByYourPreferences', { value0: total === 1 ? "product" : "products" })}</span>
         </span>
         {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
       {expanded && (
-        <ul className="mt-3 space-y-1.5 ps-6 text-emerald-900/80">
+        <ul className="mt-3 space-y-1.5 ps-6 text-status-success/80">
           {rows.map(([key, count]) => {
             const label = REASON_LABELS[key as keyof HiddenBreakdown];
             if (!label) return null;

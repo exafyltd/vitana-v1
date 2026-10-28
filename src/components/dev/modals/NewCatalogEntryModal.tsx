@@ -32,7 +32,8 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
+      {/* design-allow-next-line: measured dialog width */}
+      <DialogContent className="sm:max-w-[600px] bg-card/95 backdrop-blur-xl border-border/20 rounded-2xl p-6">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">{t('screens.dev.newCatalogEntry')}</DialogTitle>
         </DialogHeader>

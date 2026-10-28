@@ -39,7 +39,7 @@ export function MobileAutopilotGuidance({
         {/* CTA Button — soft pastel gradient mirroring the Index drawer */}
         <Button
           onClick={onTakeAction}
-          className="w-full bg-gradient-to-r from-green-400/80 to-blue-500/80 text-white hover:from-green-500 hover:to-blue-500"
+          className="w-full bg-gradient-to-r from-status-success/60 to-category-3/80 text-primary-foreground hover:from-status-success hover:to-category-3"
         >
           {translate('health.takeAction')}
         </Button>

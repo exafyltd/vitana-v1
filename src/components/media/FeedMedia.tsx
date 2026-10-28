@@ -452,6 +452,7 @@ export function FeedMedia({
       data-testid="feed-media"
       className={cn(
         "group/media relative w-full overflow-hidden",
+        // design-allow-next-line: on-media scrim, theme-independent
         videoUrl ? "bg-black" : "bg-muted",
         className,
       )}
@@ -504,7 +505,8 @@ export function FeedMedia({
               onClick={toggleSound}
               aria-label={t(soundEnabled ? "screens.home.muteVideo" : "screens.home.unmuteVideo")}
               aria-pressed={soundEnabled}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              // design-allow-next-line: on-media scrim, theme-independent
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-border/70"
             >
               {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
             </button>
@@ -513,7 +515,8 @@ export function FeedMedia({
             type="button"
             onClick={openFullscreen}
             aria-label={t("screens.home.enterFullscreen")}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            // design-allow-next-line: on-media scrim, theme-independent
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-border/70"
           >
             <Maximize2 className="h-4 w-4" />
           </button>
@@ -524,6 +527,7 @@ export function FeedMedia({
         typeof document !== "undefined" &&
         createPortal(
           <div
+            // design-allow-next-line: on-media scrim, theme-independent
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
             onClick={closeExpanded}
             role="dialog"
@@ -555,7 +559,8 @@ export function FeedMedia({
                 closeExpanded();
               }}
               aria-label={t("screens.home.exitFullscreen")}
-              className="absolute end-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              // design-allow-next-line: on-media scrim, theme-independent
+              className="absolute end-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-border/70"
               style={{ top: "calc(env(safe-area-inset-top, 0px) + 1rem)" }}
             >
               <X className="h-5 w-5" />

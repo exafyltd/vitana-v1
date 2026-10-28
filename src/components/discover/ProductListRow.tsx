@@ -43,17 +43,17 @@ export function ProductListRow({ product, badgeText, reasonText, onClick }: Prod
         />
         <BookmarkButton
           item={bookmarkItem(product)}
-          className="h-5 w-5 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+          className="h-5 w-5 bg-card/70 backdrop-blur hover:bg-card/90"
         />
         <RecommendButton
           productId={product.id}
-          className="h-5 w-5 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+          className="h-5 w-5 bg-card/70 backdrop-blur hover:bg-card/90"
         />
       </div>
 
       <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
         <div>
-          <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 dark:bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-700 dark:text-violet-300 mb-1">
+          <span className="inline-flex items-center gap-1 rounded-full bg-category-2/10 px-2 py-0.5 text-[10px] font-semibold text-category-2 mb-1">
             <Sparkles className="h-2.5 w-2.5" /> {badgeText}
           </span>
           <h4 className="text-sm font-medium leading-snug line-clamp-1">{product.title}</h4>
@@ -70,7 +70,7 @@ export function ProductListRow({ product, badgeText, reasonText, onClick }: Prod
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1 rounded-full bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 text-xs font-semibold transition-colors shrink-0"
+            className="inline-flex items-center gap-1 rounded-full bg-category-2 hover:bg-category-2 text-primary-foreground px-3 py-1.5 text-xs font-semibold transition-colors shrink-0"
           >
             {t("discover.viewProduct")} <ExternalLink className="h-3 w-3" />
           </a>

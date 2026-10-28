@@ -109,13 +109,15 @@ export function PhotoPeekPanel({
         {/* Navigation for multiple images */}
         {images.length > 1 && (
           <>
-            <div className="absolute top-2 end-2 bg-black/70 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full">
+            {/* design-allow-next-line: on-media scrim, theme-independent (counter over the photo) */}
+            <div className="absolute top-2 end-2 bg-black/70 backdrop-blur-sm text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
               {currentIndex + 1} / {images.length}
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute start-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30"
+              // design-allow-next-line: on-media scrim, theme-independent (nav control over the photo)
+              className="absolute start-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-primary-foreground hover:bg-black/70 disabled:opacity-30"
               onClick={handlePrevious}
               disabled={currentIndex === 0}
             >
@@ -124,7 +126,8 @@ export function PhotoPeekPanel({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute end-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30"
+              // design-allow-next-line: on-media scrim, theme-independent (nav control over the photo)
+              className="absolute end-2 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-primary-foreground hover:bg-black/70 disabled:opacity-30"
               onClick={handleNext}
               disabled={currentIndex === images.length - 1}
             >
@@ -157,7 +160,7 @@ export function PhotoPeekPanel({
               <Badge
                 key={index}
                 variant="secondary"
-                className="bg-secondary/50 backdrop-blur-sm border border-white/10 text-xs font-medium"
+                className="bg-secondary/50 backdrop-blur-sm border border-border/10 text-xs font-medium"
               >
                 {tag}
               </Badge>
@@ -276,7 +279,8 @@ export function PhotoPeekPanel({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="h-[80vh] mt-0 bg-card/95 backdrop-blur-sm border-white/10">
+        {/* design-allow-next-line: viewport-bound drawer height */}
+        <DrawerContent className="h-[80vh] mt-0 bg-card/95 backdrop-blur-sm border-border/10">
           <DrawerHeader className="relative shrink-0">
             <DrawerTitle>{t('screens.diary.photoPreview')}</DrawerTitle>
             <Button
@@ -298,7 +302,8 @@ export function PhotoPeekPanel({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[38vw] min-w-[420px] max-w-[560px] bg-card/95 backdrop-blur-sm border-white/10 shadow-xl p-0 overflow-hidden flex flex-col"
+        // design-allow-next-line: viewport-bound side panel width (measured min/max bounds)
+        className="w-[38vw] min-w-[420px] max-w-[560px] bg-card/95 backdrop-blur-sm border-border/10 shadow-xl p-0 overflow-hidden flex flex-col"
       >
         <SheetHeader className="p-6 pb-0 shrink-0">
           <SheetTitle className="text-start">{t('screens.diary.photoPreview')}</SheetTitle>

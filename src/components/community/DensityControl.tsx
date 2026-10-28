@@ -24,7 +24,7 @@ export function DensityControl({ value, onChange }: DensityControlProps) {
       <RadioGroup
         value={value}
         onValueChange={(v) => onChange(v as ShortsDensity)}
-        className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg"
+        className="flex items-center gap-1.5 bg-card/10 backdrop-blur-md p-1.5 rounded-full border border-border/20 shadow-lg"
         aria-label={t('screens.community.viewDensity')}
       >
         {densityOptions.map((option) => (
@@ -40,11 +40,11 @@ export function DensityControl({ value, onChange }: DensityControlProps) {
                 cursor-pointer px-3 py-2 rounded-full text-xs font-semibold
                 transition-all duration-300 ease-out
                 flex items-center gap-1.5
-                peer-focus-visible:ring-2 peer-focus-visible:ring-violet-500 peer-focus-visible:ring-offset-2
+                peer-focus-visible:ring-2 peer-focus-visible:ring-category-2 peer-focus-visible:ring-offset-2
                 ${
                   value === option.value
-                    ? 'bg-gradient-to-r from-violet-500 to-sky-400 text-white shadow-md scale-105'
-                    : 'text-foreground/70 hover:text-foreground hover:bg-white/20 hover:scale-105'
+                    ? 'bg-gradient-to-r from-category-2 to-category-7/80 text-primary-foreground shadow-md scale-105'
+                    : 'text-foreground/70 hover:text-foreground hover:bg-card/20 hover:scale-105'
                 }
               `}
             >

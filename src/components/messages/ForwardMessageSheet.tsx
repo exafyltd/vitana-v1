@@ -17,18 +17,20 @@
  * it returns to the picture.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Check, MessageCircle, Share2, Users } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { notify, notifyError, t, useI18nLocale } from '@/lib/i18n-toast';
-import { useAuth } from '@/context/AuthProvider';
-import { fetchGroups, sendChatMessage, sendGroupMessage } from '@/hooks/useChatApi';
-import { buildGlobalThreadsQueryFn } from '@/hooks/useGlobalMessages';
-import { chatGroupsQueryKey } from '@/hooks/useChatGroupsAsThreads';
-import { dmTargets, type InviteTarget } from '@/components/calendar/vcal/InviteToChatSheet';
+import { sendChatMessage, sendGroupMessage } from '@/hooks/useChatApi';
+import {
+  MAX_FORWARD_TARGETS,
+  targetKey,
+  useChatTargets,
+  useTargetSelection,
+  type ForwardTarget,
+} from './forwardTargets';
 import { copyChatAttachmentForThread, getSignedAttachmentUrl } from '@/lib/fileUpload';
 import {
   FORWARD_SHARE_LINK_TTL_DAYS,
@@ -39,9 +41,9 @@ import {
   type ChatAttachmentLike,
 } from '@/lib/chatImageActions';
 
-export const MAX_FORWARD_TARGETS = 5;
-
-export type ForwardTarget = InviteTarget;
+// VTID-05321: the target list lives in ./forwardTargets (shared with SendInMessageSheet).
+export { MAX_FORWARD_TARGETS };
+export type { ForwardTarget };
 
 export interface ForwardPayload {
   body: string;
@@ -116,14 +118,75 @@ interface ForwardMessageSheetProps {
   aboveViewer?: boolean;
 }
 
-const keyOf = (x: ForwardTarget) => `${x.kind}:${x.id}`;
+interface ChatTargetListProps {
+  targets: ForwardTarget[];
+  loading: boolean;
+  pickedKeys: ReadonlySet<string>;
+  atLimit: boolean;
+  disabled?: boolean;
+  onToggle: (x: ForwardTarget) => void;
+}
+
+/** The pickable list of chats and groups (shared with SendInMessageSheet, VTID-05321). */
+export function ChatTargetList({ targets, loading, pickedKeys, atLimit, disabled: allDisabled = false, onToggle }: ChatTargetListProps) {
+  return (
+    <ul className="m-0 flex min-h-0 flex-1 list-none flex-col gap-1 overflow-y-auto p-0" data-testid="forward-target-list">
+      {loading && targets.length === 0 && (
+        <li className="px-3 py-2 text-sm text-muted-foreground">{t('screens.messages.forwardLoading')}</li>
+      )}
+      {!loading && targets.length === 0 && (
+        <li className="px-3 py-2 text-sm text-muted-foreground" data-testid="forward-empty">
+          {t('screens.messages.forwardEmpty')}
+        </li>
+      )}
+      {targets.map((x) => {
+        const selected = pickedKeys.has(targetKey(x));
+        const disabled = !selected && atLimit;
+        return (
+          <li key={targetKey(x)}>
+            <button
+              type="button"
+              aria-pressed={selected}
+              disabled={disabled || allDisabled}
+              onClick={() => onToggle(x)}
+              className={cn(
+                'flex w-full items-center gap-3 rounded-xl px-3 py-2 text-start transition-colors',
+                'hover:bg-muted disabled:opacity-50',
+                selected && 'bg-muted',
+              )}
+              data-testid={`forward-target-${x.kind}`}
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                {x.kind === 'group' ? <Users className="h-4 w-4" /> : <MessageCircle className="h-4 w-4" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium text-foreground">{x.name}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {x.kind === 'group' ? t('screens.messages.forwardGroup') : t('screens.messages.forwardChat')}
+                </span>
+              </span>
+              <span
+                className={cn(
+                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border',
+                  selected ? 'border-primary bg-primary text-primary-foreground' : 'border-border',
+                )}
+                aria-hidden
+              >
+                {selected && <Check className="h-3 w-3" />}
+              </span>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 export function ForwardMessageSheet({ open, onOpenChange, payload, aboveViewer = false }: ForwardMessageSheetProps) {
   useI18nLocale();
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
   const [query, setQuery] = useState('');
-  const [picked, setPicked] = useState<ForwardTarget[]>([]);
+  const { picked, setPicked, pickedKeys, toggle, atLimit } = useTargetSelection();
+  const { userId, targets, loading, refreshTargets } = useChatTargets(open, query);
   const [sending, setSending] = useState(false);
   const [sharing, setSharing] = useState(false);
 
@@ -132,51 +195,16 @@ export function ForwardMessageSheet({ open, onOpenChange, payload, aboveViewer =
       setQuery('');
       setPicked([]);
     }
-  }, [open]);
-
-  const threadsKey = ['global-threads', user?.id] as const;
-  const threads = useQuery({
-    queryKey: threadsKey,
-    queryFn: () => buildGlobalThreadsQueryFn(user!.id, queryClient, threadsKey),
-    enabled: open && !!user?.id,
-    staleTime: 60_000,
-  });
-  const groups = useQuery({
-    queryKey: chatGroupsQueryKey(user?.id),
-    queryFn: fetchGroups,
-    enabled: open && !!user?.id,
-    staleTime: 2 * 60_000,
-  });
-
-  const targets = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const all: ForwardTarget[] = [
-      ...dmTargets(threads.data),
-      ...(groups.data ?? []).map((g) => ({ kind: 'group' as const, id: g.id, name: g.name })),
-    ];
-    return q ? all.filter((x) => x.name.toLowerCase().includes(q)) : all;
-  }, [threads.data, groups.data, query]);
-
-  const pickedKeys = useMemo(() => new Set(picked.map(keyOf)), [picked]);
-  const atLimit = picked.length >= MAX_FORWARD_TARGETS;
-
-  const toggle = (x: ForwardTarget) => {
-    setPicked((prev) => {
-      if (prev.some((p) => keyOf(p) === keyOf(x))) return prev.filter((p) => keyOf(p) !== keyOf(x));
-      if (prev.length >= MAX_FORWARD_TARGETS) return prev;
-      return [...prev, x];
-    });
-  };
+  }, [open, setPicked]);
 
   const send = async () => {
-    if (!user?.id || picked.length === 0 || sending) return;
+    if (!userId || picked.length === 0 || sending) return;
     setSending(true);
     try {
-      const result = await forwardToTargets(picked, payload, user.id);
+      const result = await forwardToTargets(picked, payload, userId);
       if (result.sent.length > 0) {
         notify('screens.messages.forwardDone');
-        queryClient.invalidateQueries({ queryKey: threadsKey });
-        queryClient.invalidateQueries({ queryKey: chatGroupsQueryKey(user.id) });
+        refreshTargets();
       }
       if (result.failed.length === 0) onOpenChange(false);
       else setPicked(result.failed); // keep only what still needs a retry
@@ -184,8 +212,6 @@ export function ForwardMessageSheet({ open, onOpenChange, payload, aboveViewer =
       setSending(false);
     }
   };
-
-  const loading = threads.isLoading || groups.isLoading;
 
   const fileAttachments = useMemo(() => payload.attachments.filter((a) => !isAudioAttachment(a)), [payload.attachments]);
   const hasFiles = fileAttachments.length > 0;
@@ -233,55 +259,14 @@ export function ForwardMessageSheet({ open, onOpenChange, payload, aboveViewer =
           data-testid="forward-search"
         />
 
-        <ul className="m-0 flex min-h-0 flex-1 list-none flex-col gap-1 overflow-y-auto p-0" data-testid="forward-target-list">
-          {loading && targets.length === 0 && (
-            <li className="px-3 py-2 text-sm text-muted-foreground">{t('screens.messages.forwardLoading')}</li>
-          )}
-          {!loading && targets.length === 0 && (
-            <li className="px-3 py-2 text-sm text-muted-foreground" data-testid="forward-empty">
-              {t('screens.messages.forwardEmpty')}
-            </li>
-          )}
-          {targets.map((x) => {
-            const selected = pickedKeys.has(keyOf(x));
-            const disabled = !selected && atLimit;
-            return (
-              <li key={keyOf(x)}>
-                <button
-                  type="button"
-                  aria-pressed={selected}
-                  disabled={disabled || sending}
-                  onClick={() => toggle(x)}
-                  className={cn(
-                    'flex w-full items-center gap-3 rounded-xl px-3 py-2 text-start transition-colors',
-                    'hover:bg-muted disabled:opacity-50',
-                    selected && 'bg-muted',
-                  )}
-                  data-testid={`forward-target-${x.kind}`}
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                    {x.kind === 'group' ? <Users className="h-4 w-4" /> : <MessageCircle className="h-4 w-4" />}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-medium text-foreground">{x.name}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {x.kind === 'group' ? t('screens.messages.forwardGroup') : t('screens.messages.forwardChat')}
-                    </span>
-                  </span>
-                  <span
-                    className={cn(
-                      'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border',
-                      selected ? 'border-primary bg-primary text-primary-foreground' : 'border-border',
-                    )}
-                    aria-hidden
-                  >
-                    {selected && <Check className="h-3 w-3" />}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <ChatTargetList
+          targets={targets}
+          loading={loading}
+          pickedKeys={pickedKeys}
+          atLimit={atLimit}
+          disabled={sending}
+          onToggle={toggle}
+        />
 
         {/* Wrapped: DialogContent hides its direct child buttons ([&>button]:sr-only). */}
         <div className="shrink-0">

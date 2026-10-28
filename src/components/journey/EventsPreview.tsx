@@ -53,17 +53,17 @@ export function EventsPreview({ limit = 2 }: { limit?: number }) {
   }, [todayEvents, upcomingEvents, demoEvents, limit]);
 
   return (
-    <Card className="rounded-2xl border border-amber-200/60 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 shadow-sm dark:from-amber-950/20 dark:via-orange-950/20 dark:to-rose-950/20">
+    <Card className="rounded-2xl border border-status-warning/15 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to shadow-sm">
       <CardContent className="p-4 space-y-3">
         <div className="flex items-baseline justify-between">
-          <h3 className="text-sm font-semibold flex items-center gap-2 text-orange-900 dark:text-orange-100">
-            <Sparkles className="w-4 h-4 text-orange-500" />
+          <h3 className="text-sm font-semibold flex items-center gap-2 text-status-warning">
+            <Sparkles className="w-4 h-4 text-status-warning" />
             {t("screens.autopilotdashboard.eventsTitle")}
           </h3>
           <button
             type="button"
             onClick={() => navigate("/comm/events-meetups?tab=hot")}
-            className="text-xs font-semibold text-orange-700 dark:text-orange-300 hover:underline flex items-center gap-0.5"
+            className="text-xs font-semibold text-status-warning hover:underline flex items-center gap-0.5"
           >
             {t("screens.autopilotdashboard.eventsSeeAll")}
             <ChevronRight className="w-3 h-3" />
@@ -81,13 +81,13 @@ export function EventsPreview({ limit = 2 }: { limit?: number }) {
                 key={e.id}
                 type="button"
                 onClick={() => navigate(`/comm/events-meetups?tab=hot&event=${e.id}`)}
-                className="text-start rounded-xl overflow-hidden bg-white/70 dark:bg-white/5 border border-amber-200/40 hover:shadow-md transition-shadow"
+                className="text-start rounded-xl overflow-hidden bg-card/70 border border-status-warning/10 hover:shadow-md transition-shadow"
               >
                 <div className={`h-20 relative ${e.image_url ? "" : GRADIENTS[i % GRADIENTS.length]}`}>
                   {e.image_url && (
                     <img src={e.image_url} alt="" className="absolute inset-0 w-full h-full object-cover" />
                   )}
-                  <div className="absolute top-2 start-2 bg-white/95 dark:bg-black/70 rounded-md px-1.5 py-1 text-center leading-tight shadow-sm">
+                  <div className="absolute top-2 start-2 bg-card/95 rounded-md px-1.5 py-1 text-center leading-tight shadow-sm">
                     <div className="text-[9px] uppercase font-bold text-muted-foreground">
                       {formatDate(e.start_time, "EEE")}
                     </div>

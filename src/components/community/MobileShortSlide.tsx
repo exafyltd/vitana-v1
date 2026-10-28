@@ -267,6 +267,7 @@ export function MobileShortSlide({
 
   return (
     <div
+      // design-allow-next-line: on-media scrim, theme-independent
       className="h-dvh w-full snap-start snap-always relative bg-black flex-shrink-0"
       onClick={handleTap}
     >
@@ -302,13 +303,15 @@ export function MobileShortSlide({
       />
 
       {/* Gradient overlays for readability */}
+      {/* design-allow-next-line: on-media scrim, theme-independent */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-[3]" />
 
       {/* Loading spinner overlay */}
       {isActive && videoState === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="h-16 w-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-            <Loader2 className="h-8 w-8 text-white animate-spin" />
+            <Loader2 className="h-8 w-8 text-primary-foreground animate-spin" />
           </div>
         </div>
       )}
@@ -318,9 +321,9 @@ export function MobileShortSlide({
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <button
             onClick={handleManualPlay}
-            className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all active:scale-95"
+            className="h-20 w-20 rounded-full bg-card/20 backdrop-blur-md border border-border/30 flex items-center justify-center transition-all active:scale-95"
           >
-            <Play className="h-10 w-10 text-white ms-1" />
+            <Play className="h-10 w-10 text-primary-foreground ms-1" />
           </button>
         </div>
       )}
@@ -330,11 +333,11 @@ export function MobileShortSlide({
         <div className="absolute inset-0 flex flex-col items-center justify-center z-20 gap-3">
           <button
             onClick={handleRetry}
-            className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all active:scale-95"
+            className="h-16 w-16 rounded-full bg-card/20 backdrop-blur-md border border-border/30 flex items-center justify-center transition-all active:scale-95"
           >
-            <RotateCcw className="h-8 w-8 text-white" />
+            <RotateCcw className="h-8 w-8 text-primary-foreground" />
           </button>
-          <span className="text-white text-sm font-medium drop-shadow-lg">
+          <span className="text-primary-foreground text-sm font-medium drop-shadow-lg">
             {videoState === 'error' ? 'Failed to load — tap to retry' : 'Buffering — tap to retry'}
           </span>
         </div>
@@ -349,13 +352,15 @@ export function MobileShortSlide({
             e.stopPropagation();
             onBack();
           }}
-          className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50"
+          // design-allow-next-line: on-media scrim, theme-independent
+          className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm text-primary-foreground hover:bg-black/50"
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
 
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="bg-black/30 backdrop-blur-sm text-white border-none">
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
+          <Badge variant="secondary" className="bg-black/30 backdrop-blur-sm text-primary-foreground border-none">
             {t('screens.community.shorts')}
           </Badge>
           {video.isLive && (
@@ -368,7 +373,8 @@ export function MobileShortSlide({
           {/* Owner kebab — delete */}
           {currentUserId && video.user_id === currentUserId && (onEdit || onDelete) && (
             <div onClick={(e) => e.stopPropagation()}>
-              <KebabMenu className="!h-10 !w-10 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50">
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
+              <KebabMenu className="!h-10 !w-10 rounded-full bg-black/30 backdrop-blur-sm text-primary-foreground hover:bg-black/50">
                 {onEdit && (
                   <DropdownMenuItem
                     className="cursor-pointer"
@@ -402,7 +408,8 @@ export function MobileShortSlide({
             variant="ghost"
             size="icon"
             onClick={handleMuteToggle}
-            className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50"
+            // design-allow-next-line: on-media scrim, theme-independent
+            className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm text-primary-foreground hover:bg-black/50"
           >
             {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
           </Button>
@@ -420,15 +427,16 @@ export function MobileShortSlide({
           className="flex flex-col items-center gap-1"
         >
           <div className={cn(
+            // design-allow-next-line: on-media scrim, theme-independent
             "h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all",
-            isLiked && "bg-red-500/80"
+            isLiked && "bg-status-error/80"
           )}>
             <Heart className={cn(
               "h-6 w-6 transition-all",
-              isLiked ? "fill-white text-white" : "text-white"
+              isLiked ? "fill-primary-foreground text-primary-foreground" : "text-primary-foreground"
             )} />
           </div>
-          <span className="text-white text-xs font-medium drop-shadow-lg">
+          <span className="text-primary-foreground text-xs font-medium drop-shadow-lg">
             {video.likes}
           </span>
         </button>
@@ -442,10 +450,11 @@ export function MobileShortSlide({
             }}
             className="flex flex-col items-center gap-1"
           >
+            {/* design-allow-next-line: on-media scrim, theme-independent */}
             <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
-              <MessageCircle className="h-6 w-6 text-white" />
+              <MessageCircle className="h-6 w-6 text-primary-foreground" />
             </div>
-            <span className="text-white text-xs font-medium drop-shadow-lg">
+            <span className="text-primary-foreground text-xs font-medium drop-shadow-lg">
               {video.commentsCount ?? 0}
             </span>
           </button>
@@ -459,10 +468,11 @@ export function MobileShortSlide({
           }}
           className="flex flex-col items-center gap-1"
         >
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
-            <Share2 className="h-6 w-6 text-white" />
+            <Share2 className="h-6 w-6 text-primary-foreground" />
           </div>
-          <span className="text-white text-xs font-medium drop-shadow-lg">{translate('common.share', 'Share')}</span>
+          <span className="text-primary-foreground text-xs font-medium drop-shadow-lg">{translate('common.share', 'Share')}</span>
         </button>
       </div>
 
@@ -475,19 +485,19 @@ export function MobileShortSlide({
             src={video.creatorAvatar || undefined}
             fallback={video.creator.slice(0, 2).toUpperCase()}
             alt={video.creator}
-            className="h-10 w-10 border-2 border-white"
+            className="h-10 w-10 border-2 border-border"
           />
-          <span className="text-white font-semibold text-base drop-shadow-lg">
+          <span className="text-primary-foreground font-semibold text-base drop-shadow-lg">
             <MemberLink userId={video.user_id}>@{video.creator}</MemberLink>
           </span>
         </div>
 
         {/* Title and description */}
-        <h3 className="text-white font-medium text-base mb-1 drop-shadow-lg line-clamp-1">
+        <h3 className="text-primary-foreground font-medium text-base mb-1 drop-shadow-lg line-clamp-1">
           {video.title}
         </h3>
         {video.description && (
-          <p className="text-white/80 text-sm drop-shadow-lg line-clamp-2">
+          <p className="text-primary-foreground/80 text-sm drop-shadow-lg line-clamp-2">
             {video.description}
           </p>
         )}
@@ -496,7 +506,7 @@ export function MobileShortSlide({
         {video.tags && video.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {video.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="text-white/70 text-xs drop-shadow-lg">
+              <span key={tag} className="text-primary-foreground/70 text-xs drop-shadow-lg">
                 #{tag}
               </span>
             ))}
@@ -507,11 +517,12 @@ export function MobileShortSlide({
       {/* Center play/pause indicator */}
       {showPlayIcon && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="h-20 w-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center animate-fade-out">
             {isPlaying ? (
-              <Pause className="h-10 w-10 text-white" />
+              <Pause className="h-10 w-10 text-primary-foreground" />
             ) : (
-              <Play className="h-10 w-10 text-white ms-1" />
+              <Play className="h-10 w-10 text-primary-foreground ms-1" />
             )}
           </div>
         </div>
@@ -520,7 +531,7 @@ export function MobileShortSlide({
       {/* Double-tap heart animation */}
       {showHeartAnimation && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <Heart className="h-24 w-24 text-red-500 fill-red-500 animate-ping" />
+          <Heart className="h-24 w-24 text-status-error fill-status-error animate-ping" />
         </div>
       )}
 

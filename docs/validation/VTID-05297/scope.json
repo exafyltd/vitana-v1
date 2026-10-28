@@ -1,0 +1,24 @@
+{
+  "vtid": "VTID-05297",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/home/**",
+    "apps/mobile/src/screens/home/**",
+    "apps/mobile/src/ports/feed.ts",
+    "apps/mobile/src/ports/news-card.ts",
+    "apps/mobile/tests/home/**",
+    "apps/mobile/maestro/home/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "packages/core/manifest.json",
+    "packages/core/extract.json",
+    "packages/core/src/**",
+    "packages/core/closure.generated.json",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/homeNative.json",
+    "docs/validation/VTID-05297/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05297/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

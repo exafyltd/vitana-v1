@@ -193,28 +193,41 @@ test('VTID-05117: member screens keep their frame (and the sidebar where the app
 });
 
 test('VTID-05117: professional/staff placeholders render the workspace frame — or still gate a member without the role', async ({ page, request }) => {
-  test.setTimeout(180_000);
+  test.setTimeout(300_000);
   await page.setViewportSize({ width: 1440, height: 900 });
   await signIn(page, request);
   await stubOrb(page);
 
-  const settle = async () => {
+  // Two gates exist for a member without the role: ProtectedRoute renders NotAuthorized in place, or — when
+  // ProtectedRoute lets the account through (an Exafy admin passes every role check) but its dbRole is
+  // community — useRoleRouteEnforcement redirects to /home. The role query retries before it settles (the
+  // guard aborts get_role_preference), so the workspace frame can show for one render before that redirect:
+  // only count it as "has the role" once it is still on the requested path after the retries.
+  const settle = async (path: string): Promise<'frame' | 'gated'> => {
     const workspace = page.locator('[data-archetype="workspace"]');
     const denied = page.locator('main a[href="/"]');
-    await expect(workspace.or(denied).first()).toBeVisible({ timeout: 45_000 });
-    return (await workspace.count()) > 0;
+    const onPath = () => new URL(page.url()).pathname.startsWith(path);
+    const state = async () =>
+      !onPath() || (await denied.count()) > 0 ? 'gated' : (await workspace.count()) > 0 ? 'frame?' : 'pending';
+    await expect.poll(state, { timeout: 45_000, intervals: [500] }).not.toBe('pending');
+    if ((await state()) === 'gated') return 'gated';
+    await page.waitForTimeout(10_000); // past React Query's default retry backoff
+    return (await state()) === 'frame?' ? 'frame' : 'gated';
   };
 
   await page.goto(`${OPERATOR[0]}?spotlight=1`, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('[data-sidebar="sidebar"]').first()).toBeVisible({ timeout: 45_000 });
-  const hasRole = await settle();
+  const hasRole = (await settle(OPERATOR[0])) === 'frame';
 
   if (!hasRole) {
     for (const path of OPERATOR) {
       await page.goto(`${path}?spotlight=1`, { waitUntil: 'domcontentloaded' });
-      expect(await settle(), `${path} must stay gated for a member without the role`).toBe(false);
-      await expect(page).toHaveURL(new RegExp(`${path.replace(/\//g, '\\/')}(\\?|$)`));
-      await expect(page.locator('[data-archetype]')).toHaveCount(0);
+      expect(await settle(path), `${path} must stay gated for a member without the role`).toBe('gated');
+      const landed = new URL(page.url()).pathname;
+      expect(landed === path || landed === '/home', `${path}: NotAuthorized in place or redirected to /home (landed on ${landed})`).toBe(true);
+      // NotAuthorized in place is a legacy, unframed page: no Spotlight frame at all. Only after the
+      // redirect does a frame belong there (the /home focus-feed), and it must not be the workspace one.
+      await expect(page.locator(landed === '/home' ? '[data-archetype="workspace"]' : '[data-archetype]')).toHaveCount(0);
     }
     await page.goto('/home?spotlight=clear', { waitUntil: 'domcontentloaded' });
     test.skip(true, 'The staging test user has no professional/staff role: the role gate is verified; the workspace frame itself is covered by src/pages/vtid-05117-public-leftovers.test.tsx');
@@ -223,7 +236,7 @@ test('VTID-05117: professional/staff placeholders render the workspace frame —
 
   for (const path of OPERATOR) {
     await page.goto(`${path}?spotlight=1`, { waitUntil: 'domcontentloaded' });
-    expect(await settle(), `${path} workspace frame`).toBe(true);
+    expect(await settle(path), `${path} workspace frame`).toBe('frame');
     await expect(page.locator('[data-archetype="workspace"] [data-spotlight-layout]').first()).toHaveAttribute('data-width', 'full');
     expect(await overflow(page), `${path}: horizontal scroll`).toBeLessThanOrEqual(1);
   }

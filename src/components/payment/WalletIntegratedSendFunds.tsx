@@ -164,6 +164,7 @@ export default function WalletIntegratedSendFunds({
               placeholder={t('screens.payment.whatSThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              // design-allow-next-line: measured textarea min-height off the scale (>2px)
               className="min-h-[60px] resize-none"
             />
           </div>

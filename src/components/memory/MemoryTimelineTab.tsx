@@ -61,12 +61,12 @@ export function MemoryTimelineTab() {
     id: item.id,
     screenId: SCREEN_IDS.MEMORY_TIMELINE,
     icon: item.source === "ai" ? (
-      <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
-        <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+      <div className="w-8 h-8 rounded-full bg-category-2/15 flex items-center justify-center">
+        <Brain className="w-4 h-4 text-category-2" />
       </div>
     ) : (
-      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
-        <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+      <div className="w-8 h-8 rounded-full bg-category-3/15 flex items-center justify-center">
+        <FileText className="w-4 h-4 text-category-3" />
       </div>
     ),
     title: item.source === "ai" ? "AI Insight" : "Diary Entry",
@@ -80,7 +80,7 @@ export function MemoryTimelineTab() {
     ],
     metadata: item.confidenceScore ? [
       {
-        icon: <Sparkles className="w-3.5 h-3.5 text-amber-500" />,
+        icon: <Sparkles className="w-3.5 h-3.5 text-status-warning" />,
         text: `${Math.round(item.confidenceScore * 100)}% confidence`
       }
     ] : undefined,
@@ -123,7 +123,7 @@ export function MemoryTimelineTab() {
           <span className="font-medium">{t('screens.memory.type')}</span> {item.memoryType || "insight"}
         </div>
         {item.confidenceScore && (
-          <div className="text-sm text-amber-600 dark:text-amber-500">{t('screens.memory.confidenceValue0', { value0: Math.round(item.confidenceScore * 100) })}
+          <div className="text-sm text-status-warning">{t('screens.memory.confidenceValue0', { value0: Math.round(item.confidenceScore * 100) })}
           </div>
         )}
         {item.metadata && (
@@ -137,7 +137,7 @@ export function MemoryTimelineTab() {
           {item.tags.map((tag) => (
             <span 
               key={tag} 
-              className="inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs text-white/80 hover:bg-white/10 transition-colors"
+              className="inline-flex items-center rounded-full bg-card/5 px-3 py-1 text-xs text-primary-foreground/80 hover:bg-card/10 transition-colors"
             >
               {tag}
             </span>
@@ -209,12 +209,12 @@ export function MemoryTimelineTab() {
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
                     {item.source === "ai" ? (
-                      <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      <div className="w-10 h-10 rounded-full bg-category-2/15 flex items-center justify-center">
+                        <Brain className="w-5 h-5 text-category-2" />
                       </div>
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      <div className="w-10 h-10 rounded-full bg-category-3/15 flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-category-3" />
                       </div>
                     )}
                   </div>

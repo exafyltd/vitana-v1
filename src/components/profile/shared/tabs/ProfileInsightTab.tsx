@@ -131,13 +131,13 @@ export function ProfileInsightTab({
       {/* Main Content - Left Side (2/3 width) */}
       <div className="lg:col-span-2 space-y-6">
         {/* Profile Summary Card */}
-        <Card className="rounded-2xl shadow-sm border-muted/40 bg-gradient-to-br from-white to-violet-50/30 dark:from-slate-900 dark:to-violet-950/20">
+        <Card className="rounded-2xl shadow-sm border-muted/40 bg-gradient-to-br from-card to-category-2/5">
           <CardContent className="p-8">
             <div className="flex items-start gap-6">
               {/* Avatar */}
-              <Avatar className="h-28 w-28 ring-4 ring-white dark:ring-slate-800 shadow-lg">
+              <Avatar className="h-28 w-28 ring-4 ring-border shadow-lg">
                 <AvatarImage src={profile.avatarUrl} alt={profile.name || 'User'} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
-                <AvatarFallback className="text-3xl font-semibold bg-gradient-to-br from-violet-500 to-sky-500 text-white">
+                <AvatarFallback className="text-3xl font-semibold bg-gradient-to-br from-category-2 to-category-7 text-primary-foreground">
                   {profile.name?.charAt(0) || 'U'}
                 </AvatarFallback>
               </Avatar>
@@ -148,7 +148,7 @@ export function ProfileInsightTab({
                   <div className="flex items-center gap-3 mb-2">
                     <h2 className="text-2xl font-bold text-foreground">{profile.name || 'Anonymous'}</h2>
                     {profile.professionalCredentials?.isLiveStreamingEnabled && (
-                      <Badge className="bg-gradient-to-r from-blue-500 to-sky-500 text-white border-0 rounded-full px-3 py-1">
+                      <Badge className="bg-gradient-to-r from-category-3 to-category-7 text-primary-foreground border-0 rounded-full px-3 py-1">
                         <CheckCircle2 className="h-3.5 w-3.5 me-1" />
                         {t('screens.profile.pro')}
                       </Badge>
@@ -193,33 +193,33 @@ export function ProfileInsightTab({
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-violet-50 to-violet-100/50 dark:from-violet-950/30 dark:to-violet-900/20 border-violet-200/50 dark:border-violet-800/30">
+          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-category-2/10 to-category-2/10 border-category-2/15">
             <CardContent className="p-6 text-center">
-              <FileText className="h-8 w-8 mx-auto mb-3 text-violet-600 dark:text-violet-400" />
+              <FileText className="h-8 w-8 mx-auto mb-3 text-category-2" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.posts || 0}</div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.posts')}</div>
             </CardContent>
           </Card>
 
-          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-sky-50 to-sky-100/50 dark:from-sky-950/30 dark:to-sky-900/20 border-sky-200/50 dark:border-sky-800/30">
+          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-category-7/10 to-category-7/10 border-category-7/15">
             <CardContent className="p-6 text-center">
-              <Users className="h-8 w-8 mx-auto mb-3 text-sky-600 dark:text-sky-400" />
+              <Users className="h-8 w-8 mx-auto mb-3 text-category-7" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.followers || 0}</div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.followers')}</div>
             </CardContent>
           </Card>
 
-          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-rose-50 to-rose-100/50 dark:from-rose-950/30 dark:to-rose-900/20 border-rose-200/50 dark:border-rose-800/30">
+          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-category-4/10 to-category-4/10 border-category-4/15">
             <CardContent className="p-6 text-center">
-              <Heart className="h-8 w-8 mx-auto mb-3 text-rose-600 dark:text-rose-400" />
+              <Heart className="h-8 w-8 mx-auto mb-3 text-category-4" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.following || 0}</div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.following')}</div>
             </CardContent>
           </Card>
 
-          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/30 dark:to-amber-900/20 border-amber-200/50 dark:border-amber-800/30">
+          <Card className="rounded-2xl shadow-sm bg-gradient-to-br from-status-warning-subtle to-status-warning-subtle/50 border-status-warning/15">
             <CardContent className="p-6 text-center">
-              <Users className="h-8 w-8 mx-auto mb-3 text-amber-600 dark:text-amber-400" />
+              <Users className="h-8 w-8 mx-auto mb-3 text-status-warning" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.groupsJoined || 0}</div>
               <div className="text-xs text-muted-foreground">{t('screens.profile.groups')}</div>
             </CardContent>
@@ -271,22 +271,22 @@ export function ProfileInsightTab({
 
         {/* Health Snapshot */}
         {profile.vitanaIndex && (
-          <Card className="rounded-2xl shadow-sm border-muted/40 bg-gradient-to-br from-emerald-50/80 to-white dark:from-emerald-950/30 dark:to-slate-900">
+          <Card className="rounded-2xl shadow-sm border-muted/40 bg-gradient-to-br from-status-success-subtle/80 to-card">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <Activity className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <Activity className="h-4 w-4 text-status-success" />
                 {t('screens.profile.healthSnapshot')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="text-center">
-                <div className="text-5xl font-bold bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2">
+                <div className="text-5xl font-bold bg-gradient-to-br from-status-success to-category-1 bg-clip-text text-transparent mb-2">
                   {profile.vitanaIndex}
                 </div>
                 <p className="text-xs text-muted-foreground">{t('screens.profile.vitanaIndex2')}</p>
               </div>
               {profile.vitanaPercentile && (
-                <Badge className="w-full justify-center bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full py-2">
+                <Badge className="w-full justify-center bg-gradient-to-r from-status-success to-category-1 text-primary-foreground border-0 rounded-full py-2">
                   <TrendingUp className="h-3 w-3 me-1.5" />{t('screens.profile.topValue0Wellness', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
@@ -311,7 +311,7 @@ export function ProfileInsightTab({
                     onClick={() => network.url && window.open(network.url, '_blank')}
                   >
                     <div className={`p-2 rounded-lg bg-gradient-to-br ${network.color}`}>
-                      <network.icon className="h-4 w-4 text-white" />
+                      <network.icon className="h-4 w-4 text-primary-foreground" />
                     </div>
                     <span className="text-xs font-medium">{network.name}</span>
                   </Button>
@@ -330,7 +330,7 @@ export function ProfileInsightTab({
             {recentActivity.map((activity) => (
               <div
                 key={activity.id}
-                className="p-3 rounded-xl bg-gradient-to-br from-white to-violet-50/30 dark:from-slate-800 dark:to-violet-950/20 border border-muted/30 hover:shadow-md transition-shadow cursor-pointer"
+                className="p-3 rounded-xl bg-gradient-to-br from-card to-category-2/5 border border-muted/30 hover:shadow-md transition-shadow cursor-pointer"
               >
                 {activity.type === 'post' ? (
                   <div>

@@ -152,7 +152,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                     value={ticket.currency}
                     onValueChange={(val) => updateTicketType(index, "currency", val)}
                   >
-                    <SelectTrigger className="w-[80px]">
+                    <SelectTrigger className="w-20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -170,6 +170,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                 value={ticket.description}
                 onChange={(e) => updateTicketType(index, "description", e.target.value)}
                 placeholder={t('screens.tickets.whatSIncludedWithThisTicket')}
+                // design-allow-next-line: textarea min height, no scale class within 2 px
                 className="mt-1 min-h-[60px]"
               />
             </div>

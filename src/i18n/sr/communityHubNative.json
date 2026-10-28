@@ -1,0 +1,239 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "Nazad",
+      "loading": "Učitavanje …",
+      "loadMore": "Učitaj još",
+      "retry": "Pokušaj ponovo",
+      "errorBody": "Trenutno nismo mogli to da učitamo. Pokušaj ponovo."
+    },
+    "groups": {
+      "title": "Grupe",
+      "subtitle": "Pridruži se grupama sa zajedničkim interesovanjima ili napravi svoju.",
+      "tabsLabel": "Prikaz grupa",
+      "tabMine": "Moje grupe",
+      "tabDiscover": "Otkrij",
+      "memberCount": "{count} članova",
+      "public": "Javna",
+      "private": "Privatna",
+      "join": "Pridruži se",
+      "joining": "Pridruživanje …",
+      "leave": "Napusti",
+      "leaving": "Napuštanje …",
+      "emptyMineTitle": "Još nemaš grupe",
+      "emptyMineDesc": "Pridruži se prvoj grupi da započneš.",
+      "emptyDiscoverTitle": "Nema grupa za otkrivanje",
+      "emptyDiscoverDesc": "Budi prva osoba koja pravi grupu zajednice.",
+      "create": "Napravi",
+      "searchPlaceholder": "Pretraži grupe",
+      "searchLabel": "Pretraži grupe"
+    },
+    "groupDetail": {
+      "title": "Grupa",
+      "memberCount": "{count} članova",
+      "membersWithCount": "Članovi ({count})",
+      "plusMore": "+{count}",
+      "join": "Pridruži se grupi",
+      "leave": "Napusti grupu",
+      "notFoundTitle": "Grupa nije pronađena",
+      "notFoundDesc": "Ova grupa je možda uklonjena ili ne postoji.",
+      "browse": "Pregledaj grupe"
+    },
+    "members": {
+      "title": "Članovi zajednice",
+      "subtitle": "Upoznaj celu Vitana zajednicu — dodirni karticu.",
+      "searchPlaceholder": "Pretraga po imenu ili Vitana ID-u",
+      "searchLabel": "Pretraži članove",
+      "sortLabel": "Sortiranje",
+      "sort": {
+        "newest": "Najnoviji",
+        "oldest": "Prvo osnivači",
+        "name": "Po imenu"
+      },
+      "danceLabel": "Ples",
+      "dance": {
+        "all": "Svi",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bačata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Društveni",
+        "hiphop": "Hip-hop"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "Član",
+      "empty": "Još nema članova.",
+      "emptyDance": "Niko još nije postavio ovaj ples kao preferenciju — budi prva osoba!",
+      "viewProfile": "Pogledaj profil"
+    },
+    "openAsks": {
+      "title": "Otvoreni zahtevi",
+      "summaryLoading": "Učitavanje zahteva …",
+      "summaryEmpty": "Još nema otvorenih zahteva.",
+      "summaryCount": "{n} otvorenih zahteva",
+      "kindLabel": "Vrsta",
+      "filterAll": "Svi",
+      "topicLabel": "Tema",
+      "topic": {
+        "everything": "Sve",
+        "dance": "Samo ples"
+      },
+      "kind": {
+        "commercial_buy": "Kupovina",
+        "commercial_sell": "Prodaja",
+        "activity_seek": "Aktivnost",
+        "partner_seek": "Partner",
+        "social_seek": "Druženje",
+        "mutual_aid": "Uzajamna pomoć",
+        "learning_seek": "Učenje",
+        "mentor_seek": "Mentorstvo"
+      },
+      "time": {
+        "justNow": "Upravo sada",
+        "minutes": "pre {n} min",
+        "hours": "pre {n} h",
+        "days": "pre {n} d"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "Nema otvorenih zahteva u ovom prikazu.",
+      "emptyDance": "Još nema otvorenih plesnih zahteva — objavi svoj i budi prva osoba!"
+    },
+    "findPartner": {
+      "title": "Pronađi partnera",
+      "subtitle": "Pronađi ljude koji odgovaraju tvojim otvorenim željama.",
+      "viewLabel": "Prikaz",
+      "view": {
+        "matches": "Poklapanja",
+        "board": "Tabla",
+        "posts": "Moje objave",
+        "members": "Članovi"
+      },
+      "scorePercent": "{score}%",
+      "matchFallback": "Poklapanje",
+      "emptyMatches": "Još nema poklapanja. Objavi želju i mi ćemo pratiti.",
+      "newWish": "Nova želja",
+      "searchPlaceholder": "Pretraži objave i podudaranja",
+      "searchLabel": "Pretraži objave i podudaranja",
+      "filter": "Filter",
+      "filterActive": "Filter ({count})",
+      "noMatchesForFilters": "Nema podudaranja za ove filtere. Resetuj da vidiš više.",
+      "showingOfTotal": "Prikazano {shown} od {total}",
+      "filterTitle": "Filtriraj podudaranja",
+      "filterMinScore": "Minimalni rezultat",
+      "filterClear": "Resetuj",
+      "filterShowResults": "Prikaži {count} podudaranja"
+    },
+    "matches": {
+      "title": "Ljudi koji ti odgovaraju",
+      "subtitle": "Tvoja poklapanja iz zajednice.",
+      "empty": "Još nema poklapanja. Navrati uskoro.",
+      "fallbackName": "Član zajednice",
+      "reasonDefault": "Zajednička interesovanja",
+      "score": "{score}%"
+    },
+    "intents": {
+      "boardTitle": "Tabla zajednice",
+      "boardSubtitle": "Šta drugi trenutno traže.",
+      "filtersLabel": "Filteri",
+      "filter": {
+        "all": "Svi",
+        "dance": "Ples"
+      },
+      "kind": {
+        "commercial_buy": "Kupovina",
+        "commercial_sell": "Prodaja",
+        "activity_seek": "Aktivnost",
+        "partner_seek": "Partner",
+        "social_seek": "Druženje",
+        "mutual_aid": "Uzajamna pomoć",
+        "learning_seek": "Učenje",
+        "mentor_seek": "Mentorstvo"
+      },
+      "viewMine": "Pogledaj moje namere",
+      "emptyBoard": "Nema otvorenih namera u ovom prikazu. Budi prva osoba.",
+      "emptyDance": "Još nema otvorenih plesnih objava — objavi svoju i budi prva osoba!",
+      "emptyMine": "Nema objava u ovom prikazu.",
+      "post": "Objavi",
+      "styleLabel": "Stil",
+      "variety": {
+        "any": "Bilo koji",
+        "salsa": "Salsa",
+        "tango": "Tango",
+        "bachata": "Bačata",
+        "kizomba": "Kizomba",
+        "swing": "Swing",
+        "ballroom": "Standardni plesovi",
+        "hiphop": "Hip-hop"
+      }
+    },
+    "intentMatch": {
+      "title": "Detalji poklapanja",
+      "backMine": "Nazad na moje namere",
+      "notFound": "Namera nije pronađena.",
+      "matchesCount": "Poklapanja ({count})",
+      "noMatches": "Još nema poklapanja — nastavljamo da tražimo za tebe."
+    },
+    "search": {
+      "title": "Pretraga",
+      "subtitle": "Pronađi članove Vitana zajednice.",
+      "placeholder": "Pretraži članove",
+      "inputLabel": "Pojam za pretragu",
+      "submit": "Pretraži",
+      "memberMeta": "Član zajednice",
+      "fallbackName": "Član",
+      "emptyTitle": "Nema rezultata",
+      "emptyDesc": "Promeni pojam za pretragu i pokušaj ponovo."
+    },
+    "createGroup": {
+      "title": "Napravi novu grupu",
+      "namePlaceholder": "npr. Jutarnji trkači ili Zdravo kuvanje",
+      "nameLabel": "Naziv grupe",
+      "descriptionPlaceholder": "Opiši svrhu i aktivnosti svoje grupe",
+      "descriptionLabel": "Opis",
+      "categoryLabel": "Kategorija",
+      "category": {
+        "fitness": "Fitnes",
+        "nutrition": "Ishrana",
+        "mental-health": "Mentalno zdravlje",
+        "support": "Podrška",
+        "learning": "Učenje",
+        "social": "Društveno"
+      },
+      "privacyLabel": "Vidljivost",
+      "privacy": {
+        "public": "Javna",
+        "private": "Privatna"
+      },
+      "cancel": "Otkaži",
+      "submit": "Napravi grupu",
+      "creating": "Pravljenje …",
+      "created": "Grupa je napravljena.",
+      "nameRequired": "Unesi naziv grupe."
+    },
+    "composer": {
+      "title": "Objavi u zajednici",
+      "kindLabel": "Vrsta",
+      "kind": {
+        "commercial_buy": "Kupovina",
+        "commercial_sell": "Prodaja",
+        "activity_seek": "Aktivnost",
+        "social_seek": "Društveno",
+        "mutual_aid": "Uzajamna pomoć",
+        "partner_seek": "Partner"
+      },
+      "titlePlaceholder": "Kratak naslov",
+      "titleLabel": "Naslov",
+      "scopePlaceholder": "Opiši šta ti treba ili šta nudiš",
+      "scopeLabel": "Opis",
+      "budgetMin": "Budžet min.",
+      "budgetMax": "Budžet maks.",
+      "cancel": "Otkaži",
+      "submit": "Objavi",
+      "posting": "Objavljivanje …",
+      "posted": "Objavljeno u zajednici.",
+      "titleRequired": "Unesi naslov od najmanje 3 znaka.",
+      "scopeTooShort": "Opiši to u najmanje 20 znakova."
+    }
+  }
+}

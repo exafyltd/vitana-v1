@@ -161,7 +161,8 @@ for (const route of ROUTES) {
     // so this waits for the app root rather than the sidebar.)
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`${route}?spotlight=0`, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('#root > *').first()).toBeVisible({ timeout: 30_000 });
+    // The first children of #root are a <script> and the two 0-height toast regions; wait for a rendered child.
+    await expect(page.locator('#root > *:visible').first()).toBeVisible({ timeout: 30_000 });
     await expect(page.getByTestId('delayed-loader')).toHaveCount(0, { timeout: 20_000 });
     await page.waitForTimeout(1500);
     await expect(page.locator('[data-archetype]')).toHaveCount(0);

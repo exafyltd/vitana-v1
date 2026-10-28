@@ -63,7 +63,7 @@ export function SocialChannelPickerDrawer({
                 type="button"
                 data-testid={`social-channel-option-${channel.id}`}
                 onClick={() => onPick(channel.id)}
-                className="flex w-full items-center gap-3 rounded-2xl border border-black/5 bg-white px-3 py-3 text-start shadow-sm transition-colors active:bg-slate-50"
+                className="flex w-full items-center gap-3 rounded-2xl border border-border/50 bg-card px-3 py-3 text-start shadow-sm transition-colors active:bg-surface-sunken"
               >
                 <span
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-sm"
@@ -71,14 +71,14 @@ export function SocialChannelPickerDrawer({
                 >
                   {channel.icon}
                 </span>
-                <span className="flex-1 text-sm font-semibold text-slate-900">{channel.name}</span>
+                <span className="flex-1 text-sm font-semibold text-foreground">{channel.name}</span>
                 {channel.connected ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-semibold text-green-700">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-status-success-subtle px-2 py-0.5 text-[11px] font-semibold text-status-success">
                     <Check className="h-3 w-3" strokeWidth={3} />
                     {translate('socialImport.connected', 'Connected')}
                   </span>
                 ) : (
-                  <ChevronRight className="h-4 w-4 text-slate-400 rtl:rotate-180" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground rtl:rotate-180" />
                 )}
               </button>
             </li>

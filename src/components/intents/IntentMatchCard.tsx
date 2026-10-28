@@ -128,7 +128,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
                 <span className="text-base font-semibold tracking-wide text-muted-foreground">
                   {t('screens.intents.anonymousMatch')}
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-category-4/15 text-category-4">
                   {t('screens.intents.mutualReveal')}
                 </span>
               </div>
@@ -146,7 +146,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
         <div className="text-end shrink-0">
           <p className="text-sm font-semibold">{scorePct}%</p>
           {match.compass_aligned && (
-            <p className="text-xs text-amber-600 mt-0.5">{t('screens.intents.compassaligned')}</p>
+            <p className="text-xs text-status-warning mt-0.5">{t('screens.intents.compassaligned')}</p>
           )}
         </div>
       </div>
@@ -163,7 +163,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
 
       {isMutual ? (
         <div className="space-y-2">
-          <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2">
+          <div className="text-sm text-status-success bg-status-success-subtle border border-status-success/25 rounded-md px-3 py-2">
             {t('screens.intents.mutualInterestOpenMessageThreadStart')}
           </div>
           <button

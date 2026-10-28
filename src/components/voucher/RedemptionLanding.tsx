@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Gift, Sparkles, Calendar, Users, Star } from "lucide-react";
 import type { VoucherLookupData } from "@/hooks/useRedeemVoucher";
 import { t } from '@/lib/i18n-toast';
+import { cn } from '@/lib/utils';
 
 interface RedemptionLandingProps {
   voucherData: VoucherLookupData;
@@ -35,6 +36,13 @@ const TIER_CONFIG: Record<string, { color: string; benefits: string[]; icon: Rea
     ],
     icon: <Star className="w-6 h-6" />,
   },
+};
+
+// Tier badge fills — the nearest colour tokens to the former violet / amber / emerald hex gradients.
+const TIER_BADGE: Record<string, string> = {
+  violet: "from-category-2 to-primary",
+  amber: "from-status-warning to-category-5",
+  emerald: "from-status-success to-category-1",
 };
 
 export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandingProps) {
@@ -100,14 +108,7 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
           {/* Tier Badge */}
           <div className="flex justify-center mb-4">
             <span 
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white"
-              style={{
-                background: config.color === 'violet' 
-                  ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' 
-                  : config.color === 'amber'
-                  ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-                  : 'linear-gradient(135deg, #10b981, #059669)',
-              }}
+              className={cn("inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground bg-gradient-to-br", TIER_BADGE[config.color] ?? TIER_BADGE.emerald)}
             >
               {config.icon}
               {voucherData.order?.tierName || "Experience Voucher"}

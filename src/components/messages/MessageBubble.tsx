@@ -36,7 +36,9 @@ import {
   Trash2,
   Play,
   Pause,
-  Mic
+  Mic,
+  AlertCircle,
+  RotateCw
 } from 'lucide-react';
 import { VitanaMessageActions } from './VitanaMessageActions';
 import { ChatImageViewer, type ChatViewerImage } from './ChatImageViewer';
@@ -52,6 +54,8 @@ import {
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
+import MediaAlbum, { type AlbumItem, isVideoAttachment } from './MediaAlbum';
+import { recordRecentEmoji } from '@/components/ui/emoji-picker';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
@@ -60,7 +64,9 @@ import { describeGroupNotice } from '@/lib/messaging/groupSystemNotice';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
+import { type GroupPosition, isGroupEnd, isGroupStart } from '@/lib/messaging/grouping';
 import { CalendarInviteCard } from '@/components/messages/CalendarInviteCard';
+import { SharedContentCard, sharedRefOf } from '@/components/messages/SharedContentCard';
 import { isInviteCard } from '@/lib/calendar-window-client';
 import { VitanaChatCard, isVitanaCardPayload } from '@/components/vitana/VitanaChatCard';
 interface MessageBubbleProps {
@@ -74,6 +80,12 @@ interface MessageBubbleProps {
   onUpdateMessage?: (messageId: string, updates: any) => void;
   onDeleteMessage?: (messageId: string) => void;
   onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
+  /** VTID-05320: re-send a failed message (its client_message_id). */
+  onRetry?: (clientMessageId: string) => void;
+  /** VTID-05318: the replied-to message is not available in this conversation. */
+  parentUnavailable?: boolean;
+  /** VTID-05314: place of this bubble in a run of one sender's messages. */
+  groupPosition?: GroupPosition;
 }
 
 // WhatsApp-style voice message player
@@ -123,11 +135,13 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
   const displayTime = currentTime > 0 ? currentTime : safeDuration;
 
   return (
+    // design-allow-next-line: measured bubble box / viewport-bound width
     <div className="flex items-center gap-2 min-w-[180px] max-w-[260px]">
       <button
         onClick={toggle}
         className={cn(
           "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
+          // design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent
           isOwnMessage ? "bg-black/10 hover:bg-black/20" : "bg-primary/10 hover:bg-primary/20"
         )}
       >
@@ -138,10 +152,12 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
       </button>
 
       <div className="flex-1 flex flex-col gap-1 min-w-0">
-        <div className="h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+        {/* design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent */}
+        <div className="h-1 bg-black/10 rounded-full overflow-hidden">
           <div
             className={cn(
               "h-full rounded-full transition-all duration-100",
+              // design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent
               isOwnMessage ? "bg-black/30" : "bg-primary/60"
             )}
             style={{ width: `${progress}%` }}
@@ -176,6 +192,19 @@ function isLegacySharedPlaceholder(body: string | undefined, contentData: any): 
   return trimmed === `Shared ${attachments.length} files`;
 }
 
+/**
+ * VTID-05314: corners facing the neighbours of the same group are tightened;
+ * the last bubble keeps the full (tail) corner. Logical classes, so RTL mirrors.
+ */
+function groupCornerClass(position: GroupPosition | undefined, isOwnMessage: boolean): string | false {
+  if (!position || position === 'single') return false;
+  const top = isOwnMessage ? 'rounded-se-md' : 'rounded-ss-md';
+  const bottom = isOwnMessage ? 'rounded-ee-md' : 'rounded-es-md';
+  if (position === 'first') return bottom;
+  if (position === 'last') return top;
+  return cn(top, bottom);
+}
+
 const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
   isOwnMessage,
@@ -186,7 +215,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   parentMessage,
   onUpdateMessage,
   onDeleteMessage,
-  onSendReply
+  onSendReply,
+  onRetry,
+  parentUnavailable,
+  groupPosition
 }) => {
   // VTID-03663 — this component is React.memo'd (see the default export), so it
   // bails out on shallow-equal props and the LanguageProvider re-render cascade
@@ -326,8 +358,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     setFailedUrls(prev => new Set(prev).add(failedUrl));
   }, []);
 
+  // VTID-05316: pictures and videos open in the viewer (videos with controls).
   const imageAttachments = useMemo(
-    () => allAttachments.filter(isImageAttachment),
+    () => allAttachments.filter((att) => isImageAttachment(att) || isVideoAttachment(att)),
     [allAttachments]
   );
 
@@ -335,11 +368,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     () => imageAttachments.map((att) => ({
       url: displayUrlFor(att) || '',
       filename: att.filename || att.name || '',
+      kind: isVideoAttachment(att) ? 'video' as const : 'image' as const,
     })),
     [imageAttachments, displayUrlFor]
   );
 
-  const canForward = canForwardMessage(message);
+  // VTID-05321: a shared card is not forwarded as its caption (the card would be lost).
+  const canForward = message.message_type !== 'shared_content' && canForwardMessage(message);
   const forwardPayload = useMemo<ForwardPayload>(() => {
     const body = (message.body || message.content || '') as string;
     return {
@@ -349,7 +384,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message.body, message.content, message.content_data, allAttachments]);
   // The sheet's "share via other apps" gets the pictures' fresh URLs.
   const sheetPayload = useMemo<ForwardPayload>(
-    () => ({ ...forwardPayload, shareImages: viewerImages.filter((img) => !!img.url) }),
+    () => ({ ...forwardPayload, shareImages: viewerImages.filter((img) => !!img.url && img.kind !== 'video') }),
     [forwardPayload, viewerImages]
   );
   const isForwarded = message.content_data?.forwarded === true;
@@ -359,9 +394,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   // Check if this is an optimistic message (temporary)
   const isOptimistic = message.id?.toString().startsWith('temp-');
-  
+  // VTID-05320: outbox rows carry send_status (sending | failed).
+  const isFailed = message.send_status === 'failed';
+
   const getMessageStatus = () => {
-    if (isOptimistic) {
+    if (isFailed) {
+      return 'failed';
+    }
+    if (isOptimistic || message.send_status === 'sending') {
       return 'sending';
     }
     
@@ -382,23 +422,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     return 'sending';
   };
 
-  const renderStatusIcon = () => {
+  const renderStatusIcon = (decorative = false) => {
     if (!isOwnMessage) return null;
 
     const status = getMessageStatus();
 
+    // VTID-05320: every state has its own icon and a spoken label (the
+    // invisible layout spacer copy carries neither).
+    const a11y = decorative
+      ? { 'aria-hidden': true as const }
+      : { role: 'img', 'aria-label': t(`inbox.messageStatus.${status}`), 'data-testid': `message-status-${status}` };
     switch (status) {
+      case 'failed':
+        return <AlertCircle className="w-3 h-3 text-destructive" {...a11y} />;
       case 'sending':
-        return <Loader2 className="w-3 h-3 animate-spin" />;
+        return <Clock className="w-3 h-3" {...a11y} />;
       case 'sent':
         // Single checkmark - message sent but not delivered
-        return <Check className="w-3 h-3" />;
+        return <Check className="w-3 h-3" {...a11y} />;
       case 'delivered':
         // Double checkmark - message delivered but not read
-        return <CheckCheck className="w-3 h-3" />;
+        return <CheckCheck className="w-3 h-3" {...a11y} />;
       case 'read':
         // Colored double checkmark - message read (WhatsApp style)
-        return <CheckCheck className="w-3 h-3 text-primary" />;
+        return <CheckCheck className="w-3 h-3 text-primary" {...a11y} />;
       default:
         return <Clock className="w-3 h-3" />;
     }
@@ -420,19 +467,46 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     message.message_type === 'exchange_and_send' ||
     message.message_type === 'payment_confirmation' ||
     message.message_type === 'template' ||
+    // VTID-05321: a shared post / event / product / profile card.
+    (message.message_type === 'shared_content' && !!sharedRefOf(message.content_data)) ||
     hasAttachments ||
     hasLegacyFiles;
   const isTextMessageType = !hasStructuredContent;
   const formattedTime = formatDate(new Date(message.created_at), 'HH:mm');
+  // VTID-05314: in a group the avatar/name sit on the first bubble and the
+  // time on the last. Earlier bubbles keep the time in their corner but show
+  // it only on hover / keyboard focus (inside the bubble, never clipped), to
+  // screen readers once (sr-only) and in the long-press drawer. My own earlier
+  // bubbles always show their delivery status icon (R7: Sending / Not sent).
+  const groupStart = isGroupStart(groupPosition);
+  const groupEnd = isGroupEnd(groupPosition);
+  const showTime = groupEnd;
+  // The corner stamp (and its spacer) exists on every bubble; on earlier
+  // bubbles the time inside it is revealed on hover / focus only.
+  const revealTimeClass = showTime ? undefined : 'opacity-0 transition-opacity group-hover/bubble:opacity-100 group-focus-visible/bubble:opacity-100';
+  const showSenderHeader = showAvatar && groupStart;
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
     : 'text-muted-foreground';
   const timestampInner = (
     <>
-      <span className="tabular-nums">{formattedTime}</span>
+      <span
+        className={cn("tabular-nums", revealTimeClass)}
+        aria-hidden={showTime ? undefined : true}
+        data-testid={showTime ? undefined : 'message-hover-time'}
+      >
+        {formattedTime}
+      </span>
       {renderStatusIcon()}
     </>
   );
+  const timestampSpacerInner = (
+    <>
+      <span className="tabular-nums">{formattedTime}</span>
+      {renderStatusIcon(true)}
+    </>
+  );
+  const hiddenTimeLabel = formatDate(new Date(message.created_at), 'PPp');
   // Ghost spacer appended inside the text <p> so the last line reserves
   // room for the corner-pinned timestamp (matches timestamp width exactly).
   const textTimestampSpacer = (
@@ -440,7 +514,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       aria-hidden="true"
       className="inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"
     >
-      {timestampInner}
+      {timestampSpacerInner}
     </span>
   );
   // Real timestamp, absolutely positioned in the bubble's bottom-right corner.
@@ -462,8 +536,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         timestampColorClass
       )}
     >
-      <span className="tabular-nums">{formattedTime}</span>
-      {renderStatusIcon()}
+      {timestampInner}
     </div>
   );
 
@@ -489,9 +562,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   };
 
   // Reaction and action handlers
-  const handleReactionSelect = useCallback((emoji: string) => {
+  // VTID-05315/05316: a reaction moves the emoji to the front of the member's
+  // recent list (the composer picker shows it first next time).
+  const reactWith = useCallback((emoji: string) => {
+    recordRecentEmoji(emoji, user?.id ?? null);
     addReaction(emoji);
-  }, [addReaction]);
+  }, [addReaction, user?.id]);
+  const handleReactionSelect = useCallback((emoji: string) => {
+    reactWith(emoji);
+  }, [reactWith]);
 
   const handleReply = useCallback(() => {
     if (onReply) {
@@ -502,8 +581,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const handleCopy = useCallback(() => {
     // VTID-05138: a picture-only message copies the picture itself.
     const text = forwardPayload.body.trim();
-    if (!text && imageAttachments.length > 0) {
-      void copyImageAndNotify(viewerImages[0]?.url || '');
+    const firstPicture = viewerImages.find((img) => img.kind !== 'video');
+    if (!text && firstPicture) {
+      void copyImageAndNotify(firstPicture.url || '');
       return;
     }
     navigator.clipboard.writeText(message.body || message.content || '');
@@ -805,6 +885,31 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     const isImage = isImageAttachment(attachment);
     const displayUrl = displayUrlFor(attachment);
     const isResigning = !!attachment.path && resigningPaths.has(attachment.path);
+    // VTID-05316: a single video shows its first frame; a tap plays it in the viewer.
+    if (!isImage && isVideoAttachment(attachment) && displayUrl === undefined) {
+      return (
+        <div key={key} className="h-48 w-64 max-w-full animate-pulse rounded-lg bg-muted" role="status" aria-label={t('screens.messages.imageLoading')} data-testid="chat-image-skeleton" />
+      );
+    }
+    if (!isImage && isVideoAttachment(attachment) && displayUrl) {
+      return (
+        <button
+          key={key}
+          type="button"
+          className="relative block w-64 max-w-full overflow-hidden rounded-lg bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          onClick={(e) => { e.stopPropagation(); handleImageClick(attachment); }}
+          aria-label={t('inbox.media.openVideo', { name: attachment.filename || attachment.name || '' })}
+          data-testid="chat-video-attachment"
+        >
+          <video src={displayUrl} muted playsInline preload="metadata" className="h-auto max-h-64 w-full object-cover" aria-hidden tabIndex={-1} />
+          <span className="absolute inset-0 flex items-center justify-center" aria-hidden>
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground/60 text-background">
+              <Play className="h-6 w-6 ms-0.5" />
+            </span>
+          </span>
+        </button>
+      );
+    }
     // VTID-05138: until the fresh signed URL is there, hold the place with a
     // fixed-size skeleton — never try the stale stored URL first.
     if (isImage && (displayUrl === undefined || isResigning)) {
@@ -839,6 +944,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               on a phone (no hover) they stayed invisible but still caught taps,
               so a tap on the picture's corner downloaded it instead of opening
               the viewer, whose own toolbar covers download/copy/share/forward. */}
+          {/* design-allow-next-line: scrim on fixed-colour bubble/media, theme-independent */}
           <div className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
           <div
             className="pointer-events-none absolute bottom-2 end-2 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 transition-opacity flex gap-1"
@@ -983,6 +1089,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           </Card>
         );
 
+      // VTID-05321: a shared post / event / product / profile, resolved for the viewer (I6).
+      case 'shared_content': {
+        const ref = sharedRefOf(message.content_data);
+        if (!ref) return renderLinkedText(message.body || message.content);
+        const caption = message.body || message.content;
+        return (
+          <div className="flex flex-col gap-2" data-testid="shared-content-message">
+            <SharedContentCard sharedRef={ref} isOwnMessage={isOwnMessage} />
+            {caption && renderLinkedText(caption)}
+          </div>
+        );
+      }
+
       case 'service_booking':
         return (
           <Card className="max-w-sm">
@@ -1074,14 +1193,42 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             {message.body && !isLegacySharedPlaceholder(message.body, message.content_data) &&
               renderLinkedText(message.body)}
 
-            {/* New attachment format with proper rendering */}
-            {message.content_data?.attachments && (
-              <div className="space-y-2">
-                {message.content_data.attachments.map((attachment: any, index: number) => 
-                  renderAttachment(attachment, `att-${index}`)
-                )}
-              </div>
-            )}
+            {/* New attachment format with proper rendering. VTID-05316: two or
+                more pictures / videos form an album; files stay chips below. */}
+            {message.content_data?.attachments && (() => {
+              const list = message.content_data.attachments as ChatAttachmentLike[];
+              const media = list.filter((a) => isImageAttachment(a) || isVideoAttachment(a));
+              if (media.length < 2) {
+                return (
+                  <div className="space-y-2">
+                    {list.map((attachment, index) => renderAttachment(attachment, `att-${index}`))}
+                  </div>
+                );
+              }
+              const albumItems: AlbumItem[] = media.map((att, i) => {
+                const url = displayUrlFor(att);
+                const resigning = !!att.path && resigningPaths.has(att.path);
+                return {
+                  key: `album-${i}`,
+                  kind: isVideoAttachment(att) ? 'video' : 'image',
+                  url: resigning ? undefined : url,
+                  alt: att.filename || att.name || '',
+                };
+              });
+              return (
+                <div className="space-y-2">
+                  <MediaAlbum
+                    items={albumItems}
+                    onOpen={(i) => handleImageClick(media[i])}
+                    onImageError={(i) => {
+                      const url = displayUrlFor(media[i]);
+                      if (url) handleImageError(media[i], url);
+                    }}
+                  />
+                  {list.filter((a) => !media.includes(a)).map((attachment, index) => renderAttachment(attachment, `att-file-${index}`))}
+                </div>
+              );
+            })()}
             
             {/* Legacy attachment format support — VTID-05138: entries with a
                 link or a storage path render like attachments (pictures inline). */}
@@ -1154,7 +1301,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <>
       <div className={cn(
-        "flex gap-2 w-full relative",
+        "flex gap-1.5 w-full relative",
         isOwnMessage ? "justify-end" : "justify-start"
       )}>
         {/* Avatar column - fixed width to maintain alignment */}
@@ -1162,7 +1309,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
         )}>
-          {showAvatar && (() => {
+          {showSenderHeader && (() => {
             // VTID-04992: the sender's avatar opens their profile (the
             // Vitana assistant has none, so it stays a plain picture).
             const senderId = message.sender_id || (message.sender as any)?.user_id;
@@ -1186,7 +1333,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "flex-1 flex flex-col min-w-0 overflow-hidden",
           isOwnMessage ? "items-end order-1" : "items-start"
         )}>
-          {!isOwnMessage && showAvatar && (() => {
+          {!isOwnMessage && showSenderHeader && (() => {
             const senderId = message.sender_id || (message.sender as any)?.user_id;
             const isBot = isVitanaBot(senderId);
             const name = isBot
@@ -1215,9 +1362,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div 
                 ref={messageRef}
                 tabIndex={0}
+                data-group-position={groupPosition}
                 className={cn(
-                  "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                  // design-allow-next-line: measured bubble box / viewport-bound width
+                  "group/bubble rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
+                  groupCornerClass(groupPosition, isOwnMessage),
                   isOwnMessage
                     ? "bg-domain-messages-bubble text-domain-messages-bubble-foreground"
                     : "bg-muted",
@@ -1236,7 +1386,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     parentMessage={parentMessage}
                     onQuoteClick={handleScrollToParent}
                     isOwnMessage={isOwnMessage}
-                    
+                    unavailable={parentUnavailable}
                   />
                 )}
                 
@@ -1256,6 +1406,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                       ref={editTextareaRef}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
+                      // design-allow-next-line: measured bubble box / viewport-bound width
                       className="w-full min-h-[60px] rounded-md border-2 border-border bg-card text-card-foreground px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
                     />
                     <div className="flex gap-2 justify-end">
@@ -1272,6 +1423,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   <>
                     {renderContent()}
                     {isTextMessageType ? textTimestampOverlay : inlineBelowTimestamp}
+                    {!showTime && <span className="sr-only">{hiddenTimeLabel}</span>}
                   </>
                 )}
               </div>
@@ -1286,7 +1438,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div>
                 <ReactionCluster
                   reactions={reactionSummary}
-                  onReactionClick={addReaction}
+                  onReactionClick={reactWith}
                   onReactionRemove={removeReaction}
                   onShowPopover={() => setShowReactionPopover(true)}
                   className={cn(
@@ -1296,6 +1448,24 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </div>
             </ReactionPopover>
           </div>
+
+          {/* VTID-05320: a message that could not be sent keeps its text and
+              offers one-tap Retry (same client_message_id, never a duplicate). */}
+          {isOwnMessage && isFailed && message.client_message_id && onRetry && (
+            <div className="mt-0.5 flex items-center justify-end gap-1.5 text-xs text-destructive" data-testid="message-failed-row">
+              <span>{t('inbox.messageStatus.failed')}</span>
+              <button
+                type="button"
+                onClick={() => onRetry?.(message.client_message_id)}
+                className="inline-flex min-h-11 items-center gap-1 rounded-md px-2 font-medium underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label={t('inbox.messageStatus.retryLabel')}
+                data-testid="message-retry"
+              >
+                <RotateCw className="h-3.5 w-3.5" aria-hidden />
+                {t('inbox.messageStatus.retry')}
+              </button>
+            </div>
+          )}
 
           {/* VTID-05100 — the card sits under the bubble, outside its context
               menu, so a tap opens the card's screen. No X in the chat. */}
@@ -1333,6 +1503,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       <Drawer open={showDoubleTapReactions} onOpenChange={(open) => { setShowDoubleTapReactions(open); if (!open) setShowDeleteConfirm(false); }} repositionInputs={false}>
         <DrawerContent className="!z-[120] pb-safe" overlayClassName="!z-[119]">
           <div className="px-4 pt-2 pb-4 space-y-4">
+            {/* VTID-05314: the time of a grouped bubble that does not show it. */}
+            {!showTime && (
+              <p className="text-center text-xs text-muted-foreground tabular-nums" data-testid="message-drawer-time">
+                {hiddenTimeLabel}
+              </p>
+            )}
             {/* Quick reactions row */}
             <div className="flex justify-center gap-3 py-2">
               {['👍', '❤️', '😂', '😮', '🙏', '🎉'].map((emoji) => (

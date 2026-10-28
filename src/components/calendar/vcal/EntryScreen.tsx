@@ -151,19 +151,19 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
       style={{ background: SURFACE.page, color: SURFACE.ink }}
       data-testid="vcal-entry-screen"
     >
-      <header className="flex flex-col gap-3.5 rounded-b-[36px] px-[22px] pb-7 pt-5 text-white" style={{ background: style.accent }}>
+      <header className="flex flex-col gap-3.5 rounded-b-[36px] px-[22px] pb-7 pt-5 text-primary-foreground" style={{ background: style.accent }}>
         <div className="flex items-center justify-between gap-3">
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label={t("vcal.entry.close")}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/20 text-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-card/20 text-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-border"
           >
             ✕
           </button>
           {source && (
-            <span className="truncate rounded-full bg-white/20 px-3 py-1.5 text-xs">{source}</span>
+            <span className="truncate rounded-full bg-card/20 px-3 py-1.5 text-xs">{source}</span>
           )}
         </div>
         <div aria-hidden className="text-7xl leading-none">
@@ -181,15 +181,15 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           {e.rrule && <span>🔁 {t("vcal.recurring")}</span>}
         </div>
         {done ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
+          <span className="self-start rounded-full bg-card px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ✅ {t("vcal.done")}
           </span>
         ) : ended ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }} data-testid="vcal-ended-chip">
+          <span className="self-start rounded-full bg-card px-3.5 py-2 text-sm" style={{ color: style.ink }} data-testid="vcal-ended-chip">
             ⌛ {t("vcal.entry.endedChip")}
           </span>
         ) : future ? (
-          <span className="self-start rounded-full bg-white px-3.5 py-2 text-sm" style={{ color: style.ink }}>
+          <span className="self-start rounded-full bg-card px-3.5 py-2 text-sm" style={{ color: style.ink }}>
             ⏳ {relativeIn(item.start_time, now)}
           </span>
         ) : null}
@@ -244,7 +244,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             disabled={completing}
             aria-disabled={ended || undefined}
             onClick={() => (ended ? blockEnded() : onComplete!(item))}
-            className={`h-14 rounded-[18px] text-lg font-semibold text-white disabled:opacity-60 ${ended ? "opacity-50" : ""}`}
+            className={`h-14 rounded-[18px] text-lg font-semibold text-primary-foreground disabled:opacity-60 ${ended ? "opacity-50" : ""}`}
             style={{ background: style.accent }}
             data-testid="vcal-complete"
           >
@@ -255,7 +255,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <button
             type="button"
             onClick={() => onOpenSource(AUDIOBOOK_PATH)}
-            className="h-14 rounded-[18px] text-lg font-semibold text-white"
+            className="h-14 rounded-[18px] text-lg font-semibold text-primary-foreground"
             style={{ background: style.accent }}
             data-testid="vcal-listen"
           >
@@ -272,7 +272,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               type="datetime-local"
               value={when}
               onChange={(ev) => setWhen(ev.target.value)}
-              className="h-12 w-full rounded-2xl bg-white px-3 text-base"
+              className="h-12 w-full rounded-2xl bg-card px-3 text-base"
             />
             <span className="text-sm" style={{ color: style.ink }}>
               {t("vcal.move.keepsLength")}
@@ -291,7 +291,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 type="button"
                 disabled={!pickedValid || moving}
                 onClick={() => picked && onMove!(item, picked)}
-                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
+                className="h-12 rounded-2xl text-sm font-semibold text-primary-foreground disabled:opacity-60"
                 style={{ background: style.accent }}
                 data-testid="vcal-move-confirm"
               >
@@ -305,6 +305,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             type="button"
             aria-disabled={ended || undefined}
             onClick={() => (ended ? blockEnded() : setPicking(true))}
+            // design-allow-next-line: measured control height off the scale (>2px)
             className={`h-[52px] rounded-2xl text-sm ${ended ? "opacity-50" : ""}`}
             style={{ background: SURFACE.track }}
             data-testid="vcal-move"
@@ -321,7 +322,8 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
             // the event or the room page sits with the other secondary actions.
             className={
               sourceAction.kind === "live_room" && sourceAction.joinable
-                ? "h-14 rounded-[18px] text-lg font-semibold text-white"
+                ? "h-14 rounded-[18px] text-lg font-semibold text-primary-foreground"
+                // design-allow-next-line: measured control height off the scale (>2px)
                 : `h-[52px] rounded-2xl text-sm ${ended ? "opacity-50" : ""}`
             }
             style={{ background: sourceAction.kind === "live_room" && sourceAction.joinable ? style.accent : SURFACE.track }}
@@ -349,6 +351,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <button
             type="button"
             onClick={() => setSharingOpen(true)}
+            // design-allow-next-line: measured control height off the scale (>2px)
             className="h-[52px] rounded-2xl text-sm"
             style={{ background: SURFACE.track }}
             data-testid="vcal-share"
@@ -360,6 +363,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <button
             type="button"
             onClick={() => onInvite!(item)}
+            // design-allow-next-line: measured control height off the scale (>2px)
             className="h-[52px] rounded-2xl text-sm"
             style={{ background: SURFACE.track }}
             data-testid="vcal-invite"
@@ -371,6 +375,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
           <button
             type="button"
             onClick={() => onOpenSource(`/post/post/${encodeURIComponent(sharedPostId)}`)}
+            // design-allow-next-line: measured control height off the scale (>2px)
             className="h-[52px] rounded-2xl text-sm"
             style={{ background: SURFACE.track }}
             data-testid="vcal-shared-post"
@@ -385,7 +390,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               <input
                 value={draft.title}
                 onChange={(ev) => setDraft((d) => ({ ...d, title: ev.target.value }))}
-                className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                className="h-12 w-full rounded-2xl bg-card px-3 text-base text-foreground"
                 data-testid="vcal-edit-title"
               />
             </label>
@@ -396,7 +401,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                   type="datetime-local"
                   value={draft.start}
                   onChange={(ev) => setDraft((d) => ({ ...d, start: ev.target.value }))}
-                  className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                  className="h-12 w-full rounded-2xl bg-card px-3 text-base text-foreground"
                 />
               </label>
               <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
@@ -405,7 +410,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                   type="datetime-local"
                   value={draft.end}
                   onChange={(ev) => setDraft((d) => ({ ...d, end: ev.target.value }))}
-                  className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                  className="h-12 w-full rounded-2xl bg-card px-3 text-base text-foreground"
                 />
               </label>
             </div>
@@ -414,7 +419,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               <input
                 value={draft.location}
                 onChange={(ev) => setDraft((d) => ({ ...d, location: ev.target.value }))}
-                className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+                className="h-12 w-full rounded-2xl bg-card px-3 text-base text-foreground"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs" style={{ color: style.ink }}>
@@ -423,7 +428,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 value={draft.description}
                 onChange={(ev) => setDraft((d) => ({ ...d, description: ev.target.value }))}
                 rows={3}
-                className="w-full rounded-2xl bg-white px-3 py-2 text-base text-slate-900"
+                className="w-full rounded-2xl bg-card px-3 py-2 text-base text-foreground"
               />
             </label>
             <OverlapWarning conflicts={editOverlap} />
@@ -440,7 +445,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 type="button"
                 disabled={!draftValid || saving}
                 onClick={saveEdit}
-                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
+                className="h-12 rounded-2xl text-sm font-semibold text-primary-foreground disabled:opacity-60"
                 style={{ background: style.accent }}
                 data-testid="vcal-edit-save"
               >
@@ -455,6 +460,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               <button
                 type="button"
                 onClick={() => setEditing(true)}
+                // design-allow-next-line: measured control height off the scale (>2px)
                 className={`h-[52px] rounded-2xl text-sm ${canRemove ? "" : "col-span-2"}`}
                 style={{ background: SURFACE.track }}
                 data-testid="vcal-edit"
@@ -466,6 +472,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
               <button
                 type="button"
                 onClick={() => setConfirmRemove(true)}
+                // design-allow-next-line: measured control height off the scale (>2px)
                 className={`h-[52px] rounded-2xl text-sm ${canEdit ? "" : "col-span-2"}`}
                 style={{ background: SURFACE.track }}
                 data-testid="vcal-remove"
@@ -488,7 +495,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 type="button"
                 disabled={removing}
                 onClick={() => onRemove!(item)}
-                className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
+                className="h-12 rounded-2xl text-sm font-semibold text-primary-foreground disabled:opacity-60"
                 style={{ background: style.accent }}
                 data-testid="vcal-remove-yes"
               >
@@ -499,6 +506,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
         )}
         <div className="grid grid-cols-2 gap-2.5">
           {e.location && (
+            // design-allow-next-line: measured control height off the scale (>2px)
             <button type="button" onClick={openDirections} className="h-[52px] rounded-2xl text-sm" style={{ background: SURFACE.track }}>
               🗺️ {t("vcal.entry.directions")}
             </button>
@@ -513,6 +521,7 @@ export function EntryScreen({ item, now, onClose, onComplete, completing, onMove
                 title: entryTitle(e),
               })
             }
+            // design-allow-next-line: measured control height off the scale (>2px)
             className={`h-[52px] rounded-2xl text-sm ${e.location ? "" : "col-span-2"}`}
             style={{ background: SURFACE.track }}
           >

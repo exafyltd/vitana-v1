@@ -320,6 +320,7 @@ export function NewsPostModerationMenu({
 
       {/* Report reason sheet — keeps the kebab clean and makes reporting intentional. */}
       <Sheet open={reportOpen} onOpenChange={setReportOpen}>
+        {/* design-allow-next-line: viewport-bound sheet height */}
         <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
           <SheetHeader className="text-start">
             <SheetTitle>{t("screens.home.reportSheetTitle")}</SheetTitle>
@@ -378,6 +379,7 @@ export function NewsPostModerationMenu({
           <Textarea
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
+            // design-allow-next-line: no scale value within 2px of 120px
             className="min-h-[120px]"
             maxLength={2000}
           />

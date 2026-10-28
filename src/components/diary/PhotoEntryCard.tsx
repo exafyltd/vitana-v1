@@ -91,7 +91,8 @@ export function PhotoEntryCard({
             className="w-20 h-20 md:w-24 md:h-24 rounded-lg aspect-square group-hover:opacity-90 transition-opacity"
           />
           {hasMultiplePhotos && (
-            <div className="absolute bottom-1 end-1 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2 py-0.5 rounded-full">
+            // design-allow-next-line: on-media scrim, theme-independent (badge over the photo)
+            <div className="absolute bottom-1 end-1 bg-black/70 backdrop-blur-sm text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
               +{photoCount - 1}
             </div>
           )}

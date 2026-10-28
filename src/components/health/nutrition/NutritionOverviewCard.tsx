@@ -13,15 +13,15 @@ interface NutritionOverviewCardProps {
 
 export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOverviewCardProps) {
   return (
-    <Card className="p-6 mb-6 bg-gradient-to-br from-emerald-50/50 via-cyan-50/30 to-violet-50/50 
-      dark:from-slate-900/50 dark:via-slate-800/30 dark:to-slate-900/50 
-      backdrop-blur-sm border-emerald-200/50 dark:border-slate-700/50">
+    <Card className="p-6 mb-6 bg-gradient-to-br from-status-success-subtle/50 via-category-1/5 to-category-2/5 
+ 
+      backdrop-blur-sm border-border50">
       
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Brain className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <Brain className="w-5 h-5 text-status-success" />
             <h2 className="text-xl font-bold">{t('screens.health.yourNutritionPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
@@ -37,18 +37,18 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Goal Focus */}
-        <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
+        <div className="p-4 rounded-xl bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <TrendingUp className="w-4 h-4 text-status-success" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus || 'Balanced Nutrition'}</p>
         </div>
         
         {/* Schedule */}
-        <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
+        <div className="p-4 rounded-xl bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+            <Calendar className="w-4 h-4 text-category-1" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">
@@ -60,9 +60,9 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         </div>
         
         {/* Program Progress */}
-        <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
+        <div className="p-4 rounded-xl bg-card/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+            <Clock className="w-4 h-4 text-category-2" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
           <p className="text-lg font-bold">{t('screens.health.weekValue0Value1', { value0: planData.currentWeek || 1, value1: planData.totalWeeks || 4 })}</p>
@@ -77,20 +77,20 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
           <span className="text-sm font-medium">
             {t('screens.health.trackingYourWeeklyConsistency')}
           </span>
-          <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+          <span className="text-sm font-bold text-status-success">
             {planData.completionPercentage || 0}%
           </span>
         </div>
         <Progress 
           value={planData.completionPercentage || 0} 
-          className="h-3 bg-gradient-to-r from-white/50 to-white/30 dark:from-slate-800/50 dark:to-slate-700/50"
+          className="h-3 bg-gradient-to-r from-card/50 to-card/30"
         />
       </div>
       
       {/* AI Insight */}
-      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 
-        dark:from-emerald-500/20 dark:to-cyan-500/20 border border-emerald-200/30 dark:border-emerald-700/30 mb-4">
-        <Brain className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-status-success/10 to-category-1/10 
+ border border-border30 mb-4">
+        <Brain className="w-5 h-5 text-status-success flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
             <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>

@@ -95,11 +95,11 @@ export interface VitanaRecommendationHeaderProps {
 }
 
 /**
- * The "Vitana" wordmark always uses this brand blue — NOT `text-primary`
- * (which resolves to near-black in this app's theme). A happy, recognizable
- * color is the whole point of the identity header.
+ * The "Vitana" wordmark always uses this brand blue (`category-3`) — NOT
+ * `text-primary` (which resolves to near-black in this app's theme). A happy,
+ * recognizable color is the whole point of the identity header.
  */
-const VITANA_BRAND_TEXT = 'text-blue-600 dark:text-blue-400';
+const VITANA_BRAND_TEXT = 'text-category-3';
 
 export function VitanaRecommendationHeader({ feature, className }: VitanaRecommendationHeaderProps) {
   const featureConfig = FEATURE_CONFIG[feature];
@@ -124,7 +124,7 @@ export function VitanaRecommendationHeader({ feature, className }: VitanaRecomme
           {t('screens.vitanaIdentity.vitana')}
         </span>
       </div>
-      <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 dark:bg-blue-500/15 px-2 py-0.5 text-[11px] font-semibold text-blue-700 dark:text-blue-300 flex-shrink-0 whitespace-nowrap">
+      <span className="inline-flex items-center gap-1 rounded-full bg-category-3/15 px-2 py-0.5 text-[11px] font-semibold text-category-3 flex-shrink-0 whitespace-nowrap">
         <FeatureIcon className="h-3 w-3" aria-hidden="true" />
         {t(featureConfig.labelKey)}
       </span>

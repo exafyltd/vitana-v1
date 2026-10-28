@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05330",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in as the documented test user (read-only, staging guard aborts every write), opens /u/<test user>: phone 390 — the first post body starts at the avatar's left edge (±1 px) and below it; desktop 1440 — the body sits right of the avatar column. Skipped (not failed) when the profile shows no post.",
+      "spec": "tests/e2e/staging/vtid-05330-profile-posts-full-width.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/profile/shared/tabs/ProfilePostsTab.layout.test.tsx",
+      "reason": "header holds avatar + name and not the text; body holds text + media and spans both columns on phones (md:col-start-2 from md); image FeedMedia and raw video wrapper edge to edge on phones (-mx-5) with md:mx-0 md:rounded-xl; avatar md:row-span-2"
+    }
+  ]
+}
