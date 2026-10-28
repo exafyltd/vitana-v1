@@ -1,0 +1,3 @@
+# VTID-05372 (outbox-test-dates/relative-dates) — session kiro-exafyltd-202610220833-d231, base origin/main
+red  (origin/main, 2026-10-28): send-status.vtid-05320 Tests 2 failed | 15 passed (17)
+green (lane head): 17 passed (17); full npx vitest run: 479 files, 3826 tests passed; eslint clean
