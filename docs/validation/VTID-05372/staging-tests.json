@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05372",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx",
+      "reason": "outbox fixtures relative to now, so prune() (7-day max age) never drops them; date-independent. No network, no writes."
+    }
+  ]
+}
