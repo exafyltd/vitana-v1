@@ -156,6 +156,59 @@
       "openImage": "Bild {name} öffnen",
       "openVideo": "Video {name} abspielen",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Nachrichten durchsuchen",
+      "titleConversation": "In dieser Unterhaltung suchen",
+      "hint": "Mindestens {min} Zeichen eingeben",
+      "placeholder": "Nachrichten durchsuchen…",
+      "olderHit": "Älterer Treffer",
+      "newerHit": "Neuerer Treffer",
+      "type": "Typ",
+      "from": "Von",
+      "to": "Bis",
+      "types": {
+        "any": "Alle",
+        "image": "Fotos",
+        "video": "Videos",
+        "file": "Dateien",
+        "voice": "Sprachnachrichten",
+        "link": "Links"
+      },
+      "searching": "Suche läuft…",
+      "error": "Suche fehlgeschlagen. Bitte erneut versuchen.",
+      "empty": "Keine Nachrichten gefunden",
+      "results": "Suchergebnisse",
+      "conversation": "Unterhaltung",
+      "more": "Mehr anzeigen",
+      "filters": "Filter"
+    },
+    "shared": {
+      "sendInMessage": "Als Nachricht senden",
+      "sheetTitle": "{kind} als Nachricht senden",
+      "captionPlaceholder": "Nachricht hinzufügen (optional)",
+      "sent": "Gesendet",
+      "notAllowed": "Du kannst das nicht mehr teilen.",
+      "kind": {
+        "post": "Beitrag",
+        "event": "Event",
+        "product": "Produkt",
+        "profile": "Profil"
+      },
+      "loading": "Vorschau wird geladen…",
+      "loadFailed": "Vorschau konnte nicht geladen werden",
+      "retry": "Erneut versuchen",
+      "open": "{kind} öffnen: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} nicht mehr verfügbar",
+          "body": "Es wurde entfernt."
+        },
+        "restricted": {
+          "title": "{kind} für dich nicht sichtbar",
+          "body": "Die Privatsphäre-Einstellungen erlauben es dir nicht."
+        }
+      }
     }
   }
 }

@@ -167,6 +167,59 @@
       "openImage": "فتح الصورة {name}",
       "openVideo": "تشغيل الفيديو {name}",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "البحث في الرسائل",
+      "titleConversation": "البحث في هذه المحادثة",
+      "hint": "اكتب {min} أحرف على الأقل",
+      "placeholder": "ابحث في الرسائل…",
+      "olderHit": "النتيجة الأقدم",
+      "newerHit": "النتيجة الأحدث",
+      "type": "النوع",
+      "from": "من",
+      "to": "إلى",
+      "types": {
+        "any": "الكل",
+        "image": "الصور",
+        "video": "الفيديوهات",
+        "file": "الملفات",
+        "voice": "الرسائل الصوتية",
+        "link": "الروابط"
+      },
+      "searching": "جارٍ البحث…",
+      "error": "فشل البحث. حاول مرة أخرى.",
+      "empty": "لم يتم العثور على رسائل",
+      "results": "نتائج البحث",
+      "conversation": "المحادثة",
+      "more": "عرض المزيد",
+      "filters": "عوامل التصفية"
+    },
+    "shared": {
+      "sendInMessage": "إرسال في رسالة",
+      "sheetTitle": "إرسال {kind} في رسالة",
+      "captionPlaceholder": "أضف رسالة (اختياري)",
+      "sent": "تم الإرسال",
+      "notAllowed": "لم يعد بإمكانك مشاركة هذا.",
+      "kind": {
+        "post": "منشور",
+        "event": "فعالية",
+        "product": "منتج",
+        "profile": "ملف شخصي"
+      },
+      "loading": "جارٍ تحميل المعاينة…",
+      "loadFailed": "تعذر تحميل المعاينة",
+      "retry": "حاول مرة أخرى",
+      "open": "فتح {kind}: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} لم يعد متاحًا",
+          "body": "تمت إزالته."
+        },
+        "restricted": {
+          "title": "{kind} غير مرئي لك",
+          "body": "إعدادات الخصوصية لا تسمح لك برؤيته."
+        }
+      }
     }
   },
   "_pending_review": {}

@@ -167,6 +167,59 @@
       "openImage": "Abrir imagen {name}",
       "openVideo": "Reproducir vídeo {name}",
       "_pending_review": {}
+    },
+    "search": {
+      "title": "Buscar mensajes",
+      "titleConversation": "Buscar en esta conversación",
+      "hint": "Escribe al menos {min} caracteres",
+      "placeholder": "Buscar mensajes…",
+      "olderHit": "Coincidencia anterior",
+      "newerHit": "Coincidencia más reciente",
+      "type": "Tipo",
+      "from": "Desde",
+      "to": "Hasta",
+      "types": {
+        "any": "Todos",
+        "image": "Fotos",
+        "video": "Vídeos",
+        "file": "Archivos",
+        "voice": "Mensajes de voz",
+        "link": "Enlaces"
+      },
+      "searching": "Buscando…",
+      "error": "La búsqueda falló. Inténtalo de nuevo.",
+      "empty": "No se encontraron mensajes",
+      "results": "Resultados de búsqueda",
+      "conversation": "Conversación",
+      "more": "Mostrar más",
+      "filters": "Filtros"
+    },
+    "shared": {
+      "sendInMessage": "Enviar en un mensaje",
+      "sheetTitle": "Enviar {kind} en un mensaje",
+      "captionPlaceholder": "Añade un mensaje (opcional)",
+      "sent": "Enviado",
+      "notAllowed": "Ya no puedes compartir esto.",
+      "kind": {
+        "post": "Publicación",
+        "event": "Evento",
+        "product": "Producto",
+        "profile": "Perfil"
+      },
+      "loading": "Cargando vista previa…",
+      "loadFailed": "No se pudo cargar la vista previa",
+      "retry": "Reintentar",
+      "open": "Abrir {kind}: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} ya no disponible",
+          "body": "Se eliminó."
+        },
+        "restricted": {
+          "title": "{kind} no visible para ti",
+          "body": "Su configuración de privacidad no te permite verlo."
+        }
+      }
     }
   },
   "_pending_review": {}

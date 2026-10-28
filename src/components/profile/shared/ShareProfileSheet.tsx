@@ -1,8 +1,10 @@
-import { QrCode, Share2 } from "lucide-react";
+import { QrCode, Send, Share2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { UserProfile } from "@/types/profile";
 import { useToast } from '@/hooks/use-toast';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { resolveProfileUserId } from '@/lib/resolveProfileUserId';
+import { useSendInMessage } from '@/components/messages/SendInMessageSheet';
 
 interface ShareProfileSheetProps {
   isOpen: boolean;
@@ -25,6 +27,16 @@ export function ShareProfileSheet({
   onShowQR,
 }: ShareProfileSheetProps) {
   const { toast } = useToast();
+  // VTID-05321: send this profile to a chat (the gateway keys profiles by user id).
+  const profileUserId = resolveProfileUserId(profile.user_id, profile.id);
+  const { openSendInMessage, sendInMessageSheet } = useSendInMessage(
+    profileUserId ? { kind: 'profile', id: profileUserId } : null,
+    profile.name,
+  );
+  const handleSendInMessage = () => {
+    onOpenChange(false);
+    openSendInMessage();
+  };
 
   const handleNativeShare = async () => {
     const payload = {
@@ -59,6 +71,7 @@ export function ShareProfileSheet({
   };
 
   return (
+    <>
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
@@ -82,6 +95,23 @@ export function ShareProfileSheet({
             </div>
           </button>
 
+          {profileUserId && (
+            <button
+              type="button"
+              onClick={handleSendInMessage}
+              className="flex w-full items-center gap-3 rounded-lg border p-3 text-start hover:bg-accent transition-colors"
+              data-testid="profile-send-in-message"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Send className="h-5 w-5" />
+              </div>
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('inbox.shared.sendInMessage')}</div>
+                <div className="text-xs text-muted-foreground">{t('inbox.shared.sheetTitle', { kind: t('inbox.shared.kind.profile') })}</div>
+              </div>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={handleShowQR}
@@ -100,5 +130,7 @@ export function ShareProfileSheet({
         </div>
       </DialogContent>
     </Dialog>
+    {sendInMessageSheet}
+    </>
   );
 }

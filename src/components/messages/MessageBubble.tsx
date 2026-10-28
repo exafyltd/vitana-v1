@@ -66,6 +66,7 @@ import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/l
 import { formatDate } from '@/lib/locale-format';
 import { type GroupPosition, isGroupEnd, isGroupStart } from '@/lib/messaging/grouping';
 import { CalendarInviteCard } from '@/components/messages/CalendarInviteCard';
+import { SharedContentCard, sharedRefOf } from '@/components/messages/SharedContentCard';
 import { isInviteCard } from '@/lib/calendar-window-client';
 import { VitanaChatCard, isVitanaCardPayload } from '@/components/vitana/VitanaChatCard';
 interface MessageBubbleProps {
@@ -372,7 +373,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     [imageAttachments, displayUrlFor]
   );
 
-  const canForward = canForwardMessage(message);
+  // VTID-05321: a shared card is not forwarded as its caption (the card would be lost).
+  const canForward = message.message_type !== 'shared_content' && canForwardMessage(message);
   const forwardPayload = useMemo<ForwardPayload>(() => {
     const body = (message.body || message.content || '') as string;
     return {
@@ -465,6 +467,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     message.message_type === 'exchange_and_send' ||
     message.message_type === 'payment_confirmation' ||
     message.message_type === 'template' ||
+    // VTID-05321: a shared post / event / product / profile card.
+    (message.message_type === 'shared_content' && !!sharedRefOf(message.content_data)) ||
     hasAttachments ||
     hasLegacyFiles;
   const isTextMessageType = !hasStructuredContent;
@@ -1084,6 +1088,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             </CardContent>
           </Card>
         );
+
+      // VTID-05321: a shared post / event / product / profile, resolved for the viewer (I6).
+      case 'shared_content': {
+        const ref = sharedRefOf(message.content_data);
+        if (!ref) return renderLinkedText(message.body || message.content);
+        const caption = message.body || message.content;
+        return (
+          <div className="flex flex-col gap-2" data-testid="shared-content-message">
+            <SharedContentCard sharedRef={ref} isOwnMessage={isOwnMessage} />
+            {caption && renderLinkedText(caption)}
+          </div>
+        );
+      }
 
       case 'service_booking':
         return (

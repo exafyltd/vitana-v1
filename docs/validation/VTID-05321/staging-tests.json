@@ -1,0 +1,7 @@
+{
+  "vtid": "VTID-05321",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/messages/SendInMessageSheet.vtid-05321.test.tsx src/components/messages/SharedContentCard.vtid-05321.test.tsx src/components/messages/ForwardMessageSheet.vtid-05138.test.tsx", "reason": "each entry point sends shared_content {kind,id}; the card's skeleton / available / unavailable / error states and its in-app navigation; the forward sheet unchanged. Sending is a write to shared chat data, so it is proven in CI; the look on real items is the owner's check on staging" }
+  ]
+}
