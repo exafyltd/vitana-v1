@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, SUPABASE_PUBLISHABLE_KEY } from '@/integrations/supabase/client';
 
 export interface FileUploadResult {
   url: string;
@@ -81,12 +81,56 @@ export async function copyChatAttachmentForThread(
 }
 
 /**
- * Upload file to Supabase storage for chat attachments
+ * VTID-05316 — PUT one file to a Supabase signed upload URL with
+ * XMLHttpRequest, so the composer gets real progress events. Resolves on 2xx,
+ * rejects with an Error (status / network / abort) otherwise.
+ */
+export function putToSignedUploadUrl(
+  signedUrl: string,
+  file: File,
+  onProgress?: (progress: UploadProgress) => void,
+  signal?: AbortSignal,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', signedUrl);
+    xhr.setRequestHeader('x-upsert', 'false');
+    // The same apikey header the storage client sends (the token in the URL authorises the upload).
+    if (SUPABASE_PUBLISHABLE_KEY) xhr.setRequestHeader('apikey', SUPABASE_PUBLISHABLE_KEY);
+    xhr.upload.onprogress = (e: ProgressEvent) => {
+      if (!onProgress || !e.lengthComputable) return;
+      // Never report 100 % before the server has answered.
+      onProgress({ loaded: e.loaded, total: e.total, percentage: Math.min(99, Math.round((e.loaded / e.total) * 100)) });
+    };
+    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300
+      ? resolve()
+      : reject(new Error(`Upload failed (${xhr.status})`)));
+    xhr.onerror = () => reject(new Error('Upload failed (network)'));
+    xhr.onabort = () => reject(new DOMException('Upload cancelled', 'AbortError'));
+    if (signal?.aborted) { reject(new DOMException('Upload cancelled', 'AbortError')); return; }
+    signal?.addEventListener('abort', () => xhr.abort(), { once: true });
+    const body = new FormData();
+    body.append('cacheControl', '3600');
+    body.append('', file);
+    xhr.send(body);
+  });
+}
+
+/**
+ * Upload file to Supabase storage for chat attachments.
+ *
+ * VTID-05316: real progress — the file goes to a signed upload URL
+ * (`createSignedUploadUrl`, same bucket and path rule as before) via
+ * XMLHttpRequest. Without XMLHttpRequest the client library's
+ * `uploadToSignedUrl` is used (no progress events, same result). A failed PUT
+ * is a failed upload — the composer offers Retry (a second PUT with the same
+ * one-time token could hit a 409 and orphan the first object).
  */
 export async function uploadChatAttachment(
   file: File,
   onProgress?: (progress: UploadProgress) => void,
-  threadId?: string
+  threadId?: string,
+  opts: { signal?: AbortSignal } = {},
 ): Promise<FileUploadResult> {
   try {
     // Get authenticated user
@@ -113,30 +157,30 @@ export async function uploadChatAttachment(
     // Construct path: {user_id}/{thread_id}/{filename}
     const filePath = `${user.id}/${actualThreadId}/${fileName}`;
 
-    // Upload file to Supabase storage
-    const { data, error } = await supabase.storage
-      .from('chat-attachments')
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
+    const bucket = supabase.storage.from('chat-attachments');
+    const { data: signed, error: signError } = await bucket.createSignedUploadUrl(filePath);
+    if (signError || !signed?.signedUrl) throw signError ?? new Error('Failed to create an upload URL');
 
-    if (error) throw error;
+    let storedPath = signed.path || filePath;
+    if (typeof XMLHttpRequest !== 'undefined') {
+      await putToSignedUploadUrl(signed.signedUrl, file, onProgress, opts.signal);
+    } else {
+      const { data, error } = await bucket.uploadToSignedUrl(signed.path || filePath, signed.token, file);
+      if (error) throw error;
+      storedPath = data?.path || storedPath;
+    }
 
     // Use signed URL instead of public URL (bucket is now private)
-    const signedUrl = await getSignedAttachmentUrl(data.path);
+    const signedUrl = await getSignedAttachmentUrl(storedPath);
     if (!signedUrl) {
       throw new Error('Failed to generate signed URL for uploaded file');
     }
 
-    // Simulate progress updates for better UX
-    if (onProgress) {
-      onProgress({ loaded: file.size, total: file.size, percentage: 100 });
-    }
+    onProgress?.({ loaded: file.size, total: file.size, percentage: 100 });
 
     return {
       url: signedUrl,
-      path: data.path,
+      path: storedPath,
       size: file.size,
       type: file.type,
       name: file.name

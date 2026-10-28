@@ -157,6 +157,69 @@
       "unknownSender": "Member",
       "noText": "Attachment",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Upload failed",
+      "retry": "Retry",
+      "retryUpload": "Upload {name} again",
+      "video": "Video",
+      "moreItems": "{count} more",
+      "openImage": "Open picture {name}",
+      "openVideo": "Play video {name}",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "Search messages",
+      "titleConversation": "Search in this conversation",
+      "hint": "Type at least {min} characters",
+      "placeholder": "Search messages…",
+      "olderHit": "Older match",
+      "newerHit": "Newer match",
+      "type": "Type",
+      "from": "From",
+      "to": "To",
+      "types": {
+        "any": "Any",
+        "image": "Photos",
+        "video": "Videos",
+        "file": "Files",
+        "voice": "Voice messages",
+        "link": "Links"
+      },
+      "searching": "Searching…",
+      "error": "Search failed. Please try again.",
+      "empty": "No messages found",
+      "results": "Search results",
+      "conversation": "Conversation",
+      "more": "Show more",
+      "filters": "Filters"
+    },
+    "shared": {
+      "sendInMessage": "Send in message",
+      "sheetTitle": "Send {kind} in a message",
+      "captionPlaceholder": "Add a message (optional)",
+      "sent": "Sent",
+      "notAllowed": "You can no longer share this.",
+      "kind": {
+        "post": "Post",
+        "event": "Event",
+        "product": "Product",
+        "profile": "Profile"
+      },
+      "loading": "Loading preview…",
+      "loadFailed": "Preview couldn't be loaded",
+      "retry": "Try again",
+      "open": "Open {kind}: {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} no longer available",
+          "body": "It was removed."
+        },
+        "restricted": {
+          "title": "{kind} not visible to you",
+          "body": "Its privacy settings don't let you see it."
+        }
+      }
     }
   },
   "_pending_review": {}

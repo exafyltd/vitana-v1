@@ -157,6 +157,69 @@
       "unknownSender": "Membre",
       "noText": "Pièce jointe",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Échec de l’envoi",
+      "retry": "Réessayer",
+      "retryUpload": "Renvoyer {name}",
+      "video": "Vidéo",
+      "moreItems": "{count} de plus",
+      "openImage": "Ouvrir l’image {name}",
+      "openVideo": "Lire la vidéo {name}",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "Rechercher des messages",
+      "titleConversation": "Rechercher dans cette conversation",
+      "hint": "Saisis au moins {min} caractères",
+      "placeholder": "Rechercher des messages…",
+      "olderHit": "Résultat précédent",
+      "newerHit": "Résultat suivant",
+      "type": "Type",
+      "from": "Du",
+      "to": "Au",
+      "types": {
+        "any": "Tous",
+        "image": "Photos",
+        "video": "Vidéos",
+        "file": "Fichiers",
+        "voice": "Messages vocaux",
+        "link": "Liens"
+      },
+      "searching": "Recherche…",
+      "error": "La recherche a échoué. Réessaie.",
+      "empty": "Aucun message trouvé",
+      "results": "Résultats de recherche",
+      "conversation": "Conversation",
+      "more": "Afficher plus",
+      "filters": "Filtres"
+    },
+    "shared": {
+      "sendInMessage": "Envoyer dans un message",
+      "sheetTitle": "Envoyer {kind} dans un message",
+      "captionPlaceholder": "Ajoute un message (facultatif)",
+      "sent": "Envoyé",
+      "notAllowed": "Tu ne peux plus partager ceci.",
+      "kind": {
+        "post": "Publication",
+        "event": "Événement",
+        "product": "Produit",
+        "profile": "Profil"
+      },
+      "loading": "Chargement de l'aperçu…",
+      "loadFailed": "Impossible de charger l'aperçu",
+      "retry": "Réessayer",
+      "open": "Ouvrir {kind} : {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind} n'est plus disponible",
+          "body": "Il a été supprimé."
+        },
+        "restricted": {
+          "title": "{kind} non visible pour toi",
+          "body": "Ses paramètres de confidentialité ne te permettent pas de le voir."
+        }
+      }
     }
   },
   "_pending_review": {}

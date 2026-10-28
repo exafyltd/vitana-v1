@@ -157,6 +157,69 @@
       "unknownSender": "Участник",
       "noText": "Вложение",
       "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Не удалось загрузить",
+      "retry": "Повторить",
+      "retryUpload": "Загрузить {name} снова",
+      "video": "Видео",
+      "moreItems": "Ещё {count}",
+      "openImage": "Открыть изображение {name}",
+      "openVideo": "Воспроизвести видео {name}",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "Поиск сообщений",
+      "titleConversation": "Поиск в этом чате",
+      "hint": "Введи не менее {min} символов",
+      "placeholder": "Поиск сообщений…",
+      "olderHit": "Предыдущее совпадение",
+      "newerHit": "Следующее совпадение",
+      "type": "Тип",
+      "from": "С",
+      "to": "По",
+      "types": {
+        "any": "Все",
+        "image": "Фото",
+        "video": "Видео",
+        "file": "Файлы",
+        "voice": "Голосовые",
+        "link": "Ссылки"
+      },
+      "searching": "Поиск…",
+      "error": "Не удалось выполнить поиск. Попробуй ещё раз.",
+      "empty": "Сообщения не найдены",
+      "results": "Результаты поиска",
+      "conversation": "Чат",
+      "more": "Показать ещё",
+      "filters": "Фильтры"
+    },
+    "shared": {
+      "sendInMessage": "Отправить в сообщении",
+      "sheetTitle": "Отправить в сообщении: {kind}",
+      "captionPlaceholder": "Добавь сообщение (необязательно)",
+      "sent": "Отправлено",
+      "notAllowed": "Ты больше не можешь этим поделиться.",
+      "kind": {
+        "post": "Публикация",
+        "event": "Событие",
+        "product": "Товар",
+        "profile": "Профиль"
+      },
+      "loading": "Загрузка превью…",
+      "loadFailed": "Не удалось загрузить превью",
+      "retry": "Повторить",
+      "open": "Открыть ({kind}): {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}: больше недоступно",
+          "body": "Это было удалено."
+        },
+        "restricted": {
+          "title": "{kind}: тебе не видно",
+          "body": "Настройки приватности не позволяют тебе это увидеть."
+        }
+      }
     }
   },
   "_pending_review": {}

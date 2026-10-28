@@ -13,7 +13,8 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
+import MessageSearchPanel from "@/components/messages/MessageSearchPanel";
 import { useAuth } from "@/context/AuthProvider";
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useTranslation } from "@/hooks/useTranslation";
@@ -44,6 +45,8 @@ import {
 import { notify, notifyError } from "@/lib/i18n-toast";
 import type { MentionCandidate } from "@/hooks/useMentionCandidates";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
+import { groupPositions, isGroupStart, type GroupPosition } from "@/lib/messaging/grouping";
+import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
 import { MessageSquareOff } from "lucide-react";
@@ -193,6 +196,20 @@ export default function GroupChat() {
       },
     );
   }, [shownMessages, translate]);
+
+  // VTID-05314: one sender's messages within 5 min of each other form a group.
+  const groupPositionById = useMemo(() => {
+    const positions = groupPositions(shownMessages);
+    return new Map<string, GroupPosition>(shownMessages.map((m, i) => [m.id, positions[i]]));
+  }, [shownMessages]);
+  // Spotlight layout (was a flex `gap-2`): 2 px inside a group, otherwise the
+  // same 8 px as the gap was (dividers keep their own margins on top, as on main).
+  const itemGapClass = (index: number, position?: GroupPosition) =>
+    index === 0 ? undefined : position && !isGroupStart(position) ? "mt-0.5" : "mt-2";
+  // Standalone layout keeps main's `space-y-2` (it also sets the divider and
+  // notice spacing); only a bubble that continues a group moves up to 2 px.
+  const inGroupClass = (position?: GroupPosition) =>
+    position && !isGroupStart(position) ? "!mt-0.5" : undefined;
 
   const loadMessages = useCallback(async () => {
     if (!groupId) return;
@@ -505,6 +522,38 @@ export default function GroupChat() {
     markGroupAway();
   }, [markGroupAway]);
   const jumpToMessage = useJumpToMessage({ loadAround, onJump: onGroupJump });
+
+  // VTID-05317: a deep link / search result older than the loaded page — once
+  // the page is there and the message is not, load the window around it (I8).
+  const deepJumpTriedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!ready || !groupId || !initialScrollMessageId) return;
+    const key = `${groupId}|${initialScrollMessageId}`;
+    if (deepJumpTriedRef.current === key) return;
+    if (messages.some((m) => m.id === initialScrollMessageId)) return; // the pin handles it
+    deepJumpTriedRef.current = key;
+    void jumpToMessage(initialScrollMessageId);
+  }, [ready, groupId, initialScrollMessageId, messages, jumpToMessage]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchButton = (
+    <button
+      type="button"
+      data-testid="group-search-button"
+      aria-label={translate("inbox.search.titleConversation")}
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:bg-muted active:bg-muted"
+      onClick={() => setSearchOpen(true)}
+    >
+      <Search className="h-5 w-5" aria-hidden="true" />
+    </button>
+  );
+  const searchPanel = groupId ? (
+    <MessageSearchPanel
+      open={searchOpen}
+      onOpenChange={setSearchOpen}
+      scope={`group:${groupId}`}
+      onSelect={(r) => { void jumpToMessage(r.message_id); }}
+    />
+  ) : null;
   // VTID-05322: while this group is on screen, no push for it (gateway VTID-05312).
   useChatViewingPresence(groupId ? `group:${groupId}` : null);
   const rowById = useMemo(() => new Map(shownMessages.map((m) => [m.id, m])), [shownMessages]);
@@ -670,6 +719,7 @@ export default function GroupChat() {
                   <AvatarFallback>{group.name?.[0] ?? "#"}</AvatarFallback>
                 </Avatar>
               )}
+              {group && loaded && <div className="ms-auto">{searchButton}</div>}
             </div>
             {failed ? (
               <SpotlightEmpty Icon={MessageSquareOff} titleKey="inbox.group.cantOpen" actionKey="inbox.group.backToInbox" onAction={goBack} />
@@ -682,16 +732,21 @@ export default function GroupChat() {
                     {messages.length === 0 ? (
                       <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
                     ) : (
-                      <div className="flex flex-col gap-2">
-                        {messageItems.map(item => {
+                      <div className="flex flex-col">
+                        {messageItems.map((item, index) => {
                           if (item.type === "date") {
-                            return <MessageDivider key={item.id} type="date" text={item.text} />;
+                            return (
+                              <div key={item.id} className={itemGapClass(index)}>
+                                <MessageDivider type="date" text={item.text} />
+                              </div>
+                            );
                           }
                           const msg = item.message;
                           const isOwn = msg.sender_id === userId;
                           const sender = memberById.get(msg.sender_id);
+                          const groupPosition = groupPositionById.get(msg.id);
                           return (
-                            <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-150">
+                            <div key={msg.id} id={`msg-${msg.id}`} className={cn("transition-colors duration-150", itemGapClass(index, groupPosition))}>
                               <SwipeableMessage onReply={() => handleReply(replyTargetFor(msg))} isOwnMessage={isOwn} enabled={isMobile}>
                                 <MessageBubble
                                   message={{
@@ -702,6 +757,7 @@ export default function GroupChat() {
                                   }}
                                   isOwnMessage={isOwn}
                                   showAvatar={!isOwn}
+                                  groupPosition={groupPosition}
                                   onUpdateMessage={handleUpdateMessage}
                                   onDeleteMessage={handleDeleteMessage}
                                   onRetry={handleRetry}
@@ -737,6 +793,7 @@ export default function GroupChat() {
             )}
           </div>
         </ScreenFrame>
+        {searchPanel}
       </AppLayout>
     );
   }
@@ -801,7 +858,9 @@ export default function GroupChat() {
             {group.is_system ? ` · ${translate("inbox.group.officialBadge")}` : ""}
           </div>
         </div>
+        {searchButton}
       </header>
+      {searchPanel}
 
       <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none">
         <div ref={contentRef}>
@@ -825,8 +884,9 @@ export default function GroupChat() {
               const msg = item.message;
               const isOwn = msg.sender_id === userId;
               const sender = memberById.get(msg.sender_id);
+              const groupPosition = groupPositionById.get(msg.id);
               return (
-                <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-500">
+                <div key={msg.id} id={`msg-${msg.id}`} className={cn("transition-colors duration-500", inGroupClass(groupPosition))}>
                   <SwipeableMessage onReply={() => handleReply(replyTargetFor(msg))} isOwnMessage={isOwn} enabled={isMobile}>
                     <MessageBubble
                       message={{
@@ -841,6 +901,7 @@ export default function GroupChat() {
                       }}
                       isOwnMessage={isOwn}
                       showAvatar={!isOwn}
+                      groupPosition={groupPosition}
                       onUpdateMessage={handleUpdateMessage}
                       onDeleteMessage={handleDeleteMessage}
                       onRetry={handleRetry}

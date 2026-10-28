@@ -27,6 +27,8 @@ import {
 export interface ChatViewerImage {
   url: string;
   filename: string;
+  /** VTID-05316: a video plays with native controls (no zoom / copy). */
+  kind?: 'image' | 'video';
 }
 
 interface ChatImageViewerProps {
@@ -84,6 +86,9 @@ export function ChatImageViewer({
 
   const count = images.length;
   const current = images[clamp(index, 0, Math.max(0, count - 1))];
+  // VTID-05316: read by the wheel / double-tap handlers.
+  const isVideoRef = useRef(false);
+  isVideoRef.current = current?.kind === 'video';
 
   const resetZoom = useCallback(() => {
     setScale(1);
@@ -118,6 +123,8 @@ export function ChatImageViewer({
         ev.preventDefault();
         onCloseRef.current();
       } else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+        // A focused video keeps its own seek keys.
+        if ((document.activeElement as HTMLElement | null)?.tagName === 'VIDEO') return;
         ev.preventDefault();
         const forward = ev.key === 'ArrowRight' ? 1 : -1;
         go(isRtl() ? -forward : forward);
@@ -154,6 +161,7 @@ export function ChatImageViewer({
     if (!open || !el) return;
     const onWheel = (ev: WheelEvent) => {
       ev.preventDefault();
+      if (isVideoRef.current) return; // no zoom for videos
       setScale((s) => {
         const next = clamp(s * Math.exp(-ev.deltaY * 0.002), MIN_SCALE, MAX_SCALE);
         if (next === MIN_SCALE) setOffset({ x: 0, y: 0 });
@@ -165,6 +173,7 @@ export function ChatImageViewer({
   }, [open]);
 
   const toggleZoomAt = useCallback(() => {
+    if (isVideoRef.current) return;
     if (scale > 1) resetZoom();
     else setScale(DOUBLE_TAP_SCALE);
   }, [scale, resetZoom]);
@@ -175,7 +184,8 @@ export function ChatImageViewer({
   };
 
   const onPointerDown = (ev: React.PointerEvent<HTMLDivElement>) => {
-    if ((ev.target as HTMLElement).closest('button')) return;
+    // Buttons and the video's own controls handle their pointers themselves.
+    if ((ev.target as HTMLElement).closest('button, video')) return;
     ev.currentTarget.setPointerCapture?.(ev.pointerId);
     pointers.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
     const pinching = pointers.current.size >= 2;
@@ -242,6 +252,7 @@ export function ChatImageViewer({
   };
 
   if (!open || count === 0 || typeof document === 'undefined') return null;
+  const isVideo = current?.kind === 'video';
 
   const iconButton = 'h-11 w-11 rounded-full text-foreground hover:bg-muted';
 
@@ -275,17 +286,19 @@ export function ChatImageViewer({
         >
           <Download className="h-5 w-5" />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className={iconButton}
-          onClick={() => current && copyImageAndNotify(current.url)}
-          aria-label={t('screens.messages.copyImage')}
-          data-testid="chat-image-viewer-copy"
-        >
-          <Copy className="h-5 w-5" />
-        </Button>
-        {canShare && (
+        {!isVideo && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className={iconButton}
+            onClick={() => current && copyImageAndNotify(current.url)}
+            aria-label={t('screens.messages.copyImage')}
+            data-testid="chat-image-viewer-copy"
+          >
+            <Copy className="h-5 w-5" />
+          </Button>
+        )}
+        {canShare && !isVideo && (
           <Button
             variant="ghost"
             size="icon"
@@ -318,10 +331,21 @@ export function ChatImageViewer({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerCancel}
-        onDoubleClick={toggleZoomAt}
+        onDoubleClick={isVideo ? undefined : toggleZoomAt}
         data-testid="chat-image-viewer-stage"
       >
-        {current?.url ? (
+        {current?.url && isVideo ? (
+          <video
+            key={current.url}
+            src={current.url}
+            controls
+            playsInline
+            preload="metadata"
+            className="max-h-full max-w-full"
+            aria-label={current.filename || t('inbox.media.video')}
+            data-testid="chat-image-viewer-video"
+          />
+        ) : current?.url ? (
           <img
             key={current.url}
             src={current.url}
@@ -347,7 +371,8 @@ export function ChatImageViewer({
           <Button
             variant="ghost"
             size="icon"
-            className={cn(iconButton, 'absolute start-2 top-1/2 hidden -translate-y-1/2 md:inline-flex')}
+            // A video takes the pointer for its controls: show the arrows on phones too.
+            className={cn(iconButton, 'absolute start-2 top-1/2 -translate-y-1/2', isVideo ? 'inline-flex' : 'hidden md:inline-flex')}
             onClick={() => go(-1)}
             aria-label={t('screens.messages.previousImage')}
             data-testid="chat-image-viewer-prev"
@@ -359,7 +384,7 @@ export function ChatImageViewer({
           <Button
             variant="ghost"
             size="icon"
-            className={cn(iconButton, 'absolute end-2 top-1/2 hidden -translate-y-1/2 md:inline-flex')}
+            className={cn(iconButton, 'absolute end-2 top-1/2 -translate-y-1/2', isVideo ? 'inline-flex' : 'hidden md:inline-flex')}
             onClick={() => go(1)}
             aria-label={t('screens.messages.nextImage')}
             data-testid="chat-image-viewer-next"
