@@ -1,0 +1,36 @@
+$ node --test scripts/ci/kiro-steering/guard.test.cjs
+# tests 30
+# pass 30
+# fail 0
+# skipped 0
+exit=0
+
+$ node scripts/ci/kiro-steering/guard.cjs .
+kiro-steering: OK
+exit=0
+
+5d7744b8472d9b7bb2f71819169486706f5f8a089fa5b79ddbe8cf36cbef5845  .kiro/steering/vitana-owner-autonomy.md
+5061e62d9385c7611b5f518488b44051d34f1054cd7e9e1211a57a2326442933  .kiro/steering/vitana-pipeline.md
+b49edbd900f5eebe50b39d560a59283b9b5d083229b802d496b840cad274ec8d  .claude/rules/collaboration.md
+5d7744b8472d9b7bb2f71819169486706f5f8a089fa5b79ddbe8cf36cbef5845  platform:.kiro/steering/vitana-owner-autonomy.md
+5061e62d9385c7611b5f518488b44051d34f1054cd7e9e1211a57a2326442933  platform:.kiro/steering/vitana-pipeline.md
+
+## round 2: rule files and guard block synced with platform-rules head after its review (NEVER 34 row, row-scoped anchors)
+$ node --test scripts/ci/kiro-steering/guard.test.cjs
+# tests 32
+# pass 32
+# fail 0
+# skipped 0
+exit=0
+$ node scripts/ci/kiro-steering/guard.cjs .
+kiro-steering: OK
+exit=0
+55aa6e3d6ab718a2628705e939bacd947c577d58dbabac67208f52f25dccec5d  .kiro/steering/vitana-owner-autonomy.md
+faf56b37de09495704e66adfdeadf76a8de584143b365cf0738357be7a28eb07  .kiro/steering/vitana-pipeline.md
+b49edbd900f5eebe50b39d560a59283b9b5d083229b802d496b840cad274ec8d  .claude/rules/collaboration.md
+
+## CI on head 2a2bd9f8
+pr-gate run 40497664872 attempt 1: failed in "Initialize containers" (public.ecr.aws postgres:16 pull, "Data limit exceeded"),
+an infra failure. Re-run once (failed jobs only, collaboration.md §7d / lane-land.md re-run allowlist).
+Attempt 2 result: success. Head 2a2bd9f8 with every check green: Edge data client, Lane scope, Realtime helper, Vitest (jsdom),
+change-suite, pr-gate, preview-e2e.

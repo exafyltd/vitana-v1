@@ -34,6 +34,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
+import { SendInMessageButton } from "@/components/messages/SendInMessageSheet";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { RecommendButton } from "@/components/discover/RecommendButton";
 import { ProductImage } from "@/components/discover/ProductImage";
@@ -255,6 +256,8 @@ export default function ProductDetail() {
                           item_metadata: { brand: p.brand, category: p.category },
                         }}
                       />
+                      {/* VTID-05321: send this product to a chat. */}
+                      <SendInMessageButton item={{ kind: "product", id: p.id }} itemTitle={p.title} size="icon" />
                       <UniversalShareButton
                         content={{
                           type: "product",

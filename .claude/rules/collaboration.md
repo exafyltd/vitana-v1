@@ -92,12 +92,13 @@ A new plan starts at `drafted`, a new lane at `ready`.
   Collab-Session: <reviewer session>
   Collab-Review: <slug>/<lane-id>
   Collab-Verdict: accept | changes
-  Collab-Reviewer: agent:vitana-lane-reviewer (claude-sonnet-5.5)
+  Collab-Reviewer: agent:vitana-lane-reviewer (<model>)
   Collab-Reviewed-Head: <40-hex PR head the agent reviewed>
   ```
-  `Collab-Review` stays the lane key (scope-check depends on it); the verdict is `Collab-Verdict`. Body:
+  `<model>` is the chain model the agent ran on: `claude-sonnet-5.5`, `claude-opus-5.5` or `claude-sonnet-4.5`
+  (`REVIEWER_AGENT_MODELS`, PM `governance.ts`). `Collab-Review` stays the lane key (scope-check depends on it); the verdict is `Collab-Verdict`. Body:
   `### <ISO time> · <session> · review`, then `review: accept|changes`, `head: <sha>`,
-  `reviewer: agent:vitana-lane-reviewer (claude-sonnet-5.5)`, PR link, findings summary, next actor. The reviewer
+  `reviewer: agent:vitana-lane-reviewer (<model>)`, PR link, findings summary, next actor. The reviewer
   session is never a session in the lane's executing log. An entry counts for the **current head** when
   `Collab-Reviewed-Head` equals the PR head, or every commit after it only appends review entries to this lane file
   (front matter unchanged) or is a `pm-agent` lane-state commit.
@@ -169,8 +170,8 @@ approvals, you run it end to end"). Kiro accounts carry the work because each ha
 
 **The pipeline:** `plan(<slug>)` PR → CI PLAN-SPAR (partner chain unchanged: Bedrock Opus 4.6 → Sonnet 4.6 → DeepSeek)
 → policy approval (`converged-auto-v1`) → **CI allocates a fresh VTID per lane** (never Kiro by hand) → Kiro builds
-the lanes in parallel (§8a) → the reviewer agent `vitana-lane-reviewer` (Kiro custom agent, model `claude-sonnet-5.5`,
-read-only) returns `accept` or `changes` → `verified` → merge to `main` under §7b → staging auto-deploy →
+the lanes in parallel (§8a) → the reviewer agent `vitana-lane-reviewer` (Kiro custom agent, model chain
+`claude-sonnet-5.5` → `claude-opus-5.5` → `claude-sonnet-4.5`, read-only) returns `accept` or `changes` → `verified` → merge to `main` under §7b → staging auto-deploy →
 STAGING-VERIFY → Gate 2 *"Staging verified — ready for deployment to production?"*. Production only by the owner's
 PUBLISH. **No per-PR owner approvals**: no question about git, push, PR, merge, re-runs, sparring rounds or VTIDs.
 
@@ -185,12 +186,15 @@ PUBLISH. **No per-PR owner approvals**: no question about git, push, PR, merge, 
   with its local partner; the owner then answers Gate 1 as before.
 - **Building — the lane's seat** (Kiro). `executor: claude` lanes go to Claude Code when it is available, else to the
   exceptions seat.
-- **Accepting — the reviewer agent** `agent:vitana-lane-reviewer (claude-sonnet-5.5)`. Per lane, independently and in
+- **Accepting — the reviewer agent** `agent:vitana-lane-reviewer (<model>)`, `<model>` from its chain. Per lane, independently and in
   parallel: the builder claims → implements → PR → `in-review` → the reviewer agent checks the diff against the lane's
   `tasks.md` acceptance, the lane `paths`, CI on the current head, red→green proof, no test weakening, no
   production/live writes → the calling session commits the review entry (§3). `changes` sends the lane back to
-  `executing`. The model unavailable → the agent fails loudly (`model_unavailable`), the lane stays `in-review`, no
-  other model is substituted. A builder never accepts its own lane; `reviewer_seat` is legacy.
+  `executing`. A chain model unavailable → another chain model reviews at once (owner 2026-10-21: never wait on an
+  unavailable model; the Kiro IDE recipe races one review step pinned per chain model in a `joinPolicy: "any"`
+  parallel, the Kiro Web driver tries them in order); a model outside the chain fails loudly (`model_unavailable`),
+  each model reviews a head at most once, and when all three fail the review stops loudly (recipe: the slot fails
+  with the engine's record; driver: a logged blocker, the lane is parked). A builder never accepts its own lane; `reviewer_seat` is legacy.
 - **Merging and Gate 2 — the Project Manager** (`services/gateway/src/services/project-manager/`) by the PM merge
   rule (§7b); while the PM is not `live`, the plan driver (Kiro) applies the same rule. Gate 2 goes to the Command Hub
   Operator Chat with the evidence: STAGING-VERIFY link, test counts, verified commit, every commit between production
@@ -198,7 +202,8 @@ PUBLISH. **No per-PR owner approvals**: no question about git, push, PR, merge, 
 - **The owner is asked only:** Gate 2 (and Gate 1 for a plan Claude Code sparred locally), an escalated sparring
   verdict, and the stop cases — a security or data-loss risk, a failure surviving 3 fix-forward attempts, anything
   touching production. Each stop is one message: what happened, evidence, what was tried, the recommended answer, what
-  waits on it (the five-part stop message). A migration needs the owner's approval naming the file and the database.
+  waits on it (the five-part stop message). A migration needs the owner's approval of the file(s); Kiro then applies
+  it itself (§7d).
 - **Production after Gate 2:** the owner's PUBLISH in the Command Hub, or — on the owner's explicit command in the
   conversation — a publish run by the Kiro (or Claude Code) session itself, either the full staging build or only one
   session's changes (§7c). Without that command Kiro never deploys to production.
@@ -223,9 +228,9 @@ never:
 - allocate a VTID by hand (CI PLAN-SPAR does), take a `_plan` claim of a plan they did not author (except taking over
   a driver whose heartbeat is stale, §8), or edit another lane's file;
 - approve or accept their own lane — acceptance is the reviewer agent's, never the builder's;
-- deploy to production (PUBLISH, `scripts/deploy/publish-to-prod.sh`, any `AWS-PROD-DEPLOY-*`), or dispatch any
-  workflow — the only exceptions are re-runs of a failed PLAN-SPAR, PR-GATE or STAGING-VERIFY run (by workflow path,
-  attempt 1 only, `gh run rerun`) and the owner-commanded publish (§7c);
+- deploy to production (PUBLISH, `scripts/deploy/publish-to-prod.sh`, any `AWS-PROD-DEPLOY-*`) except the
+  owner-commanded publish (§7c), or dispatch a workflow outside §7d (staging, verification and re-runs; owner-approved
+  migrations);
 - merge a PR except under §7b;
 - write to a live system from session tools, even though their credentials allow it: no Supabase writes
   (`execute_sql` with INSERT/UPDATE/DELETE/DDL, `apply_migration`, `deploy_edge_function`, branch/project/secret
@@ -239,7 +244,7 @@ attempts park with the five-part stop message (§7); `next_actor: claude` only w
 The Project Manager merges a lane PR — and **the plan driver (Kiro) applies the same rule while the PM is not
 `live`** — when ALL of these hold:
 - the lane is `verified` and the review entry (§3) is `Collab-Verdict: accept` from
-  `agent:vitana-lane-reviewer (claude-sonnet-5.5)` on the PR's current head;
+  `agent:vitana-lane-reviewer (<model>)` (`<model>` in its chain) on the PR's current head;
 - every required check is green, incl. **Lane scope** and **Collab handoff**;
 - the PR is up to date with latest `main` and its checks were re-run on that head (serialized landing, §8a); no
   conflict;
@@ -282,6 +287,26 @@ failed run or a rollback is reported with the five-part stop message and not re-
 Record it in the lane log or `handoff.md` (a lane-less change: the PR) with `publish: <run url>`, the commit, the
 scope and `authority: owner instruction <ISO time>`.
 
+## 7d. Kiro dispatches workflows (owner decision 2026-10-23)
+Owner instruction 2026-10-23: *"let Kiro execute"* — a Kiro session runs the workflows its work needs itself and never
+hands the owner a `gh workflow run` command to type. Kiro Web carries a general GitHub token (`GH_TOKEN`) for this.
+- **Without asking** (any Kiro session, incl. the plan driver): dispatch or re-run staging, verification and CI
+  workflows — `AWS-STAGE-*`, `STAGING-VERIFY*`, preview workflows, PR-GATE, PLAN-SPAR and any test/lint/CI workflow
+  that deploys nothing; re-runs of a failed run at any attempt (fix-forward still stops after 3, §7). Read repo
+  variables (`MIGRATION_TARGET`, `MIGRATION_FREEZE`, `CLAUDE_AVAILABLE`) as needed.
+- **Migrations — on the owner's approval.** `RUN-MIGRATION.yml` and every vitana-v1 `apply-*.yml` write the
+  production database (staging shares it), so Kiro dispatches one only when the owner, in the conversation, has
+  approved the migration file(s) and the target database (`supabase` or `aurora`). An approval naming only the files
+  is completed by Kiro: it reads `MIGRATION_TARGET` (unset = `supabase`), states the resolved database in its reply and
+  dispatches with `target` passed explicitly, never `default`. Not while `MIGRATION_FREEZE` is `true`; files in
+  timestamp order (and any queue the plan names); `allow_non_transactional` only when the owner named it. Kiro watches
+  each run, does the read-only post-check, and records `migration: <run url> <file> target:<db> authority: owner
+  instruction <ISO time>` in the lane log or `handoff.md`. A failed run stops the remaining files and is reported with
+  the five-part stop message; it is not re-dispatched without a new owner instruction. A policy approval
+  (`converged-auto-v1`) never authorises a migration.
+- **Never under §7d:** any production deploy workflow (`AWS-PROD-*`, `AUTO-DEPLOY.yml`, vitana-v1 `DEPLOY.yml`,
+  `supabase-functions-deploy.yml`, `DEPLOY-CLOUDFLARE-WORKERS.yml`, `EXEC-DEPLOY.yml`) — production stays §7c / PUBLISH
+  after Gate 2; repo settings, secrets or branch protection; direct live writes from session tools (§7a).
 
 ## 8. Waking each agent — the continuous plan driver
 - **One plan driver per approved plan.** One Kiro run holds the plan's `_plan` claim and drives it non-stop, 24/7

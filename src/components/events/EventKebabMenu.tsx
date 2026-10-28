@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pencil, Share2, Trash2 } from "lucide-react";
+import { Pencil, Send, Share2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { useSendInMessage } from '@/components/messages/SendInMessageSheet';
 
 interface EventKebabMenuProps {
   event: any;
@@ -39,6 +40,12 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
   const isCoCreator = !!currentUserId && event.is_co_creator === true;
   const canEdit = (isCreator || isCoCreator) && new Date(event.start_time) > new Date();
   const canDelete = isCreator || isCoCreator;
+  // VTID-05321: send this event to a chat (signed-in members; the gateway checks visibility).
+  const canSendInMessage = !!currentUserId && typeof event?.id === 'string';
+  const { openSendInMessage, sendInMessageSheet } = useSendInMessage(
+    canSendInMessage ? { kind: 'event', id: event.id } : null,
+    event?.title,
+  );
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -62,20 +69,38 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
     }
   };
 
-  // Non-creator/co-creator: show standalone Share button
+  // Non-creator/co-creator: standalone "Send in message" (signed in) and Share buttons
   if (!canEdit && !canDelete) {
-    if (!onShare) return null;
+    if (!onShare && !canSendInMessage) return null;
     return (
-      <Button
-        variant="ghost"
-        size="sm"
-        className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
-        aria-label={t('screens.events.shareEvent')}
-        onClick={(e) => { e.stopPropagation(); onShare(event); }}
-        onPointerDown={(e) => e.stopPropagation()}
-      >
-        <Share2 className="h-4 w-4" />
-      </Button>
+      <>
+        {canSendInMessage && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`p-0 hover:bg-sidebar-accent/50 ${className ?? ''} h-11 w-11`}
+            aria-label={t('inbox.shared.sendInMessage')}
+            onClick={(e) => { e.stopPropagation(); openSendInMessage(); }}
+            onPointerDown={(e) => e.stopPropagation()}
+            data-testid="event-send-in-message"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        )}
+        {onShare && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
+            aria-label={t('screens.events.shareEvent')}
+            onClick={(e) => { e.stopPropagation(); onShare(event); }}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
+        )}
+        {sendInMessageSheet}
+      </>
     );
   }
 
@@ -104,6 +129,18 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
             {t('screens.events.share')}
           </DropdownMenuItem>
         )}
+        {canSendInMessage && (
+          <DropdownMenuItem
+            onClick={(e) => {
+              e.stopPropagation();
+              openSendInMessage();
+            }}
+            data-testid="event-send-in-message"
+          >
+            <Send className="h-4 w-4 me-2" />
+            {t('inbox.shared.sendInMessage')}
+          </DropdownMenuItem>
+        )}
         {canDelete && (
           <>
             <DropdownMenuSeparator />
@@ -120,6 +157,8 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
           </>
         )}
       </KebabMenu>
+
+      {sendInMessageSheet}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

@@ -32,6 +32,7 @@ import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { RecommendButton } from "@/components/discover/RecommendButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
+import { SendInMessageButton } from "@/components/messages/SendInMessageSheet";
 import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
 
@@ -340,6 +341,8 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
           </a>
         </Button>
         <RecommendButton productId={p.id} variant="cta" size="sm" className="flex-shrink-0" />
+        {/* VTID-05321: send this product to a chat. */}
+        <SendInMessageButton item={{ kind: "product", id: p.id }} itemTitle={p.title} size="default" className="flex-shrink-0" />
         <UniversalShareButton
           content={{
             type: "product",
