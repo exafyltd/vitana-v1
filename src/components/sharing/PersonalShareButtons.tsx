@@ -87,8 +87,9 @@ export function PersonalShareButtons({
       label: "WhatsApp",
       onClick: handleWhatsApp,
       icon: (
+        // design-allow-next-line: third-party brand colour
         <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center">
-          <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-white">
+          <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-primary-foreground">
             <path d={siWhatsapp.path} />
           </svg>
         </div>
@@ -99,8 +100,9 @@ export function PersonalShareButtons({
       label: "Viber",
       onClick: handleViber,
       icon: (
+        // design-allow-next-line: third-party brand colour
         <div className="w-8 h-8 rounded-full bg-[#7360F2] flex items-center justify-center">
-          <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-white">
+          <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-primary-foreground">
             <path d={siViber.path} />
           </svg>
         </div>
@@ -121,8 +123,8 @@ export function PersonalShareButtons({
       label: "SMS",
       onClick: handleSMS,
       icon: (
-        <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center">
-          <MessageSquare className="w-5 h-5 text-white" />
+        <div className="w-8 h-8 rounded-full bg-status-success flex items-center justify-center">
+          <MessageSquare className="w-5 h-5 text-primary-foreground" />
         </div>
       ),
     },
@@ -136,10 +138,10 @@ export function PersonalShareButtons({
       icon: (
         <div className={cn(
           "w-8 h-8 rounded-full flex items-center justify-center",
-          copied ? "bg-green-600" : "bg-muted"
+          copied ? "bg-status-success" : "bg-muted"
         )}>
           {copied ? (
-            <Check className="w-5 h-5 text-white" />
+            <Check className="w-5 h-5 text-primary-foreground" />
           ) : (
             <Link2 className="w-5 h-5 text-muted-foreground" />
           )}

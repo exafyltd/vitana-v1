@@ -1,0 +1,239 @@
+{
+  "communityHubNative": {
+    "common": {
+      "back": "رجوع",
+      "loading": "جارٍ التحميل …",
+      "loadMore": "تحميل المزيد",
+      "retry": "إعادة المحاولة",
+      "errorBody": "تعذّر تحميل ذلك الآن. حاول مرة أخرى."
+    },
+    "groups": {
+      "title": "المجموعات",
+      "subtitle": "انضم إلى مجموعات ذات اهتمامات مشتركة أو أنشئ مجموعتك.",
+      "tabsLabel": "عرض المجموعات",
+      "tabMine": "مجموعاتي",
+      "tabDiscover": "استكشاف",
+      "memberCount": "{count} عضو",
+      "public": "عامة",
+      "private": "خاصة",
+      "join": "انضمام",
+      "joining": "جارٍ الانضمام …",
+      "leave": "مغادرة",
+      "leaving": "جارٍ المغادرة …",
+      "emptyMineTitle": "لا توجد مجموعات بعد",
+      "emptyMineDesc": "انضم إلى مجموعتك الأولى للبدء.",
+      "emptyDiscoverTitle": "لا توجد مجموعات لاستكشافها",
+      "emptyDiscoverDesc": "كن أول من ينشئ مجموعة للمجتمع.",
+      "create": "إنشاء",
+      "searchPlaceholder": "ابحث عن مجموعات",
+      "searchLabel": "ابحث عن مجموعات"
+    },
+    "groupDetail": {
+      "title": "المجموعة",
+      "memberCount": "{count} عضو",
+      "membersWithCount": "الأعضاء ({count})",
+      "plusMore": "+{count}",
+      "join": "الانضمام إلى المجموعة",
+      "leave": "مغادرة المجموعة",
+      "notFoundTitle": "المجموعة غير موجودة",
+      "notFoundDesc": "ربما تمت إزالة هذه المجموعة أو أنها غير موجودة.",
+      "browse": "تصفّح المجموعات"
+    },
+    "members": {
+      "title": "أعضاء المجتمع",
+      "subtitle": "تعرّف على مجتمع Vitana بالكامل — انقر على بطاقة.",
+      "searchPlaceholder": "ابحث بالاسم أو معرّف Vitana",
+      "searchLabel": "البحث عن الأعضاء",
+      "sortLabel": "ترتيب",
+      "sort": {
+        "newest": "الأحدث",
+        "oldest": "المؤسسون أولاً",
+        "name": "حسب الاسم"
+      },
+      "danceLabel": "الرقص",
+      "dance": {
+        "all": "الكل",
+        "salsa": "سالسا",
+        "tango": "تانغو",
+        "bachata": "باتشاتا",
+        "kizomba": "كيزومبا",
+        "swing": "سوينغ",
+        "ballroom": "القاعات",
+        "hiphop": "هيب هوب"
+      },
+      "handle": "@{handle}",
+      "fallbackName": "عضو",
+      "empty": "لا يوجد أعضاء بعد.",
+      "emptyDance": "لم يحدد أحد هذا الرقص كتفضيل بعد — كن أول من يفعل!",
+      "viewProfile": "عرض الملف الشخصي"
+    },
+    "openAsks": {
+      "title": "الطلبات المفتوحة",
+      "summaryLoading": "جارٍ تحميل الطلبات …",
+      "summaryEmpty": "لا توجد طلبات مفتوحة بعد.",
+      "summaryCount": "{n} طلبات مفتوحة",
+      "kindLabel": "النوع",
+      "filterAll": "الكل",
+      "topicLabel": "الموضوع",
+      "topic": {
+        "everything": "كل شيء",
+        "dance": "الرقص فقط"
+      },
+      "kind": {
+        "commercial_buy": "شراء",
+        "commercial_sell": "بيع",
+        "activity_seek": "نشاط",
+        "partner_seek": "شريك",
+        "social_seek": "اجتماعي",
+        "mutual_aid": "مساعدة متبادلة",
+        "learning_seek": "تعلّم",
+        "mentor_seek": "إرشاد"
+      },
+      "time": {
+        "justNow": "الآن",
+        "minutes": "قبل {n} دقيقة",
+        "hours": "قبل {n} ساعة",
+        "days": "قبل {n} يوم"
+      },
+      "handle": "@{handle}",
+      "emptyFilter": "لا توجد طلبات مفتوحة في هذا العرض.",
+      "emptyDance": "لا توجد طلبات رقص مفتوحة بعد — انشر طلبك وكن الأول!"
+    },
+    "findPartner": {
+      "title": "البحث عن شريك",
+      "subtitle": "اعثر على أشخاص يتوافقون مع رغباتك المفتوحة.",
+      "viewLabel": "العرض",
+      "view": {
+        "matches": "التطابقات",
+        "board": "اللوحة",
+        "posts": "منشوراتي",
+        "members": "الأعضاء"
+      },
+      "scorePercent": "{score}٪",
+      "matchFallback": "تطابق",
+      "emptyMatches": "لا توجد تطابقات بعد. انشر رغبة وسنبقى متيقظين.",
+      "newWish": "رغبة جديدة",
+      "searchPlaceholder": "ابحث في المنشورات والمطابقات",
+      "searchLabel": "ابحث في المنشورات والمطابقات",
+      "filter": "تصفية",
+      "filterActive": "تصفية ({count})",
+      "noMatchesForFilters": "لا مطابقات لهذه الفلاتر. أعد الضبط لرؤية المزيد.",
+      "showingOfTotal": "عرض {shown} من {total}",
+      "filterTitle": "تصفية المطابقات",
+      "filterMinScore": "أدنى نتيجة",
+      "filterClear": "إعادة الضبط",
+      "filterShowResults": "عرض {count} مطابقة"
+    },
+    "matches": {
+      "title": "أشخاص يتوافقون معك",
+      "subtitle": "تطابقاتك من المجتمع.",
+      "empty": "لا توجد تطابقات بعد. عد قريبًا.",
+      "fallbackName": "عضو في المجتمع",
+      "reasonDefault": "اهتمامات مشتركة",
+      "score": "{score}٪"
+    },
+    "intents": {
+      "boardTitle": "لوحة المجتمع",
+      "boardSubtitle": "ما يبحث عنه الآخرون الآن.",
+      "filtersLabel": "عوامل التصفية",
+      "filter": {
+        "all": "الكل",
+        "dance": "الرقص"
+      },
+      "kind": {
+        "commercial_buy": "شراء",
+        "commercial_sell": "بيع",
+        "activity_seek": "نشاط",
+        "partner_seek": "شريك",
+        "social_seek": "اجتماعي",
+        "mutual_aid": "مساعدة متبادلة",
+        "learning_seek": "تعلّم",
+        "mentor_seek": "إرشاد"
+      },
+      "viewMine": "عرض نواياي",
+      "emptyBoard": "لا توجد نوايا مفتوحة في هذا العرض. كن الأول.",
+      "emptyDance": "لا توجد منشورات رقص مفتوحة بعد — انشر منشورك وكن الأول!",
+      "emptyMine": "لا توجد منشورات في هذا العرض.",
+      "post": "نشر",
+      "styleLabel": "النمط",
+      "variety": {
+        "any": "أي",
+        "salsa": "سالسا",
+        "tango": "تانغو",
+        "bachata": "باتشاتا",
+        "kizomba": "كيزومبا",
+        "swing": "سوينغ",
+        "ballroom": "الرقص القاعي",
+        "hiphop": "هيب هوب"
+      }
+    },
+    "intentMatch": {
+      "title": "تفاصيل التطابق",
+      "backMine": "العودة إلى نواياي",
+      "notFound": "النية غير موجودة.",
+      "matchesCount": "التطابقات ({count})",
+      "noMatches": "لا توجد تطابقات بعد — سنواصل البحث من أجلك."
+    },
+    "search": {
+      "title": "بحث",
+      "subtitle": "اعثر على أعضاء في مجتمع Vitana.",
+      "placeholder": "البحث عن الأعضاء",
+      "inputLabel": "مصطلح البحث",
+      "submit": "بحث",
+      "memberMeta": "عضو في المجتمع",
+      "fallbackName": "عضو",
+      "emptyTitle": "لا توجد نتائج",
+      "emptyDesc": "عدّل مصطلح البحث وحاول مرة أخرى."
+    },
+    "createGroup": {
+      "title": "إنشاء مجموعة جديدة",
+      "namePlaceholder": "مثل عدّاؤو الصباح أو الطبخ الصحي",
+      "nameLabel": "اسم المجموعة",
+      "descriptionPlaceholder": "صف هدف مجموعتك وأنشطتها",
+      "descriptionLabel": "الوصف",
+      "categoryLabel": "الفئة",
+      "category": {
+        "fitness": "اللياقة",
+        "nutrition": "التغذية",
+        "mental-health": "الصحة النفسية",
+        "support": "الدعم",
+        "learning": "التعلّم",
+        "social": "اجتماعي"
+      },
+      "privacyLabel": "الظهور",
+      "privacy": {
+        "public": "عامة",
+        "private": "خاصة"
+      },
+      "cancel": "إلغاء",
+      "submit": "إنشاء المجموعة",
+      "creating": "جارٍ الإنشاء …",
+      "created": "تم إنشاء المجموعة.",
+      "nameRequired": "أدخل اسم المجموعة."
+    },
+    "composer": {
+      "title": "النشر في المجتمع",
+      "kindLabel": "النوع",
+      "kind": {
+        "commercial_buy": "شراء",
+        "commercial_sell": "بيع",
+        "activity_seek": "نشاط",
+        "social_seek": "اجتماعي",
+        "mutual_aid": "تعاون متبادل",
+        "partner_seek": "شريك"
+      },
+      "titlePlaceholder": "عنوان قصير",
+      "titleLabel": "العنوان",
+      "scopePlaceholder": "صف ما تحتاجه أو تقدّمه",
+      "scopeLabel": "الوصف",
+      "budgetMin": "أدنى ميزانية",
+      "budgetMax": "أقصى ميزانية",
+      "cancel": "إلغاء",
+      "submit": "نشر",
+      "posting": "جارٍ النشر …",
+      "posted": "تم النشر في المجتمع.",
+      "titleRequired": "أدخل عنوانًا من 3 أحرف على الأقل.",
+      "scopeTooShort": "صِفه بما لا يقل عن 20 حرفًا."
+    }
+  }
+}

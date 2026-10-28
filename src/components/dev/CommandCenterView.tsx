@@ -7,6 +7,7 @@ export function CommandCenterView() {
   const rightPanel = <OperatorChat />;
 
   return (
+    // design-allow-next-line: no scale value within 2px of 600px
     <div className="h-[600px]">
       <SplitScreen
         leftPanel={leftPanel}

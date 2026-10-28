@@ -47,11 +47,12 @@ export function PhotoCarouselModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: on-media scrim, theme-independent (photo viewer backdrop) */}
       <DialogContent className="max-w-6xl h-[90vh] p-0 bg-black/95">
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-4 end-4 z-50 text-white hover:bg-white/20"
+          className="absolute top-4 end-4 z-50 text-primary-foreground hover:bg-card/20"
           onClick={() => onOpenChange(false)}
         >
           <X className="h-6 w-6" />
@@ -67,6 +68,7 @@ export function PhotoCarouselModal({
                       <img
                         src={image}
                         alt={`Photo ${index + 1}`}
+                        // design-allow-next-line: viewport-bound media box (photo fits the viewport)
                         className="max-h-[70vh] max-w-full object-contain rounded-lg"
                       />
                     </div>
@@ -75,23 +77,24 @@ export function PhotoCarouselModal({
               </CarouselContent>
               {images.length > 1 && (
                 <>
-                  <CarouselPrevious className="start-4 bg-white/20 border-white/30 text-white hover:bg-white/30" />
-                  <CarouselNext className="end-4 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                  <CarouselPrevious className="start-4 bg-card/20 border-border/30 text-primary-foreground hover:bg-card/30" />
+                  <CarouselNext className="end-4 bg-card/20 border-border/30 text-primary-foreground hover:bg-card/30" />
                 </>
               )}
             </Carousel>
           </div>
 
-          <div className="bg-black/90 border-t border-white/10 p-6 space-y-3">
+          {/* design-allow-next-line: on-media scrim, theme-independent (photo viewer caption bar) */}
+          <div className="bg-black/90 border-t border-border/10 p-6 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 {images.length > 1 && (
-                  <span className="text-white/70 text-sm font-medium">
+                  <span className="text-primary-foreground/70 text-sm font-medium">
                     {currentIndex + 1} / {images.length}
                   </span>
                 )}
                 {createdAt && (
-                  <span className="text-white/70 text-sm">
+                  <span className="text-primary-foreground/70 text-sm">
                     {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
                   </span>
                 )}
@@ -99,7 +102,7 @@ export function PhotoCarouselModal({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-white hover:bg-white/20"
+                className="text-primary-foreground hover:bg-card/20"
                 onClick={() => handleDownload(images[currentIndex])}
               >
                 <Download className="h-4 w-4 me-2" />
@@ -108,13 +111,13 @@ export function PhotoCarouselModal({
             </div>
 
             {caption && (
-              <p className="text-white text-sm max-h-20 overflow-y-auto">{caption}</p>
+              <p className="text-primary-foreground text-sm max-h-20 overflow-y-auto">{caption}</p>
             )}
 
             {tags && tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="bg-white/10 text-white border-white/20">
+                  <Badge key={index} variant="secondary" className="bg-card/10 text-primary-foreground border-border/20">
                     {tag}
                   </Badge>
                 ))}

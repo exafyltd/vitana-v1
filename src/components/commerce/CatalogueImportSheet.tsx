@@ -158,14 +158,14 @@ export function CatalogueImportSheet({ open, onOpenChange, adminOrgs }: Props) {
           )}
 
           {phase === 'done' && outcome?.kind === 'imported' ? (
-            <div className="rounded-2xl border border-emerald-300/60 bg-emerald-50 p-5 dark:bg-emerald-950/30">
+            <div className="rounded-2xl border border-status-success/25 bg-status-success-subtle p-5">
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-status-success" />
                 <p className="text-sm text-foreground">{t(`${KEY}.done`, { count: outcome.imported })}</p>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Button variant="outline" onClick={reset}>{t(`${KEY}.importAnother`)}</Button>
-                <Button onClick={() => close(false)} className="bg-amber-700 text-white hover:bg-amber-800">
+                <Button onClick={() => close(false)} className="bg-primary text-primary-foreground hover:bg-primary/90">
                   {t(`${KEY}.close`)}
                 </Button>
               </div>
@@ -186,7 +186,7 @@ export function CatalogueImportSheet({ open, onOpenChange, adminOrgs }: Props) {
                   size="lg"
                   disabled={!activeOrgId || phase === 'checking' || phase === 'importing'}
                   onClick={() => inputRef.current?.click()}
-                  className="h-12 w-full rounded-xl bg-amber-700 text-base font-semibold text-white hover:bg-amber-800"
+                  className="h-12 w-full rounded-xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
                 >
                   <FileUp className="me-2 h-4 w-4" />
                   {fileName ? t(`${KEY}.chooseAnother`) : t(`${KEY}.chooseFile`)}
@@ -237,9 +237,9 @@ export function CatalogueImportSheet({ open, onOpenChange, adminOrgs }: Props) {
               )}
 
               {readyToImport && outcome?.kind === 'report' && (
-                <div className="rounded-2xl border border-emerald-300/60 bg-emerald-50 p-5 dark:bg-emerald-950/30">
+                <div className="rounded-2xl border border-status-success/25 bg-status-success-subtle p-5">
                   <p className="text-sm text-foreground">{t(`${KEY}.ready`, { count: outcome.validRows })}</p>
-                  <Button onClick={runImport} className="mt-4 w-full bg-amber-700 text-white hover:bg-amber-800 sm:w-auto">
+                  <Button onClick={runImport} className="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto">
                     {t(`${KEY}.importCta`, { count: outcome.validRows })}
                   </Button>
                 </div>
@@ -263,8 +263,8 @@ function Busy({ text }: { text: string }) {
 
 function Problem({ text }: { text: string }) {
   return (
-    <div className="flex items-start gap-2 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-sm text-foreground dark:bg-amber-950/30" role="alert">
-      <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
+    <div className="flex items-start gap-2 rounded-xl border border-status-warning/40 bg-status-warning-subtle p-3 text-sm text-foreground" role="alert">
+      <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-status-warning" />
       <span>{text}</span>
     </div>
   );

@@ -106,7 +106,7 @@ export function ContactSourcePicker({
                 ? "contact-source-pill flex flex-row items-center gap-3 p-3 h-auto relative w-full min-h-14 rounded-xl border border-border/60"
                 : "contact-source-pill flex-col items-start p-4 h-auto relative",
               "transition-all duration-200",
-              isSelected && "ring-2 ring-[hsl(var(--contact-sync-accent))] bg-[hsl(var(--contact-sync-tint))]",
+              isSelected && "ring-2 ring-category-4 bg-category-4/10",
               isDisabled && "opacity-50 cursor-not-allowed",
               !isDisabled && !isSelected && "hover:bg-muted"
             )}
@@ -114,7 +114,7 @@ export function ContactSourcePicker({
             {/* Connected badge */}
             {isConnected && (
               <div className="absolute top-2 end-2">
-                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-[hsl(var(--contact-success)/0.1)] text-[hsl(var(--contact-success))]">
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-status-success/10 text-status-success">
                   {t('screens.contacts.connected')}
                 </span>
               </div>
@@ -122,8 +122,8 @@ export function ContactSourcePicker({
 
             {/* Selection indicator */}
             {isSelected && (
-              <div className="absolute top-2 start-2 w-5 h-5 rounded-full bg-[hsl(var(--contact-sync-accent))] flex items-center justify-center">
-                <Check className="w-3 h-3 text-white" />
+              <div className="absolute top-2 start-2 w-5 h-5 rounded-full bg-category-4 flex items-center justify-center">
+                <Check className="w-3 h-3 text-primary-foreground" />
               </div>
             )}
 
@@ -133,7 +133,7 @@ export function ContactSourcePicker({
                 "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
                 !hidePhone && "mb-2",
                 isSelected 
-                  ? "bg-[hsl(var(--contact-sync-accent)/0.15)]"
+                  ? "bg-category-4/15"
                   : "bg-muted"
               )}
               style={{ 
@@ -159,7 +159,7 @@ export function ContactSourcePicker({
 
             {/* Contact count */}
             {count !== undefined && count > 0 && (
-              <span className="block text-xs font-medium text-[hsl(var(--contact-sync-accent))] mt-1">{t('screens.contacts.countContacts', { count })}
+              <span className="block text-xs font-medium text-category-4 mt-1">{t('screens.contacts.countContacts', { count })}
               </span>
             )}
           </motion.button>

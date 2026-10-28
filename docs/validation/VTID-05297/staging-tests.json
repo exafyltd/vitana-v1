@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05297",
+  "service": "community-app",
+  "_note": "Native Wave 2 home-feed lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every command runs with APP_PROFILE=development (the only non-test profile the native app allows). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 7). It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/home", "cwd": "apps/mobile",
+      "reason": "Home feed + deep-link unit tests: loaded / empty / error, per-kind card mapping, error-boundary isolation, All/Community tab switch, pull-to-refresh refetch, and the compose / comments / notif deep links — fake-gateway / fixtures, no network (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the Home screen, cards, data layer and feed / news-card ports type-check against @vitana/core, @vitana/tokens and the shell ports (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the new /home routes and the feed core re-exports (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 9 home rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check` (run with APP_PROFILE=development)" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/home/01-home-feed.yaml", "target": "/home", "next_actor": "owner",
+      "reason": "open the feed -> cards render; All/Community tab switch; pull-to-refresh; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/home/02-compose-comments-notif.yaml", "target": "/home/compose | /home/comments | /home/notif", "next_actor": "owner",
+      "reason": "compose push deep-link -> create-post sheet opens; comments deep-link -> first commentable post's comments open; notif deep-link -> feed renders; screenshot parity; needs G1 (iOS simulator + Android emulator)" }
+  ]
+}

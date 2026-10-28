@@ -34,14 +34,14 @@ export function MobilePriorityFocus({
           <span className="text-2xl">{pillarEmoji}</span>
           <div className="flex items-baseline gap-2">
             <span className="text-lg font-semibold text-foreground">{pillarName}</span>
-            <span className="text-amber-600 font-medium">{pillarScore}%</span>
+            <span className="text-status-warning font-medium">{pillarScore}%</span>
           </div>
         </div>
 
         {/* Progress Bar */}
         <div className="h-2 bg-muted rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all"
+            className="h-full bg-gradient-to-r from-status-warning to-status-warning/80 rounded-full transition-all"
             style={{ width: `${pillarScore}%` }}
           />
         </div>

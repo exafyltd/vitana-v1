@@ -149,7 +149,7 @@ export default function MakePaymentPopup({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-green-600" />
+            <Wallet className="w-5 h-5 text-status-success" />
             {t('screens.payment.makePayment')}
           </DialogTitle>
         </DialogHeader>
@@ -300,13 +300,13 @@ export default function MakePaymentPopup({
               <div className="flex items-center gap-1 text-sm">
                 {canAfford() ? (
                   <>
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-green-600">{t('screens.payment.sufficientBalance')}</span>
+                    <CheckCircle className="w-4 h-4 text-status-success" />
+                    <span className="text-status-success">{t('screens.payment.sufficientBalance')}</span>
                   </>
                 ) : (
                   <>
-                    <AlertCircle className="w-4 h-4 text-red-600" />
-                    <span className="text-red-600">{t('screens.payment.insufficientBalance2')}</span>
+                    <AlertCircle className="w-4 h-4 text-status-error" />
+                    <span className="text-status-error">{t('screens.payment.insufficientBalance2')}</span>
                   </>
                 )}
               </div>
@@ -325,7 +325,7 @@ export default function MakePaymentPopup({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2"></div>{t('screens.payment.processing')}
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-border me-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>

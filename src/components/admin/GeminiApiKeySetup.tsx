@@ -106,9 +106,9 @@ export function GeminiApiKeySetup() {
               </Button>
             </div>
             {testResult === "success" && (
-              <Alert className="bg-emerald-500/10 border-emerald-500/20">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                <AlertDescription className="text-emerald-500">
+              <Alert className="bg-status-success/10 border-status-success/20">
+                <CheckCircle2 className="h-4 w-4 text-status-success" />
+                <AlertDescription className="text-status-success">
                   {t('screens.admin.apiKeyValidWorking')}
                 </AlertDescription>
               </Alert>

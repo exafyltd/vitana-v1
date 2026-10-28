@@ -17,7 +17,7 @@ import SubNavigation from '@/components/SubNavigation';
 import StandardHeader from '@/components/StandardHeader';
 import { walletNavigation } from '@/config/navigation';
 import { SCREEN_IDS, withScreenId } from '@/lib/screen-id';
-import { Card, CardContent } from '@/components/ui/card';
+import { Panel as Card, PanelContent as CardContent } from '@/components/layout/spotlight/Panel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { t } from '@/lib/i18n-toast';
 import { useBilling } from '@/hooks/useBilling';
@@ -106,7 +106,7 @@ function Subscriptions() {
       />
       <SubNavigation items={walletNavigation} />
 
-      <div className="bg-gradient-to-br from-purple-50/40 via-blue-50/30 to-pink-50/30 min-h-screen">
+      <div className="bg-gradient-to-br from-category-2/5 via-category-3/5 to-category-4/5 min-h-screen">
         <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6">
           <StandardHeader
             title={t('billing.subscriptionsPage.title')}

@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo, memo } from "react";
-import { RefreshCw, Loader2, Plus, UserPlus } from "lucide-react";
+import { RefreshCw, Plus, UserPlus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -62,7 +62,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { t, useI18nLocale } from '@/lib/i18n-toast';
 import { NewsKeepAliveSlot, registerNewsScrollKeeper, useNewsActive } from "@/components/keepalive/NewsKeepAlive";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { prefersReducedMotion } from "@/components/layout/spotlight/useFocusedCard";
 import { NewsFocusStage } from "@/components/home/desktop/NewsFocusStage";
 import { NewsFocusRail, type UpNextPreview } from "@/components/home/desktop/NewsFocusRail";
@@ -501,10 +501,7 @@ export const HomeContent = memo(function HomeContent() {
   const renderV2Feed = () => (
     <>
       {isLoadingFeedV2 && feedItems.length === 0 && (
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <span className="ms-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
-        </div>
+        <SpotlightLoading archetype="focus-feed" className="mt-2 md:mt-5" />
       )}
       {!isLoadingFeedV2 && feedItems.length === 0 && (
         <div className="text-center py-20 px-4">
@@ -522,12 +519,7 @@ export const HomeContent = memo(function HomeContent() {
       )}
       {/* Endless-scroll sentinel: loads the next news page as it nears the viewport. */}
       <div ref={v2ObserverRef} className="h-1" />
-      {isFetchingNextV2 && (
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          <span className="ms-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
-        </div>
-      )}
+      {isFetchingNextV2 && <SpotlightLoading rows={2} className="py-4" />}
       {!isLoadingFeedV2 && !hasNextV2 && !isFetchingNextV2 && feedItems.length > 0 && (
         <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
       )}
@@ -561,10 +553,7 @@ export const HomeContent = memo(function HomeContent() {
     return (
     <>
       {isLoading && articles.length === 0 && (
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <span className="ms-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
-        </div>
+        <SpotlightLoading archetype="focus-feed" className="mt-2 md:mt-5" />
       )}
       {!isLoading && articles.length === 0 && (
         <div className="text-center py-20 px-4">
@@ -648,12 +637,7 @@ export const HomeContent = memo(function HomeContent() {
         </div>
       )}
       <div ref={observerRef} className="h-1" />
-      {isFetchingNextPage && (
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          <span className="ms-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
-        </div>
-      )}
+      {isFetchingNextPage && <SpotlightLoading rows={2} className="py-4" />}
       {!hasNextPage && !isFetchingNextPage && articles.length > 0 && activeTab !== "community" && (
         <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
       )}
@@ -721,8 +705,8 @@ export const HomeContent = memo(function HomeContent() {
       {/* VTID-05081: only the visible screen sets the title. */}
       {active && <SEO title={t('screens.home.newsMaxina')} description="Longevity science & community updates" canonical={window.location.href} />}
       <div className={isMobile
-        ? "px-4 pt-2 pb-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
-        : "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
+        ? "px-4 pt-2 pb-0 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen"
+        : "p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen"
       }>
         <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
           <StandardHeader title={t('screens.home.news')} description="Longevity science & community updates" emoji="📰" />

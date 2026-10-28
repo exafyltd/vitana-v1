@@ -25,6 +25,7 @@ export function MobileConversationSkeleton({ count = 5 }: MobileConversationSkel
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-3 w-10" />
             </div>
+            {/* design-allow-next-line: no scale value within 2px of 200px */}
             <Skeleton className="h-3.5 w-full max-w-[200px]" />
           </div>
         </div>

@@ -290,7 +290,7 @@ export function EventLiveRoomCard({ event, onOpenDrawer, className }: EventLiveR
           }}
           variant="icon"
           size="sm"
-          className="text-white hover:bg-white/20 hover:text-white"
+          className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
         />
         </span>
       }

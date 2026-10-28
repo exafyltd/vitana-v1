@@ -84,7 +84,7 @@ export function DocsOverviewView() {
                     <p className="text-sm text-muted-foreground">{item.date}</p>
                   </div>
                   <span className={`text-xs px-2 py-1 rounded-full ${
-                    item.type === "Created" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+                    item.type === "Created" ? "bg-status-success-subtle text-status-success" : "bg-category-3/15 text-category-3"
                   }`}>
                     {item.type}
                   </span>

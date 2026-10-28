@@ -127,7 +127,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 alt={profile.displayName}
                 style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)}
               />
-              <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-lg">
+              <AvatarFallback className="bg-gradient-to-br from-category-4/15 to-category-4/25 text-category-4 font-semibold text-lg">
                 {profile.initials}
               </AvatarFallback>
             </Avatar>

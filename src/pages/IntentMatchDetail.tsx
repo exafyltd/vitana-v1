@@ -8,7 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Loader2, ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { getIntent, getIntentMatches, getIncomingMatches, getOutgoingMatches, closeIntent, type UserIntent, type IntentMatch } from "@/lib/intentApi";
@@ -16,7 +16,7 @@ import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 import AppLayout from "@/components/AppLayout";
-import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
+import { ScreenFrame, SpotlightLoading } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { TierBEmpty, TierBSection } from "@/components/spotlight/tier-b/TierBKit";
 
@@ -113,7 +113,7 @@ export default function IntentMatchDetail() {
           }}
         >
           {loading ? (
-            <ArchetypeSkeleton archetype="detail" />
+            <SpotlightLoading archetype="detail" />
           ) : !intent ? (
             <TierBEmpty titleKey="screens.intentmatchdetail.intentNotFound" actionKey="screens.intentmatchdetail.backMyIntents" onAction={() => navigate("/intents/mine")} />
           ) : (
@@ -146,8 +146,11 @@ export default function IntentMatchDetail() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
+      <div className="container mx-auto px-4 py-6 space-y-6 max-w-3xl">
+        <Link to="/intents/mine" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" /> {t('screens.intentmatchdetail.backMyIntents')}
+        </Link>
+        <SpotlightLoading archetype="detail" />
       </div>
     );
   }

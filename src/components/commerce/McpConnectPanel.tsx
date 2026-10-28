@@ -51,8 +51,8 @@ export function McpConnectPanel({ onRegisterManually }: McpConnectPanelProps) {
   };
 
   return (
-    <div className="rounded-3xl border border-amber-200 bg-card p-5 shadow-xl shadow-amber-900/5 md:p-7" data-testid="mcp-connect-panel">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
+    <div className="rounded-3xl border border-primary/20 bg-card p-5 shadow-xl shadow-primary/5 md:p-7" data-testid="mcp-connect-panel">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-accent px-3 py-1 text-xs font-semibold text-primary">
         <Sparkles className="h-3.5 w-3.5" />
         {t(`${K}.badge`)}
       </span>
@@ -64,7 +64,7 @@ export function McpConnectPanel({ onRegisterManually }: McpConnectPanelProps) {
         <code
           dir="ltr"
           data-testid="mcp-address"
-          className="min-w-0 flex-1 select-all break-all rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-start font-mono text-sm text-amber-900 md:text-base"
+          className="min-w-0 flex-1 select-all break-all rounded-xl border border-primary/20 bg-accent/70 px-4 py-3 text-start font-mono text-sm text-primary md:text-base"
         >
           {COMMERCE_MCP_URL}
         </code>
@@ -72,7 +72,7 @@ export function McpConnectPanel({ onRegisterManually }: McpConnectPanelProps) {
           type="button"
           onClick={() => void copy()}
           data-testid="mcp-copy"
-          className="h-12 shrink-0 rounded-xl bg-amber-700 px-5 font-semibold text-white shadow-sm hover:bg-amber-800"
+          className="h-12 shrink-0 rounded-xl bg-primary px-5 font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
         >
           {copied ? <Check className="me-2 h-4 w-4" /> : <Copy className="me-2 h-4 w-4" />}
           {copied ? t(`${K}.copied`) : t(`${K}.copy`)}
@@ -105,7 +105,7 @@ export function McpConnectPanel({ onRegisterManually }: McpConnectPanelProps) {
               <TabsTrigger
                 key={h.id}
                 value={h.id}
-                className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900"
+                className="rounded-lg px-4 text-muted-foreground data-[state=active]:bg-accent data-[state=active]:text-primary"
               >
                 <span dir="ltr">{h.label}</span>
               </TabsTrigger>
@@ -113,7 +113,7 @@ export function McpConnectPanel({ onRegisterManually }: McpConnectPanelProps) {
           </TabsList>
           {HELP.map((h) => (
             <TabsContent key={h.id} value={h.id} className="mt-4">
-              <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-amber-700/70">
+              <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-muted-foreground marker:text-primary/70">
                 {h.steps.map((key) => (
                   <li key={key}>{t(key)}</li>
                 ))}
@@ -156,7 +156,7 @@ export function McpConnectPanel({ onRegisterManually }: McpConnectPanelProps) {
             variant="ghost"
             onClick={onRegisterManually}
             data-testid="mcp-register-manually"
-            className="min-h-11 text-sm font-medium text-amber-800 hover:bg-amber-50"
+            className="min-h-11 text-sm font-medium text-primary hover:bg-accent"
           >
             {t(`${K}.manualFallback`)}
           </Button>

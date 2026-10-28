@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "Aktualności",
+    "selectFeed": "Wybierz kanał",
+    "newMember": {
+      "badge": "Nowość w społeczności",
+      "fallbackName": "Nowy członek"
+    },
+    "card": {
+      "dismiss": "Ukryj kartę",
+      "open": "Otwórz"
+    },
+    "feature": {
+      "brandNew": "Nowa funkcja",
+      "didYouKnow": "Czy wiesz, że?",
+      "tryIt": "Wypróbuj teraz"
+    },
+    "performer": {
+      "badge": "Wyróżnienie społeczności",
+      "improvement": "+{value} w Vitana Index"
+    },
+    "compose": {
+      "cancel": "Anuluj",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "Komentarze",
+      "open": "Otwórz komentarze",
+      "openPost": "Otwórz wpis"
+    }
+  }
+}

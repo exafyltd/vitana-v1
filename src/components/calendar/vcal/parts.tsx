@@ -39,7 +39,7 @@ export function EntryCard({ item, onOpen, compact }: EntryCardProps) {
     <button
       type="button"
       onClick={() => onOpen(item)}
-      className={`flex w-full items-center gap-3 rounded-2xl border border-slate-100 bg-white text-start shadow-[0_2px_12px_rgba(15,23,42,0.05)] transition-transform active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
+      className={`flex w-full items-center gap-3 rounded-2xl border border-border bg-card text-start shadow-[0_2px_12px_rgba(15,23,42,0.05)] transition-transform active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-category-1 focus-visible:ring-offset-2 ${
         compact ? "px-2 py-2" : "px-3.5 py-3"
       }`}
       style={{ color: SURFACE.ink, opacity: done ? 0.7 : 1 }}
@@ -64,7 +64,7 @@ export function EntryCard({ item, onOpen, compact }: EntryCardProps) {
         )}
       </span>
       {done && !compact && (
-        <span aria-label={t("vcal.done")} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+        <span aria-label={t("vcal.done")} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-status-success-subtle text-status-success">
           <Check className="h-4 w-4" aria-hidden />
         </span>
       )}
@@ -92,7 +92,7 @@ export function BusyCard({ item, compact }: { item: CalendarWindowItem; compact?
     <div
       className={`flex w-full items-center gap-2 rounded-2xl ${compact ? "px-2.5 py-2 text-xs" : "px-3.5 py-3 text-sm"}`}
       style={{
-        background: `repeating-linear-gradient(135deg, ${SURFACE.busyBg}, ${SURFACE.busyBg} 8px, #E2E8F0 8px, #E2E8F0 16px)`,
+        background: `repeating-linear-gradient(135deg, ${SURFACE.busyBg}, ${SURFACE.busyBg} 8px, ${SURFACE.line} 8px, ${SURFACE.line} 16px)`,
         color: SURFACE.busyInk,
       }}
       data-testid="vcal-busy"
@@ -111,7 +111,7 @@ export function BusyCard({ item, compact }: { item: CalendarWindowItem; compact?
 export function ViewSwitch({ view, onChange }: { view: CalendarView; onChange: (v: CalendarView) => void }) {
   const views: CalendarView[] = ["day", "week", "month"];
   return (
-    <div role="tablist" aria-label={t("vcal.title")} className="flex gap-1 rounded-full p-1 ring-1 ring-slate-200/70" style={{ background: SURFACE.track }}>
+    <div role="tablist" aria-label={t("vcal.title")} className="flex gap-1 rounded-full p-1 ring-1 ring-border/70" style={{ background: SURFACE.track }}>
       {views.map((v) => {
         const active = v === view;
         return (
@@ -121,7 +121,7 @@ export function ViewSwitch({ view, onChange }: { view: CalendarView; onChange: (
             role="tab"
             aria-selected={active}
             onClick={() => onChange(v)}
-            className={`h-10 flex-1 rounded-full text-[15px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 ${active ? "font-semibold" : ""}`}
+            className={`h-10 flex-1 rounded-full text-[15px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1 ${active ? "font-semibold" : ""}`}
             style={{
               background: active ? "#FFFFFF" : "transparent",
               color: active ? SURFACE.ink : SURFACE.muted,

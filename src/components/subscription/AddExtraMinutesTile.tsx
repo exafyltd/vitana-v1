@@ -47,7 +47,7 @@ export function AddExtraMinutesTile() {
             <Card key={p.packKey} className="border-muted">
               <CardContent className="p-4 space-y-2">
                 <div className="font-semibold">{t(p.priceKey)}</div>
-                <p className="text-xs text-muted-foreground leading-relaxed min-h-[40px]">{t(p.labelKey)}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed min-h-10">{t(p.labelKey)}</p>
                 <div className="text-xl font-bold">{p.priceEur}</div>
                 <Button
                   onClick={() => handleBuy(p.packKey)}

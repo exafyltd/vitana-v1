@@ -139,6 +139,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        // design-allow-next-line: viewport-bound dialog width/height (calc against the screen edge)
         className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 rounded-lg"
       >
         {/* Standard unframed X close, top-right. Wrapped in a span so it isn't

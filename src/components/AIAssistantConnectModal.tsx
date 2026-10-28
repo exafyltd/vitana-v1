@@ -118,8 +118,8 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
     <div className="space-y-4">
       {phase === "success" && verifyResult ? (
         <div className="space-y-3">
-          <Alert variant="default" className="border-emerald-500/40 bg-emerald-500/10">
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+          <Alert variant="default" className="border-status-success/40 bg-status-success/10">
+            <CheckCircle2 className="h-4 w-4 text-status-success" />
             <AlertDescription className="text-sm">
               <strong>{meta.display_name}</strong>{t('screens.common.connectedVerified')}
               <div className="mt-1 text-xs text-muted-foreground">

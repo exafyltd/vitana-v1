@@ -53,7 +53,7 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
         <p className="text-xs text-muted-foreground italic px-1">{t('screens.business.nothingDetectedYet')}</p>
       ) : (
         questions.map((q) => (
-          <div key={q.id} className="rounded-lg border border-white/30 bg-white/50 p-3">
+          <div key={q.id} className="rounded-lg border border-border/30 bg-card/50 p-3">
             <div className="flex items-center justify-between gap-2 mb-1">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="capitalize">{q.platform}</span>

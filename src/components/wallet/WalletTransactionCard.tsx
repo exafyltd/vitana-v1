@@ -192,8 +192,8 @@ export function WalletTransactionCard({
     <Card 
       className={cn(
         "group cursor-pointer hover:shadow-lg transition-all duration-300 border-s-4 relative",
-        type === "incoming" || type === "reward" ? "border-s-green-500" : 
-        type === "outgoing" || type === "purchase" ? "border-s-red-500" : "border-s-blue-500",
+        type === "incoming" || type === "reward" ? "border-s-status-success" : 
+        type === "outgoing" || type === "purchase" ? "border-s-status-error" : "border-s-category-3",
         className
       )}
       onClick={onClick}
@@ -213,7 +213,8 @@ export function WalletTransactionCard({
               className="w-full h-full object-cover"
             />
             <div className="absolute top-2 start-2">
-              <Badge className="bg-black/50 text-white">
+              {/* design-allow-next-line: on-media scrim, theme-independent */}
+              <Badge className="bg-black/50 text-primary-foreground">
                 {category}
               </Badge>
             </div>
@@ -244,8 +245,10 @@ export function WalletTransactionCard({
                           alt={transactionFlow.fromUser.name}
                           className="h-4 w-4"
                         />
+                        {/* design-allow-next-line: truncation width cap, not a layout size */}
                         <span className="truncate max-w-[60px]"><MemberLink userId={transactionFlow.fromUser.id}>{transactionFlow.fromUser.name}</MemberLink></span>
                         <ArrowRightLeft className="h-3 w-3" />
+                        {/* design-allow-next-line: truncation width cap, not a layout size */}
                         <span className="truncate max-w-[60px]"><MemberLink userId={transactionFlow.toUser.id}>{transactionFlow.toUser.name}</MemberLink></span>
                         <ClickableAvatar
                           userId={transactionFlow.toUser.id}
@@ -271,9 +274,9 @@ export function WalletTransactionCard({
                     {transaction.fees !== undefined && (
                       <div className="text-xs">
                         {transaction.fees > 0 ? (
-                          <span className="text-orange-600">{t('screens.wallet.feeFees', { fees: transaction.fees })}</span>
+                          <span className="text-status-warning">{t('screens.wallet.feeFees', { fees: transaction.fees })}</span>
                         ) : (
-                          <span className="text-green-600">{t('screens.wallet.noFees')}</span>
+                          <span className="text-status-success">{t('screens.wallet.noFees')}</span>
                         )}
                       </div>
                     )}

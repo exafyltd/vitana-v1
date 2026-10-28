@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05241",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "adminFetch context headers: X-Vitana-Tenant / X-Vitana-Active-Role sent when known, absent without, Authorization unchanged",
+      "ref": "npx vitest run src/lib/admin-api.test.ts",
+      "cwd": ".",
+      "reason": "Preparatory plumbing: adminFetch only SENDS two extra request headers that gateway CORS already allows (cors.ts allowedHeaders); no gateway route adminFetch calls reads them yet, so there is no staging surface whose output changes. Proving it on staging would need an authenticated admin request through the browser, and the community-app smoke suite already covers that staging pages load. The Vitest stubs fetch and the Supabase session, so nothing is sent anywhere (read-only by construction)."
+    }
+  ]
+}

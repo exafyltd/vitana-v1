@@ -97,7 +97,7 @@ export function NewMemberCard({
 
         <div className="flex gap-2 mt-4">
           <Button
-            className="flex-1 gap-2 rounded-full bg-violet-300 text-violet-950 hover:bg-violet-400 font-semibold shadow-sm"
+            className="flex-1 gap-2 rounded-full bg-category-2/40 text-category-2 hover:bg-category-2/80 font-semibold shadow-sm"
             onClick={(e) => {
               e.stopPropagation();
               onOpen?.();
@@ -109,7 +109,7 @@ export function NewMemberCard({
           </Button>
           <Button
             variant="outline"
-            className="flex-1 gap-2 rounded-full border-[1.5px] border-sys-member-accent bg-white text-sys-member-accent hover:bg-sys-member-tint dark:bg-sys-member-card"
+            className="flex-1 gap-2 rounded-full border-[1.5px] border-sys-member-accent bg-card text-sys-member-accent hover:bg-sys-member-tint dark:bg-sys-member-card"
             onClick={(e) => {
               e.stopPropagation();
               openProfile();

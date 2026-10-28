@@ -35,9 +35,9 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
   const isRestDay = workout.duration === 0;
   
   const difficultyColors = {
-    Beginner: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20',
-    Intermediate: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20',
-    Advanced: 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20'
+    Beginner: 'bg-green-500/10 text-green-700 border-border20',
+    Intermediate: 'bg-amber-500/10 text-amber-700 border-border20',
+    Advanced: 'bg-red-500/10 text-red-700 border-border20'
   };
   
   const handleStartWorkout = () => {
@@ -56,7 +56,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
       <SheetContent 
         side="right" 
         className="w-full sm:max-w-2xl overflow-y-auto p-0 
-          backdrop-blur-xl bg-white/90 dark:bg-slate-900/90"
+          backdrop-blur-xl bg-card/90"
       >
         <div className="relative aspect-video w-full overflow-hidden">
           <img
@@ -65,29 +65,28 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
             className="w-full h-full object-cover"
           />
           
+          {/* design-allow-next-line: on-media scrim, theme-independent (gradient over the workout photo) */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           
           <button
             onClick={() => onOpenChange(false)}
-            className="absolute top-4 end-4 w-10 h-10 rounded-full 
-              bg-white/20 backdrop-blur-md hover:bg-white/30 
-              flex items-center justify-center transition-all"
+            // design-allow-next-line: on-media scrim, theme-independent (control over the workout photo)
+            className="absolute top-4 end-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
           >
-            <X className="w-5 h-5 text-white" />
+            <X className="w-5 h-5 text-primary-foreground" />
           </button>
           
           <button
             onClick={() => onOpenChange(false)}
-            className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full 
-              bg-white/20 backdrop-blur-md hover:bg-white/30 
-              flex items-center justify-center transition-all"
+            // design-allow-next-line: on-media scrim, theme-independent (control over the workout photo)
+            className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-5 h-5 text-primary-foreground" />
           </button>
           
           <div className="absolute bottom-0 start-0 end-0 p-6">
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary" className="bg-white/90 dark:bg-slate-900/90">
+              <Badge variant="secondary" className="bg-card/90">
                 {workout.day}
               </Badge>
               <Badge 
@@ -96,37 +95,37 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               >
                 {workout.difficulty}
               </Badge>
-              <Badge variant="secondary" className="bg-white/90 dark:bg-slate-900/90 text-xs">
+              <Badge variant="secondary" className="bg-card/90 text-xs">
                 {workout.mode}
               </Badge>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground drop-shadow-lg">
               {workout.title}
             </h2>
-            <p className="text-sm text-white/90 mt-1">{workout.description}</p>
+            <p className="text-sm text-primary-foreground/90 mt-1">{workout.description}</p>
           </div>
         </div>
         
         <div className="p-6 space-y-6">
           {!isRestDay && (
             <div className="grid grid-cols-3 gap-3">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 
-                dark:from-blue-950/30 dark:to-cyan-950/30 text-center">
-                <Clock className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-category-3/10 to-category-1/10 
+ text-center">
+                <Clock className="w-5 h-5 mx-auto mb-1 text-category-3" />
                 <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
                 <p className="text-sm font-bold">{t('screens.health.durationMin', { duration: workout.duration })}</p>
               </div>
               
-              <div className="p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 
-                dark:from-amber-950/30 dark:to-orange-950/30 text-center">
-                <Flame className="w-5 h-5 mx-auto mb-1 text-amber-600 dark:text-amber-400" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-status-warning-subtle to-status-warning-subtle 
+ text-center">
+                <Flame className="w-5 h-5 mx-auto mb-1 text-status-warning" />
                 <p className="text-xs text-muted-foreground">{t('screens.health.calories')}</p>
                 <p className="text-sm font-bold">{t('screens.health.caloriesburnedKcal', { caloriesBurned: workout.caloriesBurned })}</p>
               </div>
               
-              <div className="p-3 rounded-xl bg-gradient-to-br from-violet-50 to-purple-50 
-                dark:from-violet-950/30 dark:to-purple-950/30 text-center">
-                <Dumbbell className="w-5 h-5 mx-auto mb-1 text-violet-600 dark:text-violet-400" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-category-2/10 to-category-2/10 
+ text-center">
+                <Dumbbell className="w-5 h-5 mx-auto mb-1 text-category-2" />
                 <p className="text-xs text-muted-foreground">{t('screens.health.exercises')}</p>
                 <p className="text-sm font-bold">{workout.exercises.length}</p>
               </div>
@@ -160,9 +159,9 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           )}
           
           {workout.aiNote && (
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10 
-              dark:from-blue-500/20 dark:to-cyan-500/20 border border-blue-200/30 dark:border-blue-700/30">
-              <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-category-3/10 to-category-1/10 
+ border border-border30">
+              <Brain className="w-5 h-5 text-category-3 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium mb-1">{t('screens.health.autopilotAdjustment')}</p>
                 <p className="text-sm text-muted-foreground italic">
@@ -183,7 +182,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                   className={cn(
                     "p-4 rounded-xl border transition-all",
                     timerMode && idx === currentExercise 
-                      ? "bg-blue-50 dark:bg-blue-950/30 border-blue-500" 
+                      ? "bg-category-3/10 border-category-3" 
                       : "bg-muted/30 border-border hover:bg-muted/50"
                   )}
                 >
@@ -203,7 +202,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                       </div>
                     </div>
                     {timerMode && idx < currentExercise && (
-                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      <CheckCircle2 className="w-5 h-5 text-status-success" />
                     )}
                   </div>
                   
@@ -229,8 +228,8 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
         <div className="p-6 border-t sticky bottom-0 bg-background/95 backdrop-blur-md">
           {!timerMode ? (
             <Button 
-              className="w-full gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 
-                hover:from-blue-600 hover:to-cyan-600"
+              className="w-full gap-2 bg-gradient-to-r from-category-3 to-category-1 
+                hover:from-category-3 hover:to-category-1"
               size="lg"
               onClick={handleStartWorkout}
               disabled={isRestDay}
@@ -250,7 +249,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               
               {currentExercise === workout.exercises.length - 1 ? (
                 <Button 
-                  className="flex-1 bg-green-500 hover:bg-green-600"
+                  className="flex-1 bg-status-success hover:bg-status-success"
                   onClick={handleCompleteWorkout}
                 >
                   <CheckCircle2 className="w-4 h-4 me-2" />

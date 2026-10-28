@@ -38,29 +38,29 @@ export function TodaysGoalCard({
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
   return (
-    <Card className="rounded-2xl border border-amber-200/60 shadow-sm bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/20 dark:via-orange-950/20 dark:to-rose-950/20">
+    <Card className="rounded-2xl border border-status-warning/15 shadow-sm bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
       <CardContent className="p-4 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Flag className="w-4 h-4 text-orange-500" />
+            <Flag className="w-4 h-4 text-status-warning" />
             <p className="text-sm font-semibold">{t("screens.autopilotdashboard.todaysGoal")}</p>
           </div>
           {total > 0 && (
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-200/60 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100">
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-status-warning/15 text-status-warning">
               {t("screens.autopilotdashboard.todayDoneOfTotal", { done, total })}
             </span>
           )}
         </div>
 
         {loading ? (
-          <div className="h-2 rounded-full bg-amber-100/60 animate-pulse" />
+          <div className="h-2 rounded-full bg-status-warning-subtle/60 animate-pulse" />
         ) : total === 0 ? (
           <p className="text-sm text-muted-foreground">{EMPTY_COPY.myJourneyOnePillar}</p>
         ) : (
           <>
-            <Progress value={pct} className="h-2 bg-amber-100/70 dark:bg-amber-950/40" />
+            <Progress value={pct} className="h-2 bg-status-warning-subtle/70" />
             {allDone ? (
-              <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+              <p className="text-sm font-medium text-status-success">
                 {t("screens.autopilotdashboard.todayAllDone")}
               </p>
             ) : (
@@ -70,7 +70,7 @@ export function TodaysGoalCard({
                   return (
                     <li key={a.id} className="flex items-center gap-2 text-sm">
                       {completed ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-status-success shrink-0" />
                       ) : (
                         <Circle className="w-4 h-4 text-muted-foreground shrink-0" />
                       )}

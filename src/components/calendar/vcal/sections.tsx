@@ -122,7 +122,7 @@ function HabitRow({
             type="time"
             value={time}
             onChange={(e) => setTime(e.target.value || "08:00")}
-            className="h-9 rounded-xl bg-white px-2 text-sm"
+            className="h-9 rounded-xl bg-card px-2 text-sm"
             style={{ border: `1px solid ${SURFACE.line}` }}
             data-testid="vcal-habit-time"
           />
@@ -130,7 +130,7 @@ function HabitRow({
             type="button"
             disabled={add.isPending}
             onClick={() => add.mutate()}
-            className="h-9 rounded-full px-4 text-sm font-semibold text-white disabled:opacity-60"
+            className="h-9 rounded-full px-4 text-sm font-semibold text-primary-foreground disabled:opacity-60"
             style={{ background: SURFACE.primary }}
             data-testid="vcal-habit-confirm"
           >
@@ -180,8 +180,8 @@ export function JourneySection({
             <span>{wave}</span>
             <span>{t("vcal.journey.dayOf", { day: progress.dayNumber, total: 90 })}</span>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-slate-100">
-            <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-600 rtl:bg-gradient-to-l" style={{ width: `${progress.waveProgress}%` }} />
+          <div className="h-3 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-gradient-to-r from-status-success/80 to-category-1 rtl:bg-gradient-to-l" style={{ width: `${progress.waveProgress}%` }} />
           </div>
         </div>
       )}
@@ -353,8 +353,8 @@ export function ConnectCalendarCard({ onSubscribe }: { onSubscribe: (p: Provider
           <CalendarPlus className="h-5 w-5" aria-hidden />
         </div>
         <div className="min-w-0">
-          <h2 className="text-lg font-bold leading-tight text-slate-900">{t("vcal.calendars.connectTitle")}</h2>
-          <p className="mt-0.5 text-sm leading-snug text-slate-600">{t("vcal.calendars.connectBody")}</p>
+          <h2 className="text-lg font-bold leading-tight text-foreground">{t("vcal.calendars.connectTitle")}</h2>
+          <p className="mt-0.5 text-sm leading-snug text-muted-foreground">{t("vcal.calendars.connectBody")}</p>
         </div>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2">
@@ -363,7 +363,7 @@ export function ConnectCalendarCard({ onSubscribe }: { onSubscribe: (p: Provider
             key={p}
             type="button"
             onClick={() => connect(p)}
-            className="flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-3 text-[15px] font-semibold text-slate-800 ring-1 ring-slate-200 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+            className="flex flex-col items-center gap-2 rounded-2xl bg-card px-2 py-3 text-[15px] font-semibold text-foreground ring-1 ring-border active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-category-1"
             data-testid={`vcal-connect-${p}`}
           >
             <ProviderMark p={p} size={44} />

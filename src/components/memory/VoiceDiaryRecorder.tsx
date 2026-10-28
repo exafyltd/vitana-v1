@@ -457,7 +457,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
             onClick={startRecording}
             size="lg"
             disabled={isTranscribing}
-            className="h-16 w-16 rounded-full bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/40 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300"
+            className="h-16 w-16 rounded-full bg-category-2/15 hover:bg-category-2/25 text-category-2"
           >
             {isTranscribing ? <Loader2 className="h-8 w-8 animate-spin" /> : <Mic className="h-8 w-8" />}
           </Button>
@@ -527,7 +527,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
             </div>
 
             {isRecording && useBackendSTT && (
-              <div className="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-sm text-amber-900 dark:text-amber-200">
+              <div className="rounded-md border border-status-warning/40 bg-status-warning-subtle px-3 py-2 text-sm text-status-warning">
                 {t('screens.memory.yourTranscriptionWillAppearHereAs')} <strong>{t('screens.memory.stop')}</strong>{t('screens.memory.yourPhoneSBrowserDoesnT')}
               </div>
             )}

@@ -52,7 +52,7 @@ export const IncomingCallModal = ({
               variant="default"
               size="lg"
               onClick={onAccept}
-              className="rounded-full h-16 w-16 bg-green-600 hover:bg-green-700"
+              className="rounded-full h-16 w-16 bg-status-success hover:bg-status-success"
             >
               {isVideoCall ? <Video className="h-6 w-6" /> : <Phone className="h-6 w-6" />}
             </Button>

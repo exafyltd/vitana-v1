@@ -36,16 +36,16 @@ export function MobileWalletTransactionList({
     switch (type) {
       case 'transfer':
       case 'send':
-        return <ArrowUpRight className="h-4 w-4 text-red-500" />;
+        return <ArrowUpRight className="h-4 w-4 text-status-error" />;
       case 'receive':
       case 'incoming':
       case 'reseller_commission':
-        return <ArrowDownLeft className="h-4 w-4 text-emerald-500" />;
+        return <ArrowDownLeft className="h-4 w-4 text-status-success" />;
       case 'exchange':
       case 'conversion':
-        return <RefreshCw className="h-4 w-4 text-blue-500" />;
+        return <RefreshCw className="h-4 w-4 text-category-3" />;
       case 'reward':
-        return <Gift className="h-4 w-4 text-purple-500" />;
+        return <Gift className="h-4 w-4 text-category-2" />;
       default:
         return <RefreshCw className="h-4 w-4 text-muted-foreground" />;
     }
@@ -185,7 +185,7 @@ export function MobileWalletTransactionList({
               
               {/* Amount */}
               <div className="text-end flex-shrink-0">
-                <p className={`text-sm font-semibold ${tx.amount > 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}>
+                <p className={`text-sm font-semibold ${tx.amount > 0 ? 'text-status-success' : ''}`}>
                   {formatAmount(tx)}
                 </p>
                 {tx.from_currency && (

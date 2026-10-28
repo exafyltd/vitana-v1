@@ -146,7 +146,7 @@ export const EnableRemindersPrompt: React.FC = () => {
 
   if (permission === "denied") {
     return (
-      <Card className="border-amber-200/40">
+      <Card className="border-status-warning/10">
         <CardHeader className="pb-2">
           <CardTitle className="text-base flex items-center gap-2">
             <BellOff className="h-4 w-4 text-muted-foreground" />

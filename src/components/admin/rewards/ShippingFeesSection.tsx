@@ -82,7 +82,7 @@ export function ShippingFeesSection({ fees, items }: { fees: AdminShippingFee[];
   return (
     <div className="space-y-4" data-testid="reward-admin-fees">
       {missing.length > 0 && (
-        <div role="alert" data-testid="reward-admin-missing-fees" className="flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-100">
+        <div role="alert" data-testid="reward-admin-missing-fees" className="flex items-start gap-2 rounded-md border border-status-warning/40 bg-status-warning-subtle p-3 text-sm text-status-warning">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <div className="min-w-0 space-y-1 text-start">
             <p className="font-medium">{t('admin.rewardsShop.fees.missingTitle')}</p>

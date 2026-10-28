@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { discoverNavigation } from "@/config/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -196,7 +196,7 @@ function SupplementsInner() {
       />
       <SubNavigation items={discoverNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6 pb-32">
           <StandardHeader
             title={t('screens.discover.supplements')}
@@ -239,7 +239,7 @@ function SupplementsInner() {
 
             <SplitBarContent value="browse" className="space-y-6">
               {/* Filters */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+          <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-border/20">
             <div className="flex items-center gap-2 mb-4">
               <Filter className="h-5 w-5 text-primary" />
               <h3 className="text-lg font-semibold">{t('screens.discover.filterSearch')}</h3>
@@ -301,7 +301,7 @@ function SupplementsInner() {
                     const p = productsById.get(supplement.id);
                     if (p) selectProduct(p);
                   }}
-                  className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20 cursor-pointer">
+                  className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-card/80 backdrop-blur-sm border-border/20 cursor-pointer">
                   <BookmarkButton
                     item={{
                       item_type: 'supplement',
@@ -326,7 +326,7 @@ function SupplementsInner() {
                       sizeClass="w-full h-48"
                     />
                     {!supplement.in_stock && (
-                      <Badge className="absolute top-2 end-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
+                      <Badge className="absolute top-2 end-2 bg-status-error">{t('screens.discover.outStock')}</Badge>
                     )}
                   </div>
                   
@@ -363,7 +363,7 @@ function SupplementsInner() {
                     )}
                     
                     <div className="flex items-center gap-1 mb-3">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star className="h-4 w-4 fill-status-warning text-status-warning" />
                       <span className="text-sm font-medium">{supplement.rating?.toFixed(1) || '0.0'}</span>
                       <span className="text-xs text-muted-foreground">({supplement.review_count || 0})</span>
                     </div>
@@ -399,10 +399,10 @@ function SupplementsInner() {
             </SplitBarContent>
 
             <SplitBarContent value="picks" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Brain className="h-6 w-6 text-purple-500" />
+                    <Brain className="h-6 w-6 text-category-2" />
                     <h2 className="text-2xl font-semibold">{t('screens.discover.aipoweredTopPicks')}</h2>
                   </div>
                   <p className="text-muted-foreground mb-6">{t('screens.discover.personalizedSupplementRecommendationsBasedYourHeal')}</p>
@@ -414,7 +414,7 @@ function SupplementsInner() {
                           const p = productsById.get(supplement.id);
                           if (p) selectProduct(p);
                         }}
-                        className="group hover:shadow-lg transition-all duration-300 border-purple-200 cursor-pointer">
+                        className="group hover:shadow-lg transition-all duration-300 border-category-2/25 cursor-pointer">
                         <div className="relative">
                           <ProductImage
                             src={supplement.image_url}
@@ -423,18 +423,18 @@ function SupplementsInner() {
                             className="rounded-t-lg"
                             sizeClass="w-full h-32"
                           />
-                          <div className="absolute top-2 end-2 bg-white/90 rounded-full px-2 py-1">
-                            <span className="text-xs font-bold text-purple-600">{95 - index * 3}%</span>
+                          <div className="absolute top-2 end-2 bg-card/90 rounded-full px-2 py-1">
+                            <span className="text-xs font-bold text-category-2">{95 - index * 3}%</span>
                           </div>
                         </div>
                         <CardContent className="p-4">
                           <Badge variant="secondary" className="text-xs mb-2">{supplement.category}</Badge>
                           <h3 className="font-semibold text-sm mb-1 line-clamp-2">{supplement.name}</h3>
                           <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{supplement.description}</p>
-                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                          <div className="bg-category-2/10 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
-                              <Sparkles className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">{t('screens.discover.greatForYourHealthGoals')}</span>
+                              <Sparkles className="h-3 w-3 text-category-2" />
+                              <span className="text-xs text-category-2">{t('screens.discover.greatForYourHealthGoals')}</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between">
@@ -471,7 +471,7 @@ function SupplementsInner() {
 
                 if (bookmarkedSupplementsList.length === 0) {
                   return (
-                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                    <Card className="bg-card/80 backdrop-blur-sm border-border/20">
                       <CardContent className="p-12 text-center">
                         <div className="text-6xl mb-4">💛</div>
                         <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noSavedSupplementsYet')}</h3>
@@ -486,7 +486,7 @@ function SupplementsInner() {
                 return (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {bookmarkedSupplementsList.map((supplement) => (
-                      <Card key={supplement.id} className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20">
+                      <Card key={supplement.id} className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-card/80 backdrop-blur-sm border-border/20">
                         <BookmarkButton
                           item={{
                             item_type: 'supplement',
@@ -511,7 +511,7 @@ function SupplementsInner() {
                             sizeClass="w-full h-48"
                           />
                           {!supplement.in_stock && (
-                            <Badge className="absolute top-2 end-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
+                            <Badge className="absolute top-2 end-2 bg-status-error">{t('screens.discover.outStock')}</Badge>
                           )}
                         </div>
                         
@@ -542,8 +542,8 @@ function SupplementsInner() {
                                 key={i}
                                 className={`h-4 w-4 ${
                                   i < Math.floor(supplement.rating || 0)
-                                    ? "fill-yellow-400 text-yellow-400"
-                                    : "fill-gray-200 text-gray-200"
+                                    ? "fill-status-warning text-status-warning"
+                                    : "fill-muted-foreground text-muted-foreground"
                                 }`}
                               />
                             ))}

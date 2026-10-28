@@ -27,7 +27,8 @@ const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const SINGLE = new Set(['focus-feed', 'storefront', 'detail', 'dashboard']);
 
 // path → archetype(s) the page may legitimately frame itself with.
-const ROUTES: { path: string; archetypes: string[] }[] = [
+// minNav: the sidebar's minimum link count where the route uses a role nav (default 10, the community nav).
+const ROUTES: { path: string; archetypes: string[]; minNav?: number }[] = [
   { path: '/memory', archetypes: ['collection'] },
   { path: '/memory/timeline', archetypes: ['collection'] },
   { path: '/memory/recall', archetypes: ['collection'] },
@@ -58,7 +59,8 @@ const ROUTES: { path: string; archetypes: string[] }[] = [
   { path: '/creator/onboarded', archetypes: ['collection'] },
   { path: '/my-tickets', archetypes: ['collection'] },
   { path: '/sharing/distribution', archetypes: ['collection'] },
-  { path: '/patient/results', archetypes: ['collection'] },
+  // Every /patient/* path gets the 9-item patient nav (AppLayout → patientNavigation).
+  { path: '/patient/results', archetypes: ['collection'], minNav: 9 },
 ];
 
 async function signIn(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext) {
@@ -105,15 +107,18 @@ for (const route of ROUTES) {
       const sidebar = page.locator('[data-sidebar="sidebar"]').first();
       await expect(sidebar).toBeVisible();
       await expect(sidebar.locator('[data-sidebar="header"] input').first()).toBeVisible();
-      expect(await sidebar.locator('[data-sidebar="content"] a[href]').count()).toBeGreaterThanOrEqual(10);
+      expect(await sidebar.locator('[data-sidebar="content"] a[href]').count()).toBeGreaterThanOrEqual(route.minNav ?? 10);
       await expect(sidebar.locator('[data-sidebar="footer"]')).toBeVisible();
 
       await expect(page.getByTestId('delayed-loader')).toHaveCount(0, { timeout: 15_000 });
       await expect(page.locator('[data-archetype-skeleton], [data-member-skeleton]')).toHaveCount(0, { timeout: 20_000 });
-      const pageSpinners = await page.evaluate(
-        () => [...document.querySelectorAll('[data-archetype] .animate-spin')].filter((el) => !el.closest('button')).length,
-      );
-      expect(pageSpinners, 'page-level spinner after load').toBe(0);
+      // In-card loaders (React Query retries the reads the guard aborts) resolve on their own: poll, as the Tier B spec does.
+      await expect
+        .poll(
+          () => page.evaluate(() => [...document.querySelectorAll('[data-archetype] .animate-spin')].filter((el) => !el.closest('button')).length),
+          { timeout: 20_000, message: 'page-level spinner after load' },
+        )
+        .toBe(0);
 
       if (archetype && SINGLE.has(archetype)) {
         await expect(page.locator('[data-vcard-size="spotlight"]').first()).toBeVisible({ timeout: 20_000 });

@@ -449,7 +449,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
-                        className="text-white hover:bg-white/20 hover:text-white"
+                        className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                       />
                     }
                   />
@@ -482,7 +482,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
-                        className="text-white hover:bg-white/20 hover:text-white"
+                        className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                       />
                     }
                   />
@@ -515,7 +515,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
-                        className="text-white hover:bg-white/20 hover:text-white"
+                        className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                       />
                     }
                   />
@@ -552,7 +552,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
-                        className="text-white hover:bg-white/20 hover:text-white"
+                        className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                       />
                     }
                   />
@@ -585,7 +585,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
-                        className="text-white hover:bg-white/20 hover:text-white"
+                        className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                       />
                     }
                   />
@@ -619,7 +619,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
-                        className="text-white hover:bg-white/20 hover:text-white"
+                        className="text-primary-foreground hover:bg-card/20 hover:text-primary-foreground"
                       />
                     }
                   />
@@ -741,6 +741,7 @@ export default function LiveRooms() {
       />
       {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
       {!isMobile && <SubNavigation items={communityNavigation} />}
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <div className={isMobile ? "px-4 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 pb-24 md:pb-32 scroll-smooth"} style={isMobile ? undefined : { scrollPaddingBottom: "96px" }}>
         <StandardHeader
           title={translate('liveRooms.title', 'Live Rooms')}

@@ -19,7 +19,7 @@ import { TextDiaryEditor } from "@/components/diary/TextDiaryEditor";
 import { DiaryEntryList } from "@/components/diary/DiaryEntryList";
 import { PhotoGalleryGrid } from "@/components/diary/PhotoGalleryGrid";
 import { PhotoCarouselModal } from "@/components/diary/PhotoCarouselModal";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useQuery } from "@tanstack/react-query";
@@ -230,20 +230,20 @@ function Diary() {
 
           <SplitBarContent value="voice">
             <div className="mt-6 space-y-6 pb-24">
-              <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Mic className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              <Panel className="bg-gradient-to-br from-category-2/10 to-category-3/10 border-category-2/25">
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
+                    <Mic className="h-5 w-5 text-category-2" />
                     {t('screens.memory.recordTodaySEntry')}
-                  </CardTitle>
-                  <CardDescription>
+                  </PanelTitle>
+                  <PanelDescription>
                     {t('screens.memory.shareYourThoughtsFeelingsWellnessObservations')}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
+                  </PanelDescription>
+                </PanelHeader>
+                <PanelContent>
                   <VoiceDiaryRecorder />
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
 
               <DiaryEntryList entryType="voice" />
             </div>
@@ -251,17 +251,17 @@ function Diary() {
 
           <SplitBarContent value="photos">
             <div className="mt-6 space-y-6 pb-24">
-              <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
-                <CardHeader>
+              <Panel className="bg-gradient-to-br from-category-2/10 to-category-3/10 border-category-2/25">
+                <PanelHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Image className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                      <PanelTitle className="flex items-center gap-2">
+                        <Image className="h-5 w-5 text-category-2" />
                         {t('screens.memory.uploadTodaySEntry')}
-                      </CardTitle>
-                      <CardDescription>
+                      </PanelTitle>
+                      <PanelDescription>
                         {t('screens.memory.captureShareYourWellnessMomentsThrough')}
-                      </CardDescription>
+                      </PanelDescription>
                     </div>
                     <div className="flex gap-2">
                       <Button
@@ -280,11 +280,11 @@ function Diary() {
                       </Button>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
+                </PanelHeader>
+                <PanelContent>
                   <PhotoDiaryUploader />
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
 
               {photoViewMode === "list" ? (
                 <DiaryEntryList entryType="photo" />
@@ -310,20 +310,20 @@ function Diary() {
 
           <SplitBarContent value="text">
             <div className="mt-6 space-y-6 pb-24">
-              <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PenSquare className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              <Panel className="bg-gradient-to-br from-category-2/10 to-category-3/10 border-category-2/25">
+                <PanelHeader>
+                  <PanelTitle className="flex items-center gap-2">
+                    <PenSquare className="h-5 w-5 text-category-2" />
                     {t('screens.memory.typeYourTodaySEntry')}
-                  </CardTitle>
-                  <CardDescription>
+                  </PanelTitle>
+                  <PanelDescription>
                     {t('screens.memory.expressYourWellnessJourneyThroughWritten')}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
+                  </PanelDescription>
+                </PanelHeader>
+                <PanelContent>
                   <TextDiaryEditor />
-                </CardContent>
-              </Card>
+                </PanelContent>
+              </Panel>
 
               <DiaryEntryList entryType="text" />
             </div>
@@ -342,19 +342,19 @@ function Diary() {
             </p>
           </div>
 
-          <Card className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 border-red-200 dark:border-red-800">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Mic className="h-5 w-5 text-red-600 dark:text-red-400" />
+          <Panel className="bg-gradient-to-br from-status-error-subtle to-status-warning-subtle border-status-error/25">
+            <PanelHeader>
+              <PanelTitle className="flex items-center gap-2 text-base">
+                <Mic className="h-5 w-5 text-status-error" />
                 {t('screens.memory.recordFeedback')}
-              </CardTitle>
-              <CardDescription>{t('screens.memory.describeIssueImprovementAttachScreenshotsIf')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </PanelTitle>
+              <PanelDescription>{t('screens.memory.describeIssueImprovementAttachScreenshotsIf')}
+              </PanelDescription>
+            </PanelHeader>
+            <PanelContent>
               <FeedbackRecorder onSubmitted={() => setFeedbackRefreshKey(k => k + 1)} />
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
 
           <FeedbackReportList refreshKey={feedbackRefreshKey} />
         </div>

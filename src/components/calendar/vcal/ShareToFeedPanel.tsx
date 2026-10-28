@@ -88,7 +88,7 @@ export function ShareToFeedPanel({ item, accent, bg, ink, sharing, onCancel, onS
             value={cardTitle}
             onChange={(ev) => changeTitle(ev.target.value)}
             maxLength={CARD_TITLE_MAX}
-            className="h-12 w-full rounded-2xl bg-white px-3 text-base text-slate-900"
+            className="h-12 w-full rounded-2xl bg-card px-3 text-base text-foreground"
             data-testid="vcal-share-card-title"
           />
           {cardTitle.trim() !== entryName && (
@@ -108,7 +108,7 @@ export function ShareToFeedPanel({ item, accent, bg, ink, sharing, onCancel, onS
           }}
           rows={3}
           maxLength={TEXT_MAX}
-          className="w-full rounded-2xl bg-white px-3 py-2 text-base text-slate-900"
+          className="w-full rounded-2xl bg-card px-3 py-2 text-base text-foreground"
           data-testid="vcal-share-text"
         />
       </label>
@@ -139,9 +139,9 @@ export function ShareToFeedPanel({ item, accent, bg, ink, sharing, onCancel, onS
           <span className="text-xs" style={{ color: ink }}>
             {t("vcal.share.previewLabel")}
           </span>
-          <div className="flex flex-col rounded-2xl bg-white px-3 py-2 text-slate-900">
+          <div className="flex flex-col rounded-2xl bg-card px-3 py-2 text-foreground">
             <span className="break-words text-base font-semibold">{shownTitle}</span>
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-muted-foreground">
               {fmtDate(item.start_time, { weekday: "short", day: "numeric", month: "short" })} ·{" "}
               {fmtTime(item.start_time, { hour: "2-digit", minute: "2-digit" })}
               {showPlace && place ? ` · ${place}` : ""}
@@ -154,7 +154,7 @@ export function ShareToFeedPanel({ item, accent, bg, ink, sharing, onCancel, onS
         </span>
       )}
       {item.sensitive && (
-        <p role="note" className="m-0 rounded-2xl bg-orange-50 px-3 py-2 text-sm text-orange-900" data-testid="vcal-share-sensitive">
+        <p role="note" className="m-0 rounded-2xl bg-status-warning-subtle px-3 py-2 text-sm text-status-warning" data-testid="vcal-share-sensitive">
           {t("vcal.share.sensitiveHint")}
         </p>
       )}
@@ -166,7 +166,7 @@ export function ShareToFeedPanel({ item, accent, bg, ink, sharing, onCancel, onS
           type="button"
           disabled={sharing || tooLong}
           onClick={submit}
-          className="h-12 rounded-2xl text-sm font-semibold text-white disabled:opacity-60"
+          className="h-12 rounded-2xl text-sm font-semibold text-primary-foreground disabled:opacity-60"
           style={{ background: accent }}
           data-testid="vcal-share-post"
         >

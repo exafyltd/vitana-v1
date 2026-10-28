@@ -36,9 +36,9 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
         {/* Circular Score Display */}
         <div className="flex items-center justify-center">
           <div className="relative">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg">
               <div className="text-center">
-                <div className="text-4xl font-bold text-green-600">{score}</div>
+                <div className="text-4xl font-bold text-status-success">{score}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.health.text999')}</div>
               </div>
             </div>
@@ -53,14 +53,14 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
           <div className="flex items-center justify-center gap-2 text-sm">
             {trend === "up" && (
               <>
-                <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="text-green-600">{t('screens.health.improving')}</span>
+                <TrendingUp className="w-4 h-4 text-status-success" />
+                <span className="text-status-success">{t('screens.health.improving')}</span>
               </>
             )}
             {trend === "down" && (
               <>
-                <TrendingDown className="w-4 h-4 text-red-500" />
-                <span className="text-red-600">{t('screens.health.declining')}</span>
+                <TrendingDown className="w-4 h-4 text-status-error" />
+                <span className="text-status-error">{t('screens.health.declining')}</span>
               </>
             )}
             {trend === "stable" && (
@@ -78,7 +78,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
               <div className="flex items-center gap-2">
                 <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-green-400 to-blue-500"
+                    className="h-full bg-gradient-to-r from-status-success/80 to-category-3"
                     style={{ width: `${value}%` }}
                   />
                 </div>

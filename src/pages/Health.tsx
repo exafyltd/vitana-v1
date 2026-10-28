@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus, Sparkles, Upload } from "lucide-react";
@@ -321,7 +321,7 @@ export default withScreenId(function Health() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 px-3 rounded-full bg-gradient-to-r from-green-400/80 to-blue-500/80 text-white hover:from-green-500 hover:to-blue-500 gap-1.5 shrink-0"
+                  className="h-9 px-3 rounded-full bg-gradient-to-r from-status-success/60 to-category-3/80 text-primary-foreground hover:from-status-success hover:to-category-3 gap-1.5 shrink-0"
                   onClick={() => setUploadSheetOpen(true)}
                 >
                   <Plus className="h-4 w-4" />
@@ -356,11 +356,11 @@ export default withScreenId(function Health() {
               </div>
 
               <div className="px-4">
-                <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
-                  <CardContent className="p-3">
+                <Panel className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
+                  <PanelContent className="p-3">
                     <VitanaPillarAgentsPanel />
-                  </CardContent>
-                </Card>
+                  </PanelContent>
+                </Panel>
               </div>
 
               <MobilePriorityFocus
@@ -496,7 +496,7 @@ export default withScreenId(function Health() {
       <SEO title={t('screens.health.health')} description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <VitanaBaselineSurveyModal />
       <SubNavigation items={healthNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.health.letSImproveQualityLife')}
@@ -549,14 +549,14 @@ export default withScreenId(function Health() {
           </div>
 
           {/* Pillar agents — what each pillar is doing right now */}
-          <Card className="mb-6 rounded-2xl border ring-1 ring-border/60 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-lg">{t('screens.health.yourPillarsRightNow')}</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Panel className="mb-6 rounded-2xl border ring-1 ring-border/60 shadow-sm">
+            <PanelHeader>
+              <PanelTitle className="text-lg">{t('screens.health.yourPillarsRightNow')}</PanelTitle>
+            </PanelHeader>
+            <PanelContent>
               <VitanaPillarAgentsPanel />
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
 
           {/* Motivational + Next-best-action row */}
           <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -570,12 +570,12 @@ export default withScreenId(function Health() {
           {/* Actions Section */}
           <div className="grid md:grid-cols-2 gap-6 mb-6">
             {/* Today's Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">{t('screens.health.todaySActions')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+            <Panel>
+              <PanelHeader>
+                <PanelTitle className="flex items-center gap-2">{t('screens.health.todaySActions')}
+                </PanelTitle>
+              </PanelHeader>
+              <PanelContent>
                 <StackedCardList items={smartSuggestions.slice(0, 3).map((suggestion, index) => ({
                   id: `action-${index}`,
                   icon: suggestion.type === "action" ? Target : 
@@ -589,16 +589,16 @@ export default withScreenId(function Health() {
                             suggestion.priority === "medium" ? "secondary" : "success"
                   }
                 }))} />
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
 
             {/* Upcoming Health */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">{t('screens.health.upcomingSchedule')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+            <Panel>
+              <PanelHeader>
+                <PanelTitle className="flex items-center gap-2">{t('screens.health.upcomingSchedule')}
+                </PanelTitle>
+              </PanelHeader>
+              <PanelContent>
                 <div className="space-y-3">
                   {[
                     { title: 'Annual Physical', date: 'Feb 15, 2025', type: 'Appointment' },
@@ -614,16 +614,16 @@ export default withScreenId(function Health() {
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           </div>
 
           {/* AI Health Insights */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>{t('screens.health.aiHealthInsights')}</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Panel className="mb-6">
+            <PanelHeader>
+              <PanelTitle>{t('screens.health.aiHealthInsights')}</PanelTitle>
+            </PanelHeader>
+            <PanelContent>
               <StackedCardList items={smartSuggestions.slice(3, 6).map((suggestion, index) => ({
                 id: `insight-${index}`,
                 icon: suggestion.type === "action" ? Target : 
@@ -637,16 +637,16 @@ export default withScreenId(function Health() {
                           suggestion.priority === "medium" ? "secondary" : "success"
                 }
               }))} />
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
 
           {/* Community Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">{t('screens.health.communityActivity')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Panel>
+            <PanelHeader>
+              <PanelTitle className="flex items-center gap-2">{t('screens.health.communityActivity')}
+              </PanelTitle>
+            </PanelHeader>
+            <PanelContent>
               <div className="space-y-3">
                 {[
                   { user: 'Sarah M.', activity: 'completed 5K run', time: '2 hours ago' },
@@ -654,7 +654,7 @@ export default withScreenId(function Health() {
                   { user: 'Lisa K.', activity: 'achieved sleep goal', time: '6 hours ago' }
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-category-2/80 to-category-4" />
                     <div className="flex-1">
                       <div className="font-medium">{item.user} {item.activity}</div>
                       <div className="text-sm text-muted-foreground">{item.time}</div>
@@ -662,8 +662,8 @@ export default withScreenId(function Health() {
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
         </div>
       </div>
 

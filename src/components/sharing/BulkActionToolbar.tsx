@@ -31,26 +31,26 @@ export function BulkActionToolbar({
     )}>
       <div className={cn(
         "flex items-center justify-between gap-4 p-4 rounded-2xl",
-        "bg-white/75 backdrop-blur-md border-2",
-        "border-transparent bg-gradient-to-r from-teal-100/50 to-pink-100/50",
-        "shadow-xl shadow-teal-100/30"
+        "bg-card/75 backdrop-blur-md border-2",
+        "border-transparent bg-gradient-to-r from-category-1/10 to-category-4/10",
+        "shadow-xl shadow-category-1/5"
       )}>
         {/* Left Side - Selection Info */}
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-gray-900">{t('screens.sharing.selectedcountCampaignValue1Selected', { selectedCount, value1: selectedCount !== 1 ? "s" : "" })}
+            <span className="text-sm font-semibold text-foreground">{t('screens.sharing.selectedcountCampaignValue1Selected', { selectedCount, value1: selectedCount !== 1 ? "s" : "" })}
             </span>
             <div className="flex items-center gap-2 mt-1">
               <button
                 onClick={onSelectAll}
-                className="text-xs text-teal-600 hover:text-teal-700 font-medium"
+                className="text-xs text-category-1 hover:text-category-1 font-medium"
               >
                 {t('screens.sharing.selectAll')}
               </button>
-              <span className="text-gray-400">•</span>
+              <span className="text-muted-foreground">•</span>
               <button
                 onClick={onDeselectAll}
-                className="text-xs text-gray-600 hover:text-gray-700 font-medium"
+                className="text-xs text-muted-foreground hover:text-muted-foreground font-medium"
               >
                 {t('screens.sharing.deselectAll')}
               </button>
@@ -63,7 +63,7 @@ export function BulkActionToolbar({
           <Button
             size="sm"
             variant="ghost"
-            className="gap-2 hover:bg-purple-100"
+            className="gap-2 hover:bg-category-2/15"
             onClick={onDuplicate}
             disabled={selectedCount === 0}
           >
@@ -74,7 +74,7 @@ export function BulkActionToolbar({
           <Button
             size="sm"
             variant="ghost"
-            className="gap-2 hover:bg-teal-100"
+            className="gap-2 hover:bg-category-1/15"
             onClick={onSmartReschedule}
             disabled={selectedCount === 0}
           >
@@ -85,7 +85,7 @@ export function BulkActionToolbar({
           <Button
             size="sm"
             variant="ghost"
-            className="gap-2 hover:bg-blue-100"
+            className="gap-2 hover:bg-category-3/15"
             onClick={onExport}
             disabled={selectedCount === 0}
           >
@@ -96,7 +96,7 @@ export function BulkActionToolbar({
           <Button
             size="sm"
             variant="ghost"
-            className="gap-2 hover:bg-red-100 text-red-600"
+            className="gap-2 hover:bg-status-error-subtle text-status-error"
             onClick={onDelete}
             disabled={selectedCount === 0}
           >
@@ -104,12 +104,12 @@ export function BulkActionToolbar({
             {t('screens.sharing.delete')}
           </Button>
 
-          <div className="w-px h-6 bg-gray-300 mx-2" />
+          <div className="w-px h-6 bg-muted mx-2" />
 
           <Button
             size="sm"
             variant="ghost"
-            className="h-8 w-8 p-0 hover:bg-gray-200"
+            className="h-8 w-8 p-0 hover:bg-muted"
             onClick={onClose}
           >
             <X className="w-4 h-4" />

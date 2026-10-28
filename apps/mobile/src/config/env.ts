@@ -15,6 +15,8 @@
  * This file stays the single production gate; packages/core has no defaults.
  */
 
+import Constants from 'expo-constants';
+
 // VTID-05186: through the core port (tests/ports.test.ts — app code reaches lane packages only via src/ports).
 import type { CoreEndpoints } from '../ports/core';
 
@@ -171,16 +173,73 @@ export function endpoints(cfg: AppConfig): CoreEndpoints {
 }
 
 /**
- * The build's configuration. Expo inlines EXPO_PUBLIC_* at bundle time; in
- * `development` none of them is set, so this is `{}`.
+ * VTID-05249 — the per-profile config source. Each build profile's endpoints
+ * come from a committed, non-secret, non-production JSON file under `env/`:
+ *   development.json       — empty, so a development build makes no network call;
+ *   test-g1.example.json   — G1 PLACEHOLDER hosts only (never a real, production
+ *                            or staging host; the real G1 values are supplied by
+ *                            the owner at build time via EXPO_PUBLIC_*, never
+ *                            committed — see env/test-g1.g1.example.json).
+ * Both are imported statically so Metro bundles them: nothing is read from disk
+ * or the network at runtime, so an offline bundle has every value it needs.
  */
-export const config: AppConfig = loadConfig({
+import developmentProfile from '../../env/development.json';
+import testG1Profile from '../../env/test-g1.example.json';
+
+/** The committed profile sources, keyed by APP_PROFILE (app.config.ts PROFILES). */
+const PROFILE_SOURCES: Record<string, unknown> = {
+  development: developmentProfile,
+  'test-g1': testG1Profile,
+};
+
+/** Every config key, in one list, so the overlay reads exactly the known keys. */
+const ALL_KEYS: readonly (ConfigKey | ValueKey)[] = [...URL_KEYS, ...VALUE_KEYS];
+
+/** The `EXPO_PUBLIC_*` env var that overrides each key (Expo inlines these at bundle time). */
+const ENV_OVERRIDES: Record<ConfigKey | ValueKey, string | undefined> = {
   gatewayUrl: process.env.EXPO_PUBLIC_GATEWAY_URL,
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
   dataApiUrl: process.env.EXPO_PUBLIC_DATA_API_URL,
   authRedirectUrl: process.env.EXPO_PUBLIC_AUTH_REDIRECT_URL,
   webBaseUrl: process.env.EXPO_PUBLIC_WEB_BASE_URL,
+  supabasePublishableKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   googleWebClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
   googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
-  supabasePublishableKey: process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-});
+};
+
+/** The active build profile: `extra.profile` (app.config.ts) first, then APP_PROFILE. */
+function activeProfile(): string | undefined {
+  const fromExpo = (Constants.expoConfig?.extra as { profile?: unknown } | undefined)?.profile;
+  if (typeof fromExpo === 'string' && fromExpo) return fromExpo;
+  return process.env.APP_PROFILE || undefined;
+}
+
+/**
+ * Builds the raw source for the active profile: the profile's committed JSON,
+ * with any set `EXPO_PUBLIC_*` overlaid on top (only known keys are read, so a
+ * documentation key such as `_comment` in the JSON is ignored). An unknown or
+ * unset profile contributes no JSON values; the overlay still applies, so a
+ * build driven purely by `EXPO_PUBLIC_*` keeps working. Every value is then
+ * checked by the existing `loadConfig` (`assertNotProduction` /
+ * `assertNotProductionKey`); nothing here weakens that gate or adds a default.
+ */
+export function resolveProfileConfig(
+  profile = activeProfile(),
+  env: Partial<Record<ConfigKey | ValueKey, string | undefined>> = ENV_OVERRIDES,
+): AppConfig {
+  const json = (PROFILE_SOURCES[profile ?? ''] ?? {}) as Record<string, unknown>;
+  const source: AppConfig = {};
+  for (const key of ALL_KEYS) {
+    const override = env[key];
+    const fromJson = json[key];
+    const value = override ?? (typeof fromJson === 'string' ? fromJson : undefined);
+    if (value !== undefined) source[key] = value;
+  }
+  return loadConfig(source);
+}
+
+/**
+ * The build's configuration. `development` resolves to `{}` (no network); the
+ * `test-g1` placeholder set loads with every URL passing `assertNotProduction`.
+ */
+export const config: AppConfig = resolveProfileConfig();

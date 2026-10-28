@@ -7,6 +7,8 @@ import { ClickableAvatar } from '@/components/ui/clickable-avatar';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
+import NewMessagesPill from './NewMessagesPill';
+import { useChatScrollAnchor, distanceFromBottom, NEAR_BOTTOM_PX } from '@/hooks/useChatScrollAnchor';
 import MessageBubble from './MessageBubble';
 import MessageDivider from './MessageDivider';
 import MessageInput from './MessageInput';
@@ -14,6 +16,19 @@ import { SwipeableMessage } from './SwipeableMessage';
 import TypingIndicator from './TypingIndicator';
 import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
+import { useJumpToMessage, unionByIdSorted, bridgeWindow, withJumpRows } from '@/hooks/useJumpToMessage';
+import { useChatViewingPresence } from '@/hooks/useChatViewingPresence';
+import { fetchConversation, fetchConversationAround, fetchConversationAfter, type ChatMessage } from '@/hooks/useChatApi';
+
+/** VTID-05318: a row of the list as far as jumping and reply quotes need it. */
+type JumpViewRow = {
+  id: string;
+  created_at: string;
+  sender_id?: string;
+  reply_to_message_id?: string | null;
+  parent_message_id?: string | null;
+  [k: string]: unknown;
+};
 import { useAuth } from "@/context/AuthProvider";
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
@@ -26,8 +41,10 @@ import {
   Loader2,
   Mic,
   Settings2,
-  UserPlus
+  UserPlus,
+  Search
 } from 'lucide-react';
+import MessageSearchPanel from './MessageSearchPanel';
 import { cn } from '@/lib/utils';
 import MessageSkeleton from './MessageSkeleton';
 import EmptyStateIllustration from './EmptyStateIllustration';
@@ -38,6 +55,7 @@ import GroupAvatarStack from './GroupAvatarStack';
 import CreateGroupPopup from '@/components/messages/CreateGroupPopup';
 
 import { isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
+import { groupPositions, isGroupEnd } from '@/lib/messaging/grouping';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { composerPlaceholder, getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
@@ -110,7 +128,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     loadOlderMessages,
     hasOlderMessages,
     isLoadingOlder,
-  } = useHybridMessages(context, threadId);
+    // VTID-05320: Retry / discard of an unsent bubble (global context; the tenant hook has none).
+    retryMessage,
+    discardMessage,
+  } = useHybridMessages(context, threadId) as ReturnType<typeof useHybridMessages> & {
+    retryMessage?: (clientMessageId: string) => Promise<unknown>;
+    discardMessage?: (clientMessageId: string) => void;
+  };
+
 
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -230,9 +255,29 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isWindowFocused, setIsWindowFocused] = useState(true);
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
+  // VTID-05319: the thread whose opening position is set (the list is hidden
+  // until then), the frozen unread divider of this visit, and the scroll API.
+  const [positionedThread, setPositionedThread] = useState<string | null>(null);
+  const [unreadAnchor, setUnreadAnchor] = useState<{ threadId: string; messageId: string; visit: number } | null>(null);
+  const unreadPositionedRef = useRef<string | null>(null);
+  // Each opening of a conversation is a visit; an anchor from an earlier visit
+  // (even of the same conversation) is never used to position this one.
+  const visitRef = useRef(0);
+  const scrollAnchorApi = useRef<{ onScroll: () => void; markAway?: () => void } | null>(null);
 
-  // Use hybrid messages directly from the hook - no local state needed
-  const messages = hybridMessagesFromHook || [];
+  // VTID-05318: rows loaded around a jump target (reply quote / search result)
+  // are shown together with the hook's rows of this thread.
+  const [jumpRows, setJumpRows] = useState<{ threadId: string | null; rows: JumpViewRow[] }>({ threadId: null, rows: [] });
+  const baseMessages = hybridMessagesFromHook || [];
+  const olderJumpPendingRef = useRef(false);
+  // `${thread}|${oldest id}` once paging back from a jump window reached the start.
+  const jumpHistoryEndRef = useRef<string | null>(null);
+  const messages = useMemo(
+    () => (jumpRows.threadId === threadId && jumpRows.rows.length > 0
+      ? (withJumpRows(baseMessages as unknown as JumpViewRow[], jumpRows.rows) as unknown as typeof baseMessages)
+      : baseMessages),
+    [baseMessages, jumpRows, threadId]
+  );
   
   // Clear messages immediately when switching threads to prevent stale data
   const [isThreadSwitching, setIsThreadSwitching] = useState(false);
@@ -263,7 +308,31 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const hasPagedBackRef = useRef(false);
 
   const handleScrollToTop = useCallback(() => {
-    if (!threadId || !hasOlderMessages || isLoadingOlder) return;
+    if (!threadId) return;
+    // VTID-05318: a jump window is on top of the list — page back from ITS
+    // oldest row (the hook's own cursor is below it).
+    const top = messages[0] as unknown as JumpViewRow | undefined;
+    const base = baseMessages as unknown as JumpViewRow[];
+    if (top && jumpRows.threadId === threadId && base.length > 0 && top.created_at < base[0].created_at) {
+      if (olderJumpPendingRef.current) return;
+      olderJumpPendingRef.current = true;
+      hasPagedBackRef.current = true;
+      const el = scrollRef.current;
+      scrollAnchorRef.current = el ? el.scrollHeight - el.scrollTop : null;
+      const forThread = threadId;
+      if (jumpHistoryEndRef.current === `${forThread}|${top.id}`) { scrollAnchorRef.current = null; olderJumpPendingRef.current = false; return; }
+      void fetchConversation(forThread, 50, top.created_at)
+        .then((rows) => {
+          if (rows.length < 50) jumpHistoryEndRef.current = `${forThread}|${rows.length ? rows.reduce((a, b) => (a.created_at < b.created_at ? a : b)).id : top.id}`;
+          if (currentThreadRef.current !== forThread || rows.length === 0) { scrollAnchorRef.current = null; return; }
+          const older = rows.map(toViewRowRef.current);
+          setJumpRows((prev) => (prev.threadId === forThread ? { threadId: forThread, rows: unionByIdSorted(prev.rows, older) } : prev));
+        })
+        .catch(() => { scrollAnchorRef.current = null; })
+        .finally(() => { olderJumpPendingRef.current = false; });
+      return;
+    }
+    if (!hasOlderMessages || isLoadingOlder) return;
     hasPagedBackRef.current = true;
     const el = scrollRef.current;
     scrollAnchorRef.current = el ? el.scrollHeight - el.scrollTop : null;
@@ -276,7 +345,110 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     void Promise.resolve(loadOlderMessages())
       .then((added) => { if (!added) scrollAnchorRef.current = null; })
       .catch(() => { scrollAnchorRef.current = null; });
-  }, [threadId, hasOlderMessages, isLoadingOlder, loadOlderMessages]);
+  }, [threadId, hasOlderMessages, isLoadingOlder, loadOlderMessages, messages, baseMessages, jumpRows]);
+
+  // VTID-05318: gateway rows → the shape the list renders.
+  const isDirectThread = !!threadId && threads.find((th) => th.id === threadId)?.type !== 'group' && messageContext === 'global';
+  const toViewRow = useCallback((row: ChatMessage) => {
+    const participant = (threads.find((th) => th.id === threadId)?.participants as Array<{ user_id: string; display_name?: string; avatar_url?: string }> | undefined)
+      ?.find((p) => p.user_id === row.sender_id);
+    const meta = (user?.user_metadata ?? {}) as { display_name?: string; avatar_url?: string };
+    return {
+      id: row.id,
+      thread_id: threadId,
+      sender_id: row.sender_id,
+      body: row.content,
+      message_type: row.message_type || 'text',
+      content_data: row.metadata || undefined,
+      created_at: row.created_at,
+      updated_at: row.created_at,
+      read_at: row.read_at ?? null,
+      delivered_at: row.delivered_at ?? null,
+      client_message_id: row.client_message_id ?? null,
+      reply_to_message_id: row.reply_to_message_id ?? null,
+      sender: participant
+        ? { user_id: row.sender_id, display_name: participant.display_name, avatar_url: participant.avatar_url }
+        : row.sender_id === user?.id
+          ? { user_id: row.sender_id, display_name: meta.display_name, avatar_url: meta.avatar_url }
+          : null,
+    };
+  }, [threads, threadId, user]);
+  const toViewRowRef = useRef(toViewRow);
+  toViewRowRef.current = toViewRow;
+
+  // Load the window around a message of this DM and connect it to the loaded
+  // rows (forward pages), so the list stays continuous. False = not here.
+  const loadAround = useCallback(async (messageId: string): Promise<boolean | null> => {
+    if (!threadId || !isDirectThread) return false;
+    const forThread = threadId;
+    const win = await fetchConversationAround(threadId, messageId, 40);
+    if (currentThreadRef.current !== forThread) return null; // left meanwhile: no jump, no toast
+    if (!win || win.data.length === 0) return false;
+    const peer = threadId;
+    const windowRows = win.data.map(toViewRow);
+    const bridged = await bridgeWindow<JumpViewRow>(windowRows, win.has_newer, messages as unknown as JumpViewRow[], async (after) =>
+      (await fetchConversationAfter(peer, after, 100)).map(toViewRow));
+    if (currentThreadRef.current !== forThread) return null;
+    setJumpRows((prev) => ({ threadId, rows: unionByIdSorted(prev.threadId === threadId ? prev.rows : [], bridged) }));
+    return true;
+  }, [threadId, isDirectThread, toViewRow, messages]);
+
+  // The jump moves the view away from the bottom: stop following it (else
+  // the ResizeObserver pulls the view straight back down when the window grows).
+  const jumpToMessage = useJumpToMessage({
+    loadAround,
+    onJump: () => {
+      isUserNearBottomRef.current = false;
+      scrollAnchorApi.current?.markAway?.();
+    },
+  });
+
+  // VTID-05322: while this DM is on screen, no push for it (gateway VTID-05312).
+  useChatViewingPresence(isDirectThread && threadId ? `dm:${threadId}` : null);
+
+  // Reply quotes whose original is not loaded: fetched once each (null = not
+  // available in this conversation — deleted, or never part of it).
+  const [fetchedParents, setFetchedParents] = useState<Record<string, JumpViewRow | null | undefined>>({});
+  const parentsInFlightRef = useRef<Set<string>>(new Set());
+  // Bumped after each batch of quote fetches, so the next batch (> 10) starts.
+  const [parentsRound, setParentsRound] = useState(0);
+  const currentThreadRef = useRef<string | null | undefined>(threadId);
+  currentThreadRef.current = threadId;
+  useEffect(() => {
+    if (!isDirectThread || !threadId) return;
+    const rows = messages as unknown as JumpViewRow[];
+    const known = new Set(rows.map((m) => m.id));
+    const missing = Array.from(new Set(
+      rows
+        .map((m) => m.reply_to_message_id || m.parent_message_id)
+        .filter((id: string | null | undefined): id is string => !!id && !known.has(id) && fetchedParents[id] === undefined && !parentsInFlightRef.current.has(id))
+    )).slice(0, 10);
+    if (missing.length === 0) return;
+    const forThread = threadId;
+    // Results are kept unless the member switched conversations meanwhile;
+    // then the rest is not requested and the ids stay unresolved, so they are
+    // fetched again on the next visit (never stuck on "loading").
+    const stillHere = () => currentThreadRef.current === forThread;
+    missing.forEach((id) => parentsInFlightRef.current.add(id));
+    (async () => {
+      let resolved = 0;
+      for (const id of missing) {
+        if (!stillHere()) { parentsInFlightRef.current.delete(id); continue; }
+        try {
+          const win = await fetchConversationAround(forThread, id, 2);
+          const row = win?.data.find((r) => r.id === id);
+          if (stillHere()) { resolved += 1; setFetchedParents((prev) => ({ ...prev, [id]: row ? toViewRow(row) : null })); }
+        } catch {
+          // A network / server error is not "gone" (404 → null above): retried later.
+        } finally {
+          parentsInFlightRef.current.delete(id);
+        }
+      }
+      // A full batch may have more behind it; only go on if this one resolved something.
+      if (stillHere() && missing.length === 10 && resolved > 0) setParentsRound((n) => n + 1);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fetchedParents is read as a guard only
+  }, [messages, isDirectThread, threadId, toViewRow, parentsRound]);
 
   // Track scroll position and trigger top pagination — throttled via rAF, no state updates
   const handleScroll = useCallback(() => {
@@ -285,7 +457,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       rafRef.current = null;
       const el = scrollRef.current;
       if (!el) return;
-      isUserNearBottomRef.current = el.scrollTop + el.clientHeight >= el.scrollHeight - 50;
+      isUserNearBottomRef.current = distanceFromBottom(el) <= NEAR_BOTTOM_PX;
+      scrollAnchorApi.current?.onScroll();
       if (el.scrollTop <= 0) {
         handleScrollToTop();
       }
@@ -400,14 +573,25 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     };
   }, []);
 
-  // Auto-scroll only when new messages arrive and user is already at bottom
-  const prevMessageCountRef = useRef(messages.length);
-  useEffect(() => {
-    if (messages.length > prevMessageCountRef.current && isUserNearBottomRef.current) {
-      scrollToBottom(false);
-    }
-    prevMessageCountRef.current = messages.length;
-  }, [messages.length, scrollToBottom]);
+  // VTID-05319: new messages never force the view down while the member reads
+  // earlier ones — they are counted for the "↓ N new messages" pill. At the
+  // bottom (or for my own message) the view stays anchored to the newest one.
+  const followNewest = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight - el.clientHeight;
+    isUserNearBottomRef.current = true;
+  }, []);
+  const isAtBottom = useCallback(() => distanceFromBottom(scrollRef.current) <= NEAR_BOTTOM_PX, []);
+  const scrollAnchor = useChatScrollAnchor({
+    conversationKey: threadId ?? null,
+    rows: messages,
+    meId: user?.id,
+    isAtBottom,
+    follow: followNewest,
+    enabled: positionedThread === threadId,
+  });
+  scrollAnchorApi.current = scrollAnchor;
 
   // Keep the reading position steady after a page of older history is
   // prepended. Runs before paint so the user never sees the jump.
@@ -429,40 +613,73 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }, [topMessageId]);
 
 
-  // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
-  // Use useLayoutEffect to run before browser paint for smoother UX
-  // Skipped when a reaction-notification deep-link is pending — that scroll
-  // target wins instead (see the effect below).
+  // Every switch is a new opening, also back to a conversation positioned
+  // before with an empty one in between (that one never positions).
+  const lastOpenedThreadRef = useRef(threadId);
   useLayoutEffect(() => {
-    if (initialScrollMessageId) return;
-    if (threadId && messages.length > 0 && hasInitialScrolledRef.current !== threadId) {
-      hasInitialScrolledRef.current = threadId;
+    if (lastOpenedThreadRef.current === threadId) return;
+    lastOpenedThreadRef.current = threadId;
+    setPositionedThread(null);
+  }, [threadId]);
 
-      const scrollToEnd = () => {
-        // Never fight scrollback. These retries are fired from timers whose
-        // queued requestAnimationFrame survives this effect's cleanup, so one
-        // can land AFTER a prepend has already restored the reading position
-        // and slam the user back to the newest message. Reproduced on mobile
-        // by scrolling up within ~300ms of opening a thread.
-        if (hasPagedBackRef.current || scrollAnchorRef.current != null) return;
-        const el = scrollRef.current;
-        if (el) {
-          el.scrollTop = el.scrollHeight - el.clientHeight;
-          isUserNearBottomRef.current = true;
-        }
-      };
-
-      scrollToEnd();
-
-      const timers = [50, 150, 300].map(delay =>
-        setTimeout(() => {
-          requestAnimationFrame(scrollToEnd);
-        }, delay)
+  // VTID-05319: the opening position is set in a layout effect, i.e. before the
+  // first paint of the list, and the list stays invisible until it is set — so
+  // the first visible frame already shows the newest message (or the unread
+  // divider, or the deep-linked message). No timed retries, no visible jump.
+  // Late layout (images, avatars) is absorbed by the ResizeObserver below while
+  // the member is at the bottom.
+  useLayoutEffect(() => {
+    if (!threadId || messages.length === 0 || positionedThread === threadId) return;
+    // On a switch the query briefly serves the previous DM's rows as
+    // placeholder: wait for this conversation's own rows before positioning
+    // (otherwise its unread divider would be decided on the wrong rows).
+    // Only while this conversation is still being fetched: legacy direct
+    // threads carry another thread_id on their rows, and once fetching has
+    // settled the rows are this conversation's whatever their thread_id.
+    const bottomRow = messages[messages.length - 1] as { thread_id?: string | null };
+    const isDm = threads.find((t: { id: string; type?: string }) => t.id === threadId)?.type === 'direct';
+    if (isDm && isMessagesFetching && bottomRow?.thread_id && bottomRow.thread_id !== threadId) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    hasInitialScrolledRef.current = threadId;
+    // A new visit decides its own unread position (A → B → A included).
+    unreadPositionedRef.current = null;
+    visitRef.current += 1;
+    const visit = visitRef.current;
+    const target = initialScrollMessageId ? document.getElementById(`msg-${initialScrollMessageId}`) : null;
+    if (target) {
+      // A deep link / jump target wins over the bottom and the unread divider.
+      setUnreadAnchor(null);
+      target.scrollIntoView({ behavior: 'auto', block: 'center' });
+      isUserNearBottomRef.current = distanceFromBottom(el) <= NEAR_BOTTOM_PX;
+      if (!isUserNearBottomRef.current) scrollAnchor.markAway();
+    } else {
+      // Unread divider: the first message from someone else not yet read when
+      // the conversation opened (WhatsApp rule: open there). Frozen for this
+      // visit, so reading does not make it jump away.
+      // Rows without a read_at field (legacy group threads) have no read state.
+      const firstUnread = messages.find(
+        (m) => m.sender_id !== user?.id && m.read_at === null && !String(m.id).startsWith('temp-')
       );
-
-      return () => timers.forEach(clearTimeout);
+      setUnreadAnchor(firstUnread ? { threadId, messageId: firstUnread.id, visit } : null);
+      el.scrollTop = el.scrollHeight - el.clientHeight;
+      isUserNearBottomRef.current = true;
     }
-  }, [threadId, messages.length, initialScrollMessageId]);
+    setPositionedThread(threadId);
+  }, [threadId, messages, threads, isMessagesFetching, positionedThread, initialScrollMessageId, user?.id, scrollAnchor]);
+
+  // Once the unread divider is rendered, open at it (above the newest message).
+  useLayoutEffect(() => {
+    if (!unreadAnchor || unreadAnchor.threadId !== threadId || unreadAnchor.visit !== visitRef.current || unreadPositionedRef.current === threadId) return;
+    const el = scrollRef.current;
+    const divider = document.getElementById(`unread-divider-${unreadAnchor.messageId}`);
+    if (!el || !divider) return;
+    unreadPositionedRef.current = threadId;
+    const top = divider.getBoundingClientRect().top - el.getBoundingClientRect().top + el.scrollTop - 8;
+    el.scrollTop = Math.max(0, top);
+    isUserNearBottomRef.current = distanceFromBottom(el) <= NEAR_BOTTOM_PX;
+    if (!isUserNearBottomRef.current) scrollAnchor.markAway();
+  }, [unreadAnchor, threadId, scrollAnchor]);
 
   // Reaction-notification deep-link: once the target message is rendered,
   // scroll it into view and highlight it, then hand control back to the
@@ -483,6 +700,21 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     onInitialMessageScrolled?.();
     return () => clearTimeout(timer);
   }, [initialScrollMessageId, threadId, messages, onInitialMessageScrolled]);
+
+  // VTID-05317: a deep link / search result whose message is not in the loaded
+  // page — once the conversation has its rows, load the window around it (I8).
+  const deepJumpTriedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!initialScrollMessageId || !threadId || !isDirectThread) return;
+    if (messages.length === 0 || isMessagesFetching || positionedThread !== threadId) return;
+    const key = `${threadId}|${initialScrollMessageId}`;
+    if (deepJumpTriedRef.current === key) return;
+    if (document.getElementById(`msg-${initialScrollMessageId}`)) return; // the effect above handles it
+    deepJumpTriedRef.current = key;
+    void jumpToMessage(initialScrollMessageId).then(() => onInitialMessageScrolled?.());
+  }, [initialScrollMessageId, threadId, isDirectThread, messages, isMessagesFetching, positionedThread, jumpToMessage, onInitialMessageScrolled]);
+
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // ResizeObserver to keep pinned at bottom when content resizes (images loading, etc.)
   useEffect(() => {
@@ -512,12 +744,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     try {
       setSendError(null);
       
-      // Check if offline first
-      if (!navigator.onLine) {
-        setSendError('You are offline. Message will be sent when connection is restored.');
-        console.warn('📴 Offline - message queued');
-        return;
-      }
+      // VTID-05320: no offline short-circuit any more — the message goes into
+      // the outbox, shows as "Not sent" with Retry, and is re-posted once when
+      // the connection returns (useGlobalMessages).
 
       if (!threadId) {
         console.error('No thread ID available for sending message');
@@ -543,7 +772,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         recipientId,
         parentMessageId: parentMessageId || replyingTo?.id,
         actionButtons,
-      });
+        // VTID-05320: composer sends resolve at once (the bubble shows the
+        // outcome). A calendar invite waits for the stored row: its id is the
+        // sender's calendar event's source_message_id.
+        queued: messageType !== 'calendar_invite',
+      } as Parameters<typeof sendMessage>[0]);
 
       const newMessage = await sendPromise;
 
@@ -1001,6 +1234,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </div>
           
             <div className="flex items-center gap-1 shrink-0">
+              {/* VTID-05317: search this conversation (DMs; groups have their own screen). */}
+              {isDirectThread && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-11 w-11 p-0"
+                  onClick={() => setSearchOpen(true)}
+                  aria-label={t('inbox.search.titleConversation')}
+                  data-testid="conversation-search-button"
+                >
+                  <Search className="w-4 h-4" />
+                </Button>
+              )}
               {isGroupChat() && (
                 // VTID-04959: the members/rename panel was only reachable by tapping the title.
                 <Button
@@ -1045,12 +1291,21 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
 
         {/* Messages - Scrollable area */}
+        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
         <div 
-          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-2 sm:px-3 py-1 overscroll-contain focus:outline-none" 
           id="chat-scroll"
           ref={scrollRef}
+          tabIndex={-1}
           onScroll={handleScroll}
-          style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', paddingBottom: isMobile ? 'var(--composer-h, 56px)' : undefined }}
+          data-positioned={positionedThread === threadId ? 'true' : 'false'}
+          style={{
+            overscrollBehavior: 'contain',
+            WebkitOverflowScrolling: 'touch',
+            paddingBottom: isMobile ? 'var(--composer-h, 56px)' : undefined,
+            // VTID-05319: never paint the list before its opening position is set.
+            visibility: messages.length > 0 && positionedThread !== threadId ? 'hidden' : undefined,
+          }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
@@ -1084,33 +1339,26 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 // Build message lookup map for O(1) parent resolution
                 const messageMap = new Map<string, any>(messages.map(m => [m.id, m] as [string, any]));
                 
+                // VTID-05318: jump to the original, loading it when it is not on screen.
                 const handleScrollToMessage = (messageId: string) => {
-                  const el = document.getElementById(`msg-${messageId}`);
-                  if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    el.classList.add('message-highlight');
-                    setTimeout(() => el.classList.remove('message-highlight'), 1500);
-                  }
+                  // Legacy group threads have no gateway window: jump only to a rendered row, quietly.
+                  if (!isDirectThread && !document.getElementById(`msg-${messageId}`)) return;
+                  void jumpToMessage(messageId);
                 };
+
+                // VTID-05314: runs of one sender (≤ 5 min, same day, no system
+                // notice or unread divider between) form a group.
+                const positions = groupPositions(messages, {
+                  breakBefore: (m) => unreadAnchor?.threadId === threadId && unreadAnchor.messageId === m.id,
+                });
                 
                 return messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
                 const previousMessage = index > 0 ? messages[index - 1] : null;
+                const groupPosition = positions[index];
 
-                // Smart avatar display logic
-                const showAvatar = !previousMessage || previousMessage.sender_id !== message.sender_id;
-
-                // Smart spacing logic - group consecutive messages from same sender
-                const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
-
-                // Time-based grouping (within 5 minutes)
-                const timeDiff = previousMessage
-                  ? new Date(message.created_at).getTime() - new Date(previousMessage.created_at).getTime()
-                  : Infinity;
-                const isWithinTimeWindow = timeDiff < 5 * 60 * 1000; // 5 minutes
-
-                // Determine spacing
-                const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
+                // Small gap inside a group, the usual gap after its last bubble.
+                const shouldUseSmallSpacing = !isGroupEnd(groupPosition);
 
                 // Day separator between dates (WhatsApp-style centered chip)
                 const messageDate = new Date(message.created_at);
@@ -1127,16 +1375,24 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 // Resolve parent message for reply quotes (check both field names)
                 const parentId = message.parent_message_id || message.reply_to_message_id;
                 const resolvedParentMessage = parentId
-                  ? messageMap.get(parentId) || null
+                  ? messageMap.get(parentId) || fetchedParents[parentId] || null
                   : null;
+                const parentUnavailable = !!parentId && !resolvedParentMessage && fetchedParents[parentId] === null;
+
+                const isFirstUnread = unreadAnchor?.threadId === threadId && unreadAnchor.messageId === message.id;
 
                 return (
                   <React.Fragment key={message.id}>
                   {isNewDay && <MessageDivider type="date" text={dayLabel} />}
+                  {isFirstUnread && (
+                    <div id={`unread-divider-${message.id}`} data-testid="unread-divider">
+                      <MessageDivider type="unread" text={t('inbox.newMessages.unread')} />
+                    </div>
+                  )}
                   <div
                     id={`msg-${message.id}`}
                     className={cn(
-                      shouldUseSmallSpacing ? "mb-0.5" : "mb-2",
+                      shouldUseSmallSpacing ? "mb-0.5" : "mb-1.5",
                       "transition-colors duration-500"
                     )}
                   >
@@ -1152,7 +1408,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         onReply={handleReply}
                         onScrollToMessage={handleScrollToMessage}
                         parentMessage={resolvedParentMessage}
-                        showAvatar={showAvatar}
+                        parentUnavailable={parentUnavailable}
+                        groupPosition={groupPosition}
                         onUpdateMessage={async (messageId: string, updates: any) => {
                           try {
                             // Route to correct table based on thread type
@@ -1174,6 +1431,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                             }
                             
                             console.log('[Edit] Mutation succeeded for message:', messageId, 'table:', table);
+                            // VTID-05318: a row shown only from a jump window shows the new text too.
+                            const edited = String(updates.body ?? updates.content ?? '');
+                            setJumpRows((prev) => ({ ...prev, rows: prev.rows.map((r) => (r.id === messageId ? { ...r, body: edited, content: edited } as typeof r : r)) }));
                             if (fetchMessages) {
                               console.log('[Edit] Triggering refetch for threadId:', threadId);
                               await fetchMessages(threadId);
@@ -1188,6 +1448,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                           }
                         }}
                         onDeleteMessage={async (messageId: string) => {
+                          // VTID-05320: an unsent message is only local — discard it.
+                          if (String(messageId).startsWith('temp-')) {
+                            discardMessage?.(String(messageId).slice('temp-'.length));
+                            return;
+                          }
                           try {
                             const ct = threads.find((t: any) => t.id === threadId);
                             const isGroup = ct?.type === 'group';
@@ -1205,6 +1470,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                               throw error;
                             }
                             console.log('[Delete] Mutation succeeded for message:', messageId, 'table:', table);
+                            // VTID-05318: a row shown only from a jump window goes too.
+                            setJumpRows((prev) => ({ ...prev, rows: prev.rows.filter((r) => r.id !== messageId) }));
                             notify('toasts.messages.messageDeleted');
                             if (fetchMessages) {
                               console.log('[Delete] Triggering refetch for threadId:', threadId);
@@ -1219,6 +1486,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                           }
                         }}
                         onSendReply={handleSendMessage}
+                        onRetry={retryMessage ? (cid: string) => { void retryMessage(cid); } : undefined}
                       />
                     </SwipeableMessage>
                   </div>
@@ -1231,6 +1499,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           
           {/* Scroll anchor */}
           <div ref={messagesEndRef} />
+        </div>
+        <NewMessagesPill
+          count={scrollAnchor.newCount}
+          onClick={scrollAnchor.jumpToLatest}
+          focusAfterJump={() => scrollRef.current}
+          style={isMobile ? { bottom: 'calc(var(--composer-h, 56px) + 12px)' } : undefined}
+        />
         </div>
 
         <ComposerDock isMobile={isMobile}>
@@ -1278,6 +1553,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </ComposerDock>
       </div>
 
+      {isDirectThread && threadId && (
+        <MessageSearchPanel
+          open={searchOpen}
+          onOpenChange={setSearchOpen}
+          scope={`dm:${threadId}`}
+          onSelect={(r) => { void jumpToMessage(r.message_id); }}
+        />
+      )}
       <GroupMembersModal
         open={showMembersModal}
         onOpenChange={setShowMembersModal}

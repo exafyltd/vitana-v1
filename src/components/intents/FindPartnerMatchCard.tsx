@@ -225,7 +225,7 @@ export function FindPartnerMatchCard({
   };
 
   return (
-    <article className="rounded-3xl bg-card overflow-hidden border border-black/5 shadow-[0_10px_30px_-12px_rgba(15,23,42,0.18)]">
+    <article className="rounded-3xl bg-card overflow-hidden border border-border shadow-[0_10px_30px_-12px_rgba(15,23,42,0.18)]">
       {/* COVER BANNER — image-only top region */}
       <button
         type="button"
@@ -262,6 +262,7 @@ export function FindPartnerMatchCard({
               aria-hidden
               className="absolute inset-0 opacity-70 mix-blend-soft-light"
               style={{
+                // design-allow-next-line: on-media scrim, theme-independent
                 background:
                   'radial-gradient(120% 80% at 20% 10%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 60%), radial-gradient(80% 60% at 80% 90%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 60%)',
               }}
@@ -276,8 +277,8 @@ export function FindPartnerMatchCard({
             )}
             {isRedacted && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-2 text-white/90">
-                  <div className="h-14 w-14 rounded-full bg-white/25 backdrop-blur flex items-center justify-center">
+                <div className="flex flex-col items-center gap-2 text-primary-foreground/90">
+                  <div className="h-14 w-14 rounded-full bg-card/25 backdrop-blur flex items-center justify-center">
                     <Lock className="h-6 w-6" />
                   </div>
                   <span className="text-[11px] uppercase tracking-wider">{t('screens.intents.mutualReveal')}</span>
@@ -290,6 +291,7 @@ export function FindPartnerMatchCard({
         {/* Bottom gradient for legibility on real photos */}
         <div
           aria-hidden
+          // design-allow-next-line: on-media scrim, theme-independent
           className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
         />
 
@@ -315,27 +317,28 @@ export function FindPartnerMatchCard({
             <span>{tier.label}</span>
           </span>
           <div
-            className={`flex flex-col items-end gap-0.5 rounded-2xl bg-black/65 text-white backdrop-blur px-3 py-1.5 shadow-sm ${
+            // design-allow-next-line: on-media scrim, theme-independent
+            className={`flex flex-col items-end gap-0.5 rounded-2xl bg-black/65 text-primary-foreground backdrop-blur px-3 py-1.5 shadow-sm ${
               activeLabel ? '' : 'py-1'
             }`}
           >
             <span className="text-xs font-semibold leading-tight">{scorePct}% match</span>
             {activeLabel && (
               <span className="inline-flex items-center gap-1.5 text-[11px] font-medium leading-tight">
-                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-status-success/80" />
                 {activeLabel}
               </span>
             )}
           </div>
           {match.compass_aligned && (
-            <span className="px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-amber-300/95 text-amber-950 shadow-sm">
+            <span className="px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-status-warning/40 text-status-warning shadow-sm">
               ⭐ Compass-aligned
             </span>
           )}
         </div>
 
         {/* Bottom identity strip — name, handle, plus 2-3 cover tags. */}
-        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-start text-white">
+        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-start text-primary-foreground">
           {isRedacted ? (
             <h3 className="text-lg font-semibold leading-tight">Anonymous match</h3>
           ) : (
@@ -353,7 +356,8 @@ export function FindPartnerMatchCard({
                   {coverTags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center px-2.5 py-1 text-[11px] font-medium rounded-full bg-black/65 text-white backdrop-blur"
+                      // design-allow-next-line: on-media scrim, theme-independent
+                      className="inline-flex items-center px-2.5 py-1 text-[11px] font-medium rounded-full bg-black/65 text-primary-foreground backdrop-blur"
                     >
                       {tag}
                     </span>
@@ -382,7 +386,7 @@ export function FindPartnerMatchCard({
 
         {isMutual ? (
           <div className="space-y-2">
-            <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">{t('screens.intents.mutualInterestOpenMessageThreadStart')}
+            <div className="text-sm text-status-success bg-status-success-subtle border border-status-success/25 rounded-xl px-3 py-2">{t('screens.intents.mutualInterestOpenMessageThreadStart')}
             </div>
             <button
               type="button"
@@ -404,7 +408,7 @@ export function FindPartnerMatchCard({
               {breakdown.length > 0 ? (
                 <>
                   {activityBadge && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 font-medium">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-status-warning-subtle text-status-warning font-medium">
                       <span aria-hidden>🎯</span>
                       <span className="truncate">{activityBadge}</span>
                     </span>
@@ -422,7 +426,7 @@ export function FindPartnerMatchCard({
               ) : (
                 topReason && (
                   <span className="inline-flex items-center gap-1.5">
-                    <span aria-hidden className="text-violet-500">★</span>
+                    <span aria-hidden className="text-category-2">★</span>
                     <span className="truncate">{topReason.label}</span>
                   </span>
                 )
@@ -430,7 +434,7 @@ export function FindPartnerMatchCard({
               {(breakdown.length > 0 || topReason) && activeLabel && <span aria-hidden>·</span>}
               {activeLabel && (
                 <span className="inline-flex items-center gap-1">
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-status-success" />
                   <span className="truncate">{activeLabel}</span>
                 </span>
               )}

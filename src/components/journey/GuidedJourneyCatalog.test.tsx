@@ -89,14 +89,14 @@ describe('GuidedJourneyCatalog — per-topic completion (VTID-03679)', () => {
     expect(t19Button).toBeTruthy();
     expect(t20Button).toBeTruthy();
 
-    // T019 is in completedSet → its icon is the emerald CheckCircle2.
+    // T019 is in completedSet → its icon is the success CheckCircle2.
     const t19Icon = t19Button!.querySelector('svg');
-    expect(t19Icon?.getAttribute('class')).toContain('text-emerald-500');
+    expect(t19Icon?.getAttribute('class')).toContain('text-status-success');
 
     // T020 is NOT in completedSet, even though the session (14) is listened —
     // it must stay the neutral Circle, not inherit the session's checkmark.
     const t20Icon = t20Button!.querySelector('svg');
-    expect(t20Icon?.getAttribute('class')).not.toContain('text-emerald-500');
+    expect(t20Icon?.getAttribute('class')).not.toContain('text-status-success');
     expect(t20Icon?.getAttribute('class')).toContain('text-muted-foreground/35');
 
     // Same story for the per-topic status pill (a second, independent render

@@ -227,22 +227,22 @@ export function OrganizerEventSalesSheet({
               <TabsContent value="sales" className="space-y-6 mt-4">
                 {/* Summary Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-4 border border-green-200/50 dark:border-green-800/50">
-                    <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
+                  <div className="bg-gradient-to-br from-status-success-subtle to-status-success-subtle rounded-xl p-4 border border-status-success/15">
+                    <div className="flex items-center gap-2 text-status-success mb-1">
                       <DollarSign className="w-4 h-4" />
                       <span className="text-xs font-medium">{t('screens.business.revenue')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-green-700 dark:text-green-300">
+                    <p className="text-2xl font-bold text-status-success">
                       ${fmtNumber(event.totalRevenue ?? 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-4 border border-blue-200/50 dark:border-blue-800/50">
-                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
+                  <div className="bg-gradient-to-br from-category-3/10 to-category-1/10 rounded-xl p-4 border border-category-3/15">
+                    <div className="flex items-center gap-2 text-category-3 mb-1">
                       <Ticket className="w-4 h-4" />
                       <span className="text-xs font-medium">{t('screens.business.ticketsSold')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+                    <p className="text-2xl font-bold text-category-3">
                       {event.ticketsSold ?? 0}
                       {(event.totalCapacity ?? 0) > 0 && (
                         <span className="text-sm font-normal text-muted-foreground">
@@ -252,22 +252,22 @@ export function OrganizerEventSalesSheet({
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30 rounded-xl p-4 border border-purple-200/50 dark:border-purple-800/50">
-                    <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 mb-1">
+                  <div className="bg-gradient-to-br from-category-2/10 to-category-4/10 rounded-xl p-4 border border-category-2/15">
+                    <div className="flex items-center gap-2 text-category-2 mb-1">
                       <Users className="w-4 h-4" />
                       <span className="text-xs font-medium">{t('screens.business.buyers')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                    <p className="text-2xl font-bold text-category-2">
                       {event.buyerCount ?? 0}
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/50">
-                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
+                  <div className="bg-gradient-to-br from-status-warning-subtle to-status-warning-subtle rounded-xl p-4 border border-status-warning/15">
+                    <div className="flex items-center gap-2 text-status-warning mb-1">
                       <UserCheck className="w-4 h-4" />
                       <span className="text-xs font-medium">{t('screens.business.checked')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-amber-700 dark:text-amber-300">
+                    <p className="text-2xl font-bold text-status-warning">
                       {event.checkedInCount ?? 0}
                       {(event.ticketsSold ?? 0) > 0 && (
                         <span className="text-sm font-normal text-muted-foreground">

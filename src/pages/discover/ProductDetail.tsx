@@ -13,7 +13,7 @@
 
 import { useEffect } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -34,6 +34,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
+import { SendInMessageButton } from "@/components/messages/SendInMessageSheet";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { RecommendButton } from "@/components/discover/RecommendButton";
 import { ProductImage } from "@/components/discover/ProductImage";
@@ -157,7 +158,7 @@ export default function ProductDetail() {
         image={p.images?.[0] ?? undefined}
       />
 
-      <div className="p-4 md:p-6 pb-32 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-dvh">
+      <div className="p-4 md:p-6 pb-32 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-dvh">
         <div className="max-w-5xl mx-auto space-y-6">
           <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ms-2">
             <ArrowLeft className="h-4 w-4 me-2" />
@@ -165,7 +166,7 @@ export default function ProductDetail() {
           </Button>
 
           {/* Hero row: image + top-of-page summary */}
-          <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+          <Card className="bg-card/85 backdrop-blur-sm">
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="relative">
@@ -178,7 +179,7 @@ export default function ProductDetail() {
                     className="md:rounded-s-xl"
                   />
                   {p.availability && p.availability !== "in_stock" && (
-                    <Badge className="absolute top-3 end-3 bg-red-500 text-white">
+                    <Badge className="absolute top-3 end-3 bg-status-error text-primary-foreground">
                       {p.availability === "out_of_stock" ? "Out of Stock" : p.availability}
                     </Badge>
                   )}
@@ -193,7 +194,7 @@ export default function ProductDetail() {
                     <div className="flex items-center flex-wrap gap-3 text-sm text-muted-foreground">
                       {p.rating != null && p.rating > 0 && (
                         <span className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                          <Star className="w-4 h-4 fill-status-warning text-status-warning" />
                           <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
                           {p.review_count ? <span>{t('screens.discover.value0Reviews', { value0: fmtNumber(p.review_count) })}</span> : null}
                         </span>
@@ -217,7 +218,7 @@ export default function ProductDetail() {
                       )}
                     </div>
                     {p.reward_preview?.points_estimate ? (
-                      <div className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-300">
+                      <div className="flex items-center gap-1 text-sm text-status-success">
                         <Gift className="w-4 h-4" />{t('screens.discover.earnPoints_estimatePointsPurchase', { points_estimate: p.reward_preview.points_estimate })}
                       </div>
                     ) : null}
@@ -235,7 +236,7 @@ export default function ProductDetail() {
                           item_metadata: { brand: p.brand, category: p.category },
                         }}
                         size="lg"
-                        className="flex-1 min-w-[160px]"
+                        className="flex-1 min-w-40"
                       />
                       <Button asChild variant="outline" size="lg" className="flex-shrink-0">
                         <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
@@ -255,6 +256,8 @@ export default function ProductDetail() {
                           item_metadata: { brand: p.brand, category: p.category },
                         }}
                       />
+                      {/* VTID-05321: send this product to a chat. */}
+                      <SendInMessageButton item={{ kind: "product", id: p.id }} itemTitle={p.title} size="icon" />
                       <UniversalShareButton
                         content={{
                           type: "product",
@@ -279,7 +282,7 @@ export default function ProductDetail() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
               {(p.description_long || p.description) && (
-                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                <Card className="bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-2">
                     <h2 className="text-lg font-semibold">{t('screens.discover.aboutThisProduct')}</h2>
                     <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
@@ -290,7 +293,7 @@ export default function ProductDetail() {
               )}
 
               {ingredients.length > 0 && (
-                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                <Card className="bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-lg font-semibold">
                       <Leaf className="w-5 h-5 text-muted-foreground" /> {t('screens.discover.keyIngredients')}
@@ -308,12 +311,12 @@ export default function ProductDetail() {
               )}
 
               {p.safety_notes && (
-                <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200/60 dark:border-amber-900/40">
+                <Card className="bg-status-warning-subtle border-status-warning/15">
                   <CardContent className="p-6 space-y-2">
-                    <h2 className="flex items-center gap-2 text-lg font-semibold text-amber-900 dark:text-amber-200">
+                    <h2 className="flex items-center gap-2 text-lg font-semibold text-status-warning">
                       <AlertTriangle className="w-5 h-5" /> {t('screens.discover.safetyAmpInteractions')}
                     </h2>
-                    <p className="text-sm text-amber-900/90 dark:text-amber-100/90 whitespace-pre-line leading-relaxed">
+                    <p className="text-sm text-status-warning/90 whitespace-pre-line leading-relaxed">
                       {p.safety_notes}
                     </p>
                   </CardContent>
@@ -321,7 +324,7 @@ export default function ProductDetail() {
               )}
 
               {evidence.length > 0 && (
-                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                <Card className="bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-lg font-semibold">
                       <BookOpen className="w-5 h-5 text-muted-foreground" /> {t('screens.discover.evidence')}
@@ -357,7 +360,7 @@ export default function ProductDetail() {
 
             <div className="space-y-6">
               {(p.dosage || p.serving_size || p.servings_per_container) && (
-                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                <Card className="bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-base font-semibold">
                       <ClipboardList className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.directions')}
@@ -387,7 +390,7 @@ export default function ProductDetail() {
               )}
 
               {goals.length > 0 && (
-                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                <Card className="bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-base font-semibold">
                       <Target className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.supports')}
@@ -404,7 +407,7 @@ export default function ProductDetail() {
               )}
 
               {dietary.length > 0 && (
-                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                <Card className="bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-base font-semibold">
                       <ShieldCheck className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.dietary')}
@@ -421,10 +424,10 @@ export default function ProductDetail() {
               )}
 
               {matchReasons.length > 0 && (
-                <Card className="bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200/60 dark:border-emerald-900/40">
+                <Card className="bg-status-success-subtle border-status-success/15">
                   <CardContent className="p-6 space-y-2">
-                    <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">{t('screens.discover.whyThisForYou')}</h2>
-                    <ul className="space-y-1 text-sm text-emerald-900/90 dark:text-emerald-100/90">
+                    <h2 className="text-base font-semibold text-status-success">{t('screens.discover.whyThisForYou')}</h2>
+                    <ul className="space-y-1 text-sm text-status-success/90">
                       {matchReasons.map((r, i) => (
                         <li key={i} className="flex gap-2">
                           <span aria-hidden>•</span>

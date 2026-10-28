@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Droplets, Apple, Dumbbell, Moon, Brain, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { healthNavigation } from "@/config/navigation";
@@ -60,26 +60,26 @@ export default function PillarsOfHealth() {
     <AppLayout>
       <SEO title={t('screens.health.pillarsHealthHealth')} description="Explore the five pillars of health and wellness" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry */}
           <div className="flex flex-col lg:flex-row gap-6 mb-8">
             {/* Shortened Header Bar - Welcome Message Only */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+            <div className="flex-1 bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.health.buildYourFoundationForWellness')}</h1>
                 <p className="text-muted-foreground">{t('screens.health.exploreFiveFundamentalPillarsHealthDiscover')}</p>
               </div>
             </div>
             
-            {/* Small Index Card - Only Circle with 742 */}
+            {/* Small Index Panel - Only Circle with 742 */}
             <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
               onClick={() => navigate('/health-tracker/vitana-index')}
             >
               <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600"><VitanaIndexValue /></span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-lg shadow-status-success/20 group-hover:shadow-status-success/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-status-success"><VitanaIndexValue /></span>
                 </div>
               </div>
             </div>
@@ -87,19 +87,19 @@ export default function PillarsOfHealth() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pillars.map((pillar) => (
-              <Card key={pillar.titleKey} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20 hover:scale-105">
-                <CardHeader className="pb-4">
+              <Panel key={pillar.titleKey} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-card/80 backdrop-blur-sm border-border/20 hover:scale-105">
+                <PanelHeader className="pb-4">
                   <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${pillar.color} flex items-center justify-center mb-4`}>
                     <pillar.icon className="w-6 h-6 text-foreground" />
                   </div>
-                  <CardTitle className="text-lg">{t(pillar.titleKey)}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm">
+                  <PanelTitle className="text-lg">{t(pillar.titleKey)}</PanelTitle>
+                </PanelHeader>
+                <PanelContent>
+                  <PanelDescription className="text-sm">
                     {t(pillar.descriptionKey)}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+                  </PanelDescription>
+                </PanelContent>
+              </Panel>
             ))}
           </div>
         </div>

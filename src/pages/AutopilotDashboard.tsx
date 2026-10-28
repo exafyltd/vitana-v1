@@ -3,7 +3,7 @@ import { EnrichmentCardStrip } from "@/components/vitana/EnrichmentCardStrip";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { communityFetch } from "@/lib/community-gateway";
@@ -96,10 +96,10 @@ const MOTIVATION_KEYS = [
 function MotivationalLine() {
   const idx = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) % MOTIVATION_KEYS.length;
   return (
-    <Card className="rounded-2xl border border-emerald-200/50 bg-gradient-to-r from-emerald-50 via-green-50 to-lime-50 dark:from-emerald-950/30 dark:via-green-950/20 dark:to-lime-950/20">
+    <Card className="rounded-2xl border border-status-success/15 bg-gradient-to-r from-surface-page-from via-surface-page-via to-surface-page-to">
       <CardContent className="p-3 flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 bg-white/60 dark:bg-white/10 rounded-full shrink-0">
-          <Sparkles className="w-4 h-4 text-emerald-600" />
+        <div className="flex items-center justify-center w-8 h-8 bg-card/60 rounded-full shrink-0">
+          <Sparkles className="w-4 h-4 text-status-success" />
         </div>
         <p className="text-sm font-medium leading-snug">{t(MOTIVATION_KEYS[idx])}</p>
       </CardContent>
@@ -133,10 +133,10 @@ function IndexNowCard() {
           type="button"
           onClick={openIndexDrawer}
           aria-label={t("screens.autopilotdashboard.openIndexDrawerAria")}
-          className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.04]"
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-status-success/30 to-status-info/30 flex items-center justify-center shadow-sm shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.04]"
         >
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">{total === null ? "…" : total}</div>
+            <div className="text-2xl font-bold text-status-success">{total === null ? "…" : total}</div>
             <div className="text-[10px] text-muted-foreground">{t("screens.autopilotdashboard.text999")}</div>
           </div>
         </button>
@@ -541,7 +541,7 @@ export default function AutopilotDashboard() {
     return (
       <AppLayout>
         <SEO title={t("screens.autopilotdashboard.myJourney")} description="Your goal, your journey" canonical={window.location.href} />
-        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-purple-50 via-blue-50 to-pink-50 pb-32">
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-surface-page-from via-surface-page-via to-surface-page-to pb-32">
           <div className="px-4 pt-2">
             <StandardHeader title={t("screens.autopilotdashboard.myJourney")} description={t("screens.autopilotdashboard.northStarTagline")} emoji="🧭" />
           </div>
@@ -559,7 +559,7 @@ export default function AutopilotDashboard() {
   return (
     <AppLayout>
       <SEO title={t("screens.autopilotdashboard.myJourney")} description="Your goal, your journey" canonical={window.location.href} />
-      <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+      <div className="p-6 min-h-screen bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to">
         <div className="max-w-7xl mx-auto">
           <StandardHeader title={t("screens.autopilotdashboard.myJourney")} description={t("screens.autopilotdashboard.northStarTagline")} emoji="🧭" />
           <div className="mb-4">{utilityBar}</div>

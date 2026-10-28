@@ -1,0 +1,4 @@
+# red on base: origin/main 610b7270a
+Error: Failed to resolve import "./useChatViewingPresence" from "src/hooks/useChatViewingPresence.test.ts". Does the file exist?
+ FAIL  src/hooks/useChatViewingPresence.test.ts [ src/hooks/useChatViewingPresence.test.ts ]
+      Tests  no tests

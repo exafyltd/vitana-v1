@@ -8,7 +8,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { ServicesMasterActionPopup } from "@/components/ServicesMasterActionPopup";
 import { ServiceDetailSplitScreen } from "@/components/ui/split-screen";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Badge } from "@/components/ui/badge";
@@ -74,24 +74,24 @@ export default function WellnessServices() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {services.map((service) => (
-          <Card 
+          <Panel 
             key={service.id} 
             className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
             onClick={() => handleServiceClick(service)}
           >
-            <CardHeader className="pb-4">
+            <PanelHeader className="pb-4">
               <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center mb-4`}>
                 <service.icon className="w-6 h-6 text-foreground" />
               </div>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <CardTitle className="text-lg">{t(service.titleKey)}</CardTitle>
-                  <CardDescription className="text-sm mt-1">
+                  <PanelTitle className="text-lg">{t(service.titleKey)}</PanelTitle>
+                  <PanelDescription className="text-sm mt-1">
                     {t(service.descKey)}
-                  </CardDescription>
+                  </PanelDescription>
                 </div>
                 {service.vitanaImpact && (
-                  <Badge variant="secondary" className="ms-2 text-xs bg-emerald-100 text-emerald-700">
+                  <Badge variant="secondary" className="ms-2 text-xs bg-status-success-subtle text-status-success">
                     {service.vitanaImpact}
                   </Badge>
                 )}
@@ -102,8 +102,8 @@ export default function WellnessServices() {
                 )}
               </div>
               {service.suggestionKey && (
-                <div className="mt-3 p-2 bg-blue-50 rounded-lg">
-                  <p className="text-xs text-blue-700">{t(service.suggestionKey)}</p>
+                <div className="mt-3 p-2 bg-category-3/10 rounded-lg">
+                  <p className="text-xs text-category-3">{t(service.suggestionKey)}</p>
                 </div>
               )}
               <div className="flex gap-2 pt-3">
@@ -117,8 +117,8 @@ export default function WellnessServices() {
                   {t('screens.health.askAi')}
                 </Button>
               </div>
-            </CardHeader>
-          </Card>
+            </PanelHeader>
+          </Panel>
         ))}
       </div>
     );
@@ -193,7 +193,7 @@ export default function WellnessServices() {
       <SEO title={t('screens.health.servicesHubHealth')} description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.health.servicesHub')}

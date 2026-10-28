@@ -18,12 +18,12 @@ interface ContactSyncErrorStateProps {
 // VTID-04440: titles and texts come from mailhub.findFriends.errors.<type>.
 const errorConfig: Record<ErrorType, { icon: React.ReactNode; showSettings?: boolean }> = {
   oauth_failed: { icon: <ShieldX className="w-8 h-8 text-destructive" /> },
-  api_unavailable: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
+  api_unavailable: { icon: <AlertCircle className="w-8 h-8 text-status-warning" /> },
   permission_denied: { icon: <ShieldX className="w-8 h-8 text-destructive" />, showSettings: true },
-  rate_limited: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
+  rate_limited: { icon: <AlertCircle className="w-8 h-8 text-status-warning" /> },
   cancelled: { icon: <AlertCircle className="w-8 h-8 text-muted-foreground" /> },
-  file_too_large: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
-  file_empty: { icon: <AlertCircle className="w-8 h-8 text-[hsl(var(--contact-warning))]" /> },
+  file_too_large: { icon: <AlertCircle className="w-8 h-8 text-status-warning" /> },
+  file_empty: { icon: <AlertCircle className="w-8 h-8 text-status-warning" /> },
   unknown: { icon: <AlertCircle className="w-8 h-8 text-destructive" /> },
 };
 
@@ -92,7 +92,7 @@ export function ContactSyncErrorState({
         <Button
           onClick={onRetry}
           disabled={errorType === "rate_limited" && !!retryAfter}
-          className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
+          className="w-full bg-gradient-to-r from-category-4 to-category-4/80 text-primary-foreground hover:opacity-90"
         >
           <RefreshCw className="w-4 h-4 me-2" />
           {t('screens.contacts.tryAgain')}

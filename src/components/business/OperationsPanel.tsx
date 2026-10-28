@@ -152,10 +152,10 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
 
       {/* Client Information */}
       {clientInfo && (clientInfo.name || clientInfo.company || clientInfo.email) && (
-        <Card className="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30 border-purple-200/50 dark:border-purple-800/50">
+        <Card className="bg-gradient-to-br from-category-2/10 to-category-4/10 border-category-2/15">
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-purple-600" />
+              <Building2 className="w-4 h-4 text-category-2" />
               {t('screens.business.clientInformation')}
             </CardTitle>
           </CardHeader>
@@ -181,7 +181,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
               </div>
             )}
             {clientInfo.notes && (
-              <div className="pt-2 mt-2 border-t border-purple-200/50 dark:border-purple-800/50">
+              <div className="pt-2 mt-2 border-t border-category-2/15">
                 <div className="flex items-start gap-2 text-sm">
                   <FileText className="w-3.5 h-3.5 text-muted-foreground mt-0.5" />
                   <p className="text-muted-foreground">{clientInfo.notes}</p>
@@ -237,6 +237,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
           ) : attendees.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t('screens.business.noAttendeesYet')}</p>
           ) : (
+            // design-allow-next-line: fixed scroll-region height off the 4px scale (>2px)
             <div className="space-y-2 max-h-[400px] overflow-y-auto">
               {attendees.map((attendee: any) => (
                 <div 
@@ -252,7 +253,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {attendee.checked_in_at ? (
-                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 gap-1">
+                      <Badge className="bg-status-success-subtle text-status-success gap-1">
                         <CheckCircle2 className="w-3 h-3" />
                         {t('screens.business.checked')}
                       </Badge>

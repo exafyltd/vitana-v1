@@ -174,7 +174,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                     </td>
                     <td className="px-4 py-3 text-center">
                       {order.checked_in_at ? (
-                        <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                        <Badge className="bg-status-success-subtle text-status-success">
                           <Check className="w-3 h-3 me-1" />
                           {t('screens.business.checked')}
                         </Badge>

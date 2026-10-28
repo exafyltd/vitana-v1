@@ -34,17 +34,17 @@ const tierConfig = {
   test: {
     price: 0.49,
     icon: Gift,
-    color: "from-green-500 to-emerald-600",
+    color: "from-status-success to-category-1",
   },
   experience: {
     price: 99,
     icon: Sparkles,
-    color: "from-violet-500 to-purple-600",
+    color: "from-category-2 to-primary",
   },
   exclusive: {
     price: 199,
     icon: Crown,
-    color: "from-amber-500 to-orange-600",
+    color: "from-status-warning to-category-5",
   }
 };
 
@@ -361,6 +361,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContentNoAnimation
         overlayClassName="z-[99999]"
+        // design-allow-next-line: viewport-bound dialog box (dvh/vh, calc against the screen edge)
         className="z-[100000] w-[calc(100%-2rem)] max-w-md max-h-[100dvh] rounded-2xl p-0 gap-0 flex flex-col"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
@@ -380,6 +381,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
+              // design-allow-next-line: viewport-bound dialog box (dvh/vh, calc against the screen edge)
               className="flex flex-col h-full max-h-[85dvh]"
             >
               {/* Header - fixed height, doesn't scroll */}
@@ -425,7 +427,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                             "w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center shrink-0",
                             tier.color
                           )}>
-                            <Icon className="h-5 w-5 text-white" />
+                            <Icon className="h-5 w-5 text-primary-foreground" />
                           </div>
                           
                           <div className="flex-1 min-w-0">
@@ -500,8 +502,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               </div>
               
               <div className="text-center mb-6">
-                <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
-                  <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="w-16 h-16 rounded-full bg-status-success-subtle flex items-center justify-center mx-auto mb-4">
+                  <Check className="h-8 w-8 text-status-success" />
                 </div>
                 <h3 className="text-xl font-semibold mb-1">{translate('voucher.success.title')}</h3>
                 <p className="text-sm text-muted-foreground">
@@ -644,6 +646,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              // design-allow-next-line: viewport-bound dialog box (dvh/vh, calc against the screen edge)
               className="flex flex-col max-h-[85vh]"
             >
               {/* Header */}

@@ -4,7 +4,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent, PanelHeader as CardHeader, PanelTitle as CardTitle } from "@/components/layout/spotlight/Panel";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { MemberLink } from "@/components/ui/member-link";
 import { Badge } from "@/components/ui/badge";
@@ -262,7 +262,8 @@ export default function Search() {
                     <Play className="h-6 w-6 text-muted-foreground" />
                   )}
                   {result.duration && (
-                    <div className="absolute bottom-1 end-1 bg-black/70 text-white text-xs px-1 rounded">
+                    // design-allow-next-line: label scrim over thumbnail, theme-independent
+                    <div className="absolute bottom-1 end-1 bg-black/70 text-primary-foreground text-xs px-1 rounded">
                       {result.duration}
                     </div>
                   )}
@@ -302,8 +303,8 @@ export default function Search() {
           <Card key={result.id} className="hover:shadow-md transition-shadow cursor-pointer">
             <CardContent className="p-4">
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-lg bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
-                  <Heart className="h-6 w-6 text-red-600 dark:text-red-400" />
+                <div className="h-12 w-12 rounded-lg bg-status-error-subtle flex items-center justify-center">
+                  <Heart className="h-6 w-6 text-status-error" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">

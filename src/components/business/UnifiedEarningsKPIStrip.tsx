@@ -38,6 +38,7 @@ function KPICard({ icon, label, value, gradientFrom, gradientTo, onClick, isLoad
   return (
     <button
       onClick={onClick}
+      // design-allow-next-line: measured control width off the scale (>2px)
       className="relative flex-1 min-w-[140px] bg-card rounded-2xl border border-border/40 shadow-sm overflow-hidden text-start transition-all duration-200 hover:shadow-md hover:border-border/60 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
     >
       {/* Gradient top bar */}

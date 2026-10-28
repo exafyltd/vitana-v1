@@ -40,7 +40,7 @@ export function ProductImage({
 
   if (hasImage) {
     return (
-      <div className={cn("bg-white dark:bg-neutral-50", sizeClass, className)}>
+      <div className={cn("bg-card", sizeClass, className)}>
         <img
           src={src as string}
           alt={alt}

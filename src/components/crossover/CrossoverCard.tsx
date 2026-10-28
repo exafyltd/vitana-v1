@@ -111,6 +111,7 @@ const CrossoverCardBase = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
           <div className="space-y-2">
             <Button 
               onClick={onButtonClick}
+              // design-allow-next-line: on-media scrim, theme-independent
               className="w-full font-semibold text-sm h-9 text-black hover:opacity-80 transition-opacity"
               size="sm"
               style={(() => {

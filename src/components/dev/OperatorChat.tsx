@@ -123,6 +123,7 @@ export default function OperatorChat() {
           </div>
         ) : (
           items.map((m, i) => (
+            // design-allow-next-line: no fraction class for 85%
             <div key={i} className={`max-w-[85%] ${m.role==="user"?"ms-auto":"me-auto"}`}>
               <div className={`rounded-2xl px-4 py-2 shadow-sm ${
                 m.role==="user"?"bg-primary text-primary-foreground":"bg-card border"

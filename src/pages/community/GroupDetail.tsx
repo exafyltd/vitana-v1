@@ -9,7 +9,7 @@ import { useGroupMembership } from "@/hooks/useGroupMembership";
 import { generateGroupImage } from "@/lib/groupCardTransformers";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel, PanelContent } from '@/components/layout/spotlight/Panel';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -150,11 +150,12 @@ export default function GroupDetail() {
         {/* Cover Image */}
         <div className="relative h-48 md:h-64 overflow-hidden">
           <img src={coverImage} alt={group.name} className="w-full h-full object-cover" />
+          {/* design-allow-next-line: on-media scrim, theme-independent */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
           <Button 
             variant="ghost" 
             size="sm" 
-            className="absolute top-4 start-4 text-white hover:bg-white/20"
+            className="absolute top-4 start-4 text-primary-foreground hover:bg-card/20"
             onClick={() => navigate(-1)}
           >
             <ArrowLeft className="h-4 w-4 me-1" /> {translate('groupDetail.back', 'Back')}
@@ -196,19 +197,19 @@ export default function GroupDetail() {
 
           {/* Description */}
           {group.description && (
-            <Card>
-              <CardContent className="pt-6">
+            <Panel>
+              <PanelContent className="pt-6">
                 <p className="text-muted-foreground leading-relaxed">{group.description}</p>
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           )}
 
           {/* Members Preview — clickable to open full list */}
-          <Card
+          <Panel
             className="cursor-pointer hover:bg-muted/30 transition-colors"
             onClick={() => setMembersDialogOpen(true)}
           >
-            <CardContent className="pt-6">
+            <PanelContent className="pt-6">
               <h3 className="text-base font-semibold mb-4 flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 {translate('groupDetail.members', 'Members')} ({group.member_count})
@@ -227,8 +228,8 @@ export default function GroupDetail() {
                   </div>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </PanelContent>
+          </Panel>
 
           {/* Group Feed */}
           <GroupFeed groupId={group.id} isMember={isMember} />

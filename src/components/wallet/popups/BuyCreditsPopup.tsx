@@ -109,7 +109,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
       <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-blue-600" />
+            <CreditCard className="h-5 w-5 text-category-3" />
             {t('screens.wallet.buyCredits')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
@@ -117,13 +117,13 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
         <ResponsiveDialogBody className="space-y-4">
           {/* Current Balances */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+            <div className="p-3 bg-gradient-to-r from-category-3/10 to-category-3/10 rounded-lg border border-category-3/15">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.currentCredits')}</div>
-              <div className="font-semibold text-blue-700">{fmtNumber(currentCredits)}</div>
+              <div className="font-semibold text-category-3">{fmtNumber(currentCredits)}</div>
             </div>
-            <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
+            <div className="p-3 bg-gradient-to-r from-status-success-subtle to-status-success-subtle rounded-lg border border-status-success-subtle">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
-              <div className="font-semibold text-green-700">${fmtNumber(usdBalance)}</div>
+              <div className="font-semibold text-status-success">${fmtNumber(usdBalance)}</div>
             </div>
           </div>
 
@@ -134,7 +134,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
               <Button
                 key={index}
                 variant="outline"
-                className={`justify-between h-auto p-4 w-full ${pkg.popular ? 'border-blue-200 bg-blue-50/50' : ''}`}
+                className={`justify-between h-auto p-4 w-full ${pkg.popular ? 'border-category-3/25 bg-category-3/5' : ''}`}
                 onClick={() => handleBuyCredits(pkg.credits, pkg.cost)}
                 disabled={loading || pkg.cost > usdBalance}
               >
@@ -142,7 +142,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <CreditCard className="h-4 w-4 text-blue-600" />
+                    <CreditCard className="h-4 w-4 text-category-3" />
                   )}
                   <div className="text-start">
                     <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtNumber(pkg.credits) })}</div>
@@ -151,7 +151,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   {pkg.popular && (
-                    <Badge className="bg-blue-600 text-white flex items-center gap-1">
+                    <Badge className="bg-category-3 text-primary-foreground flex items-center gap-1">
                       <Star className="h-3 w-3" />
                       {t('screens.wallet.popular')}
                     </Badge>
@@ -195,12 +195,12 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
           </div>
 
           {/* Usage Info */}
-          <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
+          <div className="p-3 bg-category-2/10 rounded-lg border border-category-2/15">
             <div className="flex items-center gap-2 mb-2">
-              <Zap className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-medium text-purple-700">{t('screens.wallet.creditUsage')}</span>
+              <Zap className="h-4 w-4 text-category-2" />
+              <span className="text-sm font-medium text-category-2">{t('screens.wallet.creditUsage')}</span>
             </div>
-            <ul className="text-xs text-purple-600 space-y-1">
+            <ul className="text-xs text-category-2 space-y-1">
               <li>{t('screens.wallet.accessPremiumFeaturesServices')}</li>
               <li>{t('screens.wallet.purchaseInappItemsUpgrades')}</li>
               <li>{t('screens.wallet.participateExclusiveEvents')}</li>

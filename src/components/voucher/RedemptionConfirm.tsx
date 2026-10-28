@@ -2,12 +2,15 @@ import { motion } from "framer-motion";
 import { Gift, Loader2, AlertCircle, Sparkles, Star } from "lucide-react";
 import type { VoucherLookupData } from "@/hooks/useRedeemVoucher";
 import { t } from '@/lib/i18n-toast';
+import { cn } from '@/lib/utils';
 
 interface RedemptionConfirmProps {
   voucherData: VoucherLookupData;
   onClaim: () => void;
   isLoading: boolean;
   error?: string;
+  /** Desktop Spotlight: the page's ScreenFrame is the chrome, so render only the content column. */
+  embedded?: boolean;
 }
 
 const TIER_CONFIG: Record<string, { color: string; benefits: string[]; icon: React.ReactNode }> = {
@@ -38,25 +41,19 @@ const TIER_CONFIG: Record<string, { color: string; benefits: string[]; icon: Rea
   },
 };
 
-export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: RedemptionConfirmProps) {
+// Tier badge fills — the nearest colour tokens to the former violet / amber / emerald hex gradients.
+const TIER_BADGE: Record<string, string> = {
+  violet: "from-category-2 to-primary",
+  amber: "from-status-warning to-category-5",
+  emerald: "from-status-success to-category-1",
+};
+
+export function RedemptionConfirm({ voucherData, onClaim, isLoading, error, embedded = false }: RedemptionConfirmProps) {
   const tier = voucherData.voucher?.tier || "experience";
   const config = TIER_CONFIG[tier] || TIER_CONFIG.experience;
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30">
-      {/* Header with Logo */}
-      <div className="safe-area-top" />
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border/50">
-        <div className="flex items-center justify-center py-4 px-4">
-          <img 
-            src="/images/maxina-logo.png" 
-            alt="MAXINA" 
-            className="h-8 w-auto"
-          />
-        </div>
-      </header>
-
-      <main className="px-4 py-6 max-w-md mx-auto">
+  const main = (
+      <main className={embedded ? "max-w-md mx-auto py-2" : "px-4 py-6 max-w-md mx-auto"}>
         {/* Gift Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -84,14 +81,7 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
           {/* Tier Badge */}
           <div className="flex justify-center mb-4">
             <span 
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white"
-              style={{
-                background: config.color === 'violet' 
-                  ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' 
-                  : config.color === 'amber'
-                  ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-                  : 'linear-gradient(135deg, #10b981, #059669)',
-              }}
+              className={cn("inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-primary-foreground bg-gradient-to-br", TIER_BADGE[config.color] ?? TIER_BADGE.emerald)}
             >
               {config.icon}
               {voucherData.order?.tierName || "Experience Voucher"}
@@ -179,6 +169,25 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
           </p>
         </motion.div>
       </main>
+  );
+
+  if (embedded) return main;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30">
+      {/* Header with Logo */}
+      <div className="safe-area-top" />
+      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border/50">
+        <div className="flex items-center justify-center py-4 px-4">
+          <img 
+            src="/images/maxina-logo.png" 
+            alt="MAXINA" 
+            className="h-8 w-auto"
+          />
+        </div>
+      </header>
+
+      {main}
     </div>
   );
 }

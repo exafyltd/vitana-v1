@@ -112,7 +112,16 @@ export default function MatchesPage() {
         description={t("screens.autopilotdashboard.matchesPageDescription")}
       />
       <AppLayout>
-        <div className="p-4 md:p-6 bg-gradient-to-br from-pink-50 via-fuchsia-50 to-purple-50 dark:from-pink-950/20 dark:via-fuchsia-950/20 dark:to-purple-950/20 min-h-screen">
+        {/* matches-scroll-end: the page scrolls with the document and the
+            bottom bar (+ safe area) and the Orb are fixed over its bottom
+            edge. This padding lets the last card scroll fully above them; it
+            uses the same CSS variable as the Orb's position. The +90px matches
+            .maxina-signin-page (index.css): the Orb is Appilix-injected (no
+            height in this repo) and overhangs the bar by ~36px, so 90px leaves
+            headroom if it grows. md+ has no bar. */}
+        <div
+          data-testid="matches-page"
+          className="p-4 md:p-6 pb-[calc(var(--appilix-bottom-nav-height,72px)_+_env(safe-area-inset-bottom,0px)_+_90px)] md:pb-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
           <div className="max-w-2xl mx-auto">
             <StandardHeader
               title={t("screens.autopilotdashboard.matchesTitle")}
@@ -125,7 +134,7 @@ export default function MatchesPage() {
                   {Array.from({ length: 6 }).map((_, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-3 p-3 rounded-2xl border border-pink-200/40 bg-white/60 dark:bg-white/5"
+                      className="flex items-center gap-3 p-3 rounded-2xl border border-category-4/10 bg-card/60"
                     >
                       <Skeleton className="h-12 w-12 rounded-full shrink-0" />
                       <div className="flex-1 space-y-2">
@@ -138,7 +147,7 @@ export default function MatchesPage() {
                 </div>
               ) : list.length === 0 ? (
                 <div className="text-center py-16 px-4" data-testid="matches-empty">
-                  <Heart className="h-10 w-10 text-pink-400 mb-3 mx-auto" />
+                  <Heart className="h-10 w-10 text-category-4 mb-3 mx-auto" />
                   <p className="text-sm text-muted-foreground max-w-md mx-auto">
                     {t("screens.autopilotdashboard.matchesEmpty")}
                   </p>
@@ -150,11 +159,11 @@ export default function MatchesPage() {
                       <button
                         type="button"
                         onClick={() => navigate(`/u/${m.user_id}`)}
-                        className="w-full flex items-center gap-3 p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-pink-200/50 text-start hover:bg-white dark:hover:bg-white/10 transition-colors shadow-sm"
+                        className="w-full flex items-center gap-3 p-3 rounded-2xl bg-card/70 border border-category-4/15 text-start hover:bg-card transition-colors shadow-sm"
                       >
-                        <Avatar className="w-12 h-12 ring-2 ring-white shadow-sm shrink-0">
+                        <Avatar className="w-12 h-12 ring-2 ring-border shadow-sm shrink-0">
                           <AvatarImage src={m.avatar_url ?? undefined} alt="" />
-                          <AvatarFallback className="bg-gradient-to-br from-pink-400 to-fuchsia-500 text-white text-sm font-semibold">
+                          <AvatarFallback className="bg-gradient-to-br from-category-4/80 to-category-4 text-primary-foreground text-sm font-semibold">
                             {initials(m.display_name)}
                           </AvatarFallback>
                         </Avatar>
@@ -171,7 +180,7 @@ export default function MatchesPage() {
                             </p>
                           )}
                         </div>
-                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white shadow-sm shrink-0">
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r from-category-4 to-category-4 text-primary-foreground shadow-sm shrink-0">
                           {m.compatibility_score}%
                         </span>
                       </button>

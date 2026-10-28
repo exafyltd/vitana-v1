@@ -116,6 +116,7 @@ export function TimelineView() {
         <div className="flex items-center gap-4">
           <label className="text-sm font-medium">{t('screens.dev.timeRange')}</label>
           <Select value={timeRange} onValueChange={setTimeRange}>
+            {/* design-allow-next-line: no scale value within 2px of 200px */}
             <SelectTrigger className="w-[200px]">
               <SelectValue />
             </SelectTrigger>
