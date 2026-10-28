@@ -123,12 +123,14 @@ export function ProfilePreviewDialog() {
         fullscreenOnMobile
         hideCloseButton={isMobile}
         className={isMobile 
+          // design-allow-next-line: theme-independent dark mobile preview
           ? "z-[60] bg-[hsl(222,47%,11%)]" 
           : "z-[60] max-w-6xl p-0 gap-0 overflow-hidden"}
       >
         {isMobile && (
           <button
             onClick={closePreview}
+            // design-allow-next-line: theme-independent dark mobile preview
             className="absolute end-3 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
             style={{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
           >
@@ -137,10 +139,12 @@ export function ProfilePreviewDialog() {
         )}
         <ResponsiveDialogBody>
           {isLoading ? (
+            // design-allow-next-line: measured box, no scale class within 2 px
             <div className="flex items-center justify-center h-[300px] sm:h-[500px]">
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           ) : error || !profile ? (
+            // design-allow-next-line: measured box, no scale class within 2 px
             <div className="flex flex-col items-center justify-center h-[300px] sm:h-[400px] gap-3 px-6">
               <p className="text-muted-foreground">{t('screens.profile.unableLoadProfile')}</p>
               <Button variant="outline" onClick={closePreview}>

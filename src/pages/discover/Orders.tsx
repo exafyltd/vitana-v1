@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -519,6 +519,7 @@ export default function Orders() {
   const LoadingSkeleton = () => (
     <div className="space-y-3">
       {[1, 2, 3].map(i => (
+        // design-allow-next-line: measured skeleton box height off the scale (>2px)
         <div key={i} className="h-[88px] rounded-xl bg-muted/20 animate-pulse" />
       ))}
     </div>
@@ -677,7 +678,7 @@ export default function Orders() {
     <AppLayout>
       <SEO title={t('screens.discover.ordersDiscover')} description="Track your wellness service bookings and product orders" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-background dark:via-background dark:to-background min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title={translate('orders.myOrders')}
@@ -706,11 +707,11 @@ export default function Orders() {
 
           {/* Mock data indicator */}
           {isShowingMockData && (
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
-              <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700">
+            <div className="bg-status-warning-subtle border border-status-warning/25 rounded-lg p-3 flex items-center gap-2">
+              <Badge variant="outline" className="bg-status-warning-subtle text-status-warning border-status-warning/40">
                 {translate('orders.sampleData')}
               </Badge>
-              <span className="text-sm text-amber-700 dark:text-amber-400">
+              <span className="text-sm text-status-warning">
                 {translate('orders.previewNotice')}
               </span>
             </div>

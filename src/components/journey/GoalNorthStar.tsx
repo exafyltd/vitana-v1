@@ -86,6 +86,7 @@ export function GoalNorthStar({
     return (
       <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80" style={guidedCardStyle}>
         <CardContent
+          // design-allow-next-line: measured card min height
           className="p-8 flex min-h-[220px] flex-col items-center justify-center gap-3"
           role="status"
           aria-live="polite"
@@ -122,10 +123,10 @@ export function GoalNorthStar({
   // No goal at all → invite the user to set their Life Compass goal.
   if (!showGuided && !loading && !goal) {
     return (
-      <Card className={`rounded-3xl border shadow-sm ${guided ? "border-sky-300/60" : "border-amber-200/60 bg-gradient-to-br from-amber-50 via-rose-50 to-fuchsia-50 dark:from-amber-950/20 dark:via-rose-950/20 dark:to-fuchsia-950/20"}`} style={guidedCardStyle}>
+      <Card className={`rounded-3xl border shadow-sm ${guided ? "border-category-7/25" : "border-status-warning/15 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to"}`} style={guidedCardStyle}>
         <CardContent className="p-8 flex flex-col items-center text-center gap-3">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400/40 via-rose-400/40 to-fuchsia-500/40 flex items-center justify-center shadow-sm">
-            <Compass className="w-8 h-8 text-rose-600 dark:text-rose-300" />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-status-warning/30 via-category-4/30 to-category-4/40 flex items-center justify-center shadow-sm">
+            <Compass className="w-8 h-8 text-category-4" />
           </div>
           <h2 className="text-lg font-semibold">{t("screens.autopilotdashboard.setGoalTitle")}</h2>
           <p className="text-sm text-muted-foreground max-w-xs">
@@ -133,7 +134,7 @@ export function GoalNorthStar({
           </p>
           <Button
             onClick={onSetGoal}
-            className="mt-1 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-500 text-white border-0 hover:opacity-90"
+            className="mt-1 bg-gradient-to-r from-category-4 via-category-4 to-category-2 text-primary-foreground border-0 hover:opacity-90"
           >
             {t("screens.autopilotdashboard.setGoalCta")}
           </Button>
@@ -170,15 +171,16 @@ export function GoalNorthStar({
   const trend = computeGoalTrend(planData?.plan ?? null, new Date().toISOString().slice(0, 10));
 
   return (
-    <Card className={`rounded-3xl border shadow-sm relative overflow-hidden ${guided ? "border-sky-300/60" : "border-emerald-200/50 bg-gradient-to-br from-emerald-50 via-sky-50 to-pink-50 dark:from-emerald-950/20 dark:via-sky-950/20 dark:to-pink-950/20"}`} style={guidedCardStyle}>
+    <Card className={`rounded-3xl border shadow-sm relative overflow-hidden ${guided ? "border-category-7/25" : "border-status-success/15 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to"}`} style={guidedCardStyle}>
       <div
         aria-hidden
-        className={`pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl ${guided ? "hidden" : "bg-gradient-to-br from-emerald-300/30 via-sky-300/20 to-fuchsia-300/30"}`}
+        // design-allow-next-line: centring, not a layout direction (left-1/2 + -translate-x-1/2)
+        className={`pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl ${guided ? "hidden" : "bg-gradient-to-br from-status-success/10 via-category-7/10 to-category-4/10"}`}
       />
       <CardContent className="p-5 flex flex-col items-center text-center gap-3 relative">
 
         {showGuided && (
-          <h2 className="text-sm font-semibold uppercase tracking-[0.32em] text-sky-900/80">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.32em] text-category-7/80">
             {t("screens.autopilotdashboard.myGuidedJourney")}
           </h2>
         )}

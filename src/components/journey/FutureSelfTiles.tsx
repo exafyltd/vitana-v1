@@ -70,7 +70,7 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
         <h2 className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted-foreground">
           {t("screens.autopilotdashboard.futureSelfTitle")}
         </h2>
-        <span className="text-xs text-violet-500 font-semibold inline-flex items-center gap-0.5">
+        <span className="text-xs text-category-2 font-semibold inline-flex items-center gap-0.5">
           <Sparkles className="w-3 h-3" />
           {anchor}
         </span>
@@ -78,21 +78,21 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
 
       {/* Vivid visioning line — the emotional hook (future self-continuity) */}
       <div
-        className="mx-4 mb-3 rounded-[20px] px-4 py-3.5 relative overflow-hidden border border-white/60"
+        className="mx-4 mb-3 rounded-[20px] px-4 py-3.5 relative overflow-hidden border border-border/60"
         style={{
           background:
-            "linear-gradient(120deg, #fde2ec 0%, #ede9fe 50%, #dbeafe 100%)",
-          boxShadow: "0 6px 18px rgba(196,181,253,0.25)",
+            "linear-gradient(120deg, hsl(var(--surface-page-from)) 0%, hsl(var(--surface-page-via)) 50%, hsl(var(--surface-page-to)) 100%)",
+          boxShadow: "0 6px 18px hsl(var(--category-4) / 0.25)",
         }}
       >
         <div
           className="absolute -top-6 -end-4 w-24 h-24 rounded-full"
-          style={{ background: "radial-gradient(closest-side, rgba(252,211,77,0.45), transparent)" }}
+          style={{ background: "radial-gradient(closest-side, hsl(var(--status-warning) / 0.45), transparent)" }}
           aria-hidden
         />
         <p
           className="relative italic font-semibold leading-snug"
-          style={{ ...SERIF, color: "#6d28d9", fontSize: 16.5 }}
+          style={{ ...SERIF, color: "hsl(var(--category-2))", fontSize: 16.5 }}
         >
           {t("screens.autopilotdashboard.futureSelfVision")}
         </p>
@@ -110,22 +110,24 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
             <div
               className="absolute inset-0"
               style={{
+                // design-allow-next-line: on-media scrim, theme-independent (sheen + legibility scrim over the identity tile art)
                 background:
                   "radial-gradient(120% 70% at 50% -10%, rgba(255,255,255,0.4), transparent 55%), linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.45) 100%)",
               }}
               aria-hidden
             />
-            <div className="absolute top-2 start-2 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-violet-700 backdrop-blur-sm shadow-sm">
+            <div className="absolute top-2 start-2 w-7 h-7 rounded-full bg-card/90 flex items-center justify-center text-category-2 backdrop-blur-sm shadow-sm">
               <tile.icon className="w-3.5 h-3.5" />
             </div>
-            <div className="absolute start-2.5 end-2 bottom-2.5 text-white">
+            <div className="absolute start-2.5 end-2 bottom-2.5 text-primary-foreground">
               <div
                 className="font-bold leading-tight"
+                // design-allow-next-line: on-media scrim, theme-independent (text legibility shadow over the tile art)
                 style={{ ...SERIF, fontSize: 16, textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
               >
                 {t(tile.titleKey)}
               </div>
-              <div className="text-[10px] font-medium text-white/90 leading-tight mt-0.5">
+              <div className="text-[10px] font-medium text-primary-foreground/90 leading-tight mt-0.5">
                 {t(tile.subKey)}
               </div>
             </div>
@@ -136,10 +138,10 @@ export function FutureSelfTiles({ goal }: { goal?: MyJourneyGoal | null }) {
       {/* Closing affirmation — identity reinforcement */}
       <p
         className="text-center mx-4 mt-3.5 italic font-semibold"
-        style={{ ...SERIF, color: "#6d28d9", fontSize: 15.5 }}
+        style={{ ...SERIF, color: "hsl(var(--category-2))", fontSize: 15.5 }}
       >
         {t("screens.autopilotdashboard.futureSelfBecoming")}
-        <span className="not-italic text-amber-400 ms-1">✨</span>
+        <span className="not-italic text-status-warning ms-1">✨</span>
       </p>
     </div>
   );

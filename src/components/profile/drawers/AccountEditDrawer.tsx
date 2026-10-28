@@ -151,6 +151,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound height */}
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('screens.profile.editAccountDetails')}</DialogTitle>

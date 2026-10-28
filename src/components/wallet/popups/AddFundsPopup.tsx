@@ -65,17 +65,17 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
       <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
-            <CurrencyIcon className="h-5 w-5 text-green-600" />
+            <CurrencyIcon className="h-5 w-5 text-status-success" />
             {t('screens.wallet.addFundsBalance', { currency: displayCurrency })}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
 
         <ResponsiveDialogBody className="space-y-4">
           {/* Current Balance */}
-          <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
+          <div className="p-4 bg-gradient-to-r from-status-success-subtle to-status-success-subtle rounded-lg border border-status-success-subtle">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">{t('screens.wallet.currentBalanceLabel', { currency: displayCurrency })}</span>
-              <span className="font-semibold text-green-700">{symbol}{fmtNumber(currentBalance, { maximumFractionDigits: 2 })}</span>
+              <span className="font-semibold text-status-success">{symbol}{fmtNumber(currentBalance, { maximumFractionDigits: 2 })}</span>
             </div>
           </div>
 
@@ -122,12 +122,12 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
           </Button>
 
           {/* Security Info */}
-          <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
+          <div className="p-3 bg-category-3/10 rounded-lg border border-category-3/15">
             <div className="flex items-center gap-2 mb-2">
-              <Shield className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">{t('screens.wallet.secureTransaction')}</span>
+              <Shield className="h-4 w-4 text-category-3" />
+              <span className="text-sm font-medium text-category-3">{t('screens.wallet.secureTransaction')}</span>
             </div>
-            <ul className="text-xs text-blue-600 space-y-1">
+            <ul className="text-xs text-category-3 space-y-1">
               <li>{t('screens.wallet.cardPaymentViaStripe')}</li>
               <li>{t('screens.wallet.text256bitSslEncryption')}</li>
               <li>{t('screens.wallet.pciDssCompliantProcessing')}</li>

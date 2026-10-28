@@ -101,7 +101,7 @@ export function InviteSheet() {
         </SheetHeader>
 
         <div className="mt-6 space-y-4">
-          <div className="rounded-xl border ring-1 ring-border/60 p-3 bg-muted/40 min-h-[64px] flex items-center">
+          <div className="rounded-xl border ring-1 ring-border/60 p-3 bg-muted/40 min-h-16 flex items-center">
             {loading ? (
               <span className="text-sm text-muted-foreground inline-flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />

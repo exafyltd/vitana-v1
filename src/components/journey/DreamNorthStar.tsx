@@ -37,9 +37,9 @@ function HeartDivider({
 }: { width?: number; className?: string }) {
   return (
     <div className={`flex items-center justify-center gap-1.5 ${className}`}>
-      <span style={{ width, height: 1, background: "rgba(76, 29, 149, 0.32)" }} />
-      <span style={{ color: "#f472b6", fontSize: 11, lineHeight: 1 }}>♡</span>
-      <span style={{ width, height: 1, background: "rgba(76, 29, 149, 0.32)" }} />
+      <span style={{ width, height: 1, background: "hsl(var(--category-2) / 0.32)" }} />
+      <span style={{ color: "hsl(var(--category-4))", fontSize: 11, lineHeight: 1 }}>♡</span>
+      <span style={{ width, height: 1, background: "hsl(var(--category-2) / 0.32)" }} />
     </div>
   );
 }
@@ -62,11 +62,11 @@ function TodayDot({
         width: 18,
         height: 18,
         borderRadius: "50%",
-        background: "white",
-        border: "3px solid #7c3aed",
+        background: "hsl(var(--card))",
+        border: "3px solid hsl(var(--category-2))",
         transform: "translate(-50%, -50%)",
         boxShadow:
-          "0 0 0 6px rgba(124,58,237,0.18), 0 4px 10px rgba(124,58,237,0.3)",
+          "0 0 0 6px hsl(var(--category-2) / 0.18), 0 4px 10px hsl(var(--category-2) / 0.3)",
       }}
       aria-hidden
     />
@@ -134,12 +134,12 @@ function JourneyStep({
               style={{
                 width: badge,
                 height: badge,
-                background: "#10b981",
-                boxShadow: "0 2px 5px rgba(16,185,129,0.5)",
+                background: "hsl(var(--status-success))",
+                boxShadow: "0 2px 5px hsl(var(--status-success) / 0.5)",
               }}
               aria-hidden
             >
-              <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+              <Check className="w-2.5 h-2.5 text-primary-foreground" strokeWidth={3} />
             </span>
           )}
         </div>
@@ -160,7 +160,7 @@ function StepConnector() {
   return (
     <div
       className="flex-1 border-t-2 border-dashed"
-      style={{ marginTop: STEP_ZONE / 2, borderColor: "rgba(148,163,184,0.5)" }}
+      style={{ marginTop: STEP_ZONE / 2, borderColor: "hsl(var(--border))" }}
       aria-hidden
     />
   );
@@ -279,7 +279,7 @@ export function DreamNorthStar({
   const guidedNotReady = guided && (!guidedProgress || guidedProgress.totalSessions === 0);
   if (loading && (guidedNotReady || !goal)) {
     return (
-      <Card className="rounded-[28px] border border-violet-200/50 shadow-lg bg-white/80">
+      <Card className="rounded-[28px] border border-category-2/15 shadow-lg bg-card/80">
         <div
           className="p-8 flex min-h-80 flex-col items-center justify-center gap-3"
           role="status"
@@ -295,7 +295,7 @@ export function DreamNorthStar({
   // Error: don't pretend "no goal", offer a retry.
   if (!loading && error && !goal) {
     return (
-      <Card className="rounded-[28px] border border-violet-200/50 shadow-lg bg-white/80">
+      <Card className="rounded-[28px] border border-category-2/15 shadow-lg bg-card/80">
         <div className="p-8 flex flex-col items-center text-center gap-3">
           <div className="w-16 h-16 rounded-full bg-muted/40 flex items-center justify-center">
             <Compass className="w-8 h-8 text-muted-foreground" />
@@ -390,7 +390,7 @@ export function DreamNorthStar({
   return (
     <Card
       ref={cardRef}
-      className={`rounded-[28px] border shadow-2xl overflow-hidden relative ${guided ? "border-sky-300/60" : "border-violet-200/50"}`}
+      className={`rounded-[28px] border shadow-2xl overflow-hidden relative ${guided ? "border-category-7/25" : "border-category-2/15"}`}
       style={
         guided
           ? {
@@ -431,10 +431,11 @@ export function DreamNorthStar({
           <div
             className="text-center font-bold text-balance"
             style={{
-              color: "#4c1d95",
+              color: "hsl(var(--category-2))",
               fontSize: 20,
               lineHeight: 1.2,
               letterSpacing: "0.01em",
+              // design-allow-next-line: on-media scrim, theme-independent (white glint on the painted dream-board title)
               textShadow: "0 1px 3px rgba(255,255,255,0.6)",
             }}
           >
@@ -444,9 +445,10 @@ export function DreamNorthStar({
           <div
             className="text-center font-semibold"
             style={{
-              color: "#4c1d95",
+              color: "hsl(var(--category-2))",
               fontSize: 14,
               letterSpacing: "0.32em",
+              // design-allow-next-line: on-media scrim, theme-independent (white glint on the painted dream-board label)
               textShadow: "0 1px 3px rgba(255,255,255,0.6)",
             }}
           >
@@ -468,7 +470,7 @@ export function DreamNorthStar({
             viewBox={`0 0 ${ringSize} ${ringSize}`}
             width={ringSize}
             height={ringSize}
-            style={{ filter: "drop-shadow(0 12px 24px rgba(196,181,253,0.4))" }}
+            style={{ filter: "drop-shadow(0 12px 24px hsl(var(--category-4) / 0.4))" }}
             aria-hidden
           >
             <defs>
@@ -536,7 +538,8 @@ export function DreamNorthStar({
             <button
               type="button"
               onClick={onOpenPlan}
-              className="absolute left-1/2 z-10 -translate-x-1/2 w-11 h-11 rounded-full bg-white/95 border border-violet-200/50 shadow-md flex items-center justify-center text-violet-700 hover:scale-[1.04] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              // design-allow-next-line: centring, not a layout direction (left-1/2 + -translate-x-1/2)
+              className="absolute left-1/2 z-10 -translate-x-1/2 w-11 h-11 rounded-full bg-card/95 border border-category-2/15 shadow-md flex items-center justify-center text-category-2 hover:scale-[1.04] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{ top: -6 }}
               aria-label={t("screens.autopilotdashboard.openPlan")}
             >
@@ -606,7 +609,7 @@ export function DreamNorthStar({
                 className="absolute start-2 end-2 font-semibold leading-none truncate"
                 style={{
                   top: clickHereTop,
-                  color: "#6d28d9",
+                  color: "hsl(var(--category-2))",
                   fontSize: clickHereFont,
                   letterSpacing: "0.05em",
                 }}
@@ -622,7 +625,7 @@ export function DreamNorthStar({
                 style={{
                   top: numberTop,
                   transform: "translateY(-50%)",
-                  color: "#7c3aed",
+                  color: "hsl(var(--category-2))",
                   fontSize: guidedNumberFont,
                 }}
               >
@@ -633,7 +636,7 @@ export function DreamNorthStar({
               {guidedNextSession ? (
                 <div
                   className="absolute start-2 end-2 px-2 text-xs font-medium leading-tight"
-                  style={{ top: captionTop, color: "#7c3aed" }}
+                  style={{ top: captionTop, color: "hsl(var(--category-2))" }}
                 >
                   {t("screens.autopilotdashboard.sessionNumber", {
                     n: guidedNextSession.session,
@@ -661,24 +664,26 @@ export function DreamNorthStar({
                   ? "screens.autopilotdashboard.setGoalCta"
                   : "screens.autopilotdashboard.setDeadlineCta",
               )}
-              className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-start"
+              className="absolute rounded-full bg-card/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-start"
               style={{
                 inset: stroke + 4,
                 backdropFilter: "blur(8px)",
+                // design-allow-next-line: on-media scrim, theme-independent (inner glass glint on the painted ring)
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
               }}
             >
               <div
                 className="absolute start-0 end-0 text-center font-semibold"
-                style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
+                style={{ top: "19%", color: "hsl(var(--category-2))", fontSize: 13, letterSpacing: "0.32em" }}
               >
                 {t("screens.autopilotdashboard.dayLabel").toUpperCase()}
               </div>
               <div
+                // design-allow-next-line: centring, not a layout direction (left-1/2, translate centred in style)
                 className="absolute left-1/2 top-1/2 font-bold leading-none"
                 style={{
                   transform: "translate(-50%, -50%)",
-                  color: "#7c3aed",
+                  color: "hsl(var(--category-2))",
                   fontSize: numberFont,
                 }}
               >
@@ -716,17 +721,17 @@ export function DreamNorthStar({
               aria-label={t("screens.autopilotdashboard.startSessionAria", {
                 n: guidedNextSession.session,
               })}
-              className="rounded-2xl border border-white/60 px-4 py-2.5 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              className="rounded-2xl border border-border/60 px-4 py-2.5 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
-                background: "rgba(255,255,255,0.95)",
+                background: "hsl(var(--card) / 0.95)",
                 backdropFilter: "blur(8px)",
-                boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
+                boxShadow: "0 8px 20px hsl(var(--category-2) / 0.12)",
               }}
             >
-              <div className="text-[15px] font-bold leading-tight text-slate-900 text-center">
+              <div className="text-[15px] font-bold leading-tight text-foreground text-center">
                 {t("screens.autopilotdashboard.nextStepLabel")}
               </div>
-              <div className="text-[13px] font-medium text-violet-700 text-center mt-0.5">
+              <div className="text-[13px] font-medium text-category-2 text-center mt-0.5">
                 {t("screens.autopilotdashboard.startSessionShort", {
                   n: guidedNextSession.session,
                 })}
@@ -757,7 +762,7 @@ export function DreamNorthStar({
                   // Daily goal smashed — celebrate with a gold medal + "100% done"
                   // instead of a number, so the user sees they're complete today.
                   <JourneyStep
-                    icon={<Medal className="w-5 h-5" style={{ color: "#b45309" }} />}
+                    icon={<Medal className="w-5 h-5" style={{ color: "hsl(var(--status-warning))" }} />}
                     label={t("screens.autopilotdashboard.dailyGoalMetLabel")}
                     fill="linear-gradient(135deg, #fde68a 0%, #fcd34d 100%)"
                     ring="#f59e0b"
@@ -784,28 +789,28 @@ export function DreamNorthStar({
             // No next session resolved yet (loading) or all sessions done — keep
             // the static learning-goal pill as the calm fallback.
             <div
-              className="text-start rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
+              className="text-start rounded-2xl border border-border/60 px-4 py-3.5 flex items-center gap-3 mt-4"
               style={{
-                background: "rgba(255,255,255,0.92)",
+                background: "hsl(var(--card) / 0.92)",
                 backdropFilter: "blur(8px)",
-                boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
+                boxShadow: "0 8px 20px hsl(var(--category-2) / 0.12)",
               }}
             >
               <div
-                className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-primary-foreground shrink-0"
                 style={{
-                  background: "linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%)",
-                  boxShadow: "0 4px 10px rgba(196,181,253,0.4)",
+                  background: "linear-gradient(135deg, hsl(var(--category-2)) 0%, hsl(var(--category-4)) 100%)",
+                  boxShadow: "0 4px 10px hsl(var(--category-4) / 0.4)",
                 }}
               >
                 <Sparkles className="w-5 h-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[15px] font-bold leading-tight text-slate-900">
+                <div className="text-[15px] font-bold leading-tight text-foreground">
                   {t("screens.autopilotdashboard.guidedGoalTitle")}
                 </div>
                 <HeartDivider width={20} className="my-1.5" />
-                <div className="text-[12px] text-slate-500">
+                <div className="text-[12px] text-muted-foreground">
                   {t("screens.autopilotdashboard.guidedGoalSubtitle", {
                     total: guidedProgress!.totalSessions,
                   })}
@@ -818,31 +823,31 @@ export function DreamNorthStar({
             type="button"
             onClick={onSetGoal}
             aria-label={t("screens.autopilotdashboard.adjustGoalCta")}
-            className="text-start rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="text-start rounded-2xl border border-border/60 px-4 py-3.5 flex items-center gap-3 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             style={{
-              background: "rgba(255,255,255,0.92)",
+              background: "hsl(var(--card) / 0.92)",
               backdropFilter: "blur(8px)",
-              boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
+              boxShadow: "0 8px 20px hsl(var(--category-2) / 0.12)",
             }}
           >
             <div
-              className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0"
+              className="w-11 h-11 rounded-full flex items-center justify-center text-primary-foreground shrink-0"
               style={{
-                background: "linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%)",
-                boxShadow: "0 4px 10px rgba(196,181,253,0.4)",
+                background: "linear-gradient(135deg, hsl(var(--category-2)) 0%, hsl(var(--category-4)) 100%)",
+                boxShadow: "0 4px 10px hsl(var(--category-4) / 0.4)",
               }}
             >
               <Sparkles className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[15px] font-bold leading-tight text-slate-900">
+              <div className="text-[15px] font-bold leading-tight text-foreground">
                 {localizeGoal(goal.active_goal_text)}
               </div>
               {goal.target_date ? (
                 <>
                   <HeartDivider width={20} className="my-1.5" />
-                  <div className="text-[12px] text-slate-500 flex items-center gap-1.5">
-                    <CalendarClock className="w-3.5 h-3.5 text-violet-400" />
+                  <div className="text-[12px] text-muted-foreground flex items-center gap-1.5">
+                    <CalendarClock className="w-3.5 h-3.5 text-category-2" />
                     {fmtDate(new Date(goal.target_date), {
                       day: "numeric",
                       month: "long",
@@ -853,7 +858,7 @@ export function DreamNorthStar({
               ) : (
                 <>
                   <HeartDivider width={20} className="my-1.5" />
-                  <div className="text-[12px] text-violet-700 font-medium">
+                  <div className="text-[12px] text-category-2 font-medium">
                     {t("screens.autopilotdashboard.setDeadlineCta")}
                   </div>
                 </>
@@ -863,7 +868,7 @@ export function DreamNorthStar({
         ) : (
           <Button
             onClick={onSetGoal}
-            className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-500 text-white border-0 mt-4 rounded-full h-12 text-sm font-semibold shadow-lg"
+            className="bg-gradient-to-r from-category-4 to-category-2 text-primary-foreground border-0 mt-4 rounded-full h-12 text-sm font-semibold shadow-lg"
           >
             {t("screens.autopilotdashboard.setGoalCta")}
           </Button>
@@ -874,16 +879,16 @@ export function DreamNorthStar({
           className="text-center -mx-5 -mb-3 mt-3 py-3 px-5"
           style={{
             background:
-              "linear-gradient(180deg, rgba(196,181,253,0.22) 0%, rgba(196,181,253,0.4) 100%)",
+              "linear-gradient(180deg, hsl(var(--category-4) / 0.22) 0%, hsl(var(--category-4) / 0.4) 100%)",
           }}
         >
           <span
             className="italic font-semibold"
-            style={{ ...SERIF, fontSize: 18, color: "#6d28d9", letterSpacing: "0.02em" }}
+            style={{ ...SERIF, fontSize: 18, color: "hsl(var(--category-2))", letterSpacing: "0.02em" }}
           >
             {t("screens.autopilotdashboard.dreamTagline")}
           </span>
-          <span className="text-amber-400 ms-1">✨</span>
+          <span className="text-status-warning ms-1">✨</span>
         </div>
       </div>
     </Card>

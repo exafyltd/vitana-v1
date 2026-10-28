@@ -144,7 +144,7 @@ function ControlRow({
             <code className="text-xs text-muted-foreground">{control.type}</code>
             {readinessBadge(control.text)}
             {control.auto_registered && !control.enabled && (
-              <Badge variant="outline" className="border-amber-500 text-amber-600">
+              <Badge variant="outline" className="border-status-warning text-status-warning">
                 {t("notificationControls.newType")}
               </Badge>
             )}

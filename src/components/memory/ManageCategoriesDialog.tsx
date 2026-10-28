@@ -69,6 +69,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">

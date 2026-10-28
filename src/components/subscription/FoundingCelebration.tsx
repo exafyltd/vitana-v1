@@ -89,10 +89,10 @@ export default function FoundingCelebration() {
           initial={reduceMotion ? false : { scale: 0.6, opacity: 0, rotate: -8 }}
           animate={{ scale: 1, opacity: 1, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 220, damping: 14 }}
-          className="mx-auto mt-2 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 shadow-lg"
+          className="mx-auto mt-2 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-status-warning/40 to-status-warning shadow-lg"
           aria-hidden="true"
         >
-          <Crown className="h-10 w-10 text-white" />
+          <Crown className="h-10 w-10 text-primary-foreground" />
         </motion.div>
 
         <DialogHeader className="items-center text-center sm:text-center">
@@ -100,7 +100,7 @@ export default function FoundingCelebration() {
             initial={reduceMotion ? false : { y: 8, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15 }}
-            className="rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
+            className="rounded-full bg-status-warning-subtle px-3 py-1 text-sm font-semibold text-status-warning"
             data-testid="founding-badge"
           >
             {t('billing.founding.celebration.badge', { seat: fmtNumber(data.seat_number!), max })}
@@ -118,10 +118,10 @@ export default function FoundingCelebration() {
             initial={reduceMotion ? false : { y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-2 space-y-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-start dark:border-amber-800 dark:bg-amber-950/30"
+            className="mt-2 space-y-2 rounded-xl border border-status-warning/25 bg-status-warning-subtle p-4 text-start"
           >
             <div className="flex items-center gap-3">
-              <Gift className="h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
+              <Gift className="h-5 w-5 shrink-0 text-status-warning" aria-hidden="true" />
               <div>
                 <div className="text-xs uppercase tracking-wide text-muted-foreground">
                   {t('billing.founding.celebration.valueLabel')}
@@ -133,7 +133,7 @@ export default function FoundingCelebration() {
             </div>
             {data.granted_until && (
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <CalendarCheck className="h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
+                <CalendarCheck className="h-5 w-5 shrink-0 text-status-warning" aria-hidden="true" />
                 <span>{t('billing.founding.celebration.until', { date: fmtDate(new Date(data.granted_until)) })}</span>
               </div>
             )}

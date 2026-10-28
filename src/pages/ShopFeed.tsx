@@ -20,8 +20,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArchetypeSkeleton } from "@/components/layout/spotlight";
-import { FrameWhen } from "@/components/layout/spotlight/FrameWhen";
+import AppLayout from "@/components/AppLayout";
+import { ArchetypeSkeleton, ScreenFrame } from "@/components/layout/spotlight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { Link } from "react-router-dom";
@@ -518,6 +518,8 @@ function ShopFeedInner() {
   } = useShopFeed();
   const { emit, sessionId } = useShopEvents();
   const { selectProduct, selectedProduct } = useProductSelection();
+  // Inside AppLayout (desktop Spotlight) the app shell already owns the `main` landmark.
+  const Root = useSpotlightEnabled() ? "div" : "main";
 
   const [muted, setMuted] = useState(true);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
@@ -612,29 +614,29 @@ function ShopFeedInner() {
   // -- Role-blocked: community-only empty state -------------------------------
   if (roleBlocked) {
     return (
-      <main className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
+      <Root className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
         <h1 className="text-xl font-semibold">
           {t("videoShop.feed.roleBlockedTitle")}
         </h1>
         <p className="text-sm text-muted-foreground">
           {t("videoShop.feed.roleBlockedBody")}
         </p>
-      </main>
+      </Root>
     );
   }
 
   if (isLoading) {
     return (
-      <main className="dark min-h-dvh bg-background" aria-busy="true">
+      <Root className="dark min-h-dvh bg-background" aria-busy="true">
         <ArchetypeSkeleton archetype="immersive" />
         <span className="sr-only">{t("videoShop.feed.loading")}</span>
-      </main>
+      </Root>
     );
   }
 
   if (error && !roleBlocked) {
     return (
-      <main className="flex min-h-dvh flex-col items-center justify-center gap-3 px-6 text-center">
+      <Root className="flex min-h-dvh flex-col items-center justify-center gap-3 px-6 text-center">
         <h1 className="text-xl font-semibold">
           {t("videoShop.feed.errorTitle")}
         </h1>
@@ -644,13 +646,13 @@ function ShopFeedInner() {
         <Button variant="outline" onClick={() => refresh()}>
           {t("videoShop.feed.retry")}
         </Button>
-      </main>
+      </Root>
     );
   }
 
   if (videos.length === 0) {
     return (
-      <main className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
+      <Root className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
         <ShoppingBag className="h-8 w-8 text-muted-foreground" />
         <h1 className="text-xl font-semibold">
           {t("videoShop.feed.emptyTitle")}
@@ -661,12 +663,12 @@ function ShopFeedInner() {
         <Button asChild variant="outline" className="mt-2">
           <Link to="/discover">{t("videoShop.feed.browseDiscover")}</Link>
         </Button>
-      </main>
+      </Root>
     );
   }
 
   return (
-    <main className="h-dvh w-full overflow-y-scroll bg-foreground dark:bg-background snap-y snap-mandatory">
+    <Root className="h-dvh w-full overflow-y-scroll bg-foreground dark:bg-background snap-y snap-mandatory">
       {videos.map((video) => (
         <VideoCard
           key={video.id}
@@ -705,18 +707,29 @@ function ShopFeedInner() {
 
       {/* Expanded full PDP — reuses the existing shared drawer. */}
       <ProductDetailsDrawer />
-    </main>
+    </Root>
   );
 }
 
 export default function ShopFeed() {
   const spotlight = useSpotlightEnabled();
-  return (
-    <ProductSelectionProvider>
-      {/* VTID-05117: Spotlight on → the full-bleed `immersive` frame (no in-screen chrome). */}
-      <FrameWhen on={spotlight} archetype="immersive">
+  // Phones and Spotlight off: the full-screen feed exactly as before.
+  if (!spotlight) {
+    return (
+      <ProductSelectionProvider>
         <ShopFeedInner />
-      </FrameWhen>
-    </ProductSelectionProvider>
+      </ProductSelectionProvider>
+    );
+  }
+  // Desktop Spotlight: the full-bleed `immersive` frame (no in-screen chrome, VTID-05117) inside the app
+  // shell, so the sidebar and the ORB stay (SR-04).
+  return (
+    <AppLayout>
+      <ProductSelectionProvider>
+        <ScreenFrame archetype="immersive">
+          <ShopFeedInner />
+        </ScreenFrame>
+      </ProductSelectionProvider>
+    </AppLayout>
   );
 }

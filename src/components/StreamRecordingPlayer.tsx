@@ -94,6 +94,7 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
   return (
     <div className="w-full space-y-4">
       {/* Video Player */}
+      {/* design-allow-next-line: on-media scrim, theme-independent */}
       <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
         <video
           ref={videoRef}
@@ -107,7 +108,7 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
       <div className="space-y-2">
         {/* Progress Bar */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground min-w-[40px]">
+          <span className="text-sm text-muted-foreground min-w-10">
             {formatTime(currentTime)}
           </span>
           <Slider
@@ -117,7 +118,7 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
             onValueChange={handleSeek}
             className="flex-1"
           />
-          <span className="text-sm text-muted-foreground min-w-[40px]">
+          <span className="text-sm text-muted-foreground min-w-10">
             {formatTime(duration)}
           </span>
         </div>

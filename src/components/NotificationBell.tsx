@@ -45,7 +45,7 @@ export default function NotificationBell() {
             title={`Notifications • ${unreadCount} unread`}
             aria-label={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
           >
-            <Bell className="h-4 w-4 text-white" />
+            <Bell className="h-4 w-4 text-primary-foreground" />
           </Button>
           <NotificationBadge
             count={unreadCount}
@@ -55,6 +55,7 @@ export default function NotificationBell() {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
+        // design-allow-next-line: calc against fixed chrome width
         className="w-[calc(100vw-2rem)] sm:w-96 rounded-2xl shadow-lg p-0 overflow-hidden"
         align="end"
       >

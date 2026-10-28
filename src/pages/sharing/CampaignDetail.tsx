@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Badge } from "@/components/ui/badge";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
@@ -222,58 +222,58 @@ function CampaignDetail() {
     <>
       {/* Stats Overview */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.totalPosts')}</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Panel>
+          <PanelHeader className="pb-3">
+            <PanelTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.totalPosts')}</PanelTitle>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-3xl font-bold">{campaignPosts.length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.published')}</CardTitle>
-          </CardHeader>
-          <CardContent>
+          </PanelContent>
+        </Panel>
+        <Panel>
+          <PanelHeader className="pb-3">
+            <PanelTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.published')}</PanelTitle>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-3xl font-bold text-status-success">
               {campaignPosts.filter(p => p.status === 'published').length}
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.scheduled')}</CardTitle>
-          </CardHeader>
-          <CardContent>
+          </PanelContent>
+        </Panel>
+        <Panel>
+          <PanelHeader className="pb-3">
+            <PanelTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.scheduled')}</PanelTitle>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-3xl font-bold text-status-warning">
               {campaignPosts.filter(p => p.status === 'scheduled').length}
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.drafts')}</CardTitle>
-          </CardHeader>
-          <CardContent>
+          </PanelContent>
+        </Panel>
+        <Panel>
+          <PanelHeader className="pb-3">
+            <PanelTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.drafts')}</PanelTitle>
+          </PanelHeader>
+          <PanelContent>
             <div className="text-3xl font-bold text-muted-foreground">
               {campaignPosts.filter(p => p.status === 'draft').length}
             </div>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </div>
 
       {/* Posts List */}
-      <Card>
-        <CardHeader>
+      <Panel>
+        <PanelHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>{t('screens.sharing.campaignPosts')}</CardTitle>
+            <PanelTitle>{t('screens.sharing.campaignPosts')}</PanelTitle>
             <Button onClick={() => setShowCreatePostDialog(true)}>
               <Plus className="w-4 h-4 me-2" />
               {t('screens.sharing.createPost')}
             </Button>
           </div>
-        </CardHeader>
-        <CardContent>
+        </PanelHeader>
+        <PanelContent>
           {campaignPosts.length > 0 ? (
             <div className="space-y-3">
               {campaignPosts.map((post) => (
@@ -338,8 +338,8 @@ function CampaignDetail() {
               </Button>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </PanelContent>
+      </Panel>
     </>
   );
 

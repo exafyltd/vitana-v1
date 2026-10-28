@@ -131,7 +131,96 @@
       "today": "今天",
       "yesterday": "昨天"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "发送中",
+      "sent": "已发送",
+      "delivered": "已送达",
+      "read": "已读",
+      "failed": "未发送",
+      "retry": "重试",
+      "retryLabel": "重新发送这条消息",
+      "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "跳到最新",
+      "one": "1 条新消息",
+      "other": "{count} 条新消息",
+      "unread": "未读消息",
+      "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "原消息不可用",
+      "loading": "原消息…",
+      "jumpToOriginal": "转到原消息",
+      "jumpTo": "转到 {name} 的原消息",
+      "unknownSender": "成员",
+      "noText": "附件",
+      "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "上传失败",
+      "retry": "重试",
+      "retryUpload": "重新上传 {name}",
+      "video": "视频",
+      "moreItems": "还有 {count} 个",
+      "openImage": "打开图片 {name}",
+      "openVideo": "播放视频 {name}",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "搜索消息",
+      "titleConversation": "在此对话中搜索",
+      "hint": "请至少输入 {min} 个字符",
+      "placeholder": "搜索消息…",
+      "olderHit": "上一个匹配",
+      "newerHit": "下一个匹配",
+      "type": "类型",
+      "from": "从",
+      "to": "至",
+      "types": {
+        "any": "全部",
+        "image": "照片",
+        "video": "视频",
+        "file": "文件",
+        "voice": "语音消息",
+        "link": "链接"
+      },
+      "searching": "正在搜索…",
+      "error": "搜索失败，请重试。",
+      "empty": "未找到消息",
+      "results": "搜索结果",
+      "conversation": "对话",
+      "more": "显示更多",
+      "filters": "筛选"
+    },
+    "shared": {
+      "sendInMessage": "通过消息发送",
+      "sheetTitle": "通过消息发送{kind}",
+      "captionPlaceholder": "添加消息（可选）",
+      "sent": "已发送",
+      "notAllowed": "你已无法分享此内容。",
+      "kind": {
+        "post": "帖子",
+        "event": "活动",
+        "product": "商品",
+        "profile": "个人资料"
+      },
+      "loading": "正在加载预览…",
+      "loadFailed": "无法加载预览",
+      "retry": "重试",
+      "open": "打开{kind}：{title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}已不可用",
+          "body": "它已被删除。"
+        },
+        "restricted": {
+          "title": "你无法查看此{kind}",
+          "body": "其隐私设置不允许你查看。"
+        }
+      }
+    }
   },
   "_pending_review": {}
 }

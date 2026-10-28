@@ -172,6 +172,7 @@ export function PhotoLightbox({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        // design-allow-next-line: on-media scrim, theme-independent (photo lightbox backdrop)
         className="max-w-[98vw] h-[98vh] p-0 bg-black/80 backdrop-blur-[4px] border-none"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -180,13 +181,14 @@ export function PhotoLightbox({
         aria-label={t('screens.diary.photoPreview')}
       >
         {/* Chrome Bar - Semi-transparent with gradient fade */}
-        <div className="absolute top-0 start-0 end-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
+        {/* design-allow-next-line: on-media scrim, theme-independent (lightbox chrome over the photo) */}
+        <div className="absolute top-0 start-0 end-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-border/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
           <div className="flex items-center gap-3">
-            <span className="text-[13px] text-white/80">{t('screens.diary.timelineDiaryEntry')}</span>
+            <span className="text-[13px] text-primary-foreground/80">{t('screens.diary.timelineDiaryEntry')}</span>
             {createdAt && (
               <>
-                <span className="text-white/60">·</span>
-                <span className="text-[13px] text-white/80">
+                <span className="text-primary-foreground/60">·</span>
+                <span className="text-[13px] text-primary-foreground/80">
                   {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
                 </span>
               </>
@@ -199,11 +201,12 @@ export function PhotoLightbox({
               size="sm" 
               onClick={handleZoomOut} 
               disabled={zoomState.scale <= 1}
-              className="text-white/85 hover:text-white hover:bg-white/10"
+              className="text-primary-foreground/85 hover:text-primary-foreground hover:bg-card/10"
             >
               <ZoomOut className="h-4 w-4" />
             </Button>
-            <span className="text-sm text-white/85 min-w-[3ch] text-center">
+            {/* design-allow-next-line: character-based width (zoom percentage label) */}
+            <span className="text-sm text-primary-foreground/85 min-w-[3ch] text-center">
               {Math.round(zoomState.scale * 100)}%
             </span>
             <Button 
@@ -211,32 +214,32 @@ export function PhotoLightbox({
               size="sm" 
               onClick={handleZoomIn} 
               disabled={zoomState.scale >= 3}
-              className="text-white/85 hover:text-white hover:bg-white/10"
+              className="text-primary-foreground/85 hover:text-primary-foreground hover:bg-card/10"
             >
               <ZoomIn className="h-4 w-4" />
             </Button>
-            <div className="w-px h-6 bg-white/10 mx-1" />
+            <div className="w-px h-6 bg-card/10 mx-1" />
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={handleDownload}
-              className="text-white/85 hover:text-white hover:bg-white/10"
+              className="text-primary-foreground/85 hover:text-primary-foreground hover:bg-card/10"
             >
               <Download className="h-4 w-4" />
             </Button>
             <Button 
               variant="ghost" 
               size="sm"
-              className="text-white/85 hover:text-white hover:bg-white/10"
+              className="text-primary-foreground/85 hover:text-primary-foreground hover:bg-card/10"
             >
               <MoreHorizontal className="h-4 w-4" />
             </Button>
-            <div className="w-px h-6 bg-white/10 mx-1" />
+            <div className="w-px h-6 bg-card/10 mx-1" />
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => onOpenChange(false)}
-              className="text-white/85 hover:text-white hover:bg-white/10"
+              className="text-primary-foreground/85 hover:text-primary-foreground hover:bg-card/10"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -255,6 +258,7 @@ export function PhotoLightbox({
               ref={imageRef}
               src={images[currentIndex]}
               alt={caption || `Photo ${currentIndex + 1}`}
+              // design-allow-next-line: viewport-bound media box (photo fits the viewport)
               className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.4)] transition-all duration-500 ease-out select-none hover:scale-[1.01]"
               style={{
                 transform: `scale(${zoomState.scale}) translate(${zoomState.x / zoomState.scale}px, ${zoomState.y / zoomState.scale}px)`,
@@ -271,7 +275,8 @@ export function PhotoLightbox({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute start-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
+                  // design-allow-next-line: on-media scrim, theme-independent (nav control over the photo)
+                  className="absolute start-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-primary-foreground hover:bg-black/70 disabled:opacity-30 h-12 w-12"
                   onClick={() => onIndexChange(currentIndex - 1)}
                   disabled={currentIndex === 0}
                   aria-label={t('screens.diary.previousImage')}
@@ -281,7 +286,8 @@ export function PhotoLightbox({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute end-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
+                  // design-allow-next-line: on-media scrim, theme-independent (nav control over the photo)
+                  className="absolute end-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-primary-foreground hover:bg-black/70 disabled:opacity-30 h-12 w-12"
                   onClick={() => onIndexChange(currentIndex + 1)}
                   disabled={currentIndex === images.length - 1}
                   aria-label={t('screens.diary.nextImage')}
@@ -294,9 +300,10 @@ export function PhotoLightbox({
 
           {/* Caption & Tags Card - Below the image */}
           {(caption || (tags && tags.length > 0)) && (
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-lg px-4 py-3 max-w-[80%] animate-fade-in opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards]">
+            // design-allow-next-line: viewport-bound caption width
+            <div className="bg-card/10 backdrop-blur-sm border border-border/10 rounded-xl shadow-lg px-4 py-3 max-w-[80%] animate-fade-in opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards]">
               {caption && (
-                <p className="text-[14.5px] font-medium text-white leading-relaxed mb-2">
+                <p className="text-[14.5px] font-medium text-primary-foreground leading-relaxed mb-2">
                   {caption}
                 </p>
               )}
@@ -306,7 +313,7 @@ export function PhotoLightbox({
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="bg-white/15 text-white/80 border-none text-xs font-medium"
+                      className="bg-card/15 text-primary-foreground/80 border-none text-xs font-medium"
                     >
                       {tag}
                     </Badge>
@@ -319,7 +326,8 @@ export function PhotoLightbox({
 
         {/* Filmstrip - Keep at bottom */}
         {showFilmstrip && images.length > 1 && (
-          <div className="absolute bottom-0 start-0 end-0 h-16 bg-black/30 backdrop-blur-md border-t border-white/10 px-6">
+          // design-allow-next-line: on-media scrim, theme-independent (filmstrip over the photo)
+          <div className="absolute bottom-0 start-0 end-0 h-16 bg-black/30 backdrop-blur-md border-t border-border/10 px-6">
             <div className="flex items-center gap-2 h-full overflow-x-auto">
               {images.map((img, index) => (
                 <button

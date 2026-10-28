@@ -96,7 +96,7 @@ export default function CreditTransferPopup({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Send className="w-5 h-5 text-blue-600" />
+            <Send className="w-5 h-5 text-category-3" />
             {t('screens.payment.transferCredits')}
           </DialogTitle>
         </DialogHeader>
@@ -107,10 +107,10 @@ export default function CreditTransferPopup({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-orange-500" />
+                  <Coins className="w-5 h-5 text-status-warning" />
                   <span className="font-medium">{t('screens.payment.yourBalance')}</span>
                 </div>
-                <span className="text-lg font-bold text-orange-600">{t('screens.payment.value0Credits', { value0: fmtNumber(currentBalance) })}
+                <span className="text-lg font-bold text-status-warning">{t('screens.payment.value0Credits', { value0: fmtNumber(currentBalance) })}
                 </span>
               </div>
             </CardContent>
@@ -171,7 +171,7 @@ export default function CreditTransferPopup({
                 <span className="text-muted-foreground">{t('screens.payment.remainingValue0Credits', { value0: fmtNumber(remainingBalance) })}
                 </span>
                 {!canTransfer && transferAmount > currentBalance && (
-                  <span className="text-red-500 flex items-center gap-1">
+                  <span className="text-status-error flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" />
                     {t('screens.payment.insufficientBalance')}
                   </span>
@@ -194,17 +194,17 @@ export default function CreditTransferPopup({
 
           {/* Transfer Preview */}
           {transferAmount > 0 && canTransfer && (
-            <Card className="bg-green-50 border-green-200">
+            <Card className="bg-status-success-subtle border-status-success/25">
               <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-3 text-sm">
                   <div className="text-center">
                     <p className="font-medium">{t('screens.payment.youSend')}</p>
-                    <p className="text-green-600 font-bold">{t('screens.payment.transferamountCredits', { transferAmount })}</p>
+                    <p className="text-status-success font-bold">{t('screens.payment.transferamountCredits', { transferAmount })}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-green-600" />
+                  <ArrowRight className="w-4 h-4 text-status-success" />
                   <div className="text-center">
                     <p className="font-medium">{recipient?.name || 'Recipient'}</p>
-                    <p className="text-green-600 font-bold">{t('screens.payment.receivesTransferamountCredits', { transferAmount })}</p>
+                    <p className="text-status-success font-bold">{t('screens.payment.receivesTransferamountCredits', { transferAmount })}</p>
                   </div>
                 </div>
               </CardContent>

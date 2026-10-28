@@ -29,7 +29,7 @@ export function MobileInboxEmptyState({
           <MessageSquare className="w-10 h-10 text-primary/60" />
         </div>
         <div className="absolute -top-1 -end-1 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg">
-          <Users className="w-4 h-4 text-white" />
+          <Users className="w-4 h-4 text-primary-foreground" />
         </div>
       </div>
 
@@ -37,6 +37,7 @@ export function MobileInboxEmptyState({
       <h3 className="text-lg font-semibold text-foreground mb-2">
         {translate('inbox.emptyState.title')}
       </h3>
+      {/* design-allow-next-line: measured empty-state width */}
       <p className="text-sm text-muted-foreground mb-6 max-w-[280px]">
         {context === 'global' 
           ? translate('inbox.emptyState.globalDescription')

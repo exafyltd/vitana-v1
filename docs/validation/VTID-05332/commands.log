@@ -1,0 +1,32 @@
+# VTID-05332 (matches-scroll-end/matches-list-clearance) — session kiro-exafyltd-202610220833-d231
+# base: vitana-v1 origin/main b8a4efbd31b43001f65150e6316056cfcde18248
+
+## red — new test on origin/main (MatchesPage.tsx unchanged)
+$ npx vitest run src/pages/MatchesPage.bottom-clearance.test.tsx
+  ✓ renders every match, the last one included
+  × pads the page bottom by the bottom-nav height + safe area, reset on md
+    TestingLibraryElementError: Unable to find an element by: [data-testid="matches-page"]
+  Tests  1 failed | 1 passed (2)
+
+## green — lane head
+$ npx vitest run src/pages/MatchesPage.bottom-clearance.test.tsx src/pages/vtid-05117-leftovers-2.test.tsx
+  Test Files  2 passed (2)
+  Tests  26 passed (26)
+
+## CSS emitted (tailwindcss -c tailwind.config.ts on the class string)
+.pb-\[calc\(var\(--appilix-bottom-nav-height\2c 72px\)_\+_env\(safe-area-inset-bottom\2c 0px\)_\+_90px\)\] {
+  padding-bottom: calc(var(--appilix-bottom-nav-height,72px) + env(safe-area-inset-bottom,0px) + 90px);
+}
+@media (min-width: 768px) { .md\:pb-6 { padding-bottom: 1.5rem; } }
+
+## lint / types
+$ npx eslint src/pages/MatchesPage.tsx src/pages/MatchesPage.bottom-clearance.test.tsx
+  7 errors, all pre-existing design/no-raw-palette in MatchesPage.tsx (baseline scripts/ci/pr-gate/baseline/eslint.json: 7); 0 in the test
+$ npx tsc --noEmit -p tsconfig.app.json   → no error in MatchesPage*
+
+## merged head (lane + origin/main 3d144939c, serialized landing) — fa4de8fbf
+$ npx vitest run src/pages/MatchesPage.bottom-clearance.test.tsx src/pages/vtid-05117-leftovers-2.test.tsx
+  Tests  26 passed (26)
+CI on fa4de8fbf, attempt 1: Lane scope, preview-e2e (PR-GATE) and ORB parity (NATIVE-CI) failed fetching from
+vitana-platform: "API rate limit exceeded for user ID 171726573" / HTTP 403. That is infra, not code.
+PR-GATE re-run (attempt 2, run 39758261971): success.

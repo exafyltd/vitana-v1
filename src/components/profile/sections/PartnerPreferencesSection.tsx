@@ -86,7 +86,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
   return (
     <section className="rounded-xl border border-border bg-card p-4 space-y-3">
       <header className="flex items-center gap-2">
-        <Heart className="h-4 w-4 text-rose-500" />
+        <Heart className="h-4 w-4 text-category-4" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           {t('screens.profile.partnerPreferences')}
         </h3>
@@ -122,7 +122,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
           <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">{t('screens.profile.musthaves')}</div>
           <div className="flex flex-wrap gap-1">
             {prefs.must_haves!.map((m, i) => (
-              <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-status-success-subtle text-status-success border border-status-success/25">
                 {m}
               </span>
             ))}
@@ -137,7 +137,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
           </div>
           <div className="flex flex-wrap gap-1">
             {prefs.deal_breakers!.map((m, i) => (
-              <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
+              <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-category-4/10 text-category-4 border border-category-4/25">
                 {m}
               </span>
             ))}

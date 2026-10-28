@@ -131,7 +131,96 @@
       "today": "Dzisiaj",
       "yesterday": "Wczoraj"
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "messageStatus": {
+      "sending": "Wysyłanie",
+      "sent": "Wysłano",
+      "delivered": "Dostarczono",
+      "read": "Przeczytano",
+      "failed": "Nie wysłano",
+      "retry": "Ponów",
+      "retryLabel": "Wyślij tę wiadomość ponownie",
+      "_pending_review": {}
+    },
+    "newMessages": {
+      "none": "Przejdź do najnowszych",
+      "one": "Nowe wiadomości: 1",
+      "other": "Nowe wiadomości: {count}",
+      "unread": "Nieprzeczytane wiadomości",
+      "_pending_review": {}
+    },
+    "reply": {
+      "unavailable": "Oryginalna wiadomość jest niedostępna",
+      "loading": "Oryginalna wiadomość…",
+      "jumpToOriginal": "Przejdź do oryginalnej wiadomości",
+      "jumpTo": "Przejdź do oryginalnej wiadomości: {name}",
+      "unknownSender": "Członek",
+      "noText": "Załącznik",
+      "_pending_review": {}
+    },
+    "media": {
+      "uploadFailed": "Przesyłanie nie powiodło się",
+      "retry": "Ponów",
+      "retryUpload": "Prześlij ponownie {name}",
+      "video": "Wideo",
+      "moreItems": "Jeszcze {count}",
+      "openImage": "Otwórz obraz {name}",
+      "openVideo": "Odtwórz wideo {name}",
+      "_pending_review": {}
+    },
+    "search": {
+      "title": "Szukaj wiadomości",
+      "titleConversation": "Szukaj w tej rozmowie",
+      "hint": "Wpisz co najmniej {min} znaki",
+      "placeholder": "Szukaj wiadomości…",
+      "olderHit": "Starsze trafienie",
+      "newerHit": "Nowsze trafienie",
+      "type": "Typ",
+      "from": "Od",
+      "to": "Do",
+      "types": {
+        "any": "Wszystkie",
+        "image": "Zdjęcia",
+        "video": "Filmy",
+        "file": "Pliki",
+        "voice": "Wiadomości głosowe",
+        "link": "Linki"
+      },
+      "searching": "Wyszukiwanie…",
+      "error": "Wyszukiwanie nie powiodło się. Spróbuj ponownie.",
+      "empty": "Nie znaleziono wiadomości",
+      "results": "Wyniki wyszukiwania",
+      "conversation": "Rozmowa",
+      "more": "Pokaż więcej",
+      "filters": "Filtry"
+    },
+    "shared": {
+      "sendInMessage": "Wyślij w wiadomości",
+      "sheetTitle": "Wyślij: {kind} w wiadomości",
+      "captionPlaceholder": "Dodaj wiadomość (opcjonalnie)",
+      "sent": "Wysłano",
+      "notAllowed": "Nie możesz już tego udostępnić.",
+      "kind": {
+        "post": "Post",
+        "event": "Wydarzenie",
+        "product": "Produkt",
+        "profile": "Profil"
+      },
+      "loading": "Ładowanie podglądu…",
+      "loadFailed": "Nie udało się wczytać podglądu",
+      "retry": "Spróbuj ponownie",
+      "open": "Otwórz: {kind} – {title}",
+      "unavailable": {
+        "deleted": {
+          "title": "{kind}: już niedostępne",
+          "body": "Zostało usunięte."
+        },
+        "restricted": {
+          "title": "{kind}: niewidoczne dla ciebie",
+          "body": "Ustawienia prywatności nie pozwalają ci tego zobaczyć."
+        }
+      }
+    }
   },
   "_pending_review": {}
 }

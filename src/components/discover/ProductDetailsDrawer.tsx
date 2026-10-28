@@ -32,6 +32,7 @@ import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { RecommendButton } from "@/components/discover/RecommendButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
+import { SendInMessageButton } from "@/components/messages/SendInMessageSheet";
 import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
 
@@ -46,6 +47,7 @@ export function ProductDetailsDrawer() {
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={(v) => !v && clearSelection()}>
+        {/* design-allow-next-line: viewport-relative drawer height; the contract has no viewport-height token */}
         <DrawerContent className="max-h-[92vh]">
           <DrawerHeader className="sr-only">
             <DrawerTitle>{selectedProduct?.title ?? "Product"}</DrawerTitle>
@@ -103,7 +105,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
           sizeClass="w-full h-64 md:h-72"
         />
         {p.availability && p.availability !== "in_stock" && (
-          <Badge className="absolute top-3 end-3 bg-red-500 text-white">
+          <Badge className="absolute top-3 end-3 bg-status-error text-primary-foreground">
             {p.availability === "out_of_stock" ? "Out of Stock" : p.availability}
           </Badge>
         )}
@@ -121,7 +123,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
           <div className="flex items-center flex-wrap gap-3 mt-2 text-sm text-muted-foreground">
             {p.rating !== null && p.rating > 0 && (
               <span className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                <Star className="w-4 h-4 fill-status-warning text-status-warning" />
                 <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
                 {p.review_count ? <span>({fmtNumber(p.review_count)})</span> : null}
               </span>
@@ -155,7 +157,7 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
               )}
             </div>
             {p.reward_preview?.points_estimate ? (
-              <div className="flex items-center gap-1 text-xs text-emerald-700 mt-1">
+              <div className="flex items-center gap-1 text-xs text-status-success mt-1">
                 <Gift className="w-3.5 h-3.5" />{t('screens.discover.earnPoints_estimatePointsPurchase', { points_estimate: p.reward_preview.points_estimate })}
               </div>
             ) : null}
@@ -164,11 +166,11 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
 
         {/* Match reasons */}
         {matchReasons.length > 0 && (
-          <section className="bg-emerald-50 dark:bg-emerald-950/30 rounded-lg p-4 space-y-2">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-emerald-900 dark:text-emerald-200">
+          <section className="bg-status-success-subtle rounded-lg p-4 space-y-2">
+            <h3 className="flex items-center gap-2 text-sm font-semibold text-status-success">
               <Sparkles className="w-4 h-4" /> {t('screens.discover.whyThisForYou')}
             </h3>
-            <ul className="space-y-1 text-sm text-emerald-900/90 dark:text-emerald-100/90">
+            <ul className="space-y-1 text-sm text-status-success/90">
               {matchReasons.slice(0, 5).map((r, i) => (
                 <li key={i} className="flex gap-2">
                   <span aria-hidden>•</span>
@@ -269,11 +271,11 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
 
         {/* Safety notes */}
         {p.safety_notes && (
-          <section className="bg-amber-50 dark:bg-amber-950/20 rounded-lg p-4 border border-amber-200/60 dark:border-amber-900/40">
-            <h3 className="flex items-center gap-2 text-sm font-semibold mb-2 text-amber-900 dark:text-amber-200">
+          <section className="bg-status-warning-subtle rounded-lg p-4 border border-status-warning/15">
+            <h3 className="flex items-center gap-2 text-sm font-semibold mb-2 text-status-warning">
               <AlertTriangle className="w-4 h-4" /> {t('screens.discover.safetyAmpInteractions')}
             </h3>
-            <p className="text-sm text-amber-900/90 dark:text-amber-100/90 whitespace-pre-line leading-relaxed">
+            <p className="text-sm text-status-warning/90 whitespace-pre-line leading-relaxed">
               {p.safety_notes}
             </p>
           </section>
@@ -339,6 +341,8 @@ export function ProductDetailsBody({ product: p, onClose }: { product: Marketpla
           </a>
         </Button>
         <RecommendButton productId={p.id} variant="cta" size="sm" className="flex-shrink-0" />
+        {/* VTID-05321: send this product to a chat. */}
+        <SendInMessageButton item={{ kind: "product", id: p.id }} itemTitle={p.title} size="default" className="flex-shrink-0" />
         <UniversalShareButton
           content={{
             type: "product",

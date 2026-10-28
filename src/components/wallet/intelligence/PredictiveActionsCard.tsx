@@ -114,7 +114,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
             <Sparkles className="h-5 w-5 text-primary" />
             {t('screens.wallet.aiPredictions')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-purple-500/10 text-purple-600">{t('screens.wallet.value0Confidence', { value0: avgConfidence.toFixed(0) })}
+          <Badge variant="secondary" className="bg-category-2/10 text-category-2">{t('screens.wallet.value0Confidence', { value0: avgConfidence.toFixed(0) })}
           </Badge>
         </div>
       </CardHeader>
@@ -123,7 +123,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
         {/* Priority Actions */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-red-500" />{t('screens.wallet.highPriorityActionsLength', { length: highPriorityActions.length })}
+            <Target className="h-4 w-4 text-status-error" />{t('screens.wallet.highPriorityActionsLength', { length: highPriorityActions.length })}
           </h4>
           
           {highPriorityActions.map((action) => {
@@ -167,7 +167,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
         </div>
 
         {/* Confidence Indicator */}
-        <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
+        <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-category-2/5 border border-primary/20">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-primary" />

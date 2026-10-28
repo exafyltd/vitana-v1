@@ -1,0 +1,11 @@
+﻿# Sparring record — mt-frontend-brand (VTID-05241, lane adminfetch-header)
+
+Source of truth: exafyltd/vitana-platform `.kiro/specs/mt-frontend-brand/sparring/verdict.md` (rounds 1–2,
+responses, INTERNAL-REVIEW in the same folder). Copied here for PR-GATE.
+
+CONVERGED and approved by policy `converged-auto-v1` at 2026-10-19T20:30:44.174+00:00.
+Session `b9a2c552-d8d5-47fb-871e-7c7735d16c07` · final plan hash `813e8850fd353a66e69b9eadf7c3a63923aebcadd71740380490aa901f16266c`.
+VTIDs: VTID-05241, VTID-05242, VTID-05243, VTID-05244, VTID-05245, VTID-05246
+
+Owner approval: given by policy `converged-auto-v1` (owner decision 2026-10-14, VTID-05214/05218: a CI-sparred
+plan that converged is approved by policy instead of Gate 1).

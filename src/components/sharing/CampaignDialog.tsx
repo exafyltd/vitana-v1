@@ -408,6 +408,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
         <DialogContent 
           className={cn(
             "max-w-3xl overflow-hidden flex flex-col z-[60]",
+            // design-allow-next-line: viewport-bound sheet height
             "md:max-h-[90vh] md:rounded-2xl",
             "max-md:w-screen max-md:h-screen max-md:max-w-full max-md:rounded-none",
             "bg-gradient-to-br from-background/95 via-background to-background backdrop-blur-xl border-2 shadow-2xl"
@@ -460,8 +461,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       rows={4}
                       className="mt-1"
                     />
-                    <div className="flex items-start gap-2 mt-2 p-3 bg-[hsl(var(--sys-ai-tint))] border border-[hsl(var(--sys-ai-accent))]/20 rounded-lg">
-                      <Lightbulb className="w-4 h-4 text-[hsl(var(--sys-ai-accent))] shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2 mt-2 p-3 bg-sys-ai-tint border border-sys-ai-accent/20 rounded-lg">
+                      <Lightbulb className="w-4 h-4 text-sys-ai-accent shrink-0 mt-0.5" />
                       <p className="text-xs text-foreground">
                         <strong>{t('screens.sharing.tip')}</strong>{t('screens.sharing.describeYourCampaignOneSentenceWho')}
                       </p>
@@ -575,14 +576,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                             className={cn(
                               "flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200",
                               isSelected 
-                                ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-md" 
+                                ? "border-gradient-join-start bg-gradient-to-br from-pill-nutrition-tint to-pill-hydration-tint shadow-md" 
                                 : "border-border hover:border-muted-foreground/50 hover:bg-muted/50"
                             )}
                             onClick={() => toggleChannel(key)}
                           >
                             <Checkbox checked={isSelected} />
                             
-                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white", info.color)}>
+                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-primary-foreground", info.color)}>
                               <span className="font-bold">{info.name.charAt(0)}</span>
                             </div>
 
@@ -590,14 +591,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                               <div className="flex items-center gap-2">
                                 <span className="font-medium">{info.name}</span>
                                 {isConnected ? (
-                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
-                                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
-                                    <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">{t('screens.sharing.connected')}</span>
+                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-pill-nutrition-accent/10 rounded-full">
+                                    <div className="w-2 h-2 rounded-full bg-pill-nutrition-accent" />
+                                    <span className="text-xs text-pill-nutrition-accent">{t('screens.sharing.connected')}</span>
                                   </div>
                                 ) : (
-                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
-                                    <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
-                                    <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">{t('screens.sharing.notConnected')}</span>
+                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-sys-autopilot-accent/10 rounded-full">
+                                    <AlertCircle className="w-3 h-3 text-sys-autopilot-accent" />
+                                    <span className="text-xs text-sys-autopilot-accent">{t('screens.sharing.notConnected')}</span>
                                   </div>
                                 )}
                               </div>
@@ -606,7 +607,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                 <Button
                                   variant="link"
                                   size="sm"
-                                  className="h-auto p-0 text-xs text-[hsl(var(--pill-hydration-accent))] hover:text-[hsl(var(--pill-hydration-accent))]/80"
+                                  className="h-auto p-0 text-xs text-pill-hydration-accent hover:text-pill-hydration-accent/80"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleConnectChannel(key);
@@ -659,9 +660,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     </CollapsibleTrigger>
                     
                     <CollapsibleContent className="space-y-3 pt-3">
-                      <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
-                        <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                        <AlertDescription className="text-sm text-blue-900 dark:text-blue-100">{t('screens.sharing.forAutomatedBulkSendingViaTwilio')}
+                      <Alert className="bg-category-3/10 border-category-3/25">
+                        <Info className="w-4 h-4 text-category-3" />
+                        <AlertDescription className="text-sm text-category-3">{t('screens.sharing.forAutomatedBulkSendingViaTwilio')}
                         </AlertDescription>
                       </Alert>
 
@@ -677,14 +678,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                               className={cn(
                                 "flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200",
                                 isSelected 
-                                  ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-md" 
+                                  ? "border-gradient-join-start bg-gradient-to-br from-pill-nutrition-tint to-pill-hydration-tint shadow-md" 
                                   : "border-border hover:border-muted-foreground/50 hover:bg-muted/50"
                               )}
                               onClick={() => toggleChannel(key)}
                             >
                               <Checkbox checked={isSelected} />
                               
-                              <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white", info.color)}>
+                              <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-primary-foreground", info.color)}>
                                 <span className="font-bold">{info.name.charAt(0)}</span>
                               </div>
 
@@ -692,14 +693,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                 <div className="flex items-center gap-2">
                                   <span className="font-medium">{info.name}</span>
                                   {isConnected ? (
-                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
-                                      <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
-                                      <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">{t('screens.sharing.connected')}</span>
+                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-pill-nutrition-accent/10 rounded-full">
+                                      <div className="w-2 h-2 rounded-full bg-pill-nutrition-accent" />
+                                      <span className="text-xs text-pill-nutrition-accent">{t('screens.sharing.connected')}</span>
                                     </div>
                                   ) : (
-                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
-                                      <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
-                                      <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">{t('screens.sharing.notConnected')}</span>
+                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-sys-autopilot-accent/10 rounded-full">
+                                      <AlertCircle className="w-3 h-3 text-sys-autopilot-accent" />
+                                      <span className="text-xs text-sys-autopilot-accent">{t('screens.sharing.notConnected')}</span>
                                     </div>
                                   )}
                                 </div>
@@ -708,7 +709,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                   <Button
                                     variant="link"
                                     size="sm"
-                                    className="h-auto p-0 text-xs text-[hsl(var(--pill-hydration-accent))] hover:text-[hsl(var(--pill-hydration-accent))]/80"
+                                    className="h-auto p-0 text-xs text-pill-hydration-accent hover:text-pill-hydration-accent/80"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       handleConnectChannel(key);
@@ -724,8 +725,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
 
                       {/* Email/SMS Consent Warning */}
                       {(selectedChannels.email || selectedChannels.sms) && (
-                        <Alert className="bg-[hsl(var(--sys-ai-tint))] border-[hsl(var(--sys-ai-accent))]/30">
-                          <AlertCircle className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
+                        <Alert className="bg-sys-ai-tint border-sys-ai-accent/30">
+                          <AlertCircle className="w-4 h-4 text-sys-ai-accent" />
                           <AlertTitle className="text-foreground">{t('screens.sharing.consentRequired')}</AlertTitle>
                           <AlertDescription className="text-muted-foreground text-sm">{t('screens.sharing.someAudienceMembersMayNotHave', { value0: " ", value1: selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS" })}
                             <Button variant="link" className="h-auto p-0 ms-1 text-foreground underline">
@@ -788,7 +789,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                         className={cn(
                           "flex items-start gap-4 p-5 border-2 rounded-xl cursor-pointer transition-all duration-200",
                           selectedTemplate === template.id 
-                            ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-lg ring-2 ring-[hsl(var(--gradient-join-start))]/20" 
+                            ? "border-gradient-join-start bg-gradient-to-br from-pill-nutrition-tint to-pill-hydration-tint shadow-lg ring-2 ring-gradient-join-start/20" 
                             : "border-border hover:border-muted-foreground/50 hover:bg-muted/50 hover:shadow-md"
                         )}
                         onClick={() => applyTemplate(template.id)}
@@ -871,7 +872,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 </div>
               )}
 
-              <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="p-4 bg-category-3/10 rounded-lg border border-category-3/25">
                 <p className="text-sm">
                   {t('screens.sharing.postsWillCreatedAs')} <strong>{t('screens.sharing.drafts')}</strong>{t('screens.sharing.requireManualApprovalBeforePublishing')}
                 </p>
@@ -887,6 +888,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
               variant="outline"
               size="lg"
               onClick={() => step === 1 ? handleClose() : setStep(step - 1)}
+              // design-allow-next-line: no scale value within 2px of 120px
               className="min-w-[120px]"
             >
               {step === 1 ? (
@@ -906,7 +908,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 onClick={() => setStep(step + 1)}
                 disabled={!canProceed()}
                 size="lg"
-                className="min-w-40 bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-lg transition-all"
+                className="min-w-40 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-lg transition-all"
               >{t('screens.sharing.continue')}
                 <ChevronRight className="w-4 h-4 ms-2" />
               </Button>
@@ -920,6 +922,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       variant="outline"
                       disabled={updateCampaign.isPending || isActivating || !canProceed()}
                       size="lg"
+                      // design-allow-next-line: no scale value within 2px of 120px
                       className="min-w-[120px]"
                     >
                       {updateCampaign.isPending ? "Saving..." : "Save Draft"}
@@ -928,7 +931,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       onClick={handleSaveAndActivate}
                       disabled={updateCampaign.isPending || isActivating || !canProceed()}
                       size="lg"
-                      className="min-w-[180px] bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white hover:shadow-xl transition-all"
+                      // design-allow-next-line: no scale value within 2px of 180px
+                      className="min-w-[180px] bg-gradient-to-r from-category-1 to-status-success hover:from-category-1 hover:to-status-success text-primary-foreground hover:shadow-xl transition-all"
                     >
                       {isActivating ? "Activating..." : "Save & Activate"}
                       <Rocket className="w-4 h-4 ms-2" />
@@ -940,7 +944,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     onClick={handleSubmit}
                     disabled={createCampaign.isPending || updateCampaign.isPending || !canProceed()}
                     size="lg"
-                    className="min-w-[180px] bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-xl transition-all"
+                    // design-allow-next-line: no scale value within 2px of 180px
+                    className="min-w-[180px] bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-xl transition-all"
                   >
                     {createCampaign.isPending || updateCampaign.isPending
                       ? (isEditMode ? "Updating..." : "Creating Campaign...")

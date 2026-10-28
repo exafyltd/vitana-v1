@@ -110,6 +110,7 @@ export function MobileEarningPortal({
 
       {/* Earning Options Drawer */}
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        {/* design-allow-next-line: viewport-relative drawer height; the contract has no viewport-height token */}
         <DrawerContent className="max-h-[85vh]">
           <DrawerHeader className="text-center pb-2">
             <DrawerTitle className="text-xl">{translate('business.earning.howToEarn')}</DrawerTitle>
@@ -127,12 +128,12 @@ export function MobileEarningPortal({
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
                   onClick={option.action}
+                  // design-allow-next-line: measured box height off the 4px scale (>2px)
                   className={`
-                    relative flex flex-col items-center justify-center p-4 rounded-xl
+                    relative flex flex-col items-center justify-center p-4 rounded-xl min-h-[100px]
                     border border-border/50 bg-gradient-to-br ${option.gradient}
                     hover:border-primary/30 hover:shadow-md
                     active:scale-[0.98] transition-all duration-200
-                    min-h-[100px]
                   `}
                 >
                   <option.icon className="w-7 h-7 text-foreground mb-2" />

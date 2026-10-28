@@ -24,7 +24,9 @@
       "handleMinLength": "At least 3 characters",
       "saving": "Setting up...",
       "submit": "Let's get started!",
-      "_pending_review": {}
+      "_pending_review": {},
+      "communityIntroLabel": "Introduce me to the community",
+      "communityIntroHint": "During your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings."
     },
     "_pending_review": {}
   },

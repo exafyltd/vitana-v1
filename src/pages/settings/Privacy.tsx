@@ -20,6 +20,7 @@ import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { SpotlightConsentToggle } from "@/components/settings/SpotlightConsentToggle";
 import { PhoneDiscoverabilityToggle } from "@/components/settings/PhoneDiscoverabilityToggle";
+import { CommunityIntroToggle } from "@/components/settings/CommunityIntroToggle";
 import { PhoneNumberCard } from "@/components/settings/PhoneNumberCard";
 import { t } from '@/lib/i18n-toast';
 import { useNavigate } from "react-router-dom";
@@ -72,6 +73,7 @@ function Privacy() {
             <SpotlightPanel Icon={Eye} title={t('screens.settings.profileVisibilityControls')}>
               <div className="flex flex-col gap-4">
                 <SpotlightConsentToggle />
+                <CommunityIntroToggle />
                 <PhoneNumberCard />
                 <PhoneDiscoverabilityToggle />
               </div>
@@ -163,7 +165,7 @@ function Privacy() {
     <AppLayout>
       <SEO title={t('screens.settings.privacySettings')} description="Manage your privacy settings and data control" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.settings.privacySettings2')}
@@ -180,22 +182,22 @@ function Privacy() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.protected')}</div>
+                        <div className="text-2xl font-bold text-status-success">{t('screens.settings.protected')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.privacyStatus')}</div>
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-blue-600">{t('screens.settings.premium')}</div>
+                        <div className="text-2xl font-bold text-category-3">{t('screens.settings.premium')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.subscription')}</div>
                       </div>
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span>{t('screens.settings.notificationsActive')}</span>
-                        <span className="text-blue-600">{t('screens.settings.text5Types')}</span>
+                        <span className="text-category-3">{t('screens.settings.text5Types')}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>{t('screens.settings.connectedApps')}</span>
-                        <span className="text-green-600">{t('screens.settings.text3Apps')}</span>
+                        <span className="text-status-success">{t('screens.settings.text3Apps')}</span>
                       </div>
                     </div>
                   </div>
@@ -209,7 +211,7 @@ function Privacy() {
                 icon={Bell}
                 content={
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-blue-600">12</div>
+                    <div className="text-2xl font-bold text-category-3">12</div>
                     <div className="text-xs text-muted-foreground">{t('screens.settings.settingsConfigured')}</div>
                   </div>
                 }
@@ -223,15 +225,15 @@ function Privacy() {
                 content={
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-status-success rounded-full"></div>
                       <span>{t('screens.settings.privacySettingsUpdated2DaysAgo')}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-category-3 rounded-full"></div>
                       <span>{t('screens.settings.connectedNewFitnessApp1Week')}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-category-2 rounded-full"></div>
                       <span>{t('screens.settings.notificationPreferencesSaved')}</span>
                     </div>
                   </div>
@@ -288,6 +290,7 @@ function Privacy() {
                           <Switch />
                         </div>
                         <SpotlightConsentToggle />
+                        <CommunityIntroToggle />
                         <PhoneNumberCard />
                         <PhoneDiscoverabilityToggle />
                       </div>
@@ -301,7 +304,7 @@ function Privacy() {
                     icon={Shield}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">95%</div>
+                        <div className="text-2xl font-bold text-status-success">95%</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.excellentProtection')}</div>
                       </div>
                     }
@@ -314,7 +317,7 @@ function Privacy() {
                     icon={Eye}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-blue-600">3</div>
+                        <div className="text-2xl font-bold text-category-3">3</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.itemsVisible')}</div>
                       </div>
                     }
@@ -383,7 +386,7 @@ function Privacy() {
                     icon={Users}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.active')}</div>
+                        <div className="text-2xl font-bold text-status-success">{t('screens.settings.active')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.anonymizedSharing')}</div>
                       </div>
                     }
@@ -396,7 +399,7 @@ function Privacy() {
                     icon={Smartphone}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-orange-600">{t('screens.settings.limited')}</div>
+                        <div className="text-2xl font-bold text-status-warning">{t('screens.settings.limited')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.controlledAccess')}</div>
                       </div>
                     }
@@ -497,15 +500,15 @@ function Privacy() {
                     content={
                       <div className="space-y-3 text-sm">
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-category-3 rounded-full"></div>
                           <span>{t('screens.settings.requestDataExportAnytime')}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-status-success rounded-full"></div>
                           <span>{t('screens.settings.deleteAccountAllData')}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-category-2 rounded-full"></div>
                           <span>{t('screens.settings.viewAllDataSharingActivities')}</span>
                         </div>
                         <div className="pt-2">
@@ -523,7 +526,7 @@ function Privacy() {
                     icon={History}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-blue-600">1</div>
+                        <div className="text-2xl font-bold text-category-3">1</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.dec2024')}</div>
                       </div>
                     }
@@ -536,7 +539,7 @@ function Privacy() {
                     icon={Users}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">1.2K</div>
+                        <div className="text-2xl font-bold text-status-success">1.2K</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.healthMetrics')}</div>
                       </div>
                     }
@@ -605,7 +608,7 @@ function Privacy() {
                     icon={Smartphone}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">2</div>
+                        <div className="text-2xl font-bold text-status-success">2</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.devicesConnected')}</div>
                       </div>
                     }
@@ -618,7 +621,7 @@ function Privacy() {
                     icon={Shield}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">98%</div>
+                        <div className="text-2xl font-bold text-status-success">98%</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.excellentSecurity')}</div>
                       </div>
                     }
@@ -636,21 +639,21 @@ function Privacy() {
                             <div className="font-medium">{t('screens.settings.passwordChanged')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.text30DaysAgo')}</div>
                           </div>
-                          <div className="text-green-600 text-xs">{t('screens.settings.secure')}</div>
+                          <div className="text-status-success text-xs">{t('screens.settings.secure')}</div>
                         </div>
                         <div className="flex justify-between items-center p-2 bg-muted rounded">
                           <div>
                             <div className="font-medium">{t('screens.settings.newDeviceLogin')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.iphone2HoursAgo')}</div>
                           </div>
-                          <div className="text-green-600 text-xs">{t('screens.settings.verified')}</div>
+                          <div className="text-status-success text-xs">{t('screens.settings.verified')}</div>
                         </div>
                         <div className="flex justify-between items-center p-2 bg-muted rounded">
                           <div>
                             <div className="font-medium">{t('screens.settings.privacySettingsUpdated')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.text1WeekAgo')}</div>
                           </div>
-                          <div className="text-blue-600 text-xs">{t('screens.settings.updated')}</div>
+                          <div className="text-category-3 text-xs">{t('screens.settings.updated')}</div>
                         </div>
                       </div>
                     }

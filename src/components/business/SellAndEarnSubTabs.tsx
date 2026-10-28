@@ -41,7 +41,7 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
   if (!isReseller && !mockEnabled) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Card className="max-w-md bg-white/70 backdrop-blur-sm border border-white/20">
+        <Card className="max-w-md bg-card/70 backdrop-blur-sm border border-border/20">
           <CardHeader className="text-center">
             <div className="mx-auto w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-2">
               <Ticket className="h-6 w-6 text-accent" />

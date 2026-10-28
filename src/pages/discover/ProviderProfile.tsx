@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel as Card, PanelContent as CardContent } from "@/components/layout/spotlight/Panel";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -240,7 +240,7 @@ export default function ProviderProfile() {
                 
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex items-center gap-1">
-                    <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    <Star className="h-5 w-5 fill-status-warning text-status-warning" />
                     <span className="font-bold text-lg">{provider.rating}</span>
                     <span className="text-muted-foreground">{t('screens.discover.reviewsReviews', { reviews: provider.reviews })}</span>
                   </div>
@@ -294,10 +294,10 @@ export default function ProviderProfile() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <Clock className="h-5 w-5 text-green-500" />
+                <Clock className="h-5 w-5 text-status-success" />
                 <div>
                   <p className="text-sm text-muted-foreground">{t('screens.discover.nextAvailable')}</p>
-                  <p className="font-medium text-green-600">{provider.nextAvailable}</p>
+                  <p className="font-medium text-status-success">{provider.nextAvailable}</p>
                 </div>
               </div>
             </CardContent>

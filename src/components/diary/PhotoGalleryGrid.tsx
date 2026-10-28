@@ -33,14 +33,17 @@ export function PhotoGalleryGrid({ entries, onEntryClick }: PhotoGalleryGridProp
               className="w-full h-full"
             />
             
+            {/* design-allow-next-line: on-media scrim, theme-independent (gradient over the photo) */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 opacity-0 group-hover:opacity-100 transition-opacity" />
             
-            <div className="absolute top-2 start-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">
+            {/* design-allow-next-line: on-media scrim, theme-independent (date over the photo) */}
+            <div className="absolute top-2 start-2 bg-black/70 backdrop-blur-sm text-primary-foreground text-xs px-2 py-1 rounded">
               {formatDate(new Date(entry.created_at), "MMM d")}
             </div>
             
             {hasMultiplePhotos && (
-              <div className="absolute bottom-2 end-2 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
+              // design-allow-next-line: on-media scrim, theme-independent (count over the photo)
+              <div className="absolute bottom-2 end-2 bg-black/70 backdrop-blur-sm text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">
                 {photoCount}
               </div>
             )}

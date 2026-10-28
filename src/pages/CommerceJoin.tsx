@@ -34,9 +34,9 @@ import { ArchetypeSkeleton } from '@/components/layout/spotlight';
 import { PublicMain } from '@/components/layout/spotlight/PublicMain';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
-const fieldClass = 'border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-amber-500';
+const fieldClass = 'border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-ring';
 const optionClass =
-  'h-12 w-full justify-center gap-2.5 rounded-xl border-border bg-card text-base font-medium text-foreground hover:bg-amber-50 hover:text-foreground';
+  'h-12 w-full justify-center gap-2.5 rounded-xl border-border bg-card text-base font-medium text-foreground hover:bg-accent hover:text-foreground';
 
 const GoogleIcon = () => (
   <svg aria-hidden className="h-5 w-5" viewBox="0 0 24 24">
@@ -211,7 +211,7 @@ export default function CommerceJoin() {
       />
 
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 inset-x-0 mx-auto h-96 w-96 rounded-full bg-amber-100/40 blur-[120px]" />
+        <div className="absolute -top-40 inset-x-0 mx-auto h-96 w-96 rounded-full bg-accent/40 blur-[120px]" />
       </div>
 
       <PublicMain
@@ -225,9 +225,9 @@ export default function CommerceJoin() {
           {...(reduce ? {} : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.45, ease: 'easeOut' as const } })}
         >
           <div className="flex items-center gap-2.5">
-            <ShoppingBag className="h-5 w-5 shrink-0 text-amber-700" />
-            <span className="text-sm font-bold tracking-[0.2em] text-amber-700">VITANALAND</span>
-            <span aria-hidden className="h-4 w-px bg-amber-300" />
+            <ShoppingBag className="h-5 w-5 shrink-0 text-primary" />
+            <span className="text-sm font-bold tracking-[0.2em] text-primary">VITANALAND</span>
+            <span aria-hidden className="h-4 w-px bg-border" />
             <span className="truncate text-xs text-muted-foreground">
               {t('screens.commerceportal.portalEyebrow')}
             </span>
@@ -237,8 +237,8 @@ export default function CommerceJoin() {
             // Registration does not end at "submitted" — it ends at a
             // confirmed mailbox, so say so plainly instead of dropping them
             // on a screen that looks like nothing happened.
-            <div className="mt-8 rounded-3xl border border-amber-300 bg-card p-6 text-center">
-              <CheckCircle2 className="mx-auto h-8 w-8 text-amber-600" />
+            <div className="mt-8 rounded-3xl border border-primary/30 bg-card p-6 text-center">
+              <CheckCircle2 className="mx-auto h-8 w-8 text-primary" />
               <h1 className="mt-3 text-xl font-semibold text-foreground">
                 {t('screens.commerceportal.join.checkInboxTitle')}
               </h1>
@@ -251,7 +251,7 @@ export default function CommerceJoin() {
                   setSentTo('');
                   setMode('signin');
                 }}
-                className="mt-4 text-amber-700 hover:bg-transparent hover:text-amber-800"
+                className="mt-4 text-primary hover:bg-transparent hover:text-primary/80"
               >
                 {t('screens.commerceportal.join.alreadyConfirmed')}
               </Button>
@@ -306,7 +306,7 @@ export default function CommerceJoin() {
                     data-testid="join-option-email"
                     className={optionClass}
                   >
-                    <Mail className="h-5 w-5 text-amber-700" />
+                    <Mail className="h-5 w-5 text-primary" />
                     {t('screens.commerceportal.join.continueWithEmail')}
                   </Button>
                 </div>
@@ -376,7 +376,7 @@ export default function CommerceJoin() {
                   <Button
                     type="submit"
                     disabled={busy}
-                    className="h-11 w-full rounded-xl bg-amber-700 font-semibold text-white hover:bg-amber-800"
+                    className="h-11 w-full rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
                   >
                     {busy && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
                     {registering
@@ -389,7 +389,7 @@ export default function CommerceJoin() {
                       setMethod('choose');
                       setError('');
                     }}
-                    className="flex min-h-11 w-full items-center justify-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-amber-700"
+                    className="flex min-h-11 w-full items-center justify-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
                     {t('screens.commerceportal.join.allOptions')}
@@ -403,7 +403,7 @@ export default function CommerceJoin() {
                   setMode(registering ? 'signin' : 'register');
                   setError('');
                 }}
-                className="mt-4 min-h-11 w-full text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-amber-700 hover:underline"
+                className="mt-4 min-h-11 w-full text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
               >
                 {registering
                   ? t('screens.commerceportal.join.haveAccount')

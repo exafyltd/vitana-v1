@@ -36,8 +36,8 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
     >
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
-          <Shield className="w-6 h-6 text-[hsl(var(--contact-sync-accent))]" />
+        <div className="w-12 h-12 rounded-full bg-category-4/10 flex items-center justify-center">
+          <Shield className="w-6 h-6 text-category-4" />
         </div>
         <div>
           <h3 className="text-lg font-semibold text-foreground">
@@ -59,8 +59,8 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
             transition={{ delay: 0.1 * (index + 1) }}
             className="flex items-start gap-3"
           >
-            <div className="w-8 h-8 rounded-lg bg-[hsl(var(--contact-sync-accent)/0.1)] flex items-center justify-center flex-shrink-0">
-              <bullet.icon className="w-4 h-4 text-[hsl(var(--contact-sync-accent))]" />
+            <div className="w-8 h-8 rounded-lg bg-category-4/10 flex items-center justify-center flex-shrink-0">
+              <bullet.icon className="w-4 h-4 text-category-4" />
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">{bullet.title}</p>
@@ -87,7 +87,7 @@ export function ContactConsentCard({ onConsent, onDecline, source = "all" }: Con
         <Button
           data-testid="find-friends-consent-continue"
           onClick={onConsent}
-          className="flex-1 bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
+          className="flex-1 bg-gradient-to-r from-category-4 to-category-4/80 text-primary-foreground hover:opacity-90"
         >
           {t('mailhub.findFriends.consent.continue')}
         </Button>

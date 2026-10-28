@@ -52,17 +52,17 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <RotateCcw className="w-5 h-5 text-orange-500" />
+            <RotateCcw className="w-5 h-5 text-status-warning" />
             {t('screens.common.resetDefaults')}
           </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
-          <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-lg">
-            <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
+          <div className="flex items-start gap-3 p-4 bg-status-warning-subtle rounded-lg">
+            <AlertTriangle className="w-5 h-5 text-status-warning mt-0.5" />
             <div>
-              <h4 className="font-medium text-orange-900">{t('screens.common.warning')}</h4>
-              <p className="text-sm text-orange-800">
+              <h4 className="font-medium text-status-warning">{t('screens.common.warning')}</h4>
+              <p className="text-sm text-status-warning">
                 {t('screens.common.resettingPreferencesWillPermanentlyRemoveYour')}
               </p>
             </div>

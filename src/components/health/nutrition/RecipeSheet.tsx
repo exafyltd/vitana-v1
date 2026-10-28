@@ -51,11 +51,11 @@ function MacroChip({
   color?: 'blue' | 'teal' | 'gold' | 'green' | 'purple' 
 }) {
   const colorClasses = {
-    blue: 'bg-blue-500/10 border-blue-500/20 text-blue-700 dark:text-blue-300',
-    teal: 'bg-teal-500/10 border-teal-500/20 text-teal-700 dark:text-teal-300',
-    gold: 'bg-amber-500/10 border-amber-500/20 text-amber-700 dark:text-amber-300',
-    green: 'bg-green-500/10 border-green-500/20 text-green-700 dark:text-green-300',
-    purple: 'bg-purple-500/10 border-purple-500/20 text-purple-700 dark:text-purple-300'
+    blue: 'bg-blue-500/10 border-blue-500/20 text-blue-700',
+    teal: 'bg-teal-500/10 border-teal-500/20 text-teal-700',
+    gold: 'bg-amber-500/10 border-amber-500/20 text-amber-700',
+    green: 'bg-green-500/10 border-green-500/20 text-green-700',
+    purple: 'bg-purple-500/10 border-purple-500/20 text-purple-700'
   };
   
   return (
@@ -136,11 +136,12 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               />
               
               {/* Bottom Fade Gradient */}
+              {/* design-allow-next-line: on-media scrim, theme-independent (gradient over the recipe photo) */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               
               {/* Title Overlay */}
               <div className="absolute bottom-0 start-0 end-0 p-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
+                <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground drop-shadow-lg">
                   {recipe.title}
                 </h2>
               </div>
@@ -148,17 +149,17 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {/* Close Button (top-right) */}
               <button
                 onClick={() => onOpenChange(false)}
-                className="absolute top-4 end-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
+                className="absolute top-4 end-4 w-10 h-10 rounded-full bg-card/20 backdrop-blur-md hover:bg-card/30 flex items-center justify-center transition-all"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5 text-primary-foreground" />
               </button>
               
               {/* Back Arrow (mobile only) */}
               <button
                 onClick={() => onOpenChange(false)}
-                className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 flex items-center justify-center transition-all"
+                className="md:hidden absolute top-4 start-4 w-10 h-10 rounded-full bg-card/20 backdrop-blur-md hover:bg-card/30 flex items-center justify-center transition-all"
               >
-                <ArrowLeft className="w-5 h-5 text-white" />
+                <ArrowLeft className="w-5 h-5 text-primary-foreground" />
               </button>
             </div>
         
@@ -207,6 +208,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                   >
                     <Minus className="w-4 h-4" />
                   </Button>
+                  {/* design-allow-next-line: measured value column width */}
                   <span className="text-sm font-medium min-w-[70px] text-center">
                     {servings} {servings === 1 ? 'serving' : 'servings'}
                   </span>
@@ -223,8 +225,8 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
           
               {/* Allergens */}
               {recipe.allergens.length > 0 && (
-                <Alert className="border-amber-500/20 bg-amber-500/5">
-                  <AlertTriangle className="w-4 h-4 text-amber-600" />
+                <Alert className="border-status-warning/20 bg-status-warning/5">
+                  <AlertTriangle className="w-4 h-4 text-status-warning" />
                   <AlertTitle>{t('screens.health.allergens')}</AlertTitle>
                   <AlertDescription>{t('screens.health.containsValue0', { value0: recipe.allergens.join(', ') })}</AlertDescription>
                 </Alert>
@@ -337,7 +339,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                           </div>
                           
                           {isVegan && (
-                            <Badge variant="outline" className="text-xs bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
+                            <Badge variant="outline" className="text-xs bg-status-success-subtle border-status-success/25">
                               {t('screens.health.vegan')}
                             </Badge>
                           )}
@@ -391,7 +393,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               </Button>
               
               <Button 
-                className="flex-1 gap-2 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 hover:scale-[1.02] transition-all border-0"
+                className="flex-1 gap-2 bg-gradient-to-r from-primary to-category-2 hover:from-primary/90 hover:to-category-2/90 hover:scale-[1.02] transition-all border-0"
                 onClick={() => notifySuccess('toasts.health.addedShoppingList')}
               >
                 <ShoppingCart className="w-4 h-4" />

@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { useTranslation } from '@/hooks/useTranslation';
 import { markOnboardingComplete } from '@/hooks/useOnboardingStatus';
+import { setCommunityIntroOptIn } from '@/lib/community-intro';
 
 interface OnboardingNameFormProps {
   onComplete: () => void;
@@ -37,6 +39,9 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
   const [handleStatus, setHandleStatus] = useState<HandleStatus>('idle');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  // VTID-05206: "Introduce me to the community" — on by default (owner D1);
+  // the member's new global_community_profiles row already defaults to true.
+  const [introduceMe, setIntroduceMe] = useState(true);
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-suggest handle from display name (only if user hasn't typed a handle)
@@ -155,6 +160,16 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
           if (error) console.warn('[Onboarding] app_users update failed:', error.message);
         });
 
+      // VTID-05206: only an explicit "no" is written. Leaving the switch on keeps
+      // the row's default, so this step can never opt in a member who existed
+      // before the rollout (their row is false). Non-fatal like app_users above;
+      // the member can change it any time in Settings → Privacy.
+      if (!introduceMe) {
+        await setCommunityIntroOptIn(user.id, false).catch((err: unknown) => {
+          console.warn('[Onboarding] community intro opt-out failed:', err instanceof Error ? err.message : err);
+        });
+      }
+
       markOnboardingComplete(user.id);
       onComplete();
     } catch (err: any) {
@@ -172,22 +187,22 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full max-w-md mx-auto px-4"
     >
-      <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6">
+      <div className="bg-card/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-[#FF7BAC] to-[#C084FC] flex items-center justify-center shadow-md">
-            <span className="text-white text-lg font-bold">V</span>
+          <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md">
+            <span className="text-primary-foreground text-lg font-bold">V</span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-foreground">
             {translate('onboarding.nameForm.title', "Let's get to know you")}
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             {translate('onboarding.nameForm.subtitle', 'This is how others will see you in the community')}
           </p>
         </div>
 
         {/* Display Name */}
         <div className="space-y-2">
-          <Label htmlFor="onb-display-name" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="onb-display-name" className="text-sm font-medium text-muted-foreground">
             {translate('onboarding.nameForm.displayNameLabel', 'What should I call you?')}
           </Label>
           <Input
@@ -196,72 +211,93 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
             value={displayName}
             onChange={e => setDisplayName(e.target.value)}
             maxLength={100}
-            className="rounded-xl border-gray-200 focus:border-[#FF7BAC] focus:ring-[#FF7BAC]/20"
+            className="rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"
             autoFocus
           />
         </div>
 
         {/* Handle / Username */}
         <div className="space-y-2">
-          <Label htmlFor="onb-handle" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="onb-handle" className="text-sm font-medium text-muted-foreground">
             {translate('onboarding.nameForm.handleLabel', 'Choose your Vitanaland username')}
           </Label>
           <div className="relative">
-            <span className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
+            <span className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">@</span>
             <Input
               id="onb-handle"
               placeholder={translate('onboarding.nameForm.handlePlaceholder', 'your_username')}
               value={handle}
               onChange={e => handleHandleChange(e.target.value)}
               maxLength={HANDLE_MAX}
-              className="ps-8 rounded-xl border-gray-200 focus:border-[#FF7BAC] focus:ring-[#FF7BAC]/20"
+              className="ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"
             />
             {/* Status icon */}
             <div className="absolute end-3 top-1/2 -translate-y-1/2">
               {handleStatus === 'checking' && (
-                <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
               )}
               {handleStatus === 'available' && (
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <CheckCircle2 className="w-4 h-4 text-status-success" />
               )}
               {(handleStatus === 'taken' || handleStatus === 'invalid') && (
-                <XCircle className="w-4 h-4 text-red-500" />
+                <XCircle className="w-4 h-4 text-status-error" />
               )}
             </div>
           </div>
           {/* Status messages */}
           {handleStatus === 'taken' && (
-            <p className="text-xs text-red-500">
+            <p className="text-xs text-status-error">
               {translate('onboarding.nameForm.handleTaken', 'This username is already taken')}
             </p>
           )}
           {handleStatus === 'invalid' && (
-            <p className="text-xs text-red-500">
+            <p className="text-xs text-status-error">
               {translate('onboarding.nameForm.handleInvalid', 'Only letters, numbers, and underscores allowed')}
             </p>
           )}
           {handleStatus === 'available' && (
-            <p className="text-xs text-green-600">
+            <p className="text-xs text-status-success">
               {translate('onboarding.nameForm.handleAvailable', 'Username is available!')}
             </p>
           )}
           {handle.length > 0 && handle.length < HANDLE_MIN && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-muted-foreground">
               {translate('onboarding.nameForm.handleMinLength', 'At least 3 characters')}
             </p>
           )}
         </div>
 
+        {/* VTID-05206: Introduce me to the community */}
+        {/* design-allow-next-line: same palette as the rest of this always-white card (bg-white/95); theme tokens would turn light-on-white in dark mode */}
+        <div className="flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3" data-testid="onb-community-intro">
+          <div className="space-y-1">
+            {/* design-allow-next-line: label colour of the other fields on this always-white card */}
+            <Label htmlFor="onb-community-intro" className="text-sm font-medium text-gray-700">
+              {translate('onboarding.nameForm.communityIntroLabel', 'Introduce me to the community')}
+            </Label>
+            {/* design-allow-next-line: hint colour of the subtitle on this always-white card */}
+            <p className="text-xs text-gray-500">
+              {translate('onboarding.nameForm.communityIntroHint', 'During your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.')}
+            </p>
+          </div>
+          <Switch
+            id="onb-community-intro"
+            data-testid="onb-community-intro-switch"
+            checked={introduceMe}
+            onCheckedChange={setIntroduceMe}
+          />
+        </div>
+
         {/* Error */}
         {error && (
-          <p className="text-sm text-red-500 text-center">{error}</p>
+          <p className="text-sm text-status-error text-center">{error}</p>
         )}
 
         {/* Submit */}
         <Button
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="w-full rounded-xl bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white font-medium py-3 h-auto transition-all duration-200"
+          className="w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"
         >
           {saving ? (
             <>

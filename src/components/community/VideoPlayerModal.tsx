@@ -348,6 +348,7 @@ export const VideoPlayerModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* design-allow-next-line: on-media scrim, theme-independent */}
       <DialogContent className="max-w-none w-screen h-screen p-0 bg-black/70 backdrop-blur-xl border-0 animate-fade-in overflow-visible">
         <DialogTitle className="sr-only">{video.title}</DialogTitle>
         
@@ -363,11 +364,11 @@ export const VideoPlayerModal = ({
             <button
               aria-label={t('screens.community.close')}
               onClick={onClose}
-              className="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
+              className="pointer-events-auto w-12 h-12 rounded-full bg-card/10 backdrop-blur-md border border-border/20 
                 flex items-center justify-center shadow-lg transition-all duration-300 
-                hover:bg-white/20 hover:rotate-90 hover:scale-105 cursor-pointer"
+                hover:bg-card/20 hover:rotate-90 hover:scale-105 cursor-pointer"
             >
-              <X className="w-6 h-6 text-white" />
+              <X className="w-6 h-6 text-primary-foreground" />
             </button>
           </DialogClose>
         </div>
@@ -388,12 +389,12 @@ export const VideoPlayerModal = ({
                 handleInteraction();
               }}
               className={`absolute start-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
-                bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
+                bg-card/12 backdrop-blur-sm text-primary-foreground shadow-lg border border-border/20 
                 flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto
-                hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
+                hover:bg-card/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
                 ${showArrows ? 'opacity-100' : 'opacity-0'}`}
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
+              <ChevronLeft className="w-6 h-6 text-primary-foreground" />
             </button>
           )}
           
@@ -406,27 +407,29 @@ export const VideoPlayerModal = ({
                 handleInteraction();
               }}
               className={`absolute end-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
-                bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
+                bg-card/12 backdrop-blur-sm text-primary-foreground shadow-lg border border-border/20 
                 flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto
-                hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
+                hover:bg-card/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
                 ${showArrows ? 'opacity-100' : 'opacity-0'}`}
             >
-              <ChevronRight className="w-6 h-6 text-white" />
+              <ChevronRight className="w-6 h-6 text-primary-foreground" />
             </button>
           )}
 
           {/* Video frame with gradient border */}
           <div className="relative flex items-center justify-center overflow-visible">
             <div 
+              // design-allow-next-line: no scale value within 2px of 500px; viewport-bound sheet height
               className={`relative w-auto max-w-[500px] h-[90vh] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300
                 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
             style={{
-              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(56, 189, 248, 0.3))',
+              background: 'linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3))',
               padding: '2px'
             }}
             onMouseEnter={() => setShowControls(true)}
             onMouseLeave={() => isPlaying && setShowControls(false)}
           >
+            {/* design-allow-next-line: on-media scrim, theme-independent */}
             <div className="relative w-full h-full bg-black rounded-2xl overflow-hidden">
               {/* Thumbnail fallback layer */}
               {video.thumbnail_url && showThumbnailFallback && (
@@ -463,8 +466,9 @@ export const VideoPlayerModal = ({
               {/* Loading spinner */}
               {videoState === 'loading' && (
                 <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                  {/* design-allow-next-line: on-media scrim, theme-independent */}
                   <div className="h-16 w-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                    <Loader2 className="h-8 w-8 text-white animate-spin" />
+                    <Loader2 className="h-8 w-8 text-primary-foreground animate-spin" />
                   </div>
                 </div>
               )}
@@ -474,9 +478,9 @@ export const VideoPlayerModal = ({
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                   <button
                     onClick={handleManualPlay}
-                    className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110"
+                    className="w-20 h-20 rounded-full bg-card/20 backdrop-blur-md border border-border/30 flex items-center justify-center hover:bg-card/30 transition-all hover:scale-110"
                   >
-                    <Play className="w-10 h-10 text-white fill-white ms-1" />
+                    <Play className="w-10 h-10 text-primary-foreground fill-primary-foreground ms-1" />
                   </button>
                 </div>
               )}
@@ -486,11 +490,11 @@ export const VideoPlayerModal = ({
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-20 gap-3">
                   <button
                     onClick={handleRetry}
-                    className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all hover:scale-110"
+                    className="h-16 w-16 rounded-full bg-card/20 backdrop-blur-md border border-border/30 flex items-center justify-center transition-all hover:scale-110"
                   >
-                    <RotateCcw className="h-8 w-8 text-white" />
+                    <RotateCcw className="h-8 w-8 text-primary-foreground" />
                   </button>
-                  <span className="text-white text-sm font-medium drop-shadow-lg">
+                  <span className="text-primary-foreground text-sm font-medium drop-shadow-lg">
                     {videoState === 'error' ? 'Failed to load — tap to retry' : 'Buffering — tap to retry'}
                   </span>
                 </div>
@@ -511,26 +515,28 @@ export const VideoPlayerModal = ({
                       e.stopPropagation();
                       togglePlay();
                     }}
-                    className="pointer-events-auto w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110"
+                    className="pointer-events-auto w-20 h-20 rounded-full bg-card/20 backdrop-blur-md border border-border/30 flex items-center justify-center hover:bg-card/30 transition-all hover:scale-110"
                   >
                     {isPlaying ? (
-                      <Pause className="w-10 h-10 text-white fill-white" />
+                      <Pause className="w-10 h-10 text-primary-foreground fill-primary-foreground" />
                     ) : (
-                      <Play className="w-10 h-10 text-white fill-white ms-1" />
+                      <Play className="w-10 h-10 text-primary-foreground fill-primary-foreground ms-1" />
                     )}
                   </button>
                 </div>
 
                 {/* Bottom left: Duration & Views */}
                 <div className="absolute bottom-16 start-4 flex items-center gap-3 pointer-events-none">
-                  <div className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10">
-                    <span className="text-white text-sm font-medium">
+                  {/* design-allow-next-line: on-media scrim, theme-independent */}
+                  <div className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-border/10">
+                    <span className="text-primary-foreground text-sm font-medium">
                       {formatTime(currentTime)} / {formatTime(duration)}
                     </span>
                   </div>
-                  <div className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center gap-1.5">
-                    <Eye className="w-4 h-4 text-white" />
-                    <span className="text-white text-sm font-medium">1.2K</span>
+                  {/* design-allow-next-line: on-media scrim, theme-independent */}
+                  <div className="px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-border/10 flex items-center gap-1.5">
+                    <Eye className="w-4 h-4 text-primary-foreground" />
+                    <span className="text-primary-foreground text-sm font-medium">1.2K</span>
                   </div>
                 </div>
 
@@ -541,12 +547,13 @@ export const VideoPlayerModal = ({
                       e.stopPropagation();
                       toggleMute();
                     }}
-                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                    // design-allow-next-line: on-media scrim, theme-independent
+                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-border/10 flex items-center justify-center hover:bg-card/20 transition-all"
                   >
                     {isMuted ? (
-                      <VolumeX className="w-5 h-5 text-white" />
+                      <VolumeX className="w-5 h-5 text-primary-foreground" />
                     ) : (
-                      <Volume2 className="w-5 h-5 text-white" />
+                      <Volume2 className="w-5 h-5 text-primary-foreground" />
                     )}
                   </button>
                   <button
@@ -555,11 +562,13 @@ export const VideoPlayerModal = ({
                       setShowComments(true);
                     }}
                     aria-label={t('mediaHub.comments.title')}
-                    className="relative w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                    // design-allow-next-line: on-media scrim, theme-independent
+                    className="relative w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-border/10 flex items-center justify-center hover:bg-card/20 transition-all"
                   >
-                    <MessageCircle className="w-5 h-5 text-white" />
+                    <MessageCircle className="w-5 h-5 text-primary-foreground" />
                     {!!video.commentsCount && (
-                      <span className="absolute -top-1 -end-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
+                      // design-allow-next-line: no scale value within 2px of 18px
+                      <span className="absolute -top-1 -end-1 min-w-[18px] h-4 px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
                         {video.commentsCount}
                       </span>
                     )}
@@ -569,9 +578,10 @@ export const VideoPlayerModal = ({
                       e.stopPropagation();
                       handleShare();
                     }}
-                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                    // design-allow-next-line: on-media scrim, theme-independent
+                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-border/10 flex items-center justify-center hover:bg-card/20 transition-all"
                   >
-                    <Share2 className="w-5 h-5 text-white" />
+                    <Share2 className="w-5 h-5 text-primary-foreground" />
                   </button>
                   {onDelete && (
                     <button
@@ -579,9 +589,10 @@ export const VideoPlayerModal = ({
                         e.stopPropagation();
                         onDelete();
                       }}
-                      className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-red-500/20 transition-all"
+                      // design-allow-next-line: on-media scrim, theme-independent
+                      className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-border/10 flex items-center justify-center hover:bg-status-error/20 transition-all"
                     >
-                      <Trash2 className="w-5 h-5 text-red-400" />
+                      <Trash2 className="w-5 h-5 text-status-error" />
                     </button>
                   )}
                 </div>
@@ -589,20 +600,21 @@ export const VideoPlayerModal = ({
               )}
 
               {/* Gradient progress bar */}
-              <div className="absolute bottom-0 start-0 end-0 h-1 bg-white/10 z-10">
+              <div className="absolute bottom-0 start-0 end-0 h-1 bg-card/10 z-10">
                 <div
                   className="h-full transition-all duration-200"
                   style={{
                     width: `${progress}%`,
-                    background: 'linear-gradient(90deg, rgb(139, 92, 246), rgb(56, 189, 248))'
+                    background: 'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))'
                   }}
                 />
               </div>
 
               {/* Title overlay when paused */}
               {!isPlaying && videoState !== 'autoplay-blocked' && videoState !== 'error' && videoState !== 'stalled' && (
+                // design-allow-next-line: on-media scrim, theme-independent
                 <div className="absolute top-0 start-0 end-0 p-6 bg-gradient-to-b from-black/70 to-transparent z-10">
-                  <h3 className="text-white text-xl font-semibold">{video.title}</h3>
+                  <h3 className="text-primary-foreground text-xl font-semibold">{video.title}</h3>
                 </div>
               )}
             </div>

@@ -41,6 +41,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: no scale value within 2px of 550px */}
       <ResponsiveDialogContent className="sm:max-w-[550px]">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t('screens.sharing.privacySettings')}</ResponsiveDialogTitle>

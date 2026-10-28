@@ -97,6 +97,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: no scale value within 2px of 600px; viewport-bound sheet height */}
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('screens.common.communityFilters')}</DialogTitle>

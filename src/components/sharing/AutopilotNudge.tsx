@@ -28,12 +28,12 @@ export function AutopilotNudge({
   if (!visible) return null;
 
   return (
-    <Card className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
+    <Card className="bg-gradient-to-r from-category-2/10 to-category-3/10 border-category-2/25">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-full bg-category-2 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
           </div>
           <div className="flex-1 space-y-3">

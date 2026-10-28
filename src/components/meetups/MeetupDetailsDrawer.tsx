@@ -821,6 +821,7 @@ export function MeetupDetailsDrawer({
               value={composeMessage}
               onChange={(e) => setComposeMessage(e.target.value)}
               onKeyDown={handleComposeKeyDown}
+              // design-allow-next-line: no scale value within 2px of 140px
               className="min-h-[140px] resize-none rounded-2xl"
               autoFocus
             />
@@ -867,7 +868,7 @@ export function MeetupDetailsDrawer({
               onEdit={onEditEvent ? (ev) => { onOpenChange(false); onEditEvent(ev); } : undefined}
               onDelete={onDeleteEvent ? (id) => { onOpenChange(false); onDeleteEvent(id); } : undefined}
               onShare={onShareEvent}
-              className="text-white bg-background/80 backdrop-blur-md rounded-full shadow-md border border-border/40 h-10 w-10"
+              className="text-primary-foreground bg-background/80 backdrop-blur-md rounded-full shadow-md border border-border/40 h-10 w-10"
             />
           </div>
           <Button
@@ -890,7 +891,8 @@ export function MeetupDetailsDrawer({
             onEdit={onEditEvent ? (ev) => { onOpenChange(false); onEditEvent(ev); } : undefined}
             onDelete={onDeleteEvent ? (id) => { onOpenChange(false); onDeleteEvent(id); } : undefined}
             onShare={onShareEvent}
-            className="text-white bg-black/40 hover:bg-black/60 rounded-full h-9 w-9"
+            // design-allow-next-line: on-media scrim, theme-independent
+            className="text-primary-foreground bg-black/40 hover:bg-black/60 rounded-full h-9 w-9"
           />
         </div>
       )}
@@ -904,6 +906,7 @@ export function MeetupDetailsDrawer({
           {/* Hero Image - Edge to edge */}
           <div className={cn(
             "relative w-full bg-muted overflow-hidden",
+            // design-allow-next-line: viewport-bound sheet height
             isMobile ? "h-[70vh]" : "aspect-video"
           )}>
             {!isImageLoaded && (
@@ -927,7 +930,7 @@ export function MeetupDetailsDrawer({
               onLoad={() => setIsImageLoaded(true)}
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/90 dark:from-background/95 via-background/50 dark:via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
             
             {/* Mobile Close Button moved outside ScrollArea for sticky behavior */}
             
@@ -941,7 +944,9 @@ export function MeetupDetailsDrawer({
               style={isMobile ? { paddingTop: 'calc(env(safe-area-inset-top, 0px) + 18px)' } : undefined}
             >
               <h2 
-                className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]"
+                // design-allow-next-line: kept 22ch
+                className="text-[28px] md:text-[32px] font-bold tracking-tight text-primary-foreground max-w-[22ch]"
+                // design-allow-next-line: on-media scrim, theme-independent
                 style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}
               >
                 {event.title}
@@ -968,10 +973,11 @@ export function MeetupDetailsDrawer({
                     src={event.creator_avatar_url || event.author?.avatar}
                     fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
                     alt={event.creator_display_name || event.author?.name || 'Community Host'}
-                    className="h-7 w-7 ring-1 ring-white/50"
+                    className="h-7 w-7 ring-1 ring-border/50"
                     disabled
                   />
                   <div className="flex items-center gap-1.5 pe-2">
+                    {/* design-allow-next-line: no scale value within 2px of 120px; no scale value within 2px of 160px */}
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
                       {event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}
                     </span>
@@ -1367,9 +1373,9 @@ export function MeetupDetailsDrawer({
                 // Mobile uses inline styles for premium look
                 switch (ctaConfig.variant) {
                   case 'ticket':
-                    return cn(baseClasses, "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-[14px] h-12");
+                    return cn(baseClasses, "bg-gradient-to-r from-status-success to-category-1 hover:from-status-success hover:to-category-1 text-primary-foreground rounded-[14px] h-12");
                   case 'view-ticket':
-                    return cn(baseClasses, "bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-[14px] h-12");
+                    return cn(baseClasses, "bg-gradient-to-r from-category-2 to-category-2 hover:from-category-2 hover:to-category-2 text-primary-foreground rounded-[14px] h-12");
                   case 'disabled':
                     return cn(baseClasses, "bg-muted text-muted-foreground cursor-not-allowed rounded-[14px] h-12");
                   case 'join':
@@ -1381,9 +1387,9 @@ export function MeetupDetailsDrawer({
               // Desktop styles
               switch (ctaConfig.variant) {
                 case 'ticket':
-                  return cn(baseClasses, "h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white");
+                  return cn(baseClasses, "h-12 bg-gradient-to-r from-status-success to-category-1 hover:from-status-success hover:to-category-1 text-primary-foreground");
                 case 'view-ticket':
-                  return cn(baseClasses, "h-12 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white");
+                  return cn(baseClasses, "h-12 bg-gradient-to-r from-category-2 to-category-2 hover:from-category-2 hover:to-category-2 text-primary-foreground");
                 case 'disabled':
                   return cn(baseClasses, "h-12 bg-muted text-muted-foreground cursor-not-allowed");
                 case 'join':
@@ -1504,8 +1510,8 @@ export function MeetupDetailsDrawer({
                 size="icon"
                 className="shrink-0 flex items-center justify-center h-12 w-12 rounded-[14px] border-0"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                  background: 'hsl(var(--card) / 0.9)',
+                  border: '1px solid hsl(var(--border))'
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
                 onTouchEnd={(e) => e.stopPropagation()}
@@ -1555,8 +1561,8 @@ export function MeetupDetailsDrawer({
                   isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
                 )}
                 style={isMobile ? {
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                  background: 'hsl(var(--card) / 0.9)',
+                  border: '1px solid hsl(var(--border))'
                 } : undefined}
                 onPointerDown={(e) => isMobile && e.stopPropagation()}
                 onTouchEnd={(e) => isMobile && e.stopPropagation()}
@@ -1605,8 +1611,8 @@ export function MeetupDetailsDrawer({
               isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
             )}
             style={isMobile ? {
-              background: 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid rgba(0, 0, 0, 0.08)'
+              background: 'hsl(var(--card) / 0.9)',
+              border: '1px solid hsl(var(--border))'
             } : undefined}
             onPointerDown={(e) => isMobile && e.stopPropagation()}
             onTouchEnd={(e) => isMobile && e.stopPropagation()}
@@ -1631,7 +1637,7 @@ export function MeetupDetailsDrawer({
             )}
             style={isMobile ? {
               background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid rgba(0, 0, 0, 0.08)'
+              border: '1px solid hsl(var(--border))'
             } : undefined}
             onPointerDown={(e) => isMobile && e.stopPropagation()}
             onTouchEnd={(e) => isMobile && e.stopPropagation()}
@@ -1660,6 +1666,7 @@ export function MeetupDetailsDrawer({
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent
           side="bottom"
+          // design-allow-next-line: viewport-bound sheet height
           className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
           data-drawer-sheet=""
         >
@@ -1671,6 +1678,7 @@ export function MeetupDetailsDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
+      {/* design-allow-next-line: drawer side bound to direction=right prop */}
       <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-full md:w-[500px] rounded-none">
         {content}
       </DrawerContent>

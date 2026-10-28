@@ -80,7 +80,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
           <Building2 className="h-4 w-4 text-muted-foreground" />
           <span className="font-medium">{labTest.provider_name}</span>
           <div className="flex items-center gap-1">
-            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+            <Star className="h-3 w-3 fill-status-warning text-status-warning" />
             <span className="text-xs text-muted-foreground">4.8</span>
           </div>
         </div>

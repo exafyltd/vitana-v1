@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel, PanelContent, PanelDescription, PanelHeader, PanelTitle } from '@/components/layout/spotlight/Panel';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Plus } from "lucide-react";
@@ -38,20 +38,20 @@ export default function PatientAppointments() {
       </div>
 
       <div className="space-y-4">
-        <Card>
-          <CardHeader>
+        <Panel>
+          <PanelHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="flex items-center gap-2">
+                <PanelTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
                   {t('screens.patient.drSarahMillerAnnualCheckup')}
-                </CardTitle>
-                <CardDescription>{t('screens.patient.generalMedicine')}</CardDescription>
+                </PanelTitle>
+                <PanelDescription>{t('screens.patient.generalMedicine')}</PanelDescription>
               </div>
               <Badge>{t('screens.patient.upcoming')}</Badge>
             </div>
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
@@ -66,23 +66,23 @@ export default function PatientAppointments() {
                 <Button size="sm" variant="outline">{t('screens.patient.cancel')}</Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
-        <Card>
-          <CardHeader>
+        <Panel>
+          <PanelHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="flex items-center gap-2">
+                <PanelTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
                   {t('screens.patient.drJamesDavisFollowup')}
-                </CardTitle>
-                <CardDescription>{t('screens.patient.cardiology')}</CardDescription>
+                </PanelTitle>
+                <PanelDescription>{t('screens.patient.cardiology')}</PanelDescription>
               </div>
               <Badge>{t('screens.patient.upcoming')}</Badge>
             </div>
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
@@ -97,23 +97,23 @@ export default function PatientAppointments() {
                 <Button size="sm" variant="outline">{t('screens.patient.cancel')}</Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
 
-        <Card>
-          <CardHeader>
+        <Panel>
+          <PanelHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="flex items-center gap-2">
+                <PanelTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
                   {t('screens.patient.drLisaChenConsultation')}
-                </CardTitle>
-                <CardDescription>{t('screens.patient.dermatology')}</CardDescription>
+                </PanelTitle>
+                <PanelDescription>{t('screens.patient.dermatology')}</PanelDescription>
               </div>
               <Badge variant="secondary">{t('screens.patient.completed')}</Badge>
             </div>
-          </CardHeader>
-          <CardContent>
+          </PanelHeader>
+          <PanelContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
@@ -128,8 +128,8 @@ export default function PatientAppointments() {
                 <Button size="sm" variant="outline">{t('screens.patient.bookFollowup')}</Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </PanelContent>
+        </Panel>
       </div>
     </div>
     </AppLayout>

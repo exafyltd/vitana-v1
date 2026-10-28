@@ -24,13 +24,13 @@ import { fmtNumber } from '@/lib/locale-format';
 const TREND_STYLE = {
   up: {
     icon: TrendingUp,
-    textClass: 'text-emerald-600 dark:text-emerald-400',
+    textClass: 'text-emerald-600',
     headlineKey: 'screens.home.vitanaIndexUpHeadline',
     subtextKey: 'screens.home.vitanaIndexUpSubtext',
   },
   down: {
     icon: TrendingDown,
-    textClass: 'text-amber-600 dark:text-amber-400',
+    textClass: 'text-amber-600',
     headlineKey: 'screens.home.vitanaIndexDownHeadline',
     subtextKey: 'screens.home.vitanaIndexDownSubtext',
   },

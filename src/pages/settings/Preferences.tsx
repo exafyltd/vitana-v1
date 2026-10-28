@@ -129,7 +129,7 @@ function Preferences() {
     <AppLayout>
       <SEO title={t('screens.settings.preferencesSettings')} description="Customize your app preferences and experience" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader 
             title={t('screens.settings.preferences')}
@@ -193,10 +193,10 @@ function Preferences() {
                         <div>
                           <label className="text-sm font-medium mb-2 block">{t('screens.settings.primaryColor')}</label>
                           <div className="flex gap-3">
-                            <div className="w-8 h-8 rounded-full bg-purple-500 border-2 border-primary cursor-pointer"></div>
-                            <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-transparent cursor-pointer"></div>
-                            <div className="w-8 h-8 rounded-full bg-green-500 border-2 border-transparent cursor-pointer"></div>
-                            <div className="w-8 h-8 rounded-full bg-orange-500 border-2 border-transparent cursor-pointer"></div>
+                            <div className="w-8 h-8 rounded-full bg-category-2 border-2 border-primary cursor-pointer"></div>
+                            <div className="w-8 h-8 rounded-full bg-category-3 border-2 border-transparent cursor-pointer"></div>
+                            <div className="w-8 h-8 rounded-full bg-status-success border-2 border-transparent cursor-pointer"></div>
+                            <div className="w-8 h-8 rounded-full bg-status-warning border-2 border-transparent cursor-pointer"></div>
                           </div>
                         </div>
                       </div>
@@ -227,7 +227,7 @@ function Preferences() {
                     icon={Palette}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-purple-600">
+                        <div className="text-2xl font-bold text-category-2">
                           {themeMounted ? (resolvedTheme === "dark" ? "Dark" : "Light") : "—"}
                         </div>
                         <div className="text-xs text-muted-foreground">
@@ -300,7 +300,7 @@ function Preferences() {
                     icon={Globe}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-blue-600">EN</div>
+                        <div className="text-2xl font-bold text-category-3">EN</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.englishUs')}</div>
                       </div>
                     }
@@ -313,7 +313,7 @@ function Preferences() {
                     icon={Globe}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.pst')}</div>
+                        <div className="text-2xl font-bold text-status-success">{t('screens.settings.pst')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.pacificStandard')}</div>
                       </div>
                     }
@@ -481,7 +481,7 @@ function Preferences() {
                     icon={Type}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-purple-600">{t('screens.settings.medium')}</div>
+                        <div className="text-2xl font-bold text-category-2">{t('screens.settings.medium')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.text16pxBaseSize')}</div>
                       </div>
                     }
@@ -494,7 +494,7 @@ function Preferences() {
                     icon={Type}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">3</div>
+                        <div className="text-2xl font-bold text-status-success">3</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.enabledFeatures')}</div>
                       </div>
                     }
@@ -514,7 +514,7 @@ function Preferences() {
                     icon={Home}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-blue-600">{t('screens.settings.dashboard')}</div>
+                        <div className="text-2xl font-bold text-category-3">{t('screens.settings.dashboard')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.defaultHomeView')}</div>
                       </div>
                     }
@@ -527,7 +527,7 @@ function Preferences() {
                     icon={SettingsIcon}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.text')}</div>
+                        <div className="text-2xl font-bold text-status-success">{t('screens.settings.text')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.settingsSaved')}</div>
                       </div>
                     }

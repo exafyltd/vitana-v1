@@ -81,10 +81,10 @@ export function FoundingBanner() {
   const remaining = status.remaining ?? Math.max(0, max - usesCount);
 
   return (
-    <Card className="border-amber-400/40 bg-gradient-to-br from-amber-50/80 via-orange-50/60 to-transparent dark:from-amber-950/30 dark:via-orange-950/20">
+    <Card className="border-status-warning/30 bg-gradient-to-br from-status-warning-subtle/80 via-status-warning-subtle/60 to-transparent">
       <CardContent className="p-4 flex items-center gap-3">
-        <div className="flex-shrink-0 rounded-full bg-amber-100 dark:bg-amber-900/40 p-2">
-          <Sparkles className="h-5 w-5 text-amber-700 dark:text-amber-300" aria-hidden="true" />
+        <div className="flex-shrink-0 rounded-full bg-status-warning-subtle p-2">
+          <Sparkles className="h-5 w-5 text-status-warning" aria-hidden="true" />
         </div>
         <div className="flex-1 min-w-0 space-y-0.5">
           <p className="text-sm font-semibold leading-tight">

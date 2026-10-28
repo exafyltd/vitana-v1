@@ -48,6 +48,7 @@ export function MobileIntegrationDetailSheet({
 
   return (
     <Sheet open={!!integration} onOpenChange={() => onClose()}>
+      {/* design-allow-next-line: viewport-bound sheet height */}
       <SheetContent side="bottom" className="rounded-t-2xl max-h-[70vh]">
         <SheetHeader className="sr-only">
           <SheetTitle>{integration.name}</SheetTitle>
@@ -57,7 +58,7 @@ export function MobileIntegrationDetailSheet({
           <div
             className={cn(
               "h-12 w-12 rounded-full flex items-center justify-center shrink-0",
-              integration.connected ? "bg-emerald-500/10" : "bg-muted"
+              integration.connected ? "bg-status-success/10" : "bg-muted"
             )}
           >
             <Icon className="h-6 w-6" />

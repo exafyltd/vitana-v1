@@ -13,10 +13,10 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
   const navigate = useNavigate();
 
   return (
-    <Card className="h-full bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 border-2 border-dashed border-purple-200">
+    <Card className="h-full bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to border-2 border-dashed border-category-2/25">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-500" />{t('screens.health.heyUsername', { userName })}
+          <Sparkles className="w-5 h-5 text-category-2" />{t('screens.health.heyUsername', { userName })}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -30,14 +30,14 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
           </p>
 
           {/* Progress indicator */}
-          <div className="bg-white/60 rounded-lg p-3 space-y-2">
+          <div className="bg-card/60 rounded-lg p-3 space-y-2">
             <div className="flex justify-between text-xs font-medium">
               <span>{t('screens.health.healthProfile')}</span>
-              <span className="text-purple-600">{t('screens.health.datacompletenessComplete', { dataCompleteness })}</span>
+              <span className="text-category-2">{t('screens.health.datacompletenessComplete', { dataCompleteness })}</span>
             </div>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-purple-400 to-pink-500 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-category-2/80 to-category-4 transition-all duration-500"
                 style={{ width: `${dataCompleteness}%` }}
               />
             </div>
@@ -46,7 +46,7 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
 
         <div className="flex flex-col gap-2 pt-2">
           <Button 
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+            className="w-full bg-gradient-to-r from-category-2 to-category-4 hover:from-category-2 hover:to-category-4"
             onClick={() => navigate('/health/biomarker-results')}
           >
             <Upload className="w-4 h-4 me-2" />

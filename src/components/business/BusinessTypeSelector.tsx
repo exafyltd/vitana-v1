@@ -116,19 +116,19 @@ export function BusinessTypeSelector({
                 onClick={() => !isAlreadyReseller && handleSelect(type.id)}
               >
                 <CardContent className="flex items-center gap-4 p-4">
-                  <div className={`p-2 rounded-lg bg-white/80 ${config.color}`}>
+                  <div className={`p-2 rounded-lg bg-card/80 ${config.color}`}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-foreground">{type.title}</h3>
                       {config.hasBadge && !isAlreadyReseller && (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-category-2 text-primary-foreground">
                           {t('badgeNew', 'New')}
                         </span>
                       )}
                       {isAlreadyReseller && (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-600 text-white">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-status-success text-primary-foreground">
                           {t('badgeActive', 'Active')}
                         </span>
                       )}

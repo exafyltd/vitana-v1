@@ -211,6 +211,7 @@ export default function SocialShareButton({
       />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        {/* design-allow-next-line: viewport-bound sheet height */}
         <DialogContent className="max-w-md max-h-[90dvh] overflow-y-auto [&>button]:not-sr-only [&>button]:absolute [&>button]:end-4 [&>button]:top-4">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">

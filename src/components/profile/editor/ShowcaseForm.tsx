@@ -68,7 +68,7 @@ export function ShowcaseForm() {
     switch (type) {
       case 'post': return <MessageCircle className="w-4 h-4" />;
       case 'media': return <Star className="w-4 h-4" />;
-      case 'achievement': return <Star className="w-4 h-4 text-yellow-500" />;
+      case 'achievement': return <Star className="w-4 h-4 text-status-warning" />;
       default: return <MessageCircle className="w-4 h-4" />;
     }
   };
@@ -154,8 +154,8 @@ export function ShowcaseForm() {
       </div>
 
       {featuredCount >= maxFeatured && (
-        <Card className="p-4 border-amber-200 bg-amber-50">
-          <p className="text-sm text-amber-700">{t('screens.profile.youVeReachedMaximumNumberFeatured', { maxFeatured })}
+        <Card className="p-4 border-status-warning/25 bg-status-warning-subtle">
+          <p className="text-sm text-status-warning">{t('screens.profile.youVeReachedMaximumNumberFeatured', { maxFeatured })}
           </p>
         </Card>
       )}

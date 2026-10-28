@@ -34,12 +34,12 @@ export function CrossPlanRelationshipWidget({
   
   return (
     <TooltipProvider>
-      <div className="rounded-2xl bg-gradient-to-r from-slate-50 to-indigo-50/30 
-                      dark:from-slate-900/50 dark:to-indigo-900/20 
-                      border border-slate-200/60 dark:border-slate-800/60 
+      <div className="rounded-2xl bg-gradient-to-r from-surface-sunken to-category-3/5 
+ 
+                      border border-border60 
                       backdrop-blur-md p-6 shadow-sm">
         <div className="flex items-center gap-3 mb-4">
-          <Link2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <Link2 className="w-5 h-5 text-category-3" />
           <h3 className="text-lg font-semibold text-foreground">
             {t('screens.health.howYourPlansInteract')}
           </h3>
@@ -53,10 +53,10 @@ export function CrossPlanRelationshipWidget({
                   className={cn(
                     "flex items-center gap-3 p-3 rounded-lg transition-colors cursor-help",
                     rel.type === "positive" 
-                      ? "bg-emerald-50/50 dark:bg-emerald-950/20 hover:bg-emerald-50 dark:hover:bg-emerald-950/30" 
+                      ? "bg-status-success-subtle/50 hover:bg-status-success-subtle" 
                       : rel.type === "negative"
-                      ? "bg-amber-50/50 dark:bg-amber-950/20 hover:bg-amber-50 dark:hover:bg-amber-950/30"
-                      : "bg-slate-50/50 dark:bg-slate-950/20 hover:bg-slate-50 dark:hover:bg-slate-950/30"
+                      ? "bg-status-warning-subtle/50 hover:bg-status-warning-subtle"
+                      : "bg-surface-sunken/50 hover:bg-surface-sunken"
                   )}
                 >
                   {/* Visual Icon Pills */}
@@ -64,22 +64,22 @@ export function CrossPlanRelationshipWidget({
                     <div className={cn(
                       "px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1",
                       rel.type === "positive" 
-                        ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                        ? "bg-status-success-subtle text-status-success"
                         : rel.type === "negative"
-                        ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                        : "bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300"
+                        ? "bg-status-warning-subtle text-status-warning"
+                        : "bg-muted text-muted-foreground"
                     )}>
                       <span>{rel.icons.from}</span>
                       <span className="text-[10px]">{getPillarName(rel.from)}</span>
                     </div>
-                    <span className="text-slate-400 dark:text-slate-600 text-sm">→</span>
+                    <span className="text-muted-foreground text-sm">→</span>
                     <div className={cn(
                       "px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1",
                       rel.type === "positive" 
-                        ? "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300"
+                        ? "bg-category-3/15 text-category-3"
                         : rel.type === "negative"
-                        ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                        : "bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300"
+                        ? "bg-status-warning-subtle text-status-warning"
+                        : "bg-muted text-muted-foreground"
                     )}>
                       <span>{rel.icons.to}</span>
                       <span className="text-[10px]">{getPillarName(rel.to)}</span>
@@ -89,10 +89,10 @@ export function CrossPlanRelationshipWidget({
                   <p className={cn(
                     "text-sm font-medium flex-1",
                     rel.type === "positive" 
-                      ? "text-emerald-700 dark:text-emerald-300"
+                      ? "text-status-success"
                       : rel.type === "negative"
-                      ? "text-amber-700 dark:text-amber-300"
-                      : "text-slate-700 dark:text-slate-300"
+                      ? "text-status-warning"
+                      : "text-muted-foreground"
                   )}>
                     {rel.impact}
                   </p>

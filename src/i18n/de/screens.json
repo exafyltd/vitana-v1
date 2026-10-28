@@ -7569,7 +7569,10 @@
         "business": "Business & Einkommen",
         "businessDesc": "Optional: Ideen, wie du mit deinem Wissen in Vitanaland Geld verdienen kannst. Standardmäßig aus – nur wenn du es einschaltest.",
         "loadError": "Deine Einstellungen für Vitanas Nachrichten konnten nicht geladen werden."
-      }
+      },
+      "communityIntroTitle": "Mich der Community vorstellen",
+      "communityIntroBody": "In deiner ersten Woche sehen andere Mitglieder eine kurze Willkommenskarte über dich und können dir Hallo sagen.",
+      "communityIntroSaveFailed": "Deine Einstellung konnte nicht gespeichert werden. Bitte versuche es noch einmal."
     },
     "sharing": {
       "activateCampaign": "Kampagne aktivieren",

@@ -183,7 +183,7 @@ export default function AI() {
       <SEO title={t('screens.ai.aiIntelligence')} description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
       <SubNavigation items={aiNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.ai.aiIntelligenceOverview')}

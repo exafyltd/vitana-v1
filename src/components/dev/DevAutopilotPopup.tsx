@@ -143,11 +143,12 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* design-allow-next-line: viewport-bound dialog height */}
       <DialogContent className="max-w-2xl max-h-[80vh]">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-              <Plane className="w-4 h-4 text-red-500" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-status-error/15 to-status-warning/20 flex items-center justify-center">
+              <Plane className="w-4 h-4 text-status-error" />
             </div>
             <span>{t('screens.dev.devAutopilotActions')}</span>
             <Badge variant="outline" className="ms-2">{t('screens.dev.lengthLength2Selected', { length: selectedActions.length, length2: pendingActions.length })}
@@ -160,8 +161,8 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
         {isExecuting ? (
           <div className="py-8">
             <div className="text-center mb-4">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-                <Plane className="w-6 h-6 text-red-500 animate-pulse" />
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-status-error/15 to-status-warning/20 flex items-center justify-center">
+                <Plane className="w-6 h-6 text-status-error animate-pulse" />
               </div>
               <h3 className="font-medium mb-2">{t('screens.dev.executingDevActions')}</h3>
               <p className="text-sm text-muted-foreground">{t('screens.dev.pleaseWaitWhileAiHandlesYour')}</p>
@@ -207,7 +208,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                   <Button
                     onClick={handleExecute}
                     disabled={selectedActions.length === 0}
-                    className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
+                    className="bg-gradient-to-r from-status-error to-status-warning hover:from-status-error hover:to-status-warning text-primary-foreground"
                   >
                     <Zap className="w-4 h-4 me-2" />{t('screens.dev.goLength', { length: selectedActions.length })}
                   </Button>

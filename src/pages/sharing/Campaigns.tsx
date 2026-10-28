@@ -7,7 +7,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Panel, PanelContent } from '@/components/layout/spotlight/Panel';
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { CampaignCard } from "@/components/sharing/CampaignCard";
 import { BulkActionToolbar } from "@/components/sharing/BulkActionToolbar";
@@ -292,8 +292,8 @@ export default withScreenId(function Campaigns() {
               </div>
             </>
           ) : (
-            <Card>
-              <CardContent className="text-center py-12">
+            <Panel>
+              <PanelContent className="text-center py-12">
                 <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noCampaignsYet')}</h3>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -303,8 +303,8 @@ export default withScreenId(function Campaigns() {
                   <Plus className="w-4 h-4 me-2" />
                   {t('screens.sharing.createYourFirstCampaign')}
                 </Button>
-              </CardContent>
-            </Card>
+              </PanelContent>
+            </Panel>
           )}
         </div>
       </div>

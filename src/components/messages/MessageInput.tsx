@@ -11,10 +11,12 @@ import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { 
   validateFile, 
   uploadChatAttachment, 
   uploadVoiceMessage,
+  deleteChatAttachment,
   formatFileSize, 
   isValidFileType,
   type AttachmentData, 
@@ -26,7 +28,9 @@ import {
   X,
   Loader2,
   Mic,
-  Paperclip
+  Paperclip,
+  RotateCw,
+  AlertCircle
 } from 'lucide-react';
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
@@ -85,6 +89,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const [attachments, setAttachments] = useState<AttachmentData[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: UploadProgress }>({});
+  // VTID-05316: an upload that failed stays in the strip (with its file) until
+  // it is retried or removed; nothing is sent while one is there.
+  const [failedUploads, setFailedUploads] = useState<Array<{ id: string; file: File }>>([]);
+  const activeUploadsRef = useRef(0);
+  // Another conversation: a failed upload of this one neither blocks it nor retries into it.
+  useEffect(() => { setFailedUploads([]); }, [threadId]);
   const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -97,7 +107,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   // This ref is set synchronously at the top of handleSend, closing that
   // window; isSending still drives the disabled UI state as before.
   const sendingLockRef = useRef(false);
-  const mentionEnterConsumedRef = useRef(false);
+  const enterConsumedRef = useRef(false);
+  // VTID-05229: Enter sends only where there is a real keyboard. The input
+  // device decides, not the screen width: a narrow desktop window still has a
+  // keyboard, a wide tablet does not. Touch-first devices keep VTID-04966
+  // (Enter = new line, only the send button sends).
+  const sendsOnEnter = useMediaQuery('(hover: hover) and (pointer: fine)');
   const { toast } = useToast();
   const { user } = useAuth();
   const { activeTenantId } = useTenant();
@@ -181,7 +196,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
     
     // Guard conditions - allow sending if we have either threadId or recipientId
-    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || isSending || sendingLockRef.current) {
+    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || failedUploads.length > 0 || isSending || sendingLockRef.current) {
       return;
     }
 
@@ -251,14 +266,41 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  /** VTID-05229: plain Enter (no modifier) on a device with a real keyboard. */
+  const isSendEnter = (e: React.KeyboardEvent) =>
+    sendsOnEnter && e.key === 'Enter' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey;
+
+  /**
+   * An IME is still composing (Japanese/Chinese/Korean input, some Android
+   * keyboards): Enter confirms the composition and must never send. This reads
+   * the DOM event, not `isComposing` above, which is the typing-indicator state.
+   */
+  const isImeEnter = (e: React.KeyboardEvent) => e.nativeEvent.isComposing || e.keyCode === 229;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // While the @mention list is open, Enter/Tab/arrows/Esc pick or close a
+    // suggestion (VTID-04926); such an Enter only picks.
+    const mentionConsumed = mentionComposer.onKeyDown(e);
+    enterConsumedRef.current = mentionConsumed && e.key === 'Enter';
+    if (mentionConsumed || isImeEnter(e) || !isSendEnter(e)) return;
+    // Desktop Enter never adds a line; handleSend's own guards make it a no-op
+    // when there is nothing to send, an upload is running or a send is in
+    // flight (and its lock stops a double send). The flag also makes the
+    // keypress below swallow the line.
+    e.preventDefault();
+    enterConsumedRef.current = true;
+    void handleSend();
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    // Enter always makes a new line; only the send button sends (owner
-    // decision 2026-10-07). The one exception is an Enter that just picked an
-    // @mention suggestion (VTID-04926): not every keyboard drops the keypress
+    // On touch devices Enter makes a new line; only the send button sends
+    // (VTID-04966, owner decision 2026-10-07). An Enter whose keydown picked
+    // an @mention suggestion (VTID-04926) or sent on desktop (VTID-05229)
+    // must not add a line either: not every keyboard drops the keypress
     // after a prevented keydown, so the keydown leaves a flag and this
-    // keypress must not add a line either.
-    if (e.key === 'Enter' && mentionEnterConsumedRef.current) {
-      mentionEnterConsumedRef.current = false;
+    // keypress must not add a line.
+    if (e.key === 'Enter' && enterConsumedRef.current) {
+      enterConsumedRef.current = false;
       e.preventDefault();
     }
   };
@@ -283,7 +325,50 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    await uploadFiles(Array.from(e.target.files || []));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  /**
+   * VTID-05229: a pasted screenshot arrives as a file without a real name
+   * (browsers call it `image.png`). Give it one the recipient can recognise.
+   */
+  const renameIfGeneric = (file: File): File => {
+    if (file.name && !/^image\.(png|jpe?g|gif|webp)$/i.test(file.name)) return file;
+    const ext = ({ 'image/jpeg': 'jpg', 'image/jpg': 'jpg', 'image/gif': 'gif', 'image/webp': 'webp' } as Record<string, string>)[
+      (file.type || '').toLowerCase()
+    ] ?? 'png';
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, '0');
+    const stamp = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+    return new File([file], `screenshot-${stamp}.${ext}`, { type: file.type || 'image/png', lastModified: file.lastModified });
+  };
+
+  /**
+   * VTID-05229: Ctrl/Cmd+V (or the phone's paste menu) of a screenshot puts it
+   * in the attachment preview, exactly like the paperclip. Plain text on the
+   * clipboard wins: a copy from Word/Excel or "copy image" in a browser (which
+   * also carries a URL/alt text) pastes text as before and attaches nothing.
+   */
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const data = e.clipboardData;
+    if (!data || disabled || isUploading) return;
+    let files = Array.from(data.files || []);
+    if (files.length === 0) {
+      // Safari and older Chromium fill only `items`.
+      files = Array.from(data.items || [])
+        .filter((item) => item.kind === 'file')
+        .map((item) => item.getAsFile())
+        .filter((file): file is File => file !== null);
+    }
+    if (files.length === 0 || (data.getData('text/plain') || '').trim() !== '') return;
+    e.preventDefault();
+    void uploadFiles(files.map(renameIfGeneric));
+  };
+
+  const uploadFiles = async (files: File[]) => {
     if (files.length === 0) return;
 
     // Validate all files first
@@ -291,7 +376,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
       const validation = validateFile(file);
       if (!validation.valid) {
         notifyError('toasts.messages.fileNotAllowed');
-        if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }
     }
@@ -299,94 +383,107 @@ const MessageInput: React.FC<MessageInputProps> = ({
     // Ensure we have a thread to attach to
     if (!threadId) {
       notifyError('toasts.messages.openConversation', 'toasts.messages.selectOpenConversationBeforeAttachingFiles');
-      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
-    setIsUploading(true);
-
     for (const file of files) {
-      const uploadId = Date.now().toString() + '_' + file.name;
-      setUploadProgress(prev => ({
-        ...prev,
-        [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
-      }));
-      console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
+      await uploadOne(file);
+    }
+  };
 
-      try {
-        const attachmentResult = await uploadChatAttachment(
-          file,
-          (progress) => {
-            setUploadProgress(prev => ({
-              ...prev,
-              [uploadId]: progress
-            }));
-          },
-          threadId
-        );
+  /**
+   * VTID-05316: one file — real progress in the strip; on failure the file
+   * stays as a failed chip with Retry (the caption in the text box is kept).
+   */
+  const uploadOne = async (file: File) => {
+    if (!threadId) return;
+    const uploadId = Date.now().toString() + '_' + Math.random().toString(36).slice(2, 7) + '_' + file.name;
+    activeUploadsRef.current += 1;
+    setIsUploading(true);
+    setUploadProgress(prev => ({
+      ...prev,
+      [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
+    }));
+    console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
 
-        console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
-        // Detect images for inline preview. Mime check covers desktops and
-        // most Android pickers; the extension fallback handles cases where
-        // the OS file picker delivers an empty mime (Samsung's SAF on
-        // screenshots, some iOS variants) so a `.png` screenshot still
-        // renders as an image instead of a "download" file chip.
-        const previewableImageMimes = new Set([
-          'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
-          'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
-          'image/bmp', 'image/tiff', 'image/avif',
-        ]);
-        const previewableExts = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
-        const mime = (attachmentResult.type || '').toLowerCase();
-        const isPreviewImage =
-          previewableImageMimes.has(mime)
-          || mime.startsWith('image/')
-          || previewableExts.test(attachmentResult.name || '');
-        const attachmentData: AttachmentData = {
-          type: isPreviewImage ? 'image' : 'file',
-          url: attachmentResult.url,
-          path: attachmentResult.path,
-          name: attachmentResult.name,
-          size: attachmentResult.size,
-          mime: attachmentResult.type,
-          filename: attachmentResult.name
-        };
+    try {
+      const attachmentResult = await uploadChatAttachment(
+        file,
+        (progress) => {
+          setUploadProgress(prev => (prev[uploadId] ? { ...prev, [uploadId]: progress } : prev));
+        },
+        threadId
+      );
 
-        setAttachments(prev => [...prev, attachmentData]);
+      console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
+      // Detect images for inline preview. Mime check covers desktops and
+      // most Android pickers; the extension fallback handles cases where
+      // the OS file picker delivers an empty mime (Samsung's SAF on
+      // screenshots, some iOS variants) so a `.png` screenshot still
+      // renders as an image instead of a "download" file chip.
+      const previewableImageMimes = new Set([
+        'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
+        'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
+        'image/bmp', 'image/tiff', 'image/avif',
+      ]);
+      const previewableExts = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
+      const videoExts = /\.(mp4|webm|mov|m4v)$/i;
+      const mime = (attachmentResult.type || '').toLowerCase();
+      const isPreviewImage =
+        previewableImageMimes.has(mime)
+        || mime.startsWith('image/')
+        || previewableExts.test(attachmentResult.name || '');
+      // VTID-05316: videos are albums' members too (played in the viewer).
+      const isVideo = !isPreviewImage && (mime.startsWith('video/') || videoExts.test(attachmentResult.name || ''));
+      const attachmentData: AttachmentData = {
+        type: isPreviewImage ? 'image' : isVideo ? 'video' : 'file',
+        url: attachmentResult.url,
+        path: attachmentResult.path,
+        name: attachmentResult.name,
+        size: attachmentResult.size,
+        mime: attachmentResult.type,
+        filename: attachmentResult.name
+      };
 
-        setUploadProgress(prev => {
-          const newProgress = { ...prev };
-          delete newProgress[uploadId];
-          return newProgress;
-        });
-      } catch (error) {
-        console.error('Upload error:', error);
-        notifyError('toasts.messages.uploadFailed');
-        setUploadProgress(prev => {
-          const newProgress = { ...prev };
-          delete newProgress[uploadId];
-          return newProgress;
-        });
+      setAttachments(prev => [...prev, attachmentData]);
+    } catch (error) {
+      console.error('Upload error:', error);
+      notifyError('toasts.messages.uploadFailed');
+      setFailedUploads(prev => [...prev, { id: uploadId, file }]);
+    } finally {
+      setUploadProgress(prev => {
+        const newProgress = { ...prev };
+        delete newProgress[uploadId];
+        return newProgress;
+      });
+      activeUploadsRef.current -= 1;
+      if (activeUploadsRef.current <= 0) {
+        activeUploadsRef.current = 0;
+        setIsUploading(false);
       }
     }
+  };
 
-    setIsUploading(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+  const retryUpload = (id: string) => {
+    const failed = failedUploads.find((f) => f.id === id);
+    if (!failed) return;
+    setFailedUploads(prev => prev.filter((f) => f.id !== id));
+    void uploadOne(failed.file);
+  };
+
+  const removeFailedUpload = (id: string) => {
+    setFailedUploads(prev => prev.filter((f) => f.id !== id));
   };
 
   const removeAttachment = (index: number) => {
     const file = attachments[index];
-    if (file) {
-      const fileId = `${file.name}-${file.size}`;
-      setUploadProgress(prev => {
-        const newProgress = { ...prev };
-        delete newProgress[fileId];
-        return newProgress;
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+    // VTID-05316: an uploaded file that will not be sent is deleted again.
+    if (file?.path) {
+      deleteChatAttachment(file.path).catch((err) => {
+        console.warn('[Attachment] Could not delete the removed upload:', err);
       });
     }
-    setAttachments(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleVoiceRecording = async (audioBlob: Blob, duration: number) => {
@@ -488,7 +585,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const quickReactions = ['❤️', '👍', '😊', '🎉', '💪', '🙏'];
-  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && !disabled && !isSending;
+  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && failedUploads.length === 0 && !disabled && !isSending;
 
   return (
     <form 
@@ -506,7 +603,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       )}
 
       {/* File Attachments Preview */}
-      {(attachments.length > 0 || Object.keys(uploadProgress).length > 0) && (
+      {(attachments.length > 0 || Object.keys(uploadProgress).length > 0 || failedUploads.length > 0) && (
         <div className="px-4 pb-2" id="attachment-status">
           <div className="flex flex-wrap gap-2">
             {attachments.map((attachment, index) => (
@@ -545,15 +642,55 @@ const MessageInput: React.FC<MessageInputProps> = ({
               </div>
             ))}
 
-            {/* Show upload progress */}
+            {/* Show upload progress (VTID-05316: real progress events) */}
             {Object.entries(uploadProgress).map(([id, progress]) => (
               <div
                 key={id}
                 className="flex items-center gap-2 bg-secondary/50 rounded-lg px-3 py-2 text-sm"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress.percentage}
+                data-testid="upload-progress"
               >
                 <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                 <span className="text-muted-foreground">{t('screens.messages.uploadingPercentage', { percentage: progress.percentage })}
                 </span>
+              </div>
+            ))}
+
+            {/* VTID-05316: a failed upload keeps its place; Retry re-uploads it. */}
+            {failedUploads.map(({ id, file }) => (
+              <div
+                key={id}
+                className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm"
+                data-testid="upload-failed"
+              >
+                <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" aria-hidden />
+                <div className="flex-1 min-w-0">
+                  <div className="truncate max-w-32 font-medium">{file.name}</div>
+                  <div className="text-destructive text-xs">{t('inbox.media.uploadFailed')}</div>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="h-8 px-2 flex-shrink-0 text-xs"
+                  onClick={() => retryUpload(id)}
+                  aria-label={t('inbox.media.retryUpload', { name: file.name })}
+                  data-testid="upload-retry"
+                >
+                  <RotateCw className="w-3 h-3 me-1" aria-hidden />
+                  {t('inbox.media.retry')}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="h-6 w-6 p-0 flex-shrink-0"
+                  onClick={() => removeFailedUpload(id)}
+                  aria-label={`Remove ${file.name}`}
+                >
+                  <X className="w-3 h-3" />
+                </Button>
               </div>
             ))}
           </div>
@@ -633,14 +770,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
               ref={textareaRef}
               value={message}
               onChange={handleInputChange}
-              // While the @mention list is open, Enter/Tab/arrows/Esc pick or
-              // close a suggestion; preventDefault there also stops the
-              // keypress below from sending the message.
-              onKeyDown={(e) => {
-                mentionEnterConsumedRef.current = mentionComposer.onKeyDown(e) && e.key === 'Enter';
-              }}
+              onKeyDown={handleKeyDown}
+              onPaste={handlePaste}
               onKeyUp={(e) => {
-                if (e.key === 'Enter') mentionEnterConsumedRef.current = false;
+                if (e.key === 'Enter') enterConsumedRef.current = false;
                 mentionComposer.sync();
               }}
               onClick={mentionComposer.sync}
@@ -650,7 +783,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               disabled={disabled}
               className="min-h-6 resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
-              enterKeyHint="enter"
+              enterKeyHint={sendsOnEnter ? 'send' : 'enter'}
               aria-label={t('screens.messages.messageComposer')}
               aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
             />
@@ -659,7 +792,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
         {/* Send/Mic button outside the pill */}
         {canSend ? (
-          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label={t('screens.messages.sendMessage')}>
+          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-primary-foreground hover:bg-domain-messages-accent/90" aria-label={t('screens.messages.sendMessage')}>
             {isUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (

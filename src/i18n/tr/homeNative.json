@@ -1,0 +1,32 @@
+{
+  "homeNative": {
+    "title": "Haberler",
+    "selectFeed": "Akış seç",
+    "newMember": {
+      "badge": "Toplulukta yeni",
+      "fallbackName": "Yeni üye"
+    },
+    "card": {
+      "dismiss": "Kartı gizle",
+      "open": "Aç"
+    },
+    "feature": {
+      "brandNew": "Yepyeni özellik",
+      "didYouKnow": "Biliyor muydun?",
+      "tryIt": "Hemen dene"
+    },
+    "performer": {
+      "badge": "Topluluk öne çıkanı",
+      "improvement": "Vitana Index'te +{value}"
+    },
+    "compose": {
+      "cancel": "İptal",
+      "charCount": "{count}/{max}"
+    },
+    "comments": {
+      "title": "Yorumlar",
+      "open": "Yorumları aç",
+      "openPost": "Gönderiyi aç"
+    }
+  }
+}

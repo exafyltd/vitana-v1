@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
+import { Panel as Card, PanelContent as CardContent } from '@/components/layout/spotlight/Panel';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -168,7 +168,7 @@ function AIPicksInner() {
     return (
       <Card
         onClick={() => rec._product && selectProduct(rec._product)}
-        className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200/50 dark:border-purple-800/50 overflow-hidden h-full"
+        className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-category-2/15 overflow-hidden h-full"
       >
         <div className="relative">
           <ProductImage
@@ -178,14 +178,14 @@ function AIPicksInner() {
             subcategory={rec.subcategory}
             sizeClass="w-full h-40"
           />
-          <Badge className="absolute top-2 start-2 bg-purple-500 text-white text-xs">
+          <Badge className="absolute top-2 start-2 bg-category-2 text-primary-foreground text-xs">
             {rec.badge}
           </Badge>
-          <div className="absolute top-2 end-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
-            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
+          <div className="absolute top-2 end-2 bg-card/90 rounded-full px-2 py-1">
+            <span className="text-xs font-bold text-category-2">{rec.match}%</span>
           </div>
           <div className={cn(
-            "absolute bottom-2 start-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
+            "absolute bottom-2 start-2 rounded-full px-2 py-1 flex items-center gap-1 text-primary-foreground text-xs",
             getTypeColor(rec.type)
           )}>
             {getTypeIcon(rec.type)}
@@ -199,16 +199,17 @@ function AIPicksInner() {
           <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
 
           {rec.reason && (
-            <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
+            <div className="bg-category-2/10 p-2 rounded-lg mb-3">
               <div className="flex items-center gap-1.5">
-                <Sparkles className="h-3 w-3 text-purple-500" />
-                <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
+                <Sparkles className="h-3 w-3 text-category-2" />
+                <span className="text-xs text-category-2 line-clamp-1">{rec.reason}</span>
               </div>
             </div>
           )}
 
           <div className="flex items-center justify-between mb-3">
             <span className="text-lg font-bold">{rec.price}</span>
+            {/* design-allow-next-line: truncation width cap, not a layout size */}
             <span className="text-xs text-muted-foreground truncate max-w-[45%]">{rec.provider}</span>
           </div>
 
@@ -290,7 +291,7 @@ function AIPicksInner() {
       <AppLayout>
         <div className="flex items-center justify-center min-h-screen">
           <div className="animate-pulse flex flex-col items-center gap-4">
-            <Brain className="h-12 w-12 text-purple-500 animate-bounce" />
+            <Brain className="h-12 w-12 text-category-2 animate-bounce" />
             <p className="text-muted-foreground">{translate('discover.aiPicks.loading')}</p>
           </div>
         </div>
@@ -307,7 +308,7 @@ function AIPicksInner() {
       />
       
       <div className={cn(
-        "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen",
+        "p-6 bg-gradient-to-br from-surface-page-from via-surface-page-via to-surface-page-to min-h-screen",
         isMobile && "px-4 pb-32"
       )}>
         <div className="max-w-7xl mx-auto space-y-6">
@@ -358,7 +359,7 @@ function AIPicksInner() {
 
           {/* Results count */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Brain className="h-4 w-4 text-purple-500" />
+            <Brain className="h-4 w-4 text-category-2" />
             <span>
               {translate('discover.aiPicks.recommendationsFound').replace('{count}', String(filteredRecommendations.length))}
             </span>
@@ -376,6 +377,7 @@ function AIPicksInner() {
                   {filteredRecommendations.map((rec) => (
                     <div
                       key={rec.id}
+                      // design-allow-next-line: viewport-relative carousel item width; the contract has no viewport-width token
                       className="flex-none w-[85vw] px-2 first:ps-4 last:pe-4"
                     >
                       <RecommendationCard rec={rec} />

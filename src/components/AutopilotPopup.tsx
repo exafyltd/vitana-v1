@@ -375,7 +375,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         className={cn(
           "flex items-start space-x-3 p-3 rounded-lg border bg-card transition-all duration-300",
           isPending && "hover:bg-accent/50 cursor-pointer",
-          isCompleted && "border-green-300 bg-green-50/50 dark:bg-green-900/10",
+          isCompleted && "border-status-success/40 bg-status-success-subtle/50",
           isProcessing && "border-primary/30 bg-primary/5",
         )}
         onClick={() => isPending && toggleActionSelection(action.id)}
@@ -393,7 +393,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <CircleDot className="w-4 h-4 text-primary" />
           )}
           {isCompleted && (
-            <Check className="w-4 h-4 text-green-600" />
+            <Check className="w-4 h-4 text-status-success" />
           )}
         </div>
 
@@ -402,7 +402,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           <div className="flex items-center justify-between mb-1">
             <h4 className={cn(
               "font-medium text-sm",
-              isCompleted && "text-green-700 dark:text-green-400",
+              isCompleted && "text-status-success",
             )}>
               {action.title}
             </h4>
@@ -425,7 +425,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                 </Button>
               )}
               {isCompleted && (
-                <Badge variant="outline" className="text-xs text-green-600 border-green-300 bg-green-50">
+                <Badge variant="outline" className="text-xs text-status-success border-status-success/40 bg-status-success-subtle">
                   <Check className="w-3 h-3 me-1" />
                   {t('screens.common.erledigt')}
                 </Badge>
@@ -580,7 +580,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             {currentTotal !== null ? (
               <>{t('screens.common.now')} <strong>{currentTotal}</strong>
                 {selectedLift > 0 ? (
-                  <>{t('screens.common.value0AfterGoValue1', { value0: " ", value1: " " })}<strong className="text-green-600 font-semibold">
+                  <>{t('screens.common.value0AfterGoValue1', { value0: " ", value1: " " })}<strong className="text-status-success font-semibold">
                       {currentTotal + selectedLift}
                     </strong>
                   </>
@@ -591,7 +591,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             )}
           </span>
           {selectedLift > 0 ? (
-            <span className="text-xs text-green-600 font-semibold">+{selectedLift}</span>
+            <span className="text-xs text-status-success font-semibold">+{selectedLift}</span>
           ) : (
             <span className="text-xs text-muted-foreground">{EMPTY_COPY.autopilotPopupZero}</span>
           )}
@@ -642,7 +642,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               <Button
                 onClick={handleExecute}
                 disabled={selectedActions.length === 0 || isExecuting}
-                className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
+                className="bg-gradient-to-r from-status-error to-status-warning hover:from-status-error hover:to-status-warning text-primary-foreground"
               >
                 {isExecuting ? (
                   <Loader2 className="w-4 h-4 me-2 animate-spin" />
@@ -671,13 +671,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent className={cn(
+        // design-allow-next-line: viewport-bound dialog height
         "sm:max-w-2xl sm:max-h-[80vh]",
         isMobile && "p-6 flex flex-col"
       )} fullscreenOnMobile>
         <ResponsiveDialogHeader className={isMobile ? "text-start border-b-0 px-0 pe-0 pt-0 pb-0" : undefined}>
           <ResponsiveDialogTitle className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-              <Plane className="w-4 h-4 text-red-500" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-status-error/15 to-status-warning/20 flex items-center justify-center">
+              <Plane className="w-4 h-4 text-status-error" />
             </div>
             <span>{translate('autopilot.popup.title')}</span>
             {!loading && pendingActions.length > 0 && (
