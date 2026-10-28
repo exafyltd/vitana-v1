@@ -21,6 +21,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const ME = '11111111-1111-4111-8111-111111111111';
 const PEER = '22222222-2222-4222-8222-222222222222';
+// Outbox fixtures are relative to now: loadOutbox prunes items older than OUTBOX_MAX_AGE_MS,
+// so a fixed date would age out of the window and the test would start failing on its own.
+const minutesAgo = (m: number) => new Date(Date.now() - m * 60_000).toISOString();
 
 let currentUser: { id: string; user_metadata: Record<string, unknown>; app_metadata: Record<string, unknown> } | null;
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: currentUser }) }));
@@ -201,8 +204,8 @@ describe('reload', () => {
     const pending = newClientMessageId();
     const failed = newClientMessageId();
     saveOutbox(ME, [
-      { client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: '2026-10-21T10:00:00.000Z', attempts: 1, status: 'sending' },
-      { client_message_id: failed, user_id: ME, thread_id: PEER, kind: 'dm', body: 'had failed', message_type: 'text', created_at: '2026-10-21T10:00:01.000Z', attempts: 1, status: 'failed' },
+      { client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: minutesAgo(2), attempts: 1, status: 'sending' },
+      { client_message_id: failed, user_id: ME, thread_id: PEER, kind: 'dm', body: 'had failed', message_type: 'text', created_at: minutesAgo(1), attempts: 1, status: 'failed' },
     ]);
     sendChatMessage.mockImplementation(async (_t: string, b: string, o: { clientMessageId: string }) => serverRow(b, o.clientMessageId));
     const { result } = setup();
@@ -258,7 +261,7 @@ describe('delivery state', () => {
 describe('review fixes', () => {
   it('several mounted instances share one outbox: a reload re-posts once and nothing is overwritten', async () => {
     const pending = newClientMessageId();
-    saveOutbox(ME, [{ client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: '2026-10-21T10:00:00.000Z', attempts: 1, status: 'sending' }]);
+    saveOutbox(ME, [{ client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: minutesAgo(2), attempts: 1, status: 'sending' }]);
     let release: () => void = () => undefined;
     sendChatMessage.mockImplementation((_t: string, b: string, o: { clientMessageId: string }) =>
       new Promise((res) => { release = () => res(serverRow(b, o.clientMessageId)); }));
