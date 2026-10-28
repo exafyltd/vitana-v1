@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05329",
+  "kind": "infra",
+  "paths": [
+    ".github/workflows/AWS-STAGE-DEPLOY-FRONTEND.yml",
+    ".github/workflows/AWS-PROD-DEPLOY-FRONTEND.yml",
+    "src/lib/deploy-workflow.ecr-public-auth.test.ts",
+    "docs/validation/VTID-05329/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05329/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
