@@ -68,12 +68,16 @@ for (const vp of VIEWPORTS) {
       const { key, session } = await signIn(page, request);
       await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
       const path = which === 'public' ? `/u/${await testUserHandle(request, key, session)}` : '/me/profile';
-      // The token is seeded into localStorage before the first paint, but the
-      // auth context hydrates async. On /u/:identifier a not-yet-signed-in
-      // viewer is treated as a shared link (immersive landing, no ID card), so
-      // load /maxina first to restore the session before the route renders —
-      // matching a real signed-in visit.
-      await page.goto('/maxina', { waitUntil: 'domcontentloaded' });
+      // /u/:identifier treats a not-yet-signed-in viewer as a shared link
+      // (immersive landing, no ID card). The token is seeded into localStorage
+      // but the auth context hydrates async. Visit the auth-gated /me/profile
+      // first and wait for its ID card: that proves the session is live, so the
+      // following /u/ render takes the signed-in branch — a real signed-in
+      // visit, never the shared-link landing.
+      if (which === 'public') {
+        await page.goto('/me/profile', { waitUntil: 'domcontentloaded' });
+        await expect(page.locator('[data-testid="profile-id-card"], [data-testid="profile-vitana-index-card"]').first()).toBeVisible({ timeout: 30_000 });
+      }
       await page.goto(`${path}${vp.query}`, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('[data-testid="profile-id-card"], [data-testid="profile-vitana-index-card"]').first()).toBeVisible({ timeout: 30_000 });
       await expect(page.locator('[data-archetype-skeleton]')).toHaveCount(0, { timeout: 30_000 });
