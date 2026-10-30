@@ -11,35 +11,30 @@
       "direct": "Direktno",
       "contacts": "Kontakti",
       "notifications": "Obaveštenja",
-      "archived": "Arhivirano",
-      "_pending_review": {}
+      "archived": "Arhivirano"
     },
     "contextTabs": {
       "community": "Zajednica",
-      "network": "Mreža",
-      "_pending_review": {}
+      "network": "Mreža"
     },
     "actions": {
       "new": "Novo",
       "newMessage": "Nova poruka",
       "createGroup": "Kreiraj grupu",
       "markAllRead": "Označi sve kao pročitano",
-      "menu": "Više",
-      "_pending_review": {}
+      "menu": "Više"
     },
     "composer": {
       "placeholder": "Unesi svoju poruku...",
       "send": "Pošalji",
       "attachments": "Prilozi",
       "recipients": "Za:",
-      "add": "Dodaj",
-      "_pending_review": {}
+      "add": "Dodaj"
     },
     "states": {
       "empty": "Još nema poruka",
       "loading": "Učitavanje poruka...",
-      "error": "Neuspešno učitavanje poruka",
-      "_pending_review": {}
+      "error": "Neuspešno učitavanje poruka"
     },
     "newConversation": {
       "title": "Započni novi razgovor",
@@ -59,8 +54,7 @@
       "cancel": "Otkaži",
       "startChat": "Započni čet",
       "createGroup": "Napravi grupu",
-      "creating": "Pravljenje...",
-      "_pending_review": {}
+      "creating": "Pravljenje..."
     },
     "createGroup": {
       "title": "Napravi grupu",
@@ -77,8 +71,7 @@
       "created": "Grupa napravljena",
       "createdDesc": "\"{name}\" je uspešno napravljena.",
       "failed": "Neuspešno pravljenje grupe",
-      "failedDesc": "Molimo pokušaj ponovo.",
-      "_pending_review": {}
+      "failedDesc": "Molimo pokušaj ponovo."
     },
     "toast": {
       "success": "Uspeh",
@@ -95,8 +88,7 @@
       "groupCreated": "Grupa \"{name}\" uspešno napravljena!",
       "groupFailed": "Neuspešno kreiranje grupe",
       "allMarkedRead": "Sve poruke označene kao pročitane",
-      "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo.",
-      "_pending_review": {}
+      "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo."
     },
     "createGroupAction": "Kreiraj novu grupu",
     "newConversationAction": "Novi razgovor",
@@ -114,8 +106,7 @@
       "globalDescription": "Započni razgovor ili se pridruži zajednici da bi se povezao/la sa drugima.",
       "tenantDescription": "Poveži se sa kolegama i članovima tima u svojoj profesionalnoj mreži.",
       "startConversation": "Započni razgovor",
-      "discoverPeople": "Otkrij ljude",
-      "_pending_review": {}
+      "discoverPeople": "Otkrij ljude"
     },
     "group": {
       "loading": "Učitavam grupu…",
@@ -127,11 +118,9 @@
       "officialBadge": "zvanična grupa",
       "empty": "Još nema poruka.",
       "composerPlaceholder": "Poruka…",
-      "_pending_review": {},
       "today": "Danas",
       "yesterday": "Juče"
     },
-    "_pending_review": {},
     "messageStatus": {
       "sending": "Šalje se",
       "sent": "Poslato",
@@ -139,15 +128,13 @@
       "read": "Pročitano",
       "failed": "Nije poslato",
       "retry": "Pošalji ponovo",
-      "retryLabel": "Pošalji ovu poruku ponovo",
-      "_pending_review": {}
+      "retryLabel": "Pošalji ovu poruku ponovo"
     },
     "newMessages": {
       "none": "Idi na najnovije",
       "one": "Nove poruke: 1",
       "other": "Nove poruke: {count}",
-      "unread": "Nepročitane poruke",
-      "_pending_review": {}
+      "unread": "Nepročitane poruke"
     },
     "reply": {
       "unavailable": "Originalna poruka nije dostupna",
@@ -155,8 +142,7 @@
       "jumpToOriginal": "Idi na originalnu poruku",
       "jumpTo": "Idi na originalnu poruku: {name}",
       "unknownSender": "Član",
-      "noText": "Prilog",
-      "_pending_review": {}
+      "noText": "Prilog"
     },
     "media": {
       "uploadFailed": "Otpremanje nije uspelo",
@@ -166,7 +152,9 @@
       "moreItems": "Još {count}",
       "openImage": "Otvori sliku {name}",
       "openVideo": "Pusti video {name}",
-      "_pending_review": {}
+      "_pending_review": {
+        "video": true
+      }
     },
     "search": {
       "title": "Pretraži poruke",
@@ -221,6 +209,5 @@
         }
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

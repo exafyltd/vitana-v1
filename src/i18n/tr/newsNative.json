@@ -8,7 +8,10 @@
     "post": {
       "video": "Video",
       "likes": "{count} beğeni",
-      "comments": "{count} yorum"
+      "comments": "{count} yorum",
+      "_pending_review": {
+        "video": true
+      }
     }
   }
 }

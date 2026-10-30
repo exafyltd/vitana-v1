@@ -184,7 +184,8 @@
         "video": "Видео",
         "file": "Файлы",
         "voice": "Голосовые",
-        "link": "Ссылки"
+        "link": "Ссылки",
+        "_pending_review": {}
       },
       "searching": "Поиск…",
       "error": "Не удалось выполнить поиск. Попробуй ещё раз.",
@@ -192,7 +193,8 @@
       "results": "Результаты поиска",
       "conversation": "Чат",
       "more": "Показать ещё",
-      "filters": "Фильтры"
+      "filters": "Фильтры",
+      "_pending_review": {}
     },
     "shared": {
       "sendInMessage": "Отправить в сообщении",
@@ -204,7 +206,8 @@
         "post": "Публикация",
         "event": "Событие",
         "product": "Товар",
-        "profile": "Профиль"
+        "profile": "Профиль",
+        "_pending_review": {}
       },
       "loading": "Загрузка превью…",
       "loadFailed": "Не удалось загрузить превью",
@@ -213,13 +216,17 @@
       "unavailable": {
         "deleted": {
           "title": "{kind}: больше недоступно",
-          "body": "Это было удалено."
+          "body": "Это было удалено.",
+          "_pending_review": {}
         },
         "restricted": {
           "title": "{kind}: тебе не видно",
-          "body": "Настройки приватности не позволяют тебе это увидеть."
-        }
-      }
+          "body": "Настройки приватности не позволяют тебе это увидеть.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

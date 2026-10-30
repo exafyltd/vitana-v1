@@ -18,16 +18,14 @@
       "showLessToast": "我们会减少这类推荐",
       "mutedToast": "来源已屏蔽",
       "undo": "撤销",
-      "unmute": "取消屏蔽",
-      "_pending_review": {}
+      "unmute": "取消屏蔽"
     },
     "detail": {
       "back": "返回",
       "continueReading": "在以下位置继续阅读",
       "openInBrowser": "在浏览器中打开",
       "couldNotLoad": "此文章无法内联显示",
-      "readOn": "阅读更多",
-      "_pending_review": {}
+      "readOn": "阅读更多"
     },
     "pillars": {
       "all": "全部",
@@ -35,19 +33,47 @@
       "hydration": "补水",
       "sleep": "睡眠",
       "exercise": "运动",
-      "mental": "心理",
-      "_pending_review": {}
+      "mental": "心理"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "欢迎 {name}！",
       "joinedSummary": "{name} 刚刚加入了 MAXINA 长寿社区。",
       "newMember": "新成员",
       "sayHello": "打个招呼",
       "viewProfile": "查看资料",
-      "eyebrow": "社区新成员",
-      "_pending_review": {}
+      "eyebrow": "社区新成员"
+    },
+    "greeting": {
+      "_pending_review": {
+        "fieldLabel": true,
+        "placeholder": true,
+        "inLanguage": true,
+        "send": true,
+        "sending": true,
+        "tryAnother": true,
+        "cancel": true,
+        "loadingSuggestion": true,
+        "sentToast": true,
+        "sentToastDesc": true,
+        "suggestionFailed": true,
+        "sendFailed": true,
+        "notAllowed": true,
+        "emptyGreeting": true
+      },
+      "fieldLabel": "Your greeting",
+      "placeholder": "Write a short, friendly hello …",
+      "inLanguage": "in {language}",
+      "send": "Send",
+      "sending": "Sending …",
+      "tryAnother": "Try another",
+      "cancel": "Cancel",
+      "loadingSuggestion": "Loading a suggestion …",
+      "sentToast": "Greeting sent",
+      "sentToastDesc": "Your greeting is on its way.",
+      "suggestionFailed": "Couldn't load a suggestion. Try again in a moment.",
+      "sendFailed": "Couldn't send your greeting. Try again in a moment.",
+      "notAllowed": "This greeting can't be sent right now.",
+      "emptyGreeting": "Write a short hello first."
     }
-  },
-  "_pending_review": {}
+  }
 }
