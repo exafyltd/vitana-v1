@@ -1,6 +1,6 @@
 {
   "vtid": "VTID-05207",
-  "service": "frontend",
+  "service": "community-app",
   "note": "Read-only. The composer Send path (one tagged DM) is proven by the vitest suites, which mock the gateway; nothing is sent on staging.",
   "tests": [
     {
@@ -8,6 +8,12 @@
       "ref": "npx vitest run src/components/home/NewMemberCard.test.tsx src/components/home/NewMemberGreetingComposer.test.tsx",
       "cwd": ".",
       "reason": "DOM/behaviour proof: composer opens inline, shows the fetched suggestion and language, Try another varies, Send posts one tagged DM and is disabled in flight, a 403 shows one calm message with no auto-resend."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05207: Say hello opens the inline greeting composer, nothing is sent",
+      "spec": "tests/e2e/staging/vtid-05207-say-hello.staging.spec.ts",
+      "cwd": "."
     }
   ]
 }
