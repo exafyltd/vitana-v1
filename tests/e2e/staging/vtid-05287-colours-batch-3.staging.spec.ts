@@ -81,9 +81,11 @@ for (const route of ROUTES) {
       await page.goto(`${route}${spotlight}`, { waitUntil: 'domcontentloaded' });
 
       // The page mounted its own content (not an error boundary / blank).
-      // A runtime-injected theme bootstrap <script> can be #root's first child
-      // (hidden); assert on the first real rendered element instead.
-      await expect(page.locator('#root *:not(script):not(style)').first()).toBeVisible({ timeout: 25_000 });
+      // The page mounted its app shell (not a blank page / error boundary).
+      // #root's first children can be hidden runtime-injected nodes (a theme
+      // bootstrap <script>, the empty toast region), so wait for the real
+      // content container that AppLayout always renders.
+      await expect(page.locator('main').first()).toBeVisible({ timeout: 25_000 });
       await page.waitForTimeout(600);
 
       // No raw palette class on any rendered element: the mapping shipped.
