@@ -3,12 +3,16 @@
     "article": {
       "unavailableTitle": "Artykuł niedostępny",
       "unavailableBody": "Tego artykułu nie można tu otworzyć. Wróć do kanału, aby otworzyć go ponownie.",
-      "backToFeed": "Powrót do kanału"
+      "backToFeed": "Powrót do kanału",
+      "_pending_review": {}
     },
     "post": {
       "video": "Wideo",
       "likes": "Polubienia: {count}",
-      "comments": "Komentarze: {count}"
-    }
-  }
+      "comments": "Komentarze: {count}",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

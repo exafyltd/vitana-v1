@@ -37,7 +37,10 @@
       "leave": "退出群组",
       "notFoundTitle": "未找到群组",
       "notFoundDesc": "该群组可能已被删除或不存在。",
-      "browse": "浏览群组"
+      "browse": "浏览群组",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "社区成员",
@@ -65,7 +68,10 @@
       "fallbackName": "成员",
       "empty": "还没有成员。",
       "emptyDance": "还没有人把这种舞蹈设为偏好——成为第一个吧！",
-      "viewProfile": "查看资料"
+      "viewProfile": "查看资料",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "公开请求",
@@ -97,7 +103,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "此视图中没有公开请求。",
-      "emptyDance": "还没有公开的舞蹈请求——发布你的，成为第一个吧！"
+      "emptyDance": "还没有公开的舞蹈请求——发布你的，成为第一个吧！",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "寻找伙伴",
@@ -122,7 +131,10 @@
       "filterTitle": "筛选匹配",
       "filterMinScore": "最低分数",
       "filterClear": "重置",
-      "filterShowResults": "显示 {count} 个匹配"
+      "filterShowResults": "显示 {count} 个匹配",
+      "_pending_review": {
+        "scorePercent": true
+      }
     },
     "matches": {
       "title": "与你匹配的人",
@@ -130,7 +142,10 @@
       "empty": "还没有匹配。稍后再来看看。",
       "fallbackName": "社区成员",
       "reasonDefault": "共同兴趣",
-      "score": "{score}%"
+      "score": "{score}%",
+      "_pending_review": {
+        "score": true
+      }
     },
     "intents": {
       "boardTitle": "社区看板",

@@ -3,12 +3,16 @@
     "article": {
       "unavailableTitle": "Статья недоступна",
       "unavailableBody": "Эту статью нельзя открыть здесь. Вернись в ленту, чтобы открыть её снова.",
-      "backToFeed": "Назад в ленту"
+      "backToFeed": "Назад в ленту",
+      "_pending_review": {}
     },
     "post": {
       "video": "Видео",
       "likes": "Лайков: {count}",
-      "comments": "Комментариев: {count}"
-    }
-  }
+      "comments": "Комментариев: {count}",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

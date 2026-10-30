@@ -1,7 +1,6 @@
 {
   "newsCard": {
     "menu": {
-      "_pending_review": {},
       "share": "Paylaş",
       "save": "Kaydet",
       "saved": "Kaydedildi",
@@ -22,7 +21,6 @@
       "unmute": "Sesi Aç"
     },
     "detail": {
-      "_pending_review": {},
       "back": "Geri",
       "continueReading": "Şurada okumaya devam et",
       "openInBrowser": "Tarayıcıda aç",
@@ -30,7 +28,6 @@
       "readOn": "Devamını oku"
     },
     "pillars": {
-      "_pending_review": {},
       "all": "Tümü",
       "nutrition": "Beslenme",
       "hydration": "Su Tüketimi",
@@ -38,16 +35,45 @@
       "exercise": "Egzersiz",
       "mental": "Zihinsel"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "Hoş geldin, {name}!",
       "joinedSummary": "{name} az önce MAXINA uzun yaşam topluluğuna katıldı.",
       "newMember": "Yeni üye",
       "sayHello": "Merhaba de",
       "viewProfile": "Profili görüntüle",
-      "eyebrow": "Toplulukta yeni",
-      "_pending_review": {}
+      "eyebrow": "Toplulukta yeni"
+    },
+    "greeting": {
+      "_pending_review": {
+        "fieldLabel": true,
+        "placeholder": true,
+        "inLanguage": true,
+        "send": true,
+        "sending": true,
+        "tryAnother": true,
+        "cancel": true,
+        "loadingSuggestion": true,
+        "sentToast": true,
+        "sentToastDesc": true,
+        "suggestionFailed": true,
+        "sendFailed": true,
+        "notAllowed": true,
+        "emptyGreeting": true
+      },
+      "fieldLabel": "Your greeting",
+      "placeholder": "Write a short, friendly hello …",
+      "inLanguage": "in {language}",
+      "send": "Send",
+      "sending": "Sending …",
+      "tryAnother": "Try another",
+      "cancel": "Cancel",
+      "loadingSuggestion": "Loading a suggestion …",
+      "sentToast": "Greeting sent",
+      "sentToastDesc": "Your greeting is on its way.",
+      "suggestionFailed": "Couldn't load a suggestion. Try again in a moment.",
+      "sendFailed": "Couldn't send your greeting. Try again in a moment.",
+      "notAllowed": "This greeting can't be sent right now.",
+      "emptyGreeting": "Write a short hello first."
     }
-  },
-  "_pending_review": {}
+  }
 }

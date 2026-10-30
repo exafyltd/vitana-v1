@@ -37,7 +37,10 @@
       "leave": "Выйти из группы",
       "notFoundTitle": "Группа не найдена",
       "notFoundDesc": "Возможно, эта группа была удалена или не существует.",
-      "browse": "Просмотреть группы"
+      "browse": "Просмотреть группы",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "Участники сообщества",
@@ -65,7 +68,10 @@
       "fallbackName": "Участник",
       "empty": "Пока нет участников.",
       "emptyDance": "Никто ещё не указал этот танец как предпочтение — будь первым!",
-      "viewProfile": "Открыть профиль"
+      "viewProfile": "Открыть профиль",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "Открытые запросы",
@@ -97,7 +103,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "В этом разделе нет открытых запросов.",
-      "emptyDance": "Пока нет открытых танцевальных запросов — опубликуй свой и будь первым!"
+      "emptyDance": "Пока нет открытых танцевальных запросов — опубликуй свой и будь первым!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Найти партнёра",
@@ -122,7 +131,10 @@
       "filterTitle": "Фильтровать совпадения",
       "filterMinScore": "Минимальный балл",
       "filterClear": "Сбросить",
-      "filterShowResults": "Показать {count} совпадений"
+      "filterShowResults": "Показать {count} совпадений",
+      "_pending_review": {
+        "scorePercent": true
+      }
     },
     "matches": {
       "title": "Люди, которые тебе подходят",
@@ -130,7 +142,10 @@
       "empty": "Совпадений пока нет. Загляни позже.",
       "fallbackName": "Участник сообщества",
       "reasonDefault": "Общие интересы",
-      "score": "{score}%"
+      "score": "{score}%",
+      "_pending_review": {
+        "score": true
+      }
     },
     "intents": {
       "boardTitle": "Доска сообщества",
