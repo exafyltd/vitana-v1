@@ -63,7 +63,7 @@ test('VTID-05207: "Say hello" opens the inline greeting composer and nothing is 
     test.skip(true, 'no new-member card in the feed for this account');
   }
 
-  await card.getByRole('button', { name: /say hello|sag hallo/i }).click();
+  await card.getByRole('button', { name: /say hello|hallo sagen/i }).click();
   const composer = page.getByTestId('new-member-greeting-composer');
   await expect(composer).toBeVisible();
   await expect(composer.getByTestId('greeting-text')).toBeVisible();
