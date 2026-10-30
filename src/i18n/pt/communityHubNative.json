@@ -37,7 +37,10 @@
       "leave": "Sair do grupo",
       "notFoundTitle": "Grupo não encontrado",
       "notFoundDesc": "Este grupo pode ter sido removido ou não existe.",
-      "browse": "Explorar grupos"
+      "browse": "Explorar grupos",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "Membros da comunidade",
@@ -59,13 +62,24 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "De salão",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       },
       "handle": "@{handle}",
       "fallbackName": "Membro",
       "empty": "Ainda sem membros.",
       "emptyDance": "Ninguém definiu esta dança como preferência ainda — seja a primeira pessoa!",
-      "viewProfile": "Ver perfil"
+      "viewProfile": "Ver perfil",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "Pedidos abertos",
@@ -87,7 +101,10 @@
         "social_seek": "Social",
         "mutual_aid": "Ajuda mútua",
         "learning_seek": "Aprender",
-        "mentor_seek": "Mentoria"
+        "mentor_seek": "Mentoria",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "time": {
         "justNow": "Agora mesmo",
@@ -97,7 +114,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "Nenhum pedido aberto nesta visualização.",
-      "emptyDance": "Ainda sem pedidos de dança abertos — publique o seu e seja a primeira pessoa!"
+      "emptyDance": "Ainda sem pedidos de dança abertos — publique o seu e seja a primeira pessoa!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Encontrar parceiro(a)",
@@ -122,7 +142,10 @@
       "filterTitle": "Filtrar correspondências",
       "filterMinScore": "Pontuação mínima",
       "filterClear": "Repor",
-      "filterShowResults": "Mostrar {count} correspondências"
+      "filterShowResults": "Mostrar {count} correspondências",
+      "_pending_review": {
+        "scorePercent": true
+      }
     },
     "matches": {
       "title": "Pessoas que combinam com você",
@@ -130,7 +153,10 @@
       "empty": "Ainda sem combinações. Volte em breve.",
       "fallbackName": "Membro da comunidade",
       "reasonDefault": "Interesses em comum",
-      "score": "{score}%"
+      "score": "{score}%",
+      "_pending_review": {
+        "score": true
+      }
     },
     "intents": {
       "boardTitle": "Mural da comunidade",
@@ -148,7 +174,10 @@
         "social_seek": "Social",
         "mutual_aid": "Ajuda mútua",
         "learning_seek": "Aprendizagem",
-        "mentor_seek": "Mentoria"
+        "mentor_seek": "Mentoria",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "viewMine": "Ver minhas intenções",
       "emptyBoard": "Nenhuma intenção aberta nesta visualização. Seja a primeira pessoa.",
@@ -164,7 +193,15 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Dança de salão",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       }
     },
     "intentMatch": {
@@ -198,7 +235,11 @@
         "mental-health": "Saúde mental",
         "support": "Apoio",
         "learning": "Aprendizagem",
-        "social": "Social"
+        "social": "Social",
+        "_pending_review": {
+          "fitness": true,
+          "social": true
+        }
       },
       "privacyLabel": "Visibilidade",
       "privacy": {
@@ -220,7 +261,10 @@
         "activity_seek": "Atividade",
         "social_seek": "Social",
         "mutual_aid": "Ajuda mútua",
-        "partner_seek": "Parceiro"
+        "partner_seek": "Parceiro",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "titlePlaceholder": "Título curto",
       "titleLabel": "Título",

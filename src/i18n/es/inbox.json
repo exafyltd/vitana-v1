@@ -184,7 +184,8 @@
         "video": "Vídeos",
         "file": "Archivos",
         "voice": "Mensajes de voz",
-        "link": "Enlaces"
+        "link": "Enlaces",
+        "_pending_review": {}
       },
       "searching": "Buscando…",
       "error": "La búsqueda falló. Inténtalo de nuevo.",
@@ -192,7 +193,8 @@
       "results": "Resultados de búsqueda",
       "conversation": "Conversación",
       "more": "Mostrar más",
-      "filters": "Filtros"
+      "filters": "Filtros",
+      "_pending_review": {}
     },
     "shared": {
       "sendInMessage": "Enviar en un mensaje",
@@ -204,7 +206,8 @@
         "post": "Publicación",
         "event": "Evento",
         "product": "Producto",
-        "profile": "Perfil"
+        "profile": "Perfil",
+        "_pending_review": {}
       },
       "loading": "Cargando vista previa…",
       "loadFailed": "No se pudo cargar la vista previa",
@@ -213,13 +216,17 @@
       "unavailable": {
         "deleted": {
           "title": "{kind} ya no disponible",
-          "body": "Se eliminó."
+          "body": "Se eliminó.",
+          "_pending_review": {}
         },
         "restricted": {
           "title": "{kind} no visible para ti",
-          "body": "Su configuración de privacidad no te permite verlo."
-        }
-      }
+          "body": "Su configuración de privacidad no te permite verlo.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

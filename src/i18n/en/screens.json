@@ -7568,10 +7568,7 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded.",
-        "_pending_review": {
-          "community": true
-        }
+        "loadError": "Your settings for Vitana's messages could not be loaded."
       },
       "communityIntroTitle": "Introduce me to the community",
       "communityIntroBody": "During your first week, other members see a short welcome card about you and can say hello.",
@@ -8573,10 +8570,7 @@
       "profileSetup": "Profile",
       "socialConnect": "Connect",
       "importContacts": "Contacts",
-      "completeProfile": "Complete profile",
-      "_pending_review": {
-        "autopilot": true
-      }
+      "completeProfile": "Complete profile"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -12242,19 +12236,13 @@
         "eyebrow": "Matches",
         "title": "People who match you",
         "description": "Discover today’s matches.",
-        "action": "See matches",
-        "_pending_review": {
-          "eyebrow": true
-        }
+        "action": "See matches"
       },
       "F6": {
         "eyebrow": "Autopilot",
         "title": "Your Autopilot is ready",
         "description": "Let Vitana plan your next steps.",
-        "action": "Open",
-        "_pending_review": {
-          "eyebrow": true
-        }
+        "action": "Open"
       },
       "F9": {
         "eyebrow": "Calendar",
@@ -12274,9 +12262,6 @@
         "description": "Products, services and offers for your well-being.",
         "action": "Browse"
       },
-      "_pending_review": {
-        "eyebrowCommunity": true
-      },
       "G1": {
         "eyebrow": "Your profile",
         "title": "Complete your profile",
@@ -12289,10 +12274,7 @@
         "title": "You have new matches",
         "description": "See who is a good fit for you.",
         "action": "See who matched",
-        "metric": "New matches: {count} · {message}",
-        "_pending_review": {
-          "eyebrow": true
-        }
+        "metric": "New matches: {count} · {message}"
       },
       "G3": {
         "eyebrow": "Diary",
@@ -12322,12 +12304,7 @@
       "cooking": "Cooking",
       "social": "Community",
       "travel": "Travel",
-      "career": "Career",
-      "_pending_review": {
-        "fitness": true,
-        "biohacking": true,
-        "yoga": true
-      }
+      "career": "Career"
     },
     "nativeHealthSync": {
       "osPermission": {

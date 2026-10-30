@@ -11,35 +11,30 @@
       "direct": "Directs",
       "contacts": "Contacts",
       "notifications": "Notifications",
-      "archived": "Archivés",
-      "_pending_review": {}
+      "archived": "Archivés"
     },
     "contextTabs": {
       "community": "Communauté",
-      "network": "Réseau",
-      "_pending_review": {}
+      "network": "Réseau"
     },
     "actions": {
       "new": "Nouveau",
       "newMessage": "Nouveau message",
       "createGroup": "Créer un groupe",
       "markAllRead": "Marquer tout comme lu",
-      "menu": "Plus",
-      "_pending_review": {}
+      "menu": "Plus"
     },
     "composer": {
       "placeholder": "Tape ton message...",
       "send": "Envoyer",
       "attachments": "Pièces jointes",
       "recipients": "À :",
-      "add": "Ajouter",
-      "_pending_review": {}
+      "add": "Ajouter"
     },
     "states": {
       "empty": "Aucun message pour l'instant",
       "loading": "Chargement des messages...",
-      "error": "Échec du chargement des messages",
-      "_pending_review": {}
+      "error": "Échec du chargement des messages"
     },
     "newConversation": {
       "title": "Démarrer une nouvelle conversation",
@@ -59,8 +54,7 @@
       "cancel": "Annuler",
       "startChat": "Démarrer le chat",
       "createGroup": "Créer un groupe",
-      "creating": "Création en cours...",
-      "_pending_review": {}
+      "creating": "Création en cours..."
     },
     "createGroup": {
       "title": "Créer un groupe",
@@ -77,8 +71,7 @@
       "created": "Groupe créé",
       "createdDesc": "\"{name}\" a été créé avec succès.",
       "failed": "Échec de la création du groupe",
-      "failedDesc": "Réessaie.",
-      "_pending_review": {}
+      "failedDesc": "Réessaie."
     },
     "toast": {
       "success": "Succès",
@@ -95,8 +88,7 @@
       "groupCreated": "Le groupe \"{name}\" a été créé avec succès !",
       "groupFailed": "Échec de la création du groupe",
       "allMarkedRead": "Tous les messages marqués comme lus",
-      "markAllReadFailed": "Impossible de marquer tout lu. Réessaie.",
-      "_pending_review": {}
+      "markAllReadFailed": "Impossible de marquer tout lu. Réessaie."
     },
     "createGroupAction": "Créer un nouveau groupe",
     "newConversationAction": "Nouvelle conversation",
@@ -114,8 +106,7 @@
       "globalDescription": "Démarre une conversation ou rejoins une communauté pour te connecter avec d'autres.",
       "tenantDescription": "Connecte-toi avec tes collègues et membres d'équipe dans ton réseau professionnel.",
       "startConversation": "Démarrer une conversation",
-      "discoverPeople": "Découvrir des personnes",
-      "_pending_review": {}
+      "discoverPeople": "Découvrir des personnes"
     },
     "group": {
       "loading": "Chargement du groupe…",
@@ -127,11 +118,9 @@
       "officialBadge": "groupe officiel",
       "empty": "Aucun message pour l'instant.",
       "composerPlaceholder": "Message…",
-      "_pending_review": {},
       "today": "Aujourd'hui",
       "yesterday": "Hier"
     },
-    "_pending_review": {},
     "messageStatus": {
       "sending": "Envoi en cours",
       "sent": "Envoyé",
@@ -139,15 +128,13 @@
       "read": "Lu",
       "failed": "Non envoyé",
       "retry": "Réessayer",
-      "retryLabel": "Renvoyer ce message",
-      "_pending_review": {}
+      "retryLabel": "Renvoyer ce message"
     },
     "newMessages": {
       "none": "Aller au plus récent",
       "one": "1 nouveau message",
       "other": "{count} nouveaux messages",
-      "unread": "Messages non lus",
-      "_pending_review": {}
+      "unread": "Messages non lus"
     },
     "reply": {
       "unavailable": "Message d'origine indisponible",
@@ -155,8 +142,7 @@
       "jumpToOriginal": "Aller au message d'origine",
       "jumpTo": "Aller au message d'origine de {name}",
       "unknownSender": "Membre",
-      "noText": "Pièce jointe",
-      "_pending_review": {}
+      "noText": "Pièce jointe"
     },
     "media": {
       "uploadFailed": "Échec de l’envoi",
@@ -165,8 +151,7 @@
       "video": "Vidéo",
       "moreItems": "{count} de plus",
       "openImage": "Ouvrir l’image {name}",
-      "openVideo": "Lire la vidéo {name}",
-      "_pending_review": {}
+      "openVideo": "Lire la vidéo {name}"
     },
     "search": {
       "title": "Rechercher des messages",
@@ -184,7 +169,10 @@
         "video": "Vidéos",
         "file": "Fichiers",
         "voice": "Messages vocaux",
-        "link": "Liens"
+        "link": "Liens",
+        "_pending_review": {
+          "image": true
+        }
       },
       "searching": "Recherche…",
       "error": "La recherche a échoué. Réessaie.",
@@ -192,7 +180,11 @@
       "results": "Résultats de recherche",
       "conversation": "Conversation",
       "more": "Afficher plus",
-      "filters": "Filtres"
+      "filters": "Filtres",
+      "_pending_review": {
+        "type": true,
+        "conversation": true
+      }
     },
     "shared": {
       "sendInMessage": "Envoyer dans un message",
@@ -221,6 +213,5 @@
         }
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

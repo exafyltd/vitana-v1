@@ -18,16 +18,14 @@
       "showLessToast": "Mostraremos menos assim",
       "mutedToast": "Fonte silenciada",
       "undo": "Desfazer",
-      "unmute": "Reativar",
-      "_pending_review": {}
+      "unmute": "Reativar"
     },
     "detail": {
       "back": "Voltar",
       "continueReading": "Continuar lendo em",
       "openInBrowser": "Abrir no navegador",
       "couldNotLoad": "Este artigo não pode ser exibido aqui",
-      "readOn": "Ler mais",
-      "_pending_review": {}
+      "readOn": "Ler mais"
     },
     "pillars": {
       "all": "Todos",
@@ -35,19 +33,47 @@
       "hydration": "Hidratação",
       "sleep": "Sono",
       "exercise": "Exercício",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "Bem-vindo(a), {name}!",
       "joinedSummary": "{name} acabou de entrar na comunidade de longevidade MAXINA.",
       "newMember": "Novo membro",
       "sayHello": "Dizer olá",
       "viewProfile": "Ver perfil",
-      "eyebrow": "Novo na comunidade",
-      "_pending_review": {}
+      "eyebrow": "Novo na comunidade"
+    },
+    "greeting": {
+      "_pending_review": {
+        "fieldLabel": true,
+        "placeholder": true,
+        "inLanguage": true,
+        "send": true,
+        "sending": true,
+        "tryAnother": true,
+        "cancel": true,
+        "loadingSuggestion": true,
+        "sentToast": true,
+        "sentToastDesc": true,
+        "suggestionFailed": true,
+        "sendFailed": true,
+        "notAllowed": true,
+        "emptyGreeting": true
+      },
+      "fieldLabel": "Your greeting",
+      "placeholder": "Write a short, friendly hello …",
+      "inLanguage": "in {language}",
+      "send": "Send",
+      "sending": "Sending …",
+      "tryAnother": "Try another",
+      "cancel": "Cancel",
+      "loadingSuggestion": "Loading a suggestion …",
+      "sentToast": "Greeting sent",
+      "sentToastDesc": "Your greeting is on its way.",
+      "suggestionFailed": "Couldn't load a suggestion. Try again in a moment.",
+      "sendFailed": "Couldn't send your greeting. Try again in a moment.",
+      "notAllowed": "This greeting can't be sent right now.",
+      "emptyGreeting": "Write a short hello first."
     }
-  },
-  "_pending_review": {}
+  }
 }

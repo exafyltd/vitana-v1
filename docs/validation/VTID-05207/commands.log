@@ -1,0 +1,6 @@
+# VTID-05207 (new-member-welcome/say-hello-composer) vitana-v1 verification commands
+# Rebuilt on origin/main 847a9f686 from the reviewed local commits 30d98e4d1, dac4839b7.
+npx vitest run src/components/home      -> outputs/v1-vitest.txt (5 files, 38 tests, exit 0)
+npx eslint <4 changed tsx files>        -> outputs/v1-eslint.txt (exit 0)
+npm run build                           -> outputs/v1-build.txt (exit 0)
+npm run i18n:inventory                  -> regenerated docs/SCREEN_INVENTORY.md is NOT committed: it is outside the lane paths and its diff is main drift (page count 390 to 396), reported to the orchestrator.

@@ -11,35 +11,30 @@
       "direct": "Bezpośrednie",
       "contacts": "Kontakty",
       "notifications": "Powiadomienia",
-      "archived": "Zarchiwizowane",
-      "_pending_review": {}
+      "archived": "Zarchiwizowane"
     },
     "contextTabs": {
       "community": "Społeczność",
-      "network": "Sieć",
-      "_pending_review": {}
+      "network": "Sieć"
     },
     "actions": {
       "new": "Nowe",
       "newMessage": "Nowa wiadomość",
       "createGroup": "Utwórz grupę",
       "markAllRead": "Oznacz wszystkie jako przeczytane",
-      "menu": "Więcej",
-      "_pending_review": {}
+      "menu": "Więcej"
     },
     "composer": {
       "placeholder": "Wpisz wiadomość...",
       "send": "Wyślij",
       "attachments": "Załączniki",
       "recipients": "Do:",
-      "add": "Dodaj",
-      "_pending_review": {}
+      "add": "Dodaj"
     },
     "states": {
       "empty": "Brak wiadomości",
       "loading": "Ładowanie wiadomości...",
-      "error": "Nie udało się załadować wiadomości",
-      "_pending_review": {}
+      "error": "Nie udało się załadować wiadomości"
     },
     "newConversation": {
       "title": "Rozpocznij nową rozmowę",
@@ -59,8 +54,7 @@
       "cancel": "Anuluj",
       "startChat": "Rozpocznij czat",
       "createGroup": "Utwórz grupę",
-      "creating": "Tworzenie...",
-      "_pending_review": {}
+      "creating": "Tworzenie..."
     },
     "createGroup": {
       "title": "Utwórz grupę",
@@ -77,8 +71,7 @@
       "created": "Grupa utworzona",
       "createdDesc": "Grupa „{name}” została pomyślnie utworzona.",
       "failed": "Nie udało się utworzyć grupy",
-      "failedDesc": "Spróbuj ponownie.",
-      "_pending_review": {}
+      "failedDesc": "Spróbuj ponownie."
     },
     "toast": {
       "success": "Sukces",
@@ -95,8 +88,7 @@
       "groupCreated": "Grupa „{name}” została pomyślnie utworzona!",
       "groupFailed": "Nie udało się utworzyć grupy",
       "allMarkedRead": "Wszystkie wiadomości oznaczone jako przeczytane",
-      "markAllReadFailed": "Nie udało się oznaczyć wszystkich jako przeczytane. Spróbuj ponownie.",
-      "_pending_review": {}
+      "markAllReadFailed": "Nie udało się oznaczyć wszystkich jako przeczytane. Spróbuj ponownie."
     },
     "createGroupAction": "Utwórz nową grupę",
     "newConversationAction": "Nowa rozmowa",
@@ -114,8 +106,7 @@
       "globalDescription": "Rozpocznij rozmowę lub dołącz do społeczności, aby połączyć się z innymi.",
       "tenantDescription": "Połącz się z kolegami i członkami zespołu w swojej sieci zawodowej.",
       "startConversation": "Rozpocznij rozmowę",
-      "discoverPeople": "Odkryj ludzi",
-      "_pending_review": {}
+      "discoverPeople": "Odkryj ludzi"
     },
     "group": {
       "loading": "Ładowanie grupy…",
@@ -127,11 +118,9 @@
       "officialBadge": "oficjalna grupa",
       "empty": "Brak wiadomości.",
       "composerPlaceholder": "Wiadomość…",
-      "_pending_review": {},
       "today": "Dzisiaj",
       "yesterday": "Wczoraj"
     },
-    "_pending_review": {},
     "messageStatus": {
       "sending": "Wysyłanie",
       "sent": "Wysłano",
@@ -139,15 +128,13 @@
       "read": "Przeczytano",
       "failed": "Nie wysłano",
       "retry": "Ponów",
-      "retryLabel": "Wyślij tę wiadomość ponownie",
-      "_pending_review": {}
+      "retryLabel": "Wyślij tę wiadomość ponownie"
     },
     "newMessages": {
       "none": "Przejdź do najnowszych",
       "one": "Nowe wiadomości: 1",
       "other": "Nowe wiadomości: {count}",
-      "unread": "Nieprzeczytane wiadomości",
-      "_pending_review": {}
+      "unread": "Nieprzeczytane wiadomości"
     },
     "reply": {
       "unavailable": "Oryginalna wiadomość jest niedostępna",
@@ -155,8 +142,7 @@
       "jumpToOriginal": "Przejdź do oryginalnej wiadomości",
       "jumpTo": "Przejdź do oryginalnej wiadomości: {name}",
       "unknownSender": "Członek",
-      "noText": "Załącznik",
-      "_pending_review": {}
+      "noText": "Załącznik"
     },
     "media": {
       "uploadFailed": "Przesyłanie nie powiodło się",
@@ -165,8 +151,7 @@
       "video": "Wideo",
       "moreItems": "Jeszcze {count}",
       "openImage": "Otwórz obraz {name}",
-      "openVideo": "Odtwórz wideo {name}",
-      "_pending_review": {}
+      "openVideo": "Odtwórz wideo {name}"
     },
     "search": {
       "title": "Szukaj wiadomości",
@@ -204,7 +189,10 @@
         "post": "Post",
         "event": "Wydarzenie",
         "product": "Produkt",
-        "profile": "Profil"
+        "profile": "Profil",
+        "_pending_review": {
+          "post": true
+        }
       },
       "loading": "Ładowanie podglądu…",
       "loadFailed": "Nie udało się wczytać podglądu",
@@ -221,6 +209,5 @@
         }
       }
     }
-  },
-  "_pending_review": {}
+  }
 }
