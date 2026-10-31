@@ -164,14 +164,26 @@ CLAUDE.md Part 1 rules 46–50). For this repo:
    a network guard aborts every non-`GET` to the gateway and Supabase REST
    except sign-in. Anything that needs a write is covered by Vitest. No suite
    ever points at `vitanaland.com`.
-4. **Ready message — Claude Code session + Command Hub Operator Chat only:**
-   *"Staging verified — ready for deployment to production?"*, with the
-   verified commit, results and every commit between production and it.
-5. **"Yes" → PUBLISH directly** — the Command Hub promotion, or from Claude
-   Code the prod workflow pinned to the verified commit (`commit_sha`). The
-   commit list in the ready message is what the "yes" approves; the
-   in-session scoping rules below apply to anything outside it. Verification
-   failed → no prompt, fix forward.
+4. **Ready message — the Kiro / Claude Code session + Command Hub Operator
+   Chat only:** *"Staging verified — ready for deployment to production?"*,
+   with the verified commit, results and every commit between production and
+   it.
+5. **"Yes" → PUBLISH directly.** There are two routes:
+   - the Command Hub promotion;
+   - a Kiro or Claude Code session, when the owner explicitly commands it in
+     that conversation. The session runs the prod workflow pinned to the
+     verified commit (`commit_sha`).
+
+   A session publish is either:
+   - **full** — the whole verified staging build, the same as the button; or
+   - **session-scoped** — only the changes one session made (this session,
+     or a session id the owner names), pinned to that session's last merge
+     commit. It does not have to ship everything on staging. Stop and tell
+     the owner if anything else would ship.
+
+   Platform CLAUDE.md rule 50a and `collaboration.md` §7c apply. The
+   in-session scoping rules below apply to anything outside the approved
+   commit list. Verification failed → no prompt, fix forward.
 
 After PUBLISH, production gets the deploy check in "Verifying a frontend
 deploy actually shipped" (`.claude/rules/infrastructure.md`) and nothing
