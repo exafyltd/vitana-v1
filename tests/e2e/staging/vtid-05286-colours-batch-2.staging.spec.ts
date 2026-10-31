@@ -83,8 +83,11 @@ for (const route of ROUTES) {
 
       // The page mounted its own content (not an error boundary / blank).
       // A runtime-injected theme bootstrap <script> can be #root's first child
-      // (hidden); assert on the first real rendered element instead.
-      await expect(page.locator('#root *:not(script):not(style)').first()).toBeVisible({ timeout: 25_000 });
+      // (hidden); assert on the first real rendered element instead. The toast
+      // viewport (<div role="region" aria-label="Notifications (F8)">) is an
+      // always-hidden #root child that precedes the page in DOM order, so wait
+      // for the first VISIBLE element, not the first element.
+      await expect(page.locator('#root *:not(script):not(style):visible').first()).toBeVisible({ timeout: 25_000 });
       await page.waitForTimeout(600);
 
       // No raw palette class on any rendered element: the mapping shipped.
