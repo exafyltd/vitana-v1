@@ -1,0 +1,65 @@
+{
+  "_doc": "Commits that landed on vitana-v1 main without a VTID in their subject and cannot get a change suite after the fact (rule 47; mechanism VTID-05236, vitana-platform scripts/ci/staging-verify/lib.cjs parseCommitCoverage). Each entry names the FULL sha, the VTID whose staging-tests.json covers it, why, and who approved it. STAGING-VERIFY reads this file from the commit under test.",
+  "covers": [
+    {
+      "sha": "aa3fb55f204d689c957aa20f2b2d14dda9a19ada",
+      "vtid": "VTID-05294",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/skeletons; its branch commits carry VTID-05294 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "624618db1bd9f874525b69eb90c16333184278f7",
+      "vtid": "VTID-05290",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/commerce-shell; its branch commits carry VTID-05290 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "b8a4efbd31b43001f65150e6316056cfcde18248",
+      "vtid": "VTID-05291",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/public-profile; its branch commits carry VTID-05291 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "11b4e2ba2617b9d7541ca39c69d1b343696d84fd",
+      "vtid": "VTID-05292",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/remaining-screens; its branch commits carry VTID-05292 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "d8c29bc97afb7c4cdf65ad23869560ee1d7ae6d0",
+      "vtid": "VTID-05293",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/sizes; its branch commits carry VTID-05293 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "141eeaa3808e1033eea72826b1c6c7813c144d04",
+      "vtid": "VTID-05287",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/colours-batch-3; its branch commits carry VTID-05287 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "5044c5d2960583272726d4d8cd9e8fc0ed0129d8",
+      "vtid": "VTID-05285",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/colours-backoffice; its branch commits carry VTID-05285 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "8a49243c8c251fd4ab010cedf167495794714bee",
+      "vtid": "VTID-05288",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/colours-batch-4; its branch commits carry VTID-05288 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "b59597e0f876b9bc4dafd4fef326e84ba879896e",
+      "vtid": "VTID-05289",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/colours-batch-5; its branch commits carry VTID-05289 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    },
+    {
+      "sha": "77cb11280d9ba8e8f0063282b512fdc5e030c9e3",
+      "vtid": "VTID-05286",
+      "reason": "Merge commit of exafyltd/vitana-v1 kiro/desktop-spotlight-finish/colours-batch-2; its branch commits carry VTID-05286 and the merge subject has none. Plan spotlight-commit-coverage (VTID-05345).",
+      "approved_by": "owner, Kiro session kiro-exafyltd-202610220833-d231, 2026-10-26 ('Yes, I approve')"
+    }
+  ]
+}

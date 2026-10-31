@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05345",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npm run test:design-contract",
+      "reason": "Docs-only lane (commit-coverage.json). The covered merges run their own suites (VTID-05285..05294); this guards the design contract the desktop-spotlight lanes changed. No network, no writes."
+    }
+  ]
+}

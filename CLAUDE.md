@@ -105,8 +105,7 @@ accepts a lane, never its builder; CI spars every `plan(` PR (`PLAN-SPAR.yml` in
 converged plan by policy (`converged-auto-v1`) and allocates the VTIDs; the Project Manager merges under the PM merge
 rule §7b (the plan driver applies it while the PM is not live) and sends Gate 2. Claude Code is optional and handles
 exceptions; `executor: claude` lanes go to the exceptions seat while it is unavailable (§7). A protected gate file
-(§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs a legacy Claude or owner review on the
-current head. Kiro merges to `main`/staging only under §7b, deploys to production only on the owner's explicit command
+(§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs the owner's instruction naming the plan plus a reviewer-agent accept on the current head (Claude Code is retired). Kiro merges to `main`/staging only under §7b, deploys to production only on the owner's explicit command
 in the conversation (§7c: a full publish, or only one session's changes) and never writes a live system from session
 tools. See `.claude/rules/collaboration.md` §7–§8b.
 
