@@ -34,3 +34,11 @@ $ npm run test:unit
   The 30 red files are Windows-only source scans / path checks (gateway-tts, gateway-prefix, registry, campaign-queue,
   supabase-functions-retire, share-button guard, …), none in messaging. The identical commit a10942848 is 481/481 green
   on Linux CI (run 41207435618), so these reds are the platform, not main. Authoritative full-suite result: CI.
+
+## Preflight (head cc3a0f3bb, then this commit)
+$ node <vitana-platform>/scripts/collab/preflight.mjs --repo <WT> --base origin/main --head HEAD --branch kiro/fix-deeplink-scroll-test/fixture-dates
+  PASS Collab handoff, Lane scope, gh plan lane files, PR-GATE scope, PR-GATE sparring, PR-GATE weakening, PR-GATE red-green
+  FAIL Kiro steering: guard.test.cjs expects LF; the Windows worktree checks .kiro/steering/*.md out as CRLF
+       (git ls-files --eol: i/lf w/crlf). Same red on the unchanged base files; index and CI (Linux) are LF.
+       This lane does not touch .kiro/**. Not the lane's.
+  (first run failed PR-GATE sparring: added docs/validation/VTID-05394/plan-sparring.md, now PASS)
