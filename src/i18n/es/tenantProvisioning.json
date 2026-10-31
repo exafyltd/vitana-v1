@@ -1,0 +1,496 @@
+{
+  "tenantProvisioning": {
+    "errors": {
+      "_pending_review": {
+        "FORBIDDEN": true,
+        "NOT_EXAFY_ADMIN": true,
+        "RESERVED_SLUG": true,
+        "SLUG_TAKEN": true,
+        "INVALID": true,
+        "INVALID_SLUG": true,
+        "INVALID_ADMIN_EMAIL": true,
+        "SERVICE_ACCOUNT_EMAIL": true,
+        "INVALID_LOCALE": true,
+        "INVALID_TIMEZONE": true,
+        "UNSUPPORTED_MEDIA_TYPE": true,
+        "TOO_LARGE": true,
+        "OVERRIDE_REASON_REQUIRED": true,
+        "VALIDATION_FAILED": true,
+        "TENANT_NOT_FOUND": true,
+        "LEGACY_TENANT_READ_ONLY": true,
+        "UNAUTHENTICATED": true,
+        "UNAVAILABLE": true,
+        "UNKNOWN": true
+      },
+      "FORBIDDEN": "You need Exafy admin rights for this.",
+      "NOT_EXAFY_ADMIN": "The database refused the request: your account is not an Exafy admin.",
+      "RESERVED_SLUG": "This slug is reserved. Please choose another one.",
+      "SLUG_TAKEN": "Another community already uses this slug. Please choose another one.",
+      "INVALID": "Some details are invalid. Please check them and try again.",
+      "INVALID_SLUG": "The slug is invalid: lowercase letters, digits and single hyphens only, starting with a letter.",
+      "INVALID_ADMIN_EMAIL": "The first admin's email address is invalid.",
+      "SERVICE_ACCOUNT_EMAIL": "This email address belongs to a service account. Please use a real person's address.",
+      "INVALID_LOCALE": "At least one language is invalid.",
+      "INVALID_TIMEZONE": "The time zone is invalid.",
+      "UNSUPPORTED_MEDIA_TYPE": "This file type isn't supported. Please upload a PNG, JPEG or WebP image.",
+      "TOO_LARGE": "The file is too large. It can be at most 1 MB.",
+      "OVERRIDE_REASON_REQUIRED": "The community isn't ready yet. Give a reason if you want to open sign-up anyway.",
+      "VALIDATION_FAILED": "Some fields aren't filled in correctly. Please check them.",
+      "TENANT_NOT_FOUND": "This community doesn't exist.",
+      "LEGACY_TENANT_READ_ONLY": "This community was created before the new setup and can't be edited here.",
+      "UNAUTHENTICATED": "Your session has expired. Please sign in again.",
+      "UNAVAILABLE": "Setup isn't available right now. Please try again in a moment.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    },
+    "steps": {
+      "provision": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "optional": true,
+          "regionalLegend": true,
+          "submit": true,
+          "submitting": true,
+          "success": true,
+          "failed": true
+        },
+        "title": "Step 1: Create the community",
+        "description": "Create the new community with its address, its name and its first admin.",
+        "optional": "(optional)",
+        "regionalLegend": "Language, region and budget",
+        "submit": "Create community",
+        "submitting": "Creating …",
+        "success": "Community \"{slug}\" was created.",
+        "failed": "The community could not be created. Please try again.",
+        "fields": {
+          "slug": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Address (slug)",
+            "hint": "3–32 characters: lowercase letters, digits and single hyphens, starting with a letter."
+          },
+          "name": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Name",
+            "hint": "The community's internal name, up to 80 characters."
+          },
+          "displayName": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Display name",
+            "hint": "The name members see. Leave empty to use the name."
+          },
+          "adminEmail": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Admin email",
+            "hint": "This person becomes the community's first admin."
+          },
+          "allMembersGroupName": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "All-members group name",
+            "hint": "Every new member joins this group automatically."
+          },
+          "defaultLocale": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Default language",
+            "hint": "Language code, for example de or en."
+          },
+          "enabledLocales": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Enabled languages",
+            "hint": "Comma-separated language codes, for example de, en (at most 20)."
+          },
+          "timezone": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Time zone",
+            "hint": "For example Europe/Berlin."
+          },
+          "currency": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Currency",
+            "hint": "ISO 4217 code in upper case, for example EUR."
+          },
+          "jevBudget": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Monthly Jev budget (USD)",
+            "hint": "Between 0 and 500 USD. Leave empty for the default."
+          }
+        }
+      },
+      "brandPack": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "colorsLegend": true,
+          "colorsHint": true,
+          "overrideExplanation": true,
+          "personaToggle": true,
+          "personaHint": true,
+          "anchorLegend": true,
+          "submit": true,
+          "submitting": true,
+          "success": true,
+          "failed": true
+        },
+        "title": "Step 2: Brand pack",
+        "description": "Set the community's colours, sender and landing page. Only the fields you fill in are saved.",
+        "colorsLegend": "Colours",
+        "colorsHint": "Hex values like #1A2B3C. If you set one colour, set all three.",
+        "overrideExplanation": "The community is not ready for open sign-up yet. To open it anyway, give a reason – or switch open sign-up off again.",
+        "personaToggle": "Persona facts (optional)",
+        "personaHint": "Short facts Vitana should know about the community – no finished sentences.",
+        "anchorLegend": "Anchor person",
+        "submit": "Save brand pack",
+        "submitting": "Saving …",
+        "success": "The brand pack was saved.",
+        "failed": "The brand pack could not be saved. Please try again.",
+        "fields": {
+          "colorAccent": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Accent colour"
+          },
+          "colorBg": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Background colour"
+          },
+          "colorFg": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Text colour"
+          },
+          "legalEntityLine": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Legal entity line",
+            "hint": "The line naming the legal entity, for example in emails and the imprint."
+          },
+          "supportEmail": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Support email"
+          },
+          "senderName": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Sender name"
+          },
+          "senderEmail": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Sender email"
+          },
+          "landingCta": {
+            "_pending_review": {
+              "label": true,
+              "hint": true,
+              "unset": true
+            },
+            "label": "Landing page action",
+            "hint": "What visitors can do on the community's landing page.",
+            "unset": "Don't change",
+            "options": {
+              "_pending_review": {
+                "invite_only": true,
+                "signup": true,
+                "waitlist": true
+              },
+              "invite_only": "Invite only",
+              "signup": "Sign up",
+              "waitlist": "Waitlist"
+            }
+          },
+          "openSignup": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Open sign-up",
+            "hint": "Anyone can sign up without an invitation. Off by default."
+          },
+          "overrideReason": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Reason for opening",
+            "hint": "10–500 characters. The reason is logged."
+          },
+          "communityName": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Community name"
+          },
+          "communityPronunciation": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Name pronunciation",
+            "hint": "How Vitana should pronounce the name."
+          },
+          "anchorName": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Name"
+          },
+          "anchorPronunciation": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Pronunciation"
+          },
+          "anchorRole": {
+            "_pending_review": {
+              "label": true
+            },
+            "label": "Role"
+          },
+          "storyFacts": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Story facts",
+            "hint": "One fact per line, at most 8."
+          },
+          "offerFacts": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Offer facts",
+            "hint": "One fact per line, at most 8."
+          },
+          "tone": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Tone",
+            "hint": "One keyword per line, at most 8, for example warm."
+          }
+        }
+      },
+      "assets": {
+        "_pending_review": {
+          "title": true,
+          "description": true,
+          "allowedTypes": true,
+          "upload": true,
+          "uploading": true,
+          "uploaded": true,
+          "uploadFailed": true,
+          "invalidType": true
+        },
+        "title": "Upload images",
+        "description": "Choose a file for each image and upload it with the button.",
+        "allowedTypes": "Allowed: PNG, JPEG or WebP.",
+        "kinds": {
+          "logo": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Logo",
+            "hint": "Shown in the app and in emails."
+          },
+          "favicon": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Favicon",
+            "hint": "The small icon in the browser tab."
+          },
+          "og_image": {
+            "_pending_review": {
+              "label": true,
+              "hint": true
+            },
+            "label": "Link preview image",
+            "hint": "Appears when someone shares a link to the community."
+          }
+        },
+        "upload": "Upload",
+        "uploading": "Uploading …",
+        "uploaded": "Uploaded.",
+        "uploadFailed": "The upload didn't work. Please try again.",
+        "invalidType": "This file can't be used. Please choose a PNG, JPEG or WebP image."
+      }
+    },
+    "validation": {
+      "_pending_review": {
+        "required": true,
+        "tooLong": true,
+        "slugLength": true,
+        "slugFormat": true,
+        "slugReserved": true,
+        "email": true,
+        "hexColor": true,
+        "colorsIncomplete": true,
+        "budgetRange": true,
+        "locale": true,
+        "localeList": true,
+        "currency": true,
+        "factTooLong": true,
+        "factListTooLong": true,
+        "anchorNameRequired": true,
+        "overrideReasonLength": true,
+        "nothingToUpdate": true
+      },
+      "required": "Please fill in this field.",
+      "tooLong": "This text is too long.",
+      "slugLength": "The slug must be 3 to 32 characters long.",
+      "slugFormat": "Only lowercase letters, digits and single hyphens; start with a letter.",
+      "slugReserved": "This address is reserved for the platform. Please choose another one.",
+      "email": "Please enter a valid email address.",
+      "hexColor": "Please enter a colour in the format #RRGGBB.",
+      "colorsIncomplete": "Please set all three colours.",
+      "budgetRange": "Please enter an amount between 0 and 500.",
+      "locale": "Please enter a valid language code, for example de.",
+      "localeList": "Please enter up to 20 valid language codes, separated by commas.",
+      "currency": "Please enter a three-letter currency code in upper case, for example EUR.",
+      "factTooLong": "Each fact can be at most 200 characters long.",
+      "factListTooLong": "Please enter at most 8 entries.",
+      "anchorNameRequired": "Please enter the anchor person's name.",
+      "overrideReasonLength": "The reason must be 10 to 500 characters long.",
+      "nothingToUpdate": "Fill in at least one field before saving."
+    },
+    "panel": {
+      "_pending_review": {
+        "eyebrow": true,
+        "title": true,
+        "description": true,
+        "stepsLabel": true,
+        "stepOf": true,
+        "tenantCreated": true
+      },
+      "eyebrow": "Exafy admins only",
+      "title": "New community",
+      "description": "Create a new community in three steps: basics, brand, then images and readiness.",
+      "stepsLabel": "Progress",
+      "stepOf": "Step {step} of {total}",
+      "steps": {
+        "1": "Create community",
+        "2": "Brand",
+        "3": "Images and readiness",
+        "_pending_review": {
+          "1": true,
+          "2": true,
+          "3": true
+        }
+      },
+      "stepState": {
+        "_pending_review": {
+          "done": true,
+          "current": true,
+          "pending": true
+        },
+        "done": "done",
+        "current": "current step",
+        "pending": "not started"
+      },
+      "tenantCreated": "Community “{slug}” has been created."
+    },
+    "readiness": {
+      "_pending_review": {
+        "title": true,
+        "refresh": true,
+        "loading": true,
+        "loadFailed": true,
+        "ready": true,
+        "notReady": true,
+        "schemaMissing": true,
+        "legacy": true
+      },
+      "title": "Readiness",
+      "refresh": "Check again",
+      "loading": "Loading readiness …",
+      "loadFailed": "Readiness could not be loaded.",
+      "ready": "All set – the community can be opened.",
+      "notReady": "{done} of {total} items done.",
+      "schemaMissing": "Provisioning is not available for this community yet.",
+      "legacy": "Existing community – some items apply only partly.",
+      "status": {
+        "_pending_review": {
+          "ok": true,
+          "missing": true,
+          "info": true
+        },
+        "ok": "Done",
+        "missing": "Missing",
+        "info": "Info"
+      },
+      "checks": {
+        "_pending_review": {
+          "slug_valid_not_reserved": true,
+          "path_url": true,
+          "brand_colors": true,
+          "assets_present": true,
+          "legal_entity_line": true,
+          "support_email": true,
+          "sender": true,
+          "locales_timezone_currency": true,
+          "persona_facts_community_name": true,
+          "instance_data": true,
+          "first_admin": true,
+          "open_signup": true,
+          "unknown": true
+        },
+        "slug_valid_not_reserved": "Short name valid and available",
+        "path_url": "Community address",
+        "brand_colors": "Brand colours",
+        "assets_present": "Logo and favicon uploaded",
+        "legal_entity_line": "Operator details",
+        "support_email": "Support email",
+        "sender": "Sender name and sender email",
+        "locales_timezone_currency": "Languages, time zone and currency",
+        "persona_facts_community_name": "Community name for Vitana",
+        "instance_data": "Instance basics",
+        "first_admin": "First admin has accepted",
+        "open_signup": "Open sign-up",
+        "unknown": "Check {key}"
+      }
+    }
+  }
+}

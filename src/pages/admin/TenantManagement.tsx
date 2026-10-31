@@ -16,6 +16,7 @@ import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import { adminTenantManagementNavigation } from "@/config/navigation";
 import { GeminiApiKeySetup } from "@/components/admin/GeminiApiKeySetup";
+import { NewCommunityPanel } from "@/components/admin/tenant-provisioning/NewCommunityPanel";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { ScreenFrame } from '@/components/layout/spotlight';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
@@ -219,6 +220,9 @@ export default function TenantManagement() {
           </div>
         </CardContent>
       </Card>
+
+      {/* VTID-05221: New community (exafy admins only; the gateway enforces it too) */}
+      {isExafyAdmin && <NewCommunityPanel />}
 
       {/* Gemini API Configuration */}
       <GeminiApiKeySetup />

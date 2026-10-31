@@ -1,0 +1,254 @@
+{
+  "tenantProvisioning": {
+    "errors": {
+      "FORBIDDEN": "Dafür brauchst du Exafy-Admin-Rechte.",
+      "NOT_EXAFY_ADMIN": "Die Datenbank hat die Anlage abgelehnt: Dein Konto ist kein Exafy-Admin.",
+      "RESERVED_SLUG": "Dieser Slug ist reserviert. Wähle bitte einen anderen.",
+      "SLUG_TAKEN": "Diesen Slug nutzt schon eine andere Community. Wähle bitte einen anderen.",
+      "INVALID": "Einige Angaben sind ungültig. Prüfe sie bitte und versuch es noch einmal.",
+      "INVALID_SLUG": "Der Slug ist ungültig: nur Kleinbuchstaben, Ziffern und einzelne Bindestriche, beginnend mit einem Buchstaben.",
+      "INVALID_ADMIN_EMAIL": "Die E-Mail-Adresse des ersten Admins ist ungültig.",
+      "SERVICE_ACCOUNT_EMAIL": "Diese E-Mail-Adresse gehört zu einem Service-Konto. Gib bitte die Adresse einer echten Person an.",
+      "INVALID_LOCALE": "Mindestens eine Sprache ist ungültig.",
+      "INVALID_TIMEZONE": "Die Zeitzone ist ungültig.",
+      "UNSUPPORTED_MEDIA_TYPE": "Dieses Dateiformat wird nicht unterstützt. Lade bitte ein PNG-, JPEG- oder WebP-Bild hoch.",
+      "TOO_LARGE": "Die Datei ist zu groß. Erlaubt ist höchstens 1 MB.",
+      "OVERRIDE_REASON_REQUIRED": "Die Community ist noch nicht bereit. Gib einen Grund an, wenn du die Registrierung trotzdem öffnen willst.",
+      "VALIDATION_FAILED": "Einige Felder sind nicht korrekt ausgefüllt. Prüfe sie bitte.",
+      "TENANT_NOT_FOUND": "Diese Community gibt es nicht.",
+      "LEGACY_TENANT_READ_ONLY": "Diese Community wurde vor der neuen Einrichtung angelegt und kann hier nicht bearbeitet werden.",
+      "UNAUTHENTICATED": "Deine Sitzung ist abgelaufen. Melde dich bitte neu an.",
+      "UNAVAILABLE": "Die Einrichtung ist gerade nicht verfügbar. Versuch es bitte gleich noch einmal.",
+      "UNKNOWN": "Etwas ist schiefgelaufen. Versuch es bitte noch einmal."
+    },
+    "steps": {
+      "provision": {
+        "title": "Schritt 1: Community anlegen",
+        "description": "Lege die neue Community mit ihrer Adresse, ihrem Namen und der ersten Admin-Person an.",
+        "optional": "(optional)",
+        "regionalLegend": "Sprache, Region und Budget",
+        "submit": "Community anlegen",
+        "submitting": "Wird angelegt …",
+        "success": "Community „{slug}“ wurde angelegt.",
+        "failed": "Die Community konnte nicht angelegt werden. Bitte versuch es noch einmal.",
+        "fields": {
+          "slug": {
+            "label": "Adresse (Slug)",
+            "hint": "3–32 Zeichen: Kleinbuchstaben, Ziffern und einzelne Bindestriche, beginnt mit einem Buchstaben."
+          },
+          "name": {
+            "label": "Name",
+            "hint": "Der interne Name der Community, bis zu 80 Zeichen."
+          },
+          "displayName": {
+            "label": "Anzeigename",
+            "hint": "So sehen die Mitglieder den Namen. Leer lassen, um den Namen zu verwenden."
+          },
+          "adminEmail": {
+            "label": "E-Mail der Admin-Person",
+            "hint": "Diese Person wird die erste Admin der Community."
+          },
+          "allMembersGroupName": {
+            "label": "Name der Gruppe für alle Mitglieder",
+            "hint": "Jedes neue Mitglied tritt dieser Gruppe automatisch bei."
+          },
+          "defaultLocale": {
+            "label": "Standardsprache",
+            "hint": "Sprachcode, zum Beispiel de oder en."
+          },
+          "enabledLocales": {
+            "label": "Aktivierte Sprachen",
+            "hint": "Sprachcodes mit Komma getrennt, zum Beispiel de, en (höchstens 20)."
+          },
+          "timezone": {
+            "label": "Zeitzone",
+            "hint": "Zum Beispiel Europe/Berlin."
+          },
+          "currency": {
+            "label": "Währung",
+            "hint": "ISO-4217-Code in Großbuchstaben, zum Beispiel EUR."
+          },
+          "jevBudget": {
+            "label": "Monatliches Jev-Budget (USD)",
+            "hint": "Zwischen 0 und 500 USD. Leer lassen für die Standardeinstellung."
+          }
+        }
+      },
+      "brandPack": {
+        "title": "Schritt 2: Markenpaket",
+        "description": "Lege Farben, Absender und Landingpage der Community fest. Nur ausgefüllte Felder werden gespeichert.",
+        "colorsLegend": "Farben",
+        "colorsHint": "Hex-Werte wie #1A2B3C. Wenn du eine Farbe setzt, gib alle drei an.",
+        "overrideExplanation": "Die Community ist noch nicht bereit für eine offene Registrierung. Wenn du sie trotzdem öffnen willst, nenne einen Grund – oder schalte die offene Registrierung wieder aus.",
+        "personaToggle": "Persona-Fakten (optional)",
+        "personaHint": "Kurze Fakten, die Vitana über die Community kennen soll – keine fertigen Sätze.",
+        "anchorLegend": "Ankerperson",
+        "submit": "Markenpaket speichern",
+        "submitting": "Wird gespeichert …",
+        "success": "Das Markenpaket wurde gespeichert.",
+        "failed": "Das Markenpaket konnte nicht gespeichert werden. Bitte versuch es noch einmal.",
+        "fields": {
+          "colorAccent": {
+            "label": "Akzentfarbe"
+          },
+          "colorBg": {
+            "label": "Hintergrundfarbe"
+          },
+          "colorFg": {
+            "label": "Textfarbe"
+          },
+          "legalEntityLine": {
+            "label": "Rechtliche Angabe",
+            "hint": "Die Zeile mit dem rechtlichen Träger, zum Beispiel für E-Mails und das Impressum."
+          },
+          "supportEmail": {
+            "label": "Support-E-Mail"
+          },
+          "senderName": {
+            "label": "Absendername"
+          },
+          "senderEmail": {
+            "label": "Absender-E-Mail"
+          },
+          "landingCta": {
+            "label": "Aktion auf der Landingpage",
+            "hint": "Was Gäste auf der Startseite der Community tun können.",
+            "unset": "Nicht ändern",
+            "options": {
+              "invite_only": "Nur mit Einladung",
+              "signup": "Registrieren",
+              "waitlist": "Warteliste"
+            }
+          },
+          "openSignup": {
+            "label": "Offene Registrierung",
+            "hint": "Jede Person kann sich ohne Einladung registrieren. Standardmäßig aus."
+          },
+          "overrideReason": {
+            "label": "Grund für das Öffnen",
+            "hint": "10–500 Zeichen. Der Grund wird protokolliert."
+          },
+          "communityName": {
+            "label": "Name der Community"
+          },
+          "communityPronunciation": {
+            "label": "Aussprache des Namens",
+            "hint": "So, wie Vitana den Namen aussprechen soll."
+          },
+          "anchorName": {
+            "label": "Name"
+          },
+          "anchorPronunciation": {
+            "label": "Aussprache"
+          },
+          "anchorRole": {
+            "label": "Rolle"
+          },
+          "storyFacts": {
+            "label": "Fakten zur Geschichte",
+            "hint": "Ein Fakt pro Zeile, höchstens 8."
+          },
+          "offerFacts": {
+            "label": "Fakten zum Angebot",
+            "hint": "Ein Fakt pro Zeile, höchstens 8."
+          },
+          "tone": {
+            "label": "Tonalität",
+            "hint": "Ein Stichwort pro Zeile, höchstens 8, zum Beispiel warm."
+          }
+        }
+      },
+      "assets": {
+        "title": "Bilder hochladen",
+        "description": "Wähle für jedes Bild eine Datei und lade sie mit dem Button hoch.",
+        "allowedTypes": "Erlaubt: PNG, JPEG oder WebP.",
+        "kinds": {
+          "logo": {
+            "label": "Logo",
+            "hint": "Wird in der App und in E-Mails angezeigt."
+          },
+          "favicon": {
+            "label": "Favicon",
+            "hint": "Das kleine Symbol im Browser-Tab."
+          },
+          "og_image": {
+            "label": "Vorschaubild für Links",
+            "hint": "Erscheint, wenn jemand einen Link zur Community teilt."
+          }
+        },
+        "upload": "Hochladen",
+        "uploading": "Wird hochgeladen …",
+        "uploaded": "Hochgeladen.",
+        "uploadFailed": "Hochladen hat nicht geklappt. Bitte versuch es noch einmal.",
+        "invalidType": "Diese Datei kann nicht verwendet werden. Bitte wähle ein PNG-, JPEG- oder WebP-Bild."
+      }
+    },
+    "validation": {
+      "required": "Bitte füll dieses Feld aus.",
+      "tooLong": "Dieser Text ist zu lang.",
+      "slugLength": "Der Slug muss 3 bis 32 Zeichen lang sein.",
+      "slugFormat": "Nur Kleinbuchstaben, Ziffern und einzelne Bindestriche; beginn mit einem Buchstaben.",
+      "slugReserved": "Diese Adresse ist für die Plattform reserviert. Bitte wähl eine andere.",
+      "email": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "hexColor": "Bitte gib eine Farbe im Format #RRGGBB ein.",
+      "colorsIncomplete": "Bitte gib alle drei Farben an.",
+      "budgetRange": "Bitte gib einen Betrag zwischen 0 und 500 ein.",
+      "locale": "Bitte gib einen gültigen Sprachcode ein, zum Beispiel de.",
+      "localeList": "Bitte gib bis zu 20 gültige Sprachcodes ein, mit Komma getrennt.",
+      "currency": "Bitte gib einen dreistelligen Währungscode in Großbuchstaben ein, zum Beispiel EUR.",
+      "factTooLong": "Jeder Fakt darf höchstens 200 Zeichen lang sein.",
+      "factListTooLong": "Bitte gib höchstens 8 Einträge ein.",
+      "anchorNameRequired": "Bitte gib den Namen der Ankerperson an.",
+      "overrideReasonLength": "Der Grund muss 10 bis 500 Zeichen lang sein.",
+      "nothingToUpdate": "Füll mindestens ein Feld aus, bevor du speicherst."
+    },
+    "panel": {
+      "eyebrow": "Nur für Exafy-Admins",
+      "title": "Neue Community",
+      "description": "Lege eine neue Community in drei Schritten an: Grunddaten, Markenauftritt, dann Bilder und Startbereitschaft.",
+      "stepsLabel": "Fortschritt",
+      "stepOf": "Schritt {step} von {total}",
+      "steps": {
+        "1": "Community anlegen",
+        "2": "Markenauftritt",
+        "3": "Bilder und Bereitschaft"
+      },
+      "stepState": {
+        "done": "erledigt",
+        "current": "aktueller Schritt",
+        "pending": "noch offen"
+      },
+      "tenantCreated": "Community „{slug}“ ist angelegt."
+    },
+    "readiness": {
+      "title": "Startbereitschaft",
+      "refresh": "Neu prüfen",
+      "loading": "Bereitschaft wird geladen …",
+      "loadFailed": "Die Bereitschaft konnte nicht geladen werden.",
+      "ready": "Alles bereit – die Community kann geöffnet werden.",
+      "notReady": "{done} von {total} Punkten erledigt.",
+      "schemaMissing": "Die Bereitstellung ist für diese Community noch nicht verfügbar.",
+      "legacy": "Bestehende Community – manche Punkte gelten nur eingeschränkt.",
+      "status": {
+        "ok": "Erledigt",
+        "missing": "Fehlt",
+        "info": "Info"
+      },
+      "checks": {
+        "slug_valid_not_reserved": "Kurzname gültig und frei",
+        "path_url": "Adresse der Community",
+        "brand_colors": "Markenfarben",
+        "assets_present": "Logo und Favicon hochgeladen",
+        "legal_entity_line": "Angaben zum Betreiber",
+        "support_email": "Support-E-Mail",
+        "sender": "Absendername und Absender-E-Mail",
+        "locales_timezone_currency": "Sprachen, Zeitzone und Währung",
+        "persona_facts_community_name": "Name der Community für Vitana",
+        "instance_data": "Grunddaten der Instanz",
+        "first_admin": "Erste Admin-Person hat zugesagt",
+        "open_signup": "Offene Registrierung",
+        "unknown": "Prüfung {key}"
+      }
+    }
+  }
+}

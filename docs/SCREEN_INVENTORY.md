@@ -5,10 +5,10 @@
 
 ## Summary
 
-- **Pages scanned:** 390
+- **Pages scanned:** 391
 - **Distinct i18n keys consumed:** 4702
 - **Namespaces in use:** 47
-- **Hardcoded string suspects (regex heuristic):** 66
+- **Hardcoded string suspects (regex heuristic):** 67
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
 
@@ -253,6 +253,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 20, total in shard: 11791
 
+### src/pages/EditProfilePage.card-placement.vtid-05210.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
 ### src/pages/EditProfilePage.tsx
 
 **Status:** ✅ clean — keys consumed: 15, namespaces: 4
@@ -429,7 +433,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `mobilesupport` — **MISSING SHARD** in src/i18n/de/
+- `mobilesupport` — used: 9, total in shard: 75
 - `supportTickets` — used: 1, total in shard: 185
 
 ### src/pages/MobileSupport.vtid-05097.test.tsx
@@ -2153,7 +2157,13 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/dev/DevReleases.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+
+<details><summary>Hardcoded suspects (top 10)</summary>
+
+- `Loading platform + tenant release matrix…`
+
+</details>
 
 ### src/pages/dev/DevSettings.tsx
 
@@ -2960,7 +2970,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `mobilesupport` — **MISSING SHARD** in src/i18n/de/
+- `mobilesupport` — used: 2, total in shard: 75
 - `supportTickets` — used: 1, total in shard: 185
 
 ### src/pages/settings/TenantRole.tsx

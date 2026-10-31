@@ -187,80 +187,42 @@
       "memberMeta": "Community member"
     },
     "members": {
-      "_pending_review": {
-        "empty": true,
-        "emptyDance": true,
-        "fallbackName": true
-      },
       "sort": {
-        "_pending_review": {
-          "newest": true,
-          "oldest": true,
-          "name": true
-        },
-        "newest": "Newest",
-        "oldest": "Founders first",
-        "name": "By name"
+        "newest": "Más reciente",
+        "oldest": "Fundadores primero",
+        "name": "Por nombre"
       },
       "dance": {
-        "_pending_review": {
-          "all": true,
-          "salsa": true,
-          "tango": true,
-          "bachata": true,
-          "kizomba": true,
-          "swing": true,
-          "ballroom": true,
-          "hiphop": true
-        },
-        "all": "All",
+        "all": "Todos",
         "salsa": "Salsa",
         "tango": "Tango",
         "bachata": "Bachata",
         "kizomba": "Kizomba",
         "swing": "Swing",
-        "ballroom": "Ballroom",
+        "ballroom": "Baile de salón",
         "hiphop": "Hip-hop"
       },
-      "empty": "No members yet.",
-      "emptyDance": "Nobody has set this dance as a preference yet — be the first!",
-      "fallbackName": "Member"
+      "empty": "Aún no hay miembros.",
+      "emptyDance": "Nadie ha establecido este baile como preferencia aún — ¡sé el primero!",
+      "fallbackName": "Miembro"
     },
     "sharing": {
-      "_pending_review": {
-        "distributionDesc": true,
-        "distributionEmptyTitle": true,
-        "distributionEmptyDesc": true,
-        "openCampaigns": true
-      },
-      "distributionDesc": "Templates, automations and brand guidelines for your campaigns.",
-      "distributionEmptyTitle": "Distribution tools are coming soon",
-      "distributionEmptyDesc": "Templates, rules and brand guidelines aren't available yet. You can already plan and send your campaigns under Campaigns.",
-      "openCampaigns": "Go to campaigns"
+      "distributionDesc": "Plantillas, automatizaciones y pautas de marca para tus campañas.",
+      "distributionEmptyTitle": "Herramientas de distribución próximamente",
+      "distributionEmptyDesc": "Plantillas, reglas y pautas de marca no están disponibles aún. Ya puedes planificar y enviar tus campañas en Campañas.",
+      "openCampaigns": "Ir a campañas"
     },
     "tickets": {
-      "_pending_review": {
-        "eventFallback": true,
-        "generalAdmission": true
-      },
-      "eventFallback": "Event",
-      "generalAdmission": "General admission"
+      "eventFallback": "Evento",
+      "generalAdmission": "Entrada general"
     },
     "post": {
-      "_pending_review": {
-        "desc": true,
-        "notFoundDesc": true,
-        "backToFeed": true
-      },
-      "desc": "The post your notification is about.",
-      "notFoundDesc": "It may have been deleted or is no longer visible. The News feed has everything new from the community.",
-      "backToFeed": "Go to News"
+      "desc": "La publicación de la que trata tu notificación.",
+      "notFoundDesc": "Puede que haya sido eliminada o ya no sea visible. El feed de Noticias tiene todo lo nuevo de la comunidad.",
+      "backToFeed": "Ir a Noticias"
     },
     "privacy": {
-      "_pending_review": {
-        "desc": true
-      },
-      "desc": "Choose who sees which parts of your profile. Tap a tier to change it."
+      "desc": "Elige quién ve qué partes de tu perfil. Toca un nivel para cambiarlo."
     }
   }
 }
