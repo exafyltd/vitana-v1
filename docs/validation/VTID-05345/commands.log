@@ -1,0 +1,8 @@
+# VTID-05345 (spotlight-commit-coverage/coverage-manifests) — session kiro-exafyltd-202610220833-d231
+# base vitana-v1 origin/main a6c5bd073; STAGING-VERIFY lib.cjs from vitana-platform main
+## planRange dry run, production 1a553367ff66 → HEAD (37 commits, service community-app)
+red  (origin/main, no commit-coverage.json): missing = 10 (aa3fb55f2 624618db1 b8a4efbd3 11b4e2ba2 d8c29bc97 141eeaa38 5044c5d29 8a49243c8 b59597e0f 77cb11280), covered 0
+green (lane head): missing = [], covered = 10, invalid = [], coverageErrors = []
+## covering suites: docs/validation/VTID-05285..05294/staging-tests.json exist on main (Playwright staging specs), unchanged
+## lane suite
+$ npm run test:design-contract   → exit 0 (src/design 51 passed; pr-gate tests # fail 0; steering guard ok)

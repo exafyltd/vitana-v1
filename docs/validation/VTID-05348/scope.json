@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05348",
+  "kind": "infra",
+  "paths": [
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    "docs/validation/VTID-05348/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05348/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": [
+    {
+      "file": ".github/PULL_REQUEST_TEMPLATE.md",
+      "reason": "PR template text only, no executable behaviour (plan quality-checks \u00a73/\u00a74, converged)"
+    }
+  ]
+}
