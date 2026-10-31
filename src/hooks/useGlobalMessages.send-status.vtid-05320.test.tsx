@@ -101,6 +101,11 @@ function serverRow(content: string, cid: string | null, over: Record<string, unk
   return { id: `srv-${seq}`, tenant_id: 't', sender_id: ME, receiver_id: PEER, content, created_at: new Date(Date.UTC(2026, 9, 21, 10, 0, seq)).toISOString(), read_at: null, delivered_at: null, client_message_id: cid, ...over };
 }
 const bodies = (m: GlobalMessage[]) => m.map((x) => `${x.body}:${x.send_status ?? 'server'}`);
+// VTID-05320: an outbox item older than OUTBOX_MAX_AGE_MS (7 days) is pruned on
+// load, so a reload seed must be recent — a fixed past date becomes a time bomb
+// once the suite runs more than 7 days later. Two instants, ordered.
+const RECENT_1 = new Date(Date.now() - 120_000).toISOString();
+const RECENT_2 = new Date(Date.now() - 119_000).toISOString();
 
 beforeEach(() => {
   __resetOutboxStoresForTests();
@@ -201,8 +206,8 @@ describe('reload', () => {
     const pending = newClientMessageId();
     const failed = newClientMessageId();
     saveOutbox(ME, [
-      { client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: '2026-10-21T10:00:00.000Z', attempts: 1, status: 'sending' },
-      { client_message_id: failed, user_id: ME, thread_id: PEER, kind: 'dm', body: 'had failed', message_type: 'text', created_at: '2026-10-21T10:00:01.000Z', attempts: 1, status: 'failed' },
+      { client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: RECENT_1, attempts: 1, status: 'sending' },
+      { client_message_id: failed, user_id: ME, thread_id: PEER, kind: 'dm', body: 'had failed', message_type: 'text', created_at: RECENT_2, attempts: 1, status: 'failed' },
     ]);
     sendChatMessage.mockImplementation(async (_t: string, b: string, o: { clientMessageId: string }) => serverRow(b, o.clientMessageId));
     const { result } = setup();
@@ -258,7 +263,7 @@ describe('delivery state', () => {
 describe('review fixes', () => {
   it('several mounted instances share one outbox: a reload re-posts once and nothing is overwritten', async () => {
     const pending = newClientMessageId();
-    saveOutbox(ME, [{ client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: '2026-10-21T10:00:00.000Z', attempts: 1, status: 'sending' }]);
+    saveOutbox(ME, [{ client_message_id: pending, user_id: ME, thread_id: PEER, kind: 'dm', body: 'was in flight', message_type: 'text', created_at: RECENT_1, attempts: 1, status: 'sending' }]);
     let release: () => void = () => undefined;
     sendChatMessage.mockImplementation((_t: string, b: string, o: { clientMessageId: string }) =>
       new Promise((res) => { release = () => res(serverRow(b, o.clientMessageId)); }));
