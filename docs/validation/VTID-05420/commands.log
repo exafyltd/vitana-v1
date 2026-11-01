@@ -33,5 +33,14 @@ npm run build → exit 0 (built in 1m 48s; only the pre-existing CSS syntax warn
 node <RUN>/lane1-i18n.mjs (one-off, not committed) → 20 spotlight.grid.* keys in all 11 locales (DE first, du-form);
   stamps +20 per locale (en vs de, others vs en), 0 lost, existing stamps carried forward unchanged
 node scripts/i18n-stamp-source.mjs --check-all → 0 drifted keys in every tracked locale
+## Governance preflight
+node <vitana-platform>/scripts/collab/preflight.mjs --repo <wt> --base origin/main --head HEAD --branch kiro/spotlight-card-proportion/layout-core --title "VTID-05420 (…)"
+  run 1 (457970125): Collab handoff PASS, Lane scope PASS, gh PASS, weakening PASS, red-green PASS;
+    FAIL PR-GATE scope (scope.json had no "kind") → fixed (kind: feature)
+    FAIL PR-GATE sparring (no plan-sparring.md in this repo) → fixed (transcribed record, sparring_record in scope.json)
+    FAIL Kiro steering: guard.test.cjs "Kiro notes" regex /^---\ninclusion: always\n---/ vs the CRLF Windows checkout
+      of .kiro/steering/vitana-kiro-notes.md — environment only, file untouched by this lane, passes on CI (LF)
+  run 2: see the commit message of the fix commit
+
 npm run i18n:inventory → on Windows writes backslash paths and a different order (every heading changes); not committed
   (no key added here is consumed by src/pages/**)

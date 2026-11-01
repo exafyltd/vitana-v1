@@ -2,7 +2,9 @@
   "vtid": "VTID-05420",
   "slug": "spotlight-card-proportion",
   "lane": "layout-core",
+  "kind": "feature",
   "repo": "exafyltd/vitana-v1",
+  "sparring_record": "docs/validation/VTID-05420/plan-sparring.md",
   "change_types": ["UI", "Tooling/docs"],
   "paths": [
     "src/components/layout/spotlight/SpotlightGrid.tsx",
