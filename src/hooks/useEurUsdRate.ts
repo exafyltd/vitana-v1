@@ -4,9 +4,11 @@ import { EUR_PER_USD } from '@/lib/exchangeRates';
 // Live EUR/USD source. Frankfurter serves the ECB's published reference rates,
 // is free, keyless and CORS-enabled. Override via VITE_FX_RATES_URL to point at
 // a different feed (e.g. an intraday provider proxied through the gateway).
+// The v1 API on api.frankfurter.dev: api.frankfurter.app/latest now answers
+// with a 301 that carries no CORS header, so browsers block it.
 const FX_RATES_URL =
   import.meta.env.VITE_FX_RATES_URL ??
-  'https://api.frankfurter.app/latest?from=USD&to=EUR';
+  'https://api.frankfurter.dev/v1/latest?base=USD&symbols=EUR';
 
 async function fetchEurPerUsd(): Promise<number> {
   const res = await fetch(FX_RATES_URL);
