@@ -1,0 +1,8 @@
+# VTID-05417 red on base
+base: origin/main 3ac1f5bb84b5a7e47e2990b502f9fb620dc6c59d (layout-core merged; EventsSpotlightBody / EventsAndMeetups unchanged)
+how: scratch worktree detached at the base, only the rewritten test file copied in, no node_modules junction
+command: npx vitest run src/components/community/spotlight/social-spotlight.vtid-05110.test.tsx
+result: Test Files 1 failed (1); Tests 6 failed | 17 passed (23)
+failing: the six rewritten 'VTID-05110 / VTID-05417 Events & Meetups body (Spotlight grid, SR-31)' cases
+  (no [data-spotlight-grid], no Join button, Live now / You follow still in the nested rail, no grid skeleton)
+earlier run on 3a690a9 (before layout-core merged): same 6 failed | 17 passed
