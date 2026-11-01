@@ -1,0 +1,41 @@
+# npx vitest run src/lib/pr-ci-service-images.test.ts on origin/main 77ec05316 (before the workflow edit)
+21:52:36 [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 C:/Users/dstev/vitana-v1/.worktrees/cdm-v1
+
+ Γ¥» src/lib/pr-ci-service-images.test.ts (3 tests | 1 failed) 28ms
+     ├ù no PR CI service/container image is pulled from public.ecr.aws 16ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  src/lib/pr-ci-service-images.test.ts > VTID-05415: PR CI service images avoid the capped ECR Public mirror > no PR CI service/container image is pulled from public.ecr.aws
+AssertionError: expected [ ΓÇª(5) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "PR-GATE.yml:36 public.ecr.aws/docker/library/postgres:16",
++   "SQL-CALENDAR-ENTRY-SHARE.yml:28 public.ecr.aws/docker/library/postgres:16",
++   "SQL-EVENT-SHARE-POSTS.yml:27 public.ecr.aws/docker/library/postgres:16",
++   "SQL-GROUP-PARTICIPANTS.yml:26 public.ecr.aws/docker/library/postgres:16",
++   "SQL-THREAD-JOIN-HARDENING.yml:27 public.ecr.aws/docker/library/postgres:16",
++ ]
+
+ Γ¥» src/lib/pr-ci-service-images.test.ts:62:17
+
+     60|   it('no PR CI service/container image is pulled from public.ecr.aws',ΓÇª
+     61|     const bad = images.filter((x) => x.image.startsWith('public.ecr.awΓÇª
+     62|     expect(bad).toEqual([]);
+       |                 ^
+     63|   });
+     64|
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  21:52:36
+   Duration  22.79s (transform 324ms, setup 3.20s, import 154ms, tests 28ms, environment 17.94s)
+
