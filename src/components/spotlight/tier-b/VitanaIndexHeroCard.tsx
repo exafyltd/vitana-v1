@@ -9,6 +9,35 @@ import { cn } from '@/lib/utils';
 const INDEX_MAX = 999;
 const PILLAR_MAX = 200;
 
+const RING_R = 42;
+const RING_C = 2 * Math.PI * RING_R;
+
+/** VTID-05419 — the Index as a ring on the token gradient (no index → an empty track, no number). */
+function IndexRing({ total }: { total: number | null }) {
+  const share = total == null ? 0 : Math.max(0, Math.min(1, total / INDEX_MAX));
+  return (
+    <div
+      className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/30 via-accent/20 to-background"
+      data-vitana-index-ring=""
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 100 100" className="h-3/4 w-auto -rotate-90">
+        <circle cx="50" cy="50" r={RING_R} fill="none" strokeWidth="8" className="stroke-muted" />
+        <circle
+          cx="50"
+          cy="50"
+          r={RING_R}
+          fill="none"
+          strokeWidth="8"
+          strokeLinecap="round"
+          className="stroke-primary"
+          strokeDasharray={`${RING_C * share} ${RING_C}`}
+        />
+      </svg>
+    </div>
+  );
+}
+
 /**
  * VTID-05111 — the one `spotlight` card of the Health and Vitana Index
  * dashboards (contract SR-06): the member's real Vitana Index, its trend and
@@ -22,6 +51,8 @@ export function VitanaIndexHeroCard({
   onOpen,
   openLabel,
   showPillars = true,
+  spotlightLabel = false,
+  ringMedia = false,
 }: {
   index: VitanaIndexState | null;
   isLoading: boolean;
@@ -31,6 +62,10 @@ export function VitanaIndexHeroCard({
   openLabel?: string;
   /** Off where the screen shows its own pillar breakdown below the card. */
   showPillars?: boolean;
+  /** VTID-05419 — the card's Spotlight identity (label + accent ring, VCard `spotlightLabel`). */
+  spotlightLabel?: boolean;
+  /** VTID-05419 — media art: the Index as a ring (share of the 999 maximum) on the token gradient. */
+  ringMedia?: boolean;
 }) {
   if (isLoading && !index) return <VCardSkeleton size="spotlight" />;
 
@@ -65,6 +100,8 @@ export function VitanaIndexHeroCard({
   return (
     <VCard
       size="spotlight"
+      spotlightLabel={spotlightLabel}
+      mediaSlot={ringMedia ? <IndexRing total={index?.total ?? null} /> : undefined}
       data-testid="spotlight-vitana-index-hero"
       className={cn(onOpen && 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring')}
       eyebrow={t('vitanaIndexPage.hero.eyebrow')}

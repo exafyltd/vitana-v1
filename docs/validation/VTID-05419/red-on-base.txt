@@ -1,0 +1,613 @@
+
+05:08:20 [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+ RUN  v4.1.10 C:/Users/dstev/vitana-v1/.worktrees/spotlight-card-proportion-health-v1
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > opts the frame into the grid and renders one Spotlight card (the Vitana Index) in the spotlight slot
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stderr | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > opts the frame into the grid and renders one Spotlight card (the Vitana Index) in the spotlight slot
+ΓÜá∩╕Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+ΓÜá∩╕Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > six standard tiles beside the spotlight, in the planned order
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > "Up next ┬╖ For you": pending actions as compact cards, the weakest-pillar lift first
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > no pending actions ΓåÆ no "Up next" row, Today's plan says so honestly
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö real data only > no index yet ΓåÆ no invented numbers on the hero or the tiles
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö real data only > a single history day ΓåÆ no trend bars and no trend number
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö real data only > loading ΓåÆ the grid skeleton (1 spotlight + 6 standard), never a spinner
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö actions > View breakdown opens the Index sheet; Ask Vitana opens Vitana
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+stdout | src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö actions > My Biology goes to /health/my-biology; Today's plan and Up next open Autopilot; a pillar tile opens the sheet
+Health page using healthNavigation: [
+  { id: 'overview', name: 'Overview', path: '/health' },
+  {
+    id: 'services-hub',
+    name: 'Services Hub',
+    path: '/health/services-hub'
+  },
+  { id: 'my-biology', name: 'My Biology', path: '/health/my-biology' },
+  { id: 'plans', name: 'My Plans', path: '/health/plans' },
+  {
+    id: 'education-science',
+    name: 'Education & Science',
+    path: '/health/education'
+  }
+]
+Current path: /health
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx (10 tests | 9 failed) 502ms
+     ├ù opts the frame into the grid and renders one Spotlight card (the Vitana Index) in the spotlight slot 193ms
+     ├ù six standard tiles beside the spotlight, in the planned order 52ms
+     ├ù "Up next ┬╖ For you": pending actions as compact cards, the weakest-pillar lift first 34ms
+     ├ù no pending actions ΓåÆ no "Up next" row, Today's plan says so honestly 29ms
+     ├ù no index yet ΓåÆ no invented numbers on the hero or the tiles 32ms
+     ├ù a single history day ΓåÆ no trend bars and no trend number 23ms
+     ├ù loading ΓåÆ the grid skeleton (1 spotlight + 6 standard), never a spinner 15ms
+     ├ù View breakdown opens the Index sheet; Ask Vitana opens Vitana 48ms
+     ├ù My Biology goes to /health/my-biology; Today's plan and Up next open Autopilot; a pillar tile opens the sheet 26ms
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 9 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > opts the frame into the grid and renders one Spotlight card (the Vitana Index) in the spotlight slot
+AssertionError: expected null to be 'spotlight-grid' // Object.is equality
+- Expected:
+"spotlight-grid"
++ Received:
+null
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:131:54
+    129|     const { container } = renderHealth();
+    130|     const frame = container.querySelector('[data-archetype="dashboard"ΓÇª
+    131|     expect(frame.getAttribute('data-screen-layout')).toBe('spotlight-gΓÇª
+       |                                                      ^
+    132|     expect(frame.querySelector('[data-spotlight-layout]')!.getAttributΓÇª
+    133|
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > six standard tiles beside the spotlight, in the planned order
+TypeError: Cannot read properties of null (reading 'querySelectorAll')
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:149:29
+    147|     const { container } = renderHealth();
+    148|     const tiles = container.querySelector('[data-spotlight-grid] [dataΓÇª
+    149|     const cards = [...tiles.querySelectorAll('[data-vcard-size]')];
+       |                             ^
+    150|     expect(cards.map((c) => c.getAttribute('data-vcard-size'))).toEquaΓÇª
+    151|     expect(cards.map((c) => c.getAttribute('data-health-tile'))).toEquΓÇª
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > "Up next ┬╖ For you": pending actions as compact cards, the weakest-pillar lift first
+AssertionError: expected null not to be null
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:172:21
+    170|     const { container } = renderHealth();
+    171|     const row = container.querySelector('[data-spotlight-grid] [data-sΓÇª
+    172|     expect(row).not.toBeNull();
+       |                     ^
+    173|     expect(within(row).getByText('spotlight.grid.health.upNext')).toBeΓÇª
+    174|     const cards = [...row.querySelectorAll('[data-vcard-size]')];
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö structure > no pending actions ΓåÆ no "Up next" row, Today's plan says so honestly
+TypeError: Cannot read properties of null (reading 'textContent')
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:185:17
+    183|     expect(container.querySelector('[data-slot="row"]')).toBeNull();
+    184|     const plan = container.querySelector('[data-health-tile="today-plaΓÇª
+    185|     expect(plan.textContent).toContain('spotlight.grid.emptyTiles');
+       |                 ^
+    186|   });
+    187| });
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö real data only > no index yet ΓåÆ no invented numbers on the hero or the tiles
+AssertionError: expected [] to deeply equal [ 'ΓÇö', 'ΓÇö', 'ΓÇö', 'ΓÇö' ]
+- Expected
++ Received
+- [
+-   "ΓÇö",
+-   "ΓÇö",
+-   "ΓÇö",
+-   "ΓÇö",
+- ]
++ []
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:195:20
+    193|     expect(screen.getByTestId('spotlight-vitana-index-score').textContΓÇª
+    194|     const values = [...container.querySelectorAll('[data-health-tile-vΓÇª
+    195|     expect(values).toEqual(['ΓÇö', 'ΓÇö', 'ΓÇö', 'ΓÇö']);
+       |                    ^
+    196|     expect(container.querySelector('[data-slot="tiles"]')!.textContentΓÇª
+    197|     expect(container.querySelectorAll('[data-slot="spotlight"] li').leΓÇª
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö real data only > a single history day ΓåÆ no trend bars and no trend number
+TypeError: Cannot read properties of null (reading 'querySelector')
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:204:18
+    202|     const { container } = renderHealth();
+    203|     const trend = container.querySelector('[data-health-tile="trend"]'ΓÇª
+    204|     expect(trend.querySelector('[data-health-tile-value]')!.textContenΓÇª
+       |                  ^
+    205|     expect(trend.textContent).toContain('spotlight.grid.emptyTiles');
+    206|   });
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö real data only > loading ΓåÆ the grid skeleton (1 spotlight + 6 standard), never a spinner
+AssertionError: expected null not to be null
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:213:22
+    211|     const { container } = renderHealth();
+    212|     const skel = container.querySelector('[data-archetype-skeleton="daΓÇª
+    213|     expect(skel).not.toBeNull();
+       |                      ^
+    214|     expect(skel.querySelectorAll('[data-slot="spotlight"] [data-vcard-ΓÇª
+    215|     expect(skel.querySelectorAll('[data-slot="tiles"] [data-vcard-skelΓÇª
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[7/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö actions > View breakdown opens the Index sheet; Ask Vitana opens Vitana
+TestingLibraryElementError: Unable to find an element with the text: spotlight.grid.health.viewBreakdown. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="h-full"
+      data-screen-id="D1-005"
+    >
+      <div
+        data-testid="app-layout"
+      >
+        <div
+          class="flex min-h-full flex-col"
+          data-archetype="dashboard"
+        >
+          <nav
+            data-testid="subnav"
+          />
+          <div
+            class="flex-1 px-6 pb-10 pt-5"
+          >
+            <header
+              data-header-density="compact"
+            >
+              screens.health.letSImproveQualityLife
+            </header>
+            <div
+              class="flex items-center gap-4"
+              data-spotlight-utility=""
+            >
+              <div
+                class="min-w-0 flex-1"
+              >
+                <div
+                  data-testid="utility"
+                >
+                  <button
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3"
+                  >
+                    <svg
+                      class="lucide lucide-plus me-2 h-4 w-4"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5 12h14"
+                      />
+                      <path
+                        d="M12 5v14"
+                      />
+                    </svg>
+                    screens.health.healthActions
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="sp-layout mt-4"
+              data-spotlight-layout=""
+              data-width="stage-rail"
+            >
+              <div
+                class="sp-grid"
+              >
+                <div
+                  class="sp-stage min-w-0"
+                  data-spotlight-stage=""
+                >
+                  <div
+                    style="opacity: 0;"
+                  >
+                    <div
+                      class="flex flex-col gap-6"
+                    >
+                      <article
+                        aria-label="screens.health.openVitanaIndexForecast"
+                        class="flex flex-col overflow-hidden rounded-vcard border bg-card text-card-foreground shadow-vcard-raised cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        data-testid="spotlight-vitana-index-hero"
+                        data-vcard-size="spotlight"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <div
+                          class="flex min-w-0 flex-1 flex-col gap-2 p-5"
+                        >
+                          <div
+                            class="text-xs font-bold uppercase tracking-wide text-primary"
+                          >
+                            vitanaIndexPage.hero.eyebrow
+                          </div>
+                          <div
+                            class="line-clamp-2 text-lg font-bold leading-snug"
+                          >
+                            <span
+                              class="flex flex-wrap items-baseline gap-x-3 gap-y-1"
+                            >
+                              <span
+                                class="text-2xl font-extrabold tabular-nums text-foreground"
+                                data-testid="spotlight-vitana-index-score"
+                              >
+                                412
+                              </span>
+                              <span
+                                class="text-sm font-medium text-muted-foreground"
+                              >
+                                profile.indexHero.ofMax {"max":999}
+                              </span>
+                              <span
+                                class="text-sm font-semibold text-primary"
+                              >
+                                vitanaIndex.tiers.building
+                              </span>
+                              <span
+                                class="inline-flex items-center gap-1 rounded-full bg-status-success-subtle px-2.5 py-0.5 text-xs font-semibold text-status-success"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lucide lucide-trending-up h-3.5 w-3.5 rtl:-scale-x-100"
+                                  fill="none"
+                                  height="24"
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <polyline
+                                    points="22 7 13.5 15.5 8.5 10.5 2 17"
+                                  />
+                                  <polyline
+                                    points="16 7 22 7 22 13"
+                                  />
+                                </svg>
+                                vitanaIndexPage.hero.trendUp
+                              </span>
+                            </span>
+                          </div>
+                          <div
+                            class="truncate text-xs text-muted-foreground"
+                          >
+                            vitanaIndexPage.hero.updated {"date":"31. Oktober"}
+                          </div>
+                          <div
+                            class="text-sm text-muted-foreground"
+                          >
+                            <div
+                              class="flex flex-col gap-4"
+                            >
+                              <p
+                                class="text-sm text-foreground"
+                              >
+                                vitanaIndexPage.hero.lineUp
+                              </p>
+                              <ul
+                                aria-label="spotlightTierB.health.pillarsAria"
+                                class="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2"
+                              >
+                                <li
+                                  class="flex items-center gap-3 text-sm"
+                                >
+                                  <span
+                                    class="min-w-0 flex-1 truncate text-muted-foreground"
+                                  >
+                                    vitanaIndex.nutrition
+                                  </span>
+                                  <span
+                                    aria-hidden="true"
+                                    class="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-muted"
+                                  >
+                                    <span
+                                      class="block h-full rounded-full bg-primary"
+                                      style="width: 60%;"
+                                    />
+                                  </span>
+                                  <span
+                                    class="w-10 shrink-0 text-end text-xs font-semibold tabular-nums text-foreground"
+                                  >
+                                    120
+                                  </span>
+                                </li>
+                                <li
+                                  class="flex items-center gap-3 text-sm"
+                                >
+                                  <span
+                                    class="min-w-0 flex-1 truncate text-muted-foreground"
+                                  >
+                                    vitanaIndex.hydration
+                                  </span>
+                                  <span
+                                    aria-hidden="true"
+                                    class="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-muted"
+                                  >
+                                    <span
+                                      class="block h-full rounded-full bg-primary"
+                                      style="width: 40%;"
+                                    />
+                                  </span>
+                                  <span
+                                    class="w-10 shrink-0 text-end text-xs font-semibold tabular-nums text-foreground"
+                                  >
+                                    80
+                                  </span>
+                                </li>
+                                <li
+                                  class="flex items-center gap-3 text-sm"
+                                >
+                                  <span
+                                    class="min-w-0 flex-1 truncate text-muted-foreground"
+                                  >
+                                    vitanaIndex.exercise
+                                  </span>
+                                  <span
+                                    aria-hidden="true"
+                                    class="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-muted"
+                                  >
+                                    <span
+                                      class="block h-full rounded-full bg-primary"
+                                      style="width: 30%;"
+                                    />
+                                  </span>
+                                  <span
+                                    class="w-10 shrink-0 text-end text-xs font-semibold tabular-nums text-foreground"
+                                  >
+                                    60
+                                  </span>
+                                </li>
+                                <li
+                                  class="flex items-center gap-3 text-sm"
+                                >
+                                  <span
+                                    class="min-w-0 flex-1 truncate text-muted-foreground"
+                                  >
+                                    vitanaIndex.sleep
+                                  </span>
+                                  <span
+                                    aria-hidden="true"
+                                    class="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-muted"
+                                  >
+                                    <span
+                                      class="block h-full rounded-full bg-primary"
+                                      style="width: 50%;"
+                                    />
+                                  </span>
+                                  <span
+                                    class="w-10 shrink-0 text-end text-xs font-semibold tabular-nums text-foreground"
+                                  >
+                                    100
+                                  </span>
+                                </li>
+                                <li
+                                  class="flex items-center gap-3 text-sm"
+                                >
+                                  <span
+                                    class="min-w-0 flex-1 truncate text-muted-foreground"
+                                  >
+                                    vitanaIndex.mental
+                                  </span>
+                                  <span
+                                    aria-hidden="true"
+                                    class="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-muted"
+                                  >
+                                    <span
+                                      class="block h-full rounded-full bg-primary"
+                                      style="width: 26%;"
+                                    />
+                                  </span>
+                                  <span
+                                    class="w-10 shrink-0 text-end text-xs font-semibold tabular-nums text-foreground"
+                                  >
+                                    52
+                                  </span>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div
+                            class="mt-auto flex items-center gap-2 pt-2"
+                          >
+                            <button
+                              class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+                            >
+                              screens.health.viewMyJourney
+                              <svg
+                                class="lucide lucide-chevron-right ms-0.5 h-4 w-4 rtl:-scale-x-100"
+                                fill="none"
+                                height="24"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="m9 18 6-6-6-6"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                      <div
+                        data-testid="pillar-agents"
+                      />
+                      <div
+                        data-testid="next-best-action"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ Γ¥» Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ Γ¥» ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ Γ¥» ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ Γ¥» getByText ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:225:28
+    223|     window.addEventListener(VITANA_INDEX_OPEN_EVENT, opened);
+    224|     renderHealth();
+    225|     fireEvent.click(screen.getByText('spotlight.grid.health.viewBreakdΓÇª
+       |                            ^
+    226|     expect(opened).toHaveBeenCalledTimes(1);
+    227|     fireEvent.click(screen.getByText('spotlight.grid.health.askVitana'ΓÇª
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[8/9]ΓÄ»
+ FAIL  src/components/spotlight/tier-b/health-grid.test.tsx > VTID-05419 /health Spotlight grid ΓÇö actions > My Biology goes to /health/my-biology; Today's plan and Up next open Autopilot; a pillar tile opens the sheet
+Error: Unable to fire a "keydown" event - please provide a DOM element.
+ Γ¥» createEvent ../../node_modules/@testing-library/dom/dist/events.js:27:11
+ Γ¥» createEvent.<computed> [as keyDown] ../../node_modules/@testing-library/dom/dist/events.js:106:38
+ Γ¥» fireEvent.<computed> [as keyDown] ../../node_modules/@testing-library/dom/dist/events.js:110:68
+ Γ¥» fireEvent.keyDown ../../node_modules/@testing-library/react/dist/fire-event.js:15:52
+ Γ¥» src/components/spotlight/tier-b/health-grid.test.tsx:238:15
+    236|     window.addEventListener(VITANA_INDEX_OPEN_EVENT, opened);
+    237|     const { container } = renderHealth();
+    238|     fireEvent.keyDown(container.querySelector('[data-health-tile="biolΓÇª
+       |               ^
+    239|     expect(h.navigate).toHaveBeenCalledWith('/health/my-biology');
+    240|     fireEvent.click(container.querySelector('[data-health-tile="sleep"ΓÇª
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[9/9]ΓÄ»
+ Test Files  1 failed (1)
+      Tests  9 failed | 1 passed (10)
+   Start at  05:08:20
+   Duration  28.64s (transform 6.93s, setup 1.65s, import 14.88s, tests 502ms, environment 8.13s)
+

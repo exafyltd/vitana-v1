@@ -1,0 +1,28 @@
+# VTID-05419 (spotlight-card-proportion/health) — commands (Windows, Kiro IDE)
+# Draft run 2026-11-01 while layout-core (VTID-05420, v1#1534) was not yet on main: code checked in scratch
+# worktree .worktrees/health-scratch-v1 = layout-core head 3bf4a15f9 + this lane's files.
+
+## red on base (lane WT, origin/main ea962fc8c, only health-grid.test.tsx added)
+npx vitest run src/components/spotlight/tier-b/health-grid.test.tsx
+  -> FAIL 9 / 10 (no [data-screen-layout], no [data-spotlight-grid], no tiles); the flag-off case passes by design
+  -> red-on-base.txt
+
+## green on layout-core head + lane files (scratch)
+npx vitest run src/components/spotlight/tier-b/health-grid.test.tsx          -> PASS 10 / 10
+npx vitest run src/pages/spotlight-tier-b.vtid-05111.test.tsx                -> PASS 50 / 50
+npx eslint <6 changed files>                                                  -> 0 errors; 2 pre-existing warnings in Health.tsx (anonymous export, exhaustive-deps), new files clean
+npx tsc --noEmit -p tsconfig.app.json                                         -> 0 errors in changed files (478 pre-existing lines elsewhere)
+regression net (plan "Tests and commands")                                     -> 404 / 405 tests, 42 / 44 files; the 2 red files are red on base too (Windows CRLF):
+   src/pages/community/EventsAndMeetups.vtid-04965.test.ts (CRLF source match), src/design/screen-manifest.test.ts (rolldown parse) — same on origin/main
+staging-tests.json validateManifest (platform origin/main scripts/ci/staging-verify/lib.cjs) -> ok
+
+## lane WT fast-forwarded to origin/main 3ac1f5bb8 (layout-core VTID-05420 merged), 2026-11-01T11:10Z
+npx vitest run src/components/spotlight/tier-b/health-grid.test.tsx src/pages/spotlight-tier-b.vtid-05111.test.tsx
+  -> PASS 60 / 60 (2 files)
+regression net (plan "Tests and commands")                                     -> 404 / 405 tests, 42 / 44 files; the same 2
+   Windows-only reds as on base: EventsAndMeetups.vtid-04965.test.ts (CRLF source match), screen-manifest.test.ts (rolldown parse)
+npm run test:design-contract                                                   -> 38 / 38 tests pass; screen-manifest.test.ts suite
+   fails to parse (same rolldown Windows red as on base)
+npm run design:manifest                                                        -> exit 0, no content diff (CRLF-only rewrite reverted)
+npx eslint <6 changed files>                                                   -> 0 errors, 2 pre-existing warnings in Health.tsx
+npm run build                                                                  -> PASS (built in 2m 13s; pre-existing css-syntax warnings)
