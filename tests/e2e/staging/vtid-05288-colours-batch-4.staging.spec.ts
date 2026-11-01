@@ -64,20 +64,40 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
 // the read-only Supabase RPCs supabase-js sends as POST, e.g.
 // rpc/get_role_preference). The browser logs each abort as
 // net::ERR_BLOCKED_BY_CLIENT, and supabase-js / the app surface the same abort
-// as "TypeError: Failed to fetch" (incl. "Error getting role preference: …
-// Failed to fetch"). Those are dropped only up to the number of requests the
-// guard actually aborted on this page; every other error still fails the test.
+// as "TypeError: Failed to fetch" (incl. "Error getting role preference:
+// TypeError: Failed to fetch"). Those are dropped only up to the number of
+// Supabase REST/RPC fetch/xhr requests the guard actually aborted on this page;
+// every other error still fails the test.
+//
+// Why the match is exact: a substring /Failed to fetch/ would also swallow
+// "TypeError: Failed to fetch dynamically imported module: …" (a lazy-route
+// chunk-load failure, a real regression), so the rejection must be the whole
+// message, or the last part of an app log with nothing after it. And only
+// aborted fetch/xhr calls to the Supabase REST host count towards the budget:
+// beacons, images and other aborted resources never log "Failed to fetch".
+const SUPABASE_FETCH_REJECTION = /(^|: )(TypeError: )?Failed to fetch$/;
+const isSupabaseFetchRejection = (t: string) =>
+  !/dynamically imported module/i.test(t) && SUPABASE_FETCH_REJECTION.test(t.trim());
+
 function collectRealErrors(page: import('@playwright/test').Page): () => string[] {
   const raw: string[] = [];
   let guardAborts = 0;
-  const isBlockedNoise = (t: string) => /ERR_BLOCKED_BY_CLIENT|Failed to load resource/.test(t);
-  page.on('requestfailed', (r) => { if (/ERR_BLOCKED_BY_CLIENT/.test(r.failure()?.errorText ?? '')) guardAborts++; });
+  // The browser's own log line for a guard-aborted request ("Failed to load
+  // resource: net::ERR_BLOCKED_BY_CLIENT"); any other load failure still counts.
+  const isBlockedNoise = (t: string) => /net::ERR_BLOCKED_BY_CLIENT/.test(t);
+  page.on('requestfailed', (r) => {
+    if (
+      /ERR_BLOCKED_BY_CLIENT/.test(r.failure()?.errorText ?? '') &&
+      (r.resourceType() === 'fetch' || r.resourceType() === 'xhr') &&
+      r.url().startsWith(`${SUPABASE}/rest/v1/`)
+    ) guardAborts++;
+  });
   page.on('console', (m) => { if (m.type() === 'error' && !isBlockedNoise(m.text())) raw.push(m.text()); });
   page.on('pageerror', (e) => { if (!isBlockedNoise(String(e))) raw.push(String(e)); });
   return () => {
     let budget = guardAborts;
     return raw.filter((t) => {
-      if (budget > 0 && /Failed to fetch/.test(t)) { budget--; return false; }
+      if (budget > 0 && isSupabaseFetchRejection(t)) { budget--; return false; }
       return true;
     });
   };
