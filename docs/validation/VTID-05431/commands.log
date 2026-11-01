@@ -1,0 +1,117 @@
+# VTID-05431 (native-wave2-profile-settings-r2/settings) — local verification, 2026-11-01T18:02Z, Linux sandbox
+# verified on the branch with the implementation, tests and ledger (code commits 2620fe42e..2dc0f29d8); only docs/validation and maestro/settings docs were committed after
+# apps/mobile commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+
+## apps/mobile
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/settings --ci
+Test Suites: 3 passed, 3 total
+Tests:       168 passed, 168 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 79 passed, 79 total
+Tests:       2240 passed, 2240 total
+exit=0
+
+$ npm run bundle
+Exported: dist
+exit=0
+
+$ npm run deps:check
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 30 native route(s)
+exit=0
+
+## repo root
+$ node scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ npx eslint apps/mobile packages
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+
+$ node scripts/i18n-register-check.mjs --all
+[register] pt (Portuguese) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] ru (Russian) — 0 violation(s), 1 correct-plural (excluded), 0 grey-area
+[register] pl (Polish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] tr (Turkish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] zh (Chinese) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+[stamp] pt: 0 key(s) whose EN source changed since translation (0.0%), 2145 never stamped
+[stamp] ru: 0 key(s) whose EN source changed since translation (0.0%), 2455 never stamped
+[stamp] pl: 0 key(s) whose EN source changed since translation (0.0%), 2326 never stamped
+[stamp] ar: 0 key(s) whose EN source changed since translation (0.0%), 1498 never stamped
+[stamp] zh: 0 key(s) whose EN source changed since translation (0.0%), 2476 never stamped
+[stamp] tr: 0 key(s) whose EN source changed since translation (0.0%), 2473 never stamped
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node --test scripts/native/__tests__/*.test.mjs
+# pass 68
+# fail 0
+exit=0
+
+$ npm run build   (vite, web; the new src/i18n/*/settingsNative.json shards are bundled)
+✓ built in 33.73s
+exit 0
+
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] OK — one chunk per lazy locale, de eager. en:821KB  es:910KB  sr:879KB  fr:950KB  pt:922KB  ru:1255KB  pl:924KB  ar:1086KB  zh:824KB
+exit=0
+
+$ npm test   (root: edge-data-client + realtime-helper checks + vitest run)
+ Test Files  485 passed (485)
+      Tests  3912 passed (3912)
+exit=0
+
+$ npx eslint <every file changed vs origin/main>
+exit=0 (0 problems)
+# note: full `npx eslint . --quiet` reports 1329 pre-existing errors in files this lane does not touch (non-blocking in CI i18n check, "lint warnings noted")
+
+## red on base (origin/main a41e89a0d) — see red-on-base.txt
+$ npx jest tests/settings tests/orb/nav-directive.test.ts tests/navigation.test.tsx --ci
+Test Suites: 5 failed, 5 total; Tests: 2 failed, 469 passed (3 settings suites: Cannot find module; nav-directive + navigation: /settings not native)
+
+## preflight (vitana-platform scripts/collab/preflight.mjs, head f947bbd9f)
+preflight vitana-v1 /projects/sandbox/vitana-v1/.worktrees/native-wave2-profile-settings-r2-settings
+  base a41e89a0dbc724ce7406248213dd2e64ee123fce  head f947bbd9f75d4da22ae0edb2cb5d12721b093a3f  branch kiro/native-wave2-profile-settings-r2/settings
+
+PASS  Collab handoff [report-only in CI (vitana-v1 Collab handoff step)]
+FAIL  Lane scope [required]
+      ❌ **lane scope** — 2 problem(s) (lane native-wave2-profile-settings-r2/settings):
+      - apps/mobile/tests/navigation.test.tsx is outside lane native-wave2-profile-settings-r2/settings (paths: apps/mobile/app/(app)/settings/index.tsx, apps/mobile/app/(app)/settings/preferences.tsx, apps/mobile/app/(app)/settings/limitations.tsx, apps/mobile/app/(app)/settings/tenant-role.tsx, apps/mobile/app/(app)/delete-account.tsx, apps/mobile/src/screens/settings/**, apps/mobile/src/ports/**, apps/mobile/src/navigation/resolve.ts, apps/mobile/tests/settings/**, apps/mobile/maestro/settings/**, apps/mobile/parity/ledger.json, src/i18n/*/settingsNative.json, docs/validation/**)
+      - apps/mobile/tests/orb/nav-directive.test.ts is outside lane native-wave2-profile-settings-r2/settings (paths: apps/mobile/app/(app)/settings/index.tsx, apps/mobile/app/(app)/settings/preferences.tsx, apps/mobile/app/(app)/settings/limitations.tsx, apps/mobile/app/(app)/settings/tenant-role.tsx, apps/mobile/app/(app)/delete-account.tsx, apps/mobile/src/screens/settings/**, apps/mobile/src/ports/**, apps/mobile/src/navigation/resolve.ts, apps/mobile/tests/settings/**, apps/mobile/maestro/settings/**, apps/mobile/parity/ledger.json, src/i18n/*/settingsNative.json, docs/validation/**)
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE sparring [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE weakening [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE red-green [report-only in CI (until config.enforce=true)]
+PASS  Kiro steering [report-only in CI (until config.enforce=true)]
+SKIP  Not run by preflight [report-only in CI]
+      vitana-v1 PR-GATE also runs migrations, typecheck / ESLint / design ratchets, regression scripts and the build: run npm test, npm run lint and npm run build (lane-code.md step 7)
+
+preflight: 1 check(s) failed: Lane scope — fix every error above, then push
