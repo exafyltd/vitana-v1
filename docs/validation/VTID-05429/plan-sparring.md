@@ -18,6 +18,8 @@ CONVERGED and approved by policy `converged-auto-v1` at 2026-11-01T03:02:17.659+
 
 ## Approval
 
+- **owner approval:** policy approval `converged-auto-v1` at 2026-11-01T03:02:17.659+00:00 (no Gate 1 to the owner).
+
 Approved by policy `converged-auto-v1` (owner decision 2026-10-14, VTID-05214/05218):
 a plan sparred by CI whose session converged is approved by policy and not sent to
 the owner as Gate 1. CI allocated the VTID after convergence (`lanes/profile.md`
