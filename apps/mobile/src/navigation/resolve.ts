@@ -60,6 +60,10 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/reset-password',
   '/search',
+  '/settings',
+  '/settings/limitations',
+  '/settings/preferences',
+  '/settings/tenant-role',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
