@@ -23,6 +23,36 @@
         "keyboardHint": true
       },
       "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "grid": {
+      "label": "焦点",
+      "seeAll": "查看全部",
+      "emptyTiles": "这里暂时还没有内容。",
+      "health": {
+        "section": "你的健康",
+        "upNext": "接下来 · 为你推荐",
+        "viewBreakdown": "查看详情",
+        "askVitana": "问问 Vitana",
+        "biology": "我的生物指标",
+        "trend": "7 天趋势",
+        "todayPlan": "你今天的计划"
+      },
+      "discover": {
+        "section": "为你推荐",
+        "browseCategories": "浏览分类"
+      },
+      "events": {
+        "featured": "精选",
+        "thisWeek": "本周",
+        "upcoming": "即将开始",
+        "join": "参加"
+      },
+      "match": {
+        "topMatch": "你的最佳匹配",
+        "sayHello": "打个招呼",
+        "viewProfile": "查看资料",
+        "morePeople": "更多适合你的人"
+      }
     }
   }
 }

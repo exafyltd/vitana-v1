@@ -118,6 +118,36 @@ describe('VTID-05105 ScreenFrame', () => {
     expect(container.querySelector('aside.sp-rail')).toBeNull();
   });
 
+  it('VTID-05420: layout="spotlight-grid" uses the full width and marks the frame; chrome is unchanged', () => {
+    const { container } = inRouter(
+      <ScreenFrame
+        archetype="dashboard"
+        layout="spotlight-grid"
+        header={{ title: 'Health', description: 'd' }}
+        utility={{ children: <button>Search</button> }}
+        rail={<div>r</div>}
+      >
+        <p>grid</p>
+      </ScreenFrame>,
+    );
+    const root = container.querySelector('[data-archetype]')!;
+    expect(root.getAttribute('data-archetype')).toBe('dashboard');
+    expect(root.getAttribute('data-screen-layout')).toBe('spotlight-grid');
+    expect(container.querySelector('.sp-layout')!.getAttribute('data-width')).toBe('full');
+    expect(container.querySelector('aside.sp-rail')).toBeNull();
+    expect(screen.getByTestId('header').dataset.density).toBe('compact');
+    expect(container.querySelector('[data-spotlight-utility]')).not.toBeNull();
+  });
+
+  it('VTID-05420: without layout (or layout="default") the archetype width is unchanged and the frame is not marked', () => {
+    const { container, rerender } = inRouter(<ScreenFrame archetype="dashboard"><p>x</p></ScreenFrame>);
+    expect(container.querySelector('.sp-layout')!.getAttribute('data-width')).toBe(ARCHETYPE_WIDTH.dashboard);
+    expect(container.querySelector('[data-archetype]')!.hasAttribute('data-screen-layout')).toBe(false);
+    rerender(<MemoryRouter><ScreenFrame archetype="collection" layout="default"><p>x</p></ScreenFrame></MemoryRouter>);
+    expect(container.querySelector('.sp-layout')!.getAttribute('data-width')).toBe(ARCHETYPE_WIDTH.collection);
+    expect(container.querySelector('[data-archetype]')!.hasAttribute('data-screen-layout')).toBe(false);
+  });
+
   it('reduced motion renders the stage without the fade wrapper', () => {
     reduceMotion = true;
     const { container } = inRouter(<ScreenFrame archetype="detail"><p>still</p></ScreenFrame>);
@@ -167,5 +197,23 @@ describe('VTID-05105 archetype skeletons', () => {
     const el = container.querySelector(`[data-archetype-skeleton="${a}"]`)!;
     expect(el).not.toBeNull();
     expect(el.getAttribute('aria-busy')).toBe('true');
+  });
+
+  it('VTID-05420: layout="spotlight-grid" renders the grid shape (1 spotlight + 6 standard + 5 compact)', () => {
+    const { container } = render(<ArchetypeSkeleton archetype="dashboard" layout="spotlight-grid" />);
+    const el = container.querySelector('[data-archetype-skeleton="dashboard"]')!;
+    expect(el.getAttribute('aria-busy')).toBe('true');
+    const grid = el.querySelector('[data-spotlight-grid]')!;
+    expect(grid).not.toBeNull();
+    expect(grid.querySelectorAll(':scope > [data-slot="spotlight"] [data-vcard-skeleton][data-vcard-size="spotlight"]').length).toBe(1);
+    expect(grid.querySelectorAll(':scope > [data-slot="tiles"] [data-vcard-skeleton][data-vcard-size="standard"]').length).toBe(6);
+    expect(grid.querySelectorAll(':scope > [data-slot="row"] [data-vcard-skeleton][data-vcard-size="compact"]').length).toBe(5);
+  });
+
+  it('VTID-05420: the default skeleton shapes are unchanged', () => {
+    const { container } = render(<ArchetypeSkeleton archetype="dashboard" />);
+    expect(container.querySelector('[data-spotlight-grid]')).toBeNull();
+    expect(container.querySelectorAll('[data-vcard-size="spotlight"]').length).toBe(1);
+    expect(container.querySelectorAll('[data-vcard-size="standard"]').length).toBe(3);
   });
 });

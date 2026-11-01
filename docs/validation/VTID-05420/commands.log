@@ -1,0 +1,50 @@
+# VTID-05420 (spotlight-card-proportion/layout-core) — local verification, Windows, vitana-v1 worktree
+# base = origin/main 988a3c5070a9459453a67793f15784ad8d361f9e
+
+## Red → green
+npx vitest run src/components/layout/spotlight src/components/ui/vcard   (tests only, implementation = base)
+  → FAIL: 4 files failed | 4 passed; 13 tests failed | 65 passed (78)   [red-on-base.txt]
+npx vitest run src/components/layout/spotlight src/components/ui/vcard   (head)
+  → PASS: 8 files passed; 78 tests passed (78)                          [green-on-head.txt]
+
+## Regression net (plan.md "Tests and commands") + src/i18n
+npx vitest run src/components/layout/spotlight src/components/ui/vcard src/components/discover/spotlight
+  src/components/community/spotlight src/pages/community src/pages/spotlight-tier-b.vtid-05111.test.tsx
+  src/hooks/useSpotlightEnabled.test.ts src/components/profile src/components/media/spotlight src/components/tickets
+  src/components/spotlight src/pages/Home.spotlight.vtid-05108.test.tsx src/design src/i18n
+  → 44 files passed, 2 failed; 416 tests passed, 1 failed (417)
+    The 2 red files are the same on base (stash of every lane change, same command):
+    - src/design/screen-manifest.test.ts: RolldownError parse failure (Windows) — red on base too
+    - src/pages/community/EventsAndMeetups.vtid-04965.test.ts: source-text assertion trips on CRLF checkout — red on base too
+    → not this lane's; CI (Linux) runs them.
+
+## Design contract
+npm run test:design-contract → vitest src/design: 38 tests passed; screen-manifest.test.ts parse failure (same on base, Windows);
+  node --test pr-gate + kiro-steering guard ran after it in CI order
+npm run design:manifest → only CRLF line-ending churn in src/design/screen-manifest.json, no content change; reverted (no diff)
+npx eslint <10 changed .ts/.tsx files> → exit 0 (0 errors, 0 warnings; design/* = 0)
+node scripts/ci/pr-gate/gate.mjs weakening --base origin/main --head HEAD → exit 0 (no test weakened)
+
+## Types and build
+npx tsc --noEmit -p tsconfig.app.json → 0 errors in any touched file (the project baseline has 176 errors elsewhere on base; no typecheck npm script)
+npm run build → exit 0 (built in 1m 48s; only the pre-existing CSS syntax warnings)
+
+## i18n
+node <RUN>/lane1-i18n.mjs (one-off, not committed) → 20 spotlight.grid.* keys in all 11 locales (DE first, du-form);
+  stamps +20 per locale (en vs de, others vs en), 0 lost, existing stamps carried forward unchanged
+node scripts/i18n-stamp-source.mjs --check-all → 0 drifted keys in every tracked locale
+## Governance preflight
+node <vitana-platform>/scripts/collab/preflight.mjs --repo <wt> --base origin/main --head HEAD --branch kiro/spotlight-card-proportion/layout-core --title "VTID-05420 (…)"
+  run 1 (457970125): Collab handoff PASS, Lane scope PASS, gh PASS, weakening PASS, red-green PASS;
+    FAIL PR-GATE scope (scope.json had no "kind") → fixed (kind: feature)
+    FAIL PR-GATE sparring (no plan-sparring.md in this repo) → fixed (transcribed record, sparring_record in scope.json)
+    FAIL Kiro steering: guard.test.cjs "Kiro notes" regex /^---\ninclusion: always\n---/ vs the CRLF Windows checkout
+      of .kiro/steering/vitana-kiro-notes.md — environment only, file untouched by this lane, passes on CI (LF)
+  run 2: see the commit message of the fix commit
+
+npm run i18n:inventory → on Windows writes backslash paths and a different order (every heading changes); not committed
+  (no key added here is consumed by src/pages/**)
+
+## CI fix 1 (2026-11-01T03:15:36.6299450+01:00): change-suite red on 8f8338d (staging-tests.json invalid)
+- staging-tests.json: added service=community-app, tests[0].command -> ref, added reason
+- lib.validateManifest (vitana-platform origin/main) on the new manifest: ok=true, errors=[]

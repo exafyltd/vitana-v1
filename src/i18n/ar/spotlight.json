@@ -23,6 +23,36 @@
         "keyboardHint": true
       },
       "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "grid": {
+      "label": "في الواجهة",
+      "seeAll": "عرض الكل",
+      "emptyTiles": "لا يوجد شيء لعرضه هنا بعد.",
+      "health": {
+        "section": "صحتك",
+        "upNext": "التالي · لك",
+        "viewBreakdown": "عرض التفاصيل",
+        "askVitana": "اسأل Vitana",
+        "biology": "بيولوجيتي",
+        "trend": "اتجاه 7 أيام",
+        "todayPlan": "خطتك لليوم"
+      },
+      "discover": {
+        "section": "مقترح لك",
+        "browseCategories": "تصفح الفئات"
+      },
+      "events": {
+        "featured": "مميز",
+        "thisWeek": "هذا الأسبوع",
+        "upcoming": "قادم",
+        "join": "انضم"
+      },
+      "match": {
+        "topMatch": "أفضل تطابق لك",
+        "sayHello": "قل مرحبًا",
+        "viewProfile": "عرض الملف الشخصي",
+        "morePeople": "المزيد من الأشخاص لك"
+      }
     }
   }
 }

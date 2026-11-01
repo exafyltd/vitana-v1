@@ -34,6 +34,12 @@ archetype it guessed.
 | `workspace` | `full`, dense, rail optional | the primary table or panel | Admin (keeps `AdminTabs`), Backoffice, Dev, Professional, Staff |
 | `immersive` | full-bleed; in-screen chrome hidden; sidebar and ORB stay | the media | `/shop`, live session, fullscreen media |
 
+**Spotlight grid (SR-31).** A `dashboard`, `storefront` or `collection` screen that opts in with
+`<ScreenFrame layout="spotlight-grid">` uses the SR-31 layout instead of the row above (`full` width, one Spotlight card
+beside a 3x2 tile grid, one compact row below). Today: `/health`, `/discover`, `/comm/events-meetups`,
+`/comm/find-partner`. Every other screen of those archetypes keeps its default layout; the archetype in the manifest
+does not change.
+
 Building blocks (Phase 1a, VTID-05105):
 - `ScreenFrame` and `SpotlightLayout`: `src/components/layout/spotlight/`
 - `VCard`: `src/components/ui/vcard/`
@@ -71,13 +77,18 @@ Building blocks (Phase 1a, VTID-05105):
   | `compact` | 1:1, 64 px |
   | `row` | 1:1, 48 px |
 
-- **SR-11** A grid row never mixes card sizes.
+- **SR-11** A grid row never mixes card sizes. In the SR-31 Spotlight grid this applies to the tile grid (`standard`
+  only) and to the row below it (`compact` only); the Spotlight cell beside the tiles is the one stated exception.
 - **SR-12** Cards have no fixed pixel heights, and a card never sits inside another card.
-- **SR-13** Grid and bento rows render only full rows, never empty slots.
+- **SR-13** Grid and bento rows render only full rows, never empty slots. In the SR-31 Spotlight grid, tiles are never
+  fabricated: with 1–5 tiles the grid renders what exists in reading order and the Spotlight card keeps its 2 columns,
+  spanning only the tile rows that exist (at least 1); with 0 tiles the shared empty state (SR-25) fills the tile area.
+  The Spotlight card is never widened, and an empty row is not rendered.
 
 ### Layout and tokens
 - **SR-14** Content widths come only from the tokens `stage` (680–760 px), `wide` (stage + gap + rail), `form` (680 px)
-  and `full`. In Tailwind: `max-w-stage`, `max-w-wide`, `max-w-form`.
+  and `full`. In Tailwind: `max-w-stage`, `max-w-wide`, `max-w-form`. The SR-31 Spotlight grid uses `full`; it adds no
+  width token.
 - **SR-15** Spacing comes from the 4 px scale.
 - **SR-16** Type sizes are 12, 13, 14, 17, 20 and 24 px. 28 px is only for a storefront or dashboard hero title.
 - **SR-17** Colours, radii and elevation come only from tokens in `src/index.css`. No raw Tailwind palette classes and no
@@ -110,6 +121,18 @@ Building blocks (Phase 1a, VTID-05105):
   helpers.
 - **SR-29** WCAG 2.2 AA, including a keyboard path through the stage and the rail.
 - **SR-30** Performance budgets are those of `tests/e2e/staging/screen-journey.staging.spec.ts`.
+
+### Spotlight grid
+- **SR-31** Spotlight grid (owner-approved layout, 2026-10-31, plan `spotlight-card-proportion`, VTID-05420). One
+  Spotlight card sits top-start at about 40% of the content width (`xl` and up: 2 of 5 columns; between `lg` and `xl`:
+  2 of 4 columns, 50%) and spans the tile rows (2 at `xl`). Beside it, a 3x2 grid of equal `standard` cards (2 per row
+  between `lg` and `xl`). Below, one full-width row of `compact` cards. The Spotlight card is never full width and never
+  more than ~45% of the content area at ≥ 1280 px. It keeps its identity through `VCard spotlightLabel`: the small
+  "Spotlight" text label, the accent ring and, without media, a token gradient as its art. Screens opt in per screen
+  with `ScreenFrame layout="spotlight-grid"` (width `full`) and compose the stage with `SpotlightGrid`; the loading
+  state is `ArchetypeSkeleton` / `SpotlightLoading` with the same `layout`. Used by `/health`, `/discover`,
+  `/comm/events-meetups` and `/comm/find-partner`. Phones are unchanged. (Numbered SR-31 because SR-26 to SR-30 were
+  already taken; the plan calls it "SR-26 Spotlight grid".)
 
 ## C. Enforcement
 
@@ -177,7 +200,7 @@ role-gated screens.
 | Header bar (compact StandardHeader) | Header title (mobile StandardHeader) |
 | Utility bar | Utility bar (compact) |
 | SplitBar at the end of the utility bar | MobileModePill in the utility bar |
-| Spotlight stage, one dominant card | One card fills the view |
+| Spotlight stage, one dominant card; on opted-in screens one Spotlight card in the spotlight (SR-31) | One card fills the view |
 | Context rail | Below-the-card sections or sheets |
 
 ## E. Palette → token mapping (for migration PRs)
@@ -209,3 +232,6 @@ role-gated screens.
 5. `npx eslint <files>` shows no `design/*` errors, and the baselines are lowered.
 6. The status is flipped to `migrated` in the manifest, so staging design-lint covers it.
 7. Screenshots at 1440×900 (Spotlight on and off), RTL and 390×844 (unchanged).
+8. A screen in the Spotlight grid (SR-31) passes `layout="spotlight-grid"` to `ScreenFrame` and its skeleton, renders
+   exactly one `VCard size="spotlight" spotlightLabel` in `SpotlightGrid`, and keeps it at ≤ ~45% of the content width
+   at 1400 and 1920 px.

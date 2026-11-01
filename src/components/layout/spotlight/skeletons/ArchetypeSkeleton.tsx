@@ -1,13 +1,31 @@
 import { VCardSkeleton } from '@/components/ui/vcard';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Archetype } from '../archetypes';
+import { SpotlightGrid } from '../SpotlightGrid';
+
+export type ArchetypeSkeletonLayout = 'default' | 'spotlight-grid';
+
+const GRID_TILES = [0, 1, 2, 3, 4, 5].map((i) => <VCardSkeleton key={i} size="standard" />);
+const GRID_ROW = [0, 1, 2, 3, 4].map((i) => <VCardSkeleton key={i} size="compact" />);
 
 /**
  * VTID-05105 — loading state in the shape of the screen that is coming
  * (contract SR-20): never a page spinner, never a blank panel.
+ *
+ * VTID-05420 — `layout="spotlight-grid"` (contract SR-31): the same shape as
+ * the opted-in screen — 1 spotlight + 6 standard + 5 compact in
+ * `SpotlightGrid`, so nothing shifts when the content arrives. Without it the
+ * archetype shapes below are unchanged.
  */
-export function ArchetypeSkeleton({ archetype }: { archetype: Archetype }) {
+export function ArchetypeSkeleton({ archetype, layout }: { archetype: Archetype; layout?: ArchetypeSkeletonLayout }) {
   const label = { 'aria-busy': true, 'data-archetype-skeleton': archetype } as const;
+  if (layout === 'spotlight-grid' && archetype !== 'immersive') {
+    return (
+      <div {...label} data-skeleton-layout="spotlight-grid">
+        <SpotlightGrid spotlight={<VCardSkeleton size="spotlight" />} tiles={GRID_TILES} row={{ title: '', items: GRID_ROW }} />
+      </div>
+    );
+  }
   switch (archetype) {
     case 'focus-feed':
     case 'detail':
