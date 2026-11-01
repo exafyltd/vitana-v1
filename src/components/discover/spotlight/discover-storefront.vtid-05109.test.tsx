@@ -4,6 +4,8 @@
  * wired search + chips, one quick-view sheet for products / services /
  * providers, and the sub-page panes.
  */
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -128,23 +130,105 @@ describe('VTID-05109 storefront model', () => {
 });
 
 describe('VTID-05109 DiscoverStorefront', () => {
-  it('shows exactly one spotlight card (the "Picked for you" hero) and shelves of standard cards', () => {
+  // VTID-05416 — contract changed on purpose (owner-approved layout 2026-10-31, SR-31): the overview hero is the
+  // one Spotlight card of a Spotlight grid with six standard tiles beside it, replacing the "picks" shelf.
+  const eightFeed = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8'].map((id) => prod(id));
+
+  it('VTID-05416 the overview is the SR-31 Spotlight grid: one spotlight card (the "Picked for you" top pick) with its label', () => {
+    setData({ feed: eightFeed });
     const { container } = renderStorefront();
+    const grid = container.querySelector('[data-discover-hero] [data-spotlight-grid]') as HTMLElement;
+    expect(grid).not.toBeNull();
     const spot = container.querySelectorAll('[data-vcard-size="spotlight"]');
     expect(spot).toHaveLength(1);
+    expect(grid.querySelector('[data-slot="spotlight"] [data-vcard-size="spotlight"]')).toBe(spot[0]);
     expect(within(spot[0] as HTMLElement).getByText('Product f1')).toBeInTheDocument();
     expect(within(spot[0] as HTMLElement).getByText('spotlightDiscover.storefront.hero.pickedForYou')).toBeInTheDocument();
+    // Spotlight identity (VCard.spotlightLabel) on the stacked hero variant only.
+    expect(spot[0].getAttribute('data-hero-variant')).toBe('stacked');
+    expect(spot[0].querySelector('[data-vcard-spotlight-label]')).not.toBeNull();
+    expect(within(spot[0] as HTMLElement).getByText('spotlightDiscover.card.quickView')).toBeInTheDocument();
+    // The section heading and "See all" to the existing AI picks route.
+    expect(screen.getByText('spotlight.grid.discover.section')).toBeInTheDocument();
+    expect(screen.getByText('spotlight.grid.seeAll').closest('a')).toHaveAttribute('href', '/discover/ai-picks');
+    // The old "picks" shelf is gone — the tiles replace it.
+    expect(container.querySelector('[data-discover-shelf="picks"]')).toBeNull();
+  });
 
-    const picks = container.querySelector('[data-discover-shelf="picks"]')!;
-    expect(picks.querySelectorAll('[data-vcard-size="standard"]')).toHaveLength(4);
+  it('VTID-05416 six standard tiles beside the spotlight: feed items 2-7 in order, extra items not rendered', () => {
+    setData({ feed: eightFeed });
+    const { container } = renderStorefront();
+    const tiles = container.querySelector('[data-spotlight-grid] [data-slot="tiles"]')!;
+    const cards = tiles.querySelectorAll('[data-vcard-size]');
+    expect(cards).toHaveLength(6);
+    expect([...cards].every((c) => c.getAttribute('data-vcard-size') === 'standard')).toBe(true);
+    expect([...cards].map((c) => c.getAttribute('data-product-id'))).toEqual(['f2', 'f3', 'f4', 'f5', 'f6', 'f7']);
+    expect(container.querySelector('[data-product-id="f8"]')).toBeNull();
+    // Tiles are articles (they sit in the grid's div cells), never list items outside a list.
+    expect(tiles.querySelectorAll('li')).toHaveLength(0);
+  });
+
+  it('VTID-05416 "Browse categories" row: compact links to the existing Discover sub-routes only', () => {
+    const { container } = renderStorefront();
+    const row = container.querySelector('[data-spotlight-grid] [data-slot="row"]') as HTMLElement;
+    expect(row).not.toBeNull();
+    expect(within(row).getByText('spotlight.grid.discover.browseCategories')).toBeInTheDocument();
+    const cards = row.querySelectorAll('[data-vcard-size]');
+    expect(cards).toHaveLength(5);
+    expect([...cards].every((c) => c.getAttribute('data-vcard-size') === 'compact')).toBe(true);
+    expect([...row.querySelectorAll('[data-discover-category] a')].map((a) => a.getAttribute('href'))).toEqual([
+      '/discover/supplements',
+      '/discover/wellness-services',
+      '/discover/doctors-coaches',
+      '/discover/deals-offers',
+      '/discover/marketplace',
+    ]);
+    expect(within(row).getByText('screens.discover.marketplace').closest('a')).toHaveAttribute('href', '/discover/marketplace');
+    // Compact cards only in the row; nothing compact or row-sized anywhere else.
+    expect(container.querySelectorAll('[data-vcard-size="compact"]')).toHaveLength(5);
+    expect(container.querySelectorAll('[data-vcard-size="row"]')).toHaveLength(0);
+  });
+
+  it('the shelves stay below the grid as standard cards; deals are real discounts only', () => {
+    const { container } = renderStorefront();
     const supp = container.querySelector('[data-discover-shelf="supplements"]')!;
     expect(supp.querySelectorAll('[data-vcard-size="standard"]')).toHaveLength(4);
     expect(within(supp as HTMLElement).getByText('spotlightDiscover.card.seeAll').closest('a')).toHaveAttribute('href', '/discover/supplements');
+    // The grid comes before the shelves in reading order.
+    const grid = container.querySelector('[data-spotlight-grid]')!;
+    expect(grid.compareDocumentPosition(supp) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     // Deals shelf: real discounts only.
     const deals = container.querySelector('[data-discover-shelf="deals"]')!;
     expect([...deals.querySelectorAll('[data-product-id]')].map((e) => e.getAttribute('data-product-id'))).toEqual(['d1', 'd3']);
-    // No rows mix sizes; the hero is the only non-standard card.
-    expect(container.querySelectorAll('[data-vcard-size="compact"], [data-vcard-size="row"]')).toHaveLength(0);
+    // Shelves never mix sizes.
+    expect(container.querySelectorAll('[data-discover-shelf] [data-vcard-size]:not([data-vcard-size="standard"])')).toHaveLength(0);
+  });
+
+  it('VTID-05416 fewer feed items (D4): tiles are never fabricated; one item → the empty state fills the tile area', () => {
+    setData({ feed: [prod('f1'), prod('f2'), prod('f3')] });
+    const { container, unmount } = renderStorefront();
+    const tiles = container.querySelector('[data-slot="tiles"]')!;
+    expect(tiles.querySelectorAll('[data-vcard-size]')).toHaveLength(2);
+    expect(tiles.querySelector('[data-vcard-skeleton]')).toBeNull();
+    expect([...tiles.querySelectorAll('[data-product-id]')].map((e) => e.getAttribute('data-product-id'))).toEqual(['f2', 'f3']);
+    expect(container.querySelectorAll('[data-vcard-size="spotlight"]')).toHaveLength(1);
+    unmount();
+
+    setData({ feed: [prod('f1')] });
+    const one = renderStorefront();
+    const oneTiles = one.container.querySelector('[data-slot="tiles"]')!;
+    expect(oneTiles.querySelectorAll('[data-vcard-size]')).toHaveLength(0);
+    expect(oneTiles.querySelector('[data-discover-empty]')).not.toBeNull();
+    expect(within(oneTiles as HTMLElement).getByText('spotlight.grid.emptyTiles')).toBeInTheDocument();
+    expect(one.container.querySelectorAll('[data-vcard-size="spotlight"]')).toHaveLength(1);
+    one.unmount();
+
+    // Empty feed → the shared empty state, no grid and no spotlight card.
+    setData({ feed: [] });
+    const none = renderStorefront();
+    expect(none.container.querySelector('[data-discover-hero] [data-discover-empty]')).not.toBeNull();
+    expect(none.container.querySelector('[data-spotlight-grid]')).toBeNull();
+    expect(none.container.querySelectorAll('[data-vcard-size="spotlight"]')).toHaveLength(0);
   });
 
   it('services and doctors/coaches have no real catalog → empty states, never sample items (SR-24)', () => {
@@ -190,6 +274,11 @@ describe('VTID-05109 DiscoverStorefront', () => {
     const { container, unmount } = renderStorefront();
     expect(container.querySelector('[data-discover-hero] [data-vcard-skeleton]')).not.toBeNull();
     expect(container.querySelector('.animate-spin')).toBeNull();
+    // VTID-05416 — the skeleton has the grid's shape (D7): 1 spotlight + 6 standard + the compact row.
+    const grid = container.querySelector('[data-discover-hero] [data-spotlight-grid]')!;
+    expect(grid.querySelectorAll('[data-slot="spotlight"] [data-vcard-skeleton][data-vcard-size="spotlight"]')).toHaveLength(1);
+    expect(grid.querySelectorAll('[data-slot="tiles"] [data-vcard-skeleton][data-vcard-size="standard"]')).toHaveLength(6);
+    expect(grid.querySelectorAll('[data-slot="row"] [data-vcard-skeleton][data-vcard-size="compact"]')).toHaveLength(5);
     unmount();
 
     const refetch = vi.fn();
@@ -212,6 +301,11 @@ describe('VTID-05109 DiscoverStorefront', () => {
     expect(within(results as HTMLElement).getByText('spotlightDiscover.storefront.hero.topResult')).toBeInTheDocument();
     expect(results.querySelectorAll('[data-vcard-size="standard"]')).toHaveLength(2);
     expect(container.querySelector('[data-discover-shelf="supplements"]')).toBeNull();
+    // VTID-05416 — results mode keeps its own side-by-side hero, no Spotlight grid and no Spotlight label.
+    const hero = results.querySelector('[data-vcard-size="spotlight"]')!;
+    expect(hero.getAttribute('data-hero-variant')).toBe('side');
+    expect(hero.querySelector('[data-vcard-spotlight-label]')).toBeNull();
+    expect(container.querySelector('[data-spotlight-grid]')).toBeNull();
   });
 
   it('chips have handlers and drive the search; "clear filters" resets query and chips', () => {
@@ -236,6 +330,13 @@ describe('VTID-05109 DiscoverStorefront', () => {
     expect(within(sheet).getByText('screens.discover.openFullPage').closest('a')).toHaveAttribute('href', '/discover/product/f2');
     fireEvent.keyDown(sheet, { key: 'Escape' });
     expect(document.querySelector('[data-discover-quick-view]')).toBeNull();
+  });
+
+  it('VTID-05416 the Discover page opts its storefront ScreenFrame into the Spotlight grid layout', () => {
+    const src = readFileSync(resolve(process.cwd(), 'src/pages/Discover.tsx'), 'utf8');
+    const frame = src.slice(src.indexOf('<ScreenFrame'), src.indexOf('<DiscoverStorefront'));
+    expect(frame).toContain('archetype="storefront"');
+    expect(frame).toContain('layout="spotlight-grid"');
   });
 
   it('?tab=share deep link scrolls the Share & Earn shelf into view', () => {

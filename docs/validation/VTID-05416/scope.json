@@ -1,0 +1,34 @@
+{
+  "vtid": "VTID-05416",
+  "slug": "spotlight-card-proportion",
+  "lane": "discover",
+  "kind": "feature",
+  "repo": "exafyltd/vitana-v1",
+  "sparring_record": "docs/validation/VTID-05416/plan-sparring.md",
+  "change_types": ["UI"],
+  "paths": [
+    "src/pages/Discover.tsx",
+    "src/components/discover/spotlight/DiscoverStorefront.tsx",
+    "src/components/discover/spotlight/DiscoverCards.tsx",
+    "src/components/discover/spotlight/storefront-model.ts",
+    "src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx",
+    "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts",
+    "tests/e2e/staging/vtid-05416-discover-spotlight-grid.staging.spec.ts",
+    "docs/validation/VTID-05416/**"
+  ],
+  "weakens_tests": [],
+  "contract_changed_on_purpose": {
+    "reason": "contract changed on purpose, owner-approved layout 2026-10-31 (plan spotlight-card-proportion, rule SR-31)",
+    "tests": [
+      "src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx: the 'picks' shelf case became five Spotlight-grid cases (spotlight + label, six tiles, Browse categories row, shelves below the grid, fewer tiles) with more expects",
+      "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts: standard cards are read from the grid tiles or the shelves; the hero is asserted in the grid's spotlight slot"
+    ]
+  },
+  "protected_gate_files": [],
+  "default_behaviour_unchanged": [
+    "ProductHero default (side-by-side) variant: results mode and Deals",
+    "ProductVCard default as=\"li\" in shelves and grids",
+    "Discover flag-off and phone screens",
+    "/discover sub-routes"
+  ]
+}

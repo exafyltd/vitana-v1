@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05417",
+  "slug": "spotlight-card-proportion",
+  "lane": "events",
+  "kind": "feature",
+  "repo": "exafyltd/vitana-v1",
+  "sparring_record": "docs/validation/VTID-05417/plan-sparring.md",
+  "change_types": ["UI"],
+  "summary": "Community > Events & MeetUps desktop Spotlight onto the SR-31 Spotlight grid: the next event is the one labelled Spotlight card (Details + Join), this week's next six events are standard tiles beside it, the rest are the compact Upcoming row, Live now / You follow move below as compact rows (D8). Join reuses the existing RSVP path (useEventParticipation for free events; the page handler for paid/ticketed events and live rooms). Flag off and phones unchanged.",
+  "paths": [
+    "src/pages/community/EventsAndMeetups.tsx",
+    "src/components/community/spotlight/EventsSpotlightBody.tsx",
+    "src/components/community/spotlight/social-spotlight.vtid-05110.test.tsx",
+    "tests/e2e/staging/vtid-05110-social-spotlight.staging.spec.ts",
+    "tests/e2e/staging/vtid-05417-events-spotlight-grid.staging.spec.ts",
+    "docs/validation/VTID-05417/**"
+  ],
+  "weakens_tests": [],
+  "protected_gate_files": [],
+  "default_behaviour_unchanged": [
+    "EventsAndMeetups flag-off desktop and mobile branches",
+    "Groups / Members / Live Rooms Spotlight bodies",
+    "SpotlightGrid, ScreenFrame, VCard (consumed, not changed)"
+  ]
+}
