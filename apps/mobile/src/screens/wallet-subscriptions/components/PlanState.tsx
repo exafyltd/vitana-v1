@@ -2,7 +2,7 @@
  * VTID-05425 — native twins of the web plan-state widgets:
  *  - `SubscriptionStateCard` (src/components/subscription/SubscriptionStateCard.tsx):
  *    free / past-due / active-or-trialing hero, "View plans" or "Manage"
- *    (`BillingActions.openPortal`, ../data/actions.ts — no call by default);
+ *    (`BillingActions.openPortal`, ../data/actions.ts — POST /billing/portal);
  *  - `YourEarningsWidget` (YourEarningsWidget.tsx): hidden with no earnings
  *    and no cash balance; "Withdraw" opens the portal when cash > 0;
  *  - `FeatureComparisonTable` (FeatureComparisonTable.tsx): the six metered

@@ -4,8 +4,8 @@
  * `/profile/subscriptions` storefront (tasks 1, 2, 4). No network: the
  * no-network guard is imported first, Supabase is the in-memory double, the
  * gateway is the fake billing gateway from ./fixtures (every call recorded),
- * and `Linking.openURL` is spied, so no checkout, portal or subscription call
- * ever leaves the process. React 19: components are typed with
+ * and `Linking.openURL` is spied, so every checkout, portal or redeem request
+ * lands in the fake gateway and nothing leaves the process. React 19: components are typed with
  * `ReactElement`; no global `JSX`.
  */
 import '../helpers/no-network';
@@ -186,7 +186,7 @@ describe('plan state card', () => {
   });
 });
 
-describe('plan grids — web wire format through the not-wired gatewayBillingActions + fake gateway', () => {
+describe('plan grids — web wire format through gatewayBillingActions + fake gateway', () => {
   it('headline: Premium monthly by default; the year switch shows the annual price + save badge and checks out premium_annual', async () => {
     const open = spyOpenURL();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />);
@@ -342,49 +342,7 @@ describe('redeem card (fake gateway)', () => {
   });
 });
 
-describe('the app default BillingActions: no purchase, checkout, portal or redeem call', () => {
-  const FINISH = 'walletSubscriptionsNative.finishOnWeb';
-
-  /** Press, then expect exactly one "finish on the web" toast (cleared after, so each press is counted alone). */
-  async function pressExpectsFinishOnWeb(testID: string) {
-    fireEvent.press(screen.getByTestId(testID));
-    await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toEqual([FINISH]));
-    act(() => __clearToastsForTests());
-  }
-
-  it('overview: Choose / Buy / larger-plan Choose / Redeem make no write and point to the web', async () => {
-    const open = spyOpenURL();
-    const { gateway } = renderWithBilling(<SubscriptionsScreen />, { actions: 'app' });
-    await screen.findByTestId('subs-plan-premium-choose');
-    await pressExpectsFinishOnWeb('subs-plan-premium-choose');
-    await pressExpectsFinishOnWeb('subs-pack-starter-buy');
-    fireEvent.press(screen.getByTestId('subs-plans-expanded-toggle'));
-    await pressExpectsFinishOnWeb('subs-plan-premium_5x-choose');
-    fireEvent.changeText(screen.getByTestId('subs-redeem-input'), 'VITANA-AB12');
-    await pressExpectsFinishOnWeb('subs-redeem-submit');
-    expect(gateway.posts()).toEqual([]);
-    expect(open).not.toHaveBeenCalled();
-    expect(screen.queryByTestId('subs-redeem-success')).toBeNull();
-  });
-
-  it('paid member: Manage and Withdraw make no write', async () => {
-    const open = spyOpenURL();
-    const { gateway } = renderWithBilling(<SubscriptionsScreen />, { me: premiumActive, actions: 'app' });
-    await screen.findByTestId('subs-state-manage');
-    await pressExpectsFinishOnWeb('subs-state-manage');
-    await pressExpectsFinishOnWeb('subs-earnings-withdraw');
-    expect(gateway.posts()).toEqual([]);
-    expect(open).not.toHaveBeenCalled();
-  });
-
-  it('a ?code= deep link makes no redeem call either', async () => {
-    mockParams.current = { code: 'VITANA-AB12' };
-    const { gateway } = renderWithBilling(<SubscriptionsScreen />, { actions: 'app' });
-    await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toEqual([FINISH]));
-    expect(gateway.posts()).toEqual([]);
-    expect(router.setParams).toHaveBeenCalledWith({ code: undefined });
-  });
-
+describe('rendering alone makes no write', () => {
   it('only GET reads reach the gateway', async () => {
     const { gateway } = renderWithBilling(<ProfileSubscriptionsScreen />, { actions: 'app', founding: foundingActive });
     await screen.findByTestId('subs-founding');

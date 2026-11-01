@@ -3,7 +3,6 @@
     "intervalAria": "Billing interval",
     "subnavAria": "Wallet sections",
     "loading": "Loading subscriptions…",
-    "finishOnWeb": "This action isn't in the app yet. Please finish it in your subscriptions on the web.",
     "subnav": {
       "overview": "Overview",
       "balance": "Balance & Benefits",

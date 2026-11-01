@@ -7,7 +7,7 @@
  *  - `FoundingBanner` (FoundingBanner.tsx): the founding-campaign counter for
  *    members not on a paid plan (public GET /billing/founding-status, 30 s);
  *  - `AddExtraMinutesTile` (AddExtraMinutesTile.tsx): the three credit packs,
- *    "Buy" → `BillingActions.startCreditsCheckout` (no call by default);
+ *    "Buy" → `BillingActions.startCreditsCheckout` (POST /billing/checkout/credits);
  *  - `WhySubscribeFAQ` (WhySubscribeFAQ.tsx): the four-question accordion.
  * None of the web components reads `isIAPRestricted`; none is gated here
  * (requirements R3.2).

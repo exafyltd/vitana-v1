@@ -6,7 +6,7 @@
  *    disclosure, collapsed unless the member is on one of them.
  * Same prices (cents), same price keys, same current-plan badges. Choosing a
  * plan hands the price key to `BillingActions.startSubscriptionCheckout`
- * (../data/actions.ts; the default makes no call) and opens a returned hosted
+ * (../data/actions.ts; POST /billing/checkout/subscription) and opens the returned hosted
  * URL, as the web does. Neither web component reads
  * `isIAPRestricted`, so there is no platform branch here (requirements R3.2).
  */

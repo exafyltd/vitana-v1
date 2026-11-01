@@ -5,7 +5,7 @@
  * error-code → catalog-key map, same success card (founding variant), and the
  * same deep-link behaviour: arriving with `?code=` submits once and clears the
  * param. The claim goes to `BillingActions.redeemCode` (../data/actions.ts;
- * the default makes no call). A code claim is not a purchase; the web card is
+ * POST /billing/redeem). A code claim is not a purchase; the web card is
  * ungated, so is this one (requirements R3.2).
  */
 import { useEffect, useRef, useState, type ReactElement } from 'react';
@@ -62,8 +62,6 @@ export function RedeemCodeCard(): ReactElement {
     if (!value || value.length < 4) return;
     try {
       const result = await redeem.mutateAsync({ code: value });
-      // null: the default BillingActions made no call (it already told the member to finish on the web).
-      if (!result) return;
       if (result.ok && result.granted_until) {
         setSuccess({
           granted_plan: result.granted_plan || 'premium',

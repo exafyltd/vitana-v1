@@ -13,9 +13,9 @@
  *    receive a 402 paywall body; a non-2xx answer throws GatewayError as on
  *    every other native screen.
  *
- * Reads only. The writes (checkout, portal, redeem) go through
- * `BillingActions` (./actions.ts), whose default makes no call. When an
- * action answers with a hosted URL, native opens it with the system
+ * The writes (checkout, portal, redeem) go through `BillingActions`
+ * (./actions.ts, the web requests by default). When an action answers with
+ * a hosted URL, native opens it with the system
  * (`openBillingUrl`; the web assigns `window.location`). Tests use the fake
  * gateway only.
  */
@@ -120,10 +120,10 @@ export function useFoundingStatus(enabled: boolean) {
   });
 }
 
-/** Web `useStartSubscriptionCheckout`; the write goes to `BillingActions` (./actions.ts, no call by default). */
+/** Web `useStartSubscriptionCheckout`; the write goes to `BillingActions` (./actions.ts). */
 export function useStartSubscriptionCheckout() {
   const actions = useBillingActions();
-  return useMutation<CheckoutResult | null, Error, { priceKey: string }>({
+  return useMutation<CheckoutResult, Error, { priceKey: string }>({
     mutationFn: ({ priceKey }) => actions.startSubscriptionCheckout(priceKey),
   });
 }
@@ -131,7 +131,7 @@ export function useStartSubscriptionCheckout() {
 /** Web `useStartCreditsCheckout`; through `BillingActions`. */
 export function useStartCreditsCheckout() {
   const actions = useBillingActions();
-  return useMutation<CheckoutResult | null, Error, { packKey: string }>({
+  return useMutation<CheckoutResult, Error, { packKey: string }>({
     mutationFn: ({ packKey }) => actions.startCreditsCheckout(packKey),
   });
 }
@@ -139,7 +139,7 @@ export function useStartCreditsCheckout() {
 /** Web `useOpenPortal`; through `BillingActions`. */
 export function useOpenPortal() {
   const actions = useBillingActions();
-  return useMutation<PortalResult | null, Error, void>({
+  return useMutation<PortalResult, Error, void>({
     mutationFn: () => actions.openPortal(),
   });
 }
@@ -148,10 +148,10 @@ export function useOpenPortal() {
 export function useRedeemCode() {
   const qc = useQueryClient();
   const actions = useBillingActions();
-  return useMutation<RedeemResult | null, Error, { code: string }>({
+  return useMutation<RedeemResult, Error, { code: string }>({
     mutationFn: ({ code }) => actions.redeemCode(code),
     onSuccess: (result) => {
-      if (result?.ok) void qc.invalidateQueries({ queryKey: BILLING_ME_KEY });
+      if (result.ok) void qc.invalidateQueries({ queryKey: BILLING_ME_KEY });
     },
   });
 }

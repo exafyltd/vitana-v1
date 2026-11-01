@@ -3,8 +3,7 @@
  *
  * `billingGateway()` is a FAKE gateway: it answers the billing paths from
  * fixtures and records every call (method, path, JSON body). Checkout /
- * portal / redeem answers are canned (they are only reached through the
- * not-wired `gatewayBillingActions`, see renderWithBilling); nothing leaves the process (the
+ * portal / redeem answers are canned; nothing leaves the process (the
  * no-network guard is imported first by every test file, and `Linking.openURL`
  * is spied, so a "hosted checkout" URL is only recorded, never opened).
  */
@@ -116,9 +115,9 @@ export function spyOpenURL() {
 
 /**
  * Renders `ui` under the kit provider + the app provider stack with the fake billing gateway installed.
- * `actions: 'wire'` (the default here) injects `gatewayBillingActions`, so the writes reach the FAKE
- * gateway and their paths / payloads can be asserted; `actions: 'app'` leaves the app's default
- * `BillingActions` (no call at all), exactly what the shipped routes use.
+ * `actions: 'wire'` (the default here) injects `gatewayBillingActions` explicitly; `actions: 'app'`
+ * injects nothing, so the screens use the app's default `BillingActions`, exactly what the shipped
+ * routes use. Either way the writes reach the FAKE gateway and their paths / payloads can be asserted.
  */
 export function renderWithBilling(ui: ReactElement, opts: BillingGatewayOpts & { language?: string; direction?: 'ltr' | 'rtl'; actions?: 'wire' | 'app' } = {}) {
   const gw = billingGateway(opts);

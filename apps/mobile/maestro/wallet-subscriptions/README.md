@@ -4,9 +4,9 @@ Device-runtime parity for the native subscriptions overview + `/profile/subscrip
 storefront port (tasks.md wallet-subscriptions task 6). These flows are **not run in
 CI** and are **not a merge blocker** (requirements R6.3). They need the isolated G1
 test environment (and macOS minutes / G3 for iOS on a device). Recorded here and in
-`docs/validation/VTID-05425/staging-tests.json`. No purchase, checkout, portal or
-redeem call is ever attempted: the app's default `BillingActions` makes no call, and
-the flows only read.
+`docs/validation/VTID-05425/staging-tests.json`. The app's billing CTAs make the web's
+gateway requests and open the hosted Stripe page, so the flows never press a
+purchase, portal or redeem CTA: they only read.
 
 Flows (to author on G1):
 
