@@ -1,0 +1,72 @@
+{
+  "memoryNative": {
+    "addMemory": {
+      "save": "Guardar recuerdo"
+    },
+    "editMemory": {
+      "save": "Guardar cambios"
+    },
+    "timeline": {
+      "loadMore": "Cargar más"
+    },
+    "usage": {
+      "shareTitle": "Tus datos de uso de Vitana"
+    },
+    "education": {
+      "impact": {
+        "high": "Impacto alto",
+        "medium": "Impacto medio"
+      },
+      "items": {
+        "sleep": {
+          "category": "Sueño",
+          "title": "Cómo influye la calidad del sueño en la formación de la memoria",
+          "content": "El sueño profundo (la fase REM) es clave para consolidar la memoria. En esta fase, tu cerebro procesa y guarda la información del día. Procura dormir de 7 a 9 horas de calidad con un horario constante. Dormir mal puede reducir la retención de memoria hasta un 40 %.",
+          "factor1": "Momento del ejercicio",
+          "factor2": "Consumo de cafeína",
+          "factor3": "Tiempo de pantalla"
+        },
+        "nutrition": {
+          "category": "Nutrición",
+          "title": "El papel de la nutrición en la función cognitiva",
+          "content": "Los ácidos grasos omega-3, los antioxidantes y las vitaminas B influyen directamente en la salud de tu cerebro. Alimentos como el pescado azul, los frutos rojos y las verduras de hoja apoyan la producción de neurotransmisores y reducen la inflamación. Comer a horas regulares también estabiliza el azúcar en sangre y evita bajones de energía.",
+          "factor1": "Horario de comidas",
+          "factor2": "Hidratación",
+          "factor3": "Equilibrio de micronutrientes"
+        },
+        "exercise": {
+          "category": "Ejercicio",
+          "title": "Actividad física y claridad mental",
+          "content": "El ejercicio aumenta el BDNF (factor neurotrófico derivado del cerebro), que favorece el crecimiento de las neuronas y la función cognitiva. Solo 30 minutos de actividad moderada pueden mejorar tu concentración hasta 2 horas. A largo plazo, la constancia importa más que la intensidad.",
+          "factor1": "Tiempo de recuperación",
+          "factor2": "Tipo de ejercicio",
+          "factor3": "Intensidad"
+        },
+        "stress": {
+          "category": "Estrés",
+          "title": "Entender tu respuesta al estrés",
+          "content": "El estrés crónico eleva el cortisol, lo que perjudica la memoria y la toma de decisiones. Tu respuesta al estrés depende del sueño, la alimentación y las relaciones sociales. Practicar mindfulness 10 minutos al día puede reducir el cortisol un 23 %.",
+          "factor1": "Calidad del sueño",
+          "factor2": "Apoyo social",
+          "factor3": "Patrones de respiración"
+        },
+        "hydration": {
+          "category": "Hidratación",
+          "title": "La relación entre hidratación y rendimiento",
+          "content": "Incluso una deshidratación leve (2 % del peso corporal) reduce el rendimiento cognitivo entre un 10 y un 20 %. El agua es esencial para transportar nutrientes y eliminar desechos de las células cerebrales. Beber de forma constante a lo largo del día funciona mejor que mucha agua de golpe.",
+          "factor1": "Nivel de actividad",
+          "factor2": "Clima",
+          "factor3": "Sal en la dieta"
+        },
+        "lifestyle": {
+          "category": "Estilo de vida",
+          "title": "El efecto acumulado de los hábitos saludables",
+          "content": "Los factores de salud nunca actúan por separado. La calidad del sueño afecta a la recuperación tras el ejercicio, esta influye en tu nivel de estrés y el estrés en tus decisiones de alimentación. Un solo hábito positivo suele desencadenar mejoras en todos los ámbitos.",
+          "factor1": "Todas las categorías",
+          "factor2": "Encadenar hábitos",
+          "factor3": "Diseño del entorno"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "memoryNative": {
+    "addMemory": {
+      "save": "Enregistrer le souvenir"
+    },
+    "editMemory": {
+      "save": "Enregistrer les modifications"
+    },
+    "timeline": {
+      "loadMore": "Charger plus"
+    },
+    "usage": {
+      "shareTitle": "Tes données d'utilisation Vitana"
+    },
+    "education": {
+      "impact": {
+        "high": "Impact élevé",
+        "medium": "Impact moyen"
+      },
+      "items": {
+        "sleep": {
+          "category": "Sommeil",
+          "title": "Comment la qualité du sommeil influence la mémoire",
+          "content": "Le sommeil profond (la phase REM) est essentiel à la consolidation de la mémoire. Pendant cette phase, ton cerveau traite et stocke les informations de la journée. Vise 7 à 9 heures de sommeil de qualité avec des horaires réguliers. Un mauvais sommeil peut réduire la mémorisation jusqu'à 40 %.",
+          "factor1": "Moment de l'entraînement",
+          "factor2": "Consommation de caféine",
+          "factor3": "Temps d'écran"
+        },
+        "nutrition": {
+          "category": "Nutrition",
+          "title": "Le rôle de l'alimentation dans les fonctions cognitives",
+          "content": "Les oméga-3, les antioxydants et les vitamines B agissent directement sur la santé de ton cerveau. Des aliments comme les poissons gras, les baies et les légumes à feuilles soutiennent la production de neurotransmetteurs et réduisent l'inflammation. Manger à heures régulières stabilise aussi la glycémie et évite les coups de fatigue.",
+          "factor1": "Horaires des repas",
+          "factor2": "Hydratation",
+          "factor3": "Équilibre en micronutriments"
+        },
+        "exercise": {
+          "category": "Exercice",
+          "title": "Activité physique et clarté mentale",
+          "content": "L'exercice augmente le BDNF (facteur neurotrophique dérivé du cerveau), qui favorise la croissance des neurones et les fonctions cognitives. Seulement 30 minutes d'activité modérée peuvent améliorer ta concentration jusqu'à 2 heures. Sur le long terme, la régularité compte plus que l'intensité.",
+          "factor1": "Temps de récupération",
+          "factor2": "Type d'exercice",
+          "factor3": "Intensité"
+        },
+        "stress": {
+          "category": "Stress",
+          "title": "Comprendre ta réaction au stress",
+          "content": "Le stress chronique augmente le cortisol, ce qui nuit à la mémoire et à la prise de décision. Ta réaction au stress dépend du sommeil, de l'alimentation et des liens sociaux. Pratiquer la pleine conscience 10 minutes par jour peut réduire le cortisol de 23 %.",
+          "factor1": "Qualité du sommeil",
+          "factor2": "Soutien social",
+          "factor3": "Respiration"
+        },
+        "hydration": {
+          "category": "Hydratation",
+          "title": "Le lien entre hydratation et performance",
+          "content": "Même une légère déshydratation (2 % du poids corporel) réduit les performances cognitives de 10 à 20 %. L'eau est indispensable au transport des nutriments et à l'élimination des déchets dans les cellules du cerveau. Boire régulièrement tout au long de la journée est plus efficace que de grandes quantités d'un coup.",
+          "factor1": "Niveau d'activité",
+          "factor2": "Climat",
+          "factor3": "Sel dans l'alimentation"
+        },
+        "lifestyle": {
+          "category": "Mode de vie",
+          "title": "L'effet cumulé des bonnes habitudes",
+          "content": "Les facteurs de santé n'agissent jamais seuls. La qualité du sommeil influence la récupération après l'effort, qui influence ton niveau de stress, qui influence tes choix alimentaires. Une seule bonne habitude entraîne souvent une cascade d'améliorations dans tous les domaines.",
+          "factor1": "Toutes les catégories",
+          "factor2": "Enchaîner les habitudes",
+          "factor3": "Aménager son environnement"
+        }
+      }
+    }
+  }
+}
