@@ -76,38 +76,64 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
 // aborted fetch/xhr calls to the Supabase REST host count towards the budget:
 // beacons, images and other aborted resources never log "Failed to fetch".
 const SUPABASE_FETCH_REJECTION = /(^|: )(TypeError: )?Failed to fetch$/;
+// The same abort as a logged PostgREST error object: supabase-js resolves a
+// rejected fetch to { message: 'TypeError: Failed to fetch', details: <stack>,
+// hint: '', code: '' }, which the browser prints as
+// "<app prefix>: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch\n  at …, hint: , code: }"
+// (useRole's "Error getting role preference: …" for the guarded
+// rpc/get_role_preference). Only that exact shape counts, against the same budget.
+const POSTGREST_FETCH_REJECTION =
+  /^[^\n{]*: \{message: TypeError: Failed to fetch, details: TypeError: Failed to fetch(\n[\s\S]*)?, hint: , code: \}$/;
 const isSupabaseFetchRejection = (t: string) =>
-  !/dynamically imported module/i.test(t) && SUPABASE_FETCH_REJECTION.test(t.trim());
+  !/dynamically imported module/i.test(t) &&
+  (SUPABASE_FETCH_REJECTION.test(t.trim()) || POSTGREST_FETCH_REJECTION.test(t.trim()));
 
-function collectRealErrors(page: import('@playwright/test').Page): () => string[] {
+type ErrorCollector = { real: () => string[]; failedRequests: () => string };
+function collectRealErrors(page: import('@playwright/test').Page): ErrorCollector {
   const raw: string[] = [];
+  const failed: string[] = [];
   let guardAborts = 0;
   // The browser's own log line for a guard-aborted request ("Failed to load
   // resource: net::ERR_BLOCKED_BY_CLIENT"); any other load failure still counts.
   const isBlockedNoise = (t: string) => /net::ERR_BLOCKED_BY_CLIENT/.test(t);
   page.on('requestfailed', (r) => {
+    const errorText = r.failure()?.errorText ?? '';
+    // Every failed request is listed in the failure message (diagnosis only;
+    // it never drops an error).
+    failed.push(`${r.method()} ${r.url().split('?')[0]} ${r.resourceType()} ${errorText}`);
     if (
-      /ERR_BLOCKED_BY_CLIENT/.test(r.failure()?.errorText ?? '') &&
+      /ERR_BLOCKED_BY_CLIENT/.test(errorText) &&
       (r.resourceType() === 'fetch' || r.resourceType() === 'xhr') &&
       r.url().startsWith(`${SUPABASE}/rest/v1/`)
     ) guardAborts++;
   });
   page.on('console', (m) => { if (m.type() === 'error' && !isBlockedNoise(m.text())) raw.push(m.text()); });
   page.on('pageerror', (e) => { if (!isBlockedNoise(String(e))) raw.push(String(e)); });
-  return () => {
-    let budget = guardAborts;
-    return raw.filter((t) => {
-      if (budget > 0 && isSupabaseFetchRejection(t)) { budget--; return false; }
-      return true;
-    });
+  return {
+    real: () => {
+      let budget = guardAborts;
+      return raw.filter((t) => {
+        if (budget > 0 && isSupabaseFetchRejection(t)) { budget--; return false; }
+        return true;
+      });
+    },
+    failedRequests: () => failed.join(' ; '),
   };
+}
+
+// Sign in on /maxina, then leave that document through about:blank before the
+// collector starts: requests the sign-in page still had in flight are cancelled
+// by the navigation and logged by that page, not by the screen under test.
+// Everything the screen under test logs still counts.
+async function signInThenBlank(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext) {
+  await signIn(page, request);
+  await page.goto('about:blank');
 }
 for (const [path, archetype] of ROUTES) {
   test(`colours-batch-4: ${path} renders without console errors at 1440 (?spotlight=1)`, async ({ page, request }) => {
-    const errors = collectRealErrors(page);
-
     await page.setViewportSize({ width: 1440, height: 900 });
-    await signIn(page, request);
+    await signInThenBlank(page, request);
+    const errors = collectRealErrors(page);
     await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
     await page.goto(`${path}?spotlight=1`, { waitUntil: 'domcontentloaded' });
 
@@ -123,14 +149,13 @@ for (const [path, archetype] of ROUTES) {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     expect(overflow, 'horizontal scroll (LTR)').toBeLessThanOrEqual(1);
 
-    { const real = errors(); expect(real, `console errors on ${path}: ${real.join(' | ')}`).toHaveLength(0); }
+    { const real = errors.real(); expect(real, `console errors on ${path}: ${real.join(' | ')} || failed requests: ${errors.failedRequests()}`).toHaveLength(0); }
   });
 
   test(`colours-batch-4: ${path} renders without console errors at 390`, async ({ page, request }) => {
-    const errors = collectRealErrors(page);
-
     await page.setViewportSize({ width: 390, height: 844 });
-    await signIn(page, request);
+    await signInThenBlank(page, request);
+    const errors = collectRealErrors(page);
     await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
     await page.goto(path, { waitUntil: 'domcontentloaded' });
 
@@ -142,6 +167,6 @@ for (const [path, archetype] of ROUTES) {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     expect(overflow, 'horizontal scroll (mobile)').toBeLessThanOrEqual(1);
 
-    { const real = errors(); expect(real, `console errors on ${path} (mobile): ${real.join(' | ')}`).toHaveLength(0); }
+    { const real = errors.real(); expect(real, `console errors on ${path} (mobile): ${real.join(' | ')} || failed requests: ${errors.failedRequests()}`).toHaveLength(0); }
   });
 }
