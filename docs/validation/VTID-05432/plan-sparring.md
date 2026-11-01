@@ -18,6 +18,9 @@ CONVERGED and approved by policy `converged-auto-v1` at 2026-11-01T03:02:17.659+
 
 ## Approval
 
+- Owner approval: by policy `converged-auto-v1` (the owner's standing decision of 2026-10-14,
+  VTID-05214/05218), applied at 2026-11-01T03:02:17.659+00:00; no separate Gate 1.
+
 The converged plan is approved by policy `converged-auto-v1` (owner decision
 2026-10-14, VTID-05214/05218): a plan sparred by CI whose session converged is
 approved by policy and not sent to the owner as Gate 1. The VTID was allocated by
