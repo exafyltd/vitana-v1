@@ -39,3 +39,7 @@ $ npm run i18n:register
 PASS — "No formal-register violations." (de du / pt você / fr tu / ru ты / pl / tr / zh checked; ar skipped by design)
 $ npm run i18n:audit
 FAIL (pre-existing) — 17193 errors both with and without the 11 publicProfileNative.json shards (same count); 0 findings in publicProfileNative
+
+## preflight (head 05e57cf4c)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-profile-settings-r2/public-profile --title "VTID-05430 (native-wave2-profile-settings-r2/public-profile): native public profile and legacy redirect port"
+PASS — Collab handoff, Lane scope, gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering all PASS (exit 0); "Not run by preflight" SKIP (covered by the npm test / lint / bundle runs above)
