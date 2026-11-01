@@ -1,9 +1,15 @@
 /**
  * VTID-05186 (N3, plan change 16) — the functional sign-in / sign-up surface of
  * MaxinaPortal.tsx and AlkalmaPortal.tsx: the same tabs, fields, order and
- * catalog keys. The portals' visual extras (intro video, events teaser, Orb
- * hint, diag badge) stay with the public-auth lane, so the ledger rows are
- * `in_progress`, not `native`.
+ * catalog keys.
+ *
+ * VTID-05449 (native-wave2-public-auth-onboarding-r3/auth-portals) — the
+ * Maxina portal's mobile-web chrome (PortalChrome.tsx): backdrop overlay, the
+ * translucent card, the "part of VITANA" footer with Privacy · Terms · Help,
+ * the Orb discovery hint, the `?diag=1` badge and the `?confirmed=true`
+ * toast. `/alkalma` now renders the generic TenantPortalScreen like the web
+ * (App.tsx:878 `<TenantPortal slug="alkalma" />`); the `alkalma` keys below
+ * stay for the AlkalmaPortal.tsx shape.
  */
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -16,6 +22,7 @@ import { ConfigMissingError } from '../../ports/env';
 import { ConfigMissing } from '../ConfigMissing';
 import { Button, ErrorLine, Field } from './form';
 import { usePostSignIn } from './usePostSignIn';
+import { DiagBadge, OrbDiscoveryHint, PortalBackdrop, PortalFooter, useConfirmedToast } from './PortalChrome';
 
 /** The catalog keys each portal uses (MaxinaPortal.tsx:545-847, AlkalmaPortal.tsx:188-410). */
 export const PORTAL_KEYS: Record<PortalTenant, Record<string, string>> = {
@@ -64,7 +71,7 @@ const ALKALMA_ROLES = ['community', 'patient', 'professional'] as const;
 export function PortalScreen({ tenant }: { tenant: PortalTenant }) {
   const { t } = useI18n();
   const { colors } = useUITheme();
-  const params = useLocalSearchParams<{ redirectTo?: string; tab?: string }>();
+  const params = useLocalSearchParams<{ redirectTo?: string; tab?: string; confirmed?: string; diag?: string }>();
   const { loading, configMissing } = useAuth();
   const { redirecting } = usePostSignIn(tenant, typeof params.redirectTo === 'string' ? params.redirectTo : null);
   const k = PORTAL_KEYS[tenant];
@@ -77,6 +84,8 @@ export function PortalScreen({ tenant }: { tenant: PortalTenant }) {
   const [error, setError] = useState<string | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [missing, setMissing] = useState<readonly string[] | null>(null);
+  const chrome = tenant === 'maxina';
+  useConfirmedToast(chrome && params.confirmed === 'true');
 
   if (configMissing) return <ConfigMissing keys={configMissing} />;
   if (missing) return <ConfigMissing keys={missing} />;
@@ -111,8 +120,8 @@ export function PortalScreen({ tenant }: { tenant: PortalTenant }) {
     );
   }
 
-  return (
-    <ScrollView contentContainerStyle={styles.root} keyboardShouldPersistTaps="handled" testID={`portal-${tenant}`}>
+  const form = (
+    <>
       <View accessibilityRole="tablist" style={[styles.tabs, { backgroundColor: colors.muted }]}>
         {(['signin', 'signup'] as const).map((id) => (
           <PressableRow
@@ -189,12 +198,37 @@ export function PortalScreen({ tenant }: { tenant: PortalTenant }) {
         <Button testID="portal-apple" variant="outline" label={t('screens.portals.apple')} disabled={busy} onPress={() => void run(() => signInWithApple(tenant))} />
         <Button testID="portal-google" variant="outline" label={t('screens.portals.google')} disabled={busy} onPress={() => void run(() => signInWithGoogle())} />
       </View>
-    </ScrollView>
+    </>
+  );
+
+  if (!chrome) {
+    return (
+      <ScrollView contentContainerStyle={styles.root} keyboardShouldPersistTaps="handled" testID={`portal-${tenant}`}>
+        {form}
+      </ScrollView>
+    );
+  }
+
+  return (
+    <View style={styles.page}>
+      <PortalBackdrop />
+      <ScrollView contentContainerStyle={styles.chromeRoot} keyboardShouldPersistTaps="handled" testID={`portal-${tenant}`}>
+        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]} testID="portal-card">
+          {form}
+        </View>
+        <PortalFooter />
+      </ScrollView>
+      <OrbDiscoveryHint />
+      <DiagBadge enabled={params.diag === '1'} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 16, paddingVertical: 32, gap: 12 },
+  page: { flex: 1 },
+  chromeRoot: { flexGrow: 1, justifyContent: 'flex-start', paddingHorizontal: 16, paddingTop: 64, paddingBottom: 128 },
+  card: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 12 },
   center: { flex: 1, justifyContent: 'center', paddingHorizontal: 16, gap: 12 },
   tabs: { flexDirection: 'row', borderRadius: 12, padding: 4 },
   tab: { flex: 1, justifyContent: 'center', borderRadius: 8, paddingVertical: 8 },

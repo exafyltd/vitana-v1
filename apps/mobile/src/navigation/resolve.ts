@@ -42,6 +42,8 @@ type Row = { key: string; web_path: string; scope: string; source: string };
 export const NATIVE_ROUTES: readonly string[] = [
   '/',
   '/alkalma',
+  '/alkalma/confirmed',
+  '/auth/confirmed',
   '/comm/find-partner',
   '/comm/groups',
   '/comm/members',
@@ -55,6 +57,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/intents/mine',
   '/logout',
   '/maxina',
+  '/maxina/confirmed',
   '/me/matches',
   '/memory',
   '/memory/permissions',
@@ -62,6 +65,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/memory/timeline',
   '/native-ui-catalogue',
   '/oauth/complete',
+  '/oauth/consent',
   '/reset-password',
   '/search',
 ];
@@ -132,4 +136,21 @@ export function resolveWebPath(url: string, depth = 0): Resolution {
     candidates[0];
   const kind: ResolutionKind = best.scope === 'out:system-browser' ? 'external-console' : 'unported';
   return { kind, href: href(path, query), path, query, key: best.key };
+}
+
+/** The generic community portal row (App.tsx:2337 `/:tenantSlug`, VTID-05151). */
+export const TENANT_PORTAL_ROW = '/:tenantSlug';
+
+/**
+ * VTID-05449 — App.tsx's static routes outrank `/:tenantSlug`. Expo Router
+ * ranks the `(public)/[tenantSlug]` file above the `(app)/[...path]`
+ * resolver, so that screen asks this first: true when `url` is a native route,
+ * a registry alias or any ledger destination other than the portal row —
+ * then it renders the resolver instead of a portal.
+ */
+export function isStaticDestination(url: string): boolean {
+  const { path } = split(url.startsWith('/') ? url : `/${url}`);
+  if (NATIVE_ROUTES.includes(path)) return true;
+  if (ALIASES.some((a) => matchPattern(a.route, path))) return true;
+  return ROWS.some((r) => r.web_path !== TENANT_PORTAL_ROW && matchPattern(r.web_path, path));
 }
