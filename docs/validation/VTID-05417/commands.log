@@ -1,0 +1,24 @@
+# VTID-05417 (spotlight-card-proportion/events) - local verification, Windows, vitana-v1 worktree
+# base = origin/main 3ac1f5bb84b5a7e47e2990b502f9fb620dc6c59d (layout-core VTID-05420 merged)
+# worktree resolves node_modules from c:\Users\dstev\vitana-v1 by walking up (no junction)
+
+## Red -> green
+npx vitest run src/components/community/spotlight/social-spotlight.vtid-05110.test.tsx   (scratch WT at base, only the test file copied in)
+  -> FAIL: 1 file failed; 6 tests failed | 17 passed (23)                                    [red-on-base.txt]
+npx vitest run src/components/community/spotlight src/pages/community src/components/layout/spotlight   (head)
+  -> 10 files passed, 1 failed; 98 tests passed, 1 failed (99)
+     social-spotlight.vtid-05110.test.tsx: 23/23 pass (the 6 rewritten Events cases green)
+     the 1 red: src/pages/community/EventsAndMeetups.vtid-04965.test.ts "a room link in the address reopens the drawer"
+       - a source-text assertion containing '\n' that trips on the CRLF Windows checkout; red on base too
+         (blockers of layout-core, commands.log of VTID-05420); the asserted text is in a region this lane does not touch.
+         CI (Linux, LF) runs it.
+
+## Lint
+npx eslint <5 changed files>
+  -> EventsSpotlightBody.tsx, social-spotlight.vtid-05110.test.tsx, both staging specs: 0 problems (design/* = 0)
+  -> EventsAndMeetups.tsx: 16 errors / 6 warnings, all pre-existing (no-explicit-any etc.);
+     the same command on base (scratch WT at 3ac1f5bb8) prints the identical 22 problems (16 errors, 6 warnings);
+     this lane adds 2 lines (a comment and layout="spotlight-grid") and no new problem.
+
+## Build
+npm run build -> exit 0 (built in 3m 55s; only the pre-existing CSS syntax / chunk-size warnings)
