@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05394",
+  "slug": "fix-deeplink-scroll-test",
+  "lane": "fixture-dates",
+  "kind": "docs",
+  "sparring_record": "docs/validation/VTID-05394/plan-sparring.md",
+  "summary": "Verification-only close of lane fix-deeplink-scroll-test/fixture-dates (tasks.md T0 merged branch). The fixture fix landed on main through exafyltd/vitana-v1#1508 (627e8094f, VTID-05320) instead of #1506 (closed unmerged); this PR makes no code change and records the T3 runs on main.",
+  "paths": [
+    "docs/validation/VTID-05394/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": [
+    {
+      "file": "docs/validation/VTID-05394/**",
+      "reason": "validation records only, no executable change; red on base / green on head is recorded for #1508 in docs/validation/VTID-05320/ and in commands.log (plan fix-deeplink-scroll-test T0, converged)"
+    }
+  ]
+}
