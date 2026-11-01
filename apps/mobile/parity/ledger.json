@@ -296,10 +296,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "AUTH.MAXINA_PORTAL",
@@ -308,10 +308,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "AUTOPILOT.MY_JOURNEY",
@@ -2372,10 +2372,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/_intro/:tenantSlug",
@@ -2396,10 +2396,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/apply",
@@ -2420,10 +2420,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/autopilot/audiobook",
@@ -2684,10 +2684,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/maxina/app",
@@ -2708,10 +2708,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/maxina_support",
@@ -2732,10 +2732,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/oauth/consent",
@@ -2744,10 +2744,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/onboarding/welcome",
@@ -2864,10 +2864,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/tickets/demo",
