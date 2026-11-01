@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Gift, Share2, Sparkles, Stethoscope, Tag } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Gift, HeartPulse, Pill, Share2, ShoppingBag, Sparkles, Stethoscope, Tag, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { VCardSkeleton } from '@/components/ui/vcard';
+import { VCard, VCardSkeleton } from '@/components/ui/vcard';
+import { SpotlightGrid } from '@/components/layout/spotlight';
 import { discoverPrice, recommendationToVCard } from '@/components/ui/vcard/adapters';
 import { HiddenByLimitationsFooter } from '@/components/discover/HiddenByLimitationsFooter';
 import { AffiliateDisclosure } from '@/components/discover/AffiliateDisclosure';
@@ -14,15 +15,17 @@ import {
 } from '@/hooks/useMarketplace';
 import { fmtNumber } from '@/lib/locale-format';
 import { t } from '@/lib/i18n-toast';
-import { DataVCard, DiscoverShelf, ProductGrid, ProductHero } from './DiscoverCards';
+import { DataVCard, DiscoverShelf, ProductGrid, ProductHero, ProductVCard } from './DiscoverCards';
 import { Chip, ChipBar } from './DiscoverChips';
 import { DiscoverEmpty, DiscoverError, DiscoverGridSkeleton } from './DiscoverStates';
 import { DiscoverQuickViewSheet, type QuickViewItem } from './DiscoverQuickViewSheet';
 import { useDebouncedValue } from './useDebouncedValue';
 import {
+  BROWSE_CATEGORIES,
   DEALS_SEARCH,
   DISCOVER_GRID,
   GOAL_CHIPS,
+  GRID_TILES,
   NO_FILTERS,
   PRICE_CHIP_MAX_CENTS,
   RATING_CHIP_MIN,
@@ -35,11 +38,43 @@ import {
   type StorefrontFilters,
 } from './storefront-model';
 
+const CATEGORY_ICONS: Record<(typeof BROWSE_CATEGORIES)[number]['id'], LucideIcon> = {
+  supplements: Pill,
+  'wellness-services': HeartPulse,
+  'doctors-coaches': Stethoscope,
+  'deals-offers': Tag,
+  marketplace: ShoppingBag,
+};
+
+/** VTID-05416 — one compact card per existing Discover sub-route; the title is the link. */
+function CategoryCard({ id, to, labelKey }: (typeof BROWSE_CATEGORIES)[number]) {
+  const Icon = CATEGORY_ICONS[id];
+  return (
+    <VCard
+      size="compact"
+      data-discover-category={id}
+      mediaSlot={
+        <div className="flex h-full w-full items-center justify-center bg-primary/10 text-primary" aria-hidden="true">
+          <Icon className="size-6" />
+        </div>
+      }
+      title={
+        <Link to={to} className="hover:text-primary focus-visible:underline focus-visible:outline-none">
+          {t(labelKey)}
+        </Link>
+      }
+    />
+  );
+}
+
 /**
  * VTID-05109 — Discover overview as a storefront (requirement R5.2):
- *   filter chips → ONE hero `spotlight` ("Picked for you", the member's real
- *   marketplace feed) → shelves of `standard` cards with "See all" → Share &
- *   Earn shelf (the member's own Recommend & Earn links, or an empty state).
+ *   filter chips → the SR-31 Spotlight grid (VTID-05416): ONE `spotlight`
+ *   card ("Picked for you", the top item of the member's real marketplace
+ *   feed) at ~40% with the next six picks as `standard` tiles beside it and a
+ *   "Browse categories" row of `compact` links below → shelves of `standard`
+ *   cards with "See all" → Share & Earn shelf (the member's own Recommend &
+ *   Earn links, or an empty state).
  * Search text or any chip switches to results from the existing gateway
  * search, with the top result as the hero.
  *
@@ -88,6 +123,7 @@ export function DiscoverStorefront({ query, onClearQuery, isGuest, onSignIn, ini
   };
 
   const feedItems = feed.data?.items ?? [];
+  const categoryCards = BROWSE_CATEGORIES.map((c) => <CategoryCard key={c.id} {...c} />);
   const dealItems = realDeals(deals.data?.items);
   const resultItems = results.data?.items ?? [];
 
@@ -161,10 +197,20 @@ export function DiscoverStorefront({ query, onClearQuery, isGuest, onSignIn, ini
         </section>
       ) : (
         <>
-          {/* Hero — the one spotlight card (SR-06) */}
+          {/* VTID-05416 — SR-31 Spotlight grid: the one spotlight card (the top pick) at ~40%,
+              the next six picks beside it, "Browse categories" below. */}
           <div data-discover-hero="">
             {feed.isLoading ? (
-              <VCardSkeleton size="spotlight" />
+              <SpotlightGrid
+                spotlight={<VCardSkeleton size="spotlight" />}
+                tiles={Array.from({ length: GRID_TILES }, (_, i) => (
+                  <VCardSkeleton key={i} size="standard" />
+                ))}
+                row={{
+                  title: t('spotlight.grid.discover.browseCategories'),
+                  items: BROWSE_CATEGORIES.map((c) => <VCardSkeleton key={c.id} size="compact" />),
+                }}
+              />
             ) : feed.isError ? (
               <DiscoverError onRetry={() => feed.refetch()} />
             ) : feedItems.length === 0 ? (
@@ -174,15 +220,27 @@ export function DiscoverStorefront({ query, onClearQuery, isGuest, onSignIn, ini
                 descriptionKey="spotlightDiscover.storefront.empty.feedDesc"
               />
             ) : (
-              <ProductHero product={feedItems[0]} label={t('spotlightDiscover.storefront.hero.pickedForYou')} onOpen={openProduct} />
+              <SpotlightGrid
+                label={t('spotlight.grid.discover.section')}
+                seeAllTo="/discover/ai-picks"
+                spotlight={
+                  <ProductHero
+                    variant="stacked"
+                    product={feedItems[0]}
+                    label={t('spotlightDiscover.storefront.hero.pickedForYou')}
+                    onOpen={openProduct}
+                  />
+                }
+                tiles={feedItems.slice(1, 1 + GRID_TILES).map((p) => (
+                  <ProductVCard key={p.id} as="article" product={p} onOpen={openProduct} />
+                ))}
+                empty={
+                  <DiscoverEmpty Icon={Sparkles} titleKey="spotlight.grid.emptyTiles" className="h-full" />
+                }
+                row={{ title: t('spotlight.grid.discover.browseCategories'), items: categoryCards }}
+              />
             )}
           </div>
-
-          {feedItems.length > 1 && (
-            <DiscoverShelf id="picks" title={t('spotlightDiscover.storefront.shelves.picks')} seeAllHref="/discover/ai-picks">
-              <ProductGrid products={feedItems.slice(1, 1 + SHELF_SIZE)} onOpen={openProduct} />
-            </DiscoverShelf>
-          )}
 
           <DiscoverShelf id="supplements" title={t('spotlightDiscover.storefront.shelves.supplements')} seeAllHref="/discover/supplements">
             {supplements.isLoading ? (

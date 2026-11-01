@@ -1,0 +1,22 @@
+# VTID-05416 red on base
+# 2026-11-01T11:10:43Z base origin/main 3ac1f5bb84b5a7e47e2990b502f9fb620dc6c59d (lane source files reverted, new test kept)
+# npx vitest run src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx
+ Γ¥» src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx (22 tests | 8 failed) 5075ms
+» Failed 
+Tests 8 ΓÄ
+ FAIL  src
+ FAIL  src
+ FAIL  src
+ FAIL  src
+ FAIL  src
+ FAIL  src
+ FAIL  src
+ FAIL  src
+ Test Files  1 failed (1)
+      Tests  8 failed | 14 passed (22)
+   Duration  117.94s (transform 40.94s, setup 9.39s, import 69.73s, tests 5.07s, environment 28.80s)
+
+# green on lane working tree (base 3ac1f5b + lane changes), 2026-11-01T11:35:38Z
+# npx vitest run src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx
+ Test Files  1 passed (1)
+      Tests  22 passed (22)
