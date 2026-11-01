@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05424",
+  "service": "community-app",
+  "_note": "Native Wave 2 wallet-rewards lane (native-wave2-wallet-r2/wallet-rewards). The port is proven offline (jest-expo + RNTL, recording fake gateway that answers GETs only, in-memory Supabase double, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). No redeem, reward or payment call is made anywhere: the shop's confirm goes to an injected RewardShopActions and the default one makes no call. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R6.3, tasks wallet-rewards 5). It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/wallet-rewards", "cwd": "apps/mobile",
+      "reason": "rewards screen unit tests: back link + header, earned / earn / shop tabs via ?tab= (incl. the legacy ?tab=intelligence), rules loaded / loading / error / empty recent, earn-more actions + goal card, shop items / orders / empty / error / Stripe return notes, the redeem sheet's ready rule and request against a fake RewardShopActions, the default actions making no call, 11 locales + RTL; the iOS IAP gate both ways (iOS redirects to /home / Android shows the page) and the drawer gate unchanged — fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the rewards screens, data layer and the wallet-rewards port type-check against @vitana/ui and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /wallet/rewards route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 3 wallet-rewards rows (WALLET.REWARDS, WALLET.REWARDS_EARN_MORE, WALLET.REWARDS_SHOP) are native with their route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/wallet-rewards/01-rewards-tabs.yaml", "target": "/wallet/rewards | /wallet/rewards?tab=earn | /wallet/rewards?tab=shop", "next_actor": "owner",
+      "reason": "Android: header, back link, the three tabs; screenshot parity vs 390x844 read-only staging; no redeem attempted; needs the isolated G1 environment (Android emulator)" },
+    { "flow": "apps/mobile/maestro/wallet-rewards/02-rewards-shop.yaml", "target": "/wallet/rewards?tab=shop", "next_actor": "owner",
+      "reason": "Android: item cards, orders, the redeem sheet opened and cancelled (never confirmed); needs G1" },
+    { "flow": "apps/mobile/maestro/wallet-rewards/03-rewards-ios-gate.yaml", "target": "/wallet/rewards (iOS)", "next_actor": "owner",
+      "reason": "iOS simulator: no drawer Wallet row, /wallet/rewards lands on /home — the gate is verified, never exercised; needs G1 + macOS minutes / G3" }
+  ]
+}
