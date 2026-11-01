@@ -5,7 +5,7 @@ import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
 import type { Archetype } from '../archetypes';
-import { ArchetypeSkeleton } from './ArchetypeSkeleton';
+import { ArchetypeSkeleton, type ArchetypeSkeletonLayout } from './ArchetypeSkeleton';
 
 /**
  * Desktop-spotlight-finish (owner decision 3, 2026-10-16) — the one loading
@@ -28,6 +28,11 @@ export interface SpotlightLoadingProps {
   rows?: number;
   /** when given, the skeleton shows while true and `children` fade in when false */
   loading?: boolean;
+  /**
+   * VTID-05420 — desktop only: `'spotlight-grid'` renders the SR-31 grid
+   * skeleton (same as `ScreenFrame layout`). Phones keep their single-column shape.
+   */
+  layout?: ArchetypeSkeletonLayout;
   className?: string;
   children?: ReactNode;
 }
@@ -73,7 +78,7 @@ function MobileShape({ archetype, rows }: { archetype: Archetype; rows?: number 
   }
 }
 
-export function SpotlightLoading({ archetype, rows, loading, className, children }: SpotlightLoadingProps) {
+export function SpotlightLoading({ archetype, rows, loading, layout, className, children }: SpotlightLoadingProps) {
   const spotlight = useSpotlightEnabled();
   const reduce = useReducedMotion();
 
@@ -89,7 +94,7 @@ export function SpotlightLoading({ archetype, rows, loading, className, children
   const shape = archetype ?? 'detail';
   let body: ReactNode;
   if (rows !== undefined && archetype === undefined) body = <Rows count={rows} />;
-  else if (spotlight) body = <ArchetypeSkeleton archetype={shape} />;
+  else if (spotlight) body = <ArchetypeSkeleton archetype={shape} layout={layout} />;
   else body = <MobileShape archetype={shape} rows={rows} />;
 
   return (

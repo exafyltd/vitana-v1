@@ -51,12 +51,21 @@ export interface ScreenFrameProps {
   tabs?: ScreenFrameTabs;
   rail?: React.ReactNode;
   railLabel?: string;
+  /**
+   * VTID-05420 — contract SR-31. `'spotlight-grid'` opts the screen into the
+   * Spotlight grid (compose the stage with `SpotlightGrid`): the layout uses
+   * the existing `full` width and the frame is marked
+   * `data-screen-layout="spotlight-grid"`. Omitted / `'default'` → the
+   * archetype width, exactly as before.
+   */
+  layout?: 'default' | 'spotlight-grid';
   className?: string;
   children: React.ReactNode;
 }
 
-export function ScreenFrame({ archetype, subNav, header, utility, tabs, rail, railLabel, className, children }: ScreenFrameProps) {
+export function ScreenFrame({ archetype, subNav, header, utility, tabs, rail, railLabel, layout, className, children }: ScreenFrameProps) {
   const immersive = archetype === 'immersive';
+  const spotlightGrid = layout === 'spotlight-grid';
 
   const tabList = tabs ? (
     <SplitBarList aria-label={tabs.ariaLabel} className="mb-0 w-auto shrink-0 gap-1 rounded-full bg-muted/60 p-1 pb-1">
@@ -88,14 +97,18 @@ export function ScreenFrame({ archetype, subNav, header, utility, tabs, rail, ra
           {tabList}
         </div>
       )}
-      <SpotlightLayout width={ARCHETYPE_WIDTH[archetype]} rail={rail} railLabel={railLabel} className={immersive ? undefined : 'mt-4'}>
+      <SpotlightLayout width={spotlightGrid ? 'full' : ARCHETYPE_WIDTH[archetype]} rail={rail} railLabel={railLabel} className={immersive ? undefined : 'mt-4'}>
         <StageCrossFade>{children}</StageCrossFade>
       </SpotlightLayout>
     </>
   );
 
   return (
-    <div data-archetype={archetype} className={cn('flex min-h-full flex-col', className)}>
+    <div
+      data-archetype={archetype}
+      data-screen-layout={spotlightGrid ? 'spotlight-grid' : undefined}
+      className={cn('flex min-h-full flex-col', className)}
+    >
       {!immersive && subNav && <SubNavigation items={subNav.items} rightActions={subNav.rightActions} />}
       <div className={cn(immersive ? 'flex-1' : 'flex-1 px-6 pb-10 pt-5')}>
         {!immersive && header && (

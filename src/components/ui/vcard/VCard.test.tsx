@@ -75,6 +75,39 @@ describe('VTID-05105 VCard', () => {
     container.querySelectorAll('[class]').forEach((el) => expect(el.getAttribute('class')).not.toMatch(PHYSICAL));
   });
 
+  it('VTID-05420: spotlightLabel on a spotlight card adds the text label and the accent ring', () => {
+    const { container } = render(<VCard size="spotlight" spotlightLabel title="Index" media={{ src: 'a.jpg' }} />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.className).toContain('ring-1');
+    expect(root.className).toContain('ring-primary');
+    const label = container.querySelector('[data-vcard-spotlight-label]')!;
+    expect(label).not.toBeNull();
+    expect(label.textContent!.trim().length).toBeGreaterThan(0);
+    expect(container.querySelector('img')).not.toBeNull();
+  });
+
+  it('VTID-05420: spotlightLabel without a media src renders the token gradient art', () => {
+    const { container, rerender } = render(<VCard size="spotlight" spotlightLabel title="Index" />);
+    const art = container.querySelector('[data-vcard-spotlight-art]')!;
+    expect(art).not.toBeNull();
+    expect(art.className).toContain('bg-gradient-to-br');
+    expect(art.closest('[data-vcard-media]')).not.toBeNull();
+    rerender(<VCard size="spotlight" spotlightLabel title="Index" media={{ src: null }} />);
+    expect(container.querySelector('[data-vcard-spotlight-art]')).not.toBeNull();
+    expect(container.querySelector('[data-vcard-placeholder]')).toBeNull();
+  });
+
+  it('VTID-05420: without spotlightLabel, or on another size, nothing changes', () => {
+    const { container, rerender } = render(<VCard size="spotlight" title="T" />);
+    expect(container.querySelector('[data-vcard-spotlight-label]')).toBeNull();
+    expect((container.firstElementChild as HTMLElement).className).not.toContain('ring-primary');
+    expect(container.querySelector('[data-vcard-media]')).toBeNull();
+    rerender(<VCard size="standard" spotlightLabel title="T" />);
+    expect(container.querySelector('[data-vcard-spotlight-label]')).toBeNull();
+    expect((container.firstElementChild as HTMLElement).className).not.toContain('ring-primary');
+    expect(container.querySelector('[data-vcard-spotlight-art]')).toBeNull();
+  });
+
   it('skeletons carry the same size marker and are hidden from assistive tech', () => {
     const { container } = render(<VCardSkeleton size="compact" />);
     const root = container.firstElementChild as HTMLElement;

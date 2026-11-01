@@ -15,7 +15,37 @@
       "keyboardHint": "J / K or ↑ ↓: next card",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {},
+    "grid": {
+      "label": "Spotlight",
+      "seeAll": "See all",
+      "emptyTiles": "Nothing to show here yet.",
+      "health": {
+        "section": "Your health",
+        "upNext": "Up next · For you",
+        "viewBreakdown": "View breakdown",
+        "askVitana": "Ask Vitana",
+        "biology": "My Biology",
+        "trend": "7-day trend",
+        "todayPlan": "Today's plan"
+      },
+      "discover": {
+        "section": "Recommended for you",
+        "browseCategories": "Browse categories"
+      },
+      "events": {
+        "featured": "Featured",
+        "thisWeek": "This week",
+        "upcoming": "Upcoming",
+        "join": "Join"
+      },
+      "match": {
+        "topMatch": "Your top match",
+        "sayHello": "Say hello",
+        "viewProfile": "View profile",
+        "morePeople": "More people for you"
+      }
+    }
   },
   "_pending_review": {}
 }

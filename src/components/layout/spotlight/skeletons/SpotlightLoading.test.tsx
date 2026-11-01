@@ -64,6 +64,28 @@ describe('SpotlightLoading', () => {
     expectBusyAndSpinnerFree(container);
   });
 
+  it('VTID-05420: desktop layout="spotlight-grid" renders the grid skeleton shape', () => {
+    const { container } = render(<SpotlightLoading archetype="storefront" layout="spotlight-grid" />);
+    const root = container.querySelector('[data-spotlight-loading="desktop"]')!;
+    expect(root.getAttribute('data-archetype-skeleton')).toBe('storefront');
+    const grid = root.querySelector('[data-spotlight-grid]')!;
+    expect(grid).not.toBeNull();
+    expect(grid.querySelectorAll('[data-vcard-size="spotlight"]').length).toBe(1);
+    expect(grid.querySelectorAll('[data-slot="tiles"] [data-vcard-size="standard"]').length).toBe(6);
+    expect(grid.querySelectorAll('[data-slot="row"] [data-vcard-size="compact"]').length).toBe(5);
+    expectBusyAndSpinnerFree(container);
+  });
+
+  it('VTID-05420: mobile ignores layout="spotlight-grid" and keeps the single-column shape', () => {
+    spotlight = false;
+    const { container } = render(<SpotlightLoading archetype="storefront" layout="spotlight-grid" />);
+    expect(container.querySelector('[data-spotlight-loading="mobile"]')).not.toBeNull();
+    expect(container.querySelector('[data-spotlight-grid]')).toBeNull();
+    expect(container.querySelectorAll('[data-vcard-size="spotlight"]').length).toBe(1);
+    expect(container.querySelectorAll('[data-vcard-size="standard"]').length).toBe(2);
+    expectBusyAndSpinnerFree(container);
+  });
+
   it('loading true → false swaps the skeleton for the children with a fade', () => {
     const { container, rerender, queryByText } = render(
       <SpotlightLoading loading archetype="collection">
