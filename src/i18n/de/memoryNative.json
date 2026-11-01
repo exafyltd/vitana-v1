@@ -1,0 +1,72 @@
+{
+  "memoryNative": {
+    "addMemory": {
+      "save": "Erinnerung speichern"
+    },
+    "editMemory": {
+      "save": "Änderungen speichern"
+    },
+    "timeline": {
+      "loadMore": "Mehr laden"
+    },
+    "usage": {
+      "shareTitle": "Deine Vitana-Nutzungsdaten"
+    },
+    "education": {
+      "impact": {
+        "high": "Hohe Wirkung",
+        "medium": "Mittlere Wirkung"
+      },
+      "items": {
+        "sleep": {
+          "category": "Schlaf",
+          "title": "Wie die Schlafqualität die Gedächtnisbildung beeinflusst",
+          "content": "Tiefschlaf (die REM-Phase) ist entscheidend dafür, dass sich Erinnerungen festigen. In dieser Phase verarbeitet und speichert dein Gehirn die Informationen des Tages. Plane 7–9 Stunden guten Schlaf mit einem festen Rhythmus ein. Schlechter Schlaf kann die Merkfähigkeit um bis zu 40 % senken.",
+          "factor1": "Trainingszeitpunkt",
+          "factor2": "Koffeinkonsum",
+          "factor3": "Bildschirmzeit"
+        },
+        "nutrition": {
+          "category": "Ernährung",
+          "title": "Die Rolle der Ernährung für die geistige Leistung",
+          "content": "Omega-3-Fettsäuren, Antioxidantien und B-Vitamine wirken direkt auf die Gesundheit deines Gehirns. Lebensmittel wie fetter Fisch, Beeren und Blattgemüse unterstützen die Bildung von Neurotransmittern und dämpfen Entzündungen. Regelmäßige Essenszeiten halten außerdem den Blutzucker stabil und verhindern Energietiefs.",
+          "factor1": "Essenszeiten",
+          "factor2": "Hydration",
+          "factor3": "Mikronährstoff-Balance"
+        },
+        "exercise": {
+          "category": "Bewegung",
+          "title": "Körperliche Aktivität und geistige Klarheit",
+          "content": "Bewegung erhöht BDNF (Brain-Derived Neurotrophic Factor), das das Wachstum von Nervenzellen und die geistige Leistung fördert. Schon 30 Minuten moderate Aktivität können deine Konzentration für bis zu 2 Stunden verbessern. Für langfristige Effekte zählt Regelmäßigkeit mehr als Intensität.",
+          "factor1": "Erholungszeit",
+          "factor2": "Trainingsart",
+          "factor3": "Intensität"
+        },
+        "stress": {
+          "category": "Stress",
+          "title": "Deine Stressreaktion verstehen",
+          "content": "Chronischer Stress erhöht das Cortisol, und das beeinträchtigt Gedächtnis und Entscheidungen. Deine Stressreaktion hängt von Schlaf, Ernährung und sozialen Kontakten ab. Schon 10 Minuten Achtsamkeit am Tag können das Cortisol um 23 % senken.",
+          "factor1": "Schlafqualität",
+          "factor2": "Soziale Unterstützung",
+          "factor3": "Atemmuster"
+        },
+        "hydration": {
+          "category": "Hydration",
+          "title": "Wie Trinken und Leistung zusammenhängen",
+          "content": "Schon leichter Flüssigkeitsmangel (2 % des Körpergewichts) senkt die geistige Leistung um 10–20 %. Wasser transportiert Nährstoffe zu den Gehirnzellen und Abfallstoffe ab. Über den Tag verteilt zu trinken wirkt besser als große Mengen auf einmal.",
+          "factor1": "Aktivitätsniveau",
+          "factor2": "Klima",
+          "factor3": "Salz in der Ernährung"
+        },
+        "lifestyle": {
+          "category": "Lebensstil",
+          "title": "Wie sich gesunde Gewohnheiten gegenseitig verstärken",
+          "content": "Gesundheitsfaktoren wirken nie allein. Die Schlafqualität beeinflusst die Erholung nach dem Training, die Erholung dein Stressniveau und das Stressniveau deine Essensentscheidungen. Eine einzige gute Gewohnheit löst oft eine Kette von Verbesserungen in allen Bereichen aus.",
+          "factor1": "Alle Bereiche",
+          "factor2": "Gewohnheiten verknüpfen",
+          "factor3": "Umgebung gestalten"
+        }
+      }
+    }
+  }
+}
