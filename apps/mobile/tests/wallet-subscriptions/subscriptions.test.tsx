@@ -93,7 +93,8 @@ describe('/wallet/subscriptions overview — states', () => {
       'subs-faq',
     ]);
     expect(screen.queryByTestId('wallet-subscriptions-loading')).toBeNull();
-    expect(screen.getByText('Abonnements', { exact: true })).toBeTruthy();
+    // the page title (the sub-nav's Subscriptions tab carries the same word)
+    expect(screen.getAllByText('Abonnements', { exact: true })).toHaveLength(2);
   });
 
   it('loaded (paid plan): no redeem card, earnings shown, Premium marked current with no Choose CTA', async () => {
@@ -185,7 +186,7 @@ describe('plan state card', () => {
   });
 });
 
-describe('plan grids (fake gateway only — no real checkout)', () => {
+describe('plan grids — web wire format through the not-wired gatewayBillingActions + fake gateway', () => {
   it('headline: Premium monthly by default; the year switch shows the annual price + save badge and checks out premium_annual', async () => {
     const open = spyOpenURL();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />);
@@ -335,9 +336,59 @@ describe('redeem card (fake gateway)', () => {
   it('a ?code= deep link submits once and clears the param (founding success copy)', async () => {
     mockParams.current = { code: 'founding 1000' };
     const { gateway } = renderWithBilling(<SubscriptionsScreen />, { redeem: { ok: true, granted_plan: 'premium', granted_until: '2099-06-01T00:00:00.000Z', campaign: 'founding_500', uses_count: 7, max_uses: 500 } });
-    expect(await screen.findByTestId('subs-redeem-success-body')).toHaveTextContent('du bist #7 von 500');
+    expect(await screen.findByTestId('subs-redeem-success-body')).toHaveTextContent(/du bist #7 von 500\./);
     expect(gateway.posts()).toEqual([{ method: 'POST', path: '/billing/redeem', body: { code: 'FOUNDING1000' } }]);
     expect(router.setParams).toHaveBeenCalledWith({ code: undefined });
+  });
+});
+
+describe('the app default BillingActions: no purchase, checkout, portal or redeem call', () => {
+  const FINISH = 'walletSubscriptionsNative.finishOnWeb';
+
+  /** Press, then expect exactly one "finish on the web" toast (cleared after, so each press is counted alone). */
+  async function pressExpectsFinishOnWeb(testID: string) {
+    fireEvent.press(screen.getByTestId(testID));
+    await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toEqual([FINISH]));
+    act(() => __clearToastsForTests());
+  }
+
+  it('overview: Choose / Buy / larger-plan Choose / Redeem make no write and point to the web', async () => {
+    const open = spyOpenURL();
+    const { gateway } = renderWithBilling(<SubscriptionsScreen />, { actions: 'app' });
+    await screen.findByTestId('subs-plan-premium-choose');
+    await pressExpectsFinishOnWeb('subs-plan-premium-choose');
+    await pressExpectsFinishOnWeb('subs-pack-starter-buy');
+    fireEvent.press(screen.getByTestId('subs-plans-expanded-toggle'));
+    await pressExpectsFinishOnWeb('subs-plan-premium_5x-choose');
+    fireEvent.changeText(screen.getByTestId('subs-redeem-input'), 'VITANA-AB12');
+    await pressExpectsFinishOnWeb('subs-redeem-submit');
+    expect(gateway.posts()).toEqual([]);
+    expect(open).not.toHaveBeenCalled();
+    expect(screen.queryByTestId('subs-redeem-success')).toBeNull();
+  });
+
+  it('paid member: Manage and Withdraw make no write', async () => {
+    const open = spyOpenURL();
+    const { gateway } = renderWithBilling(<SubscriptionsScreen />, { me: premiumActive, actions: 'app' });
+    await screen.findByTestId('subs-state-manage');
+    await pressExpectsFinishOnWeb('subs-state-manage');
+    await pressExpectsFinishOnWeb('subs-earnings-withdraw');
+    expect(gateway.posts()).toEqual([]);
+    expect(open).not.toHaveBeenCalled();
+  });
+
+  it('a ?code= deep link makes no redeem call either', async () => {
+    mockParams.current = { code: 'VITANA-AB12' };
+    const { gateway } = renderWithBilling(<SubscriptionsScreen />, { actions: 'app' });
+    await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toEqual([FINISH]));
+    expect(gateway.posts()).toEqual([]);
+    expect(router.setParams).toHaveBeenCalledWith({ code: undefined });
+  });
+
+  it('only GET reads reach the gateway', async () => {
+    const { gateway } = renderWithBilling(<ProfileSubscriptionsScreen />, { actions: 'app', founding: foundingActive });
+    await screen.findByTestId('subs-founding');
+    expect(new Set(gateway.calls.map((c) => `${c.method} ${c.path}`))).toEqual(new Set(['GET /billing/me', 'GET /billing/founding-status']));
   });
 });
 

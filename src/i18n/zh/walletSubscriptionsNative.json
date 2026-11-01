@@ -1,0 +1,17 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "计费周期",
+    "subnavAria": "钱包分区",
+    "loading": "正在加载订阅…",
+    "finishOnWeb": "此操作尚未在应用中提供。请在网页版的订阅中完成。",
+    "subnav": {
+      "overview": "概览",
+      "balance": "余额与权益",
+      "subscriptions": "订阅",
+      "rewards": "奖励与佣金"
+    },
+    "plans": {
+      "freeLiveRooms": "每月 40 分钟 · 1 场"
+    }
+  }
+}

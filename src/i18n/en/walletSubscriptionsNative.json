@@ -1,0 +1,17 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Billing interval",
+    "subnavAria": "Wallet sections",
+    "loading": "Loading subscriptions…",
+    "finishOnWeb": "This action isn't in the app yet. Please finish it in your subscriptions on the web.",
+    "subnav": {
+      "overview": "Overview",
+      "balance": "Balance & Benefits",
+      "subscriptions": "Subscriptions",
+      "rewards": "Rewards & Commissions"
+    },
+    "plans": {
+      "freeLiveRooms": "40 min/mo · 1 session"
+    }
+  }
+}

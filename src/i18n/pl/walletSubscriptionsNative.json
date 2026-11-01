@@ -1,0 +1,17 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Okres rozliczeniowy",
+    "subnavAria": "Sekcje portfela",
+    "loading": "Ładowanie subskrypcji…",
+    "finishOnWeb": "Tej czynności nie ma jeszcze w aplikacji. Dokończ ją w swoich subskrypcjach w wersji webowej.",
+    "subnav": {
+      "overview": "Przegląd",
+      "balance": "Saldo i korzyści",
+      "subscriptions": "Subskrypcje",
+      "rewards": "Nagrody i prowizje"
+    },
+    "plans": {
+      "freeLiveRooms": "40 min/mies. · 1 sesja"
+    }
+  }
+}

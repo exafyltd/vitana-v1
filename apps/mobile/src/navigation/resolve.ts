@@ -58,8 +58,10 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/me/matches',
   '/native-ui-catalogue',
   '/oauth/complete',
+  '/profile/subscriptions',
   '/reset-password',
   '/search',
+  '/wallet/subscriptions',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

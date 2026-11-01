@@ -44,7 +44,7 @@ describe('routing', () => {
   });
 
   it('/profile/subscriptions renders the MobileSubscriptions storefront, not the desktop redirect', async () => {
-    renderWithBilling(<ProfileSubscriptionsRoute />);
+    renderWithBilling(<ProfileSubscriptionsRoute />, { actions: 'app' });
     expect(screen.getByTestId('profile-subscriptions')).toBeTruthy();
     await screen.findByTestId('subs-state-free');
     expect(screen.queryByTestId('wallet-subscriptions')).toBeNull();
@@ -53,7 +53,7 @@ describe('routing', () => {
   });
 
   it('/wallet/subscriptions renders the overview', async () => {
-    renderWithBilling(<WalletSubscriptionsRoute />);
+    renderWithBilling(<WalletSubscriptionsRoute />, { actions: 'app' });
     expect(screen.getByTestId('wallet-subscriptions')).toBeTruthy();
     await screen.findByTestId('subs-promises');
   });

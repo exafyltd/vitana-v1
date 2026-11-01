@@ -1,0 +1,17 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Abrechnungszeitraum",
+    "subnavAria": "Wallet-Bereiche",
+    "loading": "Abonnements werden geladen …",
+    "finishOnWeb": "Diese Aktion gibt es in der App noch nicht. Schließe sie bitte in deinen Abonnements im Web ab.",
+    "subnav": {
+      "overview": "Übersicht",
+      "balance": "Guthaben & Vorteile",
+      "subscriptions": "Abonnements",
+      "rewards": "Prämien & Provisionen"
+    },
+    "plans": {
+      "freeLiveRooms": "40 Min./Monat · 1 Sitzung"
+    }
+  }
+}

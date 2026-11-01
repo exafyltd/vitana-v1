@@ -128,7 +128,9 @@ describe('iOS renders exactly what Android renders (today\'s ungated behaviour)'
       const ios = await treeOn('ios', <ProfileSubscriptionsScreen />, 'profile-subscriptions', me);
       const android = await treeOn('android', <ProfileSubscriptionsScreen />, 'profile-subscriptions', me);
       expect(ios).toEqual(android);
-      expect(ios).toEqual(expect.arrayContaining(['subs-plan-premium-choose', 'subs-pack-power-buy']));
+      expect(ios).toEqual(expect.arrayContaining(['subs-pack-power-buy', 'subs-plans-expanded-toggle']));
+      if (me === freePlan) expect(ios).toEqual(expect.arrayContaining(['subs-plan-premium-choose', 'subs-redeem-submit']));
+      else expect(ios).toEqual(expect.arrayContaining(['subs-state-manage', 'profile-subscriptions-manage']));
     }
   });
 });

@@ -1,0 +1,17 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Период оплаты",
+    "subnavAria": "Разделы кошелька",
+    "loading": "Загружаем подписки…",
+    "finishOnWeb": "Этого действия пока нет в приложении. Заверши его в своих подписках в веб-версии.",
+    "subnav": {
+      "overview": "Обзор",
+      "balance": "Баланс и преимущества",
+      "subscriptions": "Подписки",
+      "rewards": "Награды и комиссии"
+    },
+    "plans": {
+      "freeLiveRooms": "40 мин/мес · 1 сессия"
+    }
+  }
+}

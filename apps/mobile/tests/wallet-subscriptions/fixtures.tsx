@@ -3,7 +3,8 @@
  *
  * `billingGateway()` is a FAKE gateway: it answers the billing paths from
  * fixtures and records every call (method, path, JSON body). Checkout /
- * portal / redeem answers are canned; nothing leaves the process (the
+ * portal / redeem answers are canned (they are only reached through the
+ * not-wired `gatewayBillingActions`, see renderWithBilling); nothing leaves the process (the
  * no-network guard is imported first by every test file, and `Linking.openURL`
  * is spied, so a "hosted checkout" URL is only recorded, never opened).
  */
@@ -15,6 +16,7 @@ import { makeWrapper } from '../helpers/providers';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { UIProvider } from '../../src/ports/ui';
 import type { BillingMe, FoundingStatus, RedeemResult } from '../../src/screens/wallet-subscriptions/data/billing';
+import { BillingActionsProvider, gatewayBillingActions } from '../../src/screens/wallet-subscriptions/data/actions';
 
 const FUTURE = '2099-03-01T00:00:00.000Z';
 
@@ -112,14 +114,20 @@ export function spyOpenURL() {
   return jest.spyOn(Linking, 'openURL').mockResolvedValue(true as never);
 }
 
-/** Renders `ui` under the kit provider + the app provider stack with the fake billing gateway installed. */
-export function renderWithBilling(ui: ReactElement, opts: BillingGatewayOpts & { language?: string; direction?: 'ltr' | 'rtl' } = {}) {
+/**
+ * Renders `ui` under the kit provider + the app provider stack with the fake billing gateway installed.
+ * `actions: 'wire'` (the default here) injects `gatewayBillingActions`, so the writes reach the FAKE
+ * gateway and their paths / payloads can be asserted; `actions: 'app'` leaves the app's default
+ * `BillingActions` (no call at all), exactly what the shipped routes use.
+ */
+export function renderWithBilling(ui: ReactElement, opts: BillingGatewayOpts & { language?: string; direction?: 'ltr' | 'rtl'; actions?: 'wire' | 'app' } = {}) {
   const gw = billingGateway(opts);
   const wrapper = makeWrapper({ client: supabase(), language: opts.language ?? 'de-DE' });
   __setGatewayForTests(gw.fetch);
+  const app = opts.actions === 'app';
   const Wrapped = ({ children }: { children: ReactNode }) => (
     <UIProvider colorScheme="light" direction={opts.direction ?? 'ltr'}>
-      {children}
+      {app ? children : <BillingActionsProvider value={gatewayBillingActions}>{children}</BillingActionsProvider>}
     </UIProvider>
   );
   const utils = render(<Wrapped>{ui}</Wrapped>, { wrapper });
