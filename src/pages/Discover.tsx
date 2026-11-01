@@ -163,6 +163,8 @@ function DiscoverInner() {
         />
         <ScreenFrame
           archetype="storefront"
+          /* VTID-05416 — SR-31: the overview opts into the Spotlight grid (width `full`). */
+          layout="spotlight-grid"
           subNav={{ items: discoverNavigation }}
           header={{ title: translate('discover.title'), description: translate('discover.description'), emoji: '🔍' }}
           utility={{

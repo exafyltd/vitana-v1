@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05416",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop, signed in, ?spotlight=1 at 1400x900 and 1920x1080: /discover frame opts into the Spotlight grid; exactly one Spotlight card (with its label) at 30-45% of the [data-spotlight-layout] width; the standard tiles start within the spotlight's vertical span; the 'Browse categories' row of 5 compact links sits below it; compact header with its 2 buttons and the utility bar visible; no horizontal scroll. Phone 390x844 with no query: no [data-spotlight-layout], no [data-archetype], no grid, mobile bottom nav visible",
+      "spec": "tests/e2e/staging/vtid-05416-discover-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05109 storefront spec updated to the SR-31 grid (contract changed on purpose, owner-approved layout 2026-10-31): the hero sits in the grid's spotlight slot, standard cards in the tiles or shelves, no 'picks' shelf, search results keep one hero, quick view opens from a tile or shelf product, no horizontal scroll at 1280/1440 LTR+RTL, ?spotlight=0 keeps the legacy screen",
+      "spec": "tests/e2e/staging/vtid-05109-discover-storefront.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Discover Spotlight grid in jsdom: one stacked spotlight with the Spotlight label, six standard tiles (feed items 2-7, extras dropped), 'Browse categories' compact links to the existing sub-routes only, shelves below the grid, fewer tiles never fabricated (1 item → the shared empty tile state, 0 items → the feed empty state without a grid), grid-shaped skeleton while loading, results mode keeps the side-by-side hero and no grid, the page opts its ScreenFrame into layout=\"spotlight-grid\"",
+      "ref": "npx vitest run src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx",
+      "cwd": ".",
+      "reason": "Fewer-tiles, empty, loading and error states depend on feed data the read-only staging account cannot control; the unit suite pins them deterministically, the Playwright spec proves the deployed layout."
+    }
+  ]
+}

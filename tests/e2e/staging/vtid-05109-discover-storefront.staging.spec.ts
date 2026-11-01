@@ -64,8 +64,15 @@ test('VTID-05109: storefront — one hero spotlight, shelves of standard cards, 
   await expect(page.locator('[data-vcard-skeleton]')).toHaveCount(0, { timeout: 30_000 });
   expect(await page.locator('[data-vcard-size="spotlight"]').count(), 'exactly one spotlight card').toBe(1);
 
-  const shelfCards = page.locator('[data-discover-shelf] [data-vcard-size="standard"]');
-  await expect(shelfCards.first()).toBeVisible({ timeout: 30_000 });
+  // VTID-05416 — contract changed on purpose (owner-approved layout 2026-10-31, SR-31): the hero is the one
+  // Spotlight card of the Spotlight grid, the old "picks" shelf became its standard tiles, and the shelves
+  // (supplements, deals, …) stay below. Standard cards are in the grid tiles or in the shelves.
+  await expect(page.locator('[data-spotlight-grid] [data-slot="spotlight"] [data-storefront-hero]')).toBeVisible();
+  const standardCards = page.locator(
+    '[data-spotlight-grid] [data-slot="tiles"] [data-vcard-size="standard"], [data-discover-shelf] [data-vcard-size="standard"]',
+  );
+  await expect(standardCards.first()).toBeVisible({ timeout: 30_000 });
+  expect(await page.locator('[data-discover-shelf="picks"]').count(), 'the picks shelf is now the grid tiles').toBe(0);
   expect(await page.locator('[data-discover-shelf="share"]').count()).toBe(1);
 });
 
@@ -91,7 +98,8 @@ test('VTID-05109: the overview search returns real results (typing only)', async
 test('VTID-05109: a product opens the quick-view sheet with "Open full page", and it closes', async ({ page, request }) => {
   test.setTimeout(120_000);
   await openStorefront(page, request, 1440);
-  const card = page.locator('[data-discover-shelf] [data-product-id]').first();
+  // VTID-05416 — product cards now also sit in the Spotlight grid tiles.
+  const card = page.locator('[data-spotlight-grid] [data-slot="tiles"] [data-product-id], [data-discover-shelf] [data-product-id]').first();
   await expect(card).toBeVisible({ timeout: 30_000 });
   await card.locator('button').first().click();
 

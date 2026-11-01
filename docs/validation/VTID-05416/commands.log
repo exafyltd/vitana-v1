@@ -1,0 +1,17 @@
+# VTID-05416 spotlight-card-proportion/discover - commands (Windows 11, Node, worktree on origin/main 3ac1f5bb8 = layout-core merged)
+2026-11-01T12:09:12Z
+1. RED: npx vitest run src/components/discover/spotlight/discover-storefront.vtid-05109.test.tsx
+   with the 4 lane source files at base and the new test -> FAIL 8 failed | 14 passed (22)   (red-on-base.txt)
+2. GREEN: same command on the lane tree -> PASS 22 passed (22)
+3. npm test (full Vitest, Windows) -> 29 files / 45 tests failed | 3823 passed (3868). Every failing file is a
+   source-scan / CRLF / path test outside the lane (notifDiag, personal-memory-edge, prefetch-registry,
+   supabase-functions-retire, tenant-registry, vtna-token-name, CommercePortal*, commerce/*, business-modes,
+   role-tables-no-client-writes, registry.test, EventsAndMeetups.vtid-04965, gateway-prefix, connected-apps-health);
+   none imports a discover file. Same Windows reds layout-core recorded on base (VTID-05420 commands.log). CI Linux
+   Vitest (jsdom) is the authority.
+4. npx eslint <7 changed TS/TSX files> -> 0 errors, 4 warnings (all pre-existing lines of src/pages/Discover.tsx:
+   77, 102, 144, 755); design/* = 0; i18n/* = 0.
+5. npm run build -> ok (built in 3m 1s; chunk-size warning only, pre-existing).
+6. Local screenshots: not taken - the overview grid only renders with the signed-in member's marketplace feed from
+   the production Supabase project; the read-only staging spec vtid-05416-discover-spotlight-grid carries the visual
+   proof (1400x900, 1920x1080, phone 390x844).7. node scripts/collab/preflight.mjs --repo <WT> --base origin/main --head HEAD (on d3b1f769d) -> PASS Collab handoff, Lane scope, gh lane files, PR-GATE scope/sparring/weakening/red-green; FAIL Kiro steering only (report-only): guard.test.cjs expects LF front matter and the Windows checkout has CRLF in untouched .kiro/steering files (same red layout-core recorded); not a lane file. CI runs on Linux.
