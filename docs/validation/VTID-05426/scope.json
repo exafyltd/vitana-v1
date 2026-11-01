@@ -1,0 +1,43 @@
+{
+  "vtid": "VTID-05426",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/daily-diary/**",
+    "apps/mobile/src/screens/diary/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/diary/**",
+    "apps/mobile/maestro/diary/**",
+    "apps/mobile/package.json",
+    "apps/mobile/app.config.ts",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/diaryNative.json",
+    "docs/validation/VTID-05426/**"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/daily-diary/index.tsx",
+    "apps/mobile/src/screens/diary/**",
+    "apps/mobile/src/ports/diary.tsx",
+    "apps/mobile/src/ports/diary-capture.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/diary/**",
+    "apps/mobile/maestro/diary/README.md",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "apps/mobile/app.config.ts",
+    "apps/mobile/tests/app-config.test.ts",
+    "apps/mobile/tests/orb/nav-directive.test.ts",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/diaryNative.json",
+    "docs/validation/VTID-05426/**"
+  ],
+  "outside_lane_paths": {
+    "apps/mobile/package-lock.json": "the lockfile of the task-2 dependency change (expo-image-picker 57.0.20, expo-audio 57.0.5); `npm ci` in CI needs it in sync with package.json",
+    "apps/mobile/tests/app-config.test.ts": "its exact plugin-list assertion gains the two diary plugins (extended, not loosened)",
+    "apps/mobile/tests/orb/nav-directive.test.ts": "its 'unported registry screen' example was MEMORY.DIARY, which this lane ports; it now uses COMM.OVERVIEW (/comm/events-meetups?tab=hot, still unported) with the same assertions"
+  },
+  "core_change": "none — every diary data path is class-B (ledger-findings §3); feedback-ticket.ts's pure parts are mirrored natively because the module also calls fetch/window; no packages/core manifest / closure / mobile-ci-paths change (core-closure --check: up to date)",
+  "sparring_record": "docs/validation/VTID-05426/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05426",
+  "service": "community-app",
+  "_note": "Native Wave 2 diary lane. The port is proven offline (jest-expo + RNTL, no network; the photo picker and audio recorder are faked; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web /daily-diary) and the live camera / microphone capture exercise are DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md diary task 7). No diary write or ticket is ever sent to a live system. Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/diary", "cwd": "apps/mobile",
+      "reason": "diary unit tests (3 suites / 60 tests): health-mode entry list loaded / empty / error, day groups, load more, realtime refetch, photo viewer; text entry save + Index toast; photo picker invoked (library + camera) + diary-photos upload path + denied permission; entry delete (storage objects, then the entry); voice capture through the expo-audio recorder + backend STT + saved voice entry; bugs-mode My reports loaded / empty / error, confirm; report submit with a screenshot into feedback_tickets; tab switch health <-> bugs; every gateway call carries Bearer + X-Vitana-Active-Role: community; no unresolved key in 11 locales; RTL-safe styles; the resolved Expo config registers expo-image-picker + expo-audio and the iOS plist gets the camera / photo-library / one microphone usage description — fake gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npx jest tests/app-config.test.ts", "cwd": "apps/mobile",
+      "reason": "the app config's plugin list includes the two diary capture plugins; no production profile, .dev identifiers" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the diary screen, the class-B data layer and the diary ports type-check against the shell ports, @vitana/ui, expo-image-picker and expo-audio" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /daily-diary route and the two new native deps (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "MEMORY.DAILY_DIARY, MEMORY.DIARY and MEMORY.DIARY_BUGS are native with their route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/diary/01-diary-health.yaml", "target": "/daily-diary", "next_actor": "owner",
+      "reason": "sign in, open /daily-diary: header, Health Diary pill, capture card, Text / Photo row, entries by day, photo viewer (read only); screenshot parity vs the 390x844 read-only staging web /daily-diary; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/diary/02-diary-bugs.yaml", "target": "/daily-diary?tab=bugs", "next_actor": "owner",
+      "reason": "bug-mode capture card and My reports (read only); screenshot parity vs the read-only staging web /daily-diary?tab=bugs; needs G1" },
+    { "flow": "apps/mobile/maestro/diary/03-diary-capture.yaml", "target": "/daily-diary", "next_actor": "owner",
+      "reason": "live camera / photo-library / microphone permission prompts and capture on a device in the isolated G1 environment only (never a live system); per-language InfoPlist strings for the picker keys checked on the G1 build (plan decision 5)" }
+  ]
+}
