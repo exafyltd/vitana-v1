@@ -1,0 +1,37 @@
+# VTID-05422 (native-wave2-wallet-r2/wallet-home) — commands run, with results
+# Worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-wallet-r2-wallet-home (Linux), base origin/main a41e89a0d.
+# Final runs on code commit e620bc4a4b03b07613dd345ec312ee928f5194b9 (only this log is added after it). All offline; no network, no live system.
+
+## red on base (tests only, origin/main a41e89a0d, before any implementation)
+cd apps/mobile && npx jest tests/wallet-home --ci          # FAIL: 3/3 suites fail to run (modules missing) — red-on-base.txt
+
+## core extraction (repo root)
+node scripts/native/core-closure.mjs --write               # core-closure: 23 roots, 33 src files, 11 assets — ok (closure.generated.json + mobile-ci-paths.generated.json, +1 line each)
+node scripts/native/core-closure.mjs --check               # PASS: 23 roots, 33 src files, 11 assets — up to date
+#   (npm run gen:core NOT run: it also runs gen-core-extract, which would rewrite the feed-compose / news-feed-ranker extracts — main's known red, fixed in #1545)
+
+## parity ledger (repo root)
+node scripts/native/parity-ledger.mjs --sync               # 435 rows (added 0, updated 0, removed 0, stale kept 0); 8 wallet-home rows flipped to native by hand
+node scripts/native/parity-ledger.mjs --check              # PASS: OK — 435 rows, 28 native route(s)
+
+## apps/mobile
+npm run gen:i18n                                           # PASS: 11 locales, 1419 shards → src/i18n/catalog-map.generated.ts
+npx jest tests/wallet-home --ci                            # PASS: 3 suites, 75/75 tests (iap-gate 25, wallet-home 45, exchange-rates 5)
+npm run typecheck                                          # PASS: tsc --noEmit, 0 errors
+npm test -- --ci                                           # PASS: 79/79 suites, 2145/2145 tests
+APP_PROFILE=development npm run bundle                     # PASS: ios + android entry-*.hbc (17MB each), Exported: dist (HOME pointed at a writable dir: the sandbox's /root/.expo is read-only)
+APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  # PASS: Dependencies are up to date (no dependency added)
+npm run parity:check                                       # PASS: OK — 435 rows, 28 native route(s)
+
+## repo root: i18n + lint
+npm run i18n:audit                                         # exit 1 with 17193 errors on HEAD; identical 17193 on origin/main a41e89a0d (pre-existing _pending_review keys); 0 mention walletHomeNative; coverage 100.0% vs DE in all 10 locales
+node scripts/i18n-register-check.mjs --all --max=500       # PASS: No formal-register violations (de fr sr es pt ru pl tr zh: 0 violations; ar skipped by design)
+npx eslint apps/mobile/src/screens/wallet-home "apps/mobile/app/(app)/wallet" apps/mobile/src/ports/wallet.ts apps/mobile/src/ports/ui.tsx apps/mobile/src/navigation/resolve.ts apps/mobile/tests/wallet-home packages/core/src/exchangeRates.ts   # PASS: 0 problems
+
+## preflight
+node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-home --title "VTID-05422 (native-wave2-wallet-r2/wallet-home): native wallet home port"
+#   PASS: every check passed (Collab handoff, Lane scope, gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering)
+#   (an earlier run during the GitHub API rate-limit window, remaining 0, failed Collab handoff + Lane scope with "lane file not found" — gh 403; re-run after reset passed)
+
+## not run (deferred to G1, next_actor: owner)
+# Maestro flows apps/mobile/maestro/wallet-home/*.yaml, iOS simulator / Android emulator screenshots, parity vs 390x844 read-only staging.
