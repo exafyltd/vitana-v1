@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
 
 /**
@@ -44,6 +45,13 @@ export interface VCardProps extends Omit<React.HTMLAttributes<HTMLElement>, 'tit
   /** Neighbour of the focused card in a focus feed: media is softened, text keeps full contrast. */
   dimmed?: boolean;
   focused?: boolean;
+  /**
+   * VTID-05420 — contract SR-31, `size="spotlight"` only: the card carries its
+   * Spotlight identity — a small "Spotlight" text label, the accent ring and,
+   * when there is no media `src`, a token gradient as its art. Default off, so
+   * every existing spotlight card renders as before.
+   */
+  spotlightLabel?: boolean;
   as?: 'article' | 'div' | 'li';
 }
 
@@ -88,6 +96,7 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
     priority = false,
     dimmed = false,
     focused = false,
+    spotlightLabel = false,
     as = 'article',
     className,
     ...rest
@@ -95,7 +104,8 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
   ref,
 ) {
   const Root = as as React.ElementType;
-  const hasMedia = media !== undefined || mediaSlot !== undefined;
+  const withIdentity = spotlightLabel && size === 'spotlight';
+  const hasMedia = media !== undefined || mediaSlot !== undefined || withIdentity;
   const isStacked = size === 'spotlight' || size === 'standard';
 
   const mediaNode = hasMedia ? (
@@ -112,6 +122,12 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
             decoding="async"
             className="h-full w-full object-cover"
           />
+        ) : withIdentity ? (
+          <div
+            className="h-full w-full bg-gradient-to-br from-primary/30 via-accent/20 to-background"
+            data-vcard-spotlight-art=""
+            aria-hidden="true"
+          />
         ) : (
           <div className="h-full w-full bg-muted" data-vcard-placeholder="" aria-hidden="true" />
         ))}
@@ -125,11 +141,16 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
       data-vcard-size={size}
       data-focused={focused ? '' : undefined}
       data-dimmed={dimmed ? '' : undefined}
-      className={cn(ROOT[size], focused && 'ring-2 ring-ring/40', className)}
+      className={cn(ROOT[size], withIdentity && 'ring-1 ring-primary', focused && 'ring-2 ring-ring/40', className)}
       {...rest}
     >
       {mediaNode}
       <div className={cn('flex min-w-0 flex-1 flex-col', isStacked ? (size === 'spotlight' ? 'gap-2 p-5' : 'gap-1.5 p-4') : 'gap-0.5')}>
+        {withIdentity && (
+          <div className="text-xs font-bold uppercase tracking-widest text-primary" data-vcard-spotlight-label="">
+            {t('spotlight.grid.label')}
+          </div>
+        )}
         {eyebrow && <div className="text-xs font-bold uppercase tracking-wide text-primary">{eyebrow}</div>}
         <div className={cn('line-clamp-2', TITLE[size])}>{title}</div>
         {meta && <div className="truncate text-xs text-muted-foreground">{meta}</div>}

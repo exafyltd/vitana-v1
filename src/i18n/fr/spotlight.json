@@ -23,6 +23,36 @@
         "keyboardHint": true
       },
       "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "grid": {
+      "label": "À la une",
+      "seeAll": "Tout voir",
+      "emptyTiles": "Rien à afficher ici pour l'instant.",
+      "health": {
+        "section": "Ta santé",
+        "upNext": "À suivre · Pour toi",
+        "viewBreakdown": "Voir le détail",
+        "askVitana": "Demande à Vitana",
+        "biology": "Ma biologie",
+        "trend": "Tendance sur 7 jours",
+        "todayPlan": "Ton plan du jour"
+      },
+      "discover": {
+        "section": "Recommandé pour toi",
+        "browseCategories": "Parcourir les catégories"
+      },
+      "events": {
+        "featured": "À la une",
+        "thisWeek": "Cette semaine",
+        "upcoming": "À venir",
+        "join": "Participer"
+      },
+      "match": {
+        "topMatch": "Ta meilleure correspondance",
+        "sayHello": "Dire bonjour",
+        "viewProfile": "Voir le profil",
+        "morePeople": "D'autres personnes pour toi"
+      }
     }
   }
 }

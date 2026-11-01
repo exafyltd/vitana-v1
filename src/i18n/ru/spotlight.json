@@ -23,6 +23,36 @@
         "keyboardHint": true
       },
       "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "grid": {
+      "label": "В центре внимания",
+      "seeAll": "Смотреть все",
+      "emptyTiles": "Здесь пока нечего показать.",
+      "health": {
+        "section": "Твоё здоровье",
+        "upNext": "Далее · Для тебя",
+        "viewBreakdown": "Подробнее",
+        "askVitana": "Спроси Vitana",
+        "biology": "Моя биология",
+        "trend": "Тренд за 7 дней",
+        "todayPlan": "Твой план на сегодня"
+      },
+      "discover": {
+        "section": "Рекомендуем тебе",
+        "browseCategories": "Смотреть категории"
+      },
+      "events": {
+        "featured": "Избранное",
+        "thisWeek": "На этой неделе",
+        "upcoming": "Скоро",
+        "join": "Участвовать"
+      },
+      "match": {
+        "topMatch": "Твоё лучшее совпадение",
+        "sayHello": "Поздороваться",
+        "viewProfile": "Открыть профиль",
+        "morePeople": "Ещё люди для тебя"
+      }
     }
   }
 }

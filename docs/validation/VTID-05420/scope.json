@@ -1,0 +1,35 @@
+{
+  "vtid": "VTID-05420",
+  "slug": "spotlight-card-proportion",
+  "lane": "layout-core",
+  "repo": "exafyltd/vitana-v1",
+  "change_types": ["UI", "Tooling/docs"],
+  "paths": [
+    "src/components/layout/spotlight/SpotlightGrid.tsx",
+    "src/components/layout/spotlight/ScreenFrame.tsx",
+    "src/components/layout/spotlight/index.ts",
+    "src/components/layout/spotlight/spotlight-grid.test.tsx",
+    "src/components/layout/spotlight/spotlight.vtid-05105.test.tsx",
+    "src/components/layout/spotlight/skeletons/ArchetypeSkeleton.tsx",
+    "src/components/layout/spotlight/skeletons/SpotlightLoading.tsx",
+    "src/components/layout/spotlight/skeletons/SpotlightLoading.test.tsx",
+    "src/components/ui/vcard/VCard.tsx",
+    "src/components/ui/vcard/VCard.test.tsx",
+    "src/i18n/*/spotlight.json",
+    "i18n-source-stamps/*.json",
+    "docs/design-system/SPOTLIGHT_RULES.md",
+    "docs/validation/VTID-05420/**"
+  ],
+  "not_touched_from_lane_paths": {
+    "docs/SCREEN_INVENTORY.md": "npm run i18n:inventory on Windows writes backslash paths and a different sort order (390 → 396 sections, every heading changed); committing it would be wrong output. This lane consumes no new key from src/pages/**, so the inventory content is unaffected by it. CI i18n-check only warns on staleness."
+  },
+  "weakens_tests": [],
+  "protected_gate_files": [],
+  "default_behaviour_unchanged": [
+    "ARCHETYPE_WIDTH",
+    "ArchetypeSkeleton default shapes",
+    "SpotlightLoading MobileShape",
+    "ScreenFrame without layout",
+    "VCard without spotlightLabel"
+  ]
+}

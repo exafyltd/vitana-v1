@@ -23,6 +23,36 @@
         "keyboardHint": true
       },
       "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "grid": {
+      "label": "Öne çıkan",
+      "seeAll": "Tümünü gör",
+      "emptyTiles": "Burada henüz gösterilecek bir şey yok.",
+      "health": {
+        "section": "Sağlığın",
+        "upNext": "Sırada · Senin için",
+        "viewBreakdown": "Ayrıntıları gör",
+        "askVitana": "Vitana'ya sor",
+        "biology": "Biyolojim",
+        "trend": "7 günlük eğilim",
+        "todayPlan": "Bugünkü planın"
+      },
+      "discover": {
+        "section": "Senin için önerilenler",
+        "browseCategories": "Kategorilere göz at"
+      },
+      "events": {
+        "featured": "Öne çıkanlar",
+        "thisWeek": "Bu hafta",
+        "upcoming": "Yaklaşanlar",
+        "join": "Katıl"
+      },
+      "match": {
+        "topMatch": "En iyi eşleşmen",
+        "sayHello": "Merhaba de",
+        "viewProfile": "Profili gör",
+        "morePeople": "Senin için daha fazla kişi"
+      }
     }
   }
 }
