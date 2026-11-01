@@ -19,6 +19,7 @@ const MIGRATED: { route: string; file: string }[] = [
   { route: '/comm/groups', file: 'src/pages/community/Groups.tsx' },
   { route: '/comm/groups/:id', file: 'src/pages/community/GroupDetail.tsx' },
   { route: '/comm/live-rooms', file: 'src/pages/community/LiveRooms.tsx' },
+  { route: '/comm/find-partner', file: 'src/pages/community/FindPartner.tsx' },
 ];
 
 describe('VTID-05110 archetype matches the screen manifest', () => {
@@ -65,19 +66,34 @@ vi.mock('@/hooks/useGroupDirectory', () => ({ useGroupDirectory: () => ({ data: 
 vi.mock('@/hooks/useGroupMembership', () => ({
   useGroupMembership: () => ({ isMember: true, checkingMembership: false, isJoining: false, isLeaving: false, joinGroup: vi.fn(), leaveGroup: vi.fn() }),
 }));
+// VTID-05418 — Find a Match "My Matches" fixture (8 matches → 1 spotlight + 6 tiles + 1 row card).
+const findMatches = Array.from({ length: 8 }, (_, i) => ({
+  match_id: `m${i}`, intent_a_id: 'mine', intent_b_id: `t${i}`, vitana_id_a: 'me', vitana_id_b: `member${i}`,
+  external_target_kind: null, external_target_id: null, kind_pairing: 'activity_seek::activity_seek', score: 0.8,
+  match_reasons: {}, compass_aligned: false, state: 'new', created_at: '', partner_display_name: `Member ${i}`,
+  partner_match_cover_url: null, source_intent_id: 'mine', source_category: 'dance.salsa', vertical: 'dance',
+}));
 vi.mock('@tanstack/react-query', async (orig) => ({
   ...(await orig<typeof import('@tanstack/react-query')>()),
+  useQueryClient: () => ({ invalidateQueries: vi.fn() }),
   useQuery: ({ queryKey }: { queryKey: unknown[] }) =>
     queryKey[0] === 'group-detail'
       ? { data: { ...groups[0], description: 'Icy mornings' }, isLoading: false }
-      : { data: [], isLoading: false },
+      : queryKey[0] === 'find-partner-matches'
+        ? { data: findMatches, isLoading: false, isSuccess: true }
+        : { data: [], isLoading: false },
 }));
+vi.mock('@/components/intents/FindPartnerMatchCard', () => ({ FindPartnerMatchCard: () => <article data-testid="match-card" /> }));
+vi.mock('@/components/intents/FindMatchFilterSheet', () => ({ FindMatchFilterSheet: () => null }));
+vi.mock('@/components/intents/IntentComposer', () => ({ IntentComposer: () => null }));
+vi.mock('@/components/intents/IntentCard', () => ({ IntentCard: () => null }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {} }));
 vi.mock('@/components/community/GroupFeed', () => ({ GroupFeed: () => <div data-testid="group-feed" /> }));
 vi.mock('@/components/community/GroupMembersDialog', () => ({ GroupMembersDialog: () => null }));
 
 import Groups from './Groups';
 import GroupDetail from './GroupDetail';
+import FindPartner from './FindPartner';
 
 const at = (url: string, pattern: string, el: React.ReactElement) =>
   render(
@@ -121,5 +137,36 @@ describe('VTID-05110 flag switch on real pages', () => {
     expect(screen.getByTestId('group-feed')).toBeInTheDocument();
     expect(on.container.querySelector('aside[data-spotlight-rail]')).not.toBeNull();
     expect(screen.getByText('spotlightSocial.groups.leave')).toBeInTheDocument();
+  });
+
+  it('FindPartner: flag off → today\'s match cards, no VCards; on → Spotlight grid with exactly one spotlight (VTID-05418)', () => {
+    const off = at('/comm/find-partner?view=matches', '/comm/find-partner', <FindPartner />);
+    expect(off.container.querySelector('[data-archetype]')).toBeNull();
+    expect(off.container.querySelector('[data-vcard-size]')).toBeNull();
+    expect(off.container.querySelector('[data-spotlight-grid]')).toBeNull();
+    expect(screen.getAllByTestId('match-card')).toHaveLength(8);
+    off.unmount();
+
+    spotlightOn = true;
+    const on = at('/comm/find-partner?view=matches', '/comm/find-partner', <FindPartner />);
+    const frame = on.container.querySelector('[data-archetype]')!;
+    expect(frame.getAttribute('data-archetype')).toBe('collection');
+    expect(frame.getAttribute('data-screen-layout')).toBe('spotlight-grid');
+    expect(screen.getByTestId('header').getAttribute('data-density')).toBe('compact');
+    expect(on.container.querySelectorAll('[data-spotlight-grid] [data-vcard-size="spotlight"]')).toHaveLength(1);
+    expect(on.container.querySelectorAll('[data-vcard-size="spotlight"]')).toHaveLength(1);
+    expect(on.container.querySelectorAll('[data-slot="tiles"] [data-vcard-size="standard"]')).toHaveLength(6);
+    expect(on.container.querySelectorAll('[data-slot="row"] [data-vcard-size="compact"]')).toHaveLength(1);
+    expect(screen.queryByTestId('match-card')).toBeNull();
+    expect(screen.getByRole('button', { name: 'spotlight.grid.match.sayHello' })).toBeInTheDocument();
+  });
+
+  it('FindPartner: flag on, board view → the shared result area, no Spotlight grid (VTID-05418)', () => {
+    spotlightOn = true;
+    const on = at('/comm/find-partner?view=board', '/comm/find-partner', <FindPartner />);
+    expect(on.container.querySelector('[data-archetype]')!.getAttribute('data-archetype')).toBe('collection');
+    expect(on.container.querySelector('[data-screen-layout]')).toBeNull();
+    expect(on.container.querySelector('[data-spotlight-grid]')).toBeNull();
+    expect(on.container.querySelectorAll('[data-vcard-size="spotlight"]')).toHaveLength(0);
   });
 });

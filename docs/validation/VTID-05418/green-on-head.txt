@@ -1,0 +1,11 @@
+# head = lane worktree (implementation + tests)
+12:31:37 [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 C:/Users/dstev/vitana-v1/.worktrees/spotlight-card-proportion-find-a-match-v1
+
+
+ Test Files  2 passed (2)
+      Tests  22 passed (22)
+   Start at  12:31:38
+   Duration  68.43s (transform 34.30s, setup 5.80s, import 71.08s, tests 4.59s, environment 40.87s)
+

@@ -65,3 +65,4 @@ export { eventToVCard } from './event';
 export { liveRoomToVCard } from './liveRoom';
 export { groupToVCard } from './group';
 export { memberToVCard } from './member';
+export { matchToVCard, matchCounterparty, isRedactedMatch, canGreetMatch } from './match';
