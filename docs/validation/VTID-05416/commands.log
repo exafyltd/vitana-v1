@@ -14,4 +14,4 @@
 5. npm run build -> ok (built in 3m 1s; chunk-size warning only, pre-existing).
 6. Local screenshots: not taken - the overview grid only renders with the signed-in member's marketplace feed from
    the production Supabase project; the read-only staging spec vtid-05416-discover-spotlight-grid carries the visual
-   proof (1400x900, 1920x1080, phone 390x844).
+   proof (1400x900, 1920x1080, phone 390x844).7. node scripts/collab/preflight.mjs --repo <WT> --base origin/main --head HEAD (on d3b1f769d) -> PASS Collab handoff, Lane scope, gh lane files, PR-GATE scope/sparring/weakening/red-green; FAIL Kiro steering only (report-only): guard.test.cjs expects LF front matter and the Windows checkout has CRLF in untouched .kiro/steering files (same red layout-core recorded); not a lane file. CI runs on Linux.
