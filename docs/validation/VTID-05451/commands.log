@@ -107,3 +107,15 @@ exit=0
 $ npx vitest run src/i18n scripts/native
 Test Files 3 passed (3); Tests 25 passed (25)
 exit=0
+
+## preflight (on 10110adb1)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-public-auth-onboarding-r3/public-legal --title "VTID-05451 (native-wave2-public-auth-onboarding-r3/public-legal): native public and legal screens port"
+first run: FAIL Collab handoff + Lane scope — "lane file not found ... or vitana-platform": the GitHub API quota was exhausted (gh api rate_limit: remaining 0, HTTP 403), so the vitana-platform lane file could not be fetched. Infra, no code change.
+rerun after the quota reset:
+PASS  Collab handoff
+PASS  Lane scope [required]
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope / sparring / weakening / red-green
+PASS  Kiro steering
+preflight: every check passed
+exit=0
