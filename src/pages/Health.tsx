@@ -49,9 +49,11 @@ import { MobileHealthSupplementsTab } from "@/components/health/mobile/MobileHea
 import { HealthReportUploadSheet } from "@/components/health/mobile/HealthReportUploadSheet";
 import { QuickLabOrderSheet } from "@/components/health/mobile/QuickLabOrderSheet";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
-import { ScreenFrame } from "@/components/layout/spotlight";
+import { ArchetypeSkeleton, ScreenFrame, SpotlightGrid } from "@/components/layout/spotlight";
 import { useSpotlightEnabled } from "@/hooks/useSpotlightEnabled";
 import { VitanaIndexHeroCard } from "@/components/spotlight/tier-b/VitanaIndexHeroCard";
+import { healthGridTiles, healthUpNextRow } from "@/components/spotlight/tier-b/HealthGridTiles";
+import { activateOrb } from "@/lib/orbActivate";
 
 const overviewCards = [
   {
@@ -130,7 +132,7 @@ export default withScreenId(function Health() {
   const spotlight = useSpotlightEnabled();
   const { profile } = useProfile();
   const { translate } = useTranslation();
-  const { pendingCount, getLatestActions } = useAutopilot();
+  const { pendingCount, pendingActions, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -434,12 +436,22 @@ export default withScreenId(function Health() {
   // the legacy desktop (demo actions, schedule, community activity, the fixed
   // 45 % completeness) are not shown here (contract SR-24).
   if (spotlight) {
+    // VTID-05419 — contract SR-31: the Vitana Index is the one Spotlight card
+    // (~40 % top-start), six health tiles beside it, "Up next · For you" below.
+    const healthGridInput = {
+      index: liveVitanaIndex,
+      pendingActions,
+      onOpenIndex: handleOpenIndexSheet,
+      onOpenAutopilot: () => setAutopilotOpen(true),
+      onNavigate: (to: string) => navigate(to),
+    };
     return (
       <AppLayout>
         <SEO title={t('screens.health.health')} description={translate('health.description')} canonical={window.location.href} />
         <VitanaBaselineSurveyModal />
         <ScreenFrame
           archetype="dashboard"
+          layout="spotlight-grid"
           subNav={{ items: healthNavigation }}
           header={{ title: t('screens.health.letSImproveQualityLife'), description: t('spotlightTierB.health.description'), emoji: '🌱' }}
           utility={{
@@ -455,22 +467,36 @@ export default withScreenId(function Health() {
             ),
           }}
         >
-          <div className="flex flex-col gap-6">
-            <VitanaIndexHeroCard
-              index={liveVitanaIndex}
-              isLoading={liveVitanaIndexLoading}
-              onOpen={handleOpenIndexSheet}
-              openLabel={t('screens.health.openVitanaIndexForecast')}
-              actions={
-                <Button variant="ghost" size="sm" onClick={() => navigate('/autopilot')}>
-                  {t('screens.health.viewMyJourney')}
-                  <ChevronRight className="ms-0.5 h-4 w-4 rtl:-scale-x-100" />
-                </Button>
+          {liveVitanaIndexLoading && !liveVitanaIndex ? (
+            <ArchetypeSkeleton archetype="dashboard" layout="spotlight-grid" />
+          ) : (
+            <SpotlightGrid
+              label={t('spotlight.grid.health.section')}
+              spotlight={
+                <VitanaIndexHeroCard
+                  index={liveVitanaIndex}
+                  isLoading={liveVitanaIndexLoading}
+                  onOpen={handleOpenIndexSheet}
+                  openLabel={t('screens.health.openVitanaIndexForecast')}
+                  spotlightLabel
+                  ringMedia
+                  actions={
+                    <>
+                      <Button variant="default" size="sm" onClick={handleOpenIndexSheet}>
+                        {t('spotlight.grid.health.viewBreakdown')}
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => activateOrb()}>
+                        {t('spotlight.grid.health.askVitana')}
+                        <ChevronRight className="ms-0.5 h-4 w-4 rtl:-scale-x-100" />
+                      </Button>
+                    </>
+                  }
+                />
               }
+              tiles={healthGridTiles(healthGridInput)}
+              row={healthUpNextRow(healthGridInput)}
             />
-            <VitanaPillarAgentsPanel />
-            <NextBestActionCard />
-          </div>
+          )}
         </ScreenFrame>
 
         <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />

@@ -1,0 +1,20 @@
+{
+  "vtid": "VTID-05419",
+  "service": "community-app",
+  "lane": "spotlight-card-proportion/health",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, /health?spotlight=1 at 1400x900 and 1920x1080 after the grid skeleton cleared: the frame carries data-screen-layout=spotlight-grid; exactly 1 non-skeleton spotlight card in [data-spotlight-grid] (the Vitana Index, with its Spotlight label) at >= 30 % and <= 45 % of the [data-spotlight-layout] width; 6 standard tiles beside it (top within the spotlight's vertical span, on its inline-end side); the Up next row (when rendered) below the spotlight; compact header with 2 buttons and the utility bar visible; no horizontal scroll LTR and RTL. 390x844 without query: no [data-spotlight-layout], no [data-archetype], .mobile-bottom-nav visible. Read-only: no control is clicked",
+      "spec": "tests/e2e/staging/vtid-05419-health-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Health page with mocked hooks: grid frame, one Vitana Index spotlight with label + ring + five pillars, six standard tiles in order, Up next compact row (weakest-pillar lift first; hidden without actions), no invented numbers without an index, grid skeleton while loading, View breakdown / Ask Vitana / tile handlers, flag off unchanged; VitanaIndexHeroCard default call unchanged; Health source contract",
+      "ref": "npx vitest run src/components/spotlight/tier-b/health-grid.test.tsx src/pages/spotlight-tier-b.vtid-05111.test.tsx",
+      "cwd": ".",
+      "reason": "The tile content, empty and loading states and the click handlers are deterministic in jsdom with mocked hooks; staging proves the proportion and placement on the deployed build without writing anything"
+    }
+  ]
+}
