@@ -42,3 +42,28 @@ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <work
 
 ## not run (deferred to G1, next_actor: owner)
 # Maestro flows apps/mobile/maestro/wallet-subscriptions/*.yaml, iOS simulator / Android emulator screenshots, parity vs 390x844 read-only staging.
+
+## fix 1 (driver finding: wire the web billing writes) — merge origin/main ec8682fec (8d8c0c6a9), code commit f056f2e943607e019977382f83a2578e5f1afcf0
+git merge origin/main                                        # clean merge, no conflict (regenerated core extract headers from #1544 included)
+cd apps/mobile && npx jest tests/wallet-subscriptions/billing-requests.test.tsx --ci   # RED before the fix: 3 failed, 4 passed — red-fix1.txt
+#   (fix: BillingActions default = gatewayBillingActions; deferredBillingActions + walletSubscriptionsNative.finishOnWeb removed in 11 locales)
+npm run gen:i18n                                             # PASS: 11 locales, 1430 shards
+npx jest tests/wallet-subscriptions --ci                     # PASS: 4 suites, 106/106 tests (subscriptions, billing-requests, iap-parity unchanged, routing-i18n)
+npm run typecheck                                            # PASS: tsc --noEmit, 0 errors
+npm test -- --ci                                             # PASS: 84/84 suites, 2264/2264 tests
+APP_PROFILE=development npm run bundle                       # PASS: Exported: dist (HOME pointed at a writable dir; dist removed after)
+APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check    # PASS: Dependencies are up to date
+npm run parity:check                                         # PASS: OK — 435 rows, 32 native route(s)
+node ../../scripts/native/core-closure.mjs --check           # PASS: 22 roots, 32 src files, 11 assets — up to date
+node ../../scripts/native/gen-core-extract.mjs --check       # PASS: up to date (main's stale-extract red is cleared by the merge)
+# repo root
+npx eslint <lane paths as above>                             # PASS: 0 problems
+npm run i18n:audit                                           # exit 1, 17193 errors, same count as before; 0 mention walletSubscriptionsNative; coverage 100.0% vs DE in all 10 locales
+node scripts/i18n-register-check.mjs --all --max=500         # PASS: no formal-register violations
+npm run i18n:stale                                           # PASS: exit 0
+node scripts/check-i18n-subscriptions.mjs                    # PASS: OK — 776 components
+node scripts/check-locale-registry.mjs                       # PASS
+node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22   # PASS: no long words
+node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-subscriptions --title "VTID-05425 (native-wave2-wallet-r2/wallet-subscriptions): native wallet subscriptions port"
+#   PASS: every check passed (Collab handoff, Lane scope, gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering)
+# No live endpoint was called by any test or command in this fix.

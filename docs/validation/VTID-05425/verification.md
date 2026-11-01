@@ -3,7 +3,7 @@
 Native Wave 2 wallet-subscriptions lane: the `/wallet/subscriptions` overview and the
 `/profile/subscriptions` storefront. All commands ran offline in the Linux worktree
 `/projects/sandbox/vitana-v1/.worktrees/native-wave2-wallet-r2-wallet-subscriptions`, base
-`origin/main` `a41e89a0d`. The native app has no production profile; `assertNotProduction()`
+`origin/main` `a41e89a0d`; fix 1 merged `origin/main` `ec8682fec`. The native app has no production profile; `assertNotProduction()`
 refuses prod/staging hosts. Not verified on staging: device runtime deferred to G1.
 
 ## What was built
@@ -29,14 +29,16 @@ refuses prod/staging hosts. Not verified on staging: device runtime deferred to 
   are re-implemented on the native gateway client. No core entry is added (wallet-home owns the
   only extraction).
 - `data/actions.ts`: every billing write (choose plan, buy credit pack, manage / withdraw via the
-  portal, redeem) goes to `BillingActions`. The app default makes **no call**: it shows
-  `walletSubscriptionsNative.finishOnWeb` and resolves `null`. `gatewayBillingActions` carries the
-  web wire format but is wired nowhere in the app; the tests run it against the fake gateway to
-  pin paths and payloads. This matches the sibling wallet-home lane's `WalletActions`.
+  portal, redeem) goes to `BillingActions`, whose app default is `gatewayBillingActions`: the web
+  `src/lib/billingApi.ts` requests on the native gateway client (`POST /billing/checkout/subscription`
+  `{price_key}`, `POST /billing/checkout/credits` `{pack_key}`, `POST /billing/portal` with no body,
+  `POST /billing/redeem` `{code}`, JSON). A returned hosted Stripe URL is opened with
+  `Linking.openURL` (`openBillingUrl`), where the web assigns `window.location` / `window.open`.
+  The plan names no surface where the web defers a billing write, so no deferred variant is kept.
 - `apps/mobile/src/ports/billing.tsx`: the N2 `Accordion*` / `Progress` and the lucide glyphs these
   screens draw, in their own port so the parallel wallet lanes do not edit the same
   `ports/ui.tsx` lines.
-- `src/i18n/*/walletSubscriptionsNative.json`: 9 new keys, DE first (du-form), then all 11 locales
+- `src/i18n/*/walletSubscriptionsNative.json`: 8 new keys, DE first (du-form), then all 11 locales
   (pt você, fr tu, ru ты, ar). The existing `billing.*` and `common.back` keys are reused.
 - `apps/mobile/src/navigation/resolve.ts`: `/profile/subscriptions` and `/wallet/subscriptions`
   added to `NATIVE_ROUTES`.
@@ -56,31 +58,31 @@ No gate is added, removed, widened or narrowed. Subscriptions are recorded as **
 for the owner's decision-5 call (StoreKit / Play Billing or hidden on iOS); that decision is not
 made here (`next_actor: owner`).
 
-## No purchase, checkout or subscription call
+## Billing writes (fix 1)
 
-The app default `BillingActions` makes no call (tests: "the app default BillingActions" — no POST
-reaches the gateway, `Linking.openURL` is never called, the `?code=` deep link makes no redeem
-call, and only the two GET reads reach the gateway). All tests run on the fake gateway behind the
-no-network guard.
+The shipped screens make the web's billing requests. `tests/wallet-subscriptions/billing-requests.test.tsx`
+asserts them against the fake gateway: the four request builders (path, method, JSON body,
+`Content-Type`), and the app default `BillingActions` with no provider injected (Choose, Buy,
+larger-plan Choose, Redeem, Manage, Withdraw and the `?code=` deep link post the web requests and
+hand the hosted URL to the spied `Linking.openURL`). Red on the previous head: `red-fix1.txt`
+(3 app-default tests failed, 4 builder tests passed). The earlier "app default makes no call"
+tests asserted the misread behaviour and were replaced by these; the "only GET reads on render"
+test is kept. The IAP tests (`iap-parity.test.tsx`) are unchanged. All tests run on the fake
+gateway behind the no-network guard; no test and no verification command calls a live endpoint.
 
 ## Deviations from the spec (also in the PR body)
 
-1. Billing writes go to `BillingActions`, whose default makes no call (owner instruction for this
-   lane: no real purchase, checkout or subscription call). On the web the same buttons open the
-   hosted Stripe checkout / portal. The buttons stay visible exactly where the web shows them,
-   iOS included. Turning the writes on (`gatewayBillingActions`) is a later wallet FEAT behind
-   decision 5 and G1.
-2. Text the web hard-codes in English gets catalog keys: the wallet sub-nav labels, the
+1. Text the web hard-codes in English gets catalog keys: the wallet sub-nav labels, the
    billing-interval `aria-label`, the Free plan's "40 min/mo · 1 session" line, and the loading
    label.
-3. The web error card shows `error.message` (backend message or `HTTP <status>`). Native shows
+2. The web error card shows `error.message` (backend message or `HTTP <status>`). Native shows
    the backend `message` when there is one, otherwise `billing.checkoutErrors.checkoutFailed`, so
    no raw transport string reaches the screen.
-4. The web 402 paywall interceptor (`PaywallProvider`) has no native twin yet. None of these
+3. The web 402 paywall interceptor (`PaywallProvider`) has no native twin yet. None of these
    reads is metered.
-5. `YourEarningsWidget` on the web calls a hook after its early return. Native calls it first,
+4. `YourEarningsWidget` on the web calls a hook after its early return. Native calls it first,
    which renders the same output.
-6. The storefront back button falls back to `/home` when there is no history (web `navigate(-1)`).
+5. The storefront back button falls back to `/home` when there is no history (web `navigate(-1)`).
    Its arrow flips in RTL.
 
 ## Commands and results
