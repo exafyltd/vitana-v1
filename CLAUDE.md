@@ -105,8 +105,7 @@ accepts a lane, never its builder; CI spars every `plan(` PR (`PLAN-SPAR.yml` in
 converged plan by policy (`converged-auto-v1`) and allocates the VTIDs; the Project Manager merges under the PM merge
 rule §7b (the plan driver applies it while the PM is not live) and sends Gate 2. Claude Code is optional and handles
 exceptions; `executor: claude` lanes go to the exceptions seat while it is unavailable (§7). A protected gate file
-(§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs a legacy Claude or owner review on the
-current head. Kiro merges to `main`/staging only under §7b, deploys to production only on the owner's explicit command
+(§3a, e.g. `CLAUDE.md`) never merges on a reviewer-agent accept alone: it needs the owner's instruction naming the plan plus a reviewer-agent accept on the current head (Claude Code is retired). Kiro merges to `main`/staging only under §7b, deploys to production only on the owner's explicit command
 in the conversation (§7c: a full publish, or only one session's changes) and never writes a live system from session
 tools. See `.claude/rules/collaboration.md` §7–§8b.
 
@@ -165,14 +164,26 @@ CLAUDE.md Part 1 rules 46–50). For this repo:
    a network guard aborts every non-`GET` to the gateway and Supabase REST
    except sign-in. Anything that needs a write is covered by Vitest. No suite
    ever points at `vitanaland.com`.
-4. **Ready message — Claude Code session + Command Hub Operator Chat only:**
-   *"Staging verified — ready for deployment to production?"*, with the
-   verified commit, results and every commit between production and it.
-5. **"Yes" → PUBLISH directly** — the Command Hub promotion, or from Claude
-   Code the prod workflow pinned to the verified commit (`commit_sha`). The
-   commit list in the ready message is what the "yes" approves; the
-   in-session scoping rules below apply to anything outside it. Verification
-   failed → no prompt, fix forward.
+4. **Ready message — the Kiro / Claude Code session + Command Hub Operator
+   Chat only:** *"Staging verified — ready for deployment to production?"*,
+   with the verified commit, results and every commit between production and
+   it.
+5. **"Yes" → PUBLISH directly.** There are two routes:
+   - the Command Hub promotion;
+   - a Kiro or Claude Code session, when the owner explicitly commands it in
+     that conversation. The session runs the prod workflow pinned to the
+     verified commit (`commit_sha`).
+
+   A session publish is either:
+   - **full** — the whole verified staging build, the same as the button; or
+   - **session-scoped** — only the changes one session made (this session,
+     or a session id the owner names), pinned to that session's last merge
+     commit. It does not have to ship everything on staging. Stop and tell
+     the owner if anything else would ship.
+
+   Platform CLAUDE.md rule 50a and `collaboration.md` §7c apply. The
+   in-session scoping rules below apply to anything outside the approved
+   commit list. Verification failed → no prompt, fix forward.
 
 After PUBLISH, production gets the deploy check in "Verifying a frontend
 deploy actually shipped" (`.claude/rules/infrastructure.md`) and nothing

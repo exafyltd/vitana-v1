@@ -18,7 +18,7 @@ paths:
 claimed_by: kiro-202610161055-a631
 branch: kiro/messenger-paste-enter/composer
 pr: https://github.com/exafyltd/vitana-v1/pull/1445
-updated: 2026-10-19T14:35Z
+updated: 2026-10-20T09:40Z
 ---
 # Paste screenshots and Enter-to-send in the Messenger composer
 Plan: `.kiro/specs/messenger-paste-enter/` — `plan.md` (plan block) and the `tasks.md` section marked
@@ -83,3 +83,26 @@ the messenger issues", so I re-claimed the lane.
   `getI18nLocale`, which the date formatting calls once those messages are a few days old. This lane doesn't touch it,
   and it is outside the lane's paths. It needs its own fix.
 - **Next:** merge only on the owner's explicit "merge #1445" (§7b), then STAGING-VERIFY, then Gate 2.
+
+### 2026-10-19T14:50Z · kiro-202610161055-a631 · executing (merged under §7b; staging deploy blocked)
+Owner instruction 2026-10-19, in the conversation: "merge it" (PR #1445). Merged by squash as
+**32a82e6b68407fc1b45b7a7eca43123c9a0e067b**. Independent review approved (semantic_reviewer, 2 rounds). Required checks
+were green. The only red check, `Vitest (jsdom)`, is not required and fails on main too: the date-dependent
+deep-link test.
+`DEPLOY.yml` (production) ran only its cutover gate: frozen, `aws_prod` skipped. Nothing went to production.
+`AWS Stage Deploy Community App (ECS)` run 39271829177 failed twice (attempts 1 and 2) before building anything: the
+public.ecr.aws base-image pull (`node:20-alpine`, `nginx`) returned `429 toomanyrequests: Data limit exceeded`.
+That is a CI infrastructure limit, not this change. STAGING-VERIFY has not run, so there is no Gate 2 yet.
+
+### 2026-10-20T09:40Z · kiro-202610161055-a631 · executing (staging deployed; STAGING-VERIFY blocked by the CI runner, no Gate 2)
+Owner: "retry". The staging deploy (`AWS Stage Deploy Community App (ECS)` run 39271829177) went green on attempt 3
+(the earlier failures were the public.ecr.aws 429 limit, now clear). The build at 32a82e6b6 is live on staging.
+STAGING-VERIFY community-app run 39397664080 then FAILED, twice, for a reason outside this change: the `ubuntu-latest`
+runner is now Ubuntu 26.04, and the pinned Playwright 1.51.0 has no Chromium for it
+(`ERROR: Playwright does not support chromium on ubuntu26.04-x64`). EVERY browser suite failed at
+`npx playwright install chromium --with-deps` — the smoke suite and VTID-05206 too, not just VTID-05229 — and the
+gateway STAGING-VERIFY run 39398336187 failed the same way. No staging-guard abort; the VTID-05229 Vitest part passed
+(21/21). This is a platform/runner break, fix is a `.github/workflows` change (pin the runner to `ubuntu-22.04`/`-24.04`
+or bump Playwright) — governance path, Claude Code only (collaboration §7). Handing that off.
+No Gate 2: a change is verified only when STAGING-VERIFY is green on its commit, and it is not. Not a production issue;
+production is untouched (`DEPLOY.yml` froze at the cutover gate).

@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05409",
+  "slug": "kiro-lane-admin",
+  "lane": "rules",
+  "kind": "docs",
+  "sparring_record": "docs/validation/VTID-05409/plan-sparring.md",
+  "summary": "vitana-v1 side of the kiro-lane-admin `rules` lane: the byte-identical CLAUDE.md protected-gate sentence mirror. The authoritative rule-text edits (collaboration.md, common-rules.md, vitana-owner-autonomy.md, platform CLAUDE.md) and the full validation records live in the sibling vitana-platform PR for VTID-05409; this PR carries only the CLAUDE.md mirror so both repos' CLAUDE.md stay byte-identical (sha256 recorded in the platform PR).",
+  "paths": [
+    "CLAUDE.md",
+    "docs/validation/VTID-05409/**"
+  ]
+}
