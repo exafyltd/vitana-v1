@@ -1,0 +1,42 @@
+{
+  "vtid": "VTID-05451",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(public)/index.tsx",
+    "apps/mobile/app/(public)/privacy.tsx",
+    "apps/mobile/app/(public)/terms.tsx",
+    "apps/mobile/app/(public)/maxina_support.tsx",
+    "apps/mobile/app/(public)/i/[code].tsx",
+    "apps/mobile/app/(public)/apply.tsx",
+    "apps/mobile/app/(public)/_intro/[tenantSlug].tsx",
+    "apps/mobile/src/screens/public/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/public/**",
+    "apps/mobile/maestro/public/**",
+    "src/i18n/*/publicLegalNative.json",
+    "docs/validation/VTID-05451/**"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(public)/index.tsx",
+    "apps/mobile/app/(public)/privacy.tsx",
+    "apps/mobile/app/(public)/terms.tsx",
+    "apps/mobile/app/(public)/maxina_support.tsx",
+    "apps/mobile/app/(public)/i/[code].tsx",
+    "apps/mobile/app/(public)/apply.tsx",
+    "apps/mobile/app/(public)/_intro/[tenantSlug].tsx",
+    "apps/mobile/src/screens/public/**",
+    "apps/mobile/src/ports/public.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/public/**",
+    "apps/mobile/maestro/public/README.md",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/publicLegalNative.json",
+    "docs/validation/VTID-05451/**"
+  ],
+  "core_change": "none — the web sources' pure parts (invite-code storage, apply validation, legal scoped t) sit in class-B modules (invite-attribution.ts imports the community gateway, Apply.tsx the Supabase client) and are mirrored natively in src/screens/public/**; no packages/core manifest / closure / extract / mobile-ci-paths change (core-closure --check up to date)",
+  "sparring_record": "docs/validation/VTID-05451/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
