@@ -12,7 +12,8 @@
  *  - WalletMasterActionPopup: the "Transfer & convert" section is hidden;
  *  - MobileWalletQuickActions: add-funds / buy-credits / exchange / withdraw
  *    are filtered out (send stays);
- *  - AddFunds / BuyCredits / Withdraw / SpendCredits popups render nothing;
+ *  - AddFunds / BuyCredits / Withdraw / SpendCredits / ExchangeStep /
+ *    ExchangeAndSend popups render nothing (send / request are ungated);
  *  - src/pages/wallet/Balance.tsx: `getContextualAction` returns null (no
  *    top-up / tokens / upgrade affordance); the membership tab stays visible.
  * Non-iOS (Android) shows all of them.
@@ -142,8 +143,8 @@ describe('quick actions (MobileWalletQuickActions)', () => {
   });
 });
 
-describe('purchase popups (AddFunds / BuyCredits / Withdraw / SpendCredits)', () => {
-  const gated: WalletFlowKind[] = ['add-funds', 'buy-credits', 'withdraw', 'spend-credits'];
+describe('purchase popups (AddFunds / BuyCredits / Withdraw / SpendCredits / ExchangeStep / ExchangeAndSend)', () => {
+  const gated: WalletFlowKind[] = ['add-funds', 'buy-credits', 'withdraw', 'spend-credits', 'exchange', 'exchange-and-send'];
 
   it.each(gated)('%s renders nothing on iOS', (kind) => {
     setOS('ios');
@@ -153,6 +154,12 @@ describe('purchase popups (AddFunds / BuyCredits / Withdraw / SpendCredits)', ()
 
   it.each(gated)('%s renders on Android', async (kind) => {
     setOS('android');
+    renderUI(<WalletFlowSheet kind={kind} open onClose={() => {}} />);
+    expect(await screen.findByTestId(`wallet-flow-${kind}`)).toBeTruthy();
+  });
+
+  it.each(['send', 'request'] as WalletFlowKind[])('%s is ungated on the web and stays ungated on iOS', async (kind) => {
+    setOS('ios');
     renderUI(<WalletFlowSheet kind={kind} open onClose={() => {}} />);
     expect(await screen.findByTestId(`wallet-flow-${kind}`)).toBeTruthy();
   });

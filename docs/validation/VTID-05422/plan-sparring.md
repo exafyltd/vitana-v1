@@ -21,9 +21,9 @@ CONVERGED and approved by policy `converged-auto-v1` at 2026-11-01T02:04:17.694+
   places it at `apps/mobile/app/(public)/redeem.tsx` in its own lane `wallet-redeem`. Round 2
   acknowledged it; no findings in round 2. Not this lane's surface.
 
-## Approval
+## Owner approval
 
-The converged plan is approved by policy `converged-auto-v1` (owner decision 2026-10-14,
+Owner approval: by policy `converged-auto-v1` (no Gate 1 request). The converged plan is approved by policy `converged-auto-v1` (owner decision 2026-10-14,
 VTID-05214/05218): a plan sparred by CI whose session converged is approved by policy and not
 sent to the owner as Gate 1. The VTID was allocated by CI after convergence
 (`lanes/wallet-home.md` log, 2026-11-01T02:06Z).
