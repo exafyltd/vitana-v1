@@ -1,14 +1,20 @@
 {
   "vtid": "VTID-05442",
-  "plan": "mt-track-s-r2",
-  "lane": "s-j-route-inventory",
+  "kind": "infra",
   "paths": [
-    "supabase/functions/linkedin-import/index.ts",
+    "supabase/functions/linkedin-import/**",
     "supabase/config.toml",
     "src/lib/edge-functions-caller-identity.s4.test.ts",
     "scripts/check-edge-function-auth.mjs",
     "package.json",
     "docs/validation/VTID-05442/**"
   ],
-  "deploys": "nothing: an edge-function folder removal is not deployed by any staging workflow (supabase-functions-deploy.yml cutover_gate freezes push deploys); the production copy is retired only by the owner-approved SUPABASE-FUNCTIONS-RETIRE.yml step of the plan"
+  "sparring_record": "docs/validation/VTID-05442/plan-sparring.md",
+  "weakens_tests": [
+    {
+      "file": "src/lib/edge-functions-caller-identity.s4.test.ts",
+      "reason": "the 'linkedin-import is flagged for removal' case reads supabase/functions/linkedin-import/index.ts, which this lane deletes (plan mt-track-s-r2 §4 step 3). No assertion about a remaining function is removed or loosened."
+    }
+  ],
+  "red_green_exempt": []
 }
