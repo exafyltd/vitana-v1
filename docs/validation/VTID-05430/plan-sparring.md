@@ -21,6 +21,10 @@ VTID-05214/05218): a plan sparred by CI whose session converged is approved by p
 to the owner as Gate 1. The VTID was allocated by CI after convergence (`lanes/public-profile.md`
 log, 2026-11-01T03:04Z).
 
+- **Owner approval:** policy approval `converged-auto-v1` (owner decision 2026-10-14,
+  VTID-05214/05218) stands in for Gate 1 for a CI-sparred plan that converged. Recorded here as the
+  audit line; the mechanical gate is the `vtid_ledger` trigger that admitted VTID-05430.
+
 ## Scope of this lane (public-profile)
 
 Plan decision 1b (r2 sparring R2-F1): `/u/:identifier` and `/profile/:id` are public on the web

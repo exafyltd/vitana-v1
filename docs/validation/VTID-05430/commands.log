@@ -1,0 +1,41 @@
+# VTID-05430 (native-wave2-profile-settings-r2/public-profile) — local verification
+# Worktree: /projects/sandbox/vitana-v1/.worktrees/native-wave2-profile-settings-r2-public-profile
+# Base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce. Linux, node v22.23.4. No network in tests.
+
+## red on base (new tests, no implementation) — see red-on-base.txt
+$ (apps/mobile) npx jest tests/public-profile --ci
+FAIL — 2 suites failed (Cannot find module ../../src/screens/public-profile/PublicProfileScreen), 0 tests ran
+
+## green (apps/mobile)
+$ npx jest tests/public-profile --ci
+PASS — 2 suites, 34/34 tests
+$ npm run typecheck            (pretypecheck: gen:i18n, 11 locales, 1419 shards)
+PASS — tsc --noEmit, 0 errors
+$ npm test -- --ci
+PASS — 78/78 suites, 2098/2098 tests
+$ HOME=<writable tmp> APP_PROFILE=development npm run bundle
+PASS — Metro + Hermes, ios + android entry-*.hbc (17MB android), "Exported: dist"   (HOME override: the sandbox HOME /root is read-only for ~/.expo)
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+PASS — "Dependencies are up to date" (no dependency added)
+$ npm run parity:check
+PASS — parity-ledger --check: OK — 435 rows, 28 native route(s)
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+PASS — 435 rows (added 0, updated 0, removed 0); --check OK
+$ node --test scripts/native/__tests__/*.test.mjs
+PASS — 68/68
+$ node scripts/native/gen-tokens.mjs --check
+PASS — up to date
+$ node scripts/native/core-closure.mjs --check
+PASS — 22 roots, 32 src files, 11 assets — up to date (core unchanged by this lane)
+$ node scripts/native/check-shell-pins.mjs
+PASS — every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ node scripts/native/gen-core-extract.mjs --check
+FAIL (pre-existing on origin/main, not this lane) — feed-compose / news-feed-ranker extract headers carry a stale source sha; NATIVE-CI on main fails the same step (run for 035800a7d). packages/core is outside this lane's paths.
+$ npx eslint apps/mobile packages
+PASS — 0 problems
+$ npm run i18n:register
+PASS — "No formal-register violations." (de du / pt você / fr tu / ru ты / pl / tr / zh checked; ar skipped by design)
+$ npm run i18n:audit
+FAIL (pre-existing) — 17193 errors both with and without the 11 publicProfileNative.json shards (same count); 0 findings in publicProfileNative
