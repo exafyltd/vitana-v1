@@ -1,0 +1,5 @@
+{
+  "deleteAccountNative": {
+    "errorFallback": "Nešto je pošlo po zlu. Pokušaj ponovo."
+  }
+}
