@@ -76,5 +76,30 @@ errors mentioning memoryNative: 0 (all reported errors are pre-existing _pending
 $ npx eslint apps/mobile/src/screens/memory apps/mobile/src/ports/memory.tsx 'apps/mobile/app/(app)/memory' apps/mobile/tests/memory
 (no output; apps/mobile is outside the root eslint scope) exit=0
 
+## repo root — web build + i18n vitest (the new shards are web catalog files)
+$ npm run build
+✓ built in 33.23s
+exit=0
+
+$ npx vitest run src/i18n scripts/native
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0
+
+## Preflight (head 1ebb65005366ce0de1d6ef61b0af8534f7a6a350)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-memory-diary-r2/memory --title "VTID-05427 (native-wave2-memory-diary-r2/memory): native memory garden port"
+PASS  Collab handoff
+PASS  Lane scope [required]
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope
+PASS  PR-GATE sparring
+PASS  PR-GATE weakening
+PASS  PR-GATE red-green
+PASS  Kiro steering
+SKIP  Not run by preflight (npm test / lint / build: run above)
+preflight: every check passed
+exit=0
+(an earlier run on 94e7712fd failed PR-GATE sparring: "no owner-approval line" in plan-sparring.md; fixed by the "Owner approval" section)
+
 ## Note
 jest's 5 s default timeout flaked once (pt case of the 11-locale render test) in one full npm test run under load; the two multi-screen i18n tests and the gateway-contract test now take a 30 s timeout. No assertion changed. The rerun above is green.
