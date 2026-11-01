@@ -1,0 +1,33 @@
+{
+  "vtid": "VTID-05427",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/memory/**",
+    "apps/mobile/src/screens/memory/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/memory/**",
+    "apps/mobile/maestro/memory/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/memoryNative.json",
+    "docs/validation/VTID-05427/**"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/memory/index.tsx",
+    "apps/mobile/app/(app)/memory/timeline.tsx",
+    "apps/mobile/app/(app)/memory/recall.tsx",
+    "apps/mobile/app/(app)/memory/permissions.tsx",
+    "apps/mobile/src/screens/memory/**",
+    "apps/mobile/src/ports/memory.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/memory/**",
+    "apps/mobile/maestro/memory/README.md",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/memoryNative.json",
+    "docs/validation/VTID-05427/**"
+  ],
+  "core_change": "none — every memory data path is class-B (ledger-findings §3); no packages/core manifest / closure / mobile-ci-paths change (core-closure --check: up to date)",
+  "sparring_record": "docs/validation/VTID-05427/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

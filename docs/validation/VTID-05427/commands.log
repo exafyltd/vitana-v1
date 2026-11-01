@@ -1,0 +1,80 @@
+# VTID-05427 (native-wave2-memory-diary-r2/memory) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-memory-diary-r2-memory; base origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched.
+
+## Setup
+$ (repo root) npm ci  -> added 872 packages
+$ (apps/mobile) npm ci  -> added 938 packages
+
+## Red on base (detached worktree at origin/main + copied tests/memory) — see red-on-base.txt
+$ npx jest tests/memory --ci  -> Test Suites: 4 failed, 4 total (Cannot find module ../../src/screens/memory/*)
+
+## apps/mobile (code = head 94e7712fd)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/memory --ci
+Test Suites: 4 passed, 4 total
+Tests:       70 passed, 70 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 80 passed, 80 total
+Tests:       2145 passed, 2145 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=/tmp/expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-a8da27c5887a9f0cb574462cadec1ba2.hbc (17MB)
+_expo/static/js/android/entry-d1bd315b24f93432b9224677a60619fb.hbc (17MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's /root is read-only for ~/.expo)
+
+$ HOME=/tmp/expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+> node ../../scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 30 native route(s)
+exit=0
+
+$ node ../../scripts/native/parity-ledger.mjs --sync   (repo root)
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change to the hand-flipped rows)
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0 (no core change: closure.generated.json and mobile-ci-paths.generated.json untouched)
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+(first run flagged 'Gedächtniskonsolidierung' in memoryNative de; rephrased, rerun clean)
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+locales reporting 0 stale keys: 9
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+errors mentioning memoryNative: 0 (all reported errors are pre-existing _pending_review keys)
+
+$ npx eslint apps/mobile/src/screens/memory apps/mobile/src/ports/memory.tsx 'apps/mobile/app/(app)/memory' apps/mobile/tests/memory
+(no output; apps/mobile is outside the root eslint scope) exit=0
+
+## Note
+jest's 5 s default timeout flaked once (pt case of the 11-locale render test) in one full npm test run under load; the two multi-screen i18n tests and the gateway-contract test now take a 30 s timeout. No assertion changed. The rerun above is green.
