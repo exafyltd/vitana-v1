@@ -1,0 +1,9 @@
+{
+  "walletRewardsNative": {
+    "tabsLabel": "Reward sections",
+    "shop": {
+      "finishOnWeb": "Redeeming isn't in the app yet. Please finish it in the reward shop of your web wallet.",
+      "birthDatePlaceholder": "YYYY-MM-DD"
+    }
+  }
+}

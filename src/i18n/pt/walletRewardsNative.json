@@ -1,0 +1,9 @@
+{
+  "walletRewardsNative": {
+    "tabsLabel": "Seções de recompensas",
+    "shop": {
+      "finishOnWeb": "O resgate ainda não está no app. Conclua-o na loja de prêmios da sua carteira web.",
+      "birthDatePlaceholder": "AAAA-MM-DD"
+    }
+  }
+}

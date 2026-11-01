@@ -1,0 +1,9 @@
+{
+  "walletRewardsNative": {
+    "tabsLabel": "Bereiche der Belohnungen",
+    "shop": {
+      "finishOnWeb": "Einlösen gibt es in der App noch nicht. Schließe es bitte im Prämien-Shop deiner Web-Wallet ab.",
+      "birthDatePlaceholder": "JJJJ-MM-TT"
+    }
+  }
+}

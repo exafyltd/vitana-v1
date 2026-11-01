@@ -60,6 +60,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/reset-password',
   '/search',
+  '/wallet/rewards',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

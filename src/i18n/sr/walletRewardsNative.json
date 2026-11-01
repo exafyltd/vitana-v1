@@ -1,0 +1,9 @@
+{
+  "walletRewardsNative": {
+    "tabsLabel": "Odeljci nagrada",
+    "shop": {
+      "finishOnWeb": "Iskorišćavanje još nije u aplikaciji. Završi ga u prodavnici nagrada svog veb-novčanika.",
+      "birthDatePlaceholder": "GGGG-MM-DD"
+    }
+  }
+}
