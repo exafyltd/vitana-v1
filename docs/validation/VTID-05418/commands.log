@@ -35,4 +35,11 @@ Say hello = transitionMatch(match_id, 'responded_by_a') + the toasts of FindPart
   (FindPartnerMatchCard.tsx:194) with the page's markViewed. No new endpoint, no new write path. The staging spec
   never clicks Say hello.
 ## Governance preflight
-(see below, appended after the lane commit)
+node scripts/ci/pr-gate/gate.mjs weakening --base origin/main --head HEAD → exit 0 (3 changed test files, none weakened)
+staging-tests.json validateManifest (platform scripts/ci/staging-verify/lib.cjs) → {"ok":true,"errors":[]}
+node <vitana-platform>/scripts/land-guard.mjs evidence --repo <wt> --vtid VTID-05418 → ok
+node <vitana-platform>/scripts/collab/preflight.mjs --repo <wt> --base origin/main --head HEAD --branch kiro/spotlight-card-proportion/find-a-match --title "VTID-05418 (…)"
+  run 1 (b4107356f): PASS Collab handoff, Lane scope, gh, PR-GATE scope, sparring, weakening, red-green;
+    FAIL Kiro steering only: guard.test.cjs "the Kiro notes say plan sparring…" regex /^---\ninclusion: always\n---/
+    vs the CRLF Windows checkout of .kiro/steering/vitana-kiro-notes.md (file untouched by this lane, LF on CI) —
+    same as VTID-05420's record → not this lane's.
