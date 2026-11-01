@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "Ödül bölümleri",
     "shop": {
-      "finishOnWeb": "Ödül kullanma henüz uygulamada yok. Lütfen web cüzdanındaki ödül mağazasında tamamla.",
       "birthDatePlaceholder": "YYYY-AA-GG"
     }
   }

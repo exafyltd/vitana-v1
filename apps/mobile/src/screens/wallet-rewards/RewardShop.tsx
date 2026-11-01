@@ -11,10 +11,10 @@
  * YYYY-MM-DD + age confirmation when age-restricted, a shipping fee in the
  * display currency + name / street / postal code / city when shipped). Its
  * confirm hands the web `RedeemRequest` to `RewardShopActions`
- * (./data/actions.ts); the default makes no call (no redeem, reward or
- * payment call from this lane). The web outcome handling is kept for an
- * injected implementation: known error code → its toast, else generic; a
- * checkout URL opens in the system browser (web `window.location.assign`);
+ * (./data/actions.ts; the default is the web `redeemRewardItem`, POST
+ * /api/v1/rewards/shop/redeem). The web outcome handling: known error code →
+ * its toast, else generic; a checkout URL opens in the system browser (web
+ * `window.location.assign`);
  * success → the redeemed toast, the ['wallet'] queries refetch, the sheet
  * closes. The web date input is a text field with the YYYY-MM-DD hint and the
  * country Select is a radio list (N2 has no native date picker / select).
@@ -162,7 +162,6 @@ function RedeemSheet({
       })
       .catch(() => ({ ok: false as const, error: 'NETWORK' }));
     setBusy(false);
-    if ('deferred' in res) return;
     if (res.ok !== true) {
       notifyError(`wallet.rewardShop.errors.${KNOWN_ERRORS.has(res.error) ? res.error : 'generic'}`);
       return;

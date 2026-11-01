@@ -4,9 +4,10 @@
  * WALLET.REWARDS_EARN_MORE `?tab=earn`, WALLET.REWARDS_SHOP `?tab=shop`), a
  * port of src/pages/wallet/Rewards.tsx with VtnaRewardRules, EarnMore and
  * RewardShop. No network (the guard is imported first); the gateway is the
- * recording fake from ./fixtures, which only answers GETs. No redeem, payment
- * or write call is made: the shop's confirm goes to an injected
- * RewardShopActions, and the default one makes no call. React 19: components
+ * recording fake from ./fixtures, which only answers GETs. The shop's confirm
+ * goes to RewardShopActions: most tests inject a fake; the default (the web
+ * redeemRewardItem, POST /rewards/shop/redeem) is tested against the real
+ * gateway client over a fake fetch, never a live system. React 19: components
  * typed with `ReactElement`, no global `JSX`.
  */
 import '../helpers/no-network';
@@ -15,9 +16,11 @@ import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react-native';
 import type { ReactTestInstance } from 'react-test-renderer';
-import { Platform } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { mockParams, router } from './mocks';
 import { __setSupabaseForTests } from '../../src/auth/client';
+import { __setGatewayForTests } from '../../src/auth/gateway';
+import { createGatewayFetch } from '../../src/ports/core';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { LOCALES } from '../../src/i18n';
 import { languageFromLocale } from '../../src/i18n/I18nProvider';
@@ -349,23 +352,6 @@ describe('"Shop" — the reward shop (RewardShop)', () => {
     expect(screen.getByTestId('reward-shop-dialog')).toBeTruthy();
   });
 
-  it('the default actions make NO redeem call: the member is pointed to the web shop', async () => {
-    const { gateway, double } = renderWithProviders(<RewardsScreen />);
-    fireEvent.press(await screen.findByTestId('reward-shop-open-mug'));
-    await screen.findByTestId('reward-shop-dialog');
-    for (const [f, v] of [['name', 'Ana'], ['line1', 'Weg 1'], ['postal_code', '10115'], ['city', 'Berlin']]) {
-      fireEvent.changeText(screen.getByTestId(`reward-addr-${f}`), v);
-    }
-    await act(async () => {
-      fireEvent.press(screen.getByTestId('reward-shop-confirm'));
-    });
-    expect(toastKeys()).toContain('walletRewardsNative.shop.finishOnWeb');
-    expect(gateway.calls.filter((c) => c.method !== 'GET')).toEqual([]);
-    expect(gateway.calls.some((c) => c.path.includes('redeem'))).toBe(false);
-    expect(double.calls.filter((c: { fn: string }) => c.fn.startsWith('rpc.') && c.fn !== 'rpc.list_public_tenants')).toEqual([]);
-    expect(double.writes).toEqual([]);
-  });
-
   it('cancel closes the dialog without a call', async () => {
     const redeem = jest.fn();
     renderWithProviders(<RewardsScreen />, { actions: { redeem } });
@@ -380,6 +366,94 @@ describe('"Shop" — the reward shop (RewardShop)', () => {
     renderWithProviders(<RewardsScreen />, { routes: { ...defaultRoutes(), [ORDERS_PATH]: { ok: true, orders: [{ ...orders[0], item_id: 'gone' }] } } });
     const card = await screen.findByTestId('reward-shop-orders');
     expect(within(card).getByText('Prämie')).toBeTruthy();
+  });
+});
+
+describe('redeem request (default actions = the web redeemRewardItem, against a fake fetch)', () => {
+  const ORIGIN = 'https://gateway.test';
+  type Sent = { url: string; method: string; headers: Record<string, string>; body: unknown };
+
+  /** The real native gateway client (createGatewayFetch) over a fake fetch: GET fixtures, one POST answer. No network. */
+  function fakeFetchGateway(post: { status: number; body: unknown }) {
+    const sent: Sent[] = [];
+    const routes = defaultRoutes();
+    const fetchImpl = async (url: string, init?: RequestInit) => {
+      const method = (init?.method ?? 'GET').toUpperCase();
+      sent.push({ url, method, headers: (init?.headers ?? {}) as Record<string, string>, body: typeof init?.body === 'string' ? JSON.parse(init.body) : init?.body });
+      const path = url.replace(`${ORIGIN}/api/v1`, '');
+      const hit = method === 'GET' ? routes[path] : post.body;
+      const status = method === 'GET' ? (hit === undefined ? 404 : 200) : post.status;
+      const text = hit === undefined ? '' : typeof hit === 'string' ? hit : JSON.stringify(hit);
+      return { ok: status >= 200 && status < 300, status, text: async () => text, json: async () => JSON.parse(text) } as unknown as Response;
+    };
+    return { sent, gateway: createGatewayFetch({ origin: ORIGIN, getAccessToken: () => 'tok-member', fetchImpl }) };
+  }
+
+  async function confirmMug(gw: ReturnType<typeof createGatewayFetch>) {
+    renderWithProviders(<RewardsScreen />, { gateway: gw });
+    fireEvent.press(await screen.findByTestId('reward-shop-open-mug'));
+    await screen.findByTestId('reward-shop-dialog');
+    for (const [f, v] of [['name', 'Ana'], ['line1', 'Weg 1'], ['postal_code', '10115'], ['city', 'Berlin']]) {
+      fireEvent.changeText(screen.getByTestId(`reward-addr-${f}`), v);
+    }
+    await act(async () => {
+      fireEvent.press(screen.getByTestId('reward-shop-confirm'));
+    });
+  }
+
+  beforeEach(() => {
+    mockParams.current = { tab: 'shop' };
+  });
+  afterEach(() => __setGatewayForTests(null));
+
+  it('builds the web request: POST /api/v1/rewards/shop/redeem, JSON body, bearer token; success → redeemed toast + ["wallet"] refetch + sheet closes', async () => {
+    const { sent, gateway } = fakeFetchGateway({ status: 200, body: { ok: true, order_id: 'o-9', status: 'paid', vtna_amount: 100 } });
+    renderWithProviders(<RewardsScreen />, { gateway });
+    // The reads go through the same client: one /api/v1 prefix, never doubled.
+    await waitFor(() => expect(sent.map((s) => s.url)).toContain(`${ORIGIN}/api/v1/rewards/shop`));
+    fireEvent.press(await screen.findByTestId('reward-shop-open-mug'));
+    await screen.findByTestId('reward-shop-dialog');
+    for (const [f, v] of [['name', 'Ana'], ['line1', 'Weg 1'], ['postal_code', '10115'], ['city', 'Berlin']]) {
+      fireEvent.changeText(screen.getByTestId(`reward-addr-${f}`), v);
+    }
+    await act(async () => {
+      fireEvent.press(screen.getByTestId('reward-shop-confirm'));
+    });
+    const posts = sent.filter((s) => s.method !== 'GET');
+    expect(posts).toHaveLength(1);
+    expect(posts[0].url).toBe(`${ORIGIN}/api/v1/rewards/shop/redeem`);
+    expect(posts[0].method).toBe('POST');
+    expect(posts[0].headers).toMatchObject({ 'content-type': 'application/json', authorization: 'Bearer tok-member' });
+    expect(posts[0].body).toEqual({
+      item_id: 'i-mug',
+      idempotency_key: expect.any(String),
+      currency: 'EUR',
+      locale: 'de',
+      country: 'DE',
+      address: { name: 'Ana', line1: 'Weg 1', postal_code: '10115', city: 'Berlin' },
+    });
+    await waitFor(() => expect(screen.queryByTestId('reward-shop-dialog')).toBeNull());
+    expect(__toastsForTests().find((t) => t.titleKey === 'wallet.rewardShop.redeemed')?.params).toEqual({ item: 'Vitana-Becher' });
+    await waitFor(() => expect(sent.filter((s) => s.method === 'GET' && s.url.endsWith('/rewards/shop')).length).toBeGreaterThan(1));
+  });
+
+  it('a refused redeem maps the gateway error code to the web toast; a non-JSON failure → generic', async () => {
+    await confirmMug(fakeFetchGateway({ status: 409, body: { ok: false, error: 'OUT_OF_STOCK' } }).gateway);
+    expect(toastKeys()).toEqual(['wallet.rewardShop.errors.OUT_OF_STOCK']);
+    expect(screen.getByTestId('reward-shop-dialog')).toBeTruthy();
+    screen.unmount();
+    __clearToastsForTests();
+    await confirmMug(fakeFetchGateway({ status: 502, body: 'Bad Gateway' }).gateway);
+    expect(toastKeys()).toEqual(['wallet.rewardShop.errors.generic']);
+  });
+
+  it('a shipped item with a checkout URL opens it in the system browser (web window.location.assign)', async () => {
+    const open = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
+    await confirmMug(
+      fakeFetchGateway({ status: 200, body: { ok: true, order_id: 'o-9', status: 'awaiting_shipping_payment', vtna_amount: 100, checkout_url: 'https://checkout.stripe.test/cs_1' } }).gateway,
+    );
+    expect(open).toHaveBeenCalledWith('https://checkout.stripe.test/cs_1');
+    expect(toastKeys()).toEqual([]);
   });
 });
 

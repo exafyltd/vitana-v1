@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "奖励栏目",
     "shop": {
-      "finishOnWeb": "应用内暂不支持兑换。请在你的网页钱包的奖励商店中完成。",
       "birthDatePlaceholder": "YYYY-MM-DD"
     }
   }

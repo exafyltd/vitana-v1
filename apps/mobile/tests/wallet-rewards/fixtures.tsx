@@ -3,7 +3,7 @@
  * harness. The gateway is a recording fake (path → JSON body, 404 otherwise,
  * every call kept with its method), the Supabase client is the shell's
  * in-memory double with a signed-in member. No network: the test files import
- * ../helpers/no-network first. Nothing here can redeem, pay or write: the fake
+ * ../helpers/no-network first. Nothing here can reach a live system: the fake
  * answers GET bodies only and records anything else so a test can assert it
  * never happened.
  */
@@ -12,13 +12,15 @@ import { render } from '@testing-library/react-native';
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import { makeWrapper } from '../helpers/providers';
 import { __setGatewayForTests } from '../../src/auth/gateway';
+import type { GatewayFetch } from '../../src/ports/core';
 import { UIProvider } from '../../src/ports/ui';
 import { RewardShopActionsProvider, type RewardShopActions } from '../../src/screens/wallet-rewards/data/actions';
 import type { RewardOverview, RewardShop, RewardOrder } from '../../src/screens/wallet-rewards/data/rewards';
 
-export const RULES_PATH = '/api/v1/wallet/reward-rules';
-export const SHOP_PATH = '/api/v1/rewards/shop';
-export const ORDERS_PATH = '/api/v1/rewards/orders';
+/** Relative to the gateway API root (the client prefixes /api/v1). */
+export const RULES_PATH = '/wallet/reward-rules';
+export const SHOP_PATH = '/rewards/shop';
+export const ORDERS_PATH = '/rewards/orders';
 
 export const overview: RewardOverview = {
   ok: true,
@@ -113,7 +115,7 @@ export const defaultRoutes = (): Record<string, unknown> => ({
 
 export function renderWithProviders(
   ui: ReactElement,
-  opts: { routes?: Record<string, unknown>; language?: string; direction?: 'ltr' | 'rtl'; actions?: RewardShopActions; signedIn?: boolean } = {},
+  opts: { routes?: Record<string, unknown>; language?: string; direction?: 'ltr' | 'rtl'; actions?: RewardShopActions; signedIn?: boolean; gateway?: GatewayFetch } = {},
 ) {
   const double = createSupabaseDouble({
     session: opts.signedIn === false ? null : fakeSession('u-1', { user: { id: 'u-1', app_metadata: { active_tenant_id: 't-maxina' }, user_metadata: {} } }),
@@ -121,7 +123,7 @@ export function renderWithProviders(
   });
   const wrapper = makeWrapper({ client: double.client, language: opts.language ?? 'de-DE' });
   const gateway = recordingGateway(opts.routes ?? defaultRoutes());
-  __setGatewayForTests(gateway.fetch);
+  __setGatewayForTests(opts.gateway ?? gateway.fetch);
   const body = opts.actions ? <RewardShopActionsProvider value={opts.actions}>{ui}</RewardShopActionsProvider> : ui;
   const Wrapped = ({ children }: { children: ReactNode }) => (
     <UIProvider colorScheme="light" direction={opts.direction ?? 'ltr'}>

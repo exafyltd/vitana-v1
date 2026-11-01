@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "Secciones de recompensas",
     "shop": {
-      "finishOnWeb": "Canjear aún no está en la app. Termínalo en la tienda de premios de tu wallet web.",
       "birthDatePlaceholder": "AAAA-MM-DD"
     }
   }

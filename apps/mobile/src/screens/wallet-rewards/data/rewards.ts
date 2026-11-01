@@ -10,12 +10,16 @@
  * `@/lib/community-gateway` and `@/context/AuthProvider` and EarnMore.tsx
  * imports react-router (class B), so none of these files can enter core (R4).
  *
- * Read only. The web `redeemRewardItem` (POST /api/v1/rewards/shop/redeem) is
- * NOT carried over: the shop's confirm goes to `RewardShopActions`
- * (./actions.ts), which makes no call (owner instruction for VTID-05424).
+ * Paths are relative to the gateway API root: the native client
+ * (`createGatewayFetch`, src/auth/gateway.ts) already prefixes `/api/v1`, so
+ * `/rewards/shop` here is the web's `/api/v1/rewards/shop`.
+ *
+ * `redeemRewardItem` is the web one (POST /api/v1/rewards/shop/redeem, JSON
+ * body, the gateway debits the price): a refusal or a non-JSON answer becomes
+ * `{ ok: false, error }` with the gateway's code, else `REDEEM_FAILED`.
  */
 import { useQuery } from '@tanstack/react-query';
-import { gatewayGet } from '../../../auth/gateway';
+import { gatewayGet, getGateway } from '../../../auth/gateway';
 import { useAuth } from '../../../auth/AuthProvider';
 
 export type RewardRuleGroup = 'first_steps' | 'habits' | 'community';
@@ -116,11 +120,22 @@ async function getOk<T extends OkBody>(path: string): Promise<T> {
   return json;
 }
 
-export const fetchRewardRules = () => getOk<RewardOverview>('/api/v1/wallet/reward-rules');
-export const fetchRewardShop = () => getOk<RewardShop>('/api/v1/rewards/shop');
+export const fetchRewardRules = () => getOk<RewardOverview>('/wallet/reward-rules');
+export const fetchRewardShop = () => getOk<RewardShop>('/rewards/shop');
 export async function fetchRewardOrders(): Promise<RewardOrder[]> {
-  const json = await getOk<{ ok: true; orders?: RewardOrder[] }>('/api/v1/rewards/orders');
+  const json = await getOk<{ ok: true; orders?: RewardOrder[] }>('/rewards/orders');
   return json.orders ?? [];
+}
+
+export async function redeemRewardItem(req: RedeemRequest): Promise<RedeemResponse> {
+  const resp = await getGateway()('/rewards/shop/redeem', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(req),
+  });
+  const json = (await resp.json().catch(() => ({}))) as OkBody | null;
+  if (!resp.ok || !json?.ok) return { ok: false, error: String(json?.error || 'REDEEM_FAILED') };
+  return json as RedeemResponse;
 }
 
 function useMemberQuery<T>(key: (userId: string | null) => readonly unknown[], fn: () => Promise<T>, staleTime: number) {

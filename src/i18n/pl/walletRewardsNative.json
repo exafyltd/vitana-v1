@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "Sekcje nagród",
     "shop": {
-      "finishOnWeb": "Wymiany nie ma jeszcze w aplikacji. Dokończ ją w sklepie z nagrodami w swoim portfelu w przeglądarce.",
       "birthDatePlaceholder": "RRRR-MM-DD"
     }
   }

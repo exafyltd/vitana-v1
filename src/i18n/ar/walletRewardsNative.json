@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "أقسام المكافآت",
     "shop": {
-      "finishOnWeb": "الاستبدال غير متاح في التطبيق بعد. أكمِله في متجر المكافآت في محفظتك على الويب.",
       "birthDatePlaceholder": "YYYY-MM-DD"
     }
   }

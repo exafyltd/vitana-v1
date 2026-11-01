@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "Rubriques des récompenses",
     "shop": {
-      "finishOnWeb": "L’échange n’est pas encore dans l’app. Termine-le dans la boutique de récompenses de ton portefeuille web.",
       "birthDatePlaceholder": "AAAA-MM-JJ"
     }
   }

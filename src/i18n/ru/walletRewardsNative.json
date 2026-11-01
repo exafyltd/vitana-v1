@@ -2,7 +2,6 @@
   "walletRewardsNative": {
     "tabsLabel": "Разделы наград",
     "shop": {
-      "finishOnWeb": "Обмена пока нет в приложении. Заверши его в магазине наград своего веб-кошелька.",
       "birthDatePlaceholder": "ГГГГ-ММ-ДД"
     }
   }
