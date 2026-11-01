@@ -67,4 +67,7 @@ $ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <wo
     --branch kiro/native-wave2-profile-settings-r2/delete-account \
     --title "VTID-05428 (native-wave2-profile-settings-r2/delete-account): native public delete-account port"
 run 1 (head 9ccdd4bad): 1 failed — PR-GATE sparring: plan-sparring.md had no owner-approval line → added (policy converged-auto-v1)
-run 2: see below
+run 2 (head caac92362dc854259cb45d3a8ff89e4db781e628): PASS — "preflight: every check passed"
+  PASS Collab handoff · PASS Lane scope · PASS gh for plan( PR / vitana-platform lane files · PASS PR-GATE scope
+  PASS PR-GATE sparring · PASS PR-GATE weakening · PASS PR-GATE red-green · PASS Kiro steering
+  (the only later commit adds this log entry under docs/validation/VTID-05428/)
