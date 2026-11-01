@@ -3,7 +3,7 @@
 Native Wave 2 wallet-rewards lane: `/wallet/rewards` with `?tab=earn` (WALLET.REWARDS_EARN_MORE)
 and `?tab=shop` (WALLET.REWARDS_SHOP). All commands ran offline in Linux worktree
 `/projects/sandbox/vitana-v1/.worktrees/native-wave2-wallet-r2-wallet-rewards`, base `origin/main`
-`a41e89a0d`. The native app has no production profile; `assertNotProduction()` refuses prod/staging
+`a41e89a0d`; fix round 1 merged `origin/main` `ec8682fec` (#1544) and re-ran every check. The native app has no production profile; `assertNotProduction()` refuses prod/staging
 hosts. Not verified on staging: device runtime deferred to G1.
 
 ## What was built
@@ -20,21 +20,21 @@ hosts. Not verified on staging: device runtime deferred to G1.
   route via `navigateToWebPath`, the next-goal card with progress or "Zum Shop").
 - `RewardShop.tsx`: twin of `RewardShop` (summary, balance, Stripe-return notes, item cards,
   orders) and its redeem Dialog as a bottom sheet with the same fields and the same `ready` rule.
-- `data/rewards.ts`: the native read twins of `useRewardRules`, `useRewardShop` and
-  `useRewardOrders`. They make the same gateway GETs (`/api/v1/wallet/reward-rules`,
-  `/api/v1/rewards/shop`, `/api/v1/rewards/orders`) through `gatewayGet`, with the same per-member
-  query keys, `enabled: !loading && !!userId` and stale times. The file also holds the pure
+- `data/rewards.ts`: the native twins of `useRewardRules`, `useRewardShop`, `useRewardOrders` and
+  `redeemRewardItem`. They make the same gateway calls (GET `/api/v1/wallet/reward-rules`,
+  `/api/v1/rewards/shop`, `/api/v1/rewards/orders`; POST `/api/v1/rewards/shop/redeem`) through
+  the native client, which prefixes `/api/v1` itself, so the paths in the file are relative
+  (`/rewards/shop`). Same per-member query keys, `enabled: !loading && !!userId` and stale times. The file also holds the pure
   helpers `itemText`, `stillEarnable`, `nextGoal` and `EARN_ACTION_ROUTES`. The web files that
   hold them import the community gateway / react-router (class B), so they are re-implemented,
   not extracted (R4). No core entry is added.
-- `data/actions.ts`: `RewardShopActions`. `data/currency.ts`: the display currency (AsyncStorage
+- `data/actions.ts`: `RewardShopActions`; the default is `redeemRewardItem`. `data/currency.ts`: the display currency (AsyncStorage
   key `vitana.wallet.displayCurrency`, default EUR) and the `EUR_PER_USD` fallback (0.92).
 - `iap.ts`: `isIAPRestricted()` = `Platform.OS === 'ios'`, the rule the drawer already applies.
   `drawer.ts` and `SideDrawer.tsx` are unchanged.
 - `apps/mobile/src/ports/wallet-rewards.ts`: re-exports N2's `Checkbox`, `Progress` and
   `notifySuccess` (kept out of `ports/ui.tsx`, which the parallel wallet-home lane edits).
-- `src/i18n/*/walletRewardsNative.json`: 3 new keys (tab list label, the "finish in the web shop"
-  toast, the birth-date hint), DE first (du-form), then all 11 locales (pt você, fr tu, ru ты, ar).
+- `src/i18n/*/walletRewardsNative.json`: 2 new keys (tab list label, the birth-date hint), DE first (du-form), then all 11 locales (pt você, fr tu, ru ты, ar).
   Every visible label of the web screen reuses the existing `wallet.*` keys.
 - `apps/mobile/src/navigation/resolve.ts`: `/wallet/rewards` added to `NATIVE_ROUTES`.
 - `apps/mobile/parity/ledger.json`: the 3 rows flipped `not_started` → `native`.
@@ -51,13 +51,21 @@ today's native rule. No gate is added, removed, widened or narrowed:
 | `VtnaRewardRules` / `EarnMore` / `RewardShop`: no gate | no gate | source pins: the web components have no gate, and only `RewardsScreen.tsx` reads it (once) |
 | drawer `iapRestricted: Platform.OS === 'ios'` hides the Wallet row | unchanged | drawer both ways + source pin |
 
-## No redeem, reward or payment call
+## Redeem: the web call, tested against a fake fetch only
 
 The redeem sheet builds the web `RedeemRequest` and calls `RewardShopActions.redeem`. The default
-implementation makes no call. It shows the toast `walletRewardsNative.shop.finishOnWeb` and
-returns `deferred`. The tests inject fakes to cover the web outcome handling (known error code,
-generic error, success toast + close). They also assert that with the default actions the gateway
-saw only GETs, nothing on a `redeem` path, no wallet RPC and no Supabase write.
+is the web `redeemRewardItem`: POST `/api/v1/rewards/shop/redeem` with the JSON request and the
+member's bearer token. A refusal or a non-JSON answer becomes `{ ok: false, error }` (gateway code,
+else `REDEEM_FAILED`). The sheet handles the outcome as the web does: known code →
+`wallet.rewardShop.errors.<code>`, else `errors.generic`; a `checkout_url` opens in the system
+browser (web `window.location.assign`); success → `wallet.rewardShop.redeemed`, the `['wallet']`
+queries refetch, the sheet closes.
+
+The tests never reach a live system. The `redeem request` tests run the real native gateway client
+(`createGatewayFetch`) over a fake fetch and assert the built request (URL, method, content type,
+bearer token, body), the error-code mapping and the checkout URL. The other shop tests inject a
+fake `RewardShopActions`. Red on the previous head `98877f016`: `red-fix1.txt` (3 failed).
+The iOS gate tests (`iap-gate.test.tsx`) are unchanged.
 
 ## Deviations from the spec (all recorded in the PR body)
 
@@ -67,19 +75,16 @@ saw only GETs, nothing on a `redeem` path, no wallet RPC and no Supabase write.
    on iOS, and `RewardShop` / `EarnMore` / `VtnaRewardRules` have no gate. The owner rule (keep
    the gate exactly as today) and R3.2 (mirror one-for-one) win, so the redirect is mirrored. On
    iOS the earn-more tab is not reachable, the same as on the web today.
-2. The shop's confirm hands the request to `RewardShopActions`, which makes no call by default
-   (owner instruction). Wiring the real `POST /api/v1/rewards/shop/redeem` is a later wallet FEAT
-   behind decision 5 and G1.
-3. The ExpandableSearchButton + UniversalCalendarButton utility pair, the desktop SubNavigation
+2. The ExpandableSearchButton + UniversalCalendarButton utility pair, the desktop SubNavigation
    and the desktop-only Spotlight layout are not carried over. The wallet-home lane made the same
    call for the hub.
-4. The loading state uses react-query `isPending`. On the web, a disabled query (auth still
+3. The loading state uses react-query `isPending`. On the web, a disabled query (auth still
    loading) has `isLoading` false and no data, so the error line shows for a moment. Natively the
    loading line shows instead.
-5. The web date input and country Select are a text field with a YYYY-MM-DD hint and a radio list
+4. The web date input and country Select are a text field with a YYYY-MM-DD hint and a radio list
    (N2 has no date picker or select). The decorative lucide icons are dropped where the shell icon
    set has no match.
-6. The EUR/USD rate is always the `EUR_PER_USD` fallback, the value the web uses while its live
+5. The EUR/USD rate is always the `EUR_PER_USD` fallback, the value the web uses while its live
    request loads or fails. This lane makes no third-party request. The constant is held locally
    until the wallet-home lane (VTID-05422) brings `exchangeRates` into `@vitana/core`.
 

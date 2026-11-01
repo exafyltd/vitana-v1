@@ -33,5 +33,24 @@ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <work
 #         (first run: rate limit remaining 0; second run: every gh/git call to exafyltd/* returned HTTP 403 "resource match not found" from the connections gateway).
 #         The lane file exists on vitana-platform origin/main (read with git show at the start of this lane).
 
+## fix round 1 (driver finding: redeem must call the gateway like the web) — code commit cf4652c76
+git merge origin/main                                      # merged ec8682fec (#1544, regenerated core extract headers); no conflict
+# red on the previous head 98877f016 (+ the merge), new tests only, implementation unchanged:
+cd apps/mobile && npx jest tests/wallet-rewards -t "redeem request"   # FAIL: 3 failed, 53 skipped, 56 total — red-fix1.txt
+# after the fix (all offline; redeem tested only against a fake fetch, never a live endpoint):
+npm run gen:i18n                                           # PASS: 11 locales, 1430 shards
+npx jest tests/wallet-rewards                              # PASS: 2 suites, 56/56 tests (rewards 46, iap-gate 10, iap-gate unchanged)
+npm run typecheck                                          # PASS: tsc --noEmit, 0 errors
+npm test -- --ci                                           # PASS: 82/82 suites, 2211/2211 tests
+APP_PROFILE=development npm run bundle                     # PASS: ios + android exported (HOME pointed at a writable dir); dist removed after
+npm run parity:check                                       # PASS: OK — 435 rows, 31 native route(s)
+node ../../scripts/native/core-closure.mjs --check         # PASS: up to date (no core change)
+# repo root:
+npx eslint <lane paths as above>                           # PASS: 0 problems
+node scripts/i18n-register-check.mjs --all --max=500       # PASS: No formal-register violations
+npm run i18n:audit                                         # exit 1, 17193 pre-existing _pending_review errors (same as before); 0 mention walletRewardsNative
+node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-rewards --title "VTID-05424 (native-wave2-wallet-r2/wallet-rewards): native wallet rewards port"
+#   PASS: every check passed (Collab handoff, Lane scope, gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering)
+
 ## not run (deferred to G1, next_actor: owner)
 # Maestro flows apps/mobile/maestro/wallet-rewards/*.yaml, iOS simulator / Android emulator screenshots, parity vs 390x844 read-only staging.
