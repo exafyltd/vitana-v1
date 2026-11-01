@@ -1,0 +1,44 @@
+# VTID-05394 fix-deeplink-scroll-test/fixture-dates — commands
+# Session kiro-exafyltd-202610312205-02f4 (seat exafyltd), worktree on origin/main a10942848 (2026-10-31T13:51Z).
+
+## T0 start check
+$ gh pr view 1506 --repo exafyltd/vitana-v1 --json state,mergeCommit
+  {"state":"CLOSED","mergeCommit":null,"headRefOid":"2b0d52d3d"}   -> #1506 not merged
+$ git log --oneline origin/main -- src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx
+  627e8094f VTID-05320 messenger-ux-v2/ui-send-status: reload-seed outbox dates are recent (de-time-bomb) (#1508)
+  7499b3b7d VTID-05320 (messenger-ux-v2/ui-send-status): instant send, message statuses and one-tap Retry (#1474)
+$ gh pr view 1508 --repo exafyltd/vitana-v1 --json state,mergeCommit,mergedAt
+  MERGED, mergeCommit 627e8094fa3117ca1d8327559c7a88a98d02552a, 2026-10-28T14:32:52Z
+  -> the fixture fix is on main (RECENT_1 = now-120 s, RECENT_2 = now-119 s at the three outbox seeds).
+     T1/T2 skipped; T3 run on origin/main (plan T0, merged branch). #1508 replaces #1506 in the plan text.
+
+## Red on base (CI evidence, before #1508)
+UNIT-TESTS run 40674402709 on 1349f6991 (parent line of #1508): conclusion failure
+  (VTID-05320 file: 2 failed, see plan "Today" item 4; red-on-base for the fix: docs/validation/VTID-05320/fixture-fix.md).
+
+## Green on main (CI)
+UNIT-TESTS run 40707016215 on 627e8094f (#1508 merge): success, Vitest (jsdom) Test Files 479 passed (479),
+  useGlobalMessages.send-status.vtid-05320.test.tsx 17 tests passed.
+UNIT-TESTS on main since then, all success: 40878308865 (37a53314), 40881121333 (aa6d4dd9), 40915423603 (847a9f68),
+  41040952003 (847a9f68, 2026-10-30), 41190775352 (847a9f68, 2026-10-31 schedule),
+  41202167029 (77ec0531), 41207435618 (a10942848): Vitest (jsdom) Test Files 481 passed (481).
+  -> green past 2026-10-28, no fixed outbox date left.
+
+## T3 local (Windows, worktree on a10942848, fresh npm ci)
+$ npx vitest run src/hooks/useGlobalMessages.send-status.vtid-05320.test.tsx
+  PASS  Test Files 1 passed (1), Tests 17 passed (17)
+$ npx vitest run src/components/messages/ConversationView.deeplink-scroll.vtid-05201.test.tsx
+  PASS  Test Files 1 passed (1), Tests 1 passed (1)
+$ npm run test:unit
+  Windows: Test Files 30 failed | 451 passed (481), Tests 46 failed | 3797 passed (3843)
+  The 30 red files are Windows-only source scans / path checks (gateway-tts, gateway-prefix, registry, campaign-queue,
+  supabase-functions-retire, share-button guard, …), none in messaging. The identical commit a10942848 is 481/481 green
+  on Linux CI (run 41207435618), so these reds are the platform, not main. Authoritative full-suite result: CI.
+
+## Preflight (head cc3a0f3bb, then this commit)
+$ node <vitana-platform>/scripts/collab/preflight.mjs --repo <WT> --base origin/main --head HEAD --branch kiro/fix-deeplink-scroll-test/fixture-dates
+  PASS Collab handoff, Lane scope, gh plan lane files, PR-GATE scope, PR-GATE sparring, PR-GATE weakening, PR-GATE red-green
+  FAIL Kiro steering: guard.test.cjs expects LF; the Windows worktree checks .kiro/steering/*.md out as CRLF
+       (git ls-files --eol: i/lf w/crlf). Same red on the unchanged base files; index and CI (Linux) are LF.
+       This lane does not touch .kiro/**. Not the lane's.
+  (first run failed PR-GATE sparring: added docs/validation/VTID-05394/plan-sparring.md, now PASS)
