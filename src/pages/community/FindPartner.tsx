@@ -56,12 +56,14 @@ import {
   getFindPartnerMatches,
   getCommunityMemberCount,
   getCommunityMembers,
+  transitionMatch,
   type CommunityMember,
   type FindPartnerMatch,
   type UserIntent,
 } from '@/lib/intentApi';
-import { t } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { ScreenFrame } from '@/components/layout/spotlight';
+import { FindMatchSpotlightBody } from '@/components/community/spotlight/FindMatchSpotlightBody';
 import { useSpotlightEnabled } from '@/hooks/useSpotlightEnabled';
 
 const MEMBERS_TAB_THRESHOLD = 1000;
@@ -290,6 +292,28 @@ export default function FindPartner() {
     queryClient.invalidateQueries({ queryKey: ['my-intents', 'open', user?.id ?? 'anon'] });
   }, [queryClient, user?.id]);
 
+  // VTID-05418 — Spotlight grid actions. "Say hello" is the same outgoing
+  // express-interest call (and toasts) as FindPartnerMatchCard's "Interest";
+  // "View profile" is the card's own profile hop, marking the match viewed.
+  const [greetingMatchId, setGreetingMatchId] = useState<string | null>(null);
+  const sayHello = useCallback(async (m: FindPartnerMatch) => {
+    setGreetingMatchId(m.match_id);
+    try {
+      await transitionMatch(m.match_id, 'responded_by_a');
+      notify('toasts.intents.interestRecorded', 'toasts.intents.ifTheyReInterestedTooWe');
+      refresh();
+    } catch {
+      notifyError('toasts.intents.couldNotRecordInterest');
+    } finally {
+      setGreetingMatchId(null);
+    }
+  }, [refresh]);
+  const viewMatchProfile = useCallback((m: FindPartnerMatch) => {
+    if (!m.vitana_id_b) return;
+    markViewed(m.match_id, m.vitana_id_b, m.vitana_id_a);
+    navigate(`/u/${m.vitana_id_b}`);
+  }, [markViewed, navigate]);
+
   // Active sub-view metadata for the pill label + sheet header.
   const active = viewMeta(view);
   const filterLabel = `${active.icon} ${t(active.labelKey)}`;
@@ -299,6 +323,47 @@ export default function FindPartner() {
     [showMembersTab]
   );
 
+  const errorNotice = error && !loading && (
+    <div className="text-sm text-destructive py-4">{t('screens.community.couldnTLoadError', { error })}</div>
+  );
+
+  // Showing X of Y · Reset — only when a filter/search is hiding matches.
+  const narrowedNotice = !loading && !error && matchesNarrowed && (
+    <div className="flex items-center justify-between gap-3 mb-3 text-sm text-muted-foreground">
+      <span>
+        {t('screens.community.filterShowingOfTotal', {
+          shown: matches.length,
+          total: allMatches.length,
+        })}
+      </span>
+      <button
+        type="button"
+        onClick={resetMatchFilters}
+        className="font-medium text-primary hover:underline"
+      >
+        {t('screens.community.filterReset')}
+      </button>
+    </div>
+  );
+
+  // My Matches with nothing to show: filters hid them all, or there are none
+  // yet (then real members are suggested, never a dead end).
+  const matchesEmpty = allMatches.length > 0 ? (
+    <EmptyState
+      icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
+      title={t('screens.community.noMatchesForFilters')}
+      body={t('screens.community.noMatchesForFiltersBody')}
+      cta={{ label: t('screens.community.filterReset'), onClick: resetMatchFilters }}
+    />
+  ) : (
+    <SuggestedMatches
+      members={suggestions}
+      loading={suggestionsQuery.isLoading}
+      onPostWish={() => setComposerOpen(true)}
+      onOpenMember={(vid) => vid && navigate(`/profile/${vid}`)}
+    />
+  );
+
   // VTID-05117 — the result area, shared unchanged by the legacy screen and the Spotlight frame.
   const resultsBody = (
         <div className="mt-4">
@@ -306,47 +371,14 @@ export default function FindPartner() {
             <FindPartnerLoadingSkeleton view={view} isMobile={isMobile} />
           )}
 
-          {error && !loading && (
-            <div className="text-sm text-destructive py-4">{t('screens.community.couldnTLoadError', { error })}</div>
-          )}
+          {errorNotice}
 
-          {/* Showing X of Y · Reset — only when a filter/search is hiding matches. */}
-          {!loading && !error && matchesNarrowed && (
-            <div className="flex items-center justify-between gap-3 mb-3 text-sm text-muted-foreground">
-              <span>
-                {t('screens.community.filterShowingOfTotal', {
-                  shown: matches.length,
-                  total: allMatches.length,
-                })}
-              </span>
-              <button
-                type="button"
-                onClick={resetMatchFilters}
-                className="font-medium text-primary hover:underline"
-              >
-                {t('screens.community.filterReset')}
-              </button>
-            </div>
-          )}
+          {narrowedNotice}
 
           {/* My Matches */}
           {!loading && !error && view === 'matches' && (
             matches.length === 0 ? (
-              allMatches.length > 0 ? (
-                <EmptyState
-                  icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
-                  title={t('screens.community.noMatchesForFilters')}
-                  body={t('screens.community.noMatchesForFiltersBody')}
-                  cta={{ label: t('screens.community.filterReset'), onClick: resetMatchFilters }}
-                />
-              ) : (
-                <SuggestedMatches
-                  members={suggestions}
-                  loading={suggestionsQuery.isLoading}
-                  onPostWish={() => setComposerOpen(true)}
-                  onOpenMember={(vid) => vid && navigate(`/profile/${vid}`)}
-                />
-              )
+              matchesEmpty
             ) : isMobile ? (
               // Bottom padding leaves ~ a card height of clear space so the
               // primary CTA on the last card stays above the fixed mobile
@@ -494,8 +526,29 @@ export default function FindPartner() {
               onValueChange: (v) => setView(v as View),
               items: visibleViewOptions.map((o) => ({ value: o.value, label: t(o.labelKey) })),
             }}
+            layout={view === 'matches' ? 'spotlight-grid' : undefined}
           >
-            {resultsBody}
+            {view === 'matches' ? (
+              // VTID-05418 — contract SR-31: the top match in the spotlight, six
+              // matches beside it, the rest in one row below. Board, posts and
+              // members keep the shared result area.
+              <div className="mt-4">
+                {errorNotice}
+                {narrowedNotice}
+                {!error && (
+                  <FindMatchSpotlightBody
+                    matches={matches}
+                    loading={loading}
+                    empty={matchesEmpty}
+                    onSayHello={sayHello}
+                    onViewProfile={viewMatchProfile}
+                    busyMatchId={greetingMatchId}
+                  />
+                )}
+              </div>
+            ) : (
+              resultsBody
+            )}
           </ScreenFrame>
         </AppLayout>
         <FindMatchFilterSheet

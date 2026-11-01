@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05419",
+  "slug": "spotlight-card-proportion",
+  "lane": "health",
+  "kind": "feature",
+  "repo": "exafyltd/vitana-v1",
+  "sparring_record": "docs/validation/VTID-05419/plan-sparring.md",
+  "change_types": ["UI"],
+  "paths": [
+    "src/pages/Health.tsx",
+    "src/components/spotlight/tier-b/VitanaIndexHeroCard.tsx",
+    "src/components/spotlight/tier-b/HealthGridTiles.tsx",
+    "src/components/spotlight/tier-b/health-grid.test.tsx",
+    "src/pages/spotlight-tier-b.vtid-05111.test.tsx",
+    "tests/e2e/staging/vtid-05419-health-spotlight-grid.staging.spec.ts",
+    "docs/validation/VTID-05419/**"
+  ],
+  "weakens_tests": [],
+  "protected_gate_files": [],
+  "default_behaviour_unchanged": [
+    "Health flag-off desktop (VitanaPillarAgentsPanel, NextBestActionCard, CompactVitanaIndex)",
+    "Health on phones (MobileHealthSnapshot path)",
+    "VitanaIndexHeroCard without spotlightLabel / ringMedia (VitanaIndexDetail.tsx call site)",
+    "/health/vitana-index"
+  ]
+}
