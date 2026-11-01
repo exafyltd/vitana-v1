@@ -41,7 +41,10 @@ type Row = { key: string; web_path: string; scope: string; source: string };
  */
 export const NATIVE_ROUTES: readonly string[] = [
   '/',
+  // VTID-05451: `/` a second time — app/(public)/index.tsx (PUBLIC.LANDING) next to N3's app/index.tsx redirect.
+  '/',
   '/alkalma',
+  '/apply',
   '/comm/find-partner',
   '/comm/groups',
   '/comm/members',
@@ -55,6 +58,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/intents/mine',
   '/logout',
   '/maxina',
+  '/maxina_support',
   '/me/matches',
   '/memory',
   '/memory/permissions',
@@ -62,8 +66,10 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/memory/timeline',
   '/native-ui-catalogue',
   '/oauth/complete',
+  '/privacy',
   '/reset-password',
   '/search',
+  '/terms',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

@@ -1844,10 +1844,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PUBLIC.PRIVACY",
@@ -1856,10 +1856,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PUBLIC.TERMS",
@@ -1868,10 +1868,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "REMINDERS.OVERVIEW",
@@ -2384,10 +2384,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/alkalma/confirmed",
@@ -2408,10 +2408,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/auth/confirmed",
@@ -2624,10 +2624,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/inbox/g/:groupId/msg/:messageId",
@@ -2720,10 +2720,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/oauth/complete",
