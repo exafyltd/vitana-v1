@@ -1,0 +1,11 @@
+# npx vitest run src/lib/pr-ci-service-images.test.ts on the lane head
+21:53:26 [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 C:/Users/dstev/vitana-v1/.worktrees/cdm-v1
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  21:53:26
+   Duration  23.80s (transform 276ms, setup 4.24s, import 402ms, tests 24ms, environment 18.34s)
+
