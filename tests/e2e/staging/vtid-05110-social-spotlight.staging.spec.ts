@@ -18,9 +18,11 @@ test.use({
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const SINGLE = new Set(['focus-feed', 'storefront', 'detail', 'dashboard']);
-const ROUTES: { path: string; archetype: string }[] = [
+// VTID-05417 — Events & Meetups opted into the SR-31 Spotlight grid (contract changed on purpose,
+// owner-approved layout 2026-10-31): its one spotlight card lives in the grid's spotlight slot.
+const ROUTES: { path: string; archetype: string; layout?: 'spotlight-grid' }[] = [
   { path: '/comm', archetype: 'collection' },
-  { path: '/comm/events-meetups', archetype: 'collection' },
+  { path: '/comm/events-meetups', archetype: 'collection', layout: 'spotlight-grid' },
   { path: '/comm/groups', archetype: 'collection' },
   { path: '/comm/live-rooms', archetype: 'focus-feed' },
 ];
@@ -65,10 +67,11 @@ async function expectSidebarChrome(page: import('@playwright/test').Page) {
   expect(await footer.locator('button').count()).toBeGreaterThanOrEqual(3);
 }
 
-async function expectSpotlightContract(page: import('@playwright/test').Page, archetype: string) {
+async function expectSpotlightContract(page: import('@playwright/test').Page, archetype: string, layout?: 'spotlight-grid') {
   const frame = page.locator('[data-archetype]').first();
   await expect(frame).toBeVisible({ timeout: 25_000 });
   await expect(frame).toHaveAttribute('data-archetype', archetype);
+  if (layout) await expect(frame).toHaveAttribute('data-screen-layout', layout);
   await expect(page.locator('[data-header-density="compact"]').first()).toBeVisible();
   await expectSidebarChrome(page);
 
@@ -79,6 +82,12 @@ async function expectSpotlightContract(page: import('@playwright/test').Page, ar
     await expect(spotlightCards).toHaveCount(1, { timeout: 20_000 });
   } else {
     expect(await spotlightCards.count(), 'at most one spotlight card').toBeLessThanOrEqual(1);
+  }
+  if (layout === 'spotlight-grid') {
+    // The spotlight card (if any) sits in the grid's spotlight slot, never elsewhere (SR-31).
+    expect(await page.locator('[data-spotlight-grid] [data-slot="spotlight"] [data-vcard-size="spotlight"]:not([data-vcard-skeleton])').count()).toBe(
+      await spotlightCards.count(),
+    );
   }
   // Rails hold only compact / row cards (SR-08).
   expect(await page.locator('[data-spotlight-rail] [data-vcard-size="spotlight"], [data-spotlight-rail] [data-vcard-size="standard"]').count()).toBe(0);
@@ -102,7 +111,7 @@ for (const route of ROUTES) {
       await page.setViewportSize({ width, height: 900 });
       await signIn(page, request);
       await page.goto(`${route.path}?spotlight=1`, { waitUntil: 'domcontentloaded' });
-      await expectSpotlightContract(page, route.archetype);
+      await expectSpotlightContract(page, route.archetype, route.layout);
     });
   }
 

@@ -16,10 +16,20 @@ vi.mock('@/lib/i18n-toast', () => {
 });
 vi.mock('@/hooks/useTranslation', () => ({ useTranslation: () => ({ translate: (k: string) => k }) }));
 vi.mock('@/components/events/EventsLiveRooms', () => ({
+  isLiveRoomEvent: (e: { event_type?: string | null } | null | undefined) => e?.event_type === 'live_room',
   isOngoingLiveRoom: (e: { event_type?: string; metadata?: { is_live?: boolean } }) => e.event_type === 'live_room' && e.metadata?.is_live === true,
 }));
 const membership = { isMember: false, checkingMembership: false, isJoining: false, isLeaving: false, joinGroup: vi.fn(), leaveGroup: vi.fn() };
 vi.mock('@/hooks/useGroupMembership', () => ({ useGroupMembership: () => membership }));
+// VTID-05417 — Join on the Events Spotlight card reuses the existing RSVP hook (the one NewsCard uses).
+const participation = { isParticipating: false, participantCount: 48, loading: false, checking: false, toggleParticipation: vi.fn() };
+const participationCalls: unknown[][] = [];
+vi.mock('@/hooks/useEventParticipation', () => ({
+  useEventParticipation: (...args: unknown[]) => {
+    participationCalls.push(args);
+    return participation;
+  },
+}));
 
 import { eventToVCard, groupToVCard, liveRoomToVCard, memberToVCard } from '@/components/ui/vcard/adapters';
 import type { CommunityEvent } from '@/hooks/useCommunityEvents';
@@ -116,24 +126,87 @@ describe('VTID-05110 full rows only (SR-13)', () => {
   });
 });
 
-describe('VTID-05110 Events & Meetups body', () => {
+describe('VTID-05110 / VTID-05417 Events & Meetups body (Spotlight grid, SR-31)', () => {
   const empty = { titleKey: 'spotlightSocial.events.emptyTitle', descriptionKey: 'spotlightSocial.events.emptyDesc' };
+  const nine = () => [
+    ev(),
+    ...Array.from({ length: 8 }, (_, i) => ev({ id: `e${i + 2}`, title: `Event ${i + 2}` })),
+  ];
+  const slot = (root: ParentNode, name: string) => root.querySelector(`[data-spotlight-grid] [data-slot="${name}"]`) as HTMLElement | null;
+  const reset = () => {
+    participation.isParticipating = false;
+    participation.checking = false;
+    participation.loading = false;
+    participation.toggleParticipation.mockClear();
+    participationCalls.length = 0;
+  };
 
-  it('first event is the one spotlight card, the rest are rows (no bento), clicks open the drawer handler', () => {
-    const onOpen = vi.fn();
-    const events = [ev(), ev({ id: 'e2', title: 'Cold-plunge club' }), ev({ id: 'e3', title: 'Sleep science talk' })];
-    const { container } = inRouter(<EventsSpotlightBody events={events} loading={false} liveNow={[]} onOpen={onOpen} empty={empty} />);
+  it('the next event is the one labelled spotlight card; this week\'s next six are standard tiles beside it; the rest are the compact Upcoming row', () => {
+    reset();
+    const { container } = inRouter(<EventsSpotlightBody events={nine()} loading={false} liveNow={[]} onOpen={vi.fn()} empty={empty} />);
+    expect(container.querySelectorAll('[data-spotlight-grid]')).toHaveLength(1);
+    const spot = slot(container, 'spotlight')!;
     expect(sizes(container, 'spotlight')).toHaveLength(1);
-    expect(sizes(container, 'row')).toHaveLength(2);
-    expect(within(sizes(container, 'spotlight')[0] as HTMLElement).getByText('Longevity Brunch')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Cold-plunge club'));
-    expect(onOpen).toHaveBeenCalledWith(events[1]);
-    fireEvent.click(screen.getByText('spotlightSocial.common.details'));
-    expect(onOpen).toHaveBeenCalledWith(events[0]);
-    expect(screen.getByText('spotlightSocial.events.going:48')).toBeInTheDocument();
+    expect(sizes(spot, 'spotlight')).toHaveLength(1);
+    expect(within(spot).getByText('Longevity Brunch')).toBeInTheDocument();
+    expect(spot.querySelector('[data-vcard-spotlight-label]')).not.toBeNull();
+    const tiles = slot(container, 'tiles')!;
+    expect(sizes(tiles, 'standard')).toHaveLength(6);
+    expect(within(tiles).getByText('Event 2')).toBeInTheDocument();
+    expect(within(tiles).getByText('Event 7')).toBeInTheDocument();
+    const row = slot(container, 'row')!;
+    expect(sizes(row, 'compact')).toHaveLength(2);
+    expect(within(row).getByText('spotlight.grid.events.upcoming')).toBeInTheDocument();
+    expect(within(row).getByText('Event 9')).toBeInTheDocument();
+    expect(screen.getByText('spotlight.grid.events.thisWeek')).toBeInTheDocument();
+    // No `row`-size list and no nested stage-rail any more (D8).
+    expect(sizes(container, 'row')).toHaveLength(0);
+    expect(container.querySelector('aside[data-spotlight-rail]')).toBeNull();
   });
 
-  it('rail shows live rooms (compact) and followed people (row) only — never spotlight or standard', () => {
+  it('tile, row and Details clicks open the page handler; Join on a free event uses the existing RSVP toggle', () => {
+    reset();
+    const onOpen = vi.fn();
+    const events = nine();
+    inRouter(<EventsSpotlightBody events={events} loading={false} liveNow={[]} onOpen={onOpen} empty={empty} />);
+    fireEvent.click(screen.getByText('Event 3'));
+    expect(onOpen).toHaveBeenCalledWith(events[2]);
+    fireEvent.click(screen.getByText('Event 9'));
+    expect(onOpen).toHaveBeenCalledWith(events[8]);
+    fireEvent.click(screen.getByRole('button', { name: 'spotlightSocial.common.details' }));
+    expect(onOpen).toHaveBeenCalledWith(events[0]);
+    expect(screen.getByText('spotlightSocial.events.going:48')).toBeInTheDocument();
+    expect(participationCalls[0]).toEqual(['e1', 48]);
+    onOpen.mockClear();
+    fireEvent.click(screen.getByRole('button', { name: 'spotlight.grid.events.join' }));
+    expect(participation.toggleParticipation).toHaveBeenCalledTimes(1);
+    expect(onOpen).not.toHaveBeenCalled();
+  });
+
+  it('Join on a paid / ticketed event or a live room opens it (drawer / room) and never writes; already going → no Join', () => {
+    reset();
+    const onOpen = vi.fn();
+    const paid = ev({ metadata: { is_paid: true } });
+    const view = inRouter(<EventsSpotlightBody events={[paid]} loading={false} liveNow={[]} onOpen={onOpen} empty={empty} />);
+    fireEvent.click(screen.getByRole('button', { name: 'spotlight.grid.events.join' }));
+    expect(onOpen).toHaveBeenCalledWith(paid);
+    view.unmount();
+    const liveRoom = ev({ id: 'lr0', event_type: 'live_room', metadata: { is_live: true } });
+    const view2 = inRouter(<EventsSpotlightBody events={[liveRoom]} loading={false} liveNow={[]} onOpen={onOpen} empty={empty} />);
+    fireEvent.click(screen.getByRole('button', { name: 'spotlight.grid.events.join' }));
+    expect(onOpen).toHaveBeenCalledWith(liveRoom);
+    expect(participation.toggleParticipation).not.toHaveBeenCalled();
+    expect(participationCalls).toHaveLength(0);
+    view2.unmount();
+    participation.isParticipating = true;
+    inRouter(<EventsSpotlightBody events={[ev()]} loading={false} liveNow={[]} onOpen={onOpen} empty={empty} />);
+    expect(screen.queryByRole('button', { name: 'spotlight.grid.events.join' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'spotlightSocial.common.details' })).toBeInTheDocument();
+  });
+
+  it('Live now and You follow move below the grid as compact rows — never spotlight or standard, no rail (D8)', () => {
+    reset();
+    const onOpen = vi.fn();
     const live = [ev({ id: 'lr1', title: 'Live breathwork', event_type: 'live_room', metadata: { is_live: true } })];
     const { container } = inRouter(
       <EventsSpotlightBody
@@ -141,21 +214,42 @@ describe('VTID-05110 Events & Meetups body', () => {
         loading={false}
         liveNow={live}
         followed={[{ user_id: 'u9', display_name: 'Mila', handle: 'mila' }]}
-        onOpen={vi.fn()}
+        onOpen={onOpen}
         empty={empty}
       />,
     );
-    const rail = container.querySelector('aside[data-spotlight-rail]')!;
-    expect(rail).not.toBeNull();
-    expect(sizes(rail, 'compact')).toHaveLength(1);
-    expect(sizes(rail, 'row')).toHaveLength(1);
-    expect(sizes(rail, 'spotlight')).toHaveLength(0);
-    expect(sizes(rail, 'standard')).toHaveLength(0);
+    expect(container.querySelector('aside[data-spotlight-rail]')).toBeNull();
+    const below = container.querySelector('[data-spotlight-section="events-around"]')!;
+    expect(below).not.toBeNull();
+    expect(container.querySelector('[data-spotlight-grid]')!.contains(below)).toBe(false);
+    expect(sizes(below.querySelector('[data-rail-block="live"]')!, 'compact')).toHaveLength(1);
+    expect(sizes(below.querySelector('[data-rail-block="following"]')!, 'compact')).toHaveLength(1);
+    expect(sizes(below, 'spotlight')).toHaveLength(0);
+    expect(sizes(below, 'standard')).toHaveLength(0);
+    fireEvent.click(screen.getByText('Live breathwork'));
+    expect(onOpen).toHaveBeenCalledWith(live[0]);
+    expect(screen.getByText('Mila').closest('a')!.getAttribute('href')).toBe('/u/mila');
   });
 
-  it('loading shows the skeleton, an empty tab shows the shared empty state with its action', () => {
+  it('fewer than seven events: only real tiles (D4), no Upcoming row; one event → no tiles, no empty filler', () => {
+    reset();
+    const three = [ev(), ev({ id: 'e2', title: 'Cold-plunge club' }), ev({ id: 'e3', title: 'Sleep science talk' })];
+    const { container, rerender } = inRouter(<EventsSpotlightBody events={three} loading={false} liveNow={[]} onOpen={vi.fn()} empty={empty} />);
+    expect(sizes(container, 'spotlight')).toHaveLength(1);
+    expect(sizes(slot(container, 'tiles')!, 'standard')).toHaveLength(2);
+    expect(slot(container, 'row')).toBeNull();
+    expect(container.querySelector('[data-spotlight-section="events-around"]')).toBeNull();
+    rerender(<MemoryRouter><EventsSpotlightBody events={[ev()]} loading={false} liveNow={[]} onOpen={vi.fn()} empty={empty} /></MemoryRouter>);
+    expect(sizes(container, 'spotlight')).toHaveLength(1);
+    expect(sizes(slot(container, 'tiles')!, 'standard')).toHaveLength(0);
+    expect(container.querySelector('[data-social-empty]')).toBeNull();
+  });
+
+  it('loading shows the grid skeleton, an empty tab shows the shared empty state with its action (no grid, no rail)', () => {
+    reset();
     const { container, rerender } = inRouter(<EventsSpotlightBody events={[]} loading liveNow={[]} onOpen={vi.fn()} empty={empty} />);
-    expect(container.querySelector('[data-social-skeleton]')).not.toBeNull();
+    expect(container.querySelector('[data-archetype-skeleton][data-skeleton-layout="spotlight-grid"]')).not.toBeNull();
+    expect(container.querySelectorAll('[data-vcard-skeleton]').length).toBe(12);
     const onAction = vi.fn();
     rerender(
       <MemoryRouter>
@@ -165,6 +259,7 @@ describe('VTID-05110 Events & Meetups body', () => {
     expect(screen.getByText('spotlightSocial.events.emptyTitle')).toBeInTheDocument();
     fireEvent.click(screen.getByText('spotlightSocial.events.create'));
     expect(onAction).toHaveBeenCalled();
+    expect(container.querySelector('[data-spotlight-grid]')).toBeNull();
     expect(container.querySelector('aside[data-spotlight-rail]')).toBeNull();
   });
 });

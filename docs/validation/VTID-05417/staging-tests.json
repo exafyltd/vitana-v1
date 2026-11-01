@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05417",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, /comm/events-meetups at 1400x900 ?spotlight=1: frame data-screen-layout=spotlight-grid, exactly one labelled Spotlight card in [data-spotlight-grid] at 30-45% of the [data-spotlight-layout] width, tiles beside it (top within its span), the row (when rendered) below it, compact header with its 2 buttons, utility bar visible, no horizontal scroll; at 390x844 no Spotlight frame and the mobile bottom nav visible. Read-only, nothing clicked.",
+      "spec": "tests/e2e/staging/vtid-05417-events-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05110 social screens contract, updated: /comm/events-meetups is framed with data-screen-layout=spotlight-grid and its spotlight card sits in the grid's spotlight slot; the other social routes unchanged",
+      "spec": "tests/e2e/staging/vtid-05110-social-spotlight.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}
