@@ -32,8 +32,8 @@ jobs:
     # real database: the stub is loaded fresh, every dry run is rolled back.
     services:
       pg:
-        # AWS mirror of the official image; Docker Hub rate limits failed this job (VTID-05015).
-        image: public.ecr.aws/docker/library/postgres:16
+        # Docker Hub official image: the ECR Public mirror's anonymous data cap failed pr-gate on 2026-10-31; GitHub-hosted runners are exempt from Docker Hub pull limits (VTID-05415, plan ci-dockerhub-mirror).
+        image: postgres:16
         env:
           POSTGRES_PASSWORD: dryrun
         ports: ['5432:5432']
