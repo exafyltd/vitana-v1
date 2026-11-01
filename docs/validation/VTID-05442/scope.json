@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05442",
+  "plan": "mt-track-s-r2",
+  "lane": "s-j-route-inventory",
+  "paths": [
+    "supabase/functions/linkedin-import/index.ts",
+    "supabase/config.toml",
+    "src/lib/edge-functions-caller-identity.s4.test.ts",
+    "scripts/check-edge-function-auth.mjs",
+    "package.json",
+    "docs/validation/VTID-05442/**"
+  ],
+  "deploys": "nothing: an edge-function folder removal is not deployed by any staging workflow (supabase-functions-deploy.yml cutover_gate freezes push deploys); the production copy is retired only by the owner-approved SUPABASE-FUNCTIONS-RETIRE.yml step of the plan"
+}
