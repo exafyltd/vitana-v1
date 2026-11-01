@@ -2360,7 +2360,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2804,7 +2804,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
