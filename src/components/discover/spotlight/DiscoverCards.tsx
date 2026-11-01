@@ -55,12 +55,23 @@ function DiscountBadge({ product }: { product: MarketplaceProduct }) {
   return <Badge variant="destructive">{t('spotlightDiscover.card.discount', { percent: pct })}</Badge>;
 }
 
-/** A product as a `standard` card in a shelf or results grid. */
-export function ProductVCard({ product, onOpen }: { product: MarketplaceProduct; onOpen: (p: MarketplaceProduct) => void }) {
+/**
+ * A product as a `standard` card in a shelf or results grid (`li` inside a
+ * `ul`), or as a tile of the Spotlight grid (`article`, VTID-05416).
+ */
+export function ProductVCard({
+  product,
+  onOpen,
+  as = 'li',
+}: {
+  product: MarketplaceProduct;
+  onOpen: (p: MarketplaceProduct) => void;
+  as?: 'li' | 'article';
+}) {
   const d = storefrontProductToVCard(product);
   return (
     <VCard
-      as="li"
+      as={as}
       size="standard"
       media={d.media}
       eyebrow={d.eyebrow}
@@ -74,20 +85,29 @@ export function ProductVCard({ product, onOpen }: { product: MarketplaceProduct;
   );
 }
 
-/** The one `spotlight` card of a storefront (SR-06): image at the inline start, story and actions beside it. */
+/**
+ * The one `spotlight` card of a storefront (SR-06).
+ * - `side` (default, results mode and Deals): image at the inline start, story and actions beside it.
+ * - `stacked` (VTID-05416, the SR-31 Spotlight grid on the overview): image on top, story and actions
+ *   below, with the Spotlight label and accent ring (`VCard.spotlightLabel`).
+ */
 export function ProductHero({
   product,
   label,
   onOpen,
+  variant = 'side',
 }: {
   product: MarketplaceProduct;
   label: string;
   onOpen: (p: MarketplaceProduct) => void;
+  variant?: 'side' | 'stacked';
 }) {
   const d = storefrontProductToVCard(product);
+  const stacked = variant === 'stacked';
   return (
     <VCard
       size="spotlight"
+      spotlightLabel={stacked}
       priority
       media={d.media ? { ...d.media, ratio: 'landscape' } : { src: null, ratio: 'landscape' }}
       badge={<Badge variant="secondary">{label}</Badge>}
@@ -112,8 +132,9 @@ export function ProductHero({
         </>
       }
       data-storefront-hero=""
+      data-hero-variant={variant}
       data-product-id={product.id}
-      className="grid grid-cols-2 items-center"
+      className={stacked ? 'h-full' : 'grid grid-cols-2 items-center'}
     />
   );
 }

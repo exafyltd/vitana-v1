@@ -14,6 +14,21 @@ export const DISCOVER_GRID = 'grid grid-cols-2 gap-4 xl:grid-cols-4';
 /** Number of cards a shelf shows — one full row at xl, two full rows below. */
 export const SHELF_SIZE = 4;
 
+/**
+ * VTID-05416 — the SR-31 Spotlight grid on the overview: the top feed item is
+ * the Spotlight card, the next `GRID_TILES` items are its 3x2 tiles.
+ */
+export const GRID_TILES = 6;
+
+/** VTID-05416 — "Browse categories" row: compact links to the EXISTING Discover sub-routes only. */
+export const BROWSE_CATEGORIES = [
+  { id: 'supplements', to: '/discover/supplements', labelKey: 'spotlightDiscover.storefront.shelves.supplements' },
+  { id: 'wellness-services', to: '/discover/wellness-services', labelKey: 'spotlightDiscover.storefront.shelves.services' },
+  { id: 'doctors-coaches', to: '/discover/doctors-coaches', labelKey: 'spotlightDiscover.storefront.shelves.coaches' },
+  { id: 'deals-offers', to: '/discover/deals-offers', labelKey: 'spotlightDiscover.storefront.shelves.deals' },
+  { id: 'marketplace', to: '/discover/marketplace', labelKey: 'screens.discover.marketplace' },
+] as const;
+
 /** Goal chips → the gateway's canonical `health_goals` slugs (supplement-inference HEALTH_GOALS). */
 export const GOAL_CHIPS = [
   { id: 'sleep', goal: 'better-sleep', labelKey: 'spotlightDiscover.storefront.chips.sleep' },
