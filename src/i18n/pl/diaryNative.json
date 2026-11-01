@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana potrzebuje twojego aparatu, żebyś mógł robić zdjęcia do dziennika i do zgłoszeń błędów.",
+      "photosUsage": "Vitana potrzebuje dostępu do twoich zdjęć, żebyś mógł dodawać obrazy do dziennika i do zgłoszeń błędów.",
+      "deniedTitle": "Brak dostępu",
+      "deniedCamera": "Zezwól na dostęp do aparatu w Ustawieniach, żeby zrobić zdjęcie.",
+      "deniedPhotos": "Zezwól na dostęp do zdjęć w Ustawieniach, żeby wybrać obraz.",
+      "deniedMicrophone": "Zezwól na dostęp do mikrofonu w Ustawieniach, żeby nagrać wpis głosowy."
+    },
+    "selectMode": "Wybierz sekcję dziennika",
+    "startRecording": "Rozpocznij nagrywanie",
+    "stopRecording": "Zatrzymaj nagrywanie",
+    "close": "Zamknij",
+    "removePhoto": "Usuń zdjęcie",
+    "entriesLoadError": "Nie udało się wczytać twoich wpisów.",
+    "photoSource": {
+      "title": "Dodaj zdjęcie",
+      "camera": "Zrób zdjęcie",
+      "library": "Wybierz z biblioteki"
+    },
+    "indexSaved": {
+      "title": "Zapisano · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Dotknij swojego Indexu, żeby zobaczyć zmianę.",
+      "signals": "Zapisano sygnały zdrowotne: {count}.",
+      "signalsCaption": "Zapisano sygnały zdrowotne z twojego podpisu: {count}."
+    },
+    "screenOption": {
+      "home": "Strona główna",
+      "community": "Społeczność",
+      "communityEvents": "Społeczność – Wydarzenia",
+      "discover": "Odkrywaj",
+      "discoverMarketplace": "Odkrywaj – Rynek",
+      "businessHub": "Business Hub",
+      "inbox": "Skrzynka odbiorcza",
+      "inboxMessages": "Skrzynka odbiorcza – Wiadomości",
+      "health": "Zdrowie",
+      "healthDashboard": "Zdrowie – Pulpit",
+      "aiAssistant": "Asystent AI",
+      "aiAssistantOrb": "Asystent AI – ORB",
+      "wallet": "Portfel",
+      "sharing": "Udostępnianie",
+      "memoryDiary": "Pamięć – Dziennik",
+      "memoryGarden": "Pamięć – Ogród",
+      "calendar": "Kalendarz",
+      "settings": "Ustawienia",
+      "profile": "Profil",
+      "liveRooms": "Pokoje na żywo",
+      "notifications": "Powiadomienia",
+      "other": "Inne"
+    }
+  }
+}
