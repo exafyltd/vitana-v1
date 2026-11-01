@@ -1,0 +1,20 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Wallet-Ansicht wählen",
+    "flow": {
+      "finishOnWeb": "Diese Aktion gibt es in der App noch nicht. Schließe sie bitte in deiner Web-Wallet ab."
+    },
+    "balance": {
+      "tabsLabel": "Kontobereiche",
+      "statusActive": "Aktiv",
+      "statusHealthy": "Gesund",
+      "statusGrowing": "Wachsend",
+      "tierPremium": "Premium",
+      "creditsDescription": "Nutze Credits für Gesundheitsleistungen, Labortests und Premium-Funktionen",
+      "creditsStatusDescription": "Deine Credits sind aktiv und einsatzbereit",
+      "tokensDescription": "Vitana-Network-Token für Mitbestimmung und Belohnungen",
+      "usdDescription": "US-Dollar-Guthaben und Fiat-Vorgänge",
+      "membershipDescription": "75 % Abdeckung + exklusive Gesundheitsvorteile"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Выбери вид кошелька",
+    "flow": {
+      "finishOnWeb": "Этого действия пока нет в приложении. Заверши его в своём веб-кошельке."
+    },
+    "balance": {
+      "tabsLabel": "Разделы счёта",
+      "statusActive": "Активно",
+      "statusHealthy": "Хорошо",
+      "statusGrowing": "Растёт",
+      "tierPremium": "Премиум",
+      "creditsDescription": "Используй кредиты для медицинских услуг, анализов и премиум-функций",
+      "creditsStatusDescription": "Твои кредиты активны и готовы к использованию",
+      "tokensDescription": "Токены Vitana Network для участия в решениях и наград",
+      "usdDescription": "Средства в долларах США и фиатные операции",
+      "membershipDescription": "75 % покрытия + эксклюзивные преимущества для здоровья"
+    }
+  }
+}

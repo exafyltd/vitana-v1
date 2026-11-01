@@ -1,0 +1,20 @@
+{
+  "walletHomeNative": {
+    "selectMode": "اختر عرض المحفظة",
+    "flow": {
+      "finishOnWeb": "هذا الإجراء غير متوفر في التطبيق بعد. أكمله من فضلك في محفظتك على الويب."
+    },
+    "balance": {
+      "tabsLabel": "أقسام الحساب",
+      "statusActive": "نشط",
+      "statusHealthy": "جيد",
+      "statusGrowing": "في نمو",
+      "tierPremium": "بريميوم",
+      "creditsDescription": "استخدم الأرصدة لخدمات الصحة والتحاليل المخبرية والميزات المميزة",
+      "creditsStatusDescription": "أرصدتك نشطة وجاهزة للاستخدام",
+      "tokensDescription": "رموز Vitana Network للحوكمة والمكافآت",
+      "usdDescription": "رصيد بالدولار الأمريكي وعمليات العملات الورقية",
+      "membershipDescription": "تغطية 75% + مزايا صحية حصرية"
+    }
+  }
+}

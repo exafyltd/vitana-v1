@@ -1,0 +1,20 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Escolha a visualização da carteira",
+    "flow": {
+      "finishOnWeb": "Esta ação ainda não está no app. Conclua-a na sua carteira web."
+    },
+    "balance": {
+      "tabsLabel": "Seções da conta",
+      "statusActive": "Ativo",
+      "statusHealthy": "Saudável",
+      "statusGrowing": "Em crescimento",
+      "tierPremium": "Premium",
+      "creditsDescription": "Use créditos para serviços de saúde, exames laboratoriais e recursos premium",
+      "creditsStatusDescription": "Seus créditos estão ativos e prontos para uso",
+      "tokensDescription": "Tokens da Vitana Network para governança e recompensas",
+      "usdDescription": "Saldo em dólares americanos e operações fiat",
+      "membershipDescription": "75% de cobertura + benefícios de saúde exclusivos"
+    }
+  }
+}

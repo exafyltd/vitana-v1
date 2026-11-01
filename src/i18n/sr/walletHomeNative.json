@@ -1,0 +1,20 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Izaberi prikaz novčanika",
+    "flow": {
+      "finishOnWeb": "Ova radnja još nije u aplikaciji. Završi je u svom veb-novčaniku."
+    },
+    "balance": {
+      "tabsLabel": "Odeljci naloga",
+      "statusActive": "Aktivno",
+      "statusHealthy": "Zdravo",
+      "statusGrowing": "U porastu",
+      "tierPremium": "Premium",
+      "creditsDescription": "Koristi kredite za zdravstvene usluge, laboratorijske analize i premium funkcije",
+      "creditsStatusDescription": "Tvoji krediti su aktivni i spremni za upotrebu",
+      "tokensDescription": "Vitana Network tokeni za odlučivanje i nagrade",
+      "usdDescription": "Sredstva u američkim dolarima i fiat operacije",
+      "membershipDescription": "75% pokrića + ekskluzivne zdravstvene pogodnosti"
+    }
+  }
+}
