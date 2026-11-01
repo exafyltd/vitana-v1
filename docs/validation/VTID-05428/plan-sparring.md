@@ -27,6 +27,7 @@ CONVERGED and approved by policy `converged-auto-v1` at 2026-11-01T03:02:17.659+
 
 ## Approval
 
-The converged plan is approved by policy `converged-auto-v1`: a plan sparred by CI whose
+Owner approval: given by policy `converged-auto-v1` (owner decision 2026-10-14, VTID-05214/05218),
+in place of a per-plan Gate 1. The converged plan is approved by that policy: a plan sparred by CI whose
 session converged is approved by policy and not sent to the owner as Gate 1. The VTID was
 allocated by CI after convergence (`lanes/delete-account.md` log, 2026-11-01T03:04Z).
