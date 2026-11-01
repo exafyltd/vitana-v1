@@ -56,8 +56,10 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/logout',
   '/maxina',
   '/me/matches',
+  '/me/profile',
   '/native-ui-catalogue',
   '/oauth/complete',
+  '/profile/me/privacy',
   '/reset-password',
   '/search',
 ];

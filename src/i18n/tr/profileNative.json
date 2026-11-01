@@ -1,0 +1,52 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Tüm bölüm",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Dans tercihleri",
+          "description": "Stiller, seviye, rol ve ne aradığın."
+        },
+        "partnerPreferences": {
+          "label": "Partner tercihleri",
+          "description": "Kimi aradığın. Varsayılan olarak gizli. Bölümü açsan bile alt alanlar gizli kalır."
+        },
+        "serviceOfferings": {
+          "label": "Hizmet teklifleri",
+          "description": "Ne sunduğun. Varsayılan olarak herkese açık — gizlemek amaca aykırı."
+        },
+        "myPosts": {
+          "label": "Gönderilerim",
+          "description": "Dikte ettiğin açık niyetler. Partner arama gönderileri, ayar ne olursa olsun burada ASLA görünmez."
+        },
+        "derivedAgeBand": {
+          "label": "Yaş grubu",
+          "description": "Tam yaşın yerine sadece yaş grubunu göster (ör. 30'lar). Varsayılan: sadece bağlantılar."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Stillerim",
+        "danceLevel": "Seviyem",
+        "danceLookingFor": "Aradığım şey",
+        "partnerGender": "Cinsiyet tercihi",
+        "partnerAgeRange": "Yaş aralığı",
+        "partnerRelationshipIntent": "İlişki niyeti",
+        "partnerLocationRadius": "Konum ve yarıçap",
+        "servicePriceRange": "Fiyat aralığı",
+        "postsCommercial": "Pazar yeri gönderileri",
+        "postsPartnerSeek": "Partner arama gönderileri"
+      },
+      "partnerSeekNote": "Her zaman gizli. Karşılıklı açıklama protokolü, ayar ne olursa olsun bu gönderileri korur."
+    }
+  }
+}

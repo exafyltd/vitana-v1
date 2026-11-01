@@ -1,0 +1,52 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Section entière",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Préférences de danse",
+          "description": "Styles, niveau, rôle et ce que tu recherches."
+        },
+        "partnerPreferences": {
+          "label": "Préférences de partenaire",
+          "description": "Qui tu recherches. Privé par défaut. Les sous-champs restent privés même si tu ouvres la section."
+        },
+        "serviceOfferings": {
+          "label": "Offres de services",
+          "description": "Ce que tu proposes. Public par défaut : le masquer n'a pas de sens."
+        },
+        "myPosts": {
+          "label": "Mes publications",
+          "description": "Les intentions ouvertes que tu as dictées. Les publications de recherche de partenaire n'apparaissent JAMAIS ici, quel que soit le réglage."
+        },
+        "derivedAgeBand": {
+          "label": "Tranche d'âge",
+          "description": "Affiche seulement ta tranche d'âge (p. ex. 30 ans) au lieu de ton âge exact. Par défaut : contacts uniquement."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Mes styles",
+        "danceLevel": "Mon niveau",
+        "danceLookingFor": "Ce que je recherche",
+        "partnerGender": "Préférence de genre",
+        "partnerAgeRange": "Tranche d'âge souhaitée",
+        "partnerRelationshipIntent": "Intention de relation",
+        "partnerLocationRadius": "Lieu et rayon",
+        "servicePriceRange": "Fourchette de prix",
+        "postsCommercial": "Publications marketplace",
+        "postsPartnerSeek": "Publications de recherche de partenaire"
+      },
+      "partnerSeekNote": "Toujours privé. Le protocole de révélation mutuelle protège ces publications, quel que soit le réglage."
+    }
+  }
+}

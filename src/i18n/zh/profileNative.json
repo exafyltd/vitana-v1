@@ -1,0 +1,52 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "整个部分",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "舞蹈偏好",
+          "description": "风格、水平、角色以及你在寻找什么。"
+        },
+        "partnerPreferences": {
+          "label": "伴侣偏好",
+          "description": "你在寻找谁。默认私密。即使你开放此部分，子字段仍保持私密。"
+        },
+        "serviceOfferings": {
+          "label": "服务项目",
+          "description": "你提供的服务。默认公开——隐藏就失去了意义。"
+        },
+        "myPosts": {
+          "label": "我的帖子",
+          "description": "你口述的公开意向。无论如何设置，寻找伴侣的帖子都绝不会出现在这里。"
+        },
+        "derivedAgeBand": {
+          "label": "年龄段",
+          "description": "只显示你的年龄段（例如 30 多岁），而不是确切年龄。默认：仅联系人。"
+        }
+      },
+      "fields": {
+        "danceVarieties": "我的风格",
+        "danceLevel": "我的水平",
+        "danceLookingFor": "我在寻找",
+        "partnerGender": "性别偏好",
+        "partnerAgeRange": "年龄范围",
+        "partnerRelationshipIntent": "关系意向",
+        "partnerLocationRadius": "地点和范围",
+        "servicePriceRange": "价格范围",
+        "postsCommercial": "市场帖子",
+        "postsPartnerSeek": "寻找伴侣的帖子"
+      },
+      "partnerSeekNote": "始终私密。无论如何设置，相互揭示协议都会保护这些帖子。"
+    }
+  }
+}

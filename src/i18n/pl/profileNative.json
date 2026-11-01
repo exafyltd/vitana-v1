@@ -1,0 +1,52 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Cała sekcja",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Preferencje taneczne",
+          "description": "Style, poziom, rola i czego szukasz."
+        },
+        "partnerPreferences": {
+          "label": "Preferencje partnera",
+          "description": "Kogo szukasz. Domyślnie prywatne. Pola podrzędne pozostają prywatne, nawet jeśli otworzysz sekcję."
+        },
+        "serviceOfferings": {
+          "label": "Oferowane usługi",
+          "description": "Co oferujesz. Domyślnie publiczne — ukrywanie mija się z celem."
+        },
+        "myPosts": {
+          "label": "Moje posty",
+          "description": "Otwarte intencje, które podyktowałeś. Posty z szukaniem partnera NIGDY się tu nie pojawiają, niezależnie od ustawienia."
+        },
+        "derivedAgeBand": {
+          "label": "Przedział wiekowy",
+          "description": "Pokazuj tylko swój przedział wiekowy (np. 30+) zamiast dokładnego wieku. Domyślnie: tylko kontakty."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Moje style",
+        "danceLevel": "Mój poziom",
+        "danceLookingFor": "Czego szukam",
+        "partnerGender": "Preferowana płeć",
+        "partnerAgeRange": "Przedział wieku",
+        "partnerRelationshipIntent": "Cel relacji",
+        "partnerLocationRadius": "Lokalizacja i promień",
+        "servicePriceRange": "Przedział cenowy",
+        "postsCommercial": "Posty z marketplace",
+        "postsPartnerSeek": "Posty z szukaniem partnera"
+      },
+      "partnerSeekNote": "Zawsze prywatne. Protokół wzajemnego ujawnienia chroni te posty, niezależnie od ustawienia."
+    }
+  }
+}
