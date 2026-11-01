@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05428",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(public)/delete-account.tsx",
+    "apps/mobile/src/screens/delete-account/**",
+    "apps/mobile/src/ports/delete-account.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/delete-account/**",
+    "apps/mobile/maestro/delete-account/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/deleteAccountNative.json",
+    "docs/validation/VTID-05428/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05428/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
