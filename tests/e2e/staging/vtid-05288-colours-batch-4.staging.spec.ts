@@ -59,15 +59,52 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
   }, session);
 }
 
+// Console / page errors of the screen under test, minus the harness's own noise.
+// The read-only staging guard aborts every guarded POST (analytics beacons, and
+// the read-only Supabase RPCs supabase-js sends as POST, e.g.
+// rpc/get_role_preference). The browser logs each abort as
+// net::ERR_BLOCKED_BY_CLIENT, and supabase-js / the app surface the same abort
+// as "TypeError: Failed to fetch" (incl. "Error getting role preference:
+// TypeError: Failed to fetch"). Those are dropped only up to the number of
+// Supabase REST/RPC fetch/xhr requests the guard actually aborted on this page;
+// every other error still fails the test.
+//
+// Why the match is exact: a substring /Failed to fetch/ would also swallow
+// "TypeError: Failed to fetch dynamically imported module: …" (a lazy-route
+// chunk-load failure, a real regression), so the rejection must be the whole
+// message, or the last part of an app log with nothing after it. And only
+// aborted fetch/xhr calls to the Supabase REST host count towards the budget:
+// beacons, images and other aborted resources never log "Failed to fetch".
+const SUPABASE_FETCH_REJECTION = /(^|: )(TypeError: )?Failed to fetch$/;
+const isSupabaseFetchRejection = (t: string) =>
+  !/dynamically imported module/i.test(t) && SUPABASE_FETCH_REJECTION.test(t.trim());
+
+function collectRealErrors(page: import('@playwright/test').Page): () => string[] {
+  const raw: string[] = [];
+  let guardAborts = 0;
+  // The browser's own log line for a guard-aborted request ("Failed to load
+  // resource: net::ERR_BLOCKED_BY_CLIENT"); any other load failure still counts.
+  const isBlockedNoise = (t: string) => /net::ERR_BLOCKED_BY_CLIENT/.test(t);
+  page.on('requestfailed', (r) => {
+    if (
+      /ERR_BLOCKED_BY_CLIENT/.test(r.failure()?.errorText ?? '') &&
+      (r.resourceType() === 'fetch' || r.resourceType() === 'xhr') &&
+      r.url().startsWith(`${SUPABASE}/rest/v1/`)
+    ) guardAborts++;
+  });
+  page.on('console', (m) => { if (m.type() === 'error' && !isBlockedNoise(m.text())) raw.push(m.text()); });
+  page.on('pageerror', (e) => { if (!isBlockedNoise(String(e))) raw.push(String(e)); });
+  return () => {
+    let budget = guardAborts;
+    return raw.filter((t) => {
+      if (budget > 0 && isSupabaseFetchRejection(t)) { budget--; return false; }
+      return true;
+    });
+  };
+}
 for (const [path, archetype] of ROUTES) {
   test(`colours-batch-4: ${path} renders without console errors at 1440 (?spotlight=1)`, async ({ page, request }) => {
-    const errors: string[] = [];
-    // The read-only staging guard aborts analytics / beacon writes; the browser
-    // logs each aborted request as net::ERR_BLOCKED_BY_CLIENT. That is harness
-    // noise, not a colour-swap error — count only real console / page errors.
-    const isHarnessNoise = (t: string) => /ERR_BLOCKED_BY_CLIENT|Failed to load resource/.test(t);
-    page.on('console', (m) => { if (m.type() === 'error' && !isHarnessNoise(m.text())) errors.push(m.text()); });
-    page.on('pageerror', (e) => { if (!isHarnessNoise(String(e))) errors.push(String(e)); });
+    const errors = collectRealErrors(page);
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await signIn(page, request);
@@ -86,17 +123,11 @@ for (const [path, archetype] of ROUTES) {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     expect(overflow, 'horizontal scroll (LTR)').toBeLessThanOrEqual(1);
 
-    expect(errors, `console errors on ${path}: ${errors.join(' | ')}`).toHaveLength(0);
+    { const real = errors(); expect(real, `console errors on ${path}: ${real.join(' | ')}`).toHaveLength(0); }
   });
 
   test(`colours-batch-4: ${path} renders without console errors at 390`, async ({ page, request }) => {
-    const errors: string[] = [];
-    // The read-only staging guard aborts analytics / beacon writes; the browser
-    // logs each aborted request as net::ERR_BLOCKED_BY_CLIENT. That is harness
-    // noise, not a colour-swap error — count only real console / page errors.
-    const isHarnessNoise = (t: string) => /ERR_BLOCKED_BY_CLIENT|Failed to load resource/.test(t);
-    page.on('console', (m) => { if (m.type() === 'error' && !isHarnessNoise(m.text())) errors.push(m.text()); });
-    page.on('pageerror', (e) => { if (!isHarnessNoise(String(e))) errors.push(String(e)); });
+    const errors = collectRealErrors(page);
 
     await page.setViewportSize({ width: 390, height: 844 });
     await signIn(page, request);
@@ -105,12 +136,12 @@ for (const [path, archetype] of ROUTES) {
 
     // Mobile: the content mounts (no app shell sidebar assert); the colour swap
     // must not add horizontal scroll or throw.
-    await expect(page.locator('main, [data-archetype], #root > div').first()).toBeVisible({ timeout: 25_000 });
+    await expect(page.locator('main:visible, [data-archetype]:visible, #root > div:visible').first()).toBeVisible({ timeout: 25_000 });
     await expect(page.getByTestId('delayed-loader')).toHaveCount(0, { timeout: 15_000 });
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     expect(overflow, 'horizontal scroll (mobile)').toBeLessThanOrEqual(1);
 
-    expect(errors, `console errors on ${path} (mobile): ${errors.join(' | ')}`).toHaveLength(0);
+    { const real = errors(); expect(real, `console errors on ${path} (mobile): ${real.join(' | ')}`).toHaveLength(0); }
   });
 }
