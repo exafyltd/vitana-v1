@@ -12,6 +12,9 @@
     "apps/mobile/app.config.ts",
     "apps/mobile/parity/ledger.json",
     "src/i18n/*/diaryNative.json",
+    "apps/mobile/package-lock.json",
+    "apps/mobile/tests/app-config.test.ts",
+    "apps/mobile/tests/orb/nav-directive.test.ts",
     "docs/validation/VTID-05426/**"
   ],
   "files_touched": [
