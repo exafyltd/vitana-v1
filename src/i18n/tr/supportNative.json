@@ -1,0 +1,87 @@
+{
+  "supportNative": {
+    "connectors": {
+      "modes": {
+        "all": "Tümü",
+        "shopping": "Alışveriş",
+        "ai": "Yapay zekâ",
+        "productivity": "E-posta ve takvim",
+        "media": "Müzik ve video",
+        "agent": "Autopilot"
+      },
+      "sections": {
+        "shopping": "Alışveriş ve ödüller",
+        "productivity": "E-posta, takvim ve kişiler",
+        "media": "Müzik ve video"
+      },
+      "status": {
+        "rewardsActive": "Ödüller aktif · ödeme satıcı sitesinde",
+        "recommendationsOnly": "Yalnızca öneriler · Amazon'u açar"
+      },
+      "lastSync": {
+        "oneHour": "1 saat önce",
+        "thirtyMin": "30 dk önce",
+        "twoHours": "2 saat önce"
+      },
+      "linkedTo": "{app}, {account} hesabına bağlı.",
+      "agent": {
+        "close": "Kapat",
+        "remove": "Kanalı kaldır",
+        "loadError": "Kanallar yüklenemedi. Tekrar dene.",
+        "addError": "Kanal eklenemedi. Tekrar dene."
+      },
+      "apps": {
+        "aliexpress": "Ödüller aktif — kazanmak için Discover'da alışveriş yap",
+        "bodylab24": "Ödüller aktif — Alman takviyeleri",
+        "alibaba": "Ödüller aktif — küresel pazar yeri",
+        "rockbros": "Ödüller aktif — fitness ve outdoor ekipmanı",
+        "amazon": "Yalnızca öneriler — Amazon'u açar",
+        "linkedin": "Profesyonel ağ",
+        "instagram": "Fotoğraflar, hikâyeler, reels",
+        "tiktok": "Kısa videolar",
+        "youtube": "Video içerikleri",
+        "facebook": "Sosyal paylaşım",
+        "x": "Gönderiler ve ileti dizileri",
+        "apple-health": "Adımlar, nabız, uyku",
+        "fitbit": "Aktivite, uyku, kilo",
+        "strava": "Egzersiz ve koşu verileri",
+        "oura": "Uyku kalitesi, hazır olma, HRV",
+        "garmin": "GPS ve fitness takibi",
+        "myfitnesspal": "Beslenme, kalori, makrolar",
+        "lifespin": "Metabolik sağlık içgörüleri",
+        "fhir": "Klinik sağlık kayıtları",
+        "doctorbox": "Laboratuvar sonuçları, biyobelirteçler",
+        "gmail": "Gelen kutusu, taslaklar, etiketler",
+        "google-calendar": "Etkinlikler, toplantılar, uygunluk",
+        "google-contacts": "Kişi dizini",
+        "apple-mail": "iOS Mail hesapları ve gelen kutusu",
+        "apple-calendar": "iOS Takvim etkinlikleri",
+        "iphone-contacts": "iOS adres defteri",
+        "android-contacts": "Android adres defteri",
+        "outlook-mail": "Microsoft gelen kutusu",
+        "outlook-calendar": "Microsoft takvim etkinlikleri",
+        "spotify": "Müzik çalma, çalma listeleri, dinleme geçmişi",
+        "apple-music": "Müzik çalma ve kitaplık",
+        "youtube-music": "Müzik akışı, çalma listeleri",
+        "youtube-playback": "Video oynatma, izleme geçmişi",
+        "calm": "Meditasyon, farkındalık",
+        "headspace": "Rehberli meditasyon",
+        "smart-scales": "Kilo, vücut kompozisyonu",
+        "air-quality": "İç mekân hava kalitesi",
+        "whatsapp": "Mesajlaşma entegrasyonu",
+        "telegram": "Bot ve mesajlaşma",
+        "csv-import": "Toplu veri içe aktarma",
+        "api-access": "Geliştirici araçları",
+        "chatgpt": "OpenAI API — sohbet, akıl yürütme",
+        "claude": "Anthropic API — sohbet, akıl yürütme",
+        "names": {
+          "fhir": "FHIR sağlayıcıları",
+          "smartScales": "Akıllı tartılar",
+          "airQuality": "Hava kalitesi sensörleri",
+          "csvImport": "CSV içe aktarma",
+          "apiAccess": "API erişimi"
+        }
+      }
+    }
+  }
+}
