@@ -44,3 +44,7 @@ node <vitana-platform>/scripts/collab/preflight.mjs --repo <wt> --base origin/ma
 
 npm run i18n:inventory → on Windows writes backslash paths and a different order (every heading changes); not committed
   (no key added here is consumed by src/pages/**)
+
+## CI fix 1 (2026-11-01T03:15:36.6299450+01:00): change-suite red on 8f8338d (staging-tests.json invalid)
+- staging-tests.json: added service=community-app, tests[0].command -> ref, added reason
+- lib.validateManifest (vitana-platform origin/main) on the new manifest: ok=true, errors=[]
