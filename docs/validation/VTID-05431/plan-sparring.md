@@ -23,9 +23,11 @@ CONVERGED and approved by policy `converged-auto-v1` at 2026-11-01T03:02:17.659+
 
 ## Approval
 
-The converged plan is approved by policy `converged-auto-v1` (owner decision
-2026-10-14, VTID-05214/05218). The VTID was allocated by CI after convergence
-(`lanes/settings.md` log, 2026-11-01T03:04Z).
+- **owner approval:** policy approval `converged-auto-v1` (owner decision
+  2026-10-14, VTID-05214/05218): a plan sparred by CI whose session converged is
+  approved by policy and not sent to the owner as Gate 1.
+
+The VTID was allocated by CI after convergence (`lanes/settings.md` log, 2026-11-01T03:04Z).
 
 ## Scope of this lane (settings) — 17 ledger rows → 4 route files
 
