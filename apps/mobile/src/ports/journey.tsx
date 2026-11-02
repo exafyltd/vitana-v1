@@ -18,7 +18,9 @@ import {
   ArrowUp,
   BookOpen,
   Brain,
+  Calendar,
   CalendarClock,
+  CalendarDays,
   Check,
   CheckCircle,
   CheckCircle2,
@@ -28,14 +30,17 @@ import {
   CircleDot,
   Clock,
   Compass,
+  Crown,
   Flag,
   Flame,
   Gift,
   Heart,
+  HeartPulse,
   Info,
   Loader2,
   Medal,
   Mic,
+  Minus,
   Moon,
   MousePointerClick,
   PartyPopper,
@@ -62,6 +67,8 @@ import {
 import { color } from '@vitana/tokens';
 import { useButtonForeground, useTheme } from '@vitana/ui';
 
+export { useReducedMotion } from '@vitana/ui';
+
 export {
   notify,
   notifySuccess,
@@ -72,6 +79,12 @@ export {
   Label,
   Textarea,
   Separator,
+  Dialog,
+  DialogContent,
+  DialogContentNoAnimation,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
   ResponsiveDialog,
   ResponsiveDialogContent,
   ResponsiveDialogHeader,
@@ -97,6 +110,7 @@ export { trend7d } from '@vitana/core/vitana-projection';
 export { buildPhases, type RingPhase } from '@vitana/core/goal-phases';
 export { getVitanaIndexTier, type VitanaIndexTier } from '@vitana/core/vitana-index-tiers';
 export { AUDIOBOOK_SEASONS, seasonNumber } from '@vitana/core/audiobook-queue';
+export { FEATURE_CARD_DISMISS_TTL_MS, featureCardDismissKey, CARD_STYLE } from '@vitana/core/vitana-card-catalog';
 export {
   buildJourneyRing,
   computeGoalTrend,
@@ -141,7 +155,9 @@ const ICONS: Record<string, ComponentType<LucideProps>> = {
   ArrowUp,
   BookOpen,
   Brain,
+  Calendar,
   CalendarClock,
+  CalendarDays,
   Check,
   CheckCircle,
   CheckCircle2,
@@ -151,14 +167,17 @@ const ICONS: Record<string, ComponentType<LucideProps>> = {
   CircleDot,
   Clock,
   Compass,
+  Crown,
   Flag,
   Flame,
   Gift,
   Heart,
+  HeartPulse,
   Info,
   Loader2,
   Medal,
   Mic,
+  Minus,
   Moon,
   MousePointerClick,
   PartyPopper,

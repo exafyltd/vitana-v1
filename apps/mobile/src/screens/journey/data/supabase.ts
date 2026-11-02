@@ -9,6 +9,8 @@
  *  - `useLifeCompass.ts` query + updateCompass (GoalSetupDialog)
  *  - `useVitanaIndex.ts` + `useVitanaIndexHistory.ts` (Index cards, popup lift strip)
  *  - `useUserPreferences.ts` (the AI-data consent flag behind the Autopilot popup)
+ *  - `useCalendarEvents.ts` fetchEvents + getUpcomingEvents (the utility bar's calendar button)
+ *  - `useVouchers.ts` useCreateVoucherCheckout (the gift-voucher dialog)
  *
  * The member id comes from the native auth context (`useAuth`) instead of
  * `supabase.auth.getUser()`; the rows read are the same.
@@ -314,6 +316,48 @@ export function useVitanaIndexHistory(days: number) {
     },
   });
   return { history: query.data ?? [], isLoading: query.isLoading };
+}
+
+// ── calendar ─────────────────────────────────────────────────────────────
+export interface CalendarEventRow {
+  id: string;
+  start_time: string;
+  status?: 'confirmed' | 'pending' | 'conflict' | 'cancelled' | null;
+}
+
+/**
+ * web useCalendarEvents (useCalendarEvents.ts:108-140, :727-732) as the
+ * UniversalCalendarButton reads it: the member's `calendar_events`, oldest
+ * first; `upcoming` = start after now, first 10 (getUpcomingEvents(10)); the
+ * conflict count drives the warning dot.
+ */
+export function useCalendarEvents() {
+  const { user } = useAuth();
+  const query = useQuery({
+    queryKey: ['calendar-events', user?.id],
+    enabled: !!user,
+    staleTime: 60_000,
+    queryFn: async () => {
+      const { data, error } = await db().from('calendar_events').select('*').eq('user_id', user?.id).order('start_time', { ascending: true });
+      if (error) throw new Error(error.message);
+      return (data ?? []) as CalendarEventRow[];
+    },
+  });
+  const events = query.data ?? [];
+  const now = Date.now();
+  return {
+    events,
+    upcoming: events.filter((e) => new Date(e.start_time).getTime() > now).slice(0, 10),
+    conflictCount: events.filter((e) => e.status === 'conflict').length,
+  };
+}
+
+// ── gift voucher ─────────────────────────────────────────────────────────
+/** web useCreateVoucherCheckout (useVouchers.ts:12-22): the Stripe Checkout session for a tier. */
+export async function createVoucherCheckout(tier: 'test' | 'experience' | 'exclusive', returnTo: string): Promise<{ url?: string }> {
+  const { data, error } = await db().functions.invoke('stripe-create-voucher-checkout', { body: { tier, returnTo } });
+  if (error) throw error;
+  return (data ?? {}) as { url?: string };
 }
 
 // ── user preferences (AI-data consent) ───────────────────────────────────
