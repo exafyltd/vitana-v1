@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05478",
+  "service": "community-app",
+  "note": "Read-only. Needs the gateway route of VTID-05477 deployed to staging for a 200; before that the card is hidden and the spec accepts 401/403/503.",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "VTID-05478: the feed asks the gateway for new members and never reads them from the table",
+      "spec": "tests/e2e/staging/vtid-05478-new-members-feed.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/hooks/useNewMembersFeed.test.ts src/hooks/community-intro-feed.vtid-05206.test.ts src/hooks/useAllNewsFeed.new-members.test.ts src/hooks/useNewsFeed.community-error-logging.test.ts",
+      "cwd": ".",
+      "reason": "Listing contents, exclusions and every failure mode need data or writes that staging forbids; proven here with mocked gateway responses."
+    }
+  ]
+}
