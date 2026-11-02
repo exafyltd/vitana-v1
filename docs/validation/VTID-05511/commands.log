@@ -104,3 +104,20 @@ PASS  PR-GATE weakening
 PASS  PR-GATE red-green
 PASS  Kiro steering
 SKIP  Not run by preflight (npm test, lint, build — run above)
+
+## After `git merge origin/main` (b74d3bab2, VTID-05432 support-connectors; no conflict) — merge d69196272
+$ (apps/mobile) npm ci  -> ok
+$ npm run typecheck  -> exit=0
+$ npm test -- --ci   (first run)
+Test Suites: 2 failed, 93 passed, 95 total — Tests: 5 failed, 2618 passed
+  (tests/memory/gateway-i18n.test.tsx and tests/support/i18n.test.tsx, both not this lane's: 5000 ms timeouts /
+   a skeleton still visible inside waitFor while the machine ran the full suite; neither file touches this lane)
+$ npx jest tests/memory/gateway-i18n.test.tsx tests/support/i18n.test.tsx --ci  -> 2 suites / 109 passed
+$ npm test -- --ci   (re-run, unchanged code)
+Test Suites: 95 passed, 95 total
+Tests:       2623 passed, 2623 total
+Snapshots:   57 passed, 57 total
+exit=0
+$ npx jest tests/discover-commerce --ci  -> 118 passed
+$ node scripts/native/parity-ledger.mjs --check  -> OK — 435 rows, 42 native route(s)
+$ node scripts/native/core-closure.mjs --check   -> up to date
