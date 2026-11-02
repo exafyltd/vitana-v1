@@ -48,6 +48,9 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  '/connectors',
+  '/delete-account',
+  '/daily-diary',
   '/dev/orb-bench',
   '/home',
   '/home/comments',
@@ -69,6 +72,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/onboarding/welcome',
   '/reset-password',
   '/search',
+  '/settings/connected-apps',
+  '/support',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

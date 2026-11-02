@@ -41,7 +41,7 @@ export function NotificationBadge({
       className={cn(
         // Position badge outside parent, floating above
         "absolute -top-1.5 -right-1.5 p-0 flex items-center justify-center rounded-full",
-        "bg-blue-500 text-white font-bold leading-none",
+        "bg-status-info text-primary-foreground font-bold leading-none",
         "pointer-events-none whitespace-nowrap",
         // Ensure badge is above other elements
         "z-10",
