@@ -1,0 +1,87 @@
+{
+  "supportNative": {
+    "connectors": {
+      "modes": {
+        "all": "全部",
+        "shopping": "购物",
+        "ai": "AI",
+        "productivity": "邮件和日历",
+        "media": "音乐和视频",
+        "agent": "Autopilot"
+      },
+      "sections": {
+        "shopping": "购物与奖励",
+        "productivity": "邮件、日历和联系人",
+        "media": "音乐和视频"
+      },
+      "status": {
+        "rewardsActive": "奖励已启用 · 在商家网站结账",
+        "recommendationsOnly": "仅推荐 · 打开 Amazon"
+      },
+      "lastSync": {
+        "oneHour": "1 小时前",
+        "thirtyMin": "30 分钟前",
+        "twoHours": "2 小时前"
+      },
+      "linkedTo": "{app} 已关联到 {account}。",
+      "agent": {
+        "close": "关闭",
+        "remove": "移除频道",
+        "loadError": "无法加载频道。请重试。",
+        "addError": "无法添加频道。请重试。"
+      },
+      "apps": {
+        "aliexpress": "奖励已启用 — 在 Discover 购物赚取奖励",
+        "bodylab24": "奖励已启用 — 德国营养补充剂",
+        "alibaba": "奖励已启用 — 全球市场",
+        "rockbros": "奖励已启用 — 健身和户外装备",
+        "amazon": "仅推荐 — 打开 Amazon",
+        "linkedin": "职业社交网络",
+        "instagram": "照片、快拍、Reels",
+        "tiktok": "短视频",
+        "youtube": "视频内容",
+        "facebook": "社交分享",
+        "x": "帖子和话题",
+        "apple-health": "步数、心率、睡眠",
+        "fitbit": "活动、睡眠、体重",
+        "strava": "运动和跑步数据",
+        "oura": "睡眠质量、准备度、HRV",
+        "garmin": "GPS 和健身追踪",
+        "myfitnesspal": "营养、卡路里、宏量营养素",
+        "lifespin": "代谢健康洞察",
+        "fhir": "临床健康记录",
+        "doctorbox": "化验结果、生物标志物",
+        "gmail": "收件箱、草稿、标签",
+        "google-calendar": "活动、会议、空闲时间",
+        "google-contacts": "联系人目录",
+        "apple-mail": "iOS 邮件账户和收件箱",
+        "apple-calendar": "iOS 日历活动",
+        "iphone-contacts": "来自 iOS 的通讯录",
+        "android-contacts": "来自 Android 的通讯录",
+        "outlook-mail": "Microsoft 收件箱",
+        "outlook-calendar": "Microsoft 日历活动",
+        "spotify": "音乐播放、播放列表、收听记录",
+        "apple-music": "音乐播放和资料库",
+        "youtube-music": "音乐流媒体、播放列表",
+        "youtube-playback": "视频播放、观看记录",
+        "calm": "冥想、正念",
+        "headspace": "引导冥想",
+        "smart-scales": "体重、身体成分",
+        "air-quality": "室内空气质量",
+        "whatsapp": "消息集成",
+        "telegram": "机器人和消息",
+        "csv-import": "批量数据导入",
+        "api-access": "开发者工具",
+        "chatgpt": "OpenAI API — 聊天、推理",
+        "claude": "Anthropic API — 聊天、推理",
+        "names": {
+          "fhir": "FHIR 提供方",
+          "smartScales": "智能体重秤",
+          "airQuality": "空气质量传感器",
+          "csvImport": "CSV 导入",
+          "apiAccess": "API 访问"
+        }
+      }
+    }
+  }
+}
