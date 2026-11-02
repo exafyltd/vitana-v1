@@ -82,3 +82,19 @@ PASS — 0 errors
 $ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-discover-commerce-r2/discover --title "VTID-05510 (native-wave2-discover-commerce-r2/discover): native discover port"
 PASS — gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering
 FAIL (not this lane) — Collab handoff + Lane scope: ".kiro/specs/native-wave2-discover-commerce-r2/lanes/discover.md not found" (spec on the plan branch, not merged)
+
+## gift voucher after checkout (review discover-c68982e) — base head c68982ec1 (origin branch ff, origin/main already merged)
+$ (apps/mobile) npx jest tests/discover-commerce/voucher.test.tsx   — on c68982ec1 product code (red)
+FAIL — 10 failed, 2 passed, 12 total (red-on-base.txt)
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors
+$ (apps/mobile) npx eslint <changed files>
+PASS — 0 problems
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 8/8 suites, 134/134 tests
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 8/8 suites, 134/134 tests
+$ (apps/mobile) npx jest   — full, default workers
+8 suites red on load timeouts (shell 135 s, discover i18n-rtl 324 s, memory gateway-i18n 273 s …); none touch the voucher files
+$ (apps/mobile) npx jest tests/ui/catalogue.test.tsx tests/shell.test.tsx tests/memory/timeline.test.tsx tests/community/intents.test.tsx tests/i18n-rtl.test.tsx tests/memory/recall-permissions.test.tsx
+PASS — 6/6 suites, 293/293 tests (the same suites alone)

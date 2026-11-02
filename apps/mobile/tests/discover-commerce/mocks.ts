@@ -15,6 +15,7 @@ jest.mock('expo-router', () => ({
   router: mockRouter,
   useLocalSearchParams: () => mockParams.current,
   useGlobalSearchParams: () => mockParams.current,
+  useFocusEffect: (cb: () => void) => jest.requireActual('react').useEffect(() => cb(), [cb]),
   usePathname: () => '/discover',
   Redirect: () => null,
 }));
@@ -46,8 +47,9 @@ jest.mock('expo-video', () => {
   };
 });
 
-const mockOpenBrowser = jest.fn(async () => ({ type: 'opened' }));
-jest.mock('expo-web-browser', () => ({ openAuthSessionAsync: jest.fn(), openBrowserAsync: mockOpenBrowser }));
+const mockOpenBrowser = jest.fn(async (_url: string): Promise<{ type: string }> => ({ type: 'opened' }));
+// doMock (not hoisted) so it runs after ../helpers/mocks, whose hoisted expo-web-browser mock has no openBrowserAsync.
+jest.doMock('expo-web-browser', () => ({ openAuthSessionAsync: jest.fn(), openBrowserAsync: mockOpenBrowser }));
 
 export const router = mockRouter;
 export const searchParams = mockParams;
