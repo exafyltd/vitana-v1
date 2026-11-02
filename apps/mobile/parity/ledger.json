@@ -1520,10 +1520,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "INBOX.CONVERSATION",
@@ -1556,10 +1556,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "INBOX.OVERVIEW",
@@ -1568,10 +1568,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "INTENTS.BOARD",
