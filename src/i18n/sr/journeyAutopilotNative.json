@@ -19,6 +19,23 @@
       "agreementFooter": "Dodirom na „Slažem se“ dozvoljavaš Exafy LTD da gore navedene podatke pošalje navedenim AI dobavljačima. Ovu dozvolu možeš opozvati bilo kada u Podešavanja > Privatnost.",
       "notNow": "Ne sada",
       "iAgree": "Slažem se"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA zarađeno!",
+      "errorStatus": "Server je odgovorio statusom {status}.",
+      "errorServer": "Server trenutno nije mogao da isporuči tvoje preporuke.",
+      "errorNetwork": "Nema veze. Proveri internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Joga u svitanje kraj mora",
+      "mindfulWalk": "Svesna šetnja i razgovor"
+    },
+    "indexChip": {
+      "open": "Otvori Vitana Index",
+      "openWithStreak": "Otvori Vitana Index – niz od {days} dana"
+    },
+    "calendar": {
+      "upcomingCount": "Predstojećih događaja: {count}"
     }
   }
 }

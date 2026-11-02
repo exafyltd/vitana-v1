@@ -19,6 +19,23 @@
       "agreementFooter": "بالنقر على «أوافق» تمنح Exafy LTD الإذن بإرسال البيانات المذكورة أعلاه إلى مزوّدي الذكاء الاصطناعي المذكورين. يمكنك سحب هذا الإذن في أي وقت من الإعدادات > الخصوصية.",
       "notNow": "ليس الآن",
       "iAgree": "أوافق"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA تم كسبها!",
+      "errorStatus": "ردّ الخادم بالحالة {status}.",
+      "errorServer": "تعذّر على الخادم تقديم توصياتك الآن.",
+      "errorNetwork": "لا يوجد اتصال. تحقّق من اتصالك بالإنترنت."
+    },
+    "demoEvents": {
+      "sunriseYoga": "يوغا الشروق على البحر",
+      "mindfulWalk": "مشي واعٍ وحديث"
+    },
+    "indexChip": {
+      "open": "افتح Vitana Index",
+      "openWithStreak": "افتح Vitana Index — سلسلة {days} أيام"
+    },
+    "calendar": {
+      "upcomingCount": "{count} أحداث قادمة"
     }
   }
 }

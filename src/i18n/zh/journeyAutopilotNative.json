@@ -19,6 +19,23 @@
       "agreementFooter": "点按“我同意”即表示你允许 Exafy LTD 将上述数据发送给所列的 AI 服务商。你可以随时在“设置 > 隐私”中撤回此许可。",
       "notNow": "暂不",
       "iAgree": "我同意"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA 已获得！",
+      "errorStatus": "服务器返回状态 {status}。",
+      "errorServer": "服务器暂时无法提供你的推荐。",
+      "errorNetwork": "没有网络连接。请检查你的网络。"
+    },
+    "demoEvents": {
+      "sunriseYoga": "海边日出瑜伽",
+      "mindfulWalk": "正念散步与交流"
+    },
+    "indexChip": {
+      "open": "打开 Vitana Index",
+      "openWithStreak": "打开 Vitana Index — 连续 {days} 天"
+    },
+    "calendar": {
+      "upcomingCount": "{count} 个即将到来的活动"
     }
   }
 }

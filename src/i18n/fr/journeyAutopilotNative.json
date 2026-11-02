@@ -19,6 +19,23 @@
       "agreementFooter": "En touchant « J’accepte », tu autorises Exafy LTD à envoyer les données ci-dessus aux fournisseurs d’IA indiqués. Tu peux retirer cette autorisation à tout moment dans Réglages > Confidentialité.",
       "notNow": "Pas maintenant",
       "iAgree": "J’accepte"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA gagnés !",
+      "errorStatus": "Le serveur a répondu avec le statut {status}.",
+      "errorServer": "Le serveur n’a pas pu fournir tes recommandations pour le moment.",
+      "errorNetwork": "Pas de connexion. Vérifie ton internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Yoga au lever du soleil face à la mer",
+      "mindfulWalk": "Marche consciente et discussion"
+    },
+    "indexChip": {
+      "open": "Ouvrir le Vitana Index",
+      "openWithStreak": "Ouvrir le Vitana Index – série de {days} jours"
+    },
+    "calendar": {
+      "upcomingCount": "{count} événements à venir"
     }
   }
 }

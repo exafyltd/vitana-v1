@@ -19,6 +19,23 @@
       "agreementFooter": "'Kabul ediyorum'a dokunarak Exafy LTD'ye yukarıdaki verileri belirtilen yapay zekâ sağlayıcılarına gönderme izni verirsin. Bu izni istediğin zaman Ayarlar > Gizlilik bölümünden geri alabilirsin.",
       "notNow": "Şimdi değil",
       "iAgree": "Kabul ediyorum"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA kazandın!",
+      "errorStatus": "Sunucu {status} durumuyla yanıt verdi.",
+      "errorServer": "Sunucu önerilerini şu anda getiremedi.",
+      "errorNetwork": "Bağlantı yok. İnternetini kontrol et."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Deniz kenarında gün doğumu yogası",
+      "mindfulWalk": "Farkındalıklı yürüyüş ve sohbet"
+    },
+    "indexChip": {
+      "open": "Vitana Index'i aç",
+      "openWithStreak": "Vitana Index'i aç – {days} günlük seri"
+    },
+    "calendar": {
+      "upcomingCount": "{count} yaklaşan etkinlik"
     }
   }
 }
