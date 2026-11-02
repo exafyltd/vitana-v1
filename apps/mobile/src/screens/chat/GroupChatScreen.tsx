@@ -13,7 +13,7 @@
  *    roster's @mention candidates (L866-936);
  *  - a deep-linked message is scrolled to and highlighted, loaded around
  *    first when it is older than the latest page (L327-376, L514-523).
- * The search button + panel (L524-540) is not part of this port.
+ * The search button + panel (L541, L550) is not part of this port.
  */
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';

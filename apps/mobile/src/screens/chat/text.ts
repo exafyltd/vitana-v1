@@ -8,7 +8,7 @@
  *    `inbox.group.today` / `inbox.group.yesterday`.
  *  - bubble time: hours:minutes in the member's language.
  *  - typing line: "{name} is typing…" / "{a} and {b} are typing…" /
- *    "Several people are typing…" (TypingIndicator.tsx:17-25, hard-coded
+ *    "Several people are typing…" (TypingIndicator.tsx:19-24, hard-coded
  *    English on the web; new `chatNative.typing.*` keys here).
  */
 import { useCallback } from 'react';

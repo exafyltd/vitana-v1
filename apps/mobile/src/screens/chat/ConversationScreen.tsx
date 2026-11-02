@@ -16,9 +16,9 @@
  *  - a deep-linked message is scrolled to and highlighted (L680-727).
  *
  * Not ported (see docs/validation/VTID-05458/verification.md): the
- * in-conversation search button + panel (L1245-1257), "Talk to Vitana"
- * (L1260-1271, no native ORB entry point in src/ports), the create-group
- * button (L1272-1281, the CreateGroupPopup twin is the inbox-list lane's),
+ * in-conversation search button + panel (L1245, L1557), "Talk to Vitana"
+ * (L1273, no native ORB entry point in src/ports), the create-group button
+ * (L1283 / L1574, the CreateGroupPopup twin is the inbox-list lane's),
  * the tenant ("Network") context, payment/calendar action handlers.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';

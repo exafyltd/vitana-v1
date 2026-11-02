@@ -9,7 +9,7 @@
  * dependency and a prebuild config plugin, both outside this lane's paths.
  * Until a build registers one, `getWebRTCEngine()` returns null and the call
  * screen ends the call the way the web does when media cannot start
- * (MessengerCall.tsx:95-99: "Connection error" toast, end after 2 s).
+ * (MessengerCall.tsx:97-102: "Connection error" toast, end after 2 s).
  * Unit tests register a fake engine; the live call is a G1 owner step.
  */
 import type { ComponentType } from 'react';
