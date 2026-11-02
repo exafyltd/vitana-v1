@@ -1,0 +1,39 @@
+# Commands — VTID-05442 (mt-track-s-r2/s-j-route-inventory), vitana-v1 base a41e89a0d
+
+$ git grep -n linkedin-import -- src supabase/functions ":!supabase/functions/linkedin-import"   # T1, at base
+origin/main:src/lib/edge-functions-caller-identity.s4.test.ts:6: * write any member's profile (linkedin-import, social-media-import) or read
+origin/main:src/lib/edge-functions-caller-identity.s4.test.ts:77:    'linkedin-import',
+origin/main:src/lib/edge-functions-caller-identity.s4.test.ts:90:  for (const name of ['linkedin-import', 'social-media-import']) {
+origin/main:src/lib/edge-functions-caller-identity.s4.test.ts:107:  it('linkedin-import is flagged for removal', () => {
+origin/main:src/lib/edge-functions-caller-identity.s4.test.ts:108:    expect(fn('linkedin-import')).toMatch(/flagged for removal/);
+origin/main:src/lib/edge-functions-caller-identity.s4.test.ts:272:    expect(readers).toEqual(expect.arrayContaining(['linkedin-import', 'so
+
+$ node scripts/check-edge-function-auth.mjs   # red on base
+  Error: Cannot find module '/projects/sandbox/wt-sj/scripts/check-edge-function-auth.mjs'
+  exit=1
+
+$ # green after
+check-edge-function-auth: ok — 64 functions, 59 legacy
+exit=0
+$ # planted: new function without caller-auth
+check-edge-function-auth: 1 problem(s) (VTID-05442):
+  zz-probe: must import _shared/caller-auth and call requireUser / isServiceRoleCaller / isTriggerSecretCaller
+exit=1
+$ # planted: LEGACY key with no folder
+check-edge-function-auth: 1 problem(s) (VTID-05442):
+  og-short: no folder — remove og-short from LEGACY
+exit=1
+$ # planted: LEGACY function that now satisfies the rule
+check-edge-function-auth: 1 problem(s) (VTID-05442):
+  og-event: migrated — remove og-event from LEGACY
+exit=1
+$ # restored
+check-edge-function-auth: ok — 64 functions, 59 legacy
+exit=0
+
+$ npm test
+> node scripts/check-edge-data-client.mjs && node scripts/check-realtime-helper.mjs && node scripts/check-edge-function-auth.mjs && vitest run
+check-edge-data-client: OK — every edge function uses createDataClient (VTID-05023).
+check-edge-function-auth: ok — 64 functions, 59 legacy
+ Test Files  485 passed (485)
+      Tests  3908 passed (3908)
