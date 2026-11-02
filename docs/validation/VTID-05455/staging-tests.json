@@ -5,7 +5,7 @@
   "tests": [
     { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
       "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
-    { "kind": "new", "ref": "npx jest tests/health", "cwd": "apps/mobile",
+    { "kind": "existing", "ref": "npx jest tests/health", "cwd": "apps/mobile",
       "reason": "health-hub unit tests (5 suites / 105 tests): dashboard loaded / empty / error, ?mode= tabs + normalizeHealthMode aliases + mode pill writes ?mode= back, snapshot / priority / guidance / pillar-agent widgets, chips, Health Actions popup, lab-order + upload sheets (upload write not wired), medical and supplements modes; Vitana Index overlay open (snapshot, chip, vitana:open-index bus event) / dismiss / data render; consent/no-write — every Supabase request is a select scoped to user_id = auth.uid(), the only health RPC is get_profile_health_summary as a GET, no storage call, every gateway call a GET with Bearer; Health Sync pinned-interface contract test in stub-only mode + the affordance delegates to connect() and never requests an OS permission; no unresolved key in 11 locales, RTL-safe styles, route + ledger rows — fixtures / fake gateway, no network" },
     { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
       "reason": "React 19 ReactElement typing; the screens, the class-B data module and the three ports type-check against the shell ports, @vitana/ui, @vitana/tokens and the two new @vitana/core re-exports" },
