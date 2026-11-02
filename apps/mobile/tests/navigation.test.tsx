@@ -32,7 +32,7 @@ describe('resolveWebPath', () => {
   });
 
   it('keeps the query string', () => {
-    expect(resolveWebPath('/settings?mode=billing.plan')).toMatchObject({ kind: 'unported', href: '/settings?mode=billing.plan' });
+    expect(resolveWebPath('/settings?mode=billing.plan')).toMatchObject({ kind: 'native', href: '/settings?mode=billing.plan' });
     expect(resolveWebPath('/inbox/u/abc?from=push')).toMatchObject({ kind: 'unported', href: '/inbox/u/abc?from=push' });
   });
 

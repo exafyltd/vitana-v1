@@ -61,7 +61,7 @@ now ported (tests: `apps/mobile/tests/journey/fix1.test.tsx`, red on 7c8eacd in 
 | Web | Native now |
 |---|---|
 | Utility bar, AutopilotDashboard.tsx:452-475 + utility-action-button.tsx:97-123 | `UtilityBar.tsx`, one scrolling rail in the web order: Search pill (label `actionBar.search`) · `UniversalCalendarButton` (`calendar_events` for the member, upcoming badge first 10 with the 99+ rule, pulsing conflict dot, → /calendar) · Life Compass (`vitana:open-life-compass`) · Gift Voucher (hidden on iOS, the shell's `iapRestricted` rule, unchanged) · `VitanaIndexChip` (🧬 + Index value, 🔥N streak from 3 days from the device streak store `vitana:streak:active-days`, → `vitana:open-index`) · `AutopilotChip` (pulsing badge) |
-| Gift voucher dialog, MaxinaVoucherModal.tsx:141-490 | `VoucherModal.tsx`: tier selection (catalog names + benefit arrays, €0.49 / €99 / €199), "Buy voucher · €N", loading, `stripe-create-voucher-checkout {tier, returnTo: '/autopilot'}` → Stripe in the system browser; failure → `voucher.toast.checkoutFailed` |
+| Gift voucher dialog, MaxinaVoucherModal.tsx:141-490 | `VoucherModal.tsx`: tier selection (catalog names + benefit arrays, €0.49 / €99 / €199), "Buy voucher · €N", loading, `stripe-create-voucher-checkout {tier, returnTo: '/autopilot'}` → Stripe in expo-web-browser; failure → `voucher.toast.checkoutFailed`; after checkout the success / PDF preview / e-mail states (see "Gift voucher after checkout") |
 | `AudiobookReminderControl` in the Guided view, AutopilotDashboard.tsx:435 | Typed mount slot `JourneySlotsContext.AudiobookReminderControl` (seams.ts), rendered between how-it-works and the catalog. The native control is assigned to the `autopilot-audiobook` lane by the approved plan: tasks.md (plan branch `kiro/native-wave2-journey-autopilot-r2/plan` @ 8a86b1507) line 86 names `apps/mobile/src/screens/audiobook/AudiobookReminderControl.tsx` under that lane's task 2 (lines 82-87), and line 72 sets that lane `depends_on: journey`. A plan-approved lane split, not a descope |
 | Card strip static feature cards, EnrichmentCardStrip.tsx:70-100 | `EnrichmentStrip.tsx` + `FeatureCards.tsx`: server cards first, then F1 / F2 / F3 / F9 not hidden on this device (`vitana.card.<type>.dismissed_at`, 7 days, session fallback), `maxCards` 3 |
 | EventsPreview demo fallback, EventsPreview.tsx:44-52 | The first two `useDemoMatches` events (demo-group-1 / -2, useDemoMatches.ts:613-638), titles from `journeyAutopilotNative.demoEvents.*` (11 locales) |
@@ -75,10 +75,8 @@ Kept out, with proof that the mobile web does not show it:
 
 - The celebration sound: celebrate.ts:427 calls `playSound("/audio/lift.mp3")`, but the repo has no
   `public/audio/` directory (only `public/sounds/`), so the mobile web plays nothing.
-- The gift voucher's success / e-mail / PDF states: they run only on the Stripe return URL
-  (MaxinaVoucherModal.tsx:112-130), built from the request `Origin`
-  (supabase/functions/stripe-create-voucher-checkout/index.ts:147, :161). A native request sends
-  none, so the return lands on https://vitana.app, where the web runs those states.
+- ~~The gift voucher's success / e-mail / PDF states~~ — superseded: ported natively, see
+  "Gift voucher after checkout" below (review finding discover-c68982e).
 - The streak hook's milestone / at-risk celebrations (useVitanaStreaks.ts:127-160) fire only after
   a `vitana:index-lifted` credit, which comes from the web lift watcher (celebrate.ts:301, :457);
   no native module emits it (the native hook listens for it on the overlay bus).
@@ -120,6 +118,59 @@ date picker); the hero also waits while the member is resolving (the web route s
 AuthGuard). Observation outside this lane: the shell's read-only `src/identity/GuidedModeProvider.tsx`
 calls `gatewayGet('/api/v1/journey/state')`, and `createGatewayFetch` already prefixes `/api/v1`;
 this lane does not touch it (its own provider calls `/journey/state`).
+
+## Gift voucher after checkout (review finding discover-c68982e on the discover lane, same modal copy here) — fixed natively, no backend change
+
+**Problem.** The dialog only called `stripe-create-voucher-checkout` and opened the browser. The web shows the
+post-purchase states on the Stripe return URL (`src/components/voucher/MaxinaVoucherModal.tsx:112-132`), but the
+function builds `success_url` from the request Origin (`supabase/functions/stripe-create-voucher-checkout/index.ts:147`,
+`:161`, fallback `https://vitana.app`), so a native member landed signed-out on the web origin and could not reach
+`voucher-download-pdf` (it needs the Authorization header, `supabase/functions/voucher-download-pdf/index.ts:250-274`).
+
+**Approach (read on vitana-v1 origin/main; no edge-function, schema or deploy change):**
+1. Keep the order id. The function already returns `{ url, session_id, order_id }`
+   (`stripe-create-voucher-checkout/index.ts:179-184`); `createVoucherCheckout` now types and returns it
+   (`apps/mobile/src/screens/journey/data/supabase.ts` `createVoucherCheckout`).
+2. Open checkout with expo-web-browser `openBrowserAsync` (already on main, `apps/mobile/package.json`
+   `expo-web-browser 57.0.3`; no new package). iOS resolves when the member closes the browser; Android resolves
+   at once with `opened` (`node_modules/expo-web-browser/build/WebBrowser.js:112`).
+3. Return leg (brief "External checkout / portal return leg"): while a checkout is pending the dialog re-reads the
+   order when the browser closes (iOS), on AppState `active` (Android, and any resume) and on screen focus
+   (`apps/mobile/src/screens/journey/VoucherModal.tsx` `checkPending`, the AppState listener and `useFocusEffect`). The read is the web's own
+   `voucher_orders` read (`src/hooks/useVouchers.ts:76-80`: own rows by `buyer_user_id`, newest first) narrowed to
+   the order id (`apps/mobile/src/screens/journey/data/supabase.ts` `fetchVoucherOrder`), polled 4 × 1 s for webhook lag (`waitForPaidVoucherOrder`; the
+   webhook sets `paid`, `stripe-webhook/index.ts:309-315`).
+4. `paid` → the web's success state (title, "Your {tier} voucher is ready", download, send by e-mail, view in
+   orders, done). Not paid → back to the selection, which is what the web shows on a cancel return
+   (`voucher_cancelled` has no handler on the web). A checkout error keeps `voucher.toast.checkoutFailed`.
+5. Download → `voucher-download-pdf` `{ orderId }` with the member's session (supabase `functions.invoke`, same as
+   `useDownloadVoucherPdf`, `src/hooks/useVouchers.ts:37-48`), then the web's mobile PDF preview (voucher card,
+   Save / Share, Download PDF, share hint; `MaxinaVoucherModal.tsx:642-760`, share-API branch). Download PDF opens
+   the signed URL in the in-app browser (system PDF viewer with save/share); Save / Share uses React Native
+   `Share.share` (the web's `navigator.share`).
+6. E-mail form → `voucher-send-email` `{ orderId, recipientEmail, recipientName, message }`
+   (`src/hooks/useVouchers.ts:50-66`), `voucher.toast.voucherSent` with `{email}`, then the dialog closes.
+7. Toasts are the web's `voucher.toast.*` keys from the existing catalog (`src/i18n/<locale>/voucher.json`,
+   all 11 locales); no new strings, no catalog change.
+8. The web's return params are handled too if such a link reaches the app: `voucher_success=true&order_id&tier`
+   opens the success state and clears the params; `voucher_cancelled` is cleared (`apps/mobile/src/screens/journey/VoucherModal.tsx` return-param effect).
+
+**Remaining deviations.**
+- Error toasts: the web toasts the raw server message on a download / e-mail failure
+  (`MaxinaVoucherModal.tsx:303-308`, `:341-346`); natively `voucher.toast.downloadFailed` (catalog key, no
+  untranslated server text on screen).
+- Copy link / Open in browser (the web's no-share-API branch) are not shown: the native share sheet is always
+  available, so the web's share-API branch is the one ported. No clipboard package is on main.
+- A webhook that trails the 4 s poll leaves the selection showing; the next app resume or screen focus re-reads
+  while the dialog is open, and the order stays in Orders → vouchers, whose download self-heals the status via
+  Stripe (`voucher-download-pdf/index.ts:161-226`).
+- Device runtime (real browser, real Stripe return) is deferred to G1; tests use fakes only.
+
+**Tests** (`apps/mobile/tests/journey/voucher.test.tsx`, red on the base head → green, `red-on-base.txt`): request builders (checkout keeps
+`order_id`; own-row `voucher_orders` read by id / newest / signed out; the paid poll; download and e-mail
+bodies) and the dialog: paid → success → PDF preview → download + share; e-mail form → send → toast → close;
+failed PDF read; not paid → selection; checkout failure; Android open → AppState active → refetch → success;
+the web's return params.
 
 ## Checks (counts in commands.log)
 

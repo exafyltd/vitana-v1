@@ -135,3 +135,15 @@ $ (apps/mobile) npx tsc --noEmit -> exit=0
 $ (apps/mobile) npx jest tests/journey --ci -> 3 suites, 96 passed (+2: ORB hook point)
 $ (apps/mobile) npm test -- --ci -> Test Suites 87 passed; Tests 2384 passed
 $ npx eslint apps/mobile/src/screens/journey apps/mobile/tests/journey -> exit=0
+
+## gift voucher after checkout (review discover-c68982e, same modal) — branch ff to origin, origin/main merged (011c8349f)
+$ (apps/mobile) npx jest tests/journey/voucher.test.tsx   — on 011c8349f product code (red)
+FAIL — 9 failed, 2 passed, 11 total (red-on-base.txt)
+$ (apps/mobile) npm run typecheck   — after the origin/main merge and the fix
+PASS — 0 errors
+$ (apps/mobile) npx eslint <changed files>
+PASS — 0 problems
+$ (apps/mobile) npx jest tests/journey   — default workers, run 1
+PASS — 4/4 suites, 107/107 tests
+$ (apps/mobile) npx jest tests/journey   — default workers, run 2
+PASS — 4/4 suites, 107/107 tests
