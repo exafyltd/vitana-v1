@@ -62,3 +62,14 @@ $ preflight.mjs --base origin/main (6b9137ac5) --head 4da95aa35  -> every check 
 # run had iap-gate "master action popup" hit its 5 s Jest default timeout (file unchanged, IAP tests not touched), one had
 # wallet-home "empty" miss its 5 s wait, and one full run had the buy-credits close check (sheet animation) miss; the
 # latter was made deterministic (onClose spy, a74b72305). The final runs above were made after the load cleared.
+
+## fix 2: web ExchangeStep pair + the WalletPopup Send / Exchange & Send steps (2026-11-02)
+# start: origin head 1fef022a5 (git merge origin/main 6b9137ac5: already up to date); code commit 357871b00.
+# All tests use fakes only (Supabase double, fake gateway, mocked expo-web-browser); no live system.
+$ npx jest tests/wallet-home/wallet-steps.test.tsx --ci (product code of 1fef022, new tests)  -> RED 9/9 fail — red-fix2.txt
+$ npm run typecheck                                        -> PASS (0 errors)
+$ npx eslint apps/mobile/src/screens/wallet-home apps/mobile/tests/wallet-home  -> PASS: 0 problems
+$ npx jest tests/wallet-home --ci (default workers, run 1 of 2)  -> 5 suites, 105/105 pass (32s, 23:47Z)
+$ npx jest tests/wallet-home --ci (default workers, run 2 of 2)  -> 5 suites, 105/105 pass (10s, 23:48Z)
+$ npm test -- --ci                                         -> 98/98 suites, 2784/2784 tests
+$ preflight.mjs --base origin/main (6b9137ac5) --head 357871b00  -> every check passed
