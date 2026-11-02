@@ -115,3 +115,37 @@ SKIP  Not run by preflight [report-only in CI]
       vitana-v1 PR-GATE also runs migrations, typecheck / ESLint / design ratchets, regression scripts and the build: run npm test, npm run lint and npm run build (lane-code.md step 7)
 
 preflight: 1 check(s) failed: Lane scope — fix every error above, then push
+
+## review fix round (review settings-a3c8967: timing-fragile tests), test commit 69ba06a82
+# repro before the waitFor change (asyncUtilTimeout only), 3 concurrent 'npx jest tests/settings':
+#   2 of 3 failed: tenant-role 'empty' (tenant-role-no-orgs) and 'loaded (member)' (tenant-role-current-role), sync getBy after the first findBy raced the memberships query
+# 6 runs, 3 concurrent x2 rounds, after the fix: 168/168 passed each
+$ cd apps/mobile && npx jest tests/settings   # sequential run 1, default workers
+Test Suites: 3 passed, 3 total
+Tests:       168 passed, 168 total
+Time:        43.027 s
+$ cd apps/mobile && npx jest tests/settings   # sequential run 2, default workers
+Test Suites: 3 passed, 3 total
+Tests:       168 passed, 168 total
+Time:        21.474 s, estimated 42 s
+$ cd apps/mobile && npx jest tests/settings   # sequential run 3, default workers
+Test Suites: 3 passed, 3 total
+Tests:       168 passed, 168 total
+Time:        22.253 s
+$ cd apps/mobile && npx jest   # full suite, default workers
+Test Suites: 93 passed, 93 total
+Tests:       2661 passed, 2661 total
+Time:        48.927 s
+$ cd apps/mobile && npm run typecheck
+tsc --noEmit: pass (exit 0)
+$ node vitana-platform/scripts/collab/preflight.mjs --base origin/main --head 69ba06a82 ...
+PASS  Collab handoff [report-only in CI (vitana-v1 Collab handoff step)]
+FAIL  Lane scope [required]
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE sparring [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE weakening [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE red-green [report-only in CI (until config.enforce=true)]
+PASS  Kiro steering [report-only in CI (until config.enforce=true)]
+SKIP  Not run by preflight [report-only in CI]
+Lane scope: same 2 shared paths as before (apps/mobile/tests/navigation.test.tsx, apps/mobile/tests/orb/nav-directive.test.ts), known, noted in the PR body
