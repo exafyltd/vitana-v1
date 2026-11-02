@@ -5,10 +5,34 @@
   "tests": [
     {
       "kind": "existing",
-      "name": "SpotlightGrid, ScreenFrame layout opt-in, VCard spotlightLabel, grid skeletons (Vitest)",
-      "ref": "npx vitest run src/components/layout/spotlight src/components/ui/vcard",
-      "reason": "The lane adds opt-in layout primitives only (SR-31 SpotlightGrid, ScreenFrame layout=\"spotlight-grid\", the VCard Spotlight identity, grid skeletons); no screen uses them yet, so these Vitest suites are the proof and the staging bundle renders every current screen unchanged"
+      "name": "SpotlightGrid, ScreenFrame layout opt-in, VCard spotlightLabel identity (teal-blue-amber category-token art, ring-2 ring-category-1/50, shadow-vcard-raised, desktop media grows into the tile rows from a min-h-32 token minimum), grid skeletons; VitanaIndexHeroCard ring on the VCard art (Vitest)",
+      "ref": "npx vitest run src/components/layout/spotlight src/components/ui/vcard src/pages/spotlight-tier-b.vtid-05111.test.tsx",
+      "cwd": ".",
+      "reason": "Class contracts and DOM structure are deterministic in jsdom; the staging specs below prove the rendered geometry and art on the deployed build"
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05420 round 2 on /health (1400x900, 1920x1080): spotlight bottom <= last tile row bottom + 2 px; spotlight card has a gradient background-image or an img; at 1400x900 the bottom row (when rendered) starts above the fold; full-page screenshot attached at 1400x900. The existing <= 0.45 width check is unchanged. Read-only",
+      "spec": "tests/e2e/staging/vtid-05419-health-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05420 round 2 on /discover (1400x900, 1920x1080): spotlight bottom <= last tile row bottom + 2 px; gradient or img art; full-page screenshot attached at 1400x900. Read-only",
+      "spec": "tests/e2e/staging/vtid-05416-discover-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05420 round 2 on Events & MeetUps (1400x900): spotlight bottom <= last tile row bottom + 2 px; gradient or img art; full-page screenshot attached. Read-only",
+      "spec": "tests/e2e/staging/vtid-05417-events-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "playwright",
+      "name": "VTID-05420 round 2 on Find a Match (1400x900, when the account has matches): spotlight bottom <= last tile row bottom + 2 px; gradient or img art; full-page screenshot attached. Read-only",
+      "spec": "tests/e2e/staging/vtid-05418-find-match-spotlight-grid.staging.spec.ts",
+      "cwd": "."
     }
-  ],
-  "not_verified_on_staging": "The SR-31 Spotlight grid is opt-in (ScreenFrame layout=\"spotlight-grid\") and no screen uses it until a page lane (health, discover, events, find-a-match) lands; every current screen renders as before. The page lanes' read-only staging specs carry the visible proof."
+  ]
 }
