@@ -1,0 +1,43 @@
+{
+  "vtid": "VTID-05459",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/inbox/index.tsx",
+    "apps/mobile/app/(app)/inbox/archived.tsx",
+    "apps/mobile/app/(app)/inbox/inspiration.tsx",
+    "apps/mobile/src/screens/inbox/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/inbox-chat/inbox-list/**",
+    "apps/mobile/maestro/inbox-chat/inbox-list/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/inboxNative.json",
+    "docs/validation/**",
+    "packages/core/extract.json"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/inbox/index.tsx",
+    "apps/mobile/app/(app)/inbox/archived.tsx",
+    "apps/mobile/app/(app)/inbox/inspiration.tsx",
+    "apps/mobile/src/screens/inbox/**",
+    "apps/mobile/src/ports/inbox.tsx",
+    "apps/mobile/src/ports/links.ts",
+    "apps/mobile/src/ports/badges.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/inbox-chat/inbox-list/**",
+    "apps/mobile/maestro/inbox-chat/inbox-list/README.md",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/inboxNative.json",
+    "docs/validation/VTID-05459/**"
+  ],
+  "outside_lane_paths": {},
+  "core_change": "none — every inbox data hook is class B (useHybridMessages → useGlobalMessages / useTenantMessages, useChatGroupsAsThreads, useChatUnreadCount, useUnreadSync, useChatApi's markGroupRead; useProgressiveCount reads window); the pure list rules (conversationHelpers, inboxThreadOrder, the Vitana bot id) sit on vitanaBotIdentity.ts, which reads import.meta.env, so they are mirrored natively in src/screens/inbox/data/threads-model.ts. No packages/core manifest / closure / extract / mobile-ci-paths change (core-closure --check: up to date)",
+  "shared_files": "apps/mobile/parity/ledger.json (only the 3 INBOX.OVERVIEW / ARCHIVED / INSPIRATION rows), apps/mobile/src/navigation/resolve.ts (3 NATIVE_ROUTES lines), apps/mobile/src/ports/links.ts (additive openWebPath), apps/mobile/src/ports/badges.ts (registers the inboxUnread source), src/i18n/*/inboxNative.json (shared shard with conversation-chat: merge by key)",
+  "sparring_record": "docs/validation/VTID-05459/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
