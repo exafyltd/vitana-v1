@@ -5,12 +5,13 @@
  * :539-556; the Spotlight branch is desktop-only, :478-537). The N3 shell
  * supplies the AppLayout chrome; the screen renders, top to bottom:
  *
- *   StandardHeader (🧭, "My Journey", tagline) · utility bar (search + Autopilot chip)
+ *   StandardHeader (🧭, "My Journey", tagline) · utility bar (search, calendar,
+ *     Life Compass, gift voucher, Vitana Index chip, Autopilot chip)
  *   GuidedModeSwitch · DreamNorthStar hero (the dashboard's Spotlight card) · card strip
- *   Guided:   JourneyHowItWorks · GuidedJourneyCatalog
+ *   Guided:   JourneyHowItWorks · [AudiobookReminderControl slot] · GuidedJourneyCatalog
  *   Full App: FutureSelfTiles · TodaysGoalCard · MatchesPreview · EventsPreview ·
  *             AutopilotCard · How you're doing (Index + trajectory) · "keep checking in"
- *   + AutopilotPopup, GoalSetupDialog, GoalPlanSheet
+ *   + AutopilotPopup, GoalSetupDialog, GoalPlanSheet, the milestone celebration
  *
  * Data (all native re-implementations of class-B web hooks, see data/ and
  * hooks/): `/my-journey`, the onboarding recommendations (today's actions +
@@ -20,8 +21,9 @@
  * overlay bus (web LIFE_COMPASS_OPEN_EVENT, :275-281); otherwise it opens the
  * goal dialog, whose save asks Vitana for the plan and opens the plan sheet.
  *
- * Owned by the `autopilot-audiobook` lane, not drawn here (plan decision 3):
- * the `AudiobookReminderControl` in the guided view (:435) and the
+ * Owned by the `autopilot-audiobook` lane (plan decision 3; tasks.md
+ * autopilot-audiobook tasks 1-3): the `AudiobookReminderControl` (mounted
+ * here at :435's position through `JourneySlotsContext`) and the
  * `?audiobook=play` / `/autopilot/audiobook` player start (:178-189). The
  * player plugs in through `JourneyAudiobookContext` (seams.ts).
  * React 19: typed with `ReactElement`.
@@ -39,7 +41,8 @@ import { useAutopilot } from './hooks/useAutopilot';
 import { useAIConsent } from './hooks/useAIConsent';
 import { JOURNEY_STATE_QUERY_KEY, markSessionListenedInJourneyState, useGuidedJourneyProgress } from './hooks/useGuidedJourneyProgress';
 import { recordSessionListened, useGenerateGoalPlan, useMyJourney, useOnboardingRecommendations, type Recommendation } from './data/journey';
-import { useActivateOrb, useJourneyAudiobook } from './seams';
+import { useActivateOrb, useJourneyAudiobook, useJourneySlots } from './seams';
+import { MilestoneCelebration } from './MilestoneCelebration';
 import { GuidedModeSwitch } from './GuidedModeSwitch';
 import { DreamNorthStar } from './DreamNorthStar';
 import { EnrichmentStrip } from './EnrichmentStrip';
@@ -68,6 +71,7 @@ function JourneyDashboard(): ReactElement {
   const { isGuided } = useGuidedMode();
   const audiobook = useJourneyAudiobook();
   const activateOrb = useActivateOrb();
+  const { AudiobookReminderControl } = useJourneySlots();
   const guidedJourneyProgress = useGuidedJourneyProgress();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
   const { hasConsent } = useAIConsent();
@@ -78,6 +82,7 @@ function JourneyDashboard(): ReactElement {
   const generatePlan = useGenerateGoalPlan();
   const scrollRef = useRef<ScrollView>(null);
   const catalogY = useRef(0);
+  const guidedY = useRef(0);
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
@@ -190,12 +195,19 @@ function JourneyDashboard(): ReactElement {
           />
           <EnrichmentStrip />
           {isGuided ? (
-            <>
-              <JourneyHowItWorks onScrollToSessions={() => scrollRef.current?.scrollTo({ y: catalogY.current, animated: true })} />
+            <View style={styles.content} testID="journey-guided-view" onLayout={(e) => (guidedY.current = e.nativeEvent.layout.y)}>
+              <View testID="journey-how-it-works-slot">
+                <JourneyHowItWorks onScrollToSessions={() => scrollRef.current?.scrollTo({ y: guidedY.current + catalogY.current, animated: true })} />
+              </View>
+              {AudiobookReminderControl ? (
+                <View testID="journey-slot-audiobook-reminder">
+                  <AudiobookReminderControl />
+                </View>
+              ) : null}
               <View onLayout={(e) => (catalogY.current = e.nativeEvent.layout.y)} testID="guided-session-list">
                 <GuidedJourneyCatalog />
               </View>
-            </>
+            </View>
           ) : (
             <>
               <FutureSelfTiles goal={goal} />
@@ -217,6 +229,7 @@ function JourneyDashboard(): ReactElement {
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
       <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} onSaved={handleGoalSaved} />
       <GoalPlanSheet open={planSheetOpen} onOpenChange={setPlanSheetOpen} />
+      <MilestoneCelebration />
     </>
   );
 }

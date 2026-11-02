@@ -151,7 +151,9 @@ describe('My Journey — empty and error', () => {
     await waitFor(() => expect(screen.getByTestId('journey-today-empty')).toBeTruthy());
     await waitFor(() => expect(screen.getByTestId('journey-matches-empty')).toBeTruthy());
     expect(db.functions).toContain('generate-daily-matches');
-    await waitFor(() => expect(screen.getByTestId('journey-events-empty')).toBeTruthy());
+    // No community events: EventsPreview falls back to the demo events (EventsPreview.tsx:44-52; fix round 1), so its empty line never shows.
+    await waitFor(() => expect(screen.getByTestId('journey-event-demo-group-1')).toBeTruthy());
+    expect(screen.queryByTestId('journey-events-empty')).toBeNull();
     expect(screen.getByTestId('journey-autopilot-clear')).toBeTruthy();
     await waitFor(() => expect(screen.getByTestId('journey-trajectory-empty')).toBeTruthy());
     // No Index rows: the self-heal compute RPC ran (web useVitanaIndex step 2).
