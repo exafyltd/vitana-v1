@@ -22,3 +22,10 @@ CONVERGED and approved by policy `converged-auto-v1` at 2026-11-02T16:28:50.565+
   here. This lane's routes test confirms `/discover` itself still falls through to the resolver
   until the `discover` lane lands its route file.
 - Round 2: no findings.
+
+## Owner approval
+
+Owner approval: by policy. The converged plan is approved by policy `converged-auto-v1` (owner decision 2026-10-14,
+VTID-05214/05218): a plan sparred by CI whose session converged is approved by policy and
+not sent to the owner as Gate 1. The VTID was allocated by CI after convergence
+(`lanes/marketplace-orders.md` log, 2026-11-02T16:30Z).

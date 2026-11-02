@@ -174,7 +174,7 @@ decision 5)".
 ## Results
 
 - `npm run typecheck` → PASS.
-- `npx jest tests/discover-commerce --ci` → PASS, 6 suites / 118 tests.
+- `npx jest tests/discover-commerce --ci` → PASS, 5 suites / 118 tests.
 - `npm test -- --ci` → PASS (counts in `commands.log`).
 - `APP_PROFILE=development npm run bundle` → PASS (iOS + Android `.hbc`, `Exported: dist`);
   `npm run bundle:core-probe` → PASS.
@@ -186,7 +186,7 @@ decision 5)".
 - i18n (repo root, the `i18n-check.yml` steps): audit (no `discoverCommerceNative` issue),
   subscriptions, locale registry, stamp-source, register check (no violations), DE long words, web build +
   locale chunking, `vitest run src/i18n scripts/native` → all pass.
-- Red → green: `red-on-base.txt` (the 6 lane suites fail on origin/main; 5 load errors).
+- Red → green: `red-on-base.txt` (the 5 lane suites fail on origin/main with load errors).
 
 ## Not verified on staging
 
