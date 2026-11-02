@@ -1,0 +1,23 @@
+{
+  "publicProfileNative": {
+    "notFound": {
+      "body": "你要找的个人资料不存在。",
+      "loadFailed": "无法加载个人资料",
+      "unexpected": "发生意外错误",
+      "noIdentifier": "未提供个人资料标识"
+    },
+    "landing": {
+      "brand": "VITANA",
+      "vitanaIndex": "VITANA {score}",
+      "openSocial": "打开 {network}"
+    },
+    "member": {
+      "noBio": "还没有简介",
+      "sections": "个人资料分区"
+    },
+    "post": {
+      "likes": "{count} 个赞",
+      "comments": "{count} 条评论"
+    }
+  }
+}
