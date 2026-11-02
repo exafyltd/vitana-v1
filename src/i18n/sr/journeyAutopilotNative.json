@@ -36,6 +36,10 @@
     },
     "calendar": {
       "upcomingCount": "Predstojećih događaja: {count}"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
     }
   }
 }

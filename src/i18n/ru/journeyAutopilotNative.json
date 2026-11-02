@@ -36,6 +36,10 @@
     },
     "calendar": {
       "upcomingCount": "Предстоящих событий: {count}"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
     }
   }
 }
