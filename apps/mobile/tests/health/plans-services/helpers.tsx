@@ -12,6 +12,10 @@
 import '../../helpers/mocks';
 import { fakeSession } from '../../helpers/supabase-double';
 import { makeWrapper } from '../../helpers/providers';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 const mockRouter = { navigate: jest.fn(), replace: jest.fn(), push: jest.fn(), back: jest.fn(), canGoBack: jest.fn(() => true) };
 const mockParams: { current: Record<string, string> } = { current: {} };

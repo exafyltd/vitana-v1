@@ -24,6 +24,9 @@ import { PlansScreen } from '../../../src/screens/health/PlansScreen';
 import { WellnessServicesScreen } from '../../../src/screens/health/WellnessServicesScreen';
 import { healthWrapper } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 afterAll(() => {
   __setSupabaseForTests(null);
   __setGatewayForTests(null);

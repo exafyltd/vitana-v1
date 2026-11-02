@@ -17,6 +17,9 @@ import { dismissToast, getToasts } from '../../../src/ui/toast/store';
 import { PlansScreen } from '../../../src/screens/health/PlansScreen';
 import { healthWrapper, planRow } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 afterAll(() => {
   __setSupabaseForTests(null);
   __setGatewayForTests(null);

@@ -128,3 +128,9 @@ PASS  PR-GATE red-green
 PASS  Kiro steering
 SKIP  Not run by preflight (npm test / lint / build: run above)
 exit=1 (only the two "lane file not found" checks; every other check passed)
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 63eb45927 (origin head) + this commit; edits: tests/health/plans-services/education-services.test.tsx, tests/health/plans-services/helpers.tsx, tests/health/plans-services/plans.test.tsx, tests/health/plans-services/routes-i18n.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/health/plans-services  (default workers, run 1 of 2)-> 4 suites, 91/91 pass (36s, 2026-11-02T21:38Z)
+$ npx jest tests/health/plans-services  (default workers, run 2 of 2)-> 4 suites, 91/91 pass (11s, 2026-11-02T21:38Z)
