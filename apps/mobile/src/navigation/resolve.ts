@@ -46,6 +46,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  '/connectors',
   '/delete-account',
   '/daily-diary',
   // VTID-05510: `/discover` also serves `/discover/ai-picks` (sparring R1-F1) —
@@ -73,7 +74,9 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/reset-password',
   '/search',
+  '/settings/connected-apps',
   '/shop',
+  '/support',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

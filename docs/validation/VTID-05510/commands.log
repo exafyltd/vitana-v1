@@ -49,3 +49,17 @@ $ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <wo
 PASS — gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering; "Not run by preflight" SKIP (covered by the npm test / eslint / bundle runs above)
 FAIL (not this lane) — Collab handoff + Lane scope: ".kiro/specs/native-wave2-discover-commerce-r2/lanes/discover.md not found" — the spec is on the plan branch (vitana-platform plan PR #4604, not merged yet)
   (first run also failed PR-GATE sparring: no owner-approval line in plan-sparring.md — added, then PASS)
+
+## merge origin/main 955a503a1 (PR was conflicting)
+$ git merge origin/main   — conflict in apps/mobile/src/navigation/resolve.ts (NATIVE_ROUTES: kept '/settings/connected-apps', '/shop', '/support');
+  apps/mobile/src/ports/ui.tsx auto-merged with duplicate ICONS keys (Apple, Brain, Moon, Sparkles now aliased on main) — typecheck caught TS1117; this lane's duplicate entries removed
+$ (apps/mobile) npm ci; npm run typecheck
+PASS — 0 errors
+$ (apps/mobile) npm test -- --ci
+PASS — 97/97 suites, 2635/2635 tests
+$ parity-ledger --sync / --check
+PASS — 0 changes; OK — 435 rows, 43 native route(s)
+$ core-closure --check / gen-core-extract --check
+PASS — up to date
+$ npx eslint apps/mobile packages
+PASS — 0 problems
