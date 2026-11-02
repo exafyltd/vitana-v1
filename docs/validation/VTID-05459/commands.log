@@ -203,3 +203,24 @@ $ npm run parity:check  -> OK — 435 rows, 35 native route(s); exit=0
 $ node ../../scripts/native/core-closure.mjs --check  -> up to date; exit=0
 $ (root) i18n register / long-words / subscriptions / locale-registry / stamp-source -> all OK; i18n-audit: 0 inboxNative errors
 $ (root) npx eslint apps/mobile/src/screens/inbox apps/mobile/src/ports/inbox.tsx apps/mobile/app.config.ts "apps/mobile/app/(app)/inbox" apps/mobile/tests/inbox-chat apps/mobile/tests/app-config.test.ts -> exit=0
+
+## Stale Find Friends expectation after main merge (base head 0f479294b)
+Fix: tests/inbox-chat/inbox-list/find-friends.test.tsx expects router.navigate('/connectors') (was
+'/settings/connected-apps'). The web navigates to /connectors (src/components/contacts/ContactSyncModal.tsx:284) and main
+now has a native /connectors route (#1543). Product code unchanged.
+(cwd apps/mobile)
+$ npx jest tests/inbox-chat/inbox-list/find-friends.test.tsx --ci
+Test Suites: 1 passed, 1 total / Tests: 8 passed, 8 total; exit=0
+$ npx jest tests/inbox-chat --ci   (run 1, default workers)
+Test Suites: 9 passed, 9 total / Tests: 110 passed, 110 total; exit=0
+$ npx jest tests/inbox-chat --ci   (run 2, default workers)
+Test Suites: 9 passed, 9 total / Tests: 110 passed, 110 total; exit=0
+$ npm run typecheck  -> exit=0
+$ npm test -- --ci
+Test Suites: 99 passed, 99 total / Tests: 2610 passed, 2610 total; exit=0
+Note: earlier runs during this step at host load average 34-47 on 8 cores (other workloads) had timing failures
+(1-23 tests in tests/inbox-chat; 8 in full jest incl. i18n-rtl, memory, support suites). All runs recorded above were
+at load < 16 and passed; nothing was changed to get them green.
+$ (root) node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-inbox-chat-calls-r2/inbox-list --title "VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list): native inbox list port"
+exit=1: every check PASS except Lane scope (4 shared paths from earlier lane commits: apps/mobile/app.config.ts,
+apps/mobile/package.json, apps/mobile/package-lock.json, apps/mobile/tests/app-config.test.ts; not touched here)

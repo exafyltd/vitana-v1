@@ -214,8 +214,8 @@ describe('Find Friends', () => {
     await waitFor(() => expect(screen.getByTestId('find-friends-connect')).toBeTruthy());
     expect(screen.getByText("Outlook Contacts isn't connected yet")).toBeTruthy();
     fireEvent.press(screen.getByTestId('find-friends-open-connected-apps'));
-    // The web path /connectors resolves to the Connected Apps route (navigation/resolve.ts).
-    expect(router.navigate).toHaveBeenLastCalledWith('/settings/connected-apps');
+    // Matches the web: src/components/contacts/ContactSyncModal.tsx:284 navigates to /connectors.
+    expect(router.navigate).toHaveBeenLastCalledWith('/connectors');
 
     fireEvent.press(screen.getByTestId('find-friends-button'));
     await waitFor(() => expect(screen.getByTestId('find-friends-import')).toBeTruthy());
