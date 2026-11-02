@@ -145,6 +145,9 @@ describe('auth plugins', () => {
       'expo-audio',
       // VTID-05458 (conversation-chat lane): the 1:1 call's WebRTC engine (tests/inbox-chat/conversation-chat/app-config-webrtc.test.ts).
       '@config-plugins/react-native-webrtc',
+      // VTID-05458 fix 1: the chat's video viewer and date fields (tests/inbox-chat/conversation-chat/app-config-webrtc.test.ts).
+      'expo-video',
+      '@react-native-community/datetimepicker',
     ]);
     expect(cfg.ios?.usesAppleSignIn).toBe(true);
     expect(cfg.ios?.bundleIdentifier).toBe(IDENTIFIERS.ios);

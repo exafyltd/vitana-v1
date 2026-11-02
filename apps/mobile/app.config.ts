@@ -72,7 +72,25 @@ export function buildPlugins(env: Record<string, string | undefined>, profile: P
   if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
   plugins.push(...diaryCapturePlugins());
   plugins.push(...callPlugins());
+  plugins.push(...chatMediaPlugins());
   return plugins;
+}
+
+/**
+ * VTID-05458 (conversation-chat fix 1, driver decision) — the chat's media
+ * parity packages that ship a config plugin:
+ *   expo-video — the picture viewer plays videos inline (no background
+ *     playback, no Picture-in-Picture: no UIBackgroundModes `audio`, the
+ *     ORB's F9 rule);
+ *   @react-native-community/datetimepicker — the calendar-invite, due-date
+ *     and search date fields (default styles).
+ * expo-clipboard needs no plugin; expo-document-picker's plugin only sets an
+ * iCloud container entitlement, which the Files picker does not need, so it is
+ * not registered. No new usage string: the camera / library strings are the
+ * expo-image-picker ones above.
+ */
+export function chatMediaPlugins(): PluginEntry[] {
+  return [['expo-video', { supportsBackgroundPlayback: false, supportsPictureInPicture: false }], '@react-native-community/datetimepicker'];
 }
 
 /**
