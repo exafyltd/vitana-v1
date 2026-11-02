@@ -70,7 +70,35 @@ export function buildPlugins(env: Record<string, string | undefined>, profile: P
   ];
   const scheme = googleIosUrlScheme(env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID);
   if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
+  plugins.push(...diaryCapturePlugins());
   return plugins;
+}
+
+/**
+ * VTID-05426 (diary lane; plan decision 3, sparring R1-F1 + R2-F1) — the
+ * Daily Diary's photo and voice capture. The usage strings come from the i18n
+ * catalog in the base locale (`native-locales.json` baseLocale, the same base
+ * withVitanaVoice writes), never from this file:
+ *   camera + photo library: `diaryNative.permissions.cameraUsage` / `photosUsage`
+ *   microphone: `orbNative.micUsageDescription`, the ONE microphone string —
+ *     withVitanaVoice already writes NSMicrophoneUsageDescription (localised
+ *     per language at prebuild), so expo-audio gets the identical text and the
+ *     key never has two different values (R2-F1).
+ * No background audio (the ORB's F9 rule): enableBackgroundPlayback /
+ * enableBackgroundRecording are off, so no UIBackgroundModes `audio` and no
+ * foreground media service. Per-language InfoPlist strings for the two
+ * picker keys are checked on the G1 device build (plan decision 5).
+ */
+export function diaryCapturePlugins(): PluginEntry[] {
+  /* eslint-disable @typescript-eslint/no-require-imports */
+  const base = (require('./modules/vitana-voice/plugin/native-locales.json') as { baseLocale: string }).baseLocale;
+  const diary = (require(`../../src/i18n/${base}/diaryNative.json`) as { diaryNative: { permissions: { cameraUsage: string; photosUsage: string } } }).diaryNative.permissions;
+  const orb = (require(`../../src/i18n/${base}/orbNative.json`) as { orbNative: { micUsageDescription: string } }).orbNative;
+  /* eslint-enable @typescript-eslint/no-require-imports */
+  return [
+    ['expo-image-picker', { photosPermission: diary.photosUsage, cameraPermission: diary.cameraUsage, microphonePermission: orb.micUsageDescription }],
+    ['expo-audio', { microphonePermission: orb.micUsageDescription, enableBackgroundPlayback: false, enableBackgroundRecording: false }],
+  ];
 }
 
 

@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "A Vitana precisa da sua câmera para que você possa tirar fotos para o seu diário e para os relatos de erros.",
+      "photosUsage": "A Vitana precisa acessar as suas fotos para que você possa adicionar imagens ao seu diário e aos relatos de erros.",
+      "deniedTitle": "Acesso não permitido",
+      "deniedCamera": "Permita o acesso à câmera nos Ajustes para tirar uma foto.",
+      "deniedPhotos": "Permita o acesso às suas fotos nos Ajustes para escolher uma imagem.",
+      "deniedMicrophone": "Permita o acesso ao microfone nos Ajustes para gravar uma entrada de voz."
+    },
+    "selectMode": "Escolha uma seção do diário",
+    "startRecording": "Iniciar gravação",
+    "stopRecording": "Parar gravação",
+    "close": "Fechar",
+    "removePhoto": "Remover foto",
+    "entriesLoadError": "Não foi possível carregar as suas entradas.",
+    "photoSource": {
+      "title": "Adicionar uma foto",
+      "camera": "Tirar uma foto",
+      "library": "Escolher da galeria"
+    },
+    "indexSaved": {
+      "title": "Salvo · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Toque no seu Index para ver a mudança.",
+      "signals": "{count} sinais de saúde registrados.",
+      "signalsCaption": "{count} sinais de saúde registrados a partir da sua legenda."
+    },
+    "screenOption": {
+      "home": "Início",
+      "community": "Comunidade",
+      "communityEvents": "Comunidade – Eventos",
+      "discover": "Descobrir",
+      "discoverMarketplace": "Descobrir – Marketplace",
+      "businessHub": "Business Hub",
+      "inbox": "Caixa de entrada",
+      "inboxMessages": "Caixa de entrada – Mensagens",
+      "health": "Saúde",
+      "healthDashboard": "Saúde – Painel",
+      "aiAssistant": "Assistente de IA",
+      "aiAssistantOrb": "Assistente de IA – ORB",
+      "wallet": "Carteira",
+      "sharing": "Compartilhar",
+      "memoryDiary": "Memória – Diário",
+      "memoryGarden": "Memória – Jardim",
+      "calendar": "Calendário",
+      "settings": "Ajustes",
+      "profile": "Perfil",
+      "liveRooms": "Salas ao vivo",
+      "notifications": "Notificações",
+      "other": "Outro"
+    }
+  }
+}
