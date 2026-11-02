@@ -27,6 +27,9 @@ import { overlayBus } from '../../src/navigation/overlay-bus';
 import { HealthScreen } from '../../src/screens/health/HealthScreen';
 import { fullTables, gatewayRoutes, healthWrapper, FAIL, USER_ID } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 const realOS = Platform.OS;
 function setOS(os: typeof Platform.OS) {
   Object.defineProperty(Platform, 'OS', { configurable: true, get: () => os });

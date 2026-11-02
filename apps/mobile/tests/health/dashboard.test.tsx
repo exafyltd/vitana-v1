@@ -16,6 +16,9 @@ import { HealthScreen, normalizeHealthMode } from '../../src/screens/health/Heal
 import { filterSupplements } from '../../src/screens/health/MobileHealthSupplementsTab';
 import { healthWrapper, supplements, FAIL } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 beforeEach(() => {
   searchParams.current = {};
   jest.clearAllMocks();

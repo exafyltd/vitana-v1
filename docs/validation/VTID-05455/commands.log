@@ -184,3 +184,9 @@ FAIL  Collab handoff / FAIL  Lane scope — the same known "lanes/health-hub.md 
 PASS  gh for plan( PR / PR-GATE scope / sparring / weakening / red-green / Kiro steering
 $ node <vitana-platform>/scripts/ci/staging-verify/run.mjs check-pr --service community-app --repo-root . --base origin/main --head HEAD --title "<PR title>"
 [staging-verify] ✓ change suite present and valid for VTID-05455
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on cda3e39f0 (origin head) + this commit; edits: tests/health/dashboard.test.tsx, tests/health/helpers.tsx, tests/health/i18n-routes.test.tsx, tests/health/utility-bar.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/health  (default workers, run 1 of 2)        -> 6 suites, 119/119 pass (81s, 2026-11-02T21:36Z)
+$ npx jest tests/health  (default workers, run 2 of 2)        -> 6 suites, 119/119 pass (31s, 2026-11-02T21:36Z)
