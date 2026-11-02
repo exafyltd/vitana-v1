@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05519",
+  "kind": "infra",
+  "paths": [
+    ".github/workflows/AWS-STAGE-DEPLOY-FRONTEND.yml",
+    ".github/workflows/PREVIEW-DEPLOY-FRONTEND.yml",
+    ".github/workflows/PREVIEW-TEARDOWN-FRONTEND.yml",
+    "src/lib/eng-platform-stage-oidc.test.ts",
+    "docs/validation/VTID-05519/**"
+  ],
+  "sparring_record": "vitana-platform:.kiro/specs/eng-platform-p01/sparring/verdict.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05519",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/eng-platform-stage-oidc.test.ts",
+      "reason": "OIDC path inert until the owner sets the role variables; the merge redeploys staging frontend on the unchanged key path"
+    }
+  ]
+}

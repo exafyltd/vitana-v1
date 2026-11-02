@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write # eng-platform-p01: OIDC for the staging AWS role
 
 concurrency:
   group: preview-teardown-pr-${{ github.event.pull_request.number }}
@@ -42,7 +43,7 @@ jobs:
       - name: Resolve which preview resources are configured
         id: gate
         env:
-          HAS_AWS: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID != '' }}
+          HAS_AWS: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID != '' || vars.AWS_PREVIEW_ROLE_ARN != '' }}
           HAS_CF: ${{ secrets.PREVIEW_CF_DISTRIBUTION_ID != '' }}
         run: |
           if [ "$HAS_AWS" = "true" ]; then
@@ -57,8 +58,10 @@ jobs:
         if: steps.gate.outputs.skip == 'false'
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_STAGING_SECRET_ACCESS_KEY }}
+          # eng-platform-p01: OIDC when vars.AWS_PREVIEW_ROLE_ARN is set; the static keys only while it is unset.
+          role-to-assume: ${{ vars.AWS_PREVIEW_ROLE_ARN }}
+          aws-access-key-id: ${{ !vars.AWS_PREVIEW_ROLE_ARN && secrets.AWS_STAGING_ACCESS_KEY_ID || '' }}
+          aws-secret-access-key: ${{ !vars.AWS_PREVIEW_ROLE_ARN && secrets.AWS_STAGING_SECRET_ACCESS_KEY || '' }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Remove the PR's preview objects
