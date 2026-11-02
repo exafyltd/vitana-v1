@@ -11,7 +11,7 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ReactElement, ReactNode } from 'react';
-import { render } from '@testing-library/react-native';
+import { configure, render } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../../src/auth/AuthProvider';
 import { __setSupabaseForTests } from '../../src/auth/client';
@@ -20,6 +20,12 @@ import { TenantProvider } from '../../src/identity/TenantProvider';
 import { LanguageProvider } from '../../src/identity/LanguageProvider';
 import { ThemeProvider } from '../../src/theme/ThemeProvider';
 import { UIProvider } from '../../src/ports/ui';
+
+// Every settings test imports this harness: give findBy*/waitFor 5 s instead
+// of RNTL's 1 s default so the suite holds under default-worker load.
+configure({ asyncUtilTimeout: 5000 });
+// Chained 5 s waits must fit inside the test's own budget (Jest default 5 s).
+jest.setTimeout(30000);
 
 type Row = Record<string, any>;
 type Result = { data: any; error: { message: string; code?: string } | null };

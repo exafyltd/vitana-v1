@@ -115,9 +115,9 @@ describe('/settings/tenant-role', () => {
     const sb = createSettingsSupabase({ rpc: { get_role_preference: () => ({ data: [{ role: 'patient' }], error: null }) }, functions: { list_my_memberships: () => ({ data: MEMBERSHIPS, error: null }) } });
     renderSettings(<TenantRoleRoute />, { supabase: sb });
     expect(await screen.findByTestId('tenant-role-context')).toBeTruthy();
-    expect(screen.getByTestId('tenant-role-current-role')).toHaveTextContent(/Community-Mitglied/);
+    await waitFor(() => expect(screen.getByTestId('tenant-role-current-role')).toHaveTextContent(/Community-Mitglied/));
     await waitFor(() => expect(screen.getByTestId('tenant-role-current-tenant')).toHaveTextContent(/Maxina/));
-    expect(screen.getByTestId('tenant-role-no-roles')).toBeTruthy();
+    await waitFor(() => expect(screen.getByTestId('tenant-role-no-roles')).toBeTruthy());
     expect(screen.queryByTestId('tenant-role-switch-org')).toBeNull();
     await waitFor(() => expect(screen.getByTestId('tenant-role-permission-patient')).toHaveTextContent(/Gewährt/));
     expect(screen.getByTestId('tenant-role-permission-professional')).toHaveTextContent(/Nicht verfügbar/);
@@ -127,7 +127,7 @@ describe('/settings/tenant-role', () => {
     const sb = createSettingsSupabase({ exafyAdmin: true, functions: { list_my_memberships: () => ({ data: { memberships: [] }, error: null }) } });
     renderSettings(<TenantRoleScreen />, { supabase: sb });
     expect(await screen.findByTestId('tenant-role-admin-notice')).toBeTruthy();
-    expect(screen.getByTestId('tenant-role-no-orgs')).toBeTruthy();
+    await waitFor(() => expect(screen.getByTestId('tenant-role-no-orgs')).toBeTruthy());
   });
 
   it('error: a failed memberships call shows the no-roles notice, never a crash', async () => {

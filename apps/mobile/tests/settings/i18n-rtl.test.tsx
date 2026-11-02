@@ -21,6 +21,10 @@ import { TenantRoleScreen } from '../../src/screens/settings/TenantRoleScreen';
 const REPO = join(__dirname, '../../../..');
 const RAW_KEY = /^[a-z][A-Za-z0-9]*(\.[A-Za-z0-9_]+)+$/;
 
+// The 11-locale loops render every screen once per locale; under default
+// workers that outruns Jest's 5 s default.
+jest.setTimeout(30000);
+
 afterEach(() => {
   mockParams.current = {};
 });
