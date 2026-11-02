@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana necesita tu cámara para que puedas hacer fotos para tu diario y para los informes de errores.",
+      "photosUsage": "Vitana necesita acceso a tus fotos para que puedas añadir imágenes a tu diario y a los informes de errores.",
+      "deniedTitle": "Acceso no permitido",
+      "deniedCamera": "Permite el acceso a la cámara en Ajustes para hacer una foto.",
+      "deniedPhotos": "Permite el acceso a tus fotos en Ajustes para elegir una imagen.",
+      "deniedMicrophone": "Permite el acceso al micrófono en Ajustes para grabar una entrada de voz."
+    },
+    "selectMode": "Elige una sección del diario",
+    "startRecording": "Empezar a grabar",
+    "stopRecording": "Detener la grabación",
+    "close": "Cerrar",
+    "removePhoto": "Quitar foto",
+    "entriesLoadError": "No se pudieron cargar tus entradas.",
+    "photoSource": {
+      "title": "Añadir una foto",
+      "camera": "Hacer una foto",
+      "library": "Elegir de la galería"
+    },
+    "indexSaved": {
+      "title": "Guardado · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Toca tu Index para ver el cambio.",
+      "signals": "{count} señales de salud registradas.",
+      "signalsCaption": "{count} señales de salud registradas a partir de tu pie de foto."
+    },
+    "screenOption": {
+      "home": "Inicio",
+      "community": "Comunidad",
+      "communityEvents": "Comunidad – Eventos",
+      "discover": "Descubrir",
+      "discoverMarketplace": "Descubrir – Mercado",
+      "businessHub": "Business Hub",
+      "inbox": "Bandeja de entrada",
+      "inboxMessages": "Bandeja de entrada – Mensajes",
+      "health": "Salud",
+      "healthDashboard": "Salud – Panel",
+      "aiAssistant": "Asistente de IA",
+      "aiAssistantOrb": "Asistente de IA – ORB",
+      "wallet": "Monedero",
+      "sharing": "Compartir",
+      "memoryDiary": "Memoria – Diario",
+      "memoryGarden": "Memoria – Jardín",
+      "calendar": "Calendario",
+      "settings": "Ajustes",
+      "profile": "Perfil",
+      "liveRooms": "Salas en directo",
+      "notifications": "Notificaciones",
+      "other": "Otro"
+    }
+  }
+}

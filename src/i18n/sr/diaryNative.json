@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitani je potrebna tvoja kamera da bi mogao da praviš fotografije za svoj dnevnik i za prijave grešaka.",
+      "photosUsage": "Vitani je potreban pristup tvojim fotografijama da bi mogao da dodaješ slike u svoj dnevnik i u prijave grešaka.",
+      "deniedTitle": "Pristup nije dozvoljen",
+      "deniedCamera": "Dozvoli pristup kameri u Podešavanjima da bi napravio fotografiju.",
+      "deniedPhotos": "Dozvoli pristup fotografijama u Podešavanjima da bi izabrao sliku.",
+      "deniedMicrophone": "Dozvoli pristup mikrofonu u Podešavanjima da bi snimio glasovni unos."
+    },
+    "selectMode": "Izaberi odeljak dnevnika",
+    "startRecording": "Započni snimanje",
+    "stopRecording": "Zaustavi snimanje",
+    "close": "Zatvori",
+    "removePhoto": "Ukloni fotografiju",
+    "entriesLoadError": "Tvoji unosi nisu mogli da se učitaju.",
+    "photoSource": {
+      "title": "Dodaj fotografiju",
+      "camera": "Napravi fotografiju",
+      "library": "Izaberi iz galerije"
+    },
+    "indexSaved": {
+      "title": "Sačuvano · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Dodirni svoj Index da vidiš promenu.",
+      "signals": "Zabeleženo zdravstvenih signala: {count}.",
+      "signalsCaption": "Zabeleženo zdravstvenih signala iz tvog opisa: {count}."
+    },
+    "screenOption": {
+      "home": "Početna",
+      "community": "Zajednica",
+      "communityEvents": "Zajednica – Događaji",
+      "discover": "Otkrij",
+      "discoverMarketplace": "Otkrij – Tržište",
+      "businessHub": "Business Hub",
+      "inbox": "Prijemno sanduče",
+      "inboxMessages": "Prijemno sanduče – Poruke",
+      "health": "Zdravlje",
+      "healthDashboard": "Zdravlje – Kontrolna tabla",
+      "aiAssistant": "AI asistent",
+      "aiAssistantOrb": "AI asistent – ORB",
+      "wallet": "Novčanik",
+      "sharing": "Deljenje",
+      "memoryDiary": "Sećanja – Dnevnik",
+      "memoryGarden": "Sećanja – Bašta",
+      "calendar": "Kalendar",
+      "settings": "Podešavanja",
+      "profile": "Profil",
+      "liveRooms": "Sobe uživo",
+      "notifications": "Obaveštenja",
+      "other": "Ostalo"
+    }
+  }
+}

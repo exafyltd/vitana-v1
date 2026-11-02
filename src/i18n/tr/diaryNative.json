@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Günlüğün ve hata bildirimlerin için fotoğraf çekebilmen için Vitana'nın kamerana ihtiyacı var.",
+      "photosUsage": "Günlüğüne ve hata bildirimlerine resim ekleyebilmen için Vitana'nın fotoğraflarına erişmesi gerekiyor.",
+      "deniedTitle": "Erişime izin verilmedi",
+      "deniedCamera": "Fotoğraf çekmek için Ayarlar'da kamera erişimine izin ver.",
+      "deniedPhotos": "Resim seçmek için Ayarlar'da fotoğraf erişimine izin ver.",
+      "deniedMicrophone": "Sesli kayıt yapmak için Ayarlar'da mikrofon erişimine izin ver."
+    },
+    "selectMode": "Bir günlük bölümü seç",
+    "startRecording": "Kaydı başlat",
+    "stopRecording": "Kaydı durdur",
+    "close": "Kapat",
+    "removePhoto": "Fotoğrafı kaldır",
+    "entriesLoadError": "Kayıtların yüklenemedi.",
+    "photoSource": {
+      "title": "Fotoğraf ekle",
+      "camera": "Fotoğraf çek",
+      "library": "Galeriden seç"
+    },
+    "indexSaved": {
+      "title": "Kaydedildi · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Değişimi görmek için Index'ine dokun.",
+      "signals": "{count} sağlık sinyali kaydedildi.",
+      "signalsCaption": "Açıklamandan {count} sağlık sinyali kaydedildi."
+    },
+    "screenOption": {
+      "home": "Ana sayfa",
+      "community": "Topluluk",
+      "communityEvents": "Topluluk – Etkinlikler",
+      "discover": "Keşfet",
+      "discoverMarketplace": "Keşfet – Pazar yeri",
+      "businessHub": "Business Hub",
+      "inbox": "Gelen kutusu",
+      "inboxMessages": "Gelen kutusu – Mesajlar",
+      "health": "Sağlık",
+      "healthDashboard": "Sağlık – Panel",
+      "aiAssistant": "Yapay zekâ asistanı",
+      "aiAssistantOrb": "Yapay zekâ asistanı – ORB",
+      "wallet": "Cüzdan",
+      "sharing": "Paylaşım",
+      "memoryDiary": "Hafıza – Günlük",
+      "memoryGarden": "Hafıza – Bahçe",
+      "calendar": "Takvim",
+      "settings": "Ayarlar",
+      "profile": "Profil",
+      "liveRooms": "Canlı odalar",
+      "notifications": "Bildirimler",
+      "other": "Diğer"
+    }
+  }
+}
