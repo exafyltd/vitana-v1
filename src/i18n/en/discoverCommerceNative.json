@@ -62,6 +62,30 @@
       "gutHealth": "Gut Health",
       "herbs": "Herbs",
       "heartHealth": "Heart Health"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "TBA",
+        "eventFallback": "Event",
+        "generalAdmission": "General Admission",
+        "loadError": "Could not load your ticket. Please check your email for confirmation."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 I'm going to {title}!",
+        "email": "Email",
+        "emailSubject": "My ticket for {title}",
+        "sms": "SMS",
+        "copyLink": "Copy Link",
+        "copied": "Copied!",
+        "openingWhatsapp": "Opening WhatsApp…",
+        "openingViber": "Opening Viber…",
+        "openingEmail": "Opening email…",
+        "openingMessages": "Opening messages…"
+      },
+      "package": {
+        "failedToVerify": "Failed to verify payment",
+        "unableToVerify": "Unable to verify your purchase. Please contact support."
+      }
     }
   }
 }

@@ -62,6 +62,30 @@
       "gutHealth": "Saúde intestinal",
       "herbs": "Ervas",
       "heartHealth": "Saúde do coração"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "A anunciar",
+        "eventFallback": "Evento",
+        "generalAdmission": "Entrada geral",
+        "loadError": "Não foi possível carregar o seu ingresso. Verifique o seu e-mail para ver a confirmação."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Eu vou para {title}!",
+        "email": "E-mail",
+        "emailSubject": "Meu ingresso para {title}",
+        "sms": "SMS",
+        "copyLink": "Copiar link",
+        "copied": "Copiado!",
+        "openingWhatsapp": "Abrindo o WhatsApp…",
+        "openingViber": "Abrindo o Viber…",
+        "openingEmail": "Abrindo o e-mail…",
+        "openingMessages": "Abrindo as mensagens…"
+      },
+      "package": {
+        "failedToVerify": "Não foi possível verificar o pagamento",
+        "unableToVerify": "Não foi possível verificar a sua compra. Entre em contato com o suporte."
+      }
     }
   }
 }

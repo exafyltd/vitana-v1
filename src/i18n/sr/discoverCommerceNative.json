@@ -62,6 +62,30 @@
       "gutHealth": "Zdravlje creva",
       "herbs": "Bilje",
       "heartHealth": "Zdravlje srca"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "Naknadno",
+        "eventFallback": "Događaj",
+        "generalAdmission": "Opšti ulaz",
+        "loadError": "Tvoja ulaznica nije mogla da se učita. Proveri imejl za potvrdu."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Idem na {title}!",
+        "email": "Imejl",
+        "emailSubject": "Moja ulaznica za {title}",
+        "sms": "SMS",
+        "copyLink": "Kopiraj link",
+        "copied": "Kopirano!",
+        "openingWhatsapp": "Otvaram WhatsApp…",
+        "openingViber": "Otvaram Viber…",
+        "openingEmail": "Otvaram imejl…",
+        "openingMessages": "Otvaram poruke…"
+      },
+      "package": {
+        "failedToVerify": "Plaćanje nije moglo da se proveri",
+        "unableToVerify": "Tvoja kupovina nije mogla da se proveri. Obrati se podršci."
+      }
     }
   }
 }

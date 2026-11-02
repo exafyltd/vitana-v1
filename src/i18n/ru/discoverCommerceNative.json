@@ -62,6 +62,30 @@
       "gutHealth": "Здоровье кишечника",
       "herbs": "Травы",
       "heartHealth": "Здоровье сердца"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "Уточняется",
+        "eventFallback": "Событие",
+        "generalAdmission": "Общий вход",
+        "loadError": "Не удалось загрузить твой билет. Проверь почту — там есть подтверждение."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Я иду на {title}!",
+        "email": "Почта",
+        "emailSubject": "Мой билет на {title}",
+        "sms": "SMS",
+        "copyLink": "Копировать ссылку",
+        "copied": "Скопировано!",
+        "openingWhatsapp": "Открываем WhatsApp…",
+        "openingViber": "Открываем Viber…",
+        "openingEmail": "Открываем почту…",
+        "openingMessages": "Открываем сообщения…"
+      },
+      "package": {
+        "failedToVerify": "Не удалось проверить оплату",
+        "unableToVerify": "Не удалось проверить твою покупку. Обратись в поддержку."
+      }
     }
   }
 }
