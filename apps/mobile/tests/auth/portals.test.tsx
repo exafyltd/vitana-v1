@@ -20,6 +20,9 @@ import { translate } from '../../src/i18n';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { __setSupabaseForTests } from '../../src/auth/client';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 let mockParams: Record<string, string> = {};
 let mockPath = '/maxina';
 const mockRedirect = jest.fn();

@@ -5,6 +5,10 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSupabaseDouble, type DoubleOptions } from '../helpers/supabase-double';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 export const G1_AUTH = 'https://g1-auth.example.org';
 

@@ -18,6 +18,9 @@ import { isStaticDestination, NATIVE_ROUTES } from '../../src/navigation/resolve
 import { ResetPasswordScreen } from '../../src/screens/auth/ResetPasswordScreen';
 import { __setSupabaseForTests } from '../../src/auth/client';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 jest.mock('expo-router', () => ({
   router: { navigate: jest.fn(), replace: jest.fn() },
   usePathname: () => '/reset-password',
