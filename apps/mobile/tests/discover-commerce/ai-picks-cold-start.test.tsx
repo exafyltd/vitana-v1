@@ -10,11 +10,14 @@
  */
 import '../helpers/no-network';
 import '../helpers/mocks';
+import './timing';
 import { renderRouter, screen } from 'expo-router/testing-library';
 import { resolveWebPath } from '../../src/navigation/resolve';
 import { createLinkRouter } from '../../src/linking/link-router';
 import Resolver from '../../app/(app)/[...path]';
 import DiscoverRoute from '../../app/(app)/discover/index';
+
+jest.setTimeout(30000);
 
 // The real route file renders DiscoverScreen; the screen itself is covered by
 // discover.test.tsx, so here it only reports the params it was opened with.

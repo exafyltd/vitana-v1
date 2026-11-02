@@ -63,3 +63,19 @@ $ core-closure --check / gen-core-extract --check
 PASS — up to date
 $ npx eslint apps/mobile packages
 PASS — 0 problems
+
+## test timing (reviewer blocker, see marketplace-orders review 67ba80c) — base head 8e3a45ef9
+tests/discover-commerce/timing.ts: configure({ asyncUtilTimeout: 8000 }) (identical file in the marketplace-orders lane), imported by helpers.tsx and ai-picks-cold-start.test.tsx
+jest.setTimeout(30000): i18n-rtl.test.tsx (11-locale loop), sub-catalogues.test.tsx (4 screens), ai-picks-cold-start.test.tsx (router render)
+removed per-call { timeout: 5000 } in shop.test.tsx (covered by the 8000 ms config); no assertion changed, nothing skipped
+core.test.ts: pure functions, no render or async util, so no timing import
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 7/7 suites, 122/122 tests (57.6 s)
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 7/7 suites, 122/122 tests (16.8 s)
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 3
+PASS — 7/7 suites, 122/122 tests (18.2 s)
+$ (apps/mobile) npx jest
+PASS — 97/97 suites, 2635/2635 tests (90.2 s)
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors

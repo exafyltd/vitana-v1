@@ -23,6 +23,8 @@ import { CategoryProductsScreen } from '../../src/screens/discover/CategoryProdu
 import { ShopFeedScreen } from '../../src/screens/discover/ShopFeedScreen';
 import { budget, discoverWrapper, emptyCart, feedResult, flush, product, searchResult, UUID } from './helpers';
 
+jest.setTimeout(30000);
+
 afterEach(() => {
   searchParams.current = {};
 });

@@ -20,6 +20,8 @@ import { CategoryProductsScreen } from '../../src/screens/discover/CategoryProdu
 import { searchQueryString } from '../../src/screens/discover/data/marketplace';
 import { budget, discoverWrapper, emptyCart, product, searchResult, UUID } from './helpers';
 
+jest.setTimeout(30000);
+
 afterEach(() => {
   searchParams.current = {};
   jest.clearAllMocks();

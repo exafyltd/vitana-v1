@@ -9,6 +9,7 @@
  * the test files import `../helpers/no-network` first.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import './timing';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { createGatewayFetch } from '../../src/ports/core';
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';

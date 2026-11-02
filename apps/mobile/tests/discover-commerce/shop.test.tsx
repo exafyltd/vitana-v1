@@ -71,8 +71,8 @@ describe('/shop — feed states', () => {
     const { wrapper, requests } = discoverWrapper({ 'GET /shop-feed/videos': status(500, { ok: false, error: 'down' }) });
     render(<ShopFeedScreen />, { wrapper });
     // the hook retries a 500 once (web retry rule, react-query's 1 s delay) before the error state
-    fireEvent.press(await screen.findByTestId('shop-retry', {}, { timeout: 5000 }));
-    await waitFor(() => expect(requests.filter((r) => r.path === '/shop-feed/videos').length).toBeGreaterThanOrEqual(3), { timeout: 5000 });
+    fireEvent.press(await screen.findByTestId('shop-retry'));
+    await waitFor(() => expect(requests.filter((r) => r.path === '/shop-feed/videos').length).toBeGreaterThanOrEqual(3));
   });
 
   it('empty: "Browse Discover" goes to /discover', async () => {
