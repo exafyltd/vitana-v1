@@ -1,0 +1,23 @@
+{
+  "publicProfileNative": {
+    "notFound": {
+      "body": "الملف الشخصي الذي تبحث عنه غير موجود.",
+      "loadFailed": "تعذّر تحميل الملف الشخصي",
+      "unexpected": "حدث خطأ غير متوقع",
+      "noIdentifier": "لم يتم تقديم معرّف الملف الشخصي"
+    },
+    "landing": {
+      "brand": "VITANA",
+      "vitanaIndex": "VITANA {score}",
+      "openSocial": "افتح {network}"
+    },
+    "member": {
+      "noBio": "لا توجد نبذة بعد",
+      "sections": "أقسام الملف الشخصي"
+    },
+    "post": {
+      "likes": "{count} إعجاب",
+      "comments": "{count} تعليق"
+    }
+  }
+}
