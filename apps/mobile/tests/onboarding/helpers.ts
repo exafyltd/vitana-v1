@@ -6,6 +6,10 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 export type Upsert = { table: string; values: Record<string, any>; options: any };
 

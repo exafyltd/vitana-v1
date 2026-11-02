@@ -116,3 +116,9 @@ FAIL  Lane scope       — lanes/onboarding.md "not found in this repo, an open 
 PASS  gh for plan( PR / vitana-platform lane files
 PASS  PR-GATE scope, sparring, weakening, red-green, Kiro steering
 SKIP  npm test / lint / build: run above
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 152cb4e47 (origin head) + this commit; edits: tests/onboarding/helpers.ts, tests/onboarding/i18n-rtl.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/onboarding  (default workers, run 1 of 2)    -> 2 suites, 76/76 pass (38s, 2026-11-02T21:31Z)
+$ npx jest tests/onboarding  (default workers, run 2 of 2)    -> 2 suites, 76/76 pass (4s, 2026-11-02T21:31Z)
