@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "Нажми и удерживай для реакций и действий"
+    },
+    "emoji": {
+      "open": "Выбери эмодзи",
+      "recent": "Недавние",
+      "smileys": "Смайлы",
+      "people": "Люди",
+      "nature": "Природа",
+      "food": "Еда",
+      "activity": "Активность",
+      "travel": "Путешествия",
+      "objects": "Предметы"
+    },
+    "voice": {
+      "discard": "Удалить запись",
+      "play": "Воспроизвести",
+      "pause": "Пауза",
+      "stop": "Остановить запись"
+    },
+    "composer": {
+      "datePlaceholder": "ГГГГ-ММ-ДД",
+      "timePlaceholder": "ЧЧ:ММ",
+      "removeFile": "Убрать {name}"
+    },
+    "payment": {
+      "status": {
+        "pending": "Ожидает",
+        "completed": "Выполнено",
+        "declined": "Отклонено"
+      },
+      "accept": "Принять",
+      "decline": "Отклонить",
+      "pay": "Оплатить",
+      "refreshBalance": "Обновить баланс"
+    },
+    "invite": {
+      "untitled": "Приглашение"
+    },
+    "booking": {
+      "untitled": "Запрос услуги"
+    },
+    "companion": {
+      "indexScore": "Твой индекс: {score}"
     }
   }
 }

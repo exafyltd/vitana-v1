@@ -3,25 +3,70 @@
   "service": "community-app",
   "_note": "Native Wave 2 conversation-chat lane (1:1 DM, group chat, the /msg/ and /t/ deep links, the embedded 1:1 call). Proven offline only (jest-expo + RNTL, fake gateway + Supabase double with fake realtime channels, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). No test sends a message, posts to a group, opens a call, uploads a file or writes presence/typing anywhere. Device runtime, the live realtime stream and a real WebRTC call are DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md conversation-chat task 7). Recorded here, not run in CI, not a merge blocker.",
   "tests": [
-    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
-      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
-    { "kind": "existing", "ref": "npx jest tests/inbox-chat/conversation-chat", "cwd": "apps/mobile",
-      "reason": "conversation-chat unit tests (6 suites / 132 tests): DM loaded / empty / error, GET /chat/conversation/:peer, POST /chat/send body, POST /chat/read, Enter = new line, failed send + Retry with the same client_message_id, typing from a mocked realtime event, realtime refetch, reply; /msg/ deep-link scroll + highlight and the ?around= window; /t/ thread resolve (legacy group thread / direct); every MessageBubble variant + swipe-to-reply; group chat loading / loaded / empty / error, send, @mentions, realtime reload, /msg/ window; member search calls exactly rpc search_global_directory { search_term } / search_tenant_directory { search_term, tenant_id_param }; call state machine idle→outgoing→connected→ended and incoming→accept/decline/no-answer on mocked signalling, incoming modal / calling screen / in-call screen per state; 11-locale keys, no raw key, RTL bubble alignment, RTL-safe styles, the six ledger rows — fake gateway / fixtures, no network" },
-    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
-      "reason": "React 19 ReactElement typing; the chat screens, the class-B data layer re-implementation, the call twins and the chat / webrtc ports type-check against the shell ports, @vitana/ui and @vitana/core" },
-    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
-      "reason": "Metro + Hermes bundle for iOS and Android includes the six /inbox/{u,g,t} routes (run with APP_PROFILE=development)" },
-    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
-      "reason": "INBOX.CONVERSATION, INBOX.GROUP and the four exclusion routes /inbox/u/:recipientId/msg/:messageId, /inbox/g/:groupId/msg/:messageId, /inbox/t/:threadId, /inbox/t/:threadId/msg/:messageId are native with their own route files under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+    {
+      "kind": "existing",
+      "ref": "npm run gen:i18n",
+      "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)"
+    },
+    {
+      "kind": "existing",
+      "ref": "npx jest tests/inbox-chat/conversation-chat",
+      "cwd": "apps/mobile",
+      "reason": "conversation-chat unit tests (11 suites / 226 tests): DM loaded / empty / error, GET /chat/conversation/:peer, POST /chat/send body, POST /chat/read, Enter = new line, failed send + Retry with the same client_message_id, typing from a mocked realtime event, realtime refetch, reply; /msg/ deep-link scroll + highlight and the ?around= window; /t/ thread resolve (legacy group thread / direct); every MessageBubble variant + swipe-to-reply; group chat loading / loaded / empty / error, send, @mentions, realtime reload, /msg/ window; member search calls exactly rpc search_global_directory { search_term } / search_tenant_directory { search_term, tenant_id_param }; call state machine idle→outgoing→connected→ended and incoming→accept/decline/no-answer on mocked signalling, incoming modal / calling screen / in-call screen per state; 11-locale keys, no raw key, RTL bubble alignment, RTL-safe styles, the six ledger rows; fix 1: the composer's emoji picker + recents, group paperclip → signed upload with progress → attachment message, failed upload + Retry, remove → delete, voice recorder → voice message, the DM attachment menu (calendar invite, Send Funds → process_wallet_transfer + confirmation, Request Payment, hidden on iOS); every bubble variant (voice player, payment request / exchange / confirmation with Pay + Decline, service booking, template quick replies, media album, video, file chips + download, legacy files, shared content, v2 + legacy calendar invites, Vitana Markdown / actions / companion card, event links); Copy; the ChatImageViewer; the forward sheet (per-target attachment copy, send, share outside); DM + group search; Talk to Vitana; create group; viewing presence; delivery receipts; the new-messages pill; the tenant context; the call tones; the react-native-webrtc engine adapter and its config plugin — fake device / gateway / fixtures, no network"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run typecheck",
+      "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the chat screens, the class-B data layer re-implementation, the call twins and the chat / webrtc ports type-check against the shell ports, @vitana/ui and @vitana/core"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run bundle",
+      "cwd": "apps/mobile",
+      "env": {
+        "APP_PROFILE": "development"
+      },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the six /inbox/{u,g,t} routes (run with APP_PROFILE=development)"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run parity:check",
+      "cwd": "apps/mobile",
+      "reason": "INBOX.CONVERSATION, INBOX.GROUP and the four exclusion routes /inbox/u/:recipientId/msg/:messageId, /inbox/g/:groupId/msg/:messageId, /inbox/t/:threadId, /inbox/t/:threadId/msg/:messageId are native with their own route files under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`"
+    },
+    {
+      "kind": "existing",
+      "ref": "npx jest tests/app-config.test.ts tests/diary/app-config-plugins.test.ts",
+      "cwd": "apps/mobile",
+      "reason": "the resolved Expo config keeps every plugin the app registered before and adds @config-plugins/react-native-webrtc after expo-audio (fix 1); one camera / one microphone usage string"
+    }
   ],
   "deferred_g1": [
-    { "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/01-dm-read.yaml", "target": "/inbox/u/:recipientId", "next_actor": "owner",
-      "reason": "sign in as the G1 test member, open an EXISTING conversation and read it (no message is typed or sent); screenshot parity vs the 390x844 read-only staging web conversation; iOS simulator + Android emulator; needs the isolated G1 environment" },
-    { "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/02-group-read.yaml", "target": "/inbox/g/:groupId", "next_actor": "owner",
-      "reason": "open an existing group the test member belongs to and read it (no send); header, member count, list; parity vs staging web read-only; needs G1" },
-    { "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/03-deeplinks.yaml", "target": "/inbox/u/:recipientId/msg/:messageId, /inbox/g/:groupId/msg/:messageId, /inbox/t/:threadId, /inbox/t/:threadId/msg/:messageId", "next_actor": "owner",
-      "reason": "cold-start each deep link: the target message is centred and highlighted, the thread form opens its conversation; read only; needs G1" },
-    { "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/04-live-realtime-call.yaml", "target": "embedded 1:1 call + realtime", "next_actor": "owner",
-      "reason": "two G1 test sessions on two devices: live presence, typing indicator and incremental message stream between the two TEST accounts, and a real 1:1 WebRTC call (media permissions, ICE/signalling) once a native WebRTC engine is registered (src/ports/webrtc.ts; react-native-webrtc needs a package.json dependency + config plugin outside this lane). Writes only inside G1, never to production or staging" }
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/01-dm-read.yaml",
+      "target": "/inbox/u/:recipientId",
+      "next_actor": "owner",
+      "reason": "sign in as the G1 test member, open an EXISTING conversation and read it (no message is typed or sent); screenshot parity vs the 390x844 read-only staging web conversation; iOS simulator + Android emulator; needs the isolated G1 environment"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/02-group-read.yaml",
+      "target": "/inbox/g/:groupId",
+      "next_actor": "owner",
+      "reason": "open an existing group the test member belongs to and read it (no send); header, member count, list; parity vs staging web read-only; needs G1"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/03-deeplinks.yaml",
+      "target": "/inbox/u/:recipientId/msg/:messageId, /inbox/g/:groupId/msg/:messageId, /inbox/t/:threadId, /inbox/t/:threadId/msg/:messageId",
+      "next_actor": "owner",
+      "reason": "cold-start each deep link: the target message is centred and highlighted, the thread form opens its conversation; read only; needs G1"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/conversation-chat/04-live-realtime-call.yaml",
+      "target": "embedded 1:1 call + realtime",
+      "next_actor": "owner",
+      "reason": "two G1 test sessions on two devices: live presence, typing indicator and incremental message stream between the two TEST accounts, and a real 1:1 WebRTC call through the react-native-webrtc engine (src/ports/webrtc.ts) on a G1 dev-client build (media permissions, ICE/signalling); the call tones; a voice message recorded and played; a picture picked and uploaded inside G1. Writes only inside G1, never to production or staging"
+    }
   ]
 }

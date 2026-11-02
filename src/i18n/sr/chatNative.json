@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "Dugo pritisni za reakcije i radnje"
+    },
+    "emoji": {
+      "open": "Izaberi emodži",
+      "recent": "Nedavno",
+      "smileys": "Smajliji",
+      "people": "Ljudi",
+      "nature": "Priroda",
+      "food": "Hrana",
+      "activity": "Aktivnost",
+      "travel": "Putovanja",
+      "objects": "Predmeti"
+    },
+    "voice": {
+      "discard": "Obriši snimak",
+      "play": "Pusti",
+      "pause": "Pauziraj",
+      "stop": "Zaustavi snimanje"
+    },
+    "composer": {
+      "datePlaceholder": "GGGG-MM-DD",
+      "timePlaceholder": "SS:MM",
+      "removeFile": "Ukloni {name}"
+    },
+    "payment": {
+      "status": {
+        "pending": "Na čekanju",
+        "completed": "Završeno",
+        "declined": "Odbijeno"
+      },
+      "accept": "Prihvati",
+      "decline": "Odbij",
+      "pay": "Plati sada",
+      "refreshBalance": "Osveži stanje"
+    },
+    "invite": {
+      "untitled": "Pozivnica"
+    },
+    "booking": {
+      "untitled": "Zahtev za uslugu"
+    },
+    "companion": {
+      "indexScore": "Tvoj indeks: {score}"
     }
   }
 }

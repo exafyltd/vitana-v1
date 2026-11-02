@@ -7,8 +7,8 @@ production profile; `assertNotProduction()` refuses prod/staging hosts). Linux, 
 base `origin/main` e530abd0. Every command and its counts: `commands.log`.
 
 **Not verified on staging: device runtime deferred to G1.** No test or command in this
-session sent a message, posted to a group, opened a call, uploaded a file or wrote
-presence/typing to any live system.
+session sent a message, posted to a group, placed or opened a call, uploaded a file, moved
+wallet funds or wrote presence/typing to any live system.
 
 ## What was built
 
@@ -41,23 +41,115 @@ presence/typing to any live system.
   error boundary), `ChatFrame.tsx` (full-screen layer over the shell, as the web chat is a
   fixed full-screen layer on phones), `text.ts`.
 - Ports: `src/ports/chat.tsx` (kit Dialog / Textarea, lucide icons, the core re-exports),
-  `src/ports/webrtc.ts` (engine door; none registered in this build — see below).
+  `src/ports/webrtc.ts` (the react-native-webrtc engine), `src/ports/chat-device.ts`
+  (picker, upload, clipboard, share, recorder, player), `src/ports/orb-activate.ts`.
 - Core: `src/lib/messaging/grouping.ts`, `src/lib/mentions.ts`,
   `src/lib/messaging/groupSystemNotice.ts`, `src/lib/messaging/groupManagement.ts` re-exported
   (import-free, class A); `closure.generated.json` + `mobile-ci-paths.generated.json`
-  regenerated (`npm run gen:core`). `vitanaBotIdentity.ts` (class B, `import.meta.env`) and
-  `inAppLinks.ts` (class C) were rejected by `core-closure` and are not in core.
-- i18n: `src/i18n/*/chatNative.json` (9 keys) and `callsNative.json` (15 keys), DE first
+  regenerated (`npm run gen:core`); fix 1 adds `src/lib/chatMarkdown.ts`. `vitanaBotIdentity.ts`
+  (class B, `import.meta.env`) and `inAppLinks.ts` (class C) were rejected by `core-closure` and
+  are re-implemented natively.
+- i18n: `src/i18n/*/chatNative.json` (9 keys + 26 in fix 1: emoji tabs, voice controls,
+  date/time hints, payment status / buttons, card fallbacks) and `callsNative.json` (15 keys), DE first
   (du-form: "Lange drücken …"; fr tu, pt você, ru ты), all 11 locales. Every other string
   reuses existing web keys (`screens.messages.*`, `inbox.*`, `toasts.*`). New keys replace
   strings the web hard-codes in English (TypingIndicator.tsx:19-24, CallingScreen.tsx:42,
   MessengerCall.tsx:176-179, ConversationView.tsx:1116 subtitle).
 - Ledger: the six `inbox-chat-calls` rows of this lane → `native`; `--sync` + `--check` OK.
 
+## Fix 1 (review `changes` on b76f75e)
+
+The reviewer's three blockers, each fixed in product code behind a port, with fakes in the tests:
+
+1. **Every chat surface the mobile web shows**
+   - Composer (`MessageInput.tsx`): the emoji picker with per-member recents (`EmojiPicker.tsx`,
+     `data/emojiRecents.ts`). The DM paperclip opens the AttachmentMenu (`AttachmentMenu.tsx`):
+     Send Funds, Request Payment, calendar invite and Attach file. The group paperclip opens the
+     library directly. Uploads go to the `chat-attachments` signed upload URL with progress; a failed
+     upload gets Retry; removing an upload deletes it (`data/upload.ts`). The voice recorder
+     (`VoiceRecorder.tsx`, expo-audio) sends a `voice` message. Devices go through
+     `src/ports/chat-device.ts` (expo-image-picker, XHR upload, RN Clipboard, Share, Linking,
+     expo-audio recorder + player).
+   - Bubble drawer: Reply, **Copy**, **Forward** (`ForwardMessageSheet.tsx` + `data/forward.ts`:
+     DMs + groups, up to 5 targets, each attachment copied per target, `forwarded: true`, share
+     outside with 7-day links), Edit and Delete. Reactions: long press shows who reacted
+     (ReactionPopover).
+   - `ChatImageViewer.tsx`: swipe between pictures, "n of m", prev/next, pinch and double-tap zoom,
+     Download, Copy picture, Share, Forward.
+   - DM header: **Search this conversation** (`MessageSearchPanel.tsx`, `data/search.ts`,
+     `GET /chat/search` scope `dm:<peer>`). **Talk to Vitana** appears in the Vitana DM only and
+     opens the ORB through `src/ports/orb-activate.ts`. **Create group** with the peer
+     (`CreateGroupSheet.tsx`, `data/createGroup.ts`).
+   - Group screen: Search (scope `group:<id>`).
+   - Both screens: "I am viewing" presence (`data/viewing.ts`, `POST /chat/viewing`), delivery
+     receipts (`POST /chat/delivered`, `useConversation.ts`) and the "↓ N new messages" pill
+     (`MessageList.tsx`).
+   - **Tenant context**: `?context=tenant` on the `/inbox/u` and `/inbox/t` routes uses
+     `data/useTenantConversation.ts` (`message_threads`, `thread_participants`, `messages`).
+   - Call tones (`calls/callSounds.ts`, the web's four sounds through expo-audio).
+   - Card actions on the DM screen: legacy calendar Accept / Decline / Maybe
+     (`calendar_invite_responses` + `calendar_events` + the confirmation message), quick replies,
+     and payment replies.
+2. **Every MessageBubble variant** (`MessageBubble.tsx`, `bubble/*`):
+   - the voice player;
+   - payment request, exchange & send and confirmation cards, with Pay / Accept / Decline over
+     `data/wallet.ts` (`process_wallet_transfer`, `process_wallet_exchange_and_send`);
+   - service booking, template quick replies, shared content (`GET /chat/shared-preview`);
+   - the v2 calendar invite card (`/calendar/invites/:id`, POST respond) and the legacy invite with
+     its status;
+   - the media album, video tiles, file chips with size and download, legacy `files`;
+   - Vitana's Markdown (`parseChatMarkdown` through `@vitana/core/chat-markdown`), her
+     VitanaMessageActions and her companion card;
+   - in-app event links (`inAppLinks.ts`): event URLs open `/comm/events-meetups?event=…` through
+     `navigateToWebPath`, which falls back to the Unported route while Events is not native.
+3. **A real WebRTC engine** (task 5):
+   - `react-native-webrtc` 155.0.1 and `@config-plugins/react-native-webrtc` 15.0.2 were added
+     with `npx expo install` (pinned exact; lockfile adds only those two plus `debug` / `ms`).
+   - `app.config.ts` `callPlugins()` registers the plugin with the existing camera and microphone
+     catalog strings.
+   - `src/ports/webrtc.ts` loads the engine on first use (`reactNativeWebRTCEngine`). A test
+     registers a fake engine, and a runtime without the native module gets null.
+   - No call was placed from tests or this session.
+
+Outside the lane paths, under the owner's Option C instruction (the same as diary #1548):
+`apps/mobile/package.json`, `apps/mobile/package-lock.json`, `apps/mobile/app.config.ts`, and the
+one-line plugin-list expectation in `apps/mobile/tests/app-config.test.ts`.
+
 ## Red → green
 
-`red-on-base.txt`: the six suites fail on origin/main e530abd0 (modules missing). Green on the
-lane head: 6 suites / 132 tests; full `npm test` 90 suites / 2418 tests.
+- `red-on-base.txt`: the six first suites fail on origin/main e530abd0 (modules missing).
+- `red-fix1.txt`: the five fix-1 suites (composer, bubble-variants, screen-features,
+  webrtc-engine, app-config-webrtc) fail on the previous head b76f75e:
+  - the new modules and the `react-native-webrtc` package are missing;
+  - `reactNativeWebRTCEngine is not a function`;
+  - no engine is loaded;
+  - the plugin is not in the resolved config.
+- Green on the lane head: `npx jest tests/inbox-chat/conversation-chat` gives 11 suites /
+  226 tests; the full `npm test` gives 95 suites / 2534 tests (`commands.log`).
+
+## Not shown on the mobile web (not ported)
+
+| Web UI | Evidence |
+|---|---|
+| Star / Pin / Select and the desktop right-click menu | `src/components/messages/MessageContextMenu.tsx:66-69`: on mobile (`useIsMobile`) the menu renders only its children. Long press opens the drawer (Reply, Copy, Forward, Edit, Delete; `MessageBubble.tsx` drawer). Star and Pin are also `console.log` TODOs (`MessageBubble.tsx` handleStar / handlePin). |
+| The global Send Funds / Payment Request dialogs (recipient search) | `AttachmentMenu.tsx`: these open only when `conversationType` is not `direct`. The group composer never renders the AttachmentMenu (`MessageInput.tsx:700-716`), and a loaded DM is always `direct`. |
+
+## Native differences that need a package outside this lane (owner decision)
+
+Each surface below is ported. Each one differs from the mobile web only because the package
+that would match the web is not in `apps/mobile/package.json`. Driver authority covers only the
+two WebRTC packages, so none of these were added:
+
+| Surface | Native now | Package for 1:1 parity |
+|---|---|---|
+| Copy picture (viewer + picture-only Copy); paste a screenshot into the composer | the web's "unsupported" toast (`chatImageActions.ts:150-156`); text copy works (RN Clipboard) | `expo-clipboard` |
+| Video playback inside the viewer | the play tile opens the system player | `expo-video` |
+| Attaching documents (pdf, docx, zip…) | the library picker offers pictures and videos only | `expo-document-picker` |
+| Date / time entry (calendar invite, due date, search filters) | `YYYY-MM-DD` / `HH:MM` text fields, the same validation | `@react-native-community/datetimepicker` |
+
+The Vitana companion cards F2 (live Index sheet), F7 (share invite) and F8 (server tip) show
+their copy without the web widget's own action. Those actions belong to Home / Index screens
+that are not native yet.
 
 ## Sparring decisions honoured
 
@@ -71,29 +163,10 @@ lane head: 6 suites / 132 tests; full `npm test` 90 suites / 2418 tests.
   `useChatApi` (DM + group) → `api.ts`; `markGroupRead` → `useGroupChat`; `useMessageReactions`
   → `useReactions`; `useCallState` / `useWebRTC` → `calls/`. `useChatGroupsAsThreads`,
   `useChatUnreadCount`, `useUnreadSync`, `useProgressiveCount` belong to the inbox list
-  (`inbox-list` lane). `useTenantMessages` — see "Not ported".
-
-## Not ported (mobile web shows it; recorded with web file:line evidence)
-
-| Web UI / behaviour | Evidence | Why |
-|---|---|---|
-| DM "search in this conversation" button + panel | `src/components/messages/ConversationView.tsx:1245`, `:1557`; `MessageSearchPanel.tsx` (256 lines) + `useMessageSearch` | separate feature (VTID-05317) with its own data hook; follow-up |
-| Group chat search button + panel | `src/pages/messages/GroupChat.tsx:541`, `:550` | same |
-| "Talk to Vitana" (opens the ORB) | `ConversationView.tsx:1273` | no native ORB-activation entry in `src/ports` (the ORB is the shell's slot) |
-| Create-group button in the DM header | `ConversationView.tsx:1283`, `:1574` (`CreateGroupPopup`) | the CreateGroupPopup twin is the `inbox-list` lane's; lanes may not import each other's screens |
-| Emoji picker, attachment menu (payments / calendar invite / file picker + upload), voice recorder | `src/components/messages/MessageInput.tsx:718`, `:743`, `:736`, `:707` | uploads write to storage and need picker/permission config outside the lane; the OS keyboard has emoji. The composer shows text + send only (no mic button) |
-| Voice player, payment / service-booking / template cards, media album, Vitana companion card, `VitanaMessageActions` | `MessageBubble.tsx:1266`, `:1104`, `:1191`, `:1236`, `:1306`, `:1564`, `:1363` | each is another domain's component (wallet, booking, Vitana cards); pictures and files render, a calendar invite renders as a card |
-| Copy, Forward (ForwardMessageSheet), Star / Pin, desktop context menu | `MessageBubble.tsx:1635`, `:1584`, `:1444-1445`, `:1440` | no clipboard module in the app's dependencies; Forward is its own sheet + storage copy |
-| In-app event-link routing (event URLs open the Events screen) | `MessageBubble.tsx:825` (`src/lib/inAppLinks.ts`) | `inAppLinks.ts` is class C (prod host + `window`); links open outside the app |
-| "↓ N new messages" pill, viewing presence (push suppression) | `ConversationView.tsx:1503`, `:407`; `GroupChat.tsx:926`, `:558` | the inverted list keeps the newest message in view; `useChatViewingPresence` is a separate gateway contract |
-| Delivered receipts (`/chat/delivered`) | `src/hooks/useGlobalMessages.ts:1830-1850` | follow-up; read state is written |
-| Ringtones / beeps | `src/components/CallManager.tsx:25-29` (`callSounds`) | Web Audio oscillators; no native tone source in the lane |
-| Tenant ("Network") context | `src/hooks/useHybridMessages.ts:35` (`useTenantMessages`, 873 lines) | the phone opens in the community context (`Messages.tsx:118-120`); the DM routes open community conversations |
-| A real WebRTC media engine | `src/hooks/useWebRTC.ts` (`getUserMedia`, `RTCPeerConnection`) | `react-native-webrtc` needs an `apps/mobile/package.json` dependency + config plugin outside the lane paths; `src/ports/webrtc.ts` is the door. Without an engine the in-call screen fails like the web does when media cannot start (`MessengerCall.tsx:97-102`) |
-
-No UI the mobile web does not show was added. The web never calls `startCall` from a button
-(no outgoing-call control in `ConversationView.tsx` / `GroupChat.tsx`), so the native port has
-none either; the outgoing path exists in the state machine and is unit-tested.
+  (`inbox-list` lane). `useTenantMessages` → `useTenantConversation` (fix 1);
+  `useMessageSearch` → `data/search.ts`; `useChatViewingPresence` → `data/viewing.ts`;
+  `useWallet` (transfer / exchange-and-send / balances) → `data/wallet.ts`;
+  `useCalendarEvents.respondToInvite` → `data/calendar.ts`.
 
 ## Deferred to G1 (`next_actor: owner`)
 

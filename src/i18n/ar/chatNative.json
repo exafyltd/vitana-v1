@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "اضغط مطولاً للتفاعلات والإجراءات"
+    },
+    "emoji": {
+      "open": "اختر رمزًا تعبيريًا",
+      "recent": "الأخيرة",
+      "smileys": "الوجوه",
+      "people": "الأشخاص",
+      "nature": "الطبيعة",
+      "food": "الطعام",
+      "activity": "النشاط",
+      "travel": "السفر",
+      "objects": "الأشياء"
+    },
+    "voice": {
+      "discard": "حذف التسجيل",
+      "play": "تشغيل",
+      "pause": "إيقاف مؤقت",
+      "stop": "إيقاف التسجيل"
+    },
+    "composer": {
+      "datePlaceholder": "YYYY-MM-DD",
+      "timePlaceholder": "HH:MM",
+      "removeFile": "إزالة {name}"
+    },
+    "payment": {
+      "status": {
+        "pending": "قيد الانتظار",
+        "completed": "مكتمل",
+        "declined": "مرفوض"
+      },
+      "accept": "قبول",
+      "decline": "رفض",
+      "pay": "ادفع الآن",
+      "refreshBalance": "تحديث الرصيد"
+    },
+    "invite": {
+      "untitled": "دعوة"
+    },
+    "booking": {
+      "untitled": "طلب خدمة"
+    },
+    "companion": {
+      "indexScore": "مؤشرك: {score}"
     }
   }
 }

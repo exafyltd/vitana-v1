@@ -119,3 +119,27 @@ PASS  PR-GATE red-green
 PASS  Kiro steering
 SKIP  Not run by preflight (npm test / lint / build: run above)
 exit=1 (both failures are "lane file not found" because the plan PR is not merged; no other error)
+
+## Fix 1 (review `changes` on b76f75e) — worktree up to date with origin/main e530abd0 (merge: already up to date)
+$ (apps/mobile) npm ci  -> exit=0
+$ (apps/mobile) APP_PROFILE=development npx expo install react-native-webrtc @config-plugins/react-native-webrtc  -> package.json + package-lock.json (pinned 155.0.1 / 15.0.2; lock adds react-native-webrtc, its debug/ms, @config-plugins/react-native-webrtc)
+$ (apps/mobile) npm run gen:core  -> core-closure: 27 roots, 37 src files, 11 assets — ok (adds src/lib/chatMarkdown.ts; mobile-ci-paths.generated.json updated)
+$ red on the previous head b76f75e (detached worktree, its own npm ci, fix-1 tests copied) -> docs/validation/VTID-05458/red-fix1.txt: 5 suites failed (modules / package missing, reactNativeWebRTCEngine is not a function, no engine, plugin not in the config)
+$ (apps/mobile) npm run typecheck  -> exit=0
+$ (apps/mobile) npx jest tests/inbox-chat/conversation-chat  -> Test Suites: 11 passed, 11 total; Tests: 226 passed, 226 total
+$ (apps/mobile) npx jest tests/inbox-chat/conversation-chat tests/app-config.test.ts tests/ports.test.ts tests/diary/app-config-plugins.test.ts  -> 14 suites passed
+$ (apps/mobile) npm test  -> Test Suites: 95 passed, 95 total; Tests: 2534 passed, 2534 total
+$ (apps/mobile) APP_PROFILE=development npm run bundle  -> exit=0 (ios + android .hbc, 18 MB each)
+$ (apps/mobile) npm run parity:check  -> parity-ledger --check: OK — 435 rows, 38 native route(s)
+$ (apps/mobile) node ../../scripts/native/core-closure.mjs --check  -> up to date
+$ (apps/mobile) APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> Dependencies are up to date
+$ node scripts/native/gen-tokens.mjs --check  -> up to date
+$ node scripts/native/check-shell-pins.mjs  -> OK
+$ node --test scripts/native/__tests__/*.test.mjs  -> # pass 68 / # fail 0
+$ node scripts/i18n-register-check.mjs --all  -> No formal-register violations.
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22  -> No long words found.
+$ node scripts/check-i18n-subscriptions.mjs  -> OK
+$ node scripts/i18n-stamp-source.mjs --check-all  -> 0 changed keys
+$ node scripts/i18n-audit.mjs --report-only  -> errors mentioning chatNative / callsNative: 0
+$ npx vitest run src/i18n scripts/native  -> Test Files 3 passed (3); Tests 25 passed (25)
+$ npx eslint apps/mobile/src/screens/chat apps/mobile/src/ports apps/mobile/app/(app)/inbox apps/mobile/tests/inbox-chat apps/mobile/app.config.ts  -> exit=0

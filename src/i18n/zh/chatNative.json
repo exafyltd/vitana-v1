@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "长按以回应或操作"
+    },
+    "emoji": {
+      "open": "选择表情",
+      "recent": "最近",
+      "smileys": "笑脸",
+      "people": "人物",
+      "nature": "自然",
+      "food": "食物",
+      "activity": "活动",
+      "travel": "旅行",
+      "objects": "物品"
+    },
+    "voice": {
+      "discard": "删除录音",
+      "play": "播放",
+      "pause": "暂停",
+      "stop": "停止录音"
+    },
+    "composer": {
+      "datePlaceholder": "YYYY-MM-DD",
+      "timePlaceholder": "HH:MM",
+      "removeFile": "移除 {name}"
+    },
+    "payment": {
+      "status": {
+        "pending": "待处理",
+        "completed": "已完成",
+        "declined": "已拒绝"
+      },
+      "accept": "接受",
+      "decline": "拒绝",
+      "pay": "立即支付",
+      "refreshBalance": "刷新余额"
+    },
+    "invite": {
+      "untitled": "活动邀请"
+    },
+    "booking": {
+      "untitled": "服务请求"
+    },
+    "companion": {
+      "indexScore": "你的指数：{score}"
     }
   }
 }

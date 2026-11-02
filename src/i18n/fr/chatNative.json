@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "Appuie longuement pour les réactions et les actions"
+    },
+    "emoji": {
+      "open": "Choisis un emoji",
+      "recent": "Récents",
+      "smileys": "Smileys",
+      "people": "Personnes",
+      "nature": "Nature",
+      "food": "Nourriture",
+      "activity": "Activités",
+      "travel": "Voyages",
+      "objects": "Objets"
+    },
+    "voice": {
+      "discard": "Supprimer l'enregistrement",
+      "play": "Lire",
+      "pause": "Pause",
+      "stop": "Arrêter l'enregistrement"
+    },
+    "composer": {
+      "datePlaceholder": "AAAA-MM-JJ",
+      "timePlaceholder": "HH:MM",
+      "removeFile": "Retirer {name}"
+    },
+    "payment": {
+      "status": {
+        "pending": "En attente",
+        "completed": "Terminé",
+        "declined": "Refusé"
+      },
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "pay": "Payer maintenant",
+      "refreshBalance": "Actualiser le solde"
+    },
+    "invite": {
+      "untitled": "Invitation"
+    },
+    "booking": {
+      "untitled": "Demande de service"
+    },
+    "companion": {
+      "indexScore": "Ton indice : {score}"
     }
   }
 }

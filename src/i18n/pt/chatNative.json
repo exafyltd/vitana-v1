@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "Toque e segure para reações e ações"
+    },
+    "emoji": {
+      "open": "Escolha um emoji",
+      "recent": "Recentes",
+      "smileys": "Carinhas",
+      "people": "Pessoas",
+      "nature": "Natureza",
+      "food": "Comida",
+      "activity": "Atividade",
+      "travel": "Viagens",
+      "objects": "Objetos"
+    },
+    "voice": {
+      "discard": "Excluir gravação",
+      "play": "Reproduzir",
+      "pause": "Pausar",
+      "stop": "Parar gravação"
+    },
+    "composer": {
+      "datePlaceholder": "AAAA-MM-DD",
+      "timePlaceholder": "HH:MM",
+      "removeFile": "Remover {name}"
+    },
+    "payment": {
+      "status": {
+        "pending": "Pendente",
+        "completed": "Concluído",
+        "declined": "Recusado"
+      },
+      "accept": "Aceitar",
+      "decline": "Recusar",
+      "pay": "Pagar agora",
+      "refreshBalance": "Atualizar saldo"
+    },
+    "invite": {
+      "untitled": "Convite"
+    },
+    "booking": {
+      "untitled": "Pedido de serviço"
+    },
+    "companion": {
+      "indexScore": "Seu índice: {score}"
     }
   }
 }

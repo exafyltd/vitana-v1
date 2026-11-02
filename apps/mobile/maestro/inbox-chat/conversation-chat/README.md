@@ -9,6 +9,6 @@ targets and limits in `docs/validation/VTID-05458/staging-tests.json` → `defer
 2. `02-group-read.yaml` — open an existing group and read it (never send).
 3. `03-deeplinks.yaml` — cold-start the `/msg/` and `/t/` deep links; the target is centred and highlighted.
 4. `04-live-realtime-call.yaml` — two G1 test sessions: presence, typing, the live stream and a real
-   1:1 WebRTC call (needs a registered native WebRTC engine, `src/ports/webrtc.ts`).
+   1:1 WebRTC call through the react-native-webrtc engine (`src/ports/webrtc.ts`, a G1 dev-client build).
 
 Never run against production or staging; the native app has no production profile.

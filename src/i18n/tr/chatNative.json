@@ -18,6 +18,48 @@
     },
     "bubble": {
       "longPressHint": "Tepkiler ve işlemler için basılı tut"
+    },
+    "emoji": {
+      "open": "Bir emoji seç",
+      "recent": "Son kullanılanlar",
+      "smileys": "Yüzler",
+      "people": "İnsanlar",
+      "nature": "Doğa",
+      "food": "Yiyecek",
+      "activity": "Etkinlik",
+      "travel": "Seyahat",
+      "objects": "Nesneler"
+    },
+    "voice": {
+      "discard": "Kaydı sil",
+      "play": "Oynat",
+      "pause": "Duraklat",
+      "stop": "Kaydı durdur"
+    },
+    "composer": {
+      "datePlaceholder": "YYYY-AA-GG",
+      "timePlaceholder": "SS:DD",
+      "removeFile": "{name} kaldır"
+    },
+    "payment": {
+      "status": {
+        "pending": "Beklemede",
+        "completed": "Tamamlandı",
+        "declined": "Reddedildi"
+      },
+      "accept": "Kabul et",
+      "decline": "Reddet",
+      "pay": "Şimdi öde",
+      "refreshBalance": "Bakiyeyi yenile"
+    },
+    "invite": {
+      "untitled": "Davet"
+    },
+    "booking": {
+      "untitled": "Hizmet talebi"
+    },
+    "companion": {
+      "indexScore": "Endeksin: {score}"
     }
   }
 }
