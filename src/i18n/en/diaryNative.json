@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana needs your camera so you can take photos for your diary and for bug reports.",
+      "photosUsage": "Vitana needs access to your photos so you can add pictures to your diary and to bug reports.",
+      "deniedTitle": "Access not allowed",
+      "deniedCamera": "Allow camera access in Settings to take a photo.",
+      "deniedPhotos": "Allow photo access in Settings to choose a picture.",
+      "deniedMicrophone": "Allow microphone access in Settings to record a voice entry."
+    },
+    "selectMode": "Choose a diary section",
+    "startRecording": "Start recording",
+    "stopRecording": "Stop recording",
+    "close": "Close",
+    "removePhoto": "Remove photo",
+    "entriesLoadError": "Your entries couldn't be loaded.",
+    "photoSource": {
+      "title": "Add a photo",
+      "camera": "Take a photo",
+      "library": "Choose from library"
+    },
+    "indexSaved": {
+      "title": "Saved · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Tap your Index to see the move.",
+      "signals": "{count} health signals logged.",
+      "signalsCaption": "{count} health signals logged from your caption."
+    },
+    "screenOption": {
+      "home": "Home",
+      "community": "Community",
+      "communityEvents": "Community – Events",
+      "discover": "Discover",
+      "discoverMarketplace": "Discover – Marketplace",
+      "businessHub": "Business Hub",
+      "inbox": "Inbox",
+      "inboxMessages": "Inbox – Messages",
+      "health": "Health",
+      "healthDashboard": "Health – Dashboard",
+      "aiAssistant": "AI Assistant",
+      "aiAssistantOrb": "AI Assistant – ORB",
+      "wallet": "Wallet",
+      "sharing": "Sharing",
+      "memoryDiary": "Memory – Diary",
+      "memoryGarden": "Memory – Garden",
+      "calendar": "Calendar",
+      "settings": "Settings",
+      "profile": "Profile",
+      "liveRooms": "Live Rooms",
+      "notifications": "Notifications",
+      "other": "Other"
+    }
+  }
+}

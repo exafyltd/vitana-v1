@@ -1,0 +1,36 @@
+{
+  "vtid": "VTID-05427",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/memory/**",
+    "apps/mobile/src/screens/memory/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/memory/**",
+    "apps/mobile/maestro/memory/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/src/**",
+    "src/i18n/*/memoryNative.json",
+    "docs/validation/VTID-05427/**"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/memory/index.tsx",
+    "apps/mobile/app/(app)/memory/timeline.tsx",
+    "apps/mobile/app/(app)/memory/recall.tsx",
+    "apps/mobile/app/(app)/memory/permissions.tsx",
+    "apps/mobile/src/screens/memory/**",
+    "apps/mobile/src/ports/memory.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/memory/**",
+    "apps/mobile/maestro/memory/README.md",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/src/extracted/feed-compose.generated.ts",
+    "packages/core/src/extracted/news-feed-ranker.generated.ts",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/memoryNative.json",
+    "docs/validation/VTID-05427/**"
+  ],
+  "core_change": "no re-export — every memory data path is class-B (ledger-findings §3); no packages/core manifest / closure / mobile-ci-paths change. The only packages/core edit is the regenerated header sha of the two stale home-lane extracts (packages/core/src/extracted/{feed-compose,news-feed-ranker}.generated.ts), which made NATIVE-CI's gen-core-extract --check red on main",
+  "sparring_record": "docs/validation/VTID-05427/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

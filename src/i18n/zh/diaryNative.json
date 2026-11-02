@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana 需要使用你的相机，这样你就可以为日记和错误报告拍照。",
+      "photosUsage": "Vitana 需要访问你的照片，这样你就可以为日记和错误报告添加图片。",
+      "deniedTitle": "未获得访问权限",
+      "deniedCamera": "请在设置中允许访问相机，以便拍照。",
+      "deniedPhotos": "请在设置中允许访问照片，以便选择图片。",
+      "deniedMicrophone": "请在设置中允许访问麦克风，以便录制语音日记。"
+    },
+    "selectMode": "选择日记板块",
+    "startRecording": "开始录音",
+    "stopRecording": "停止录音",
+    "close": "关闭",
+    "removePhoto": "移除照片",
+    "entriesLoadError": "无法加载你的日记。",
+    "photoSource": {
+      "title": "添加照片",
+      "camera": "拍照",
+      "library": "从相册中选择"
+    },
+    "indexSaved": {
+      "title": "已保存 · Vitana Index +{n}",
+      "breakdown": "{breakdown}。点按你的 Index 查看变化。",
+      "signals": "已记录 {count} 条健康信号。",
+      "signalsCaption": "已从你的说明中记录 {count} 条健康信号。"
+    },
+    "screenOption": {
+      "home": "首页",
+      "community": "社区",
+      "communityEvents": "社区 – 活动",
+      "discover": "发现",
+      "discoverMarketplace": "发现 – 市场",
+      "businessHub": "Business Hub",
+      "inbox": "收件箱",
+      "inboxMessages": "收件箱 – 消息",
+      "health": "健康",
+      "healthDashboard": "健康 – 仪表盘",
+      "aiAssistant": "AI 助手",
+      "aiAssistantOrb": "AI 助手 – ORB",
+      "wallet": "钱包",
+      "sharing": "分享",
+      "memoryDiary": "记忆 – 日记",
+      "memoryGarden": "记忆 – 花园",
+      "calendar": "日历",
+      "settings": "设置",
+      "profile": "个人资料",
+      "liveRooms": "直播间",
+      "notifications": "通知",
+      "other": "其他"
+    }
+  }
+}

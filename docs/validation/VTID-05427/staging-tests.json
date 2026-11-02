@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05427",
+  "service": "community-app",
+  "_note": "Native Wave 2 memory lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md memory task 7). Parity reference for these four rows is body parity against the native N3 shell baseline, NOT a 390x844 web screenshot: the web memory pages render the responsive desktop AppLayout on phones (plan decision 6, sparring R1-F1). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/memory", "cwd": "apps/mobile",
+      "reason": "memory unit tests (4 suites / 70 tests): overview week story / routines / what Vitana knows / garden loaded, empty and error (counts never zero without data), category detail delete + quick categorize, add memory via the diary write path, timeline + education panes; timeline spotlight, days, filters, cursor paging, detail hide-from-AI + delete, loading / empty / error; recall static body + honest empty state + actions sheet; permissions switches read + write + failure toast + unavailable, usage count / export / delete; every gateway call carries Bearer + X-Vitana-Active-Role: community; no unresolved key in 11 locales; RTL-safe styles — fake gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the four screens, the class-B data layer and the memory port type-check against the shell ports, @vitana/ui and @vitana/tokens" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the four /memory routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "MEMORY.OVERVIEW, MEMORY.TIMELINE, MEMORY.RECALL and MEMORY.PERMISSIONS are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/memory/01-memory-overview.yaml", "target": "/memory", "next_actor": "owner",
+      "reason": "sign in, open /memory: week story, routines, what Vitana knows, garden counts; open a category sheet; Timeline / Education tabs; body parity vs the native N3 shell baseline (not a web screenshot); needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/memory/02-memory-timeline.yaml", "target": "/memory/timeline", "next_actor": "owner",
+      "reason": "Index spotlight, pillar chips, a day of moments, a moment's detail sheet (read only); body parity vs the native N3 shell baseline; needs G1" },
+    { "flow": "apps/mobile/maestro/memory/03-memory-recall.yaml", "target": "/memory/recall", "next_actor": "owner",
+      "reason": "static body, honest empty state, Memory Actions sheet; body parity vs the native N3 shell baseline; needs G1" },
+    { "flow": "apps/mobile/maestro/memory/04-memory-permissions.yaml", "target": "/memory/permissions", "next_actor": "owner",
+      "reason": "the learning switches and the usage count render (read only, no switch toggled); body parity vs the native N3 shell baseline; needs G1" }
+  ]
+}

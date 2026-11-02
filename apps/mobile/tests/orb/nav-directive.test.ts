@@ -37,10 +37,11 @@ describe('runNativeNavigation (pure mapping)', () => {
 
   it('a registry screen that is not ported yet ⇒ not_found native_screen_not_ported, nothing pushed', () => {
     const { deps, pushed } = navDeps();
-    // MEMORY.DIARY: the planner picks its mobile route (/daily-diary?tab=health), which has no native screen yet.
-    expect(runNativeNavigation('/memory/diary', ctx({ screen_id: 'MEMORY.DIARY' }), deps)).toEqual({
+    // COMM.OVERVIEW: the planner picks its mobile route (/comm/events-meetups?tab=hot), which has no native screen yet.
+    // (MEMORY.DIARY → /daily-diary?tab=health was the example until the diary lane ported it, VTID-05426.)
+    expect(runNativeNavigation('/comm', ctx({ screen_id: 'COMM.OVERVIEW' }), deps)).toEqual({
       status: 'not_found',
-      route: '/daily-diary?tab=health',
+      route: '/comm/events-meetups?tab=hot',
       reason: NAV_REASON.SCREEN_NOT_PORTED,
     });
     expect(runNativeNavigation('/somewhere-unknown', ctx(), deps)).toMatchObject({ status: 'not_found', reason: NAV_REASON.SCREEN_NOT_PORTED });
@@ -143,12 +144,12 @@ describe('directives through the session', () => {
     const s = createOrbSession(deps);
     await s.start();
     const sock = FakeSocket.last();
-    sock.serverSend({ type: 'orb_directive', directive: 'navigate', route: '/memory/diary', screen_id: 'MEMORY.DIARY' });
+    sock.serverSend({ type: 'orb_directive', directive: 'navigate', route: '/comm', screen_id: 'COMM.OVERVIEW' });
     jest.advanceTimersByTime(300 + 200);
     expect(sock.sent.find((m) => m.type === 'nav_result')).toEqual({
       type: 'nav_result',
-      screen_id: 'MEMORY.DIARY',
-      route: '/daily-diary?tab=health',
+      screen_id: 'COMM.OVERVIEW',
+      route: '/comm/events-meetups?tab=hot',
       status: 'not_found',
       reason: NAV_REASON.SCREEN_NOT_PORTED,
       entry_kind: 'route',
@@ -209,7 +210,7 @@ describe('directives through the session', () => {
     await s.start();
     const sock = FakeSocket.last();
     voice.emit('onPlaybackState', { playing: true, startedAt: 1 });
-    sock.serverSend({ type: 'orb_directive', directive: 'navigate', route: '/memory/diary', screen_id: 'MEMORY.DIARY', after_speech: true });
+    sock.serverSend({ type: 'orb_directive', directive: 'navigate', route: '/comm', screen_id: 'COMM.OVERVIEW', after_speech: true });
     jest.advanceTimersByTime(5_000);
     expect(sock.sent.find((m) => m.type === 'nav_result')).toBeUndefined();
     sock.serverSend({ type: 'turn_complete' });
