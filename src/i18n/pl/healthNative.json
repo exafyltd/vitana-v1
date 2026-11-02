@@ -146,6 +146,63 @@
           "prompt": "Jak jasny i spokojny jest dziś Twój umysł? (1 = bardzo zestresowany, 5 = jasny i spokojny)"
         }
       }
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Zapisz dane",
+        "example": "np. {value}",
+        "units": {
+          "count": "liczba",
+          "hours": "godziny",
+          "min": "min"
+        },
+        "features": {
+          "biomarker_glucose": "Glukoza na czczo",
+          "meal_log": "Zapisane posiłki",
+          "macro_balance": "Wskaźnik równowagi makroskładników",
+          "water_intake": "Spożycie wody",
+          "hydration_log": "Kontrole nawodnienia",
+          "wearable_steps": "Kroki",
+          "wearable_heart_rate": "Średnie tętno",
+          "wearable_workout": "Minuty treningu",
+          "vo2_max": "Szacowane VO₂ max",
+          "wearable_sleep_duration": "Czas snu",
+          "wearable_sleep_efficiency": "Wydajność snu",
+          "wearable_hrv": "HRV (średnia nocna)",
+          "meditation_minutes": "Minuty medytacji",
+          "mood_entry": "Ocena nastroju",
+          "wearable_stress": "Stres (urządzenie)",
+          "journal_entry": "Wpisy w dzienniku dziś"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Kwasy tłuszczowe",
+      "noSupplementsYet": "Nie dodano jeszcze suplementów. Stuknij „Dodaj suplement”, aby zacząć.",
+      "noSupplementsInCategory": "Brak suplementów w kategorii {category}.",
+      "dialog": {
+        "addTitle": "Dodaj suplement",
+        "editTitle": "Edytuj suplement",
+        "addDescription": "Dodaj nowy suplement do swojej rutyny",
+        "editDescription": "Zaktualizuj informacje o suplemencie",
+        "addSubmit": "Dodaj suplement",
+        "updateSubmit": "Zaktualizuj suplement",
+        "datePlaceholder": "RRRR-MM-DD"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Zamów nowe badanie laboratoryjne",
+          "description": "Zaplanuj kompleksowe badanie zdrowia"
+        },
+        "downloadResults": {
+          "title": "Pobierz wszystkie wyniki",
+          "description": "Wyeksportuj całą historię badań"
+        },
+        "trackTrends": {
+          "title": "Śledź trendy",
+          "description": "Zobacz, jak zmieniają się twoje biomarkery"
+        }
+      }
     }
   }
 }

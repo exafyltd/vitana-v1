@@ -146,6 +146,63 @@
           "prompt": "Koliko je tvoj um danas bistar i miran? (1 = veoma pod stresom, 5 = bistar i miran)"
         }
       }
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Zabeleži podatke",
+        "example": "npr. {value}",
+        "units": {
+          "count": "broj",
+          "hours": "sati",
+          "min": "min"
+        },
+        "features": {
+          "biomarker_glucose": "Šećer u krvi natašte",
+          "meal_log": "Zabeleženi obroci",
+          "macro_balance": "Ocena balansa makronutrijenata",
+          "water_intake": "Unos vode",
+          "hydration_log": "Provere hidratacije",
+          "wearable_steps": "Koraci",
+          "wearable_heart_rate": "Prosečan puls",
+          "wearable_workout": "Minuti treninga",
+          "vo2_max": "Procena VO₂ max",
+          "wearable_sleep_duration": "Trajanje sna",
+          "wearable_sleep_efficiency": "Efikasnost sna",
+          "wearable_hrv": "HRV (noćni prosek)",
+          "meditation_minutes": "Minuti meditacije",
+          "mood_entry": "Ocena raspoloženja",
+          "wearable_stress": "Stres (nosivi uređaj)",
+          "journal_entry": "Unosi u dnevnik danas"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Masne kiseline",
+      "noSupplementsYet": "Još nema dodatih suplemenata. Dodirni „Dodaj suplement“ da počneš.",
+      "noSupplementsInCategory": "Nema suplemenata u kategoriji {category}.",
+      "dialog": {
+        "addTitle": "Dodaj suplement",
+        "editTitle": "Izmeni suplement",
+        "addDescription": "Dodaj novi suplement u svoju rutinu",
+        "editDescription": "Ažuriraj podatke o suplementu",
+        "addSubmit": "Dodaj suplement",
+        "updateSubmit": "Ažuriraj suplement",
+        "datePlaceholder": "GGGG-MM-DD"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Naruči novi laboratorijski test",
+          "description": "Zakaži sveobuhvatan zdravstveni pregled"
+        },
+        "downloadResults": {
+          "title": "Preuzmi sve rezultate",
+          "description": "Izvezi celu istoriju laboratorijskih nalaza"
+        },
+        "trackTrends": {
+          "title": "Prati trendove",
+          "description": "Pogledaj kako se tvoji biomarkeri menjaju tokom vremena"
+        }
+      }
     }
   }
 }

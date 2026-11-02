@@ -146,6 +146,63 @@
           "prompt": "Quão clara e calma está sua mente hoje? (1 = muito estressada, 5 = clara e calma)"
         }
       }
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Registrar dados",
+        "example": "ex.: {value}",
+        "units": {
+          "count": "quantidade",
+          "hours": "horas",
+          "min": "min"
+        },
+        "features": {
+          "biomarker_glucose": "Glicemia em jejum",
+          "meal_log": "Refeições registradas",
+          "macro_balance": "Pontuação de equilíbrio de macros",
+          "water_intake": "Ingestão de água",
+          "hydration_log": "Registros de hidratação",
+          "wearable_steps": "Passos",
+          "wearable_heart_rate": "Frequência cardíaca média",
+          "wearable_workout": "Minutos de treino",
+          "vo2_max": "Estimativa de VO₂ máx.",
+          "wearable_sleep_duration": "Duração do sono",
+          "wearable_sleep_efficiency": "Eficiência do sono",
+          "wearable_hrv": "VFC (média noturna)",
+          "meditation_minutes": "Minutos de meditação",
+          "mood_entry": "Pontuação de humor",
+          "wearable_stress": "Estresse (wearable)",
+          "journal_entry": "Entradas no diário hoje"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Ácidos graxos",
+      "noSupplementsYet": "Você ainda não adicionou suplementos. Toque em “Adicionar suplemento” para começar.",
+      "noSupplementsInCategory": "Nenhum suplemento na categoria {category}.",
+      "dialog": {
+        "addTitle": "Adicionar suplemento",
+        "editTitle": "Editar suplemento",
+        "addDescription": "Adicione um novo suplemento à sua rotina",
+        "editDescription": "Atualize as informações do suplemento",
+        "addSubmit": "Adicionar suplemento",
+        "updateSubmit": "Atualizar suplemento",
+        "datePlaceholder": "AAAA-MM-DD"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Pedir novo exame laboratorial",
+          "description": "Agende um check-up de saúde completo"
+        },
+        "downloadResults": {
+          "title": "Baixar todos os resultados",
+          "description": "Exporte todo o seu histórico de exames"
+        },
+        "trackTrends": {
+          "title": "Acompanhar tendências",
+          "description": "Veja como seus biomarcadores evoluem"
+        }
+      }
     }
   }
 }

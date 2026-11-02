@@ -50,6 +50,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/daily-diary',
   '/dev/orb-bench',
   '/health',
+  '/health/my-biology',
+  '/health/vitana-index',
   '/home',
   '/home/comments',
   '/home/compose',

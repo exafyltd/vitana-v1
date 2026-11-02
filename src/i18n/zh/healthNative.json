@@ -146,6 +146,63 @@
           "prompt": "今天你的头脑有多清晰平静？（1 = 压力很大，5 = 清晰平静）"
         }
       }
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "记录数据",
+        "example": "例如 {value}",
+        "units": {
+          "count": "次数",
+          "hours": "小时",
+          "min": "分钟"
+        },
+        "features": {
+          "biomarker_glucose": "空腹血糖",
+          "meal_log": "已记录餐数",
+          "macro_balance": "宏量营养均衡评分",
+          "water_intake": "饮水量",
+          "hydration_log": "补水打卡",
+          "wearable_steps": "步数",
+          "wearable_heart_rate": "平均心率",
+          "wearable_workout": "锻炼分钟数",
+          "vo2_max": "最大摄氧量估算",
+          "wearable_sleep_duration": "睡眠时长",
+          "wearable_sleep_efficiency": "睡眠效率",
+          "wearable_hrv": "HRV（夜间平均）",
+          "meditation_minutes": "冥想分钟数",
+          "mood_entry": "情绪评分",
+          "wearable_stress": "压力（可穿戴设备）",
+          "journal_entry": "今日日记条目"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "脂肪酸",
+      "noSupplementsYet": "还没有添加补充剂。点按“添加补充剂”开始。",
+      "noSupplementsInCategory": "{category} 类别中没有补充剂。",
+      "dialog": {
+        "addTitle": "添加补充剂",
+        "editTitle": "编辑补充剂",
+        "addDescription": "为你的日常添加新的补充剂",
+        "editDescription": "更新补充剂信息",
+        "addSubmit": "添加补充剂",
+        "updateSubmit": "更新补充剂",
+        "datePlaceholder": "YYYY-MM-DD"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "预约新的化验",
+          "description": "安排全面的健康筛查"
+        },
+        "downloadResults": {
+          "title": "下载全部结果",
+          "description": "导出你的全部化验记录"
+        },
+        "trackTrends": {
+          "title": "追踪趋势",
+          "description": "查看生物标志物随时间的变化"
+        }
+      }
     }
   }
 }
