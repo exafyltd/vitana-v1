@@ -362,6 +362,13 @@
         "ai"
       ],
       "reason": "VTID-05523 — the AI coach page data the web renders directly on /ai, /ai/insights, /ai/recommendations and /ai/companion (todayActions, memoryHighlights, inspiration, lifestylePatterns, indexMovement, socialEngagement, correlations, recommendations, chat); imports nothing, pure. The native AI coach twins read the same records, so the cards show the same content."
+    },
+    "src/lib/checkout-idempotency.ts": {
+      "entry": "checkout-idempotency.ts",
+      "lanes": [
+        "product-cart-checkout"
+      ],
+      "reason": "Checkout idempotency key rule (cartSignature, nextIdempotency, mintIdempotencyKey): the cart retries a checkout under the same key until its contents change. Imports nothing; pure."
     }
   }
 }

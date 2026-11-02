@@ -11,6 +11,7 @@
     "src/integrations/supabase/types.ts",
     "src/lib/audiobook/queue.ts",
     "src/lib/chatMarkdown.ts",
+    "src/lib/checkout-idempotency.ts",
     "src/lib/exchangeRates.ts",
     "src/lib/goalPhases.ts",
     "src/lib/horizonBuckets.ts",
