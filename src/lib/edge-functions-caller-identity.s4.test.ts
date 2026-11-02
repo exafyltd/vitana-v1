@@ -3,7 +3,7 @@
  * service-role client on an identity the caller chose.
  *
  * `verify_jwt=true` accepts the public anon key, so a body `userId` let anyone
- * write any member's profile (linkedin-import, social-media-import) or read
+ * write any member's profile (social-media-import; linkedin-import, since removed, VTID-05442) or read
  * their full context (fetch-user-context). queue-campaign-recipients let any
  * anon-key holder queue email/SMS/WhatsApp to members, and
  * send-welcome-discount (verify_jwt=false) sent a Maxina-branded email with a
@@ -72,9 +72,8 @@ describe('VTID-05049 _shared/caller-auth.ts', () => {
   });
 });
 
-describe('VTID-05049 the five functions use caller-auth', () => {
+describe('VTID-05049 the four functions use caller-auth', () => {
   for (const name of [
-    'linkedin-import',
     'social-media-import',
     'queue-campaign-recipients',
     'send-welcome-discount',
@@ -87,7 +86,7 @@ describe('VTID-05049 the five functions use caller-auth', () => {
 });
 
 describe('VTID-05049 profile imports write only the caller\'s own profile', () => {
-  for (const name of ['linkedin-import', 'social-media-import']) {
+  for (const name of ['social-media-import']) {
     const src = handler(fn(name));
 
     it(`${name} authenticates with requireUser before reading the body`, () => {
@@ -104,9 +103,6 @@ describe('VTID-05049 profile imports write only the caller\'s own profile', () =
     });
   }
 
-  it('linkedin-import is flagged for removal', () => {
-    expect(fn('linkedin-import')).toMatch(/flagged for removal/);
-  });
 });
 
 describe('VTID-05049 fetch-user-context', () => {
@@ -269,7 +265,7 @@ describe('VTID-05049 tree-wide: no service-role function trusts a body user id u
     const readers = readdirSync(FUNCTIONS).filter(
       (d) => existsSync(join(FUNCTIONS, d, 'index.ts')) && BODY_USER_ID.some((re) => re.test(fn(d))),
     );
-    expect(readers).toEqual(expect.arrayContaining(['linkedin-import', 'social-media-import', 'fetch-user-context']));
+    expect(readers).toEqual(expect.arrayContaining(['social-media-import', 'fetch-user-context']));
   });
 
   it('every SERVICE_ROLE function that reads a body user id checks the caller', () => {
