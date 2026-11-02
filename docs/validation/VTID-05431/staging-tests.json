@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05431",
+  "service": "community-app",
+  "_note": "Native Wave 2 settings lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every write (notification / privacy / preference switches, phone verification, AI consent, billing portal, creator onboarding, limitations save, organisation switch) is asserted as the BUILT request against a mocked gateway / Supabase double and fires nothing. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 7); this write-heavy cluster runs at G1 only on the isolated test environment, read-only (open and read, never toggle or save).",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/settings", "cwd": "apps/mobile",
+      "reason": "settings hub (13 ?mode= sections, fallbacks, mode pill, delete-account entry, ORB settings-navigate), a write per section asserted against the mocked gateway / Supabase double, /settings/preferences?section= redirect + fallback, limitations and tenant-role loaded / empty / error, 11 locales without a raw key, Arabic RTL — fake-gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the settings screens, data hooks and the settings-ui port type-check against @vitana/core, @vitana/tokens and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the four /settings routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 17 settings rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/settings/01-settings-hub.yaml", "target": "/settings (+13 ?mode= sections)", "next_actor": "owner",
+      "reason": "open each section through the mode pill and read; screenshot parity vs 390x844 read-only staging /settings?mode=…; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/settings/02-preferences-redirect.yaml", "target": "/settings/preferences?section=accessibility", "next_actor": "owner",
+      "reason": "the redirect lands on the hub's notifications section (web fallback, R1.5); needs G1" },
+    { "flow": "apps/mobile/maestro/settings/03-limitations.yaml", "target": "/settings/limitations", "next_actor": "owner",
+      "reason": "counter and sections render, nothing saved; screenshot parity; needs G1" },
+    { "flow": "apps/mobile/maestro/settings/04-tenant-role.yaml", "target": "/settings/tenant-role", "next_actor": "owner",
+      "reason": "current context and permissions render, no switch pressed; screenshot parity; needs G1" }
+  ]
+}
