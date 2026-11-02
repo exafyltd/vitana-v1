@@ -6,6 +6,8 @@
     "apps/mobile/app/(app)/profile/me/privacy.tsx",
     "apps/mobile/src/screens/profile/**",
     "apps/mobile/src/ports/profile.ts",
+    "apps/mobile/src/ports/profile-media.ts",
+    "apps/mobile/src/ports/profile-ui.ts",
     "apps/mobile/src/navigation/resolve.ts",
     "apps/mobile/tests/profile/**",
     "apps/mobile/maestro/profile/**",

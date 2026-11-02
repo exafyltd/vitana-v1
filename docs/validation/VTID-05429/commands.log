@@ -50,3 +50,21 @@ $ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <wo
      PR-GATE sparring ("no owner-approval line" — fixed in plan-sparring.md)
   -> after the rate-limit reset: PASS Collab handoff, Lane scope, plan( PR lane files, PR-GATE scope / sparring /
      weakening / red-green, Kiro steering — "preflight: every check passed"
+
+## review fix 1 (2026-11-01)
+$ git merge origin/main                                       -> conflict apps/mobile/src/navigation/resolve.ts (kept both sides) -> 20116662c
+$ cd apps/mobile && npm ci                                    -> added 941 packages
+$ npx jest tests/profile/uploads.test.tsx  (on 85861633 and 20116662c, temp worktree) -> FAIL: suite cannot run (red-fix1.txt)
+$ npx jest tests/profile/uploads.test.tsx --verbose           -> 19/19 pass
+$ npx jest tests/profile                                      -> 5 suites, 57/57 pass
+$ npx jest                                                    -> 88 suites, 2288/2288 pass
+$ npm run typecheck                                           -> pass
+$ APP_PROFILE=development npm run bundle                      -> PASS (needed __UNSAFE_EXPO_HOME_DIRECTORY: sandbox $HOME read-only); dist removed
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check   -> "Dependencies are up to date"
+$ npm run parity:check                                        -> OK — 435 rows, 33 native route(s)
+$ node scripts/native/core-closure.mjs --check                -> up to date
+$ node scripts/native/check-shell-pins.mjs                    -> OK
+$ node --test scripts/native/__tests__/*.test.mjs             -> 68 pass, 0 fail
+$ npx eslint apps/mobile packages                             -> 0 problems
+$ node scripts/i18n-register-check.mjs --all                  -> No formal-register violations.
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found.

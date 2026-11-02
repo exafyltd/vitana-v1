@@ -48,21 +48,70 @@ lane `delete-account`. `lanes/profile.md` still lists `(app)/u/[identifier].tsx`
 6. **Create post** reuses the home lane's `MobileCreatePostSheet` (the same web
    component, imported, not modified).
 
-## Not ported in this lane (deviations from 1:1, recorded for the reviewer)
+## Uploads and the About editors (review fix 1)
 
-These mobile-web pieces of `/me/profile` need a native capability or another surface
-that is not part of this lane's paths; each is a follow-up FEAT, not a silent drop:
+- **Upload port** `apps/mobile/src/ports/profile-media.ts`: `expo-image-picker`
+  (library; the config plugin and usage strings are the diary lane's, in
+  `app.config.ts`, unchanged) plus pure request builders. The data layer
+  `src/screens/profile/data/uploads.ts` sends them. Same buckets, paths and shapes
+  as the web:
+  - avatar: `avatars/<uid>/avatar-<ms>.<ext>`, upsert, saved by the Identity sheet
+    (`IdentityForm.uploadFile`); Remove sets `''` at 50/50;
+  - gallery: `media-uploads/<uid>/gallery/<uuid>.<ext>` + `profile_gallery` INSERT
+    `{ user_id, image_url, caption, is_public, sort_order }`; delete by id after the
+    confirm (`useProfileGallery`, `PhotoUploadDialog`, `PhotoGallery`);
+  - Cover Library (Posts-tab tile, and `?drawer=cover-library` like the mobile web):
+    `intent-covers` at `user-universal/<uid>/<ms>` / `user-library/<uid>/<uuid>`,
+    `profiles.universal_intent_cover_url`, `user_intent_cover_library` INSERT /
+    DELETE (id + user id), `GET /api/v1/intent-categories`, and for a
+    narrower-than-16:9 photo the staged upload + `POST /api/v1/cover-images/outpaint`
+    (`CoverLibraryDrawer`, `coverImageTo16x9.ts`).
+- **About sheet**: the links editor (add, label, URL, remove) and the languages
+  editor (the web's 10 language options, add without duplicates, remove). The save
+  sends `links` as `{ label, url }` and `languages` as the stored values (web `AboutForm`).
+- Tests: `tests/profile/uploads.test.tsx` asserts every built upload, insert,
+  delete and gateway call on the doubles; nothing is sent.
 
-- Avatar / cover / gallery **uploads**, the Cover Library tile + drawer and the
-  identity avatar position editor: need `expo-image-picker` + storage upload, which
-  adds a native dependency (`apps/mobile/package.json` is outside this lane's paths).
-  The Identity save carries the loaded avatar fields unchanged.
-- The Autopilot banner + bio popup (AI suggestion call), the enrichment card strips
-  (home lane's card renderer), the QR share screen, the interests picker, the
-  dance / partner / service-offering drawers (`?drawer=` deep links), the video and
-  music galleries, milestone add / edit / delete, the links and languages editors in
-  the About sheet (links and languages are carried unchanged on save), and the
-  Identity card's index standing / boost lines.
+## Reviewer finding 2: not on mobile web
+
+`design.md` 2a lists the profile-progress card and the Dance / Partner preferences
+drawers among the `EditProfilePage` pieces. On the web they are not part of the
+**mobile** branch, which R1.1 makes binding (no added sections). Driver decision C:
+none of them are ported, and `?drawer=` opens nothing except `cover-library`.
+
+- `ProfileProgressCard` (`src/components/profile/editor/ProfileProgressCard.tsx`) is
+  rendered nowhere. `src/components/profile/shared/ProfileLayout.tsx:23` imports it
+  and never uses it. The only other reference is a test mock
+  (`src/components/profile/ProfileLayout.spotlight.test.tsx:79`).
+- `src/pages/EditProfilePage.tsx`: the mobile branch is lines 432-680
+  (`if (isMobile) { … }`). It mounts the Identity, About, Services, Compliance,
+  Showcase, Visibility, AccountEdit and CoverLibrary drawers (CoverLibrary at
+  line 632) but not `PartnerPreferencesDrawer`, `ServiceOfferingsDrawer` or
+  `DancePreferencesDrawer`. Those are mounted only in the desktop return, at lines
+  792, 798 and 813.
+- Lines 87-89 still set the dance / partner / offerings open state from `?drawer=`
+  on mobile, but nothing is mounted to render it. No in-app link targets those
+  values; the only `?drawer=` link in `src/` is `IntentComposer.tsx:337`
+  (`/edit-profile?drawer=cover-library`).
+- Guarded by `tests/profile/uploads.test.tsx` ("mobile-web parity"):
+  `?drawer=dance|partner|offerings` renders none of the three drawers, and no tab
+  shows a progress card.
+
+## Other differences from mobile web (not raised in review)
+
+- Avatar: no Reposition dialog (`AvatarPositioner`); an upload resets the offsets to
+  50/50 as the web does before repositioning.
+- Cover photos: the web re-encodes a 16:9-or-wider photo to JPEG on a canvas, and
+  letterboxes a narrow one when the outpaint fails. There is no canvas natively, so
+  the picked bytes are uploaded unchanged, which is the web's own raw-upload fallback
+  in `uploadToIntentCovers`.
+- The About sheet does not show the web's bio / location / per-link visibility
+  selects. The web never saves them.
+- A failed gallery upload shows the upload-failed toast; the web's
+  `uploadPhoto.mutate` fails silently.
+- The Autopilot banner + bio popup, the enrichment card strips, the QR share screen,
+  the interests picker, the video and music galleries, milestone add / edit / delete
+  and the Identity card's index standing / boost lines are not ported.
 - The Vitana Index shows the latest stored `vitana_index_scores.score_total`; the web
   hook's self-heal recompute RPC is not called natively.
 

@@ -62,5 +62,49 @@ Known pre-existing, not from this lane: `gen-core-extract.mjs --check` reports
 `npm run i18n:gate` fails 10 locale review-queue checks on `origin/main` (none in
 `profileNative`).
 
+## Review fix 1 (reviewer verdict `changes` on 85861633)
+
+Merged `origin/main` (20116662c; `resolve.ts` conflict kept both sides' routes),
+`npm ci` in `apps/mobile` (main added `expo-image-picker`, `expo-audio`).
+
+- **Finding 1 (uploads):** new upload port `src/ports/profile-media.ts`
+  (`expo-image-picker` + pure request builders) and `src/screens/profile/data/uploads.ts`
+  (senders). Wired: the avatar Upload / Remove in the Identity sheet, the gallery Upload
+  sheet + delete confirm in the Media tab, and the Cover Library sheet (Posts-tab tile,
+  `?drawer=cover-library`). Same buckets, paths and request shapes as the web (see
+  lane-brief.md). `app.config.ts` and its picker plugin are unchanged.
+- **Finding 2 (parity):** the About sheet now has the links and languages editors.
+  The progress card and the dance / partner / service-offering drawers are **not on
+  mobile web**, so they are not ported (driver decision C). Evidence:
+  - `src/components/profile/shared/ProfileLayout.tsx:23` imports `ProfileProgressCard`
+    and never renders it. No other web file renders it.
+  - `src/pages/EditProfilePage.tsx` mobile branch, lines 432-680: it mounts no
+    `DancePreferencesDrawer`, `PartnerPreferencesDrawer` or `ServiceOfferingsDrawer`.
+    Those are mounted only in the desktop return, at lines 792, 798 and 813. Lines
+    87-89 set their open state from `?drawer=`, but nothing renders it on mobile.
+
+  `tests/profile/uploads.test.tsx` asserts that the native screen renders none of
+  the three drawers and no progress card.
+- The "Not ported in this lane" deferral text is removed from `MyProfileScreen.tsx`
+  and `lane-brief.md`. The remaining small differences are listed openly in
+  lane-brief.md under "Other differences from mobile web".
+
+Red → green: `red-fix1.txt`. The new suite fails to run on 85861633 (no
+`expo-image-picker`) and on its merge with main, 20116662c (no
+`src/ports/profile-media.ts`). It passes on this branch, 19/19.
+
+| Check (fix 1) | Result |
+|---|---|
+| `npx jest tests/profile` | 5 suites, 57/57 pass |
+| `npx jest` (full, apps/mobile) | 88 suites, 2288/2288 pass |
+| `npm run typecheck` | pass |
+| `APP_PROFILE=development npm run bundle` | pass (iOS + Android Hermes; dist removed after) |
+| `APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check` | "Dependencies are up to date" |
+| `npm run parity:check` | OK — 435 rows, 33 native routes |
+| `core-closure.mjs --check` / `check-shell-pins.mjs` | up to date / OK |
+| `node --test scripts/native/__tests__/*.test.mjs` | 68 pass, 0 fail |
+| `npx eslint apps/mobile packages` | 0 problems |
+| i18n register (`--all`), long-words (de) | pass |
+
 **Not verified on staging: device runtime deferred to G1** (`staging-tests.json`
 `deferred_g1`, `next_actor: owner`, isolated environment only).
