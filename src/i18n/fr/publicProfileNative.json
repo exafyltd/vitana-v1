@@ -1,0 +1,23 @@
+{
+  "publicProfileNative": {
+    "notFound": {
+      "body": "Le profil que tu cherches n'existe pas.",
+      "loadFailed": "Impossible de charger le profil",
+      "unexpected": "Une erreur inattendue s'est produite",
+      "noIdentifier": "Aucun identifiant de profil fourni"
+    },
+    "landing": {
+      "brand": "VITANA",
+      "vitanaIndex": "VITANA {score}",
+      "openSocial": "Ouvrir {network}"
+    },
+    "member": {
+      "noBio": "Pas encore de bio",
+      "sections": "Sections du profil"
+    },
+    "post": {
+      "likes": "{count} j'aime",
+      "comments": "{count} commentaires"
+    }
+  }
+}

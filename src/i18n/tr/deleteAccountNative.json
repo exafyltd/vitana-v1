@@ -1,0 +1,5 @@
+{
+  "deleteAccountNative": {
+    "errorFallback": "Bir şeyler ters gitti. Lütfen tekrar dene."
+  }
+}
