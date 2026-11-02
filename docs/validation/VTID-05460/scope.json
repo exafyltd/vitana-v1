@@ -1,0 +1,44 @@
+{
+  "vtid": "VTID-05460",
+  "kind": "feature",
+  "stacked_on": { "pr": "https://github.com/exafyltd/vitana-v1/pull/1565", "lane": "native-wave2-journey-autopilot-r2/journey", "vtid": "VTID-05461", "head": "ea78f0835fea3b420d5882d16771dda3828afcbf" },
+  "paths": [
+    "apps/mobile/app/(app)/autopilot/audiobook.tsx",
+    "apps/mobile/src/screens/audiobook/**",
+    "apps/mobile/maestro/audiobook/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/audiobook/**",
+    "src/i18n/*/journeyAutopilotNative.json",
+    "docs/validation/**",
+    "packages/core/extract.json"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/autopilot/audiobook.tsx",
+    "apps/mobile/src/screens/audiobook/{AudiobookPlayerProvider,AudiobookMiniPlayer,AudiobookReminderControl,AudiobookDeepLink,AudiobookHost}.tsx",
+    "apps/mobile/src/screens/audiobook/events.ts",
+    "apps/mobile/src/ports/audiobook.tsx",
+    "apps/mobile/src/ports/journey-dashboard.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/maestro/audiobook/README.md",
+    "apps/mobile/tests/audiobook/{mocks.ts,helpers.tsx,player.test.tsx,deeplink-reminder.test.tsx,route-i18n.test.tsx}",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/journeyAutopilotNative.json",
+    "docs/validation/VTID-05460/**",
+    "apps/mobile/app/_layout.tsx",
+    "apps/mobile/tests/journey/core-i18n-route.test.tsx"
+  ],
+  "outside_lane_paths": {
+    "apps/mobile/app/_layout.tsx": "tasks.md task 2 mounts the mini player 'as an app-wide overlay the same way the web mini-player is (web src/App.tsx:810)', and the player provider has to sit above the router so /autopilot (the journey lane's index.tsx) sees the player and the reminder slot. The root layout is the only place above the router; it is not in the lane's paths (plan gap). Change: one import + <AudiobookHost> around <Stack /> inside <OrbProvider>.",
+    "apps/mobile/tests/journey/core-i18n-route.test.tsx": "the journey lane's route test asserted that /autopilot/audiobook resolves 'unported' ('stays the sibling lane's row (still unported here)'). This lane flips that row to native (tasks.md task 6), so the assertion now expects 'native' — tightened to the new state, not loosened or skipped."
+  },
+  "core_change": "none. The player uses the core queue rules (@vitana/core/audiobook-queue, already re-exported by the journey lane) through src/ports/audiobook.tsx; no manifest / extract / closure change. core-closure --check and gen-core-extract --check up to date.",
+  "sparring_record": "docs/validation/VTID-05460/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
