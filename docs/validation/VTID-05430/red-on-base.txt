@@ -1,0 +1,10 @@
+# red on base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce + the new tests only (no implementation)
+$ npx jest tests/public-profile --ci
+FAIL tests/public-profile/public-profile.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/public-profile/PublicProfileScreen' from 'tests/public-profile/public-profile.test.tsx'
+FAIL tests/public-profile/i18n.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/public-profile/PublicProfileScreen' from 'tests/public-profile/i18n.test.tsx'
+Test Suites: 2 failed, 2 total
+Tests:       0 total
