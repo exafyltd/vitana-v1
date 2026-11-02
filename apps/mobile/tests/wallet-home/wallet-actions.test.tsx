@@ -171,15 +171,16 @@ describe('request builders (liveWalletActions → fakes)', () => {
 
 describe('the app default WalletActions make the web calls from the sheets', () => {
   it('buy credits: USD → CREDITS through process_wallet_exchange, then the web toasts', async () => {
-    const { fake } = renderApp(<WalletScreen />);
-    await openFlow('wallet-quick-buy-credits', 'buy-credits');
+    const onClose = jest.fn();
+    const { fake } = renderApp(<WalletFlowSheet kind="buy-credits" open onClose={onClose} />);
     await waitFor(() => expect(textOf('wallet-flow-buy-credits')).toContain('2,450'));
     fireEvent.press(screen.getByTestId('wallet-flow-quick-500'));
     await confirm();
     await waitFor(() => expect(toastKeys()).toContain('toasts.wallet.creditsPurchasedSuccessfully'));
     expect(toastKeys()).toContain('toasts.hooks.exchangeCompleted');
     expect(fake.rpcs()).toEqual([{ fn: 'process_wallet_exchange', args: { p_user_id: 'u-1', p_from_currency: 'USD', p_to_currency: 'CREDITS', p_amount: 5, p_exchange_rate: 100 } }]);
-    await waitFor(() => expect(screen.queryByTestId('wallet-flow-buy-credits')).toBeNull());
+    // The web closes the popup after a purchase.
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it('withdraw: needs a method, then debits amount + fee through update_user_balance', async () => {
