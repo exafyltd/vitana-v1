@@ -183,7 +183,7 @@ function AppSidebar({
                 {open && (
                   <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1 flex items-center gap-1">
                     {getTenantDisplayName()}
-                    {isExafyAdmin && <Shield className="h-3 w-3 text-slate-400" />}
+                    {isExafyAdmin && <Shield className="h-3 w-3 text-muted-foreground" />}
                   </span>
                 )}
               </div>
@@ -196,7 +196,7 @@ function AppSidebar({
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    className="h-8 w-8 p-0 hover:bg-sidebar-accent text-white rounded-lg transition-colors"
+                    className="h-8 w-8 p-0 hover:bg-sidebar-accent text-sidebar-foreground rounded-lg transition-colors"
                     onClick={() => onSidebarOpenChange(!open)}
                     aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
                   >
@@ -224,7 +224,7 @@ function AppSidebar({
                 <UniversalCalendarButton
                   variant="ghost" 
                   size="sm"
-                  className="h-8 w-8 p-0 text-white group-hover:text-primary transition-colors"
+                  className="h-8 w-8 p-0 text-sidebar-foreground group-hover:text-primary transition-colors"
                   showEventCount={true}
                   showConflictIndicator={true}
                   showText={false}
@@ -244,7 +244,7 @@ function AppSidebar({
                 title={t('screens.common.digitalWallet')}
                 onClick={() => setWalletPopupOpen(true)}
               >
-                <Wallet className="h-4 w-4 text-white" />
+                <Wallet className="h-4 w-4 text-sidebar-foreground" />
               </Button>
               )}
               
@@ -257,7 +257,7 @@ function AppSidebar({
                   onClick={() => setAutopilotPopupOpen(true)}
                   aria-label={`Autopilot with ${pendingCount} pending suggestion${pendingCount !== 1 ? 's' : ''}`}
                 >
-                  <Plane className="h-4 w-4 text-white" />
+                  <Plane className="h-4 w-4 text-sidebar-foreground" />
                 </Button>
                 <NotificationBadge 
                   count={pendingCount} 
@@ -275,7 +275,7 @@ function AppSidebar({
                   onClick={() => navigate('/universal-cart')}
                   aria-label={`Shopping cart with ${cartCount} item${cartCount !== 1 ? 's' : ''}`}
                 >
-                  <ShoppingCart className="h-4 w-4 text-white" />
+                  <ShoppingCart className="h-4 w-4 text-sidebar-foreground" />
                 </Button>
                 <NotificationBadge 
                   count={cartCount} 
@@ -348,7 +348,7 @@ function AppSidebar({
                 <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
                   <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                     <AvatarImage src={profile.avatar} alt={profile.displayName} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
-                    <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
+                    <AvatarFallback className="bg-gradient-to-br from-category-4/15 to-category-4/25 text-category-4 font-semibold">
                       {profile.initials}
                     </AvatarFallback>
                   </Avatar>
@@ -373,7 +373,7 @@ function AppSidebar({
                 <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
                   <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                     <AvatarImage src={profile.avatar} alt={profile.displayName} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
-                    <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
+                    <AvatarFallback className="bg-gradient-to-br from-category-4/15 to-category-4/25 text-category-4 font-semibold text-xs">
                       {profile.initials}
                     </AvatarFallback>
                   </Avatar>
