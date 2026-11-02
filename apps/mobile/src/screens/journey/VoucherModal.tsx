@@ -1,32 +1,51 @@
 /**
  * VTID-05461 — twin of `src/components/voucher/MaxinaVoucherModal.tsx`, the
  * gift-voucher dialog the utility bar's Gift Voucher pill opens:
- *  - selection (:327-475): title + subtitle, the three tiers (test €0.49,
+ *  - selection (:378-475): title + subtitle, the three tiers (test €0.49,
  *    experience €99, exclusive €199) with their catalog name and benefits
- *    (`voucher.tiers.<tier>.benefits`), the selected check, and
- *    "Buy voucher · €N" (disabled until a tier is picked);
+ *    (`voucher.tiers.<tier>.benefits`, a string array), the selected check,
+ *    and "Buy voucher · €N" (disabled until a tier is picked);
  *  - loading (:477-490): "opening secure checkout";
- *  - buy (:141-166): `stripe-create-voucher-checkout` with `{ tier, returnTo }`
- *    (returnTo = this screen, `/autopilot`), then the Stripe page — the web
- *    navigates the window, natively it opens in the system browser; a failure
- *    toasts `voucher.toast.checkoutFailed` and returns to the selection.
- * The web's success / e-mail / PDF states run only on the Stripe return URL
- * (`voucher_success=true`, :112-130). That URL is built from the request's
- * `Origin` (supabase/functions/stripe-create-voucher-checkout/index.ts:147,
- * :161), which a native request does not send, so the return lands on
- * https://vitana.app and those states run on the web, not in this dialog.
+ *  - buy (:141-166): the `stripe-create-voucher-checkout` edge function with
+ *    `{ tier, returnTo }` (returnTo = this screen, `/autopilot`), then the Stripe
+ *    page in expo-web-browser; a failure toasts `voucher.toast.checkoutFailed`
+ *    and returns to the selection;
+ *  - the return leg: the web reads `voucher_success` / `order_id` / `tier` on
+ *    the Stripe return URL (:112-132). Natively the Stripe return lands on the
+ *    web origin (success_url = request Origin, stripe-create-voucher-checkout
+ *    /index.ts:147, :161), so the dialog keeps the order id the function
+ *    returns (:179-184) and, when the browser closes (iOS), on AppState
+ *    'active' (Android, where `openBrowserAsync` resolves at once) and on
+ *    screen focus while the checkout is pending, re-reads the member's own
+ *    `voucher_orders` row (briefly polled: the webhook can trail). `paid` →
+ *    the success state; otherwise back to the selection, as the web's cancel
+ *    return (`voucher_cancelled`, unhandled on the web) leaves it. The web's
+ *    return params are handled too if such a link reaches the app;
+ *  - success (:490-555): download (→ `voucher-download-pdf` with the member's
+ *    session, then the mobile preview), send by e-mail, view in orders, done;
+ *  - e-mail form (:557-640): recipient e-mail *, name, message → back / send
+ *    (`voucher-send-email`, `voucher.toast.voucherSent`, then closes);
+ *  - PDF preview (:642-760, the web's mobile branch with the share API):
+ *    the voucher card, Save / Share (the system share sheet) and Download PDF
+ *    (the signed PDF in the in-app browser).
+ *
  * Shown only where IAP is not restricted (UtilityBar).
  */
-import { useState, type ReactElement } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
+import { AppState, Pressable, ScrollView, Share, StyleSheet, View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import { Button, Spinner, Text, useUITheme } from '../../ports/ui';
-import { alpha, ButtonIcon, DialogContentNoAnimation, Dialog, JourneyIcon, notifyError, useToneColor } from '../../ports/journey';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { Button, IconButton, Spinner, Text, useUITheme } from '../../ports/ui';
+import { alpha, ButtonIcon, DialogContentNoAnimation, Dialog, Input, JourneyIcon, notify, notifyError, notifySuccess, Textarea, useToneColor } from '../../ports/journey';
 import { catalogs, FALLBACK_LOCALE, isLocale } from '../../i18n';
 import { useI18n } from '../../i18n/I18nProvider';
-import { createVoucherCheckout } from './data/supabase';
+import { navigateToWebPath } from '../../navigation/navigate';
+import { createVoucherCheckout, downloadVoucherPdf, sendVoucherEmail, waitForPaidVoucherOrder, type VoucherPdfData } from './data/supabase';
 
 type Tier = 'test' | 'experience' | 'exclusive';
+type ModalState = 'selection' | 'loading' | 'success' | 'email-form' | 'pdf-preview';
+const isTier = (v: unknown): v is Tier => v === 'test' || v === 'experience' || v === 'exclusive';
+
 const TIERS: Array<{ id: Tier; price: number; icon: string }> = [
   { id: 'test', price: 0.49, icon: 'Gift' },
   { id: 'experience', price: 99, icon: 'Sparkles' },
@@ -50,42 +69,330 @@ export function VoucherModal({ open, onOpenChange }: { open: boolean; onOpenChan
   const { colors } = useUITheme();
   const tierTint = [colors.statusSuccess, useToneColor('category-2'), colors.statusWarning];
   const [selected, setSelected] = useState<Tier | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState<ModalState>('selection');
+  const [completedOrderId, setCompletedOrderId] = useState<string | null>(null);
+  const [completedTier, setCompletedTier] = useState<Tier | null>(null);
+  const [recipientEmail, setRecipientEmail] = useState('');
+  const [recipientName, setRecipientName] = useState('');
+  const [personalMessage, setPersonalMessage] = useState('');
+  const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
+  const [previewVoucher, setPreviewVoucher] = useState<VoucherPdfData | null>(null);
+  const [downloading, setDownloading] = useState(false);
+  const [sending, setSending] = useState(false);
+  /** The checkout opened in the browser and not yet seen paid. */
+  const pending = useRef<{ orderId: string | undefined; tier: Tier } | null>(null);
+  const checking = useRef(false);
+  const handledReturn = useRef(false);
+  const params = useLocalSearchParams<{ voucher_success?: string; voucher_cancelled?: string; order_id?: string; tier?: string }>();
+
+  const reset = () => {
+    pending.current = null;
+    setSelected(null);
+    setModalState('selection');
+    setCompletedOrderId(null);
+    setCompletedTier(null);
+    setRecipientEmail('');
+    setRecipientName('');
+    setPersonalMessage('');
+    setSignedPdfUrl(null);
+    setPreviewVoucher(null);
+  };
 
   const close = (next: boolean) => {
-    if (!next) {
-      setSelected(null);
-      setLoading(false);
-    }
+    if (!next) reset();
     onOpenChange(next);
   };
 
+  // The web's Stripe return (:112-132), if the return link reaches the app.
+  useEffect(() => {
+    if (params.voucher_success === 'true' && params.order_id && !handledReturn.current) {
+      handledReturn.current = true;
+      pending.current = null;
+      setCompletedOrderId(params.order_id);
+      setCompletedTier(isTier(params.tier) ? params.tier : null);
+      setModalState('success');
+      onOpenChange(true);
+      router.setParams({ voucher_success: undefined, order_id: undefined, tier: undefined });
+    } else if (params.voucher_cancelled) {
+      router.setParams({ voucher_cancelled: undefined });
+    }
+  }, [params.voucher_success, params.voucher_cancelled, params.order_id, params.tier, onOpenChange]);
+
+  useEffect(() => {
+    if (!open) handledReturn.current = false;
+  }, [open]);
+
+  /** Re-reads the pending checkout's order: paid → success, else the selection. */
+  const checkPending = useCallback(async () => {
+    const p = pending.current;
+    if (!p || checking.current) return;
+    checking.current = true;
+    setModalState('loading');
+    try {
+      const order = await waitForPaidVoucherOrder(p.orderId);
+      if (pending.current !== p) return;
+      if (order) {
+        pending.current = null;
+        setCompletedOrderId(order.id);
+        setCompletedTier(p.tier);
+        setModalState('success');
+      } else {
+        setModalState('selection');
+      }
+    } catch {
+      if (pending.current === p) setModalState('selection');
+    } finally {
+      checking.current = false;
+    }
+  }, []);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active' && pending.current) void checkPending();
+    });
+    return () => sub.remove();
+  }, [checkPending]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (pending.current) void checkPending();
+    }, [checkPending]),
+  );
+
   const buy = async () => {
     if (!selected) return;
-    setLoading(true);
+    setModalState('loading');
     try {
       const data = await createVoucherCheckout(selected, RETURN_TO);
-      if (data.url) {
-        await WebBrowser.openBrowserAsync(data.url);
-        close(false);
+      if (!data.url) {
+        setModalState('selection');
         return;
       }
-      setLoading(false);
+      pending.current = { orderId: data.order_id, tier: selected };
+      const result = await WebBrowser.openBrowserAsync(data.url);
+      // iOS resolves when the member closes the browser; Android ('opened') at once — AppState 'active' checks there.
+      if (result.type !== 'opened') await checkPending();
     } catch {
+      pending.current = null;
       notifyError('voucher.toast.checkoutFailed');
-      setLoading(false);
+      setModalState('selection');
     }
   };
 
+  const downloadPdf = async () => {
+    if (!completedOrderId) {
+      notifyError('voucher.toast.failedToLoadVoucher');
+      return;
+    }
+    notify('voucher.toast.generatingVoucher');
+    setDownloading(true);
+    try {
+      const result = await downloadVoucherPdf(completedOrderId);
+      if (!result?.voucher || !result?.signedPdfUrl) {
+        notifyError('voucher.toast.failedToLoadVoucher');
+        return;
+      }
+      setPreviewVoucher(result.voucher);
+      setSignedPdfUrl(result.signedPdfUrl);
+      setModalState('pdf-preview');
+    } catch {
+      notifyError('voucher.toast.downloadFailed');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const downloadDirect = async () => {
+    if (!signedPdfUrl) return;
+    try {
+      await WebBrowser.openBrowserAsync(signedPdfUrl);
+      notifySuccess('voucher.toast.downloadStarted');
+    } catch {
+      notifyError('voucher.toast.downloadFailedCopyLink');
+    }
+  };
+
+  const shareUrl = async () => {
+    if (!signedPdfUrl) return;
+    try {
+      const r = await Share.share({ title: t('voucher.preview.giftVoucher'), message: `${t('voucher.preview.giftVoucher')}\n${signedPdfUrl}`, url: signedPdfUrl });
+      if (r.action === Share.sharedAction) notifySuccess('voucher.toast.voucherShared');
+    } catch {
+      await downloadDirect();
+    }
+  };
+
+  const confirmSendEmail = async () => {
+    if (!completedOrderId || !recipientEmail) {
+      notifyError('voucher.toast.enterRecipientEmail');
+      return;
+    }
+    notify('voucher.toast.sendingVoucherEmail');
+    setSending(true);
+    try {
+      await sendVoucherEmail({ orderId: completedOrderId, recipientEmail, recipientName, message: personalMessage });
+      notifySuccess('voucher.toast.voucherSent', undefined, { email: recipientEmail });
+      close(false);
+    } catch {
+      notifyError('voucher.toast.downloadFailed');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const viewOrders = () => {
+    close(false);
+    navigateToWebPath('/discover/orders?tab=vouchers');
+  };
+
+  const tierForDisplay = completedTier ?? selected;
   const price = selected ? TIERS.find((x) => x.id === selected)?.price : null;
   return (
     <Dialog open={open} onOpenChange={close}>
       <DialogContentNoAnimation testID="voucher-modal">
-        {loading ? (
+        {modalState === 'loading' ? (
           <View style={styles.loading} testID="voucher-loading">
             <Spinner accessibilityLabel={t('voucher.modal.openingCheckout')} />
             <Text size="sm" muted>
               {t('voucher.modal.openingCheckout')}
+            </Text>
+          </View>
+        ) : modalState === 'success' ? (
+          <View style={styles.section} testID="voucher-success">
+            <View style={styles.successHead}>
+              <View style={[styles.successIcon, { backgroundColor: colors.statusSuccessSubtle }]}>
+                <JourneyIcon name="Check" size={32} color={colors.statusSuccess} />
+              </View>
+              <Text size="lg" weight="600" accessibilityRole="header">
+                {t('voucher.success.title')}
+              </Text>
+              <Text size="sm" muted>
+                {t('voucher.success.ready', { tier: tierForDisplay ? t(`voucher.tiers.${tierForDisplay}.name`) : '' })}
+              </Text>
+            </View>
+            <Button testID="voucher-download" variant="outline" disabled={downloading} onPress={() => void downloadPdf()} style={styles.rowButton}>
+              {downloading ? <Spinner /> : <JourneyIcon name="Download" size={16} color={colors.foreground} />}
+              {t('voucher.success.download')}
+            </Button>
+            <Button testID="voucher-send-email" variant="outline" onPress={() => setModalState('email-form')} style={styles.rowButton}>
+              <JourneyIcon name="Mail" size={16} color={colors.foreground} />
+              {t('voucher.success.sendEmail')}
+            </Button>
+            <Button testID="voucher-view-orders" variant="ghost" onPress={viewOrders} style={styles.rowButton}>
+              <JourneyIcon name="ShoppingBag" size={16} color={colors.mutedForeground} />
+              {t('voucher.success.viewOrders')}
+            </Button>
+            <Button testID="voucher-done" onPress={() => close(false)}>
+              {t('voucher.success.done')}
+            </Button>
+          </View>
+        ) : modalState === 'email-form' ? (
+          <View style={styles.section} testID="voucher-email-form">
+            <View style={styles.header}>
+              <View style={styles.titleRow}>
+                <JourneyIcon name="Mail" size={20} color={colors.primary} />
+                <Text size="lg" weight="600" accessibilityRole="header">
+                  {t('voucher.email.title')}
+                </Text>
+              </View>
+              <Text size="sm" muted>
+                {t('voucher.email.subtitle')}
+              </Text>
+            </View>
+            <View style={styles.field}>
+              <Text size="sm" weight="500">
+                {t('voucher.email.recipientEmail')}
+              </Text>
+              <Input testID="voucher-email-recipient" value={recipientEmail} onChangeText={setRecipientEmail} keyboardType="email-address" autoCapitalize="none" placeholder={t('screens.voucher.friendExampleCom')} accessibilityLabel={t('voucher.email.recipientEmail')} />
+            </View>
+            <View style={styles.field}>
+              <Text size="sm" weight="500">
+                {t('voucher.email.recipientName')}
+              </Text>
+              <Input testID="voucher-email-name" value={recipientName} onChangeText={setRecipientName} placeholder={t('screens.voucher.jane')} accessibilityLabel={t('voucher.email.recipientName')} />
+            </View>
+            <View style={styles.field}>
+              <Text size="sm" weight="500">
+                {t('voucher.email.personalMessage')}
+              </Text>
+              <Textarea testID="voucher-email-message" value={personalMessage} onChangeText={setPersonalMessage} placeholder={t('voucher.email.messagePlaceholder')} accessibilityLabel={t('voucher.email.personalMessage')} numberOfLines={3} />
+            </View>
+            <View style={styles.buttonRow}>
+              <Button testID="voucher-email-back" variant="outline" onPress={() => setModalState('success')} style={styles.flex}>
+                {t('voucher.email.back')}
+              </Button>
+              <Button testID="voucher-email-send" disabled={!recipientEmail || sending} onPress={() => void confirmSendEmail()} style={styles.flex}>
+                {sending ? <Spinner /> : <JourneyIcon name="Send" size={16} color={colors.primaryForeground} />}
+                {t('voucher.email.send')}
+              </Button>
+            </View>
+          </View>
+        ) : modalState === 'pdf-preview' && previewVoucher && signedPdfUrl ? (
+          <View style={styles.section} testID="voucher-pdf-preview">
+            <View style={styles.previewHead}>
+              <Text weight="600" accessibilityRole="header">
+                {t('voucher.preview.title')}
+              </Text>
+              <IconButton testID="voucher-pdf-close" name="X" size={16} accessibilityLabel={t('voucher.email.back')} onPress={() => {
+                setSignedPdfUrl(null);
+                setModalState('success');
+              }} />
+            </View>
+            <ScrollView style={styles.list} contentContainerStyle={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <Text size="xl" weight="700" color={colors.primary} style={styles.center}>
+                VITANA
+              </Text>
+              <Text size="xl" style={styles.center}>
+                🎁
+              </Text>
+              <Text size="sm" muted style={styles.center}>
+                {t('voucher.preview.giftVoucher').toUpperCase()}
+              </Text>
+              <View style={[styles.tierBadge, { backgroundColor: colors.primary }]}>
+                <Text size="sm" weight="600" color={colors.primaryForeground}>
+                  {(previewVoucher.tierName || previewVoucher.tier || '').toUpperCase()}
+                </Text>
+              </View>
+              <Text size="xl" weight="700" style={styles.center}>
+                {previewVoucher.price}
+              </Text>
+              <Text size="sm" muted style={styles.center}>
+                {t('voucher.preview.validUntil', { date: previewVoucher.expiresAt })}
+              </Text>
+              <View style={[styles.codeBox, { backgroundColor: colors.muted }]}>
+                <Text size="xs" muted style={styles.center}>
+                  {t('voucher.preview.voucherCode').toUpperCase()}
+                </Text>
+                <Text size="lg" weight="700" style={styles.code}>
+                  {previewVoucher.code}
+                </Text>
+              </View>
+              {previewVoucher.benefits?.length ? (
+                <View style={styles.listBody}>
+                  <Text size="xs" muted>
+                    {t('voucher.preview.whatsIncluded').toUpperCase()}
+                  </Text>
+                  {previewVoucher.benefits.map((b, i) => (
+                    <View key={i} style={styles.benefit}>
+                      <JourneyIcon name="Check" size={16} color={colors.primary} />
+                      <Text size="sm" style={styles.flex}>
+                        {b}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
+            </ScrollView>
+            <Button testID="voucher-pdf-share" onPress={() => void shareUrl()}>
+              <JourneyIcon name="Share2" size={16} color={colors.primaryForeground} />
+              {t('voucher.preview.share')}
+            </Button>
+            <Button testID="voucher-pdf-download" variant="outline" onPress={() => void downloadDirect()}>
+              <JourneyIcon name="Download" size={16} color={colors.foreground} />
+              {t('voucher.preview.downloadPdf')}
+            </Button>
+            <Text size="xs" muted style={styles.center}>
+              {t('voucher.preview.shareHint')}
             </Text>
           </View>
         ) : (
@@ -162,4 +469,16 @@ const styles = StyleSheet.create({
   benefit: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginTop: 4 },
   check: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   loading: { alignItems: 'center', gap: 12, paddingVertical: 48 },
+  section: { gap: 8 },
+  successHead: { alignItems: 'center', gap: 4, marginBottom: 16 },
+  successIcon: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  rowButton: { justifyContent: 'flex-start' },
+  field: { gap: 4 },
+  buttonRow: { flexDirection: 'row', gap: 8, marginTop: 16 },
+  previewHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingEnd: 24 },
+  card: { gap: 8, padding: 24, borderRadius: 16, borderWidth: 1 },
+  center: { textAlign: 'center' },
+  tierBadge: { alignSelf: 'center', paddingHorizontal: 16, paddingVertical: 6, borderRadius: 999 },
+  codeBox: { borderRadius: 12, padding: 16, gap: 4 },
+  code: { textAlign: 'center', fontFamily: 'monospace', letterSpacing: 2 },
 });
