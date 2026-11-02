@@ -241,6 +241,13 @@
         "conversation-chat"
       ],
       "reason": "Group rename / participant deactivate over an injected client (renameGlobalGroup, deactivateParticipant). Imports nothing; pure. Used by the native members modal."
+    },
+    "src/lib/chatMarkdown.ts": {
+      "entry": "chat-markdown.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Vitana chat-reply Markdown parser (parseChatMarkdown, parseChatInline, MdBlock, MdInline). Imports nothing; pure. Used by the native message bubble for the Vitana bot's replies (VTID-05193)."
     }
   }
 }

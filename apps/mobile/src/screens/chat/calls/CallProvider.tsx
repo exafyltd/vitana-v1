@@ -7,15 +7,16 @@
  * inbox / DM page (`src/pages/Messages.tsx:1274,1425-1429`), not in the group
  * chat page, so the native DM screen mounts them the same way.
  *
- * Not ported: the web `callSounds` ringtones / beeps (`src/utils/callSounds.ts`,
- * Web Audio oscillators) — no native audio asset or tone generator is in this
- * lane's paths. The incoming-call toast (`toasts.common.incomingCall`) is kept.
+ * The tones are the web `callSounds` (src/utils/callSounds.ts, see
+ * ./callSounds.ts); media comes from the react-native-webrtc engine
+ * (src/ports/webrtc.ts).
  */
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Button, notify, notifyError, Text, useUITheme } from '../../../ports/ui';
 import { ChatIcon, Dialog, DialogContent } from '../../../ports/chat';
 import { getWebRTCEngine } from '../../../ports/webrtc';
+import { callSounds } from './callSounds';
 import { getSupabase } from '../../../auth/client';
 import { useI18n } from '../../../i18n/I18nProvider';
 import { useCallState, type CallData } from './useCallState';
@@ -271,9 +272,31 @@ export function CallManager({ userId }: { userId: string }) {
   const { activeCall, incomingCall, acceptCall, rejectCall, endCall } = useCall();
   const unknown = t('callsNative.unknownUser');
 
+  // Tones (CallManager.tsx:22-56): the incoming ringtone while a call rings,
+  // the outgoing ringtone while calling, a beep on connect and on end.
   useEffect(() => {
-    if (incomingCall) notify('toasts.common.incomingCall');
+    if (incomingCall) {
+      callSounds.playIncomingRingtone();
+      notify('toasts.common.incomingCall');
+    } else {
+      callSounds.stopAll();
+    }
+    return () => callSounds.stopAll();
   }, [incomingCall]);
+
+  const state = activeCall?.state;
+  useEffect(() => {
+    if (state === 'calling') callSounds.playOutgoingRingtone();
+    else if (state === 'active') callSounds.playConnectedBeep();
+    return () => {
+      if (state === 'ended') callSounds.playEndedBeep();
+    };
+  }, [state]);
+
+  const endWithBeep = () => {
+    callSounds.playEndedBeep();
+    void endCall();
+  };
 
   const other = (call: CallData) =>
     call.callerId === userId
@@ -287,12 +310,18 @@ export function CallManager({ userId }: { userId: string }) {
           callerName={incomingCall.callerName || unknown}
           callerAvatar={incomingCall.callerAvatar}
           isVideoCall={incomingCall.isVideoCall}
-          onAccept={() => void acceptCall(incomingCall)}
-          onReject={() => void rejectCall(incomingCall)}
+          onAccept={() => {
+            callSounds.stopAll();
+            void acceptCall(incomingCall);
+          }}
+          onReject={() => {
+            callSounds.stopAll();
+            void rejectCall(incomingCall);
+          }}
         />
       ) : null}
       {activeCall?.state === 'calling' ? (
-        <CallingScreen recipientName={activeCall.recipientName || unknown} recipientAvatar={activeCall.recipientAvatar} isVideoCall={activeCall.isVideoCall} onEndCall={() => void endCall()} />
+        <CallingScreen recipientName={activeCall.recipientName || unknown} recipientAvatar={activeCall.recipientAvatar} isVideoCall={activeCall.isVideoCall} onEndCall={endWithBeep} />
       ) : null}
       {activeCall?.state === 'active' ? (
         <MessengerCall
@@ -301,7 +330,7 @@ export function CallManager({ userId }: { userId: string }) {
           recipientId={other(activeCall).id}
           recipientName={other(activeCall).name}
           isVideoCall={activeCall.isVideoCall}
-          onEndCall={() => void endCall()}
+          onEndCall={endWithBeep}
         />
       ) : null}
     </>

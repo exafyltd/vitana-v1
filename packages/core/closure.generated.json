@@ -4,6 +4,7 @@
     "src/components/vitana/vitana-card-catalog.ts",
     "src/integrations/supabase/data-routing.ts",
     "src/integrations/supabase/types.ts",
+    "src/lib/chatMarkdown.ts",
     "src/lib/mentions.ts",
     "src/lib/messaging/groupManagement.ts",
     "src/lib/messaging/groupSystemNotice.ts",

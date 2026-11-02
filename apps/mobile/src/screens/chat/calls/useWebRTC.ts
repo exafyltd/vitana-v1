@@ -5,9 +5,9 @@
  * `offer` / `answer` / `ice-candidate` broadcasts addressed by `to`, presence
  * join → offer to the newcomer, presence leave → close that peer, the same
  * STUN servers and three join attempts 2 s apart. Media and peer connections
- * come from `src/ports/webrtc` (no engine is registered in this build → the
- * join fails and the call screen ends the call, as the web does when media
- * cannot start).
+ * come from `src/ports/webrtc` (react-native-webrtc; without the native
+ * module the join fails and the call screen ends the call, as the web does
+ * when media cannot start).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getSupabase } from '../../../auth/client';
