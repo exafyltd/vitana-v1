@@ -1196,10 +1196,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.BIOLOGY_SUPPLEMENTS",
@@ -1208,10 +1208,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.CONDITIONS",
@@ -1280,10 +1280,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.OVERVIEW",
@@ -1460,10 +1460,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HOME.CREATE_POST",

@@ -334,6 +334,63 @@
       },
       "litersOf": "{current}L / {target}L",
       "liters": "{value}L"
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Log data",
+        "example": "e.g. {value}",
+        "units": {
+          "count": "count",
+          "hours": "hours",
+          "min": "min"
+        },
+        "features": {
+          "biomarker_glucose": "Fasting glucose",
+          "meal_log": "Meals logged",
+          "macro_balance": "Macro balance score",
+          "water_intake": "Water intake",
+          "hydration_log": "Hydration check-ins",
+          "wearable_steps": "Steps",
+          "wearable_heart_rate": "Avg heart rate",
+          "wearable_workout": "Workout minutes",
+          "vo2_max": "VO₂-max estimate",
+          "wearable_sleep_duration": "Sleep duration",
+          "wearable_sleep_efficiency": "Sleep efficiency",
+          "wearable_hrv": "HRV (overnight avg)",
+          "meditation_minutes": "Meditation minutes",
+          "mood_entry": "Mood score",
+          "wearable_stress": "Stress (wearable)",
+          "journal_entry": "Journal entries today"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Fatty Acids",
+      "noSupplementsYet": "No supplements added yet. Tap 'Add Supplement' to get started.",
+      "noSupplementsInCategory": "No supplements in {category} category.",
+      "dialog": {
+        "addTitle": "Add Supplement",
+        "editTitle": "Edit Supplement",
+        "addDescription": "Add a new supplement to your regimen",
+        "editDescription": "Update supplement information",
+        "addSubmit": "Add Supplement",
+        "updateSubmit": "Update Supplement",
+        "datePlaceholder": "YYYY-MM-DD"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Order New Lab Test",
+          "description": "Schedule comprehensive health screening"
+        },
+        "downloadResults": {
+          "title": "Download All Results",
+          "description": "Export your complete lab history"
+        },
+        "trackTrends": {
+          "title": "Track Trends",
+          "description": "View biomarker trends over time"
+        }
+      }
     }
   }
 }
