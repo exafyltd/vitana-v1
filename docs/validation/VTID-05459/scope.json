@@ -17,7 +17,11 @@
     "apps/mobile/parity/ledger.json",
     "src/i18n/*/inboxNative.json",
     "docs/validation/**",
-    "packages/core/extract.json"
+    "packages/core/extract.json",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "apps/mobile/app.config.ts",
+    "apps/mobile/tests/app-config.test.ts"
   ],
   "files_touched": [
     "apps/mobile/app/(app)/inbox/index.tsx",
