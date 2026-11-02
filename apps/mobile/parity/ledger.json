@@ -2516,7 +2516,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null

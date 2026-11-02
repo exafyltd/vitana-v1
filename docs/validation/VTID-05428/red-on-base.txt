@@ -1,0 +1,23 @@
+# VTID-05428 red on base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce + only tests/delete-account/delete-account.test.tsx
+$ cd apps/mobile && npm run gen:i18n && npx jest tests/delete-account
+FAIL tests/delete-account/delete-account.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/delete-account/DeleteAccountScreen' from 'tests/delete-account/delete-account.test.tsx'
+
+      38 | import { languageFromLocale } from '../../src/i18n/I18nProvider';
+      39 | import { resolveWebPath } from '../../src/navigation/resolve';
+    > 40 | import { DeleteAccountScreen } from '../../src/screens/delete-account/DeleteAccountScreen';
+         | ^
+      41 | import {
+      42 |   ACCOUNT_DELETION_FUNCTION,
+      43 |   buildAccountDeletionRequest,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/delete-account/delete-account.test.tsx:40:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        18.141 s
+Ran all test suites matching /tests\/delete-account/i.
