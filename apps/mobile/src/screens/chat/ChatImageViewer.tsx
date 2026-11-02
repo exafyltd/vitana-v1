@@ -8,9 +8,9 @@
  * previous / next arrows on a video, and the toolbar: Download (opens the
  * file in the system viewer), Copy picture, Share picture (system share
  * sheet), Forward (opens the forward sheet above the viewer).
- * Copy picture takes the web's "unsupported" path when the device cannot put
- * a picture on the clipboard (chat-device port). A video shows its play
- * button and opens in the system player.
+ * Copy picture puts the picture itself on the clipboard (expo-clipboard);
+ * a video plays inside the viewer with the system controls (expo-video) and
+ * has no copy / share, like the web.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, FlatList, Image, Modal, Pressable, StyleSheet, useWindowDimensions, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
@@ -94,7 +94,7 @@ export async function copyImageAndNotify(url: string): Promise<'copied' | 'unsup
     return 'unsupported';
   }
   try {
-    device.copyText(url);
+    await device.copyImage(url);
     notify('screens.messages.imageCopied');
     return 'copied';
   } catch {
@@ -123,6 +123,7 @@ export function ChatImageViewer({ images, initialIndex, onClose, onForward }: { 
   const [zoomed, setZoomed] = useState(false);
   const list = useRef<FlatList<ChatViewerImage>>(null);
   const count = images.length;
+  const Video = getChatDevice().VideoPlayerView;
   const current = images[index];
   const isVideo = current?.kind === 'video';
 
@@ -190,9 +191,13 @@ export function ChatImageViewer({ images, initialIndex, onClose, onForward }: { 
           renderItem={({ item }) => (
             <View style={[styles.page, { width }]}>
               {item.kind === 'video' ? (
-                <Pressable onPress={() => void getChatDevice().openUrl(item.url)} accessibilityRole="button" accessibilityLabel={item.filename || t('inbox.media.video')} style={styles.video} testID="chat-image-viewer-video">
-                  <ChatIcon name="Play" size={40} color={colors.background} />
-                </Pressable>
+                index === images.indexOf(item) ? (
+                  <View style={styles.image} accessibilityLabel={item.filename || t('inbox.media.video')}>
+                    <Video uri={item.url} testID="chat-image-viewer-video" />
+                  </View>
+                ) : (
+                  <View style={styles.image} />
+                )
               ) : item.url ? (
                 <ZoomableImage uri={item.url} label={item.filename} onZoomChange={setZoomed} />
               ) : (
@@ -226,7 +231,6 @@ const styles = StyleSheet.create({
   page: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   image: { width: '100%', height: '100%' },
   fill: { width: '100%', height: '100%' },
-  video: { width: 96, height: 96, borderRadius: 48, alignItems: 'center', justifyContent: 'center' },
   arrow: { position: 'absolute', top: '50%', width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
   start: { start: 8 },
   end: { end: 8 },

@@ -249,24 +249,46 @@ export const PROFILES = [
  * upload recorder with progress, a clipboard, a share sheet, a recorder and
  * players that only record what was asked. Nothing touches a device.
  */
-export function fakeDevice(o: { pick?: Awaited<ReturnType<import('../../../src/ports/chat-device').ChatDevice['pickMedia']>>; failPut?: boolean; recordResult?: 'recording' | 'denied'; share?: 'shared' | 'cancelled' | 'failed' } = {}) {
+export function fakeDevice(o: { pick?: Awaited<ReturnType<import('../../../src/ports/chat-device').ChatDevice['pickMedia']>>; failPut?: boolean; recordResult?: 'recording' | 'denied'; share?: 'shared' | 'cancelled' | 'failed'; pickDate?: Date } = {}) {
   const log = {
     puts: [] as Array<{ url: string; name: string; headers: Record<string, string> }>,
     copied: [] as string[],
+    copiedImages: [] as string[],
+    picked: [] as string[],
     shared: [] as Array<{ message?: string; url?: string }>,
     opened: [] as string[],
     players: [] as Array<{ source: string; opts?: { loop?: boolean; volume?: number }; played: number; paused: number; stopped: number; released: number; emit: (s: { currentTime: number; duration: number; playing: boolean; didJustFinish: boolean }) => void }>,
     recorder: { started: 0, stopped: 0, cancelled: 0 },
   };
   const device = {
-    pickMedia: jest.fn(async () => o.pick ?? { status: 'cancelled' as const }),
+    pickMedia: jest.fn(async (source: string = 'library') => {
+      log.picked.push(source);
+      return o.pick ?? { status: 'cancelled' as const };
+    }),
     putFile: jest.fn(async (url: string, file: { name: string }, headers: Record<string, string>, onProgress?: (p: { loaded: number; total: number; percentage: number }) => void) => {
       log.puts.push({ url, name: file.name, headers });
       onProgress?.({ loaded: 5, total: 10, percentage: 50 });
       if (o.failPut) throw new Error('Upload failed (network)');
     }),
     copyText: jest.fn((text: string) => void log.copied.push(text)),
-    canCopyImages: false,
+    canCopyImages: true,
+    copyImage: jest.fn(async (url: string) => {
+      if (url.includes('gone')) throw new Error('image 404');
+      log.copiedImages.push(url);
+    }),
+    VideoPlayerView: ({ uri, testID }: { uri: string; testID?: string }) => {
+      const { Text } = jest.requireActual('react-native') as typeof import('react-native');
+      return <Text testID={testID}>{`video:${uri}`}</Text>;
+    },
+    /** A press picks `o.pickDate` (or 2026-11-20 18:30 local). */
+    DateTimeField: ({ onChange, display, placeholder, testID }: { onChange: (d: Date) => void; display: string; placeholder: string; testID?: string }) => {
+      const { Pressable, Text } = jest.requireActual('react-native') as typeof import('react-native');
+      return (
+        <Pressable testID={testID} onPress={() => onChange(o.pickDate ?? new Date(2026, 10, 20, 18, 30))}>
+          <Text>{display || placeholder}</Text>
+        </Pressable>
+      );
+    },
     share: jest.fn(async (input: { message?: string; url?: string }) => {
       log.shared.push(input);
       return o.share ?? 'shared';

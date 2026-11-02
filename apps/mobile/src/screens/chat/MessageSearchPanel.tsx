@@ -15,7 +15,28 @@ import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { BottomSheet, Button, Spinner, Text, TextInput, useUITheme } from '../../ports/ui';
 import { ChatIcon } from '../../ports/chat';
 import { useI18n } from '../../i18n/I18nProvider';
+import { getChatDevice } from '../../ports/chat-device';
+import { dayToDate, localDay } from './AttachmentMenu';
 import { highlightParts, SEARCH_MIN_CHARS, SEARCH_TYPES, useMessageSearch, type MessageSearchResult, type SearchType } from './data/search';
+
+/** web `<input type="date" min/max>` (MessageSearchPanel.tsx:183-187) through the system picker. */
+function DayField({ value, onChange, min, max, label, testID }: { value: string; onChange: (d: string) => void; min?: string; max?: string; label: string; testID: string }) {
+  const { language } = useI18n();
+  const Field = getChatDevice().DateTimeField;
+  const date = dayToDate(value);
+  return (
+    <Field
+      mode="date"
+      value={date}
+      onChange={(d) => onChange(localDay(d))}
+      minimumDate={min ? (dayToDate(min) ?? undefined) : undefined}
+      maximumDate={max ? (dayToDate(max) ?? undefined) : undefined}
+      placeholder={label}
+      display={date ? new Intl.DateTimeFormat(language, { dateStyle: 'medium' }).format(date) : ''}
+      testID={testID}
+    />
+  );
+}
 
 export function MessageSearchPanel({ open, onClose, scope, onSelect }: { open: boolean; onClose: () => void; scope: string; onSelect: (r: MessageSearchResult) => void }) {
   const { t, language } = useI18n();
@@ -112,11 +133,11 @@ export function MessageSearchPanel({ open, onClose, scope, onSelect }: { open: b
           <View style={styles.wrap}>
             <View style={styles.flex}>
               <Text muted>{t('inbox.search.from')}</Text>
-              <TextInput value={from} onChangeText={setFrom} placeholder={t('chatNative.composer.datePlaceholder')} testID="message-search-from" />
+              <DayField value={from} onChange={setFrom} max={to} label={t('inbox.search.from')} testID="message-search-from" />
             </View>
             <View style={styles.flex}>
               <Text muted>{t('inbox.search.to')}</Text>
-              <TextInput value={to} onChangeText={setTo} placeholder={t('chatNative.composer.datePlaceholder')} testID="message-search-to" />
+              <DayField value={to} onChange={setTo} min={from} label={t('inbox.search.to')} testID="message-search-to" />
             </View>
           </View>
         </View>

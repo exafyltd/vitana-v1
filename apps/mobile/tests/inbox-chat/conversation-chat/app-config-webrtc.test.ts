@@ -92,3 +92,44 @@ describe('the iOS Info.plist and Android permissions every registered plugin wri
     expect(perms).toEqual(expect.arrayContaining(['android.permission.CAMERA', 'android.permission.RECORD_AUDIO']));
   }, 30_000);
 });
+
+describe('chat media parity packages (fix 1, driver decision)', () => {
+  const cfg = resolved();
+
+  it('registers expo-video without background playback or PiP, and the date-time picker', () => {
+    expect(entry(cfg, 'expo-video')).toEqual(['expo-video', { supportsBackgroundPlayback: false, supportsPictureInPicture: false }]);
+    expect(entry(cfg, '@react-native-community/datetimepicker')).toBe('@react-native-community/datetimepicker');
+    expect(entry(buildConfig('test-g1'), 'expo-video')).toEqual(entry(cfg, 'expo-video'));
+  });
+
+  it('expo-clipboard, expo-video, expo-document-picker and the date-time picker are pinned dependencies', () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const pkg = require('../../../package.json') as { dependencies: Record<string, string> };
+    for (const name of ['expo-clipboard', 'expo-video', 'expo-document-picker', '@react-native-community/datetimepicker']) expect(pkg.dependencies[name]).toMatch(/^\d+\.\d+\.\d+$/);
+  });
+
+  it('running every iOS Info.plist mod keeps one camera / microphone string and adds no background mode', async () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), 'chat-media-plugins-'));
+    try {
+      const plugins = (cfg.plugins as Entry[])
+        .filter((p) => [VOICE, 'expo-image-picker', 'expo-audio', WEBRTC, 'expo-video', '@react-native-community/datetimepicker'].includes(Array.isArray(p) ? p[0] : p))
+        .map((p) => {
+          const [name, props] = Array.isArray(p) ? p : [p, undefined];
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const mod = require(name.startsWith('./') ? join(APP, name) : `${name}/app.plugin`);
+          return [mod.default ?? mod, props];
+        });
+      const config = withPlugins({ name: cfg.name, slug: cfg.slug, _internal: { projectRoot } }, plugins) as ExpoConfig & {
+        mods: { ios: Record<string, (c: unknown) => Promise<{ modResults: Record<string, unknown> }>> };
+      };
+      const modRequest = { projectRoot, platformProjectRoot: join(projectRoot, 'ios'), platform: 'ios', introspect: false };
+      const afterDangerous = (await config.mods.ios.dangerous({ ...config, modRequest: { ...modRequest, modName: 'dangerous' }, modResults: {} })) as unknown as Record<string, unknown>;
+      const { modResults } = await config.mods.ios.infoPlist({ ...afterDangerous, modRequest: { ...modRequest, modName: 'infoPlist' }, modResults: {} });
+      expect(modResults.NSCameraUsageDescription).toBe(camera);
+      expect(modResults.NSMicrophoneUsageDescription).toBe(mic);
+      expect(modResults.UIBackgroundModes ?? []).not.toContain('audio');
+    } finally {
+      rmSync(projectRoot, { recursive: true, force: true });
+    }
+  }, 30_000);
+});

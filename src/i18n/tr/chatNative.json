@@ -37,9 +37,8 @@
       "stop": "Kaydı durdur"
     },
     "composer": {
-      "datePlaceholder": "YYYY-AA-GG",
-      "timePlaceholder": "SS:DD",
-      "removeFile": "{name} kaldır"
+      "removeFile": "{name} kaldır",
+      "pickerDone": "Bitti"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "Endeksin: {score}"
+    },
+    "attach": {
+      "library": "Fotoğraf arşivi",
+      "camera": "Kamera",
+      "files": "Dosyalar"
     }
   }
 }

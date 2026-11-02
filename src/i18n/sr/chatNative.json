@@ -37,9 +37,8 @@
       "stop": "Zaustavi snimanje"
     },
     "composer": {
-      "datePlaceholder": "GGGG-MM-DD",
-      "timePlaceholder": "SS:MM",
-      "removeFile": "Ukloni {name}"
+      "removeFile": "Ukloni {name}",
+      "pickerDone": "Gotovo"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "Tvoj indeks: {score}"
+    },
+    "attach": {
+      "library": "Biblioteka fotografija",
+      "camera": "Kamera",
+      "files": "Datoteke"
     }
   }
 }

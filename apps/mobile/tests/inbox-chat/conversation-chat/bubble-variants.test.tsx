@@ -33,6 +33,7 @@ afterEach(() => {
 });
 afterAll(() => __setSupabaseForTests(null));
 
+
 const base = (over: Partial<ChatViewMessage>): ChatViewMessage => ({
   id: 'b1',
   thread_id: PEER,
@@ -217,7 +218,7 @@ describe('media', () => {
     expect(screen.getByText('alt.pdf')).toBeTruthy();
   });
 
-  it('viewer toolbar: download opens the picture, share opens the share sheet, copy says "unsupported"', async () => {
+  it('viewer toolbar: download opens the picture, share opens the share sheet, copy puts the picture on the clipboard', async () => {
     const { dev } = renderBubble(base({ id: 'im', message_type: 'attachment', content_data: { attachments: [{ type: 'image', url: 'https://cdn/a.jpg', filename: 'a.jpg' }] } }));
     fireEvent.press(screen.getByTestId('chat-image'));
     fireEvent.press(await screen.findByTestId('chat-image-viewer-download'));
@@ -225,7 +226,16 @@ describe('media', () => {
     fireEvent.press(screen.getByTestId('chat-image-viewer-copy'));
     await waitFor(() => expect(dev.log.opened).toEqual(['https://cdn/a.jpg']));
     expect(dev.log.shared).toEqual([{ url: 'https://cdn/a.jpg' }]);
-    await waitFor(() => expect(__toastsForTests().some((x) => x.titleKey === 'screens.messages.imageCopyUnsupported')).toBe(true));
+    await waitFor(() => expect(dev.log.copiedImages).toEqual(['https://cdn/a.jpg']));
+    await waitFor(() => expect(__toastsForTests().some((x) => x.titleKey === 'screens.messages.imageCopied')).toBe(true));
+  });
+
+  it('a video plays inside the viewer (no copy / share for a video)', async () => {
+    renderBubble(base({ id: 'vv', message_type: 'attachment', content_data: { attachments: [{ type: 'video', url: 'https://cdn/v.mp4', filename: 'v.mp4' }] } }));
+    fireEvent.press(screen.getByTestId('chat-video'));
+    expect((await screen.findByTestId('chat-image-viewer-video')).props.children).toBe('video:https://cdn/v.mp4');
+    expect(screen.queryByTestId('chat-image-viewer-copy')).toBeNull();
+    expect(screen.queryByTestId('chat-image-viewer-share')).toBeNull();
   });
 });
 
@@ -316,11 +326,19 @@ describe('links + Copy + Forward', () => {
     expect(dev.log.copied).toEqual(['Kopier mich']);
   });
 
-  it('Copy on a picture-only message takes the "picture copy unsupported" path', async () => {
-    renderBubble(base({ id: 'c2', message_type: 'attachment', content_data: { attachments: [{ type: 'image', url: 'https://cdn/a.jpg' }] } }));
+  it('Copy on a picture-only message copies the picture itself', async () => {
+    const { dev } = renderBubble(base({ id: 'c2', message_type: 'attachment', content_data: { attachments: [{ type: 'image', url: 'https://cdn/a.jpg' }] } }));
     longPress('c2');
     fireEvent.press(screen.getByTestId('message-action-copy'));
-    await waitFor(() => expect(__toastsForTests().some((x) => x.titleKey === 'screens.messages.imageCopyUnsupported')).toBe(true));
+    await waitFor(() => expect(dev.log.copiedImages).toEqual(['https://cdn/a.jpg']));
+    expect(dev.log.copied).toEqual([]);
+  });
+
+  it('a picture that cannot be fetched says "Could not copy"', async () => {
+    renderBubble(base({ id: 'c3', message_type: 'attachment', content_data: { attachments: [{ type: 'image', url: 'https://cdn/gone.jpg' }] } }));
+    longPress('c3');
+    fireEvent.press(screen.getByTestId('message-action-copy'));
+    await waitFor(() => expect(__toastsForTests().some((x) => x.titleKey === 'screens.messages.imageCopyFailed')).toBe(true));
   });
 
   it('voice and cards cannot be forwarded (no Forward action)', () => {

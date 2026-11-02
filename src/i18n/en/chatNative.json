@@ -37,9 +37,8 @@
       "stop": "Stop recording"
     },
     "composer": {
-      "datePlaceholder": "YYYY-MM-DD",
-      "timePlaceholder": "HH:MM",
-      "removeFile": "Remove {name}"
+      "removeFile": "Remove {name}",
+      "pickerDone": "Done"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "Your Index: {score}"
+    },
+    "attach": {
+      "library": "Photo library",
+      "camera": "Camera",
+      "files": "Files"
     }
   }
 }

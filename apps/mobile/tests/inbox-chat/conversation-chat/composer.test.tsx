@@ -68,7 +68,9 @@ describe('attachments (group paperclip → library → upload)', () => {
     const dev = fakeDevice({ pick: { status: 'picked', files: [photo] } });
     const { d, onSend } = setup({}, dev);
     fireEvent.press(screen.getByTestId('attach-paperclip'));
+    fireEvent.press(await screen.findByTestId('attach-source-library'));
     await waitFor(() => expect(screen.getByTestId('attachment-chip')).toBeTruthy());
+    expect(dev.log.picked).toEqual(['library']);
     const upload = d.storageOps.find((o) => o.op === 'createSignedUploadUrl');
     expect(upload?.bucket).toBe('chat-attachments');
     expect(upload?.path).toMatch(new RegExp(`^${ME}/g1/\\d+_[a-z0-9]+\\.jpg$`));
@@ -87,6 +89,7 @@ describe('attachments (group paperclip → library → upload)', () => {
     const dev = fakeDevice({ pick: { status: 'picked', files: [photo] }, failPut: true });
     setup({}, dev);
     fireEvent.press(screen.getByTestId('attach-paperclip'));
+    fireEvent.press(await screen.findByTestId('attach-source-camera'));
     expect(await screen.findByTestId('upload-failed')).toBeTruthy();
     expect(__toastsForTests().some((x) => x.titleKey === 'toasts.messages.uploadFailed')).toBe(true);
     fireEvent.changeText(screen.getByTestId('message-input-field'), 'caption');
@@ -99,6 +102,7 @@ describe('attachments (group paperclip → library → upload)', () => {
     const dev = fakeDevice({ pick: { status: 'picked', files: [photo] } });
     const { d } = setup({}, dev);
     fireEvent.press(screen.getByTestId('attach-paperclip'));
+    fireEvent.press(await screen.findByTestId('attach-source-library'));
     await waitFor(() => expect(screen.getByTestId('attachment-chip')).toBeTruthy());
     fireEvent.press(screen.getByTestId('attachment-remove-0'));
     await waitFor(() => expect(d.storageOps.some((o) => o.op === 'remove')).toBe(true));
@@ -109,6 +113,7 @@ describe('attachments (group paperclip → library → upload)', () => {
     const dev = fakeDevice({ pick: { status: 'picked', files: [{ ...photo, mimeType: 'application/x-msdownload', name: 'x.exe' }] } });
     setup({}, dev);
     fireEvent.press(screen.getByTestId('attach-paperclip'));
+    fireEvent.press(await screen.findByTestId('attach-source-files'));
     await waitFor(() => expect(__toastsForTests().some((x) => x.titleKey === 'toasts.messages.fileNotAllowed')).toBe(true));
     expect(dev.log.puts).toHaveLength(0);
   });
@@ -163,8 +168,7 @@ describe('DM attachment menu', () => {
     fireEvent.press(screen.getByTestId('attachment-menu-button'));
     fireEvent.press(await screen.findByTestId('attach-calendar'));
     fireEvent.changeText(await screen.findByTestId('calendar-invite-title'), 'Laufen');
-    fireEvent.changeText(screen.getByTestId('calendar-invite-date'), '2026-11-20');
-    fireEvent.changeText(screen.getByTestId('calendar-invite-time'), '18:30');
+    fireEvent.press(screen.getByTestId('calendar-invite-datetime'));
     fireEvent.changeText(screen.getByTestId('calendar-invite-location'), 'Park');
     fireEvent.press(screen.getByTestId('calendar-invite-submit'));
     await waitFor(() => expect(onSend).toHaveBeenCalled());
@@ -226,11 +230,34 @@ describe('DM attachment menu', () => {
     expect(screen.queryByTestId('attach-request-payment')).toBeNull();
   });
 
-  it('Attach file opens the library', async () => {
-    const dev = fakeDevice({ pick: { status: 'cancelled' } });
-    setup({ conversationType: 'direct', recipient, threadId: PEER }, dev);
+  it('Attach file opens the phone chooser (library / camera / files); a document uploads as a file attachment', async () => {
+    const pdf = { uri: 'file:///cache/plan.pdf', name: 'plan.pdf', mimeType: 'application/pdf', size: 4096 };
+    const dev = fakeDevice({ pick: { status: 'picked', files: [pdf] } });
+    const { onSend } = setup({ conversationType: 'direct', recipient, threadId: PEER }, dev);
     fireEvent.press(screen.getByTestId('attachment-menu-button'));
     fireEvent.press(await screen.findByTestId('attach-file'));
-    await waitFor(() => expect(dev.device.pickMedia).toHaveBeenCalled());
+    expect(await screen.findByTestId('attach-source-library')).toBeTruthy();
+    expect(screen.getByTestId('attach-source-camera')).toBeTruthy();
+    fireEvent.press(screen.getByTestId('attach-source-files'));
+    await waitFor(() => expect(screen.getByTestId('attachment-chip')).toBeTruthy());
+    expect(dev.log.picked).toEqual(['files']);
+    fireEvent.press(screen.getByTestId('message-send'));
+    await waitFor(() => expect(onSend).toHaveBeenCalled());
+    const [, type, data] = (onSend.mock.calls[0] as unknown) as [string, string, { attachments: Array<Record<string, unknown>> }];
+    expect(type).toBe('attachment');
+    expect(data.attachments[0]).toMatchObject({ type: 'file', name: 'plan.pdf', mime: 'application/pdf', size: 4096 });
+  });
+
+  it('Request Payment due date comes from the date picker as YYYY-MM-DD', async () => {
+    (Platform as { OS: string }).OS = 'android';
+    const { onSend } = setup({ conversationType: 'direct', recipient }, fakeDevice({ pickDate: new Date(2026, 11, 24, 9, 0) }));
+    fireEvent.press(screen.getByTestId('attachment-menu-button'));
+    fireEvent.press(await screen.findByTestId('attach-request-payment'));
+    fireEvent.changeText(await screen.findByTestId('payment-request-amount'), '3');
+    fireEvent.changeText(screen.getByTestId('payment-request-description'), 'Kaffee');
+    fireEvent.press(screen.getByTestId('payment-request-due'));
+    fireEvent.press(screen.getByTestId('payment-request-submit'));
+    await waitFor(() => expect(onSend).toHaveBeenCalled());
+    expect(((onSend.mock.calls[0] as unknown) as [string, string, Record<string, unknown>])[2].dueDate).toBe('2026-12-24');
   });
 });

@@ -37,9 +37,8 @@
       "stop": "إيقاف التسجيل"
     },
     "composer": {
-      "datePlaceholder": "YYYY-MM-DD",
-      "timePlaceholder": "HH:MM",
-      "removeFile": "إزالة {name}"
+      "removeFile": "إزالة {name}",
+      "pickerDone": "تم"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "مؤشرك: {score}"
+    },
+    "attach": {
+      "library": "مكتبة الصور",
+      "camera": "الكاميرا",
+      "files": "الملفات"
     }
   }
 }

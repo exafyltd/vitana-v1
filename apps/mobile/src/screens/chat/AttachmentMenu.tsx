@@ -10,7 +10,8 @@
  *    message follows (type `payment_confirmation`);
  *  - Request Payment: amount, currency, description, optional due date → a
  *    `payment_request` message;
- *  - Send Calendar Invite: title, date + time, optional place and description
+ *  - Send Calendar Invite: title, date + time (the system picker, the web's
+ *    datetime-local), optional place and description
  *    → a `calendar_invite` message with Accept / Decline / Maybe buttons
  *    (MessageInput.sendCalendarInvite, 60 min default length);
  *  - Attach file: the device's photo / video library.
@@ -25,6 +26,7 @@ import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Avatar, BottomSheet, Button, Text, TextInput, useUITheme } from '../../ports/ui';
 import { ChatIcon, Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ports/chat';
 import { useI18n } from '../../i18n/I18nProvider';
+import { getChatDevice } from '../../ports/chat-device';
 import { CURRENCIES, useWallet, type Currency } from './data/wallet';
 
 type Send = (content: string, messageType: string, contentData: Record<string, unknown> | null, actionButtons?: unknown[]) => Promise<void>;
@@ -35,6 +37,17 @@ export const iapRestricted = () => Platform.OS === 'ios';
 
 const DATE_RX = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RX = /^\d{1,2}:\d{2}$/;
+
+const pad = (n: number) => String(n).padStart(2, '0');
+/** A picked local Date as the web inputs' values: `YYYY-MM-DD` and `HH:MM`. */
+export const localDay = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+export const localTime = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+/** `YYYY-MM-DD` → local midnight Date (for the field's value). */
+export const dayToDate = (day: string) => {
+  if (!DATE_RX.test(day)) return null;
+  const [y, m, d] = day.split('-').map(Number);
+  return new Date(y, m - 1, d);
+};
 
 /** web composeIso (MessageInput.sendCalendarInvite): local date + time, 09:00 without a time. */
 export function composeInviteIso(date: string, time?: string): string {
@@ -178,6 +191,22 @@ export function SendFundsDialog({ open, onClose, recipient, userId, onSend }: { 
   );
 }
 
+function DueDate({ value, onChange }: { value: string; onChange: (day: string) => void }) {
+  const { t, language } = useI18n();
+  const Field = getChatDevice().DateTimeField;
+  const date = dayToDate(value);
+  return (
+    <Field
+      mode="date"
+      value={date}
+      onChange={(d) => onChange(localDay(d))}
+      placeholder={t('screens.payment.dueDateOptional')}
+      display={date ? new Intl.DateTimeFormat(language, { dateStyle: 'medium' }).format(date) : ''}
+      testID="payment-request-due"
+    />
+  );
+}
+
 export function PaymentRequestDialog({ open, onClose, recipient, onSend }: { open: boolean; onClose: () => void; recipient: Recipient; onSend: Send }) {
   const { t } = useI18n();
   const [amount, setAmount] = useState('');
@@ -219,7 +248,7 @@ export function PaymentRequestDialog({ open, onClose, recipient, onSend }: { ope
           <Text style={styles.bold}>{t('screens.payment.description')}</Text>
           <TextInput value={description} onChangeText={setDescription} placeholder={t('screens.payment.whatThisPaymentFor')} testID="payment-request-description" />
           <Text style={styles.bold}>{t('screens.payment.dueDateOptional')}</Text>
-          <TextInput value={dueDate} onChangeText={setDueDate} placeholder={t('chatNative.composer.datePlaceholder')} testID="payment-request-due" />
+          <DueDate value={dueDate} onChange={setDueDate} />
           <View style={styles.row}>
             <Button variant="outline" onPress={onClose} style={styles.flex}>
               {t('screens.payment.cancel')}
@@ -235,7 +264,8 @@ export function PaymentRequestDialog({ open, onClose, recipient, onSend }: { ope
 }
 
 export function CalendarInviteDialog({ open, onClose, onSend }: { open: boolean; onClose: () => void; onSend: Send }) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const Field = getChatDevice().DateTimeField;
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -263,14 +293,17 @@ export function CalendarInviteDialog({ open, onClose, onSend }: { open: boolean;
           <Text style={styles.bold}>{t('screens.messages.eventTitle')}</Text>
           <TextInput value={title} onChangeText={setTitle} placeholder={t('screens.messages.meetingTitle')} testID="calendar-invite-title" />
           <Text style={styles.bold}>{t('screens.messages.dateTime')}</Text>
-          <View style={styles.row}>
-            <View style={styles.flex}>
-              <TextInput value={date} onChangeText={setDate} placeholder={t('chatNative.composer.datePlaceholder')} testID="calendar-invite-date" />
-            </View>
-            <View style={styles.flex}>
-              <TextInput value={time} onChangeText={setTime} placeholder={t('chatNative.composer.timePlaceholder')} testID="calendar-invite-time" />
-            </View>
-          </View>
+          <Field
+            mode="datetime"
+            value={valid || (DATE_RX.test(date) && TIME_RX.test(time)) ? new Date(composeInviteIso(date, time)) : null}
+            onChange={(d) => {
+              setDate(localDay(d));
+              setTime(localTime(d));
+            }}
+            placeholder={t('screens.messages.dateTime')}
+            display={DATE_RX.test(date) && TIME_RX.test(time) ? new Intl.DateTimeFormat(language, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(composeInviteIso(date, time))) : ''}
+            testID="calendar-invite-datetime"
+          />
           <Text style={styles.bold}>{t('screens.messages.locationOptional')}</Text>
           <TextInput value={location} onChangeText={setLocation} placeholder={t('screens.messages.meetingLocation')} testID="calendar-invite-location" />
           <Text style={styles.bold}>{t('screens.messages.descriptionOptional')}</Text>

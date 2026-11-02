@@ -37,9 +37,8 @@
       "stop": "Остановить запись"
     },
     "composer": {
-      "datePlaceholder": "ГГГГ-ММ-ДД",
-      "timePlaceholder": "ЧЧ:ММ",
-      "removeFile": "Убрать {name}"
+      "removeFile": "Убрать {name}",
+      "pickerDone": "Готово"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "Твой индекс: {score}"
+    },
+    "attach": {
+      "library": "Медиатека",
+      "camera": "Камера",
+      "files": "Файлы"
     }
   }
 }

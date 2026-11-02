@@ -3,7 +3,9 @@
  * mocks for the chat / call tests, imported before the code under test so
  * jest hoists them: storage, expo-router (no native router), zero safe-area
  * insets, stub expo-image-picker / expo-audio modules (the tests register a
- * fake chat device instead, see fakeDevice in helpers.tsx) and the ORB
+ * fake chat device instead, see fakeDevice in helpers.tsx), stub
+ * expo-clipboard / expo-video / expo-document-picker / the date-time picker,
+ * and the ORB
  * activation port. The `mock`-prefixed names are the ones jest lets a
  * factory use.
  */
@@ -59,9 +61,18 @@ jest.mock(
   { virtual: true },
 );
 
+jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(async () => true), setImageAsync: jest.fn(async () => undefined) }));
+jest.mock('expo-document-picker', () => ({ getDocumentAsync: jest.fn(async () => ({ canceled: true, assets: null })) }));
+jest.mock('expo-video', () => ({ useVideoPlayer: () => ({}), VideoView: () => null }));
+jest.mock('@react-native-community/datetimepicker', () => ({ __esModule: true, default: () => null, DateTimePickerAndroid: { open: jest.fn() } }));
+
 const mockActivateOrb = jest.fn(() => true);
 jest.mock('../../../src/ports/orb-activate', () => ({ useActivateOrb: () => mockActivateOrb }));
 
 export const router = mockRouter;
 export const activateOrb = mockActivateOrb;
 export const routeParams = mockParams;
+
+// The chat screens pull in the device, video and picker modules: the first
+// render of a suite on a busy CI runner can take longer than jest's 5 s.
+jest.setTimeout(20_000);

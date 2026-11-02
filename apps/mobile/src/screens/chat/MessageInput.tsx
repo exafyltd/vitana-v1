@@ -7,7 +7,9 @@
  *    VTID-05229: `sendsOnEnter` is false without a real keyboard).
  *  - the pill holds the emoji picker, the attachment trigger and the text: a
  *    DM opens the AttachmentMenu (Send Funds, Request Payment, Calendar invite,
- *    Attach file); a group's paperclip opens the library directly (L700-716).
+ *    Attach file); a group's paperclip opens the file chooser directly
+ *    (L700-716). The chooser is the phone's one for the web file input:
+ *    photo library, camera or files (pdf, Office, text, archives, audio).
  *  - picked files upload at once with real progress ("Uploading n%"); a failed
  *    upload stays as a chip with Retry / remove and blocks sending (VTID-05316);
  *    removing an uploaded file deletes it again; files go out as an
@@ -21,9 +23,9 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, View, type NativeSyntheticEvent, type TextInputSelectionChangeEventData } from 'react-native';
-import { Avatar, Button, notifyError, Spinner, Text, useUITheme } from '../../ports/ui';
+import { Avatar, BottomSheet, Button, notifyError, Spinner, Text, useUITheme } from '../../ports/ui';
 import { addMention, ChatIcon, filterLocalCandidates, findActiveMentionToken, insertMention, pruneMentions, Textarea, type Mention } from '../../ports/chat';
-import { getChatDevice, type PickedFile } from '../../ports/chat-device';
+import { getChatDevice, type PickedFile, type PickSource } from '../../ports/chat-device';
 import { useI18n } from '../../i18n/I18nProvider';
 import { ReplyPreview } from './components';
 import { AttachmentMenu, type Recipient } from './AttachmentMenu';
@@ -148,12 +150,20 @@ export function MessageInput({
     }
   };
 
-  const attachFiles = async () => {
+  const [sourceOpen, setSourceOpen] = useState(false);
+  /** The web file input's phone chooser: photo library, camera or files. */
+  const chooseSource = () => {
     if (!threadId) {
       notifyError('toasts.messages.openConversation', 'toasts.messages.selectOpenConversationBeforeAttachingFiles');
       return;
     }
-    const picked = await getChatDevice().pickMedia();
+    setSourceOpen(true);
+  };
+
+  const attachFiles = async (source: PickSource) => {
+    setSourceOpen(false);
+    if (!threadId) return;
+    const picked = await getChatDevice().pickMedia(source);
     if (picked.status !== 'picked') return;
     if (picked.files.some((f) => !validateFile(f))) {
       notifyError('toasts.messages.fileNotAllowed');
@@ -297,11 +307,11 @@ export function MessageInput({
             <View style={[styles.pill, { backgroundColor: colors.muted, borderColor: colors.border }]}>
               <EmojiPicker userId={currentUserId} disabled={disabled} onSelect={(emoji) => onChange(text + emoji)} />
               {conversationType === 'group' ? (
-                <Pressable onPress={() => void attachFiles()} disabled={disabled || uploading} accessibilityRole="button" accessibilityLabel={t('screens.messages.attach')} style={styles.icon} testID="attach-paperclip">
+                <Pressable onPress={chooseSource} disabled={disabled || uploading} accessibilityRole="button" accessibilityLabel={t('screens.messages.attach')} style={styles.icon} testID="attach-paperclip">
                   <ChatIcon name="Paperclip" size={16} />
                 </Pressable>
               ) : (
-                <AttachmentMenu onFileAttach={() => void attachFiles()} onSend={sendCard} recipient={recipient ?? null} userId={currentUserId} disabled={disabled || uploading} />
+                <AttachmentMenu onFileAttach={chooseSource} onSend={sendCard} recipient={recipient ?? null} userId={currentUserId} disabled={disabled || uploading} />
               )}
               <View style={styles.fieldBox}>
                 <Textarea
@@ -339,6 +349,20 @@ export function MessageInput({
           </>
         )}
       </View>
+      <BottomSheet open={sourceOpen} onClose={() => setSourceOpen(false)} title={t('screens.messages.attachFile')} testID="attach-source">
+        {(
+          [
+            ['library', 'Image', 'chatNative.attach.library'],
+            ['camera', 'Camera', 'chatNative.attach.camera'],
+            ['files', 'FileText', 'chatNative.attach.files'],
+          ] as const
+        ).map(([source, icon, key]) => (
+          <Pressable key={source} onPress={() => void attachFiles(source)} accessibilityRole="button" style={styles.sourceRow} testID={`attach-source-${source}`}>
+            <ChatIcon name={icon} size={20} />
+            <Text>{t(key)}</Text>
+          </Pressable>
+        ))}
+      </BottomSheet>
     </View>
   );
 }
@@ -359,6 +383,7 @@ const styles = StyleSheet.create({
   thumb: { width: 32, height: 32, borderRadius: 4 },
   bold: { fontWeight: '600', fontSize: 13 },
   small: { fontSize: 12 },
+  sourceRow: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 44, paddingHorizontal: 12 },
   suggestions: { borderWidth: 1, borderRadius: 12, marginBottom: 8, paddingVertical: 4 },
   suggestion: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 8 },
 });

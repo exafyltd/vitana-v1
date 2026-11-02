@@ -37,9 +37,8 @@
       "stop": "Detener grabación"
     },
     "composer": {
-      "datePlaceholder": "AAAA-MM-DD",
-      "timePlaceholder": "HH:MM",
-      "removeFile": "Quitar {name}"
+      "removeFile": "Quitar {name}",
+      "pickerDone": "Listo"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "Tu índice: {score}"
+    },
+    "attach": {
+      "library": "Fototeca",
+      "camera": "Cámara",
+      "files": "Archivos"
     }
   }
 }

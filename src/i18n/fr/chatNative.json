@@ -37,9 +37,8 @@
       "stop": "Arrêter l'enregistrement"
     },
     "composer": {
-      "datePlaceholder": "AAAA-MM-JJ",
-      "timePlaceholder": "HH:MM",
-      "removeFile": "Retirer {name}"
+      "removeFile": "Retirer {name}",
+      "pickerDone": "OK"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "Ton indice : {score}"
+    },
+    "attach": {
+      "library": "Photothèque",
+      "camera": "Appareil photo",
+      "files": "Fichiers"
     }
   }
 }

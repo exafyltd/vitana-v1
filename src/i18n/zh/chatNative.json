@@ -37,9 +37,8 @@
       "stop": "停止录音"
     },
     "composer": {
-      "datePlaceholder": "YYYY-MM-DD",
-      "timePlaceholder": "HH:MM",
-      "removeFile": "移除 {name}"
+      "removeFile": "移除 {name}",
+      "pickerDone": "完成"
     },
     "payment": {
       "status": {
@@ -60,6 +59,11 @@
     },
     "companion": {
       "indexScore": "你的指数：{score}"
+    },
+    "attach": {
+      "library": "照片图库",
+      "camera": "相机",
+      "files": "文件"
     }
   }
 }
