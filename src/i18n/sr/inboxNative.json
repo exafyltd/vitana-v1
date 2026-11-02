@@ -43,6 +43,9 @@
       "away": "Odsutan",
       "offline": "Van mreže"
     },
-    "datePlaceholder": "GGGG-MM-DD"
+    "datePlaceholder": "GGGG-MM-DD",
+    "permissions": {
+      "contactsUsage": "Vitana čita tvoje kontakte samo kada dodirneš „Preuzmi kontakte sa telefona”, da bi ti pokazala ko je od tvojih prijatelja već na Vitanaland."
+    }
   }
 }

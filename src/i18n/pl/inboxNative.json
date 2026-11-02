@@ -43,6 +43,9 @@
       "away": "Zaraz wracam",
       "offline": "Offline"
     },
-    "datePlaceholder": "RRRR-MM-DD"
+    "datePlaceholder": "RRRR-MM-DD",
+    "permissions": {
+      "contactsUsage": "Vitana odczytuje Twoje kontakty tylko wtedy, gdy stukniesz „Importuj kontakty z telefonu”, aby pokazać, którzy z Twoich znajomych są już na Vitanaland."
+    }
   }
 }

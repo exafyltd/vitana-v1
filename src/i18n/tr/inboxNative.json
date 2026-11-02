@@ -43,6 +43,9 @@
       "away": "Uzakta",
       "offline": "Çevrimdışı"
     },
-    "datePlaceholder": "YYYY-AA-GG"
+    "datePlaceholder": "YYYY-AA-GG",
+    "permissions": {
+      "contactsUsage": "Vitana, kişilerini yalnızca „Telefondaki kişileri aktar“ seçeneğine dokunduğunda okur; böylece arkadaşlarından hangilerinin zaten Vitanaland'de olduğunu görürsün."
+    }
   }
 }

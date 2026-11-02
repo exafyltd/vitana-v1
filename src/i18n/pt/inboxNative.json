@@ -43,6 +43,9 @@
       "away": "Ausente",
       "offline": "Offline"
     },
-    "datePlaceholder": "AAAA-MM-DD"
+    "datePlaceholder": "AAAA-MM-DD",
+    "permissions": {
+      "contactsUsage": "A Vitana só lê seus contatos quando você toca em “Importar contatos do celular”, para você ver quais dos seus amigos já estão na Vitanaland."
+    }
   }
 }

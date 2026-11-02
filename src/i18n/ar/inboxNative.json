@@ -43,6 +43,9 @@
       "away": "بعيد",
       "offline": "غير متصل"
     },
-    "datePlaceholder": "YYYY-MM-DD"
+    "datePlaceholder": "YYYY-MM-DD",
+    "permissions": {
+      "contactsUsage": "يقرأ Vitana جهات اتصالك فقط عندما تنقر على «استيراد جهات الاتصال من الهاتف»، حتى ترى أيًّا من أصدقائك موجود بالفعل على Vitanaland."
+    }
   }
 }

@@ -43,6 +43,9 @@
       "away": "离开",
       "offline": "离线"
     },
-    "datePlaceholder": "YYYY-MM-DD"
+    "datePlaceholder": "YYYY-MM-DD",
+    "permissions": {
+      "contactsUsage": "只有当你点按“从手机导入联系人”时，Vitana 才会读取你的联系人，以便你查看哪些朋友已经在 Vitanaland 上。"
+    }
   }
 }

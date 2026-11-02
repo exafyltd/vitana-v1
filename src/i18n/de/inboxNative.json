@@ -43,6 +43,9 @@
       "away": "Abwesend",
       "offline": "Offline"
     },
-    "datePlaceholder": "JJJJ-MM-TT"
+    "datePlaceholder": "JJJJ-MM-TT",
+    "permissions": {
+      "contactsUsage": "Vitana liest deine Kontakte nur, wenn du „Kontakte vom Handy übernehmen“ tippst, damit du siehst, wer von deinen Freunden schon auf Vitanaland ist."
+    }
   }
 }

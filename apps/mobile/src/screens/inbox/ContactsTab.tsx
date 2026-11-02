@@ -2,6 +2,9 @@
  * VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list) — the inbox's
  * Contacts pill (web VTID-04440, Messages.tsx:1351-1394), native twin of
  * `src/components/contacts/ContactsTabContent.tsx` with its parts:
+ *  - "Add contact" and "Find Friends" (`ImportContactsButton` →
+ *    `ContactSyncModal`, ./FindFriendsSheet) side by side; the empty state
+ *    offers Find Friends first, then "Add your first contact";
  *  - "Add contact" (`AddContactDialog`: member search through the directory
  *    RPCs for the member's mode, or manual name / phone / e-mail),
  *  - the contact search (name, phone, e-mail) once there are contacts,
@@ -40,6 +43,7 @@ import { useAuth } from '../../auth/AuthProvider';
 import { useTenant } from '../../identity/TenantProvider';
 import { useRole } from '../../identity/useRole';
 import { useInboxText } from './text';
+import { FindFriendsButton } from './FindFriendsSheet';
 import { searchDirectory, type DirectoryUser } from './data/directory';
 import {
   availableChannels,
@@ -67,7 +71,18 @@ export function ContactsTab({ onStartConversation }: { onStartConversation: (use
   const [query, setQuery] = useState('');
   const [pendingDelete, setPendingDelete] = useState<Contact | null>(null);
   const [removeOpen, setRemoveOpen] = useState(false);
-  const [inviteFor, setInviteFor] = useState<Contact | null>(null);
+  const [inviteFor, setInviteFor] = useState<InviteTarget | null>(null);
+  const toTarget = (c: Contact): InviteTarget => ({ id: c.id, name: c.contact_name, phone: c.contact_phone, phoneE164: c.metadata?.phones_e164?.[0] ?? null, email: c.contact_email });
+  const renderInvite = (target: InviteTarget | null, onClose: () => void, onInvited: (id: string) => void) => (
+    <InviteSheet
+      target={target}
+      onClose={onClose}
+      onInvited={(id) => {
+        onInvited(id);
+        void refetch();
+      }}
+    />
+  );
 
   const hasPhoneContacts = contacts.some((c) => c.source === 'android');
   const matched = query ? searchContacts(query) : null;
@@ -99,6 +114,9 @@ export function ContactsTab({ onStartConversation }: { onStartConversation: (use
           <InboxButtonIcon name="Plus" />
           {t('screens.contacts.addContact')}
         </Button>
+        <View style={styles.action}>
+          <FindFriendsButton onImportComplete={() => void refetch()} renderInvite={renderInvite} />
+        </View>
       </View>
 
       {contacts.length > 0 ? (
@@ -136,6 +154,7 @@ export function ContactsTab({ onStartConversation }: { onStartConversation: (use
           <Text muted style={styles.center}>
             {t('screens.contacts.addContactsEasilyFindMessageThem')}
           </Text>
+          <FindFriendsButton size="lg" testID="find-friends-button-empty" onImportComplete={() => void refetch()} renderInvite={renderInvite} />
           <Button variant="ghost" testID="contacts-add-first" onPress={() => setShowAdd(true)}>
             <InboxButtonIcon name="Plus" />
             {t('screens.contacts.addYourFirstContact')}
@@ -159,7 +178,7 @@ export function ContactsTab({ onStartConversation }: { onStartConversation: (use
                 {t('screens.contacts.inviteVitanaLength', { length: toInvite.length }).toUpperCase()}
               </Text>
               {toInvite.map((c) => (
-                <ContactRow key={c.id} contact={c} onInvite={() => setInviteFor(c)} onDelete={() => setPendingDelete(c)} />
+                <ContactRow key={c.id} contact={c} onInvite={() => setInviteFor(toTarget(c))} onDelete={() => setPendingDelete(c)} />
               ))}
             </View>
           ) : null}
@@ -211,7 +230,7 @@ export function ContactsTab({ onStartConversation }: { onStartConversation: (use
         </ResponsiveConfirmDialogContent>
       </ResponsiveConfirmDialog>
 
-      <InviteSheet contact={inviteFor} onClose={() => setInviteFor(null)} onInvited={() => void refetch()} />
+      <InviteSheet target={inviteFor} onClose={() => setInviteFor(null)} onInvited={() => void refetch()} />
       <AddContactSheet open={showAdd} onClose={() => setShowAdd(false)} onAdd={addContact} />
     </View>
   );
@@ -272,13 +291,10 @@ function ContactRow({ contact, onMessage, onInvite, onDelete }: { contact: Conta
 }
 
 /** `InviteContactButton`'s channel menu: the member's own app opens with their invite link in the text. */
-function InviteSheet({ contact, onClose, onInvited }: { contact: Contact | null; onClose: () => void; onInvited: () => void }): ReactElement {
+function InviteSheet({ target, onClose, onInvited }: { target: InviteTarget | null; onClose: () => void; onInvited: (id: string) => void }): ReactElement {
   const { t } = useInboxText();
   const { user } = useAuth();
   const [busy, setBusy] = useState(false);
-  const target: InviteTarget | null = contact
-    ? { id: contact.id, name: contact.contact_name, phone: contact.contact_phone, phoneE164: contact.metadata?.phones_e164?.[0] ?? null, email: contact.contact_email }
-    : null;
 
   const invite = async (channel: InviteChannel) => {
     if (!user?.id || !target || busy) return;
@@ -307,7 +323,7 @@ function InviteSheet({ contact, onClose, onInvited }: { contact: Contact | null;
       }
       if (!opened) return;
       await markContactInvited(user.id, target.id).catch(() => undefined);
-      onInvited();
+      onInvited(target.id);
       notify('mailhub.findFriends.invite.opened');
       onClose();
     } catch {
@@ -318,7 +334,7 @@ function InviteSheet({ contact, onClose, onInvited }: { contact: Contact | null;
   };
 
   return (
-    <BottomSheet testID="contacts-invite-sheet" open={!!contact} onClose={onClose} title={t('screens.contacts.sendInviteVia')}>
+    <BottomSheet testID="contacts-invite-sheet" open={!!target} onClose={onClose} title={t('screens.contacts.sendInviteVia')}>
       {target
         ? availableChannels(target).map((channel) => (
             <PressableRow key={channel} testID={`invite-channel-${channel}`} disabled={busy} onPress={() => void invite(channel)} style={styles.channel}>

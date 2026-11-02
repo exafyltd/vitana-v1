@@ -22,6 +22,10 @@ Flows (to author on G1; sign in, navigate, read — never send, never mark read)
   sub-navigation, tabs, the static content; screenshot parity.
 - `04-unread-realtime.yaml` — **G1 environment only, never a live system**: a DM
   from a second G1 test member bumps its row and the bottom-bar badge.
+- `05-find-friends.yaml` — **G1 simulator / emulator with a seeded test address
+  book only**: Contacts → Find Friends, the OS contacts prompt shows the catalog
+  usage string, the import reaches the G1 gateway and the results list the G1
+  test members; never a real address book, never a live system.
 
 Until G1, the port is proven offline by the jest-expo + RNTL unit tests in
 `apps/mobile/tests/inbox-chat/inbox-list/` (fake gateway, Supabase double, mocked

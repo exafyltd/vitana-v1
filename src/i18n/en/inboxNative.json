@@ -43,6 +43,9 @@
       "away": "Away",
       "offline": "Offline"
     },
-    "datePlaceholder": "YYYY-MM-DD"
+    "datePlaceholder": "YYYY-MM-DD",
+    "permissions": {
+      "contactsUsage": "Vitana reads your contacts only when you tap “Import contacts from my phone”, so you can see which of your friends are already on Vitanaland."
+    }
   }
 }
