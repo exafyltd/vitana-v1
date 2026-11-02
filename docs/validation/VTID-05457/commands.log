@@ -1,0 +1,146 @@
+# VTID-05457 (native-wave2-health-biology-r3/vitana-index-biology) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-health-biology-r3-vitana-index-biology
+# Branch kiro/native-wave2-health-biology-r3/vitana-index-biology, based on origin/kiro/native-wave2-health-biology-r3/health-hub
+# cda3e39f0faceaaf67e2b16c88a9f5f60427aab4 (stacked on #1562); origin/main at check time 5c75715e16ce360e2d96df28790f480e4582583f.
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched (recording Supabase double + fake gateway; no network in tests).
+# Code verified at 8018270d6 (last code commit); docs-only commits follow.
+
+## Setup
+$ git -C vitana-v1 worktree add .worktrees/native-wave2-health-biology-r3-vitana-index-biology -b kiro/native-wave2-health-biology-r3/vitana-index-biology origin/kiro/native-wave2-health-biology-r3/health-hub
+$ (apps/mobile) npm ci   -> exit=0
+$ (repo root) npm ci     -> exit=0 (typescript for the scripts/native generators, web build, i18n scripts)
+
+## Red on base — see red-on-base.txt
+$ (detached worktree at cda3e39f0 + copied tests/health/vitana-index-biology) npx jest tests/health/vitana-index-biology --ci
+Test Suites: 4 failed, 4 total   (Cannot find module ../../../src/screens/health/VitanaIndexDetailScreen / MyBiologyScreen)
+Tests:       0 total
+exit=1
+$ (same at origin/main 5c75715e1) npx jest tests/health/vitana-index-biology --ci
+Test Suites: 4 failed, 4 total   (Cannot find module ../mocks — health-hub's harness is not on main yet)
+exit=1
+
+## Core extraction
+$ (apps/mobile) npm run gen:core
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets (unchanged)
+core-closure: 25 roots, 35 src files, 11 assets — ok
+$ node scripts/native/core-closure.mjs --check
+core-closure: 25 roots, 35 src files, 11 assets — up to date
+exit=0
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets — up to date
+exit=0
+
+## apps/mobile (code = 8018270d6)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/health/vitana-index-biology --ci
+Test Suites: 4 passed, 4 total
+Tests:       86 passed, 86 total
+exit=0
+(while writing the tests: overlays are asserted closed after their exit animation inside act (gone() helper); the
+ sparkline is looked up with includeHiddenElements (it is a11y-hidden decoration); the loading test gates the Index
+ read. Two real bugs found on the way and fixed in the screen: the Health Sync connect() was never called without an
+ onResult prop, and the upload sheet kept its first category — see verification.md. No assertion was removed or loosened.)
+
+$ npx jest tests/health --ci
+Test Suites: 10 passed, 10 total
+Tests:       215 passed, 215 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 94 passed, 94 total
+Tests:       2502 passed, 2502 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<tmp> APP_PROFILE=development npm run bundle
+_expo/static/js/android/entry-fe776ed5d062de56cc74af0efe21eddb.hbc (18MB)
+_expo/static/js/ios/entry-bce70ac8e87134eca2b75d90b83577fb.hbc (17MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's /root is read-only for ~/.expo)
+
+$ HOME=<tmp> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ HOME=<tmp> APP_PROFILE=development npm run bundle:core-probe
+probe-dist/ios.js: ok (1273011 bytes, 113 sources, no production host, one react, nothing from the root node_modules)
+probe-dist/android.js: ok (1273015 bytes, 113 sources, no production host, one react, nothing from the root node_modules)
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 35 native route(s)
+exit=0
+$ node scripts/native/parity-ledger.mjs --sync   (repo root)
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change to the 4 hand-flipped rows)
+
+## repo root — the other NATIVE-CI script gates
+$ node scripts/native/gen-tokens.mjs --check
+gen-tokens: 166 light / 134 dark overrides, 117 colour classes, 12 excluded — up to date
+exit=0
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+$ node --test scripts/native/__tests__/*.test.mjs
+# tests 68 / # pass 68 / # fail 0
+exit=0
+$ node --test scripts/native/__tests__/eslint/*.test.mjs
+# tests 22 / # pass 22 / # fail 0
+exit=0
+$ npx eslint apps/mobile packages
+(no output) exit=0
+
+## repo root — i18n
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+$ node scripts/i18n-stamp-source.mjs --check-all
+[stamp] 0 key(s) whose EN source changed since translation (0.0%)
+exit=0
+$ node scripts/check-locale-registry.mjs
+[locale-registry] OK — picker and supported_locales agree.
+exit=0
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+findings mentioning healthNative: 0 (all reported errors are pre-existing _pending_review keys)
+$ node scripts/i18n-parity-gate.mjs --all
+[gate] 10 failing check(s).   exit=1 — identical on the base cda3e39f0 (142-line report, pre-existing
+_pending_review review-queue counts per GA locale; no healthNative key involved; not a CI gate of this PR)
+
+## repo root — web build + i18n vitest (the shards are web catalog files)
+$ npm run build
+✓ built in 43.06s
+exit=0
+$ npx vitest run src/i18n scripts/native
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0
+
+## Staging-verify change suite
+$ node vitana-platform/scripts/ci/staging-verify/run.mjs check-pr --service community-app --repo-root . --base origin/main --head HEAD --title "<PR title>"
+[staging-verify] ✓ change suite present and valid for VTID-05457
+exit=0
+(same with --base origin/kiro/native-wave2-health-biology-r3/health-hub: ✓, exit=0)
+
+## Preflight (head 9cc099a35)
+$ node vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/kiro/native-wave2-health-biology-r3/health-hub --head HEAD --branch kiro/native-wave2-health-biology-r3/vitana-index-biology --title "VTID-05457 (native-wave2-health-biology-r3/vitana-index-biology): native Vitana Index and biology port"
+PASS  Collab handoff / Lane scope / gh for plan( PR / PR-GATE scope / sparring / weakening / red-green / Kiro steering
+preflight: every check passed
+exit=0
+$ (same with --base origin/main)
+FAIL  Collab handoff + Lane scope — "one PR per lane: commits name 2 lanes (…/vitana-index-biology, …/health-hub)"
+every other check PASS; exit=1
+This is the stack: against main the range still contains health-hub's #1562 commits. It clears when #1562 merges
+(the PR diff to main is then this lane's commits only). Not a defect of this lane.
