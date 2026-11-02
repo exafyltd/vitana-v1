@@ -20,6 +20,7 @@
     "gen:tokens": "node ../../scripts/native/gen-tokens.mjs"
   },
   "dependencies": {
+    "@config-plugins/react-native-webrtc": "15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-google-signin/google-signin": "16.1.5",
     "@supabase/supabase-js": "2.56.0",
@@ -46,6 +47,7 @@
     "react-native-screens": "4.26.2",
     "react-native-svg": "15.15.4",
     "react-native-url-polyfill": "4.0.0",
+    "react-native-webrtc": "155.0.1",
     "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
