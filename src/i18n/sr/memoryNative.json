@@ -1,0 +1,72 @@
+{
+  "memoryNative": {
+    "addMemory": {
+      "save": "Sačuvaj uspomenu"
+    },
+    "editMemory": {
+      "save": "Sačuvaj izmene"
+    },
+    "timeline": {
+      "loadMore": "Učitaj još"
+    },
+    "usage": {
+      "shareTitle": "Tvoji podaci o korišćenju Vitane"
+    },
+    "education": {
+      "impact": {
+        "high": "Veliki uticaj",
+        "medium": "Srednji uticaj"
+      },
+      "items": {
+        "sleep": {
+          "category": "Spavanje",
+          "title": "Kako kvalitet sna utiče na stvaranje sećanja",
+          "content": "Dubok san (REM faza) ključan je za učvršćivanje pamćenja. U toj fazi tvoj mozak obrađuje i čuva informacije iz celog dana. Trudi se da spavaš 7–9 sati kvalitetnog sna u stalnom ritmu. Loš san može smanjiti pamćenje i do 40%.",
+          "factor1": "Vreme treninga",
+          "factor2": "Unos kofeina",
+          "factor3": "Vreme ispred ekrana"
+        },
+        "nutrition": {
+          "category": "Ishrana",
+          "title": "Uloga ishrane u radu mozga",
+          "content": "Omega-3 masne kiseline, antioksidansi i vitamini B grupe direktno utiču na zdravlje tvog mozga. Masna riba, bobičasto voće i lisnato povrće podržavaju stvaranje neurotransmitera i smanjuju upale. Redovni obroci takođe stabilizuju šećer u krvi i sprečavaju padove energije.",
+          "factor1": "Vreme obroka",
+          "factor2": "Hidratacija",
+          "factor3": "Ravnoteža mikronutrijenata"
+        },
+        "exercise": {
+          "category": "Vežbanje",
+          "title": "Fizička aktivnost i mentalna jasnoća",
+          "content": "Vežbanje povećava BDNF (moždani neurotrofni faktor), koji podstiče rast neurona i rad mozga. Već 30 minuta umerene aktivnosti može poboljšati tvoju koncentraciju i do 2 sata. Na duže staze, redovnost je važnija od intenziteta.",
+          "factor1": "Vreme oporavka",
+          "factor2": "Vrsta vežbanja",
+          "factor3": "Intenzitet"
+        },
+        "stress": {
+          "category": "Stres",
+          "title": "Razumi svoju reakciju na stres",
+          "content": "Hronični stres podiže kortizol, što slabi pamćenje i donošenje odluka. Tvoja reakcija na stres zavisi od sna, ishrane i odnosa s drugima. Samo 10 minuta svesne pažnje dnevno može sniziti kortizol za 23%.",
+          "factor1": "Kvalitet sna",
+          "factor2": "Društvena podrška",
+          "factor3": "Način disanja"
+        },
+        "hydration": {
+          "category": "Hidratacija",
+          "title": "Veza između hidratacije i učinka",
+          "content": "Već blaga dehidratacija (2% telesne težine) smanjuje mentalni učinak za 10–20%. Voda je neophodna za prenos hranljivih materija i uklanjanje otpadnih materija iz moždanih ćelija. Redovno pijenje tokom dana deluje bolje nego velike količine odjednom.",
+          "factor1": "Nivo aktivnosti",
+          "factor2": "Klima",
+          "factor3": "So u ishrani"
+        },
+        "lifestyle": {
+          "category": "Stil života",
+          "title": "Kumulativni efekat zdravih navika",
+          "content": "Zdravstveni faktori nikada ne deluju odvojeno. Kvalitet sna utiče na oporavak posle treninga, oporavak na nivo stresa, a stres na izbor hrane. Jedna dobra navika često pokrene lanac poboljšanja u svim oblastima.",
+          "factor1": "Sve kategorije",
+          "factor2": "Povezivanje navika",
+          "factor3": "Uređenje okruženja"
+        }
+      }
+    }
+  }
+}

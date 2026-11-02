@@ -1,0 +1,72 @@
+{
+  "memoryNative": {
+    "addMemory": {
+      "save": "Save Memory"
+    },
+    "editMemory": {
+      "save": "Save Changes"
+    },
+    "timeline": {
+      "loadMore": "Load more"
+    },
+    "usage": {
+      "shareTitle": "Your Vitana usage data"
+    },
+    "education": {
+      "impact": {
+        "high": "High impact",
+        "medium": "Medium impact"
+      },
+      "items": {
+        "sleep": {
+          "category": "Sleep",
+          "title": "How Sleep Quality Impacts Memory Formation",
+          "content": "Deep sleep (REM stage) is crucial for memory consolidation. During this phase, your brain processes and stores information from the day. Aim for 7–9 hours of quality sleep, maintaining a consistent schedule. Poor sleep can reduce memory retention by up to 40%.",
+          "factor1": "Exercise timing",
+          "factor2": "Caffeine intake",
+          "factor3": "Screen time"
+        },
+        "nutrition": {
+          "category": "Nutrition",
+          "title": "Nutrition's Role in Cognitive Function",
+          "content": "Omega-3 fatty acids, antioxidants, and B vitamins directly influence brain health. Foods like fatty fish, berries, and leafy greens support neurotransmitter production and reduce inflammation. Consistent nutrition timing also stabilizes blood sugar, preventing energy crashes.",
+          "factor1": "Meal timing",
+          "factor2": "Hydration",
+          "factor3": "Micronutrient balance"
+        },
+        "exercise": {
+          "category": "Exercise",
+          "title": "Physical Activity and Mental Clarity",
+          "content": "Exercise increases BDNF (Brain-Derived Neurotrophic Factor), which promotes neuron growth and cognitive function. Just 30 minutes of moderate activity can improve focus for up to 2 hours. Consistency matters more than intensity for long-term benefits.",
+          "factor1": "Recovery time",
+          "factor2": "Exercise type",
+          "factor3": "Intensity"
+        },
+        "stress": {
+          "category": "Stress",
+          "title": "Understanding Stress Response Patterns",
+          "content": "Chronic stress elevates cortisol, which impairs memory and decision-making. Your body's stress response is influenced by sleep, nutrition, and social connections. Practicing mindfulness for 10 minutes daily can reduce cortisol by 23%.",
+          "factor1": "Sleep quality",
+          "factor2": "Social support",
+          "factor3": "Breathing patterns"
+        },
+        "hydration": {
+          "category": "Hydration",
+          "title": "Hydration and Performance Connection",
+          "content": "Even mild dehydration (2% body weight) reduces cognitive performance by 10–20%. Water is essential for nutrient transport and waste removal in brain cells. Consistent hydration throughout the day is more effective than large amounts at once.",
+          "factor1": "Activity level",
+          "factor2": "Climate",
+          "factor3": "Diet sodium"
+        },
+        "lifestyle": {
+          "category": "Lifestyle",
+          "title": "Compound Effects of Healthy Habits",
+          "content": "Individual health factors don't exist in isolation. Sleep quality affects exercise recovery, which influences stress levels, which impacts nutrition choices. Building one positive habit often creates a cascade of improvements across all health domains.",
+          "factor1": "All categories",
+          "factor2": "Habit stacking",
+          "factor3": "Environmental design"
+        }
+      }
+    }
+  }
+}
