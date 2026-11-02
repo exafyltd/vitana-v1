@@ -73,3 +73,18 @@ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <work
 # configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
 $ npx jest tests/wallet-subscriptions  (default workers, run 1 of 2)-> 4 suites, 106/106 pass (29s, 2026-11-02T21:28Z)
 $ npx jest tests/wallet-subscriptions  (default workers, run 2 of 2)-> 4 suites, 106/106 pass (10s, 2026-11-02T21:28Z)
+
+## fix 2: return leg after hosted checkout / portal (2026-11-02)
+# on 849523c (origin head) + 8ce942517; reviewer finding: no return leg after openBillingUrl
+# expo-web-browser 57.0.3 is already on main: no package.json / package-lock.json / app.config.ts change
+$ npx jest tests/wallet-subscriptions/return-leg.test.tsx  (lane src at 849523c) -> 5 failed, 1 passed (red-fix2.txt)
+$ npx jest tests/wallet-subscriptions/return-leg.test.tsx  (8ce942517)          -> 6/6 pass
+$ npm run typecheck                                                              -> PASS
+$ npx jest tests/wallet-subscriptions  (default workers, run 1 of 2)            -> 5 suites, 112/112 pass
+$ npx jest tests/wallet-subscriptions  (default workers, run 2 of 2)            -> 5 suites, 112/112 pass
+$ npm test                                                                       -> 95 suites, 2600/2600 pass
+$ npm run parity:check                                                           -> OK — 435 rows, 39 native route(s)
+$ node ../../scripts/native/core-closure.mjs --check                             -> up to date
+$ npx eslint apps/mobile/src/screens/wallet-subscriptions apps/mobile/tests/wallet-subscriptions (root) -> 0 problems
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs ... --head 8ce942517 -> every check passed (base 955a503a1)
+# No live endpoint, no Stripe call: fake gateway + stubbed expo-web-browser only.
