@@ -1,0 +1,72 @@
+{
+  "memoryNative": {
+    "addMemory": {
+      "save": "Anıyı kaydet"
+    },
+    "editMemory": {
+      "save": "Değişiklikleri kaydet"
+    },
+    "timeline": {
+      "loadMore": "Daha fazla yükle"
+    },
+    "usage": {
+      "shareTitle": "Vitana kullanım verilerin"
+    },
+    "education": {
+      "impact": {
+        "high": "Yüksek etki",
+        "medium": "Orta etki"
+      },
+      "items": {
+        "sleep": {
+          "category": "Uyku",
+          "title": "Uyku kalitesi hafızanın oluşmasını nasıl etkiler",
+          "content": "Derin uyku (REM evresi) hafızanın pekişmesi için çok önemlidir. Bu evrede beynin günün bilgilerini işler ve depolar. Düzenli bir saatte 7–9 saat kaliteli uyku hedefle. Kötü uyku, hatırlama gücünü %40'a kadar azaltabilir.",
+          "factor1": "Antrenman zamanı",
+          "factor2": "Kafein tüketimi",
+          "factor3": "Ekran süresi"
+        },
+        "nutrition": {
+          "category": "Beslenme",
+          "title": "Beslenmenin bilişsel işlevlerdeki rolü",
+          "content": "Omega-3 yağ asitleri, antioksidanlar ve B vitaminleri beyin sağlığını doğrudan etkiler. Yağlı balık, orman meyveleri ve yeşil yapraklı sebzeler nörotransmitter üretimini destekler ve iltihabı azaltır. Düzenli öğün saatleri kan şekerini de dengeler ve enerji düşüşlerini önler.",
+          "factor1": "Öğün zamanlaması",
+          "factor2": "Sıvı Alımı",
+          "factor3": "Mikro besin dengesi"
+        },
+        "exercise": {
+          "category": "Egzersiz",
+          "title": "Fiziksel aktivite ve zihinsel berraklık",
+          "content": "Egzersiz, nöronların büyümesini ve bilişsel işlevleri destekleyen BDNF'yi (beyin kaynaklı nörotrofik faktör) artırır. Yalnızca 30 dakikalık orta düzey aktivite odaklanmanı 2 saate kadar iyileştirebilir. Uzun vadede düzenlilik, yoğunluktan daha önemlidir.",
+          "factor1": "Toparlanma süresi",
+          "factor2": "Egzersiz türü",
+          "factor3": "Yoğunluk"
+        },
+        "stress": {
+          "category": "Stres",
+          "title": "Stres tepkini anla",
+          "content": "Kronik stres kortizolü yükseltir; bu da hafızayı ve karar vermeyi zayıflatır. Stres tepkin uykuya, beslenmeye ve sosyal bağlarına bağlıdır. Günde 10 dakika farkındalık çalışması kortizolü %23 azaltabilir.",
+          "factor1": "Uyku kalitesi",
+          "factor2": "Sosyal destek",
+          "factor3": "Nefes alışkanlıkları"
+        },
+        "hydration": {
+          "category": "Sıvı Alımı",
+          "title": "Sıvı alımı ile performans arasındaki bağ",
+          "content": "Hafif bir susuzluk bile (vücut ağırlığının %2'si) bilişsel performansı %10–20 düşürür. Su, besinlerin beyin hücrelerine taşınması ve atıkların uzaklaştırılması için gereklidir. Gün boyunca düzenli içmek, bir seferde çok içmekten daha etkilidir.",
+          "factor1": "Aktivite düzeyi",
+          "factor2": "İklim",
+          "factor3": "Beslenmedeki tuz"
+        },
+        "lifestyle": {
+          "category": "Yaşam tarzı",
+          "title": "Sağlıklı alışkanlıkların birikimli etkisi",
+          "content": "Sağlık faktörleri asla tek başına işlemez. Uyku kalitesi antrenman sonrası toparlanmayı, toparlanma stres düzeyini, stres de beslenme tercihlerini etkiler. Tek bir olumlu alışkanlık çoğu zaman her alanda bir dizi iyileşmeyi başlatır.",
+          "factor1": "Tüm kategoriler",
+          "factor2": "Alışkanlık zinciri",
+          "factor3": "Çevre düzeni"
+        }
+      }
+    }
+  }
+}
