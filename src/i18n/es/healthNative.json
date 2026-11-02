@@ -1,0 +1,192 @@
+{
+  "healthNative": {
+    "conditions": {
+      "description": "Evalúa tus riesgos de salud y crea planes de acción preventivos para mantener un bienestar óptimo."
+    },
+    "education": {
+      "description": "Accede a materiales de educación sanitaria seleccionados según tus intereses y tu perfil demográfico.",
+      "episode": "Ep. {episode}",
+      "videos": {
+        "v1": {
+          "title": "El Vitana Index a fondo",
+          "category": "Métricas de salud"
+        },
+        "v2": {
+          "title": "Preparación de comidas para una salud óptima",
+          "category": "Nutrición"
+        },
+        "v3": {
+          "title": "Técnicas para optimizar el sueño",
+          "category": "Salud del sueño"
+        },
+        "v4": {
+          "title": "La ciencia del HIIT",
+          "category": "Fitness"
+        },
+        "v5": {
+          "title": "Estrategias para manejar el estrés",
+          "category": "Salud mental"
+        },
+        "v6": {
+          "title": "Cómo interpretar los análisis",
+          "category": "Médico"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "La ciencia de la longevidad",
+          "series": "Salud a fondo"
+        },
+        "p2": {
+          "title": "Mitos de la nutrición desmentidos",
+          "series": "Ciencia de los alimentos"
+        },
+        "p3": {
+          "title": "Sueño y rendimiento",
+          "series": "Salud al máximo"
+        },
+        "p4": {
+          "title": "Ejercicio y salud cerebral",
+          "series": "Mente y cuerpo"
+        },
+        "p5": {
+          "title": "Entrenamiento de resiliencia mental",
+          "series": "Psicología hoy"
+        },
+        "p6": {
+          "title": "Tendencias en medicina preventiva",
+          "series": "Salud del futuro"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Explorar artículos",
+        "description": "Descubre artículos seleccionados sobre salud y bienestar"
+      },
+      "watchVideos": {
+        "title": "Ver vídeos",
+        "description": "Vídeos y documentales educativos sobre salud"
+      },
+      "listenPodcasts": {
+        "title": "Escuchar pódcasts",
+        "description": "Episodios de pódcast sobre salud y bienestar"
+      },
+      "searchContent": {
+        "title": "Buscar contenido",
+        "description": "Encuentra temas e información de salud concretos"
+      },
+      "myBookmarks": {
+        "title": "Mis marcadores",
+        "description": "Accede a tus artículos y recursos guardados"
+      },
+      "downloadOffline": {
+        "title": "Descargar sin conexión",
+        "description": "Guarda contenido para leerlo o verlo más tarde"
+      },
+      "healthCourses": {
+        "title": "Cursos de salud",
+        "description": "Inscríbete en programas estructurados de bienestar"
+      }
+    },
+    "services": {
+      "description": "Reserva citas, chequeos y programas de bienestar adaptados a tus necesidades.",
+      "impactPoints": "+{points} puntos"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Reservar chequeo",
+        "description": "Programa tu revisión médica anual completa"
+      },
+      "orderLabTests": {
+        "title": "Pedir análisis",
+        "description": "Solicita análisis de biomarcadores y pruebas diagnósticas"
+      },
+      "myAppointments": {
+        "title": "Mis citas",
+        "description": "Consulta y gestiona tus próximas citas médicas"
+      },
+      "findSpecialists": {
+        "title": "Buscar especialistas",
+        "description": "Conecta con médicos especialistas de tu zona"
+      },
+      "wellnessPrograms": {
+        "title": "Programas de bienestar",
+        "description": "Únete a retos y programas de salud de la comunidad"
+      },
+      "telemedicine": {
+        "title": "Telemedicina",
+        "description": "Programa consultas virtuales con profesionales"
+      },
+      "healthRecords": {
+        "title": "Historial médico",
+        "description": "Accede a tu historial médico completo y tus documentos"
+      },
+      "insuranceSupport": {
+        "title": "Ayuda con el seguro",
+        "description": "Obtén ayuda con reclamaciones y verificación de cobertura"
+      }
+    },
+    "plans": {
+      "description": "Planes impulsados por IA adaptados a tu perfil de salud y tus objetivos",
+      "planName": {
+        "nutrition": "Plan de nutrición",
+        "exercise": "Plan de ejercicio",
+        "hydration": "Plan de hidratación",
+        "sleep": "Plan de sueño",
+        "mental": "Plan de salud mental",
+        "supplement": "Plan de suplementos"
+      },
+      "pillarName": {
+        "nutrition": "Nutrición",
+        "exercise": "Ejercicio",
+        "hydration": "Hidratación",
+        "sleep": "Sueño",
+        "mental": "Mental",
+        "supplement": "Suplementos"
+      },
+      "refreshed": "¡{planName} actualizado! 🔄",
+      "justNow": "Justo ahora",
+      "hoursAgo": "hace {hours} h",
+      "daysAgo": "hace {days} d",
+      "never": "Nunca",
+      "toasts": {
+        "recalibrateDescription": "Analizando todos los planes y las sinergias entre pilares. Puede tardar unos momentos...",
+        "viewProgress": "Ver progreso",
+        "reportDescription": "Estamos preparando tu informe detallado de salud. ¡Vuelve en unos minutos!",
+        "gotIt": "Entendido",
+        "optimizing": "✨ Optimizando {pillar}",
+        "optimizeDescription": "El Autopilot de IA está analizando tu pilar más débil y generando mejoras específicas.",
+        "viewPlan": "Ver plan"
+      },
+      "proteinShort": "{protein} P",
+      "nutritionDefaults": {
+        "goalFocus": "Nutrición equilibrada",
+        "schedule": "3 comidas + 2 tentempiés",
+        "calTarget": "Objetivo: {calories} kcal",
+        "daily": "Diario",
+        "insight": "Tu plan de nutrición está optimizado para tu nivel de actividad actual y tus objetivos."
+      },
+      "aiSummary": {
+        "exercise": "¡Tu constancia es excelente! La hidratación y el sueño están mejorando tu recuperación.",
+        "hydration": "Tu constancia en la hidratación mejoró un 12 % esta semana: ¡gran avance! La IA recomienda añadir electrolitos tras los entrenamientos intensos para recuperarte más rápido.",
+        "sleep": "La constancia de tu sueño mejoró un 10 % esta semana: gran tendencia de recuperación. La IA detectó que tu franja ideal para acostarte es 22:30-23:00 para el máximo sueño profundo.",
+        "mental": "Tus indicadores de estrés mejoraron un 12 % desde que empezaste la respiración matutina. Tu concentración varía menos: excelente avance esta semana."
+      },
+      "ai": "IA",
+      "hydrationStatus": {
+        "goalMet": "Objetivo cumplido",
+        "catchUp": "Hay que recuperar",
+        "belowTarget": "Por debajo del objetivo",
+        "onTrack": "Vas bien"
+      },
+      "sleepStatus": {
+        "excellent": "Calidad del sueño excelente",
+        "good": "Calidad del sueño buena",
+        "improve": "Hay margen de mejora"
+      },
+      "litersOf": "{current} l / {target} l",
+      "liters": "{value} l"
+    }
+  }
+}

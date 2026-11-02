@@ -213,6 +213,55 @@
         "N6"
       ],
       "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/data/mockRecipes.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "The sample nutrition plan (mockNutritionPlan) the web Plans screen falls back to when the member has no nutrition plan row; imports only src/types/recipe; pure data."
+    },
+    "src/data/mockExercise.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "The sample exercise plan (mockExercisePlan) the web Plans screen falls back to; imports only src/types/exercise; pure data."
+    },
+    "src/data/mockHydration.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "The sample hydration plan (mockHydrationPlan) the web Plans screen falls back to; imports only src/types/hydration; pure data."
+    },
+    "src/data/mockSleep.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "The sample sleep plan (mockSleepPlan) the web Plans screen falls back to; imports only src/types/sleep; pure data."
+    },
+    "src/data/mockMental.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "The sample mental plan (mockMentalPlan) the web Plans screen falls back to; imports only src/types/mental; pure data."
+    },
+    "src/lib/mockPlanData.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "getMockPlan: the sample plan row a PersonalizedPlanCard shows when the member has no row of that type; imports nothing; pure."
+    },
+    "src/services/autopilotContext.ts": {
+      "entry": "health-plans.ts",
+      "lanes": [
+        "health-plans-services"
+      ],
+      "reason": "calculateAutopilotContext: the Plans screen cross-plan relationships and Autopilot summary; imports only src/lib/vitanaIndex (pure); pure."
     }
   }
 }

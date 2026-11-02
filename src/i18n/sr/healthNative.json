@@ -1,0 +1,192 @@
+{
+  "healthNative": {
+    "conditions": {
+      "description": "Proceni svoje zdravstvene rizike i napravi preventivne planove kako bi održao optimalno blagostanje."
+    },
+    "education": {
+      "description": "Pristupi odabranim zdravstvenim edukativnim materijalima povezanim s tvojim interesovanjima i profilom.",
+      "episode": "Ep. {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index detaljno",
+          "category": "Zdravstveni pokazatelji"
+        },
+        "v2": {
+          "title": "Priprema obroka za optimalno zdravlje",
+          "category": "Ishrana"
+        },
+        "v3": {
+          "title": "Tehnike za bolji san",
+          "category": "Zdravlje sna"
+        },
+        "v4": {
+          "title": "Nauka o HIIT treningu",
+          "category": "Fitnes"
+        },
+        "v5": {
+          "title": "Strategije za upravljanje stresom",
+          "category": "Mentalno zdravlje"
+        },
+        "v6": {
+          "title": "Tumačenje laboratorijskih nalaza",
+          "category": "Medicina"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "Nauka o dugovečnosti",
+          "series": "Zdravlje detaljno"
+        },
+        "p2": {
+          "title": "Razbijamo mitove o ishrani",
+          "series": "Nauka o hrani"
+        },
+        "p3": {
+          "title": "San i učinak",
+          "series": "Vrhunsko zdravlje"
+        },
+        "p4": {
+          "title": "Vežbanje i zdravlje mozga",
+          "series": "Um i telo"
+        },
+        "p5": {
+          "title": "Trening mentalne otpornosti",
+          "series": "Psihologija danas"
+        },
+        "p6": {
+          "title": "Trendovi preventivne medicine",
+          "series": "Zdravlje budućnosti"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Pregledaj članke",
+        "description": "Istraži odabrane članke o zdravlju i blagostanju"
+      },
+      "watchVideos": {
+        "title": "Gledaj video snimke",
+        "description": "Edukativni video snimci i dokumentarci o zdravlju"
+      },
+      "listenPodcasts": {
+        "title": "Slušaj podkaste",
+        "description": "Epizode podkasta o zdravlju i blagostanju"
+      },
+      "searchContent": {
+        "title": "Pretraži sadržaj",
+        "description": "Pronađi određene zdravstvene teme i informacije"
+      },
+      "myBookmarks": {
+        "title": "Moji obeleživači",
+        "description": "Pristupi sačuvanim člancima i materijalima"
+      },
+      "downloadOffline": {
+        "title": "Preuzmi za oflajn",
+        "description": "Sačuvaj sadržaj da ga pročitaš ili pogledaš kasnije"
+      },
+      "healthCourses": {
+        "title": "Zdravstveni kursevi",
+        "description": "Upiši se u strukturisane programe o blagostanju"
+      }
+    },
+    "services": {
+      "description": "Zakaži termine, preglede i wellness programe prilagođene tvojim potrebama.",
+      "impactPoints": "+{points} poena"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Zakaži pregled",
+        "description": "Zakaži svoj godišnji sistematski pregled"
+      },
+      "orderLabTests": {
+        "title": "Naruči analize",
+        "description": "Zatraži analizu biomarkera i dijagnostičke testove"
+      },
+      "myAppointments": {
+        "title": "Moji termini",
+        "description": "Pregledaj i upravljaj predstojećim lekarskim terminima"
+      },
+      "findSpecialists": {
+        "title": "Pronađi specijaliste",
+        "description": "Poveži se sa specijalistima u svojoj blizini"
+      },
+      "wellnessPrograms": {
+        "title": "Wellness programi",
+        "description": "Pridruži se zdravstvenim izazovima i programima zajednice"
+      },
+      "telemedicine": {
+        "title": "Telemedicina",
+        "description": "Zakaži virtuelne konsultacije sa stručnjacima"
+      },
+      "healthRecords": {
+        "title": "Zdravstveni karton",
+        "description": "Pristupi celoj svojoj medicinskoj istoriji i dokumentima"
+      },
+      "insuranceSupport": {
+        "title": "Podrška za osiguranje",
+        "description": "Dobij pomoć oko zahteva i provere pokrića"
+      }
+    },
+    "plans": {
+      "description": "Planovi uz pomoć AI, prilagođeni tvom zdravstvenom profilu i ciljevima",
+      "planName": {
+        "nutrition": "Plan: Ishrana",
+        "exercise": "Plan: Vežbanje",
+        "hydration": "Plan: Hidratacija",
+        "sleep": "Plan: San",
+        "mental": "Plan: Mentalno",
+        "supplement": "Plan: Suplementi"
+      },
+      "pillarName": {
+        "nutrition": "Ishrana",
+        "exercise": "Vežbanje",
+        "hydration": "Hidratacija",
+        "sleep": "San",
+        "mental": "Mentalno",
+        "supplement": "Suplementi"
+      },
+      "refreshed": "{planName} je osvežen! 🔄",
+      "justNow": "Upravo sada",
+      "hoursAgo": "pre {hours} h",
+      "daysAgo": "pre {days} d",
+      "never": "Nikad",
+      "toasts": {
+        "recalibrateDescription": "Analiziramo sve planove i sinergije među stubovima. Ovo može potrajati nekoliko trenutaka...",
+        "viewProgress": "Pogledaj napredak",
+        "reportDescription": "Tvoj detaljan izveštaj o zdravlju se priprema. Svrati ponovo za nekoliko minuta!",
+        "gotIt": "Važi",
+        "optimizing": "✨ Optimizacija: {pillar}",
+        "optimizeDescription": "AI Autopilot analizira tvoj najslabiji stub i priprema ciljana poboljšanja.",
+        "viewPlan": "Pogledaj plan"
+      },
+      "proteinShort": "{protein} P",
+      "nutritionDefaults": {
+        "goalFocus": "Uravnotežena ishrana",
+        "schedule": "3 obroka + 2 užine",
+        "calTarget": "Cilj: {calories} kcal",
+        "daily": "Dnevno",
+        "insight": "Tvoj plan ishrane je prilagođen tvom trenutnom nivou aktivnosti i ciljevima."
+      },
+      "aiSummary": {
+        "exercise": "Odlična doslednost! Hidratacija i san poboljšavaju tvoj oporavak.",
+        "hydration": "Tvoja doslednost u hidrataciji porasla je 12% ove nedelje — sjajan napredak! AI preporučuje elektrolite posle intenzivnog treninga za brži oporavak.",
+        "sleep": "Doslednost sna porasla je 10% ove nedelje — odličan trend oporavka. AI je otkrio da je tvoj optimalni period za odlazak na spavanje 22:30-23:00 za najviše dubokog sna.",
+        "mental": "Pokazatelji stresa poboljšali su se za 12% otkako radiš jutarnje vežbe disanja. Tvoja koncentracija je stabilnija — odličan napredak ove nedelje."
+      },
+      "ai": "AI",
+      "hydrationStatus": {
+        "goalMet": "Cilj ostvaren",
+        "catchUp": "Treba nadoknaditi",
+        "belowTarget": "Ispod cilja",
+        "onTrack": "Na dobrom putu"
+      },
+      "sleepStatus": {
+        "excellent": "Kvalitet sna odličan",
+        "good": "Kvalitet sna dobar",
+        "improve": "Ima prostora za napredak"
+      },
+      "litersOf": "{current} l / {target} l",
+      "liters": "{value} l"
+    }
+  }
+}

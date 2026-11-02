@@ -122,6 +122,14 @@
           ]
         }
       ]
+    },
+    "service-details": {
+      "sources": [
+        {
+          "file": "src/components/health/ServiceDetailDrawer.tsx",
+          "take": ["ServiceProvider", "ServiceDetail", "mockServiceDetails"]
+        }
+      ]
     }
   }
 }
