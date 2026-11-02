@@ -12,13 +12,12 @@ const PILLAR_MAX = 200;
 const RING_R = 42;
 const RING_C = 2 * Math.PI * RING_R;
 
-/** VTID-05419 — the Index as a ring on the VCard Spotlight art (VTID-05420: transparent, so the
- *  teal → blue → amber token gradient of the media box shows through; no index → an empty track). */
+/** VTID-05419 — the Index as a ring on the token gradient (no index → an empty track, no number). */
 function IndexRing({ total }: { total: number | null }) {
   const share = total == null ? 0 : Math.max(0, Math.min(1, total / INDEX_MAX));
   return (
     <div
-      className="flex h-full w-full items-center justify-center"
+      className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/30 via-accent/20 to-background"
       data-vitana-index-ring=""
       aria-hidden="true"
     >
@@ -138,9 +137,8 @@ export function VitanaIndexHeroCard({
                 const pct = Math.max(0, Math.min(100, Math.round((value / PILLAR_MAX) * 100)));
                 return (
                   <li key={key} className="flex items-center gap-3 text-sm">
-                    {/* VTID-05420: the full pillar name is never truncated; the bar takes the room that is left */}
-                    <span className="shrink-0 whitespace-nowrap text-muted-foreground" data-pillar-label="">{pillarLabel(key)}</span>
-                    <span className="h-1.5 min-w-6 flex-1 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+                    <span className="min-w-0 flex-1 truncate text-muted-foreground">{pillarLabel(key)}</span>
+                    <span className="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-muted" aria-hidden="true">
                       <span className="block h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
                     </span>
                     <span className="w-10 shrink-0 text-end text-xs font-semibold tabular-nums text-foreground">{fmtNumber(value)}</span>
