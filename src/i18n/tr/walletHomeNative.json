@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "Cüzdan görünümünü seç",
     "flow": {
-      "finishOnWeb": "Bu işlem henüz uygulamada yok. Lütfen web cüzdanında tamamla."
+      "bankTransfer": "Banka havalesi",
+      "bankTransferTime": "1-3 iş günü",
+      "debitCard": "Banka kartı",
+      "debitCardTime": "Anında"
     },
     "balance": {
       "tabsLabel": "Hesap bölümleri",

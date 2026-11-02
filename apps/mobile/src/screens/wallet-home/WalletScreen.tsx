@@ -25,9 +25,13 @@
  *
  * Not carried over (documented in the PR): the ExpandableSearchButton (the
  * web handler only logs), the UniversalCalendarButton and the
- * VitanaIndex / Autopilot chips (other lanes' surfaces, as on native Home),
- * and the Stripe deposit return leg (`?depositId=&depositResult=`): this lane
- * starts no deposit. React 19: typed with `ReactElement`.
+ * VitanaIndex / Autopilot chips (other lanes' surfaces, as on native Home).
+ *
+ * Stripe deposit return leg (`?depositId=&depositResult=`, web
+ * `useDeposit(…, { pollUntilTerminal: true })`): ./data/depositReturn.ts reads
+ * a pending deposit again on AppState 'active' and on focus, honours the
+ * web's return params, refetches the wallet and shows the web's toasts.
+ * React 19: typed with `ReactElement`.
  */
 import { useEffect, useMemo, useState, type ReactElement } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -40,6 +44,7 @@ import { isIAPRestricted } from './iap';
 import { fmtNumber } from './format';
 import { useWallet, type WalletTransaction } from './data/wallet';
 import { useDisplayCurrency, useEurUsdRate } from './data/currency';
+import { useDepositReturnLeg } from './data/depositReturn';
 import { BalanceCard } from './components/BalanceCard';
 import { CurrencyToggle } from './components/CurrencyToggle';
 import { QuickActions } from './components/QuickActions';
@@ -76,7 +81,7 @@ export function filterTransactions(transactions: WalletTransaction[], filter: st
 export function WalletScreen(): ReactElement {
   const { colors } = useUITheme();
   const { t, locale } = useI18n();
-  const params = useLocalSearchParams<{ tab?: string; filter?: string }>();
+  const params = useLocalSearchParams<{ tab?: string; filter?: string; depositId?: string; depositResult?: string }>();
   const restricted = isIAPRestricted();
 
   // Wallet is hidden on iOS: redirect home (web Wallet.tsx, replace).
@@ -93,6 +98,7 @@ export function WalletScreen(): ReactElement {
   }, [params.tab]);
 
   const { transactions, loading, getBalance, isLoaded } = useWallet();
+  useDepositReturnLeg({ depositId: params.depositId, depositResult: params.depositResult });
   const { displayCurrency, setDisplayCurrency } = useDisplayCurrency();
   const { eurPerUsd } = useEurUsdRate();
 

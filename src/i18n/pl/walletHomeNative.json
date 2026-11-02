@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "Wybierz widok portfela",
     "flow": {
-      "finishOnWeb": "Tej akcji nie ma jeszcze w aplikacji. Dokończ ją w swoim portfelu w przeglądarce."
+      "bankTransfer": "Przelew bankowy",
+      "bankTransferTime": "1–3 dni robocze",
+      "debitCard": "Karta debetowa",
+      "debitCardTime": "Natychmiast"
     },
     "balance": {
       "tabsLabel": "Sekcje konta",

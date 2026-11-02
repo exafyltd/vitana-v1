@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "Izaberi prikaz novčanika",
     "flow": {
-      "finishOnWeb": "Ova radnja još nije u aplikaciji. Završi je u svom veb-novčaniku."
+      "bankTransfer": "Bankovni prenos",
+      "bankTransferTime": "1–3 radna dana",
+      "debitCard": "Debitna kartica",
+      "debitCardTime": "Odmah"
     },
     "balance": {
       "tabsLabel": "Odeljci naloga",

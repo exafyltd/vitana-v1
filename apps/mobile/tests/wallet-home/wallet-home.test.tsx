@@ -6,8 +6,9 @@
  * is imported first and the Supabase client is the in-memory wallet double.
  * Every test runs as Android (non-iOS) unless it says otherwise; the iOS gate
  * is covered in iap-gate.test.tsx. No real payment, transfer or redeem call:
- * the money-moving flows submit to a fake `WalletActions` and the default one
- * makes no call at all. React 19: `ReactElement`, no global `JSX`.
+ * the money-moving flows here submit to a fake `WalletActions`; the app
+ * default's web calls are asserted against fakes in wallet-actions.test.tsx.
+ * React 19: `ReactElement`, no global `JSX`.
  */
 import '../helpers/no-network';
 import './mocks';
@@ -26,10 +27,10 @@ import { languageFromLocale } from '../../src/i18n/I18nProvider';
 import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
 import { WalletScreen } from '../../src/screens/wallet-home/WalletScreen';
 import { BalanceScreen } from '../../src/screens/wallet-home/BalanceScreen';
-import { WalletActionsProvider, type WalletActions, type WalletActionRequest } from '../../src/screens/wallet-home/data/actions';
+import { WalletActionsProvider, type WalletActions } from '../../src/screens/wallet-home/data/actions';
 import { __resetDisplayCurrencyForTests } from '../../src/screens/wallet-home/data/currency';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { walletClient, type WalletFixture } from './fixtures';
+import { fakeWalletActions, walletClient, type WalletFixture } from './fixtures';
 
 // Several screens or locales per test: more than the 5 s Jest default.
 jest.setTimeout(30_000);
@@ -175,16 +176,16 @@ describe('wallet hub — WalletPopup overlay and the flows (fake WalletActions o
     expect(await screen.findByTestId('wallet-flow-exchange')).toBeTruthy();
   });
 
-  it('add funds: a quick amount in EUR is submitted in USD minor units to the injected WalletActions', async () => {
-    const submit = jest.fn(async (_req: WalletActionRequest) => {});
-    renderUI(<WalletScreen />, { actions: { submit } });
+  it('add funds: a quick amount in EUR is sent to the deposit in USD minor units', async () => {
+    const actions = fakeWalletActions();
+    renderUI(<WalletScreen />, { actions });
     await waitFor(() => expect(textOf('wallet-balance-cash')).toContain('€'));
     fireEvent.press(screen.getByTestId('wallet-quick-add-funds'));
     fireEvent.press(await screen.findByTestId('wallet-flow-quick-50'));
     await act(async () => {
       fireEvent.press(screen.getByTestId('wallet-flow-submit'));
     });
-    expect(submit).toHaveBeenCalledWith({ kind: 'add-funds', amount: 50, currency: 'EUR', usdAmountMinor: Math.round((50 / 0.92) * 100) });
+    expect(actions.createDeposit).toHaveBeenCalledWith({ amount_minor: Math.round((50 / 0.92) * 100), currency: 'USD' });
   });
 
   it('exchange: the quote comes from core calculateExchange (USD → CREDITS, no fees)', async () => {
@@ -194,28 +195,15 @@ describe('wallet hub — WalletPopup overlay and the flows (fake WalletActions o
     expect(textOf('wallet-flow-quote')).toContain('1.200');
   });
 
-  it('the default WalletActions makes no call: it tells the member to finish on the web wallet', async () => {
-    const { fake } = renderUI(<WalletScreen />);
-    fireEvent.press(screen.getByTestId('wallet-quick-withdraw'));
-    fireEvent.press(await screen.findByTestId('wallet-flow-quick-100'));
-    await act(async () => {
-      fireEvent.press(screen.getByTestId('wallet-flow-submit'));
-    });
-    expect(__toastsForTests().map((t) => t.titleKey)).toContain('walletHomeNative.flow.finishOnWeb');
-    // The shell's tenant list (rpc.list_public_tenants, a read) is the only RPC; no wallet RPC runs.
-    expect(fake.calls.filter((c) => c.fn.startsWith('rpc.') && c.fn !== 'rpc.list_public_tenants')).toEqual([]);
-    expect(fake.writes).toEqual([]);
-  });
-
   it('an empty amount is refused with the web toast and nothing is submitted', async () => {
-    const submit = jest.fn(async () => {});
-    renderUI(<WalletScreen />, { actions: { submit } });
-    fireEvent.press(screen.getByTestId('wallet-quick-send'));
-    await screen.findByTestId('wallet-flow-send');
+    const actions = fakeWalletActions();
+    renderUI(<WalletScreen />, { actions });
+    fireEvent.press(screen.getByTestId('wallet-quick-add-funds'));
+    await screen.findByTestId('wallet-flow-add-funds');
     await act(async () => {
       fireEvent.press(screen.getByTestId('wallet-flow-submit'));
     });
-    expect(submit).not.toHaveBeenCalled();
+    expect(actions.createDeposit).not.toHaveBeenCalled();
     expect(__toastsForTests().map((t) => t.titleKey)).toContain('toasts.wallet.invalidAmount2');
   });
 });

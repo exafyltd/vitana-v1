@@ -3,7 +3,8 @@
  * hub + balance tests. Imported BEFORE the code under test so jest hoists the
  * `jest.mock` calls. Same stubs as tests/home/mocks.ts: expo-router (the
  * `router` + `useLocalSearchParams` the screens read for the `tab` / `filter`
- * params), react-native-safe-area-context (zero insets) and the secure-store /
+ * params, `useFocusEffect` run as a mount effect), expo-web-browser (the
+ * Stripe checkout is recorded, never opened), react-native-safe-area-context (zero insets) and the secure-store /
  * async-storage the auth + language providers touch.
  */
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -28,8 +29,12 @@ const mockRouter = {
   setParams: jest.fn(),
 };
 
+// The system browser for the hosted Stripe checkout: recorded, never opened.
+jest.mock('expo-web-browser', () => ({ openBrowserAsync: jest.fn(async () => ({ type: 'cancel' })), openAuthSessionAsync: jest.fn() }));
+
 jest.mock('expo-router', () => ({
   router: mockRouter,
+  useFocusEffect: (cb: () => void) => jest.requireActual('react').useEffect(() => cb(), [cb]),
   useLocalSearchParams: () => mockParams.current,
   usePathname: () => '/wallet',
   useGlobalSearchParams: () => ({}),

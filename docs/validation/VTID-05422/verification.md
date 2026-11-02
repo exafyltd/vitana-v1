@@ -28,10 +28,13 @@ hosts. Not verified on staging: device runtime deferred to G1.
 - `data/wallet.ts`: the native read twin of `useWallet`. It runs the same two PostgREST reads
   (`user_wallets` by `user_id`; `wallet_transactions` from/to the member, newest 10) through
   `getSupabase()`. `data/currency.ts` holds the display currency (AsyncStorage, default EUR) and
-  the `EUR_PER_USD` fallback rate. `data/actions.ts` defines `WalletActions`.
+  the `EUR_PER_USD` fallback rate. `data/actions.ts` holds the web's write calls
+  (`liveWalletActions`, the app default), `data/flows.ts` the web popups' handlers and the
+  Stripe deposit return leg, `data/depositReturn.ts` the hub's AppState / focus / return-param side.
 - `iap.ts`: `isIAPRestricted()` = `Platform.OS === 'ios'`, the same rule the drawer already applies
   (`SideDrawer.tsx` → `drawer.ts`). `drawer.ts` and `SideDrawer.tsx` are unchanged.
-- `src/i18n/*/walletHomeNative.json`: 12 new keys, DE first (du-form), then all 11 locales
+- `src/i18n/*/walletHomeNative.json`: 15 new keys (fix 1: the withdrawal-method names and times,
+  `flow.finishOnWeb` removed), DE first (du-form), then all 11 locales
   (pt você, fr tu, ru ты, ar). The existing `wallet.*`, `walletActions.*`, `screens.wallet.*`,
   `screens.payment.*`, `spotlightTierB.wallet.*` and `toasts.wallet.*` keys are reused.
 - `apps/mobile/src/ports/ui.tsx`: 14 lucide glyphs added to the icon map.
@@ -54,13 +57,40 @@ added, removed, widened or narrowed:
 | `Balance.tsx` `getContextualAction()` null; membership tab stays | `contextualAction()` null | iap-gate: every tab both ways |
 | drawer `iapRestricted: Platform.OS === 'ios'` hides the Wallet row | unchanged | iap-gate: drawer both ways + source pin |
 
-## No payment, transfer or redeem call
+## The flows make the web's calls (fix 1)
 
-The flows check the amount the same way the web does, then call `WalletActions.submit`. The
-default `WalletActions` makes no call. It shows the toast `walletHomeNative.flow.finishOnWeb`
-(finish in the web wallet). The tests inject a fake and assert that no wallet RPC and no write ran.
-The web's `initialize_user_wallet` RPC, the Stripe deposit return leg and the live FX request are
-not carried over.
+Fix 1 corrects a misread of the driver brief. "No real payment or transfer call" applies to the
+tests and the build session only. There was no owner instruction to defer the product calls. The
+app default `liveWalletActions` (`data/actions.ts`) now makes the calls the mobile web makes, with
+the same endpoints, request shapes and handling (`data/flows.ts`):
+
+| Flow | Web source | Call | Web toasts |
+|---|---|---|---|
+| add funds | AddFundsPopup + useCreateDeposit | gateway `POST /api/v1/wallet/deposits/create` `{ amount_minor, currency: 'USD' }` (Bearer, `X-Vitana-Active-Role: community`), then Stripe Checkout in expo-web-browser | `redirectingToCheckout`; `transactionFailed` |
+| deposit return | Wallet.tsx `depositId` / `depositResult` + useDeposit | `GET /api/v1/wallet/deposits/:id`, polled 8 × 2.5 s, then the wallet refetch | `fundsAddedSuccessfully` / `transactionFailed` / `depositCanceled` |
+| buy credits | BuyCreditsPopup | RPC `process_wallet_exchange` USD → CREDITS | `exchangeCompleted`, `creditsPurchasedSuccessfully`; `purchaseFailed` |
+| withdraw | WithdrawPopup (method select, fee, 2 s wait) | RPC `update_user_balance` subtract `withdrawal` | `withdrawalInitiated2`; `withdrawalFailed` |
+| spend credits | SpendCreditsPopup | RPC `update_user_balance` subtract `purchase` | `success`; `error` |
+| exchange | ExchangeStep | RPC `process_wallet_exchange` | `exchangeCompleted`; `exchangeFailed` |
+| send | MakePaymentPopup (member search, currency, description) | `global_community_profiles` read, RPC `process_wallet_transfer`, `user_activity_log` + `messages` inserts | `transferSuccessful`, `paymentSent`; `paymentFailed` |
+| request | PaymentRequestPopup | `messages` insert (`payment_request`, no recipient) | `paymentRequestSent`; `error` |
+| exchange & send | ExchangeAndSendPopup | `user_activity_log` + `messages` inserts (the web makes no RPC here) | `exchangeSendCompleted`; `transactionFailed` |
+| balance top-up / tokens / upgrade | Balance.tsx dialogs | none: the web buttons have no handler | none |
+
+Stripe return leg (brief rule "External checkout / portal return leg"): the created deposit is
+marked pending. It is read again when the browser closes (iOS), on AppState 'active' (Android,
+whose `openBrowserAsync` resolves `opened` at once) and on screen focus. Each read refetches the
+wallet balances and transactions, and a settled deposit shows the web's toast. A deposit still
+pending after the short poll stays pending for the next return. The web's return params
+(`?depositId=&depositResult=success|canceled`) are handled when the link reaches the app.
+
+Web behaviour carried over as is: `transferFunds` shows `transferSuccessful` first and does not
+throw on failure, so the payment message is still sent. The request body always reads `$<amount>`.
+Exchange & send checks the amount against the popup's fixed sample balance.
+
+Tests run only against fakes (fake gateway wallet rail, Supabase double, mocked
+expo-web-browser). No test and no session command called a live system or Stripe. Red on the
+previous head: `red-fix1.txt`. The iap-gate tests are unchanged.
 
 ## Deviations from the spec (all recorded in the PR body)
 
@@ -68,16 +98,15 @@ not carried over.
    `{!isIAPRestricted() && …}` branch. Today's web also redirects iOS from `/wallet` to `/home`.
    The owner rule (keep the gate exactly as today) and R3.2 (mirror one-for-one) win, so the
    redirect is mirrored too.
-2. The flows' confirm buttons hand the request to `WalletActions`, which makes no call by default
-   (owner instruction). Wiring a real gateway is a later wallet FEAT behind decision 5 and G1. The
-   recipient search (send / request / exchange & send), the withdrawal-method select and the spend
-   catalogue are also deferred.
+2. Not carried over: the spend catalogue (the quick amounts name the purchase as the web's quick
+   spend does) and the request's optional due date (sent as `undefined`, as the web does when it
+   is empty). The exchange sheet keeps its USD → CREDITS pair.
 3. The web "intelligence" cards and the motivational banner are hardcoded English sample content.
    The native twins keep each card's translated title and summary and drop the invented rows, as
    the web's own Spotlight port did (VTID-05111, SR-24).
 4. The web header's search button only logs, so it is omitted. The calendar button and the
    VitanaIndex / Autopilot chips belong to other lanes and are also omitted (same as native Home).
-5. The EUR/USD rate is always the `EUR_PER_USD` fallback. The web uses this value while its live
+5. The web's `initialize_user_wallet` RPC is not carried over. The EUR/USD rate is always the `EUR_PER_USD` fallback. The web uses this value while its live
    request loads or fails. This lane makes no third-party request.
 
 ## Commands and results

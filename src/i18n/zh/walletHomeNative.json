@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "选择钱包视图",
     "flow": {
-      "finishOnWeb": "应用内暂不支持此操作。请在网页版钱包中完成。"
+      "bankTransfer": "银行转账",
+      "bankTransferTime": "1-3 个工作日",
+      "debitCard": "借记卡",
+      "debitCardTime": "即时"
     },
     "balance": {
       "tabsLabel": "账户分区",

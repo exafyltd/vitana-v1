@@ -12,26 +12,42 @@
  *
  * Each sheet keeps the web title, the current-balance line, the amount field
  * with its quick amounts, and the confirm button; the exchange quote comes
- * from core `calculateExchange`. Every web `if (isIAPRestricted()) return
- * null` is mirrored: add-funds, buy-credits, withdraw, spend-credits, exchange
- * and exchange-and-send render nothing on iOS; send and request are ungated
- * on the web and stay ungated. Confirm validates the amount like the web
- * (`toasts.wallet.invalidAmount2`) and hands the request to `WalletActions`
- * (./data/actions.ts) — this lane makes no payment / transfer call.
- * Deferred to a later wallet FEAT (documented in the PR): the recipient
- * search of send / request / exchange-and-send, the withdrawal-method select,
- * and the spend catalogue.
+ * from core `calculateExchange`. Send, request and exchange & send add the
+ * web's description field, send and request its currency select, send its
+ * community-member recipient search, withdraw its method select. Every web
+ * `if (isIAPRestricted()) return null` is mirrored: add-funds, buy-credits,
+ * withdraw, spend-credits, exchange and exchange-and-send render nothing on
+ * iOS; send and request are ungated on the web and stay ungated. Confirm runs
+ * the web popup's handler (../data/flows.ts: the same validation, calls and
+ * toasts) and closes the sheet where the web closes the popup.
+ * Not carried over (documented in the PR): the spend catalogue (the quick
+ * amounts name the purchase like the web's quick spend) and the request's
+ * optional due date (sent as undefined, as the web does when it is empty).
  */
-import { useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BottomSheet, Button, Text, TextInput, notifyError, useUITheme } from '../../../ports/ui';
+import { BottomSheet, Button, PressableRow, RadioGroup, Text, TextInput, useUITheme } from '../../../ports/ui';
 import { radius } from '../../../ports/tokens';
-import { calculateExchange, convertFromUsd, convertToUsd, getCurrencySymbol } from '../../../ports/wallet';
+import { calculateExchange, convertFromUsd, getCurrencySymbol } from '../../../ports/wallet';
+import { useAuth } from '../../../auth/AuthProvider';
 import { useI18n } from '../../../i18n/I18nProvider';
 import { isIAPRestricted } from '../iap';
-import { useWallet } from '../data/wallet';
+import { useWallet, useWalletRefresh } from '../data/wallet';
 import { useDisplayCurrency, useEurUsdRate } from '../data/currency';
-import { useWalletActions, type WalletActionRequest } from '../data/actions';
+import { useWalletActions, type CommunityMember } from '../data/actions';
+import {
+  WITHDRAWAL_METHODS,
+  submitAddFunds,
+  submitBuyCredits,
+  submitExchange,
+  submitExchangeAndSend,
+  submitRequest,
+  submitSend,
+  submitSpendCredits,
+  submitWithdraw,
+  type FlowContext,
+  type PaymentCurrency,
+} from '../data/flows';
 import { fmtNumber } from '../format';
 
 export type WalletFlowKind = 'add-funds' | 'buy-credits' | 'withdraw' | 'spend-credits' | 'send' | 'request' | 'exchange' | 'exchange-and-send';
@@ -138,16 +154,43 @@ export function WalletFlowSheet({ kind, open, onClose }: { kind: WalletFlowKind;
   return <FlowBody kind={kind} open={open} onClose={onClose} />;
 }
 
+const DESCRIBED: readonly WalletFlowKind[] = ['send', 'request', 'exchange-and-send'];
+
 function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean; onClose: () => void }): ReactElement {
   const { colors } = useUITheme();
   const { t, locale } = useI18n();
-  const { getBalance } = useWallet();
+  const { user } = useAuth();
+  const { balances, getBalance } = useWallet();
+  const refresh = useWalletRefresh();
   const { displayCurrency } = useDisplayCurrency();
   const { eurPerUsd } = useEurUsdRate();
   const actions = useWalletActions();
   const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [payCurrency, setPayCurrency] = useState<PaymentCurrency>('CREDITS');
+  const [methodId, setMethodId] = useState<string | null>(null);
+  const [itemName, setItemName] = useState<string | null>(null);
+  const [recipient, setRecipient] = useState<CommunityMember | null>(null);
+  const [search, setSearch] = useState('');
+  const [members, setMembers] = useState<CommunityMember[] | null>(null);
   const [busy, setBusy] = useState(false);
   const cfg = FLOWS[kind];
+  const selfId = user?.id ?? null;
+
+  // Send: the web loads the default member list, then searches from 2 characters (or the empty term).
+  useEffect(() => {
+    if (kind !== 'send' || !open || !selfId) return;
+    const term = search.trim();
+    if (term.length === 1) return;
+    let live = true;
+    actions.searchMembers(term, selfId).then(
+      (rows) => live && setMembers(rows),
+      () => undefined,
+    );
+    return () => {
+      live = false;
+    };
+  }, [kind, open, search, selfId, actions]);
 
   const cashSymbol = cfg.unit === 'cash' ? getCurrencySymbol(displayCurrency) : cfg.unit === 'usd' ? getCurrencySymbol('USD') : '';
   const currencyParam = { currency: displayCurrency };
@@ -163,23 +206,56 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
   const parsed = parseFloat(amount.replace(',', '.'));
   const quote = kind === 'exchange' && parsed > 0 ? calculateExchange(parsed, 'USD', 'CREDITS') : null;
 
-  const submit = async () => {
-    if (!amount || !(parsed > 0)) {
-      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidAmountAdd');
-      return;
+  const run = (): Promise<boolean> => {
+    const ctx: FlowContext = {
+      actions,
+      user: user ? { id: user.id, tenantId: (user.app_metadata?.active_tenant_id as string | undefined) || 'default' } : null,
+      balances,
+      getBalance,
+      refresh,
+    };
+    const amountText = amount.replace(',', '.');
+    switch (kind) {
+      case 'add-funds':
+        return submitAddFunds(ctx, { amountText, displayCurrency, eurPerUsd });
+      case 'buy-credits':
+        return submitBuyCredits(ctx, { amountText });
+      case 'withdraw':
+        return submitWithdraw(ctx, { amountText, methodId });
+      case 'spend-credits':
+        return submitSpendCredits(ctx, { amountText, itemName });
+      case 'send':
+        return submitSend(ctx, { amountText, description, recipient, currency: payCurrency });
+      case 'request':
+        return submitRequest(ctx, { amountText, description, currency: payCurrency });
+      case 'exchange':
+        return submitExchange(ctx, { amountText, fromCurrency: 'USD', toCurrency: 'CREDITS' });
+      case 'exchange-and-send':
+        return submitExchangeAndSend(ctx, { amountText, description });
     }
-    const request: WalletActionRequest =
-      kind === 'add-funds'
-        ? { kind, amount: parsed, currency: displayCurrency, usdAmountMinor: Math.round(convertToUsd(parsed, displayCurrency, eurPerUsd) * 100) }
-        : { kind, amount: parsed, currency: cfg.unit === 'credits' ? 'CREDITS' : 'USD' };
+  };
+
+  const submit = async () => {
     setBusy(true);
     try {
-      await actions.submit(request);
-    } catch {
-      notifyError('toasts.wallet.transactionFailed');
+      if (await run()) {
+        setAmount('');
+        setDescription('');
+        setMethodId(null);
+        setItemName(null);
+        setRecipient(null);
+        setSearch('');
+        onClose();
+      }
     } finally {
       setBusy(false);
     }
+  };
+
+  const pickQuick = (q: number) => {
+    setAmount(String(q));
+    // Web quick spend names the purchase.
+    if (kind === 'spend-credits') setItemName(`${q} Credits Purchase`);
   };
 
   const submitLabel = kind === 'withdraw' ? t(cfg.submitKey, { value0: (parsed > 0 ? parsed : 0).toFixed(2) }) : t(cfg.submitKey);
@@ -206,7 +282,7 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
             ) : null}
             <View style={styles.quickRow}>
               {cfg.quick.map((q) => (
-                <Button key={q} testID={`wallet-flow-quick-${q}`} size="sm" variant="outline" onPress={() => setAmount(String(q))}>
+                <Button key={q} testID={`wallet-flow-quick-${q}`} size="sm" variant="outline" onPress={() => pickQuick(q)}>
                   {cfg.unit === 'credits' ? t('screens.wallet.value0Credits', { value0: fmtNumber(locale, q) }) : `${cashSymbol}${q}`}
                 </Button>
               ))}
@@ -222,6 +298,68 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
             <Text variant="caption" muted>
               {t('screens.wallet.noFeesFreeExchange')}
             </Text>
+          </View>
+        ) : null}
+        {kind === 'withdraw' ? (
+          <View style={styles.quickBlock}>
+            <Text variant="label">{t('screens.wallet.withdrawalMethod')}</Text>
+            <RadioGroup
+              testID="wallet-flow-method"
+              accessibilityLabel={t('screens.wallet.selectWithdrawalMethod')}
+              value={methodId}
+              onChange={setMethodId}
+              options={WITHDRAWAL_METHODS.map((m) => ({ value: m.id, label: t(m.labelKey), subtitle: `${t(m.timeKey)} · ${t('screens.wallet.feeFee', { fee: m.fee })}` }))}
+            />
+          </View>
+        ) : null}
+        {kind === 'send' || kind === 'request' ? (
+          <View style={styles.quickBlock}>
+            <Text variant="label">{t('screens.payment.currency')}</Text>
+            <RadioGroup
+              testID="wallet-flow-currency"
+              accessibilityLabel={t('screens.payment.currency')}
+              value={payCurrency}
+              onChange={(v) => setPayCurrency(v as PaymentCurrency)}
+              options={[
+                { value: 'CREDITS', label: t('screens.payment.credits') },
+                { value: 'USD', label: t('screens.payment.usd') },
+              ]}
+            />
+          </View>
+        ) : null}
+        {kind === 'send' ? (
+          <View style={styles.quickBlock} testID="wallet-flow-recipient">
+            <Text variant="label">{t('screens.payment.paymentRecipient')}</Text>
+            {recipient ? (
+              <View style={styles.selected}>
+                <Text weight="600" testID="wallet-flow-recipient-selected">
+                  {recipient.display_name || recipient.user_id}
+                </Text>
+                <Button testID="wallet-flow-recipient-change" size="sm" variant="outline" onPress={() => setRecipient(null)}>
+                  {t('screens.payment.change')}
+                </Button>
+              </View>
+            ) : (
+              <>
+                <TextInput testID="wallet-flow-recipient-search" value={search} onChangeText={setSearch} placeholder={t('screens.payment.searchForCommunityMember')} accessibilityLabel={t('screens.payment.paymentRecipient')} />
+                {members && members.length === 0 ? (
+                  <Text variant="caption" muted>
+                    {t('screens.payment.noMembersFound')}
+                  </Text>
+                ) : null}
+                {(members ?? []).map((m) => (
+                  <PressableRow key={m.user_id} testID={`wallet-flow-member-${m.user_id}`} accessibilityRole="button" onPress={() => setRecipient(m)} style={styles.member}>
+                    <Text>{m.display_name || m.user_id}</Text>
+                  </PressableRow>
+                ))}
+              </>
+            )}
+          </View>
+        ) : null}
+        {DESCRIBED.includes(kind) ? (
+          <View style={styles.quickBlock}>
+            <Text variant="label">{t('screens.payment.description')}</Text>
+            <TextInput testID="wallet-flow-description" value={description} onChangeText={setDescription} placeholder={t('screens.payment.whatThisPaymentFor')} accessibilityLabel={t('screens.payment.description')} />
           </View>
         ) : null}
         <Button testID="wallet-flow-submit" onPress={submit} disabled={busy}>
@@ -248,5 +386,7 @@ const styles = StyleSheet.create({
   quickBlock: { gap: 8 },
   quickRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   quote: { gap: 4 },
+  selected: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+  member: { paddingVertical: 8 },
   bullets: { gap: 4, padding: 12, borderRadius: radius.lg, borderWidth: 1 },
 });

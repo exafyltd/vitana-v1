@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "Wallet-Ansicht wählen",
     "flow": {
-      "finishOnWeb": "Diese Aktion gibt es in der App noch nicht. Schließe sie bitte in deiner Web-Wallet ab."
+      "bankTransfer": "Banküberweisung",
+      "bankTransferTime": "1–3 Werktage",
+      "debitCard": "Debitkarte",
+      "debitCardTime": "Sofort"
     },
     "balance": {
       "tabsLabel": "Kontobereiche",

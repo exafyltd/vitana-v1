@@ -6,18 +6,19 @@
  * `@vitana/core` (the web hook is class B: it imports
  * `@/integrations/supabase/client`).
  *
- * Read only. Deliberately not carried over (no write or money movement from
- * this lane — owner instruction for VTID-05422):
+ * The writes (the `update_user_balance` / `process_wallet_*` RPCs, the
+ * Stripe deposit) are the flows' calls in ./actions.ts + ./flows.ts; after
+ * each one the flows refetch these two reads (`useWalletRefresh`), as the web
+ * hook refetches after its writes. Not carried over:
  *  - `initialize_user_wallet` (the web RPC that creates the rows on a first
  *    visit): a member without rows sees the loading label, as the web does
  *    until its init completes;
- *  - `updateBalance` / `exchangeCurrency` / `transferFunds` /
- *    `exchangeAndSend` (the `update_user_balance` / `process_wallet_*` RPCs):
- *    the native flows hand their request to `WalletActions` (./actions.ts);
  *  - the realtime channel and the last-good-balances localStorage cache: the
- *    native hub relies on react-query's cache and `refreshData()`.
+ *    native hub relies on react-query's cache and the refetch after a write
+ *    or a return to the app.
  */
-import { useQuery } from '@tanstack/react-query';
+import { useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getSupabase } from '../../../auth/client';
 import { useAuth } from '../../../auth/AuthProvider';
 
@@ -121,4 +122,13 @@ export function useWallet(): WalletData {
       void transactionsQuery.refetch();
     },
   };
+}
+
+/** Invalidates and refetches the wallet balances + transactions (web `fetchBalances()` + `fetchTransactions()`). */
+export function useWalletRefresh(): () => Promise<unknown> {
+  const queryClient = useQueryClient();
+  return useCallback(
+    () => Promise.all([queryClient.invalidateQueries({ queryKey: ['wallet', 'balances'] }), queryClient.invalidateQueries({ queryKey: ['wallet', 'transactions'] })]),
+    [queryClient],
+  );
 }

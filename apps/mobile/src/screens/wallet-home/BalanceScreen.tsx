@@ -15,9 +15,9 @@
  * iOS IAP gate, mirrored one-for-one: `getContextualAction()` returns null
  * under `isIAPRestricted()`, so on iOS there is no top-up / buy-stake /
  * upgrade affordance on any tab; the membership tab (a real-world service)
- * stays visible. The three dialogs are bottom sheets; their confirm buttons go
- * to `WalletActions` (no payment call from this lane), and the package tiles
- * stay non-interactive as on the web. The motivational banner and the
+ * stays visible. The three dialogs are bottom sheets; as on the web
+ * (src/pages/wallet/Balance.tsx), their confirm buttons and package tiles
+ * have no handler, so they make no call. The motivational banner and the
  * intelligence cards' sample rows are hardcoded English on the web and are
  * not carried over (./components/InsightCard.tsx). React 19: `ReactElement`.
  */
@@ -30,7 +30,6 @@ import { useI18n } from '../../i18n/I18nProvider';
 import { isIAPRestricted } from './iap';
 import { fmtNumber } from './format';
 import { useWallet, type WalletTransaction } from './data/wallet';
-import { useWalletActions, type WalletActionKind } from './data/actions';
 import { BalanceCard } from './components/BalanceCard';
 import { TransactionList } from './components/TransactionList';
 import { InsightCard } from './components/InsightCard';
@@ -75,12 +74,12 @@ export function BalanceScreen(): ReactElement {
   const params = useLocalSearchParams<{ tab?: string }>();
   const tab: BalanceTab = TABS.some((x) => x.value === params.tab) ? (params.tab as BalanceTab) : 'credits';
   const { transactions, loading, getBalance, isLoaded } = useWallet();
-  const actions = useWalletActions();
   const [dialog, setDialog] = useState<Dialog | null>(null);
   const action = contextualAction(tab);
 
   const amountOr = (value: number | null, key: string) => (value !== null ? t(key, { amount: fmtNumber(locale, value) }) : t('common.loading'));
-  const submitAction = (kind: WalletActionKind) => () => void actions.submit({ kind });
+  // Web Balance.tsx: the dialogs' confirm buttons have no onClick.
+  const noHandler = () => undefined;
   const status = (key: string) => t(`walletHomeNative.balance.${key}`);
 
   return (
@@ -199,7 +198,7 @@ export function BalanceScreen(): ReactElement {
               </View>
             ))}
           </View>
-          <Button testID="balance-topup-confirm" onPress={submitAction('top-up-credits')}>
+          <Button testID="balance-topup-confirm" onPress={noHandler}>
             {t('screens.wallet.purchaseCredits')}
           </Button>
         </View>
@@ -217,7 +216,7 @@ export function BalanceScreen(): ReactElement {
               </View>
             ))}
           </View>
-          <Button testID="balance-tokens-confirm" onPress={submitAction('buy-stake-tokens')}>
+          <Button testID="balance-tokens-confirm" onPress={noHandler}>
             {t('screens.wallet.continuePurchase')}
           </Button>
         </View>
@@ -241,7 +240,7 @@ export function BalanceScreen(): ReactElement {
               </Text>
             ))}
           </View>
-          <Button testID="balance-upgrade-confirm" onPress={submitAction('upgrade-membership')}>
+          <Button testID="balance-upgrade-confirm" onPress={noHandler}>
             {t('screens.wallet.upgradeNow')}
           </Button>
         </View>

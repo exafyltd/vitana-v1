@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "Choisis la vue du wallet",
     "flow": {
-      "finishOnWeb": "Cette action n’est pas encore dans l’app. Termine-la dans ton wallet web."
+      "bankTransfer": "Virement bancaire",
+      "bankTransferTime": "1 à 3 jours ouvrés",
+      "debitCard": "Carte de débit",
+      "debitCardTime": "Immédiat"
     },
     "balance": {
       "tabsLabel": "Sections du compte",

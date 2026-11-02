@@ -2,7 +2,10 @@
   "walletHomeNative": {
     "selectMode": "Выбери вид кошелька",
     "flow": {
-      "finishOnWeb": "Этого действия пока нет в приложении. Заверши его в своём веб-кошельке."
+      "bankTransfer": "Банковский перевод",
+      "bankTransferTime": "1–3 рабочих дня",
+      "debitCard": "Дебетовая карта",
+      "debitCardTime": "Мгновенно"
     },
     "balance": {
       "tabsLabel": "Разделы счёта",
