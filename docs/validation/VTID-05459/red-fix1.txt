@@ -36,3 +36,15 @@ PASS tests/inbox-chat/inbox-list/archived-inspiration.test.tsx (53.199 s)
 Test Suites: 4 failed, 3 passed, 7 total
 Tests:       17 failed, 68 passed, 85 total
 exit=1
+
+# Fix round 1b (driver decision A: Find Friends) — red on the previous head 2ef4744187859637cc43d7fec4e0f22868a14332
+# detached worktree at 2ef4744, npm ci, the new tests copied in (find-friends.test.tsx, app-config-contacts.test.ts, tests/app-config.test.ts plugin list), no implementation
+# $ (apps/mobile) npx jest tests/inbox-chat/inbox-list/find-friends.test.tsx tests/inbox-chat/inbox-list/app-config-contacts.test.ts tests/app-config.test.ts --ci
+FAIL tests/inbox-chat/inbox-list/app-config-contacts.test.ts
+FAIL tests/inbox-chat/inbox-list/find-friends.test.tsx
+FAIL tests/app-config.test.ts (17.028 s)
+    find-friends.test.tsx: Cannot find module 'expo-contacts/legacy' (dependency not installed yet)
+    app-config-contacts.test.ts: TypeError: Cannot read properties of undefined (reading 'contactsUsage') (no catalog key / plugin yet)
+    app-config.test.ts: ● auth plugins › adds SecureStore and Sign in with Apple, keeps the .dev ids (expo-contacts / expo-document-picker not registered)
+Tests:       1 failed, 30 passed, 31 total
+exit=1

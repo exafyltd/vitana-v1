@@ -170,3 +170,36 @@ $ node scripts/i18n-stamp-source.mjs --check-all      -> 0 changed keys. exit=0
 $ node scripts/i18n-audit.mjs --report-only           -> errors mentioning inboxNative: 0. exit=0
 $ npx eslint apps/mobile/src/screens/inbox apps/mobile/src/ports/{inbox.tsx,links.ts,badges.ts} "apps/mobile/app/(app)/inbox" apps/mobile/tests/inbox-chat
 exit=0 (0 problems)
+
+## Fix round 1b — driver decision A: port Find Friends (ImportContactsButton → ContactSyncModal)
+$ git fetch origin && git merge origin/main  -> merged c3d71c83e (no conflicts; merge commit 2d601c052)
+$ (apps/mobile) APP_PROFILE=development npx expo install expo-contacts expo-document-picker
+  -> expo-contacts 57.0.8, expo-document-picker 57.0.3 (pinned exact like the other expo-* deps); package-lock: only their two entries
+Red on 2ef474418 (see red-fix1.txt, second block):
+$ npx jest tests/inbox-chat/inbox-list/find-friends.test.tsx tests/inbox-chat/inbox-list/app-config-contacts.test.ts tests/app-config.test.ts --ci
+  3 suites failed (Cannot find module 'expo-contacts/legacy'; no contactsUsage key; plugin list) — Tests: 1 failed, 30 passed; exit=1
+
+$ npx jest tests/inbox-chat --ci
+Test Suites: 9 passed, 9 total
+Tests:       110 passed, 110 total
+exit=0
+(first run: two Find Friends tests found the Contacts-tab row behind the sheet with the same testID / name
+ -> they now look inside the results; the mocks' call counts are cleared per test; /connectors resolves to
+ /settings/connected-apps through navigation/resolve.ts)
+
+$ npm run typecheck  -> exit=0
+$ npm test -- --ci
+Test Suites: 93 passed, 93 total
+Tests:       2395 passed, 2395 total
+exit=0
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-74318df33ce9da4a4c011f0bf43e67e4.hbc (17MB)
+_expo/static/js/android/entry-b0a702455428ad7631e4c2048f0dbab5.hbc (18MB)
+exit=0 (dist/ and .expohome removed)
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> Dependencies are up to date; exit=0
+  (online `npm run deps:check` lists 7 pre-existing outdated packages, e.g. expo-router 57.0.23 / jest-expo 57.0.5 —
+   none of them added here; expo-contacts / expo-document-picker are not listed)
+$ npm run parity:check  -> OK — 435 rows, 35 native route(s); exit=0
+$ node ../../scripts/native/core-closure.mjs --check  -> up to date; exit=0
+$ (root) i18n register / long-words / subscriptions / locale-registry / stamp-source -> all OK; i18n-audit: 0 inboxNative errors
+$ (root) npx eslint apps/mobile/src/screens/inbox apps/mobile/src/ports/inbox.tsx apps/mobile/app.config.ts "apps/mobile/app/(app)/inbox" apps/mobile/tests/inbox-chat apps/mobile/tests/app-config.test.ts -> exit=0

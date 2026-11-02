@@ -50,6 +50,22 @@ base `origin/main` e530abd0d. Every command and its counts: `commands.log`. Red 
   `AddContactDialog` (directory RPCs or manual), `InviteContactButton` (`GET /invites/me`, wa.me / sms: /
   mailto: / share, `invite_sent_at`), "Remove contacts imported from my phone"
   (`DELETE /connected-apps/android-contacts`), empty and no-match states.
+- `FindFriendsSheet.tsx` + `data/contact-sync.ts` + `data/vcard.ts` — fix round 1b (driver decision A):
+  "Find Friends" (`ImportContactsButton` → `ContactSyncModal`, `ContactsTabContent.tsx:96`, `:136`) with
+  consent (`ContactConsentCard`, device flag `contact_sync_consent_<id>`), the phone's address book (read only,
+  expo-contacts — the web's native-app `vitanaNative.contacts.getAll()` bridge) or, on a device without one, a
+  .vcf file (expo-document-picker, parsed on the device by the mirrored `src/lib/vcard.ts`), both imported through
+  `POST /connected-apps/android-contacts/import` (`native` / `vcf`, region); Google / Outlook / iCloud through
+  `POST /connected-apps/:id/sync` or the connect step (→ `/connectors`); syncing, results (`DedupePreviewList`:
+  Message / Invite, search, show more), error states (Open Settings → the app's system settings),
+  `VerifyPhoneHint` + `VerifyPhoneDialog` (`GET /me/phone`, `POST /me/phone/verification[/confirm]`). The
+  browser Contact Picker mode has no native counterpart (the web uses it only in Chrome on Android).
+- `app.config.ts` `contactsImportPlugins()` — `expo-contacts` (usage string from `inboxNative.permissions.
+  contactsUsage`, base locale, DE-first in the catalogs) and `expo-document-picker` (no iCloud container);
+  `android.blockedPermissions` drops the plugin's WRITE_CONTACTS (the app only reads). `apps/mobile/package.json`
+  + `package-lock.json`: `expo-contacts` 57.0.8 and `expo-document-picker` 57.0.3 (`npx expo install`, pinned; no
+  other package). These three files are outside the lane paths, covered by the owner's Option C instruction for
+  native-wave2 lanes (as diary #1548); `tests/app-config.test.ts` gets the two plugin names added to its list.
 - `data/presence.ts` + `PresenceDot` (components.tsx) — fix round 1: `PresenceIndicator` on the avatar of a
   direct card (`MobileConversationCard.tsx:75-81`) from the native twin of `useUserPresence`
   (`thread_presence` read, `presence_global` channel sync, the member's own track + heartbeat upsert, Vitana
@@ -69,7 +85,6 @@ base `origin/main` e530abd0d. Every command and its counts: `commands.log`. Red 
 |---|---|---|
 | Create-group sheet "twin of `CreateGroupPopup.tsx`, opened from the inbox header" (tasks.md task 2) | Not ported; the mobile web's create-group flow is the New sheet's group mode, which is ported. The user rule "never add UI the mobile web does not show" (R1.1) wins over the task text. | `Messages.tsx:1413` mounts `CreateGroupPopup`, but on the mobile branch nothing opens it: the only mobile caller passes `onCreateGroup` to `MobileInboxEmptyState` (`Messages.tsx:1209`), which destructures it and never renders it (`MobileInboxEmptyState.tsx:19`, no use below). `NewConversationPopup.tsx:90-102` switches to group mode at 2+ members and creates the group (`:349-389`). Both popups call the same RPCs. |
 | Action-rail chips (gift voucher, `VitanaIndexChip`, `AutopilotChip` + `AutopilotPopup`), `UniversalCalendarButton` | Deferred to their lanes (same as the home and diary lanes) | `Messages.tsx:1308-1316`, `:1332`, `:1420-1423` |
-| Contacts tab "Find Friends" (`ImportContactsButton` → `ContactSyncModal`: phone address book, .vcf file, Google / Outlook / iCloud) | NOT YET PORTED — open question to the driver (fix round 1): the phone address book / .vcf import needs a native module (`expo-contacts` / `expo-document-picker`) in `apps/mobile/package.json` + the app config permission strings, outside the lane paths | `ContactsTabContent.tsx:96`, `:136`; `ContactSyncModal.tsx`; `useContactSync.ts:22-34` |
 | `CallProvider` / `CallManager` | conversation-chat lane (plan decision 1) | `Messages.tsx:1274`, `:1425-1427` |
 | Archived / Inspiration `ExpandableSearchButton`, `UniversalCalendarButton` | Search only logs its query; calendar is the calendar lane's (diary precedent) | `Archived.tsx:79-83`, `Inspiration.tsx:143-147` |
 | Delivery receipts for DMs arriving while the list is open (`queueDelivered`) and the localStorage thread cache | Not on the list: receipts belong to the conversation lane (VTID-05320 delivery state); the in-memory React Query cache stands in for the per-tab localStorage cache | `useGlobalMessages.ts:1887`, `:122-140` |
