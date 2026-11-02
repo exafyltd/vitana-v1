@@ -1,0 +1,45 @@
+# VTID-05510 (native-wave2-discover-commerce-r2/discover) — local verification
+# Worktree: /projects/sandbox/vitana-v1/.worktrees/native-wave2-discover-commerce-r2-discover
+# Base: origin/main e1ab28b1f (no newer main at the last fetch). Linux, node v22.23.4. No network in tests.
+# Setup: apps/mobile `npm ci`; repo root `npm ci --ignore-scripts` (typescript for the native generators).
+
+## red on base (new tests, no implementation) — see red-on-base.txt
+$ (apps/mobile, detached origin/main worktree, tests/discover-commerce copied in, expo-video --no-save) npx jest tests/discover-commerce --ci
+FAIL — 7/7 suites failed to run (Cannot find module src/screens/discover/* / src/ports/discover / src/ports/add-to-cart), 0 tests ran
+
+## green (apps/mobile)
+$ npx jest tests/discover-commerce --ci
+PASS — 7 suites, 122/122 tests
+$ npm run typecheck            (pretypecheck: gen:i18n, 11 locales, 1452 shards)
+PASS — tsc --noEmit, 0 errors
+$ npm test -- --ci
+PASS — 93/93 suites, 2464/2464 tests
+  (an earlier full run, before the commit "share links on the profile's webBaseUrl", failed tests/env.test.ts — a production host literal in
+   src/screens/discover — fixed in that commit; and once timed out in
+   tests/memory/gateway-i18n.test.tsx under load, which passed on its own and in the final full run)
+$ HOME=<writable tmp> APP_PROFILE=development npm run bundle
+PASS — Metro + Hermes, ios entry-*.hbc (17MB) + android entry-*.hbc (18MB), "Exported: dist"   (HOME override: the sandbox HOME is read-only for ~/.expo)
+$ HOME=<writable tmp> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+PASS — "Dependencies are up to date" (expo-video 57.0.5 = the SDK 57 bundled version)
+$ npm run parity:check
+PASS — parity-ledger --check: OK — 435 rows, 40 native route(s)
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+PASS — 435 rows (added 0, updated 0, removed 0); ledger unchanged
+$ node scripts/native/gen-core-extract.mjs --check
+PASS — 13 files from 24 sources, 48 icons, 11 assets — up to date
+$ node scripts/native/core-closure.mjs --check
+PASS — 22 roots, 32 src files, 11 assets — up to date
+$ node scripts/native/gen-tokens.mjs --check
+PASS — up to date
+$ node scripts/native/check-shell-pins.mjs
+PASS — every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ node --test scripts/native/__tests__/*.test.mjs
+PASS — 68/68
+$ npx eslint apps/mobile packages
+PASS — 0 problems
+$ npm run i18n:register
+PASS — "No formal-register violations." (de du / pt você / fr tu / ru ты / pl / tr / zh checked; ar skipped by design)
+$ npm run i18n:audit
+FAIL (pre-existing) — 17193 errors on this branch and 17193 on origin/main (same count); 0 findings in discoverCommerceNative

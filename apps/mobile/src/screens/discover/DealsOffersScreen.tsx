@@ -16,7 +16,7 @@
  *    with their badges, slots, benefits, price-drop lines and buttons.
  *
  * Web defect not reproduced: the web passes review counts to `fmtDateTime`
- * (DealsOffers.tsx:589, :694, :838), which prints an epoch date; the native
+ * (DealsOffers.tsx:536, :645, :844), which prints an epoch date; the native
  * cards print the count with the locale number format.
  *
  * iOS IAP gate flag (R5): add-to-cart purchase surface on every tab — today's

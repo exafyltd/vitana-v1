@@ -22,9 +22,9 @@
  *    where IAP is restricted (`isIAPRestricted()`, :43). Natively that is the
  *    shell's `iapRestricted` rule, unchanged: `Platform.OS === 'ios'`
  *    (src/shell/logic/drawer.ts:37-38);
- *  - `IndexPill` (Discover.tsx:367-375): 🧬 + today's Vitana Index ("…" while
+ *  - `IndexPill` (Discover.tsx:357-367): 🧬 + today's Vitana Index ("…" while
  *    loading, VitanaIndexValue) → `/health`;
- *  - `AutopilotPill` (Discover.tsx:378-393): plane + "Autopilot" and the
+ *  - `AutopilotPill` (Discover.tsx:369-386): plane + "Autopilot" and the
  *    pulsing destructive pending-count badge; opens the Autopilot popup
  *    through the `autopilot:open` bus event (the shell drawer's event);
  *  - `ActionButton` (Supplements / Wellness / Deals): "+ Action" opens the
