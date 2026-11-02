@@ -48,3 +48,18 @@ npm run i18n:inventory → on Windows writes backslash paths and a different ord
 ## CI fix 1 (2026-11-01T03:15:36.6299450+01:00): change-suite red on 8f8338d (staging-tests.json invalid)
 - staging-tests.json: added service=community-app, tests[0].command -> ref, added reason
 - lib.validateManifest (vitana-platform origin/main) on the new manifest: ok=true, errors=[]
+
+## Fix-forward 1 (2026-11-01T20:55:26Z): STAGING-VERIFY 41329713260 (community-app @ 035800a7) red on VTID-05416 /discover and VTID-05419 /health
+- Failure: spotlight width / [data-spotlight-layout] width = 0.4927 at 1400x900, cap 0.45
+  (https://github.com/exafyltd/vitana-platform/actions/runs/41329713260).
+- Root cause (this lane): SpotlightGrid used Tailwind's default breakpoint names (lg = 1024, xl = 1280) but this repo's
+  tailwind.config.ts screens are md = 1024, lg = 1280, xl = 1536. At 1400 px the grid was in its 4-column shape
+  (spotlight 2 of 4 = 49%, tiles 2 x 3) instead of 5 columns (spotlight 2 of 5 = ~39%, tiles 3 x 2).
+- Fix: lg:grid-cols-4 xl:grid-cols-5 -> md:grid-cols-4 lg:grid-cols-5 (same for col/row spans, the empty tile area
+  and the compact row). Pixel bands unchanged from plan D3: >=1280 px 40%, 1024-1279 px 50%, <1024 px single column.
+- Red on base (origin/main a41e89a SpotlightGrid.tsx with the new test): npx vitest run src/components/layout/spotlight/spotlight-grid.test.tsx -> Tests  3 failed | 6 passed (9)
+- Green on head: npx vitest run src/components/layout/spotlight src/components/ui/vcard src/components/spotlight/tier-b src/pages/spotlight-tier-b.vtid-05111.test.tsx src/components/discover/spotlight src/components/community/spotlight src/pages/community/social-spotlight-pages.vtid-05110.test.tsx -> Test Files  14 passed (14); Tests  206 passed (206)
+- npx eslint SpotlightGrid.tsx spotlight-grid.test.tsx -> exit 0
+- npm run build -> exit 0; dist CSS contains .md:grid-cols-4, .lg:grid-cols-5, .md:col-span-2, .lg:col-span-2, .md:row-span-3, .lg:row-span-2, .md:grid-cols-3
+- Not verified locally in a browser: no test-user password in this environment, so no signed-in screenshot; the page
+  lanes' read-only staging specs (0.30-0.45 at 1400 and 1920) are the proof on staging.
