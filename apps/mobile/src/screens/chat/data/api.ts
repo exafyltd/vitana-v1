@@ -187,3 +187,29 @@ export async function updateGroupMessage(groupId: string, messageId: string, con
 export async function deleteGroupMessage(groupId: string, messageId: string): Promise<void> {
   await chatGatewayFetch(`/groups/${groupId}/messages/${messageId}`, { method: 'DELETE' });
 }
+
+// ── Lists + receipts (forward targets, VTID-05138; delivery, VTID-05320) ──
+
+export interface ChatConversation {
+  peer_id: string;
+  last_message: ChatMessage;
+}
+
+/** The member's DMs (web `fetchConversations`, `/chat/conversations`). */
+export async function fetchConversations(): Promise<ChatConversation[]> {
+  const json = await chatGatewayFetch<DataBody<ChatConversation[]>>('/conversations');
+  return json.data || [];
+}
+
+/** The member's groups (web `fetchGroups`, `/chat/groups/`). */
+export async function fetchGroups(): Promise<ChatGroup[]> {
+  const json = await chatGatewayFetch<DataBody<ChatGroup[]>>('/groups/');
+  return json.data || [];
+}
+
+/** Received DMs that reached this device (≤ 200 ids, web `markMessagesDelivered`). */
+export async function markMessagesDelivered(messageIds: string[]): Promise<number> {
+  if (messageIds.length === 0) return 0;
+  const json = await chatGatewayFetch<{ updated?: number }>('/delivered', { method: 'POST', body: JSON.stringify({ message_ids: messageIds.slice(0, 200) }) });
+  return Number(json.updated) || 0;
+}

@@ -18,13 +18,19 @@
  *    `new_chat_message` notifications.
  *  - realtime (L1866+): an INSERT into `chat_messages` addressed to me from
  *    this peer refetches the stream.
+ *  - delivery receipts (VTID-05320, L1824-1865): the peer's DMs that are not
+ *    yet delivered / read are reported to `/chat/delivered` in one batch per
+ *    500 ms (≤ 200 ids, each id once; a failed batch may be reported again).
+ *    DMs only — groups have no per-message delivery state.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getSupabase } from '../../../auth/client';
-import { markChatRead, requestVitanaReply, sendChatMessage } from './api';
+import { markChatRead, markMessagesDelivered, requestVitanaReply, sendChatMessage } from './api';
 import { chatMessageToView, enrichProfiles, fetchThreadMessages, MESSAGE_PAGE_SIZE } from './thread';
 import { isVitanaBot, tempIdFor, type ChatViewMessage, type ConversationThread } from './types';
+
+export const DELIVERED_BATCH_MS = 500;
 
 export function newClientMessageId(): string {
   const c = (globalThis as { crypto?: { randomUUID?: () => string; getRandomValues?: (b: Uint8Array) => Uint8Array } }).crypto;
@@ -43,6 +49,8 @@ export interface SendInput {
   messageType?: string;
   contentData?: Record<string, unknown> | null;
   replyToMessageId?: string | null;
+  /** Card buttons; stored on tenant messages only (the DM gateway drops them, as on the web). */
+  actionButtons?: unknown[] | null;
 }
 
 type Outbox = Record<string, { row: ChatViewMessage; input: SendInput }>;
@@ -275,6 +283,38 @@ export function useConversation(thread: ConversationThread | null, userId: strin
       void supabase.removeChannel(channel);
     };
   }, [thread, userId, queryClient, queryKey]);
+
+  // Delivery receipts for the peer's DMs.
+  const deliveredQueue = useRef<Set<string>>(new Set());
+  const deliveredReported = useRef<Set<string>>(new Set());
+  const deliveredTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (!thread || thread.type !== 'direct' || !userId) return;
+    for (const m of messages) {
+      if (m.sender_id !== thread.id || m.delivered_at || m.read_at || m.id.startsWith('temp-') || deliveredReported.current.has(m.id)) continue;
+      deliveredQueue.current.add(m.id);
+    }
+    if (deliveredQueue.current.size === 0 || deliveredTimer.current) return;
+    deliveredTimer.current = setTimeout(() => {
+      deliveredTimer.current = null;
+      const batch = Array.from(deliveredQueue.current).slice(0, 200);
+      for (const id of batch) {
+        deliveredQueue.current.delete(id);
+        deliveredReported.current.add(id);
+      }
+      if (batch.length > 0) {
+        markMessagesDelivered(batch).catch(() => {
+          for (const id of batch) deliveredReported.current.delete(id);
+        });
+      }
+    }, DELIVERED_BATCH_MS);
+  }, [thread, userId, messages]);
+  useEffect(
+    () => () => {
+      if (deliveredTimer.current) clearTimeout(deliveredTimer.current);
+    },
+    [],
+  );
 
   const mergeRows = useCallback((rows: ChatViewMessage[]) => {
     setJump((prev) => {

@@ -13,7 +13,10 @@
  *    roster's @mention candidates (L866-936);
  *  - a deep-linked message is scrolled to and highlighted, loaded around
  *    first when it is older than the latest page (L327-376, L514-523).
- * The search button + panel (L541, L550) is not part of this port.
+ *  - the search button + "Search this conversation" panel (scope
+ *    `group:<id>`, L537-556): a hit jumps to the message;
+ *  - "I am viewing this group" presence (no push while open, L558);
+ *  - the composer's paperclip opens the library directly (group mode).
  */
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -27,6 +30,8 @@ import { ConversationErrorBoundary, ConversationErrorCard } from './components';
 import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
 import { useGroupChat } from './data/useGroupChat';
+import { useChatViewingPresence } from './data/viewing';
+import { MessageSearchPanel } from './MessageSearchPanel';
 import type { ChatViewMessage } from './data/types';
 
 export function GroupChatScreen({ groupId, scrollToMessageId }: { groupId: string; scrollToMessageId?: string | null }) {
@@ -47,7 +52,9 @@ function GroupBody({ groupId, scrollToMessageId, onBack }: { groupId: string; sc
   const chat = useGroupChat(groupId, user?.id);
   const [deepLinkId, setDeepLinkId] = useState<string | null>(scrollToMessageId);
   const [replyingTo, setReplyingTo] = useState<ChatViewMessage | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { group } = chat;
+  useChatViewingPresence(groupId ? `group:${groupId}` : null);
 
   const backButton = (
     <Button variant="ghost" size="icon" onPress={onBack} accessibilityLabel={t('inbox.group.back')} testID="group-chat-back">
@@ -99,6 +106,9 @@ function GroupBody({ groupId, scrollToMessageId, onBack }: { groupId: string; sc
             {`${group.member_count} ${memberLabel}${group.is_system ? ` · ${t('inbox.group.officialBadge')}` : ''}`}
           </Text>
         </View>
+        <Button variant="ghost" size="icon" onPress={() => setSearchOpen(true)} accessibilityLabel={t('inbox.search.titleConversation')} testID="group-search-button">
+          <ChatIcon name="Search" size={20} />
+        </Button>
       </View>
       <View style={styles.fill}>
         {chat.messages.length === 0 ? (
@@ -130,12 +140,15 @@ function GroupBody({ groupId, scrollToMessageId, onBack }: { groupId: string; sc
           onCancelReply={() => setReplyingTo(null)}
           currentUserId={user?.id}
           mentionCandidates={chat.mentionCandidates}
+          threadId={group.id}
+          conversationType="group"
           onSend={async (content, messageType, contentData, replyToId) => {
             setReplyingTo(null);
             await chat.send({ content, messageType, contentData, replyToMessageId: replyToId ?? null });
           }}
         />
       </View>
+      <MessageSearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} scope={`group:${groupId}`} onSelect={(r) => setDeepLinkId(r.message_id)} />
     </View>
   );
 }
