@@ -1,0 +1,9 @@
+{
+  "onboardingNative": {
+    "avatarInitial": "V",
+    "errors": {
+      "handleTaken": "Este nome de usuário já está em uso. Escolha outro.",
+      "generic": "Algo deu errado. Tente novamente."
+    }
+  }
+}
