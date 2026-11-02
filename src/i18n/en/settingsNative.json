@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Chat",
+      "calendar": "Calendar",
+      "community": "Community",
+      "updateFailed": "Failed to update preference"
+    },
+    "consent": {
+      "title": "AI Data Sharing Disclosure",
+      "subtitle": "Before using AI features, please review how your data is used.",
+      "whatIsSent": "What data may be sent",
+      "voiceData": "Voice recordings and transcripts",
+      "diaryData": "Typed prompts, chat messages, and diary entries",
+      "memoryData": "Memory Garden entries and wellness goals",
+      "profileData": "Profile context (name, preferences)",
+      "socialData": "Social media profile URLs and bio text (when using import features)",
+      "recipientLabel": "Recipient:",
+      "recipient": "Google (Gemini AI models) via the Lovable AI Gateway. Your data is transmitted securely via encrypted connections.",
+      "purposeLabel": "Purpose",
+      "purpose": "To generate personalized AI responses, voice synthesis, proactive greetings, health coaching, and profile enrichment suggestions.",
+      "notStored": "Data is not permanently stored by the AI provider",
+      "revokeAnytime": "You can revoke consent anytime in Settings > Privacy",
+      "gdprCompliant": "Compliant with GDPR and privacy regulations",
+      "agreementFooter": "By tapping 'I Agree', you give Exafy LTD permission to send the data listed above to the named AI service providers. You can withdraw this permission at any time in Settings > Privacy.",
+      "notNow": "Not Now",
+      "iAgree": "I Agree"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90%",
+      "platformShare": "10%",
+      "redirecting": "Redirecting...",
+      "completeSetup": "Complete Setup",
+      "enablePayments": "Enable Payments",
+      "opening": "Opening...",
+      "viewDashboard": "View Dashboard"
+    },
+    "limitations": {
+      "description": "These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable.",
+      "removeTag": "Remove {v}",
+      "tag": "{v} ×",
+      "never": "never",
+      "allergens": "Allergens",
+      "medicationsLabel": "Medications (generic or class, e.g. SSRI, blood-thinner)",
+      "accessibilityLabel": "Accessibility needs",
+      "ofActiveProducts": "of {count} active products",
+      "maxPlaceholder": "e.g. 40",
+      "capPlaceholder": "e.g. 150",
+      "dietary": {
+        "vegan": "vegan",
+        "vegetarian": "vegetarian",
+        "halal": "halal",
+        "kosher": "kosher",
+        "glutenFree": "gluten-free",
+        "dairyFree": "dairy-free",
+        "nutFree": "nut-free",
+        "soyFree": "soy-free",
+        "sugarFree": "sugar-free",
+        "organic": "organic"
+      }
+    },
+    "tenantRole": {
+      "description": "Manage your context and permissions",
+      "noRoleSelected": "No Role Selected",
+      "noOrganization": "No Organization",
+      "current": "Current",
+      "available": "Available",
+      "switching": "Switching...",
+      "switchOrganization": "Switch Organization",
+      "roles": {
+        "community": "Community Member",
+        "patient": "Patient",
+        "professional": "Professional",
+        "staff": "Staff",
+        "backoffice": "Back Office",
+        "admin": "Administrator"
+      },
+      "roleDescriptions": {
+        "community": "Access community features and social connections",
+        "patient": "Full health tracking and medical features",
+        "professional": "Professional tools for doctors and coaches",
+        "staff": "Staff management and operational features",
+        "backoffice": "ERP/CRM back-office tools and approvals",
+        "admin": "Full administrative access and management",
+        "default": "Access to role-specific features"
+      },
+      "permissions": {
+        "community": "Community Access",
+        "health": "Health Data Access",
+        "professional": "Professional Tools",
+        "staff": "Staff Features",
+        "admin": "Admin Features"
+      }
+    }
+  }
+}
