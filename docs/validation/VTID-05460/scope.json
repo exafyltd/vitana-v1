@@ -16,7 +16,9 @@
     "apps/mobile/tests/audiobook/**",
     "src/i18n/*/journeyAutopilotNative.json",
     "docs/validation/**",
-    "packages/core/extract.json"
+    "packages/core/extract.json",
+    "apps/mobile/app/_layout.tsx",
+    "apps/mobile/tests/journey/core-i18n-route.test.tsx"
   ],
   "files_touched": [
     "apps/mobile/app/(app)/autopilot/audiobook.tsx",
