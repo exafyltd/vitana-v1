@@ -88,3 +88,44 @@ FAIL Collab handoff + FAIL Lane scope — the same single cause: .kiro/specs/nat
      is not on vitana-platform main yet (the spec lives on the plan branch kiro/native-wave2-journey-autopilot-r2/plan);
      the brief's known "lane file not found" allowance. No other preflight error.
 (first run also failed PR-GATE sparring: plan-sparring.md lacked the owner-approval line — added, now PASS)
+
+## Fix round 1 (review journey-7c8eacd.md, verdict changes) — code head 352aed614
+$ git fetch origin && git merge --ff-only origin/kiro/native-wave2-journey-autopilot-r2/journey -> Already up to date
+$ git merge origin/main -> Already up to date (branch already contains origin/main e530abd0d)
+$ (apps/mobile) npm ci -> ok
+
+### red on the previous head 7c8eacd (red-fix1.txt)
+$ (apps/mobile) npx jest tests/journey/fix1.test.tsx --ci
+Tests: 21 failed, 2 passed, 23 total (the 2 passing tests are absence guards)
+
+### green
+$ (apps/mobile) npm run typecheck -> tsc --noEmit, exit=0 (gen:i18n: 11 locales, 1452 shards)
+$ (apps/mobile) npx jest tests/journey --ci
+Test Suites: 3 passed, 3 total
+Tests:       94 passed, 94 total
+(first green runs fixed only test queries: kit dialog testIDs carry the -content suffix, aria-hidden
+ badges need includeHiddenElements, the reduced-motion tests render inside the shell's UIProvider,
+ the gateway double lower-cases header names. journey.test.tsx: the no-events case now expects the
+ demo events — the web's EventsPreview.tsx:44-52 fallback — instead of the empty line.)
+$ (apps/mobile) npm test -- --ci
+Test Suites: 87 passed, 87 total
+Tests:       2382 passed, 2382 total
+Snapshots:   57 passed, 57 total
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle -> ios entry-6081c714….hbc (17MB), android entry-5c6bc0f1….hbc (18MB), Exported: dist, exit=0 (dist and .expohome removed)
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check -> Dependencies are up to date
+$ (apps/mobile) npm run parity:check -> parity-ledger --check: OK — 435 rows, 33 native route(s)
+$ node scripts/native/core-closure.mjs --check -> 27 roots, 37 src files, 11 assets — up to date
+$ node scripts/native/gen-core-extract.mjs --check -> 12 files from 19 sources — up to date
+$ npx eslint apps/mobile/src/screens/journey apps/mobile/src/ports/journey.tsx "apps/mobile/app/(app)/autopilot" apps/mobile/tests/journey -> exit=0
+$ node scripts/i18n-register-check.mjs --all -> No formal-register violations.
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found.
+$ node scripts/check-locale-registry.mjs -> OK
+$ node scripts/i18n-stamp-source.mjs --check-all -> 0 changed-source keys
+$ node scripts/check-i18n-subscriptions.mjs -> OK — 776 components
+$ node scripts/i18n-audit.mjs --report-only -> no error mentions journeyAutopilotNative
+$ npx vitest run src/i18n scripts/native -> Test Files 3 passed (3), Tests 25 passed (25)
+
+### preflight (head 352aed614)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-journey-autopilot-r2/journey --title "VTID-05461 (native-wave2-journey-autopilot-r2/journey): native My Journey port"
+PASS gh for plan( PR / vitana-platform lane files; PASS PR-GATE scope / sparring / weakening / red-green; PASS Kiro steering
+FAIL Collab handoff + FAIL Lane scope — unchanged single cause: lanes/journey.md is on the plan branch, not on vitana-platform main (the brief's "lane file not found" allowance)
