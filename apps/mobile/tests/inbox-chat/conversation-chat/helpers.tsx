@@ -35,7 +35,7 @@ export type FakeChannel = {
   presenceState: () => Record<string, unknown>;
 };
 
-export function createChatDouble(opts: { userId?: string | null; tables?: Record<string, Row[]>; rpc?: Record<string, (args: any) => Result>; failTables?: string[]; sendResult?: string } = {}) {
+export function createChatDouble(opts: { userId?: string | null; tables?: Record<string, Row[]>; rpc?: Record<string, (args: any) => Result>; failTables?: string[]; sendResult?: string; failUpload?: boolean } = {}) {
   const tables = opts.tables ?? {};
   const userId = opts.userId === undefined ? ME : opts.userId;
   const calls: Array<{ fn: string; args: any[] }> = [];
@@ -43,6 +43,7 @@ export function createChatDouble(opts: { userId?: string | null; tables?: Record
   const channels = new Map<string, FakeChannel>();
   const broadcasts: Array<{ channel: string; event: string; payload: any }> = [];
   const removed: string[] = [];
+  const storageOps: Array<{ op: string; bucket: string; path: string; to?: string; ttl?: number }> = [];
 
   function from(table: string) {
     const filters: Array<[string, string, any]> = [];
@@ -66,6 +67,8 @@ export function createChatDouble(opts: { userId?: string | null; tables?: Record
     const b: any = {
       select: () => b,
       insert: (v: Row) => ((mode = 'insert'), (values = v), b),
+      upsert: (v: Row) => ((mode = 'insert'), (values = v), b),
+      gte: (c: string, v: any) => (filters.push(['gte', c, v]), b),
       update: (v: Row) => ((mode = 'update'), (values = v), b),
       delete: () => ((mode = 'delete'), b),
       eq: (c: string, v: any) => (filters.push(['eq', c, v]), b),
@@ -138,7 +141,22 @@ export function createChatDouble(opts: { userId?: string | null; tables?: Record
     }),
     storage: {
       from: (bucket: string) => ({
-        createSignedUrl: jest.fn(async (path: string) => ({ data: { signedUrl: `https://signed.test/${bucket}/${path}` }, error: null })),
+        createSignedUrl: jest.fn(async (path: string, ttl?: number) => {
+          storageOps.push({ op: 'createSignedUrl', bucket, path, ttl });
+          return { data: { signedUrl: `https://signed.test/${bucket}/${path}` }, error: null };
+        }),
+        createSignedUploadUrl: jest.fn(async (path: string) => {
+          storageOps.push({ op: 'createSignedUploadUrl', bucket, path });
+          return opts.failUpload ? { data: null, error: { message: 'upload refused' } } : { data: { signedUrl: `https://upload.test/${bucket}/${path}?token=t`, path, token: 't' }, error: null };
+        }),
+        copy: jest.fn(async (from: string, to: string) => {
+          storageOps.push({ op: 'copy', bucket, path: from, to });
+          return { data: { path: to }, error: null };
+        }),
+        remove: jest.fn(async (paths: string[]) => {
+          storageOps.push({ op: 'remove', bucket, path: paths.join(',') });
+          return { data: [], error: null };
+        }),
       }),
     },
     channel: jest.fn(channel),
@@ -160,7 +178,7 @@ export function createChatDouble(opts: { userId?: string | null; tables?: Record
     }
   }
 
-  return { client: client as any, calls, writes, channels, broadcasts, removed, emit };
+  return { client: client as any, calls, writes, channels, broadcasts, removed, emit, storageOps };
 }
 
 export type GatewayRoute = (req: { method: string; path: string; query: string; body: any }) => { status?: number; body?: unknown } | unknown;
@@ -174,11 +192,11 @@ export function chatGateway(routes: Record<string, GatewayRoute | unknown>) {
     const body = typeof init?.body === 'string' ? JSON.parse(init.body) : undefined;
     requests.push({ method, path: pathname, query, body });
     const key = `${method} ${pathname}`;
-    if (!Object.prototype.hasOwnProperty.call(routes, key)) return { ok: false, status: 404, text: async () => JSON.stringify({ error: 'Gateway 404' }) } as unknown as Response;
+    if (!Object.prototype.hasOwnProperty.call(routes, key)) return { ok: false, status: 404, text: async () => JSON.stringify({ error: 'Gateway 404' }), json: async () => ({ error: 'Gateway 404' }) } as unknown as Response;
     const route = routes[key];
     const out = typeof route === 'function' ? (route as GatewayRoute)({ method, path: pathname, query, body }) : { body: route };
     const { status = 200, body: resBody } = (out ?? {}) as { status?: number; body?: unknown };
-    return { ok: status < 400, status, text: async () => JSON.stringify(resBody ?? {}) } as unknown as Response;
+    return { ok: status < 400, status, text: async () => JSON.stringify(resBody ?? {}), json: async () => resBody ?? {} } as unknown as Response;
   };
   return { fetch, requests };
 }
@@ -225,3 +243,61 @@ export const PROFILES = [
   { user_id: ME, display_name: 'Mia Me', avatar_url: null },
   { user_id: PEER, display_name: 'Petra Peer', avatar_url: null },
 ];
+
+/**
+ * A fake chat device (src/ports/chat-device): a scripted media pick, an
+ * upload recorder with progress, a clipboard, a share sheet, a recorder and
+ * players that only record what was asked. Nothing touches a device.
+ */
+export function fakeDevice(o: { pick?: Awaited<ReturnType<import('../../../src/ports/chat-device').ChatDevice['pickMedia']>>; failPut?: boolean; recordResult?: 'recording' | 'denied'; share?: 'shared' | 'cancelled' | 'failed' } = {}) {
+  const log = {
+    puts: [] as Array<{ url: string; name: string; headers: Record<string, string> }>,
+    copied: [] as string[],
+    shared: [] as Array<{ message?: string; url?: string }>,
+    opened: [] as string[],
+    players: [] as Array<{ source: string; opts?: { loop?: boolean; volume?: number }; played: number; paused: number; stopped: number; released: number; emit: (s: { currentTime: number; duration: number; playing: boolean; didJustFinish: boolean }) => void }>,
+    recorder: { started: 0, stopped: 0, cancelled: 0 },
+  };
+  const device = {
+    pickMedia: jest.fn(async () => o.pick ?? { status: 'cancelled' as const }),
+    putFile: jest.fn(async (url: string, file: { name: string }, headers: Record<string, string>, onProgress?: (p: { loaded: number; total: number; percentage: number }) => void) => {
+      log.puts.push({ url, name: file.name, headers });
+      onProgress?.({ loaded: 5, total: 10, percentage: 50 });
+      if (o.failPut) throw new Error('Upload failed (network)');
+    }),
+    copyText: jest.fn((text: string) => void log.copied.push(text)),
+    canCopyImages: false,
+    share: jest.fn(async (input: { message?: string; url?: string }) => {
+      log.shared.push(input);
+      return o.share ?? 'shared';
+    }),
+    openUrl: jest.fn(async (url: string) => void log.opened.push(url)),
+    useRecorder: () => ({
+      start: async () => {
+        log.recorder.started += 1;
+        return o.recordResult ?? 'recording';
+      },
+      stop: async () => {
+        log.recorder.stopped += 1;
+        return { uri: 'file:///voice.m4a', mimeType: 'audio/mp4' };
+      },
+      cancel: () => void (log.recorder.cancelled += 1),
+    }),
+    createPlayer: jest.fn((source: string, opts?: { loop?: boolean; volume?: number }) => {
+      let listener: ((s: { currentTime: number; duration: number; playing: boolean; didJustFinish: boolean }) => void) | null = null;
+      const entry = { source, opts, played: 0, paused: 0, stopped: 0, released: 0, emit: (s: { currentTime: number; duration: number; playing: boolean; didJustFinish: boolean }) => listener?.(s) };
+      log.players.push(entry);
+      return {
+        play: () => void (entry.played += 1),
+        pause: () => void (entry.paused += 1),
+        stop: () => void (entry.stopped += 1),
+        release: () => void (entry.released += 1),
+        onStatus: (l: typeof listener) => {
+          listener = l;
+          return () => (listener = null);
+        },
+      };
+    }),
+  };
+  return { device, log };
+}
