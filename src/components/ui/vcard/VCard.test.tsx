@@ -75,11 +75,12 @@ describe('VTID-05105 VCard', () => {
     container.querySelectorAll('[class]').forEach((el) => expect(el.getAttribute('class')).not.toMatch(PHYSICAL));
   });
 
-  it('VTID-05420: spotlightLabel on a spotlight card adds the text label and the accent ring', () => {
+  it('VTID-05420: spotlightLabel on a spotlight card adds the text label, the accent glow ring and raised elevation', () => {
     const { container } = render(<VCard size="spotlight" spotlightLabel title="Index" media={{ src: 'a.jpg' }} />);
     const root = container.firstElementChild as HTMLElement;
-    expect(root.className).toContain('ring-1');
-    expect(root.className).toContain('ring-primary');
+    expect(root.className).toContain('ring-2');
+    expect(root.className).toContain('ring-category-1/50');
+    expect(root.className).toContain('shadow-vcard-raised');
     const label = container.querySelector('[data-vcard-spotlight-label]')!;
     expect(label).not.toBeNull();
     expect(label.textContent!.trim().length).toBeGreaterThan(0);
@@ -91,7 +92,24 @@ describe('VTID-05105 VCard', () => {
     const art = container.querySelector('[data-vcard-spotlight-art]')!;
     expect(art).not.toBeNull();
     expect(art.className).toContain('bg-gradient-to-br');
-    expect(art.closest('[data-vcard-media]')).not.toBeNull();
+    // teal → blue → amber category tokens (light + dark values), never the flat muted wash
+    expect(art.className).toContain('from-category-1');
+    expect(art.className).toContain('via-category-3');
+    expect(art.className).toContain('to-category-5');
+    const box = art.closest('[data-vcard-media]') as HTMLElement;
+    expect(box).not.toBeNull();
+    expect(box.className).not.toContain('bg-muted');
+    expect(box.className).toContain('from-category-1');
+    // desktop grid: the media takes the room the text leaves instead of a fixed 16:9 height
+    expect(box.className).toContain('md:aspect-auto');
+    expect(box.className).toContain('md:min-h-32');
+    expect(box.className).toContain('md:flex-1');
+    expect(box.className).toContain('aspect-video'); // phones keep 16:9
+    // the media content is a layer over the box on desktop, so it never sizes the box
+    const layer = box.querySelector(':scope > [data-vcard-media-layer]') as HTMLElement;
+    expect(layer.className).toContain('md:absolute');
+    expect(layer.className).toContain('md:inset-0');
+    expect(layer.contains(art)).toBe(true);
     rerender(<VCard size="spotlight" spotlightLabel title="Index" media={{ src: null }} />);
     expect(container.querySelector('[data-vcard-spotlight-art]')).not.toBeNull();
     expect(container.querySelector('[data-vcard-placeholder]')).toBeNull();
@@ -100,11 +118,17 @@ describe('VTID-05105 VCard', () => {
   it('VTID-05420: without spotlightLabel, or on another size, nothing changes', () => {
     const { container, rerender } = render(<VCard size="spotlight" title="T" />);
     expect(container.querySelector('[data-vcard-spotlight-label]')).toBeNull();
-    expect((container.firstElementChild as HTMLElement).className).not.toContain('ring-primary');
+    expect((container.firstElementChild as HTMLElement).className).not.toContain('ring-category-1');
     expect(container.querySelector('[data-vcard-media]')).toBeNull();
+    rerender(<VCard size="spotlight" title="T" media={{ src: 'a.jpg' }} />);
+    const plainBox = container.querySelector('[data-vcard-media]') as HTMLElement;
+    expect(plainBox.className).toContain('bg-muted');
+    expect(plainBox.className).toContain('aspect-video');
+    expect(plainBox.className).not.toContain('md:aspect-auto');
+    expect((plainBox.querySelector('[data-vcard-media-layer]') as HTMLElement).className).not.toContain('absolute');
     rerender(<VCard size="standard" spotlightLabel title="T" />);
     expect(container.querySelector('[data-vcard-spotlight-label]')).toBeNull();
-    expect((container.firstElementChild as HTMLElement).className).not.toContain('ring-primary');
+    expect((container.firstElementChild as HTMLElement).className).not.toContain('ring-category-1');
     expect(container.querySelector('[data-vcard-spotlight-art]')).toBeNull();
   });
 

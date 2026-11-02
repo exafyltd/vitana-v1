@@ -10,6 +10,9 @@
 //     - six standard tiles, each beside the spotlight (its top within the spotlight's vertical span,
 //       on its inline-end side);
 //     - the "Up next" row, when the account has Autopilot actions, starts below the spotlight;
+//     - VTID-05420 round 2: the spotlight ends with the last tile row (+2 px), carries a gradient
+//       background-image or an img, and at 1400x900 the bottom row starts above the fold;
+//       a full-page screenshot at 1400x900 is attached once the checks pass;
 //     - the compact header with its 2 buttons and the utility bar are visible;
 //     - no horizontal scroll (LTR and dir="rtl").
 //   390x844, no query: no Spotlight frame, the mobile bottom nav is visible.
@@ -74,15 +77,22 @@ test('VTID-05419: /health — one Vitana Index Spotlight card at ~40 %, six tile
       const spot = document.querySelector(spotSel)!.getBoundingClientRect();
       const tiles = [...document.querySelectorAll('[data-spotlight-grid] [data-slot="tiles"] [data-vcard-size="standard"]')].map((el) => {
         const r = el.getBoundingClientRect();
-        return { top: r.top, left: r.left, right: r.right };
+        return { top: r.top, bottom: r.bottom, left: r.left, right: r.right };
       });
       const rowEl = document.querySelector('[data-spotlight-grid] [data-slot="row"]');
       const row = rowEl ? rowEl.getBoundingClientRect().top : null;
+      // Spotlight art: a token gradient (background-image) or a real image somewhere in the card.
+      const card = document.querySelector(spotSel)!;
+      const art = [card, ...card.querySelectorAll('*')].some(
+        (el) => el.tagName === 'IMG' || /gradient\(/.test(getComputedStyle(el).backgroundImage),
+      );
       return {
         share: spot.width / layout.width,
         spot: { top: spot.top, bottom: spot.bottom, left: spot.left, right: spot.right },
         tiles,
         row,
+        art,
+        viewport: innerHeight,
         rtl: getComputedStyle(document.documentElement).direction === 'rtl',
       };
     }, SPOT);
@@ -97,6 +107,13 @@ test('VTID-05419: /health — one Vitana Index Spotlight card at ~40 %, six tile
       else expect(tile.left, 'tile on the inline-end side').toBeGreaterThanOrEqual(m.spot.right - 1);
     }
     if (m.row !== null) expect(m.row, 'Up next row below the spotlight').toBeGreaterThanOrEqual(m.spot.bottom - 1);
+    // VTID-05420 round 2: the Spotlight spans exactly the tile rows (never taller than the second row) …
+    const lastTileBottom = Math.max(...m.tiles.map((x) => x.bottom));
+    expect(m.spot.bottom, `spotlight bottom vs the last tile row bottom at ${width}px`).toBeLessThanOrEqual(lastTileBottom + 2);
+    // … carries its art (token gradient or image) …
+    expect(m.art, 'spotlight card has a gradient background-image or an img').toBe(true);
+    // … and at 1400x900 the full-width bottom row starts above the fold.
+    if (width === 1400 && m.row !== null) expect(m.row, 'bottom row top above the fold at 1400x900').toBeLessThan(m.viewport);
 
     const header = page.locator('[data-header-density="compact"]').first();
     await expect(header).toBeVisible();
@@ -113,6 +130,15 @@ test('VTID-05419: /health — one Vitana Index Spotlight card at ~40 %, six tile
     await page.evaluate(() => {
       document.documentElement.dir = 'ltr';
     });
+
+    // Read-only evidence for STAGING-VERIFY: a full-page screenshot once every check above passed.
+    if (width === 1400) {
+      await page.waitForTimeout(300);
+      await test.info().attach('vtid-05419-health-1400x900.png', {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png',
+      });
+    }
   }
 
   // Phone: unchanged, no Spotlight frame.

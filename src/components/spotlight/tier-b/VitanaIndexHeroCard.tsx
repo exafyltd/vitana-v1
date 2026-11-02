@@ -12,12 +12,13 @@ const PILLAR_MAX = 200;
 const RING_R = 42;
 const RING_C = 2 * Math.PI * RING_R;
 
-/** VTID-05419 — the Index as a ring on the token gradient (no index → an empty track, no number). */
+/** VTID-05419 — the Index as a ring on the VCard Spotlight art (VTID-05420: transparent, so the
+ *  teal → blue → amber token gradient of the media box shows through; no index → an empty track). */
 function IndexRing({ total }: { total: number | null }) {
   const share = total == null ? 0 : Math.max(0, Math.min(1, total / INDEX_MAX));
   return (
     <div
-      className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/30 via-accent/20 to-background"
+      className="flex h-full w-full items-center justify-center"
       data-vitana-index-ring=""
       aria-hidden="true"
     >

@@ -74,11 +74,21 @@ test('VTID-05417: Events & MeetUps at 1400x900 — one Spotlight card at ~40%, t
   const tiles = page.locator('[data-spotlight-grid] [data-slot="tiles"] [data-vcard-size="standard"]');
   const tileCount = await tiles.count();
   expect(tileCount, 'at most six tiles').toBeLessThanOrEqual(6);
+  let lastTileBottom = -Infinity;
   for (let i = 0; i < tileCount; i += 1) {
     const box = await tiles.nth(i).boundingBox();
     expect(box!.y, `tile ${i} top within the spotlight span`).toBeGreaterThanOrEqual(spotBox!.y - 1);
     expect(box!.y, `tile ${i} top within the spotlight span`).toBeLessThan(spotBox!.y + spotBox!.height);
+    lastTileBottom = Math.max(lastTileBottom, box!.y + box!.height);
   }
+  // VTID-05420 round 2: the spotlight spans exactly the tile rows (never taller than the last one) and carries art.
+  if (tileCount > 0) {
+    expect(spotBox!.y + spotBox!.height, 'spotlight bottom vs the last tile row bottom').toBeLessThanOrEqual(lastTileBottom + 2);
+  }
+  const hasArt = await spotlight.evaluate((card) =>
+    [card, ...card.querySelectorAll('*')].some((el) => el.tagName === 'IMG' || /gradient\(/.test(getComputedStyle(el).backgroundImage)),
+  );
+  expect(hasArt, 'spotlight card has a gradient background-image or an img').toBe(true);
 
   const row = page.locator('[data-spotlight-grid] [data-slot="row"]');
   if ((await row.count()) > 0) {
@@ -93,6 +103,12 @@ test('VTID-05417: Events & MeetUps at 1400x900 — one Spotlight card at ~40%, t
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   expect(overflow, 'horizontal scroll').toBeLessThanOrEqual(1);
+
+  // Read-only evidence for STAGING-VERIFY: a full-page screenshot once every check above passed.
+  await test.info().attach('vtid-05417-events-1400x900.png', {
+    body: await page.screenshot({ fullPage: true }),
+    contentType: 'image/png',
+  });
 });
 
 test('VTID-05417: Events & MeetUps at 390x844 (phone) is not framed by Spotlight', async ({ page, request }) => {

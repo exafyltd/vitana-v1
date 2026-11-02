@@ -83,12 +83,22 @@ for (const [width, height] of [
     // Tiles sit beside the spotlight: their tops fall within the spotlight's vertical span.
     const tiles = page.locator('[data-spotlight-grid] [data-slot="tiles"] [data-vcard-size="standard"]');
     const tileCount = await tiles.count();
+    let lastTileBottom = -Infinity;
     for (let i = 0; i < tileCount; i++) {
       const b = await tiles.nth(i).boundingBox();
       expect(b, `tile ${i} box`).toBeTruthy();
       expect(b!.y, `tile ${i} starts within the spotlight's span`).toBeGreaterThanOrEqual(sBox!.y - 1);
       expect(b!.y, `tile ${i} starts within the spotlight's span`).toBeLessThan(sBox!.y + sBox!.height);
+      lastTileBottom = Math.max(lastTileBottom, b!.y + b!.height);
     }
+    // VTID-05420 round 2: the spotlight spans exactly the tile rows (never taller than the last one) and carries art.
+    if (tileCount > 0) {
+      expect(sBox!.y + sBox!.height, 'spotlight bottom vs the last tile row bottom').toBeLessThanOrEqual(lastTileBottom + 2);
+    }
+    const hasArt = await spot.evaluate((card) =>
+      [card, ...card.querySelectorAll('*')].some((el) => el.tagName === 'IMG' || /gradient\(/.test(getComputedStyle(el).backgroundImage)),
+    );
+    expect(hasArt, 'spotlight card has a gradient background-image or an img').toBe(true);
 
     // The "Browse categories" row is rendered (static links) below the spotlight, compact cards only.
     const row = page.locator('[data-spotlight-grid] [data-slot="row"]');
@@ -107,6 +117,14 @@ for (const [width, height] of [
 
     // No horizontal scroll.
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), 'horizontal scroll').toBeLessThanOrEqual(1);
+
+    // Read-only evidence for STAGING-VERIFY: a full-page screenshot once every check above passed.
+    if (width === 1400) {
+      await test.info().attach('vtid-05416-discover-1400x900.png', {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png',
+      });
+    }
   });
 }
 
