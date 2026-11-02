@@ -1,7 +1,7 @@
 /**
  * VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list) — the native inbox
  * list (`/inbox`, INBOX.OVERVIEW), a 1:1 port of the mobile-web branch of
- * `src/pages/Messages.tsx` (`useIsMobile()`, lines 1272-1435: list-first, a
+ * `src/pages/Messages.tsx` (`useIsMobile()`, lines 1272-1431: list-first, a
  * tap opens the conversation full screen):
  *  - StandardHeader: `inbox.title` + `inbox.description`;
  *  - the action row: Search (filters the list by title / last message, with
@@ -38,6 +38,7 @@ import {
   filterThreads,
   getConversationDisplayAvatar,
   getConversationDisplayTitle,
+  getOtherParticipant,
   searchThreads,
   sortAndDedupe,
   type ConversationFilter,
@@ -290,6 +291,7 @@ export function InboxScreen(): ReactElement {
                 lastMessage={item.last_message?.body}
                 timestamp={item.updated_at}
                 unreadCount={item.unread_count || 0}
+                participantUserId={getOtherParticipant(item, userId)?.user_id}
                 onPress={() => open(item)}
               />
             </RowErrorBoundary>

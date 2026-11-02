@@ -209,6 +209,9 @@ describe('search, filters, navigation', () => {
     await waitFor(() => expect(screen.getByTestId(`inbox-card-${ANNA}`)).toBeTruthy());
     fireEvent.press(screen.getByTestId(`inbox-card-${ANNA}-open`));
     expect(router.navigate).toHaveBeenLastCalledWith(`/inbox/u/${ANNA}`);
+    // The avatar opens the member's profile (web ClickableAvatar).
+    fireEvent.press(screen.getByTestId(`inbox-card-${ANNA}-avatar`));
+    expect(router.navigate).toHaveBeenLastCalledWith(`/u/${ANNA}`);
     fireEvent.press(screen.getByTestId('inbox-card-chat_group:g-1-open'));
     expect(router.navigate).toHaveBeenLastCalledWith('/inbox/g/g-1');
   });

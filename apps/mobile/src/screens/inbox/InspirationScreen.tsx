@@ -7,10 +7,10 @@
  * sheet), the split-bar tabs — Templates (the four categories with three
  * templates each, "Copy" to the clipboard, "Send"), My Favorites, Recently
  * Used and Custom Messages (each an empty panel with a 0 badge).
- * "Send" and the five popup actions only log on the web (Inspiration.tsx:189,
+ * "Send" and the five popup actions only log on the web (Inspiration.tsx:201,
  * InspirationMasterActionPopup.tsx:22-25), so here they do nothing beyond
  * closing the popup. Documented deferrals: the utility row's
- * ExpandableSearchButton only logs (Inspiration.tsx:136-139) and
+ * ExpandableSearchButton only logs (Inspiration.tsx:144-146) and
  * UniversalCalendarButton is the calendar lane's. React 19: `ReactElement`.
  */
 import { useState, type ReactElement } from 'react';

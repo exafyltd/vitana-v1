@@ -13,7 +13,7 @@
  * Actions"), the split-bar tabs (All / Recently / By category / Settings);
  * the web's three side-by-side cards stack vertically on the phone width.
  * Documented deferrals: the utility row's ExpandableSearchButton only logs
- * its query (Archived.tsx:75-77) and UniversalCalendarButton is the calendar
+ * its query (Archived.tsx:80-82) and UniversalCalendarButton is the calendar
  * lane's. React 19: typed with `ReactElement`.
  */
 import { useState, type ReactElement } from 'react';

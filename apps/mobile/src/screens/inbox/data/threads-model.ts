@@ -9,7 +9,7 @@
  *  - `compareInboxThreads` (`src/lib/inboxThreadOrder.ts`),
  *  - the chat-group thread ids (`src/hooks/useChatGroupsAsThreads.ts`),
  *  - the filter + sort + per-peer dedupe of `Messages.tsx`
- *    `renderMobileConversationList` (lines 1171-1235).
+ *    `renderMobileConversationList` (lines 1182-1268).
  * Those web modules sit on class-B imports, so they are copied, not
  * core-extracted (plan decision 2). Display fallbacks are passed in
  * translated; nothing here renders text.
@@ -120,21 +120,21 @@ export function compareInboxThreads(a: InboxThread, b: InboxThread, pinned: { ha
   return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
 }
 
-/** `getFilteredThreads` (Messages.tsx:669-674) for the mobile pills. */
+/** `getFilteredThreads` (Messages.tsx:667-672) for the mobile pills. */
 export function filterThreads(threads: InboxThread[], filter: ConversationFilter): InboxThread[] {
   if (filter === 'groups') return threads.filter((t) => t.type === 'group');
   if (filter === 'direct') return threads.filter((t) => t.type === 'direct');
   return threads;
 }
 
-/** Search on title + last message body (Messages.tsx:1174-1181). */
+/** Search on title + last message body (Messages.tsx:1186-1193). */
 export function searchThreads(threads: InboxThread[], query: string, title: (t: InboxThread) => string): InboxThread[] {
   const q = query.trim().toLowerCase();
   if (!q) return threads;
   return threads.filter((t) => title(t).toLowerCase().includes(q) || (t.last_message?.body || '').toLowerCase().includes(q));
 }
 
-/** Sort, then keep one direct thread per counterpart — the newer one (Messages.tsx:1201-1220). */
+/** Sort, then keep one direct thread per counterpart — the newer one (Messages.tsx:1215-1233). */
 export function sortAndDedupe(threads: InboxThread[], pinned: { has(id: string): boolean }, currentUserId?: string): InboxThread[] {
   const acc: Array<InboxThread & { _dedupeKey: string }> = [];
   for (const thread of [...threads].sort((a, b) => compareInboxThreads(a, b, pinned, currentUserId))) {
@@ -156,10 +156,10 @@ export function sortAndDedupe(threads: InboxThread[], pinned: { has(id: string):
 /**
  * The conversation route a list row opens (navigated by path through the
  * resolver; the screens belong to the `conversation-chat` lane):
- * a chat group → `/inbox/g/<groupId>` (Messages.tsx:452-458), a global direct
+ * a chat group → `/inbox/g/<groupId>` (Messages.tsx:455-460), a global direct
  * thread (id = peer id) → `/inbox/u/<peerId>`, any other thread →
  * `/inbox/t/<threadId>` with `?context=tenant` in the Network context (the web
- * page reads `context` with the thread, Messages.tsx:166-190).
+ * page reads `context` with the thread, Messages.tsx:166-200).
  */
 export function conversationPathFor(thread: InboxThread, context: InboxContext, currentUserId?: string): string {
   if (isChatGroupThreadId(thread.id)) return `/inbox/g/${encodeURIComponent(chatGroupIdFromThreadId(thread.id))}`;

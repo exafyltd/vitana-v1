@@ -2,13 +2,14 @@
  * VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list) — the inbox list's
  * building blocks, native twins of the web mobile inbox components:
  *  - `ConversationCard` — `src/components/messages/mobile/MobileConversationCard.tsx`
- *    (48 px avatar, name + short time, last message, start-edge unread
- *    accent, round unread badge capped at "9+", pinned dot),
+ *    (48 px avatar that opens the other participant's profile, name + short
+ *    time, last message, start-edge unread accent, round unread badge capped
+ *    at "9+", pinned dot),
  *  - `ConversationSkeleton` — `MobileConversationSkeleton.tsx`,
  *  - `InboxEmptyState` — `MobileInboxEmptyState.tsx` (illustration, title,
  *    context description, "Start a conversation", "Discover people" → /community),
  *  - `RowErrorBoundary` — the `FeedItemErrorBoundary` around each row
- *    (Messages.tsx:1240-1247),
+ *    (Messages.tsx:1242-1249),
  *  - `InboxSubNav` + `InboxPage` — `SubNavigation items={messagesNavigation}`
  *    and `StandardHeader` of the Archived / Inspiration pages.
  * Presence dots are not drawn: `PresenceIndicator` is realtime presence,
@@ -16,7 +17,7 @@
  * (logical start/end); every string arrives translated.
  */
 import { Component, type ReactElement, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar, Button, PressableRow, Skeleton, Text, useUITheme } from '../../ports/ui';
 import { InboxButtonIcon, InboxIcon } from '../../ports/inbox';
 import { openWebPath } from '../../ports/links';
@@ -30,6 +31,7 @@ export function ConversationCard({
   timestamp,
   unreadCount = 0,
   isPinned = false,
+  participantUserId,
   onPress,
 }: {
   id: string;
@@ -39,6 +41,8 @@ export function ConversationCard({
   timestamp?: string;
   unreadCount?: number;
   isPinned?: boolean;
+  /** The other participant: the avatar opens their profile (web ClickableAvatar → /u/<id>). */
+  participantUserId?: string;
   onPress: () => void;
 }): ReactElement {
   const { colors } = useUITheme();
@@ -51,7 +55,13 @@ export function ConversationCard({
     >
       <PressableRow accessibilityLabel={name} testID={`inbox-card-${id}-open`} onPress={onPress} style={styles.cardPress}>
         <View style={styles.avatarWrap}>
-          <Avatar uri={avatarUrl ?? undefined} fallback={name?.[0]?.toUpperCase() || '?'} size={48} />
+          {participantUserId ? (
+            <Pressable testID={`inbox-card-${id}-avatar`} accessibilityRole="button" accessibilityLabel={name} onPress={() => openWebPath(`/u/${encodeURIComponent(participantUserId)}`)}>
+              <Avatar uri={avatarUrl ?? undefined} fallback={name?.[0]?.toUpperCase() || '?'} size={48} />
+            </Pressable>
+          ) : (
+            <Avatar uri={avatarUrl ?? undefined} fallback={name?.[0]?.toUpperCase() || '?'} size={48} />
+          )}
           {isPinned ? <View testID={`inbox-card-${id}-pinned`} style={[styles.pinned, { backgroundColor: colors.primary }]} /> : null}
         </View>
         <View style={styles.cardBody}>
