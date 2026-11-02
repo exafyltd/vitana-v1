@@ -1,0 +1,19 @@
+# VTID-05510 red on base — tests/discover-commerce run on origin/main e1ab28b1f (new tests copied in, no implementation; expo-video installed --no-save so the missing screens, not the missing dependency, are what fails)
+# cwd: apps/mobile   cmd: npx jest tests/discover-commerce --ci
+
+FAIL tests/discover-commerce/ai-picks-cold-start.test.tsx
+    Cannot find module '../../src/screens/discover/DiscoverScreen' from 'tests/discover-commerce/ai-picks-cold-start.test.tsx'
+FAIL tests/discover-commerce/core.test.ts
+    Cannot find module '../../src/ports/discover' from 'tests/discover-commerce/core.test.ts'
+FAIL tests/discover-commerce/i18n-rtl.test.tsx
+    Cannot find module '../../src/screens/discover/DiscoverScreen' from 'tests/discover-commerce/i18n-rtl.test.tsx'
+FAIL tests/discover-commerce/shop.test.tsx
+    Cannot find module '../../src/screens/discover/ShopFeedScreen' from 'tests/discover-commerce/shop.test.tsx'
+FAIL tests/discover-commerce/discover.test.tsx
+    Cannot find module '../../src/screens/discover/DiscoverScreen' from 'tests/discover-commerce/discover.test.tsx'
+FAIL tests/discover-commerce/add-to-cart.test.tsx
+    Cannot find module '../../src/ports/add-to-cart' from 'tests/discover-commerce/add-to-cart.test.tsx'
+FAIL tests/discover-commerce/sub-catalogues.test.tsx
+    Cannot find module '../../src/screens/discover/SupplementsScreen' from 'tests/discover-commerce/sub-catalogues.test.tsx'
+Test Suites: 7 failed, 7 total
+Tests:       0 total
