@@ -164,9 +164,23 @@ describe('VTID-05111 dashboard hero — exactly one spotlight card, real data on
     const { container } = render(<VitanaIndexHeroCard index={index} isLoading={false} spotlightLabel ringMedia />);
     const card = container.querySelector('[data-vcard-size="spotlight"]') as HTMLElement;
     expect(card.querySelector('[data-vcard-spotlight-label]')).not.toBeNull();
-    expect(card.className).toContain('ring-primary');
+    // VTID-05420 round 2: the Spotlight identity ring is the teal category token at 50 %
+    expect(card.className).toContain('ring-2');
+    expect(card.className).toContain('ring-category-1/50');
     expect(card.querySelector('[data-vcard-media] [data-vitana-index-ring]')).not.toBeNull();
+    // the ring sits on the media box's teal → blue → amber art, with no wash of its own over it
+    expect(card.querySelector('[data-vcard-media]')!.className).toContain('from-category-1');
+    expect(card.querySelector('[data-vitana-index-ring]')!.className).not.toMatch(/(^|\s)(bg-|from-|via-|to-)/);
     expect(card.querySelectorAll('li').length).toBe(5);
+    // VTID-05420: the five pillar names are shown in full, never truncated
+    const labels = [...card.querySelectorAll('[data-pillar-label]')] as HTMLElement[];
+    expect(labels.length).toBe(5);
+    for (const l of labels) {
+      expect(l.className).not.toMatch(/(^|\s)(truncate|text-ellipsis|line-clamp-\d)(\s|$)/);
+      expect(l.className.split(/\s+/)).toContain('shrink-0');
+      expect(l.className.split(/\s+/)).toContain('whitespace-nowrap');
+      expect(l.textContent!.length).toBeGreaterThan(1);
+    }
   });
 
   it('opens on Enter when it is interactive, but not when an inner button is used', () => {
