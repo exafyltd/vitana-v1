@@ -46,6 +46,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  // VTID-05512: the post-checkout / wallet top-up return (exclusion row).
+  '/checkout/success',
   '/connectors',
   '/delete-account',
   '/daily-diary',
@@ -72,12 +74,26 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/memory/timeline',
   '/native-ui-catalogue',
   '/oauth/complete',
+  // VTID-05512: the Stripe package / ticket returns (exclusion rows).
+  '/packages/success',
   '/reset-password',
   '/search',
   '/settings/connected-apps',
   '/shop',
   '/support',
+  '/tickets/success',
+  // VTID-05512: DISCOVER.CART (the legacy `/cart` redirects here, REDIRECTS below).
+  '/universal-cart',
 ];
+
+/**
+ * Web `<Navigate replace>` routes (src/App.tsx) a deep link may still carry.
+ * VTID-05512: `/cart` → `/universal-cart` (App.tsx:1087, Phase 0: the
+ * Universal Cart is the one cart), query kept.
+ */
+export const REDIRECTS: Readonly<Record<string, string>> = {
+  '/cart': '/universal-cart',
+};
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 
@@ -123,6 +139,9 @@ export function resolveWebPath(url: string, depth = 0): Resolution {
   const { path, query } = split(url.startsWith('/') ? url : `/${url}`);
 
   if (NATIVE_ROUTES.includes(path)) return { kind: 'native', href: href(path, query), path, query };
+
+  const redirect = REDIRECTS[path];
+  if (redirect && depth < 3) return resolveWebPath(href(redirect, query), depth + 1);
 
   // A web route the phone shows elsewhere: follow the alias (most specific query first).
   const alias = ALIASES.filter((a) => matchPattern(a.route, path) && queryMatches(split(a.route).query, query)).sort(
