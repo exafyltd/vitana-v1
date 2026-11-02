@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05428",
+  "service": "community-app",
+  "_note": "Native Wave 2 delete-account lane (public /delete-account in the (public) group). The port is proven offline (jest-expo + RNTL, no network; the deletion request is built against a mocked supabase functions.invoke and never sent; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web /delete-account, never confirmed) is DEFERRED to G1 as next_actor: owner (tasks.md delete-account task 5). It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/delete-account", "cwd": "apps/mobile",
+      "reason": "delete-account unit tests: signed-out view and signed-in info → confirm (typed DELETE) → dialog → done / error, the deletion request asserted against a mocked functions.invoke and never sent, 11 locales without raw keys, Arabic RTL, no physical left/right, route in (public), /delete-account resolves native — fixtures only, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screen, request module and port type-check against @vitana/ui, @vitana/tokens and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the new (public)/delete-account route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "/delete-account is native with its route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/delete-account/01-delete-account.yaml", "target": "/delete-account", "next_actor": "owner",
+      "reason": "signed out → sign-in-required view; signed in → info → confirm (type DELETE) → final dialog CANCELLED, never confirmed; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment, never a live backend as the test account" }
+  ]
+}

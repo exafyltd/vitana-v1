@@ -1,0 +1,5 @@
+{
+  "deleteAccountNative": {
+    "errorFallback": "Une erreur est survenue. Réessaie, s’il te plaît."
+  }
+}

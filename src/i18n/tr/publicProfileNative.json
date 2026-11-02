@@ -1,0 +1,23 @@
+{
+  "publicProfileNative": {
+    "notFound": {
+      "body": "Aradığın profil mevcut değil.",
+      "loadFailed": "Profil yüklenemedi",
+      "unexpected": "Beklenmeyen bir hata oluştu",
+      "noIdentifier": "Profil tanımlayıcısı belirtilmedi"
+    },
+    "landing": {
+      "brand": "VITANA",
+      "vitanaIndex": "VITANA {score}",
+      "openSocial": "{network} aç"
+    },
+    "member": {
+      "noBio": "Henüz biyografi yok",
+      "sections": "Profil bölümleri"
+    },
+    "post": {
+      "likes": "{count} beğeni",
+      "comments": "{count} yorum"
+    }
+  }
+}
