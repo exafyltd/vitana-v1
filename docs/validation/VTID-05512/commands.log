@@ -1,0 +1,100 @@
+# VTID-05512 (native-wave2-discover-commerce-r2/product-cart-checkout) — local verification
+# Worktree: /projects/sandbox/vitana-v1/.worktrees/native-wave2-discover-commerce-r2-product-cart-checkout
+# Base: origin/kiro/native-wave2-discover-commerce-r2/discover c68982ec1 (PR #1573), later merged 974d8ffb8; origin/main 6b9137ac5 merged.
+# Linux, node v22.23.4. No network in tests (fake gateway + Supabase double).
+# Setup: apps/mobile `npm ci` (after creating the worktree); repo root `npm ci --ignore-scripts` (typescript for the native generators).
+
+## core extraction (task 1)
+$ (apps/mobile) npm run gen:core
+PASS — gen-core-extract: 13 files from 24 sources (unchanged); core-closure --write: 23 roots, 33 src files, 11 assets — ok
+       (closure.generated.json + mobile-ci-paths.generated.json regenerated: + src/lib/checkout-idempotency.ts)
+$ node scripts/native/core-closure.mjs --check
+PASS — up to date (checkout-idempotency is class A)
+
+## red on base (new tests, no implementation) — see red-on-base.txt
+$ (apps/mobile, throwaway detached worktree at c68982ec1, the 5 new test files copied in) npm run gen:i18n && npx jest tests/discover-commerce/{product-detail,universal-cart,purchase-success,commerce-routes,commerce-i18n-rtl}.test.tsx
+FAIL — 5/5 suites failed to run (Cannot find module src/ports/commerce / src/screens/commerce/*), 0 tests ran
+
+## green, before the merges (head a953f0054)
+$ (apps/mobile) npm run typecheck
+PASS — tsc --noEmit, 0 errors
+$ (apps/mobile) npx jest tests/discover-commerce/{product-detail,universal-cart,purchase-success,commerce-routes,commerce-i18n-rtl}.test.tsx
+PASS — 5 suites, 120/120 tests (after fixing the tests' own wrong expectations: dialog testIDs, en catalog wording, the web's parallel budget read)
+
+## merge origin/kiro/native-wave2-discover-commerce-r2/discover 974d8ffb8 (voucher fix on #1573)
+$ git merge origin/kiro/native-wave2-discover-commerce-r2/discover   — no conflict
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors
+
+## merge origin/main 6b9137ac5 (VTID-05431 settings)
+$ git merge origin/main   — conflict in apps/mobile/src/navigation/resolve.ts (NATIVE_ROUTES): kept main's /settings/* and this lane's routes
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors (no package.json / lock change from main, npm ci not needed)
+$ node scripts/native/parity-ledger.mjs --check
+PASS — OK — 435 rows, 52 native route(s)
+
+## test timing (brief "Test timing")
+every lane test imports tests/discover-commerce/timing.ts (the discover lane's file: configure({ asyncUtilTimeout: 8000 })),
+directly and through helpers.tsx; jest.setTimeout(30000) in all 5 lane suites (11-locale loops, several screens, router renders);
+no per-call timeout overrides; jest.config.js / jest.setup.ts untouched.
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 13/13 suites, 254/254 tests (107.0 s)   [this lane: 5 suites / 120 tests; discover lane: 8 suites / 134]
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 13/13 suites, 254/254 tests (79.3 s)
+
+## full mobile suite
+$ (apps/mobile) npm test
+FAIL (not this lane) — 104/106 suites, 2975/2977 tests (74.0 s): tests/memory/gateway-i18n.test.tsx (zh loop, waitFor skeleton)
+       and tests/settings/i18n-rtl.test.tsx (Arabic, unmounted node) timed out under load
+$ (apps/mobile) npx jest tests/memory/gateway-i18n.test.tsx tests/settings/i18n-rtl.test.tsx
+PASS — 2/2 suites, 154/154 tests
+$ (apps/mobile) npx jest   — second full run, machine load average ~1600–2900 on 8 CPUs (other agents)
+FAIL (not this lane) — 98/106 suites, 2957/2977 tests (473.7 s): 20 timeouts ("Exceeded timeout of 5000 ms", waitFor) in
+       delete-account, support/connectors, diary, public-profile, discover-commerce/discover (discover lane), memory/overview,
+       shell, memory/gateway-i18n; every suite of this lane passed in that run
+$ (apps/mobile) npx jest <the 8 suites above>
+PASS — 8/8 suites, 206/206 tests (37.5 s)
+
+## build gates (apps/mobile)
+$ HOME=<writable dir> APP_PROFILE=development npm run bundle
+PASS — Metro + Hermes: ios entry-*.hbc (18MB) + android entry-*.hbc (18MB), "Exported: dist"   (HOME override: the sandbox HOME is read-only for ~/.expo)
+$ HOME=<writable dir> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+PASS — "Dependencies are up to date"
+$ npm run parity:check
+PASS — parity-ledger --check: OK — 435 rows, 52 native route(s)
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+PASS — 435 rows (added 0, updated 0, removed 0); the 5 lane rows native
+$ node scripts/native/gen-core-extract.mjs --check
+PASS — 13 files from 24 sources, 48 icons, 11 assets — up to date
+$ node scripts/native/core-closure.mjs --check
+PASS — 23 roots, 33 src files, 11 assets — up to date
+$ node scripts/native/gen-tokens.mjs --check
+PASS — up to date
+$ node scripts/native/check-shell-pins.mjs
+PASS — every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ node --test scripts/native/__tests__/*.test.mjs
+PASS — 68/68
+$ npx eslint apps/mobile packages
+PASS — 0 problems
+$ npx vitest run src/i18n scripts/native
+PASS — 3 files, 25/25 tests
+$ npm run i18n:register
+PASS — "No formal-register violations."
+$ npm run i18n:audit
+FAIL (pre-existing) — 17193 errors (`_pending_review` keys in GA locales), the same count main had for the discover lane's run;
+       0 findings in discoverCommerceNative; coverage vs DE 100 % in all 10 locales
+
+## lane scope (own commits only)
+$ git show --name-only <the 7 VTID-05512 commits>   — 55 files, 0 outside the lane's paths
+
+## preflight (head ba73b1170)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-discover-commerce-r2/product-cart-checkout --title "VTID-05512 (native-wave2-discover-commerce-r2/product-cart-checkout): native product, cart and checkout port"
+PASS — gh lane files, PR-GATE sparring / weakening / red-green, Kiro steering; "Not run by preflight" SKIP (covered above)
+FAIL (stacking, not fixable in this lane) — Collab handoff + Lane scope: "one PR per lane: commits name … product-cart-checkout,
+       … discover"; PR-GATE scope: the discover lane's files. The branch is stacked on #1573 (instructed), so its commits are in
+       the diff to main until #1573 merges; then origin/main is merged in and these clear.
+$ … same with --base origin/kiro/native-wave2-discover-commerce-r2/discover
+FAIL (merge artifact) — Collab handoff: 6b9137ac (main's squash commit of VTID-05431) has no trailers; Lane scope / PR-GATE scope:
+       VTID-05431's settings files — both come from merging origin/main, not from this lane
