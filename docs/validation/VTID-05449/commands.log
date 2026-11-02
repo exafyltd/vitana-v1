@@ -133,3 +133,9 @@ PASS  Kiro steering
 SKIP  Not run by preflight (npm test / lint / build: run above)
 preflight: every check passed
 exit=0
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 55ff278ae (origin head) + this commit; edits: tests/auth/helpers.tsx, tests/auth/i18n-rtl.test.tsx, tests/auth/portals.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/auth  (default workers, run 1 of 2)          -> 5 suites, 231/231 pass (42s, 2026-11-02T21:30Z)
+$ npx jest tests/auth  (default workers, run 2 of 2)          -> 5 suites, 231/231 pass (16s, 2026-11-02T21:31Z)
