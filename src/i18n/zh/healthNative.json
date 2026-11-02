@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "健康同步尚未启用。"
+    },
+    "searchPlaceholder": "搜索报告、补充剂…",
+    "utility": {
+      "closeSearch": "关闭搜索",
+      "upcomingEvent": "{count} 个即将到来的日程",
+      "upcomingEvents": "{count} 个即将到来的日程"
+    },
+    "baselineSurvey": {
+      "next": "下一步",
+      "finish": "完成",
+      "rating": "评分 {n}",
+      "questions": {
+        "nutrition": {
+          "title": "你的饮食",
+          "prompt": "你觉得最近吃得怎么样？（1 = 很差，5 = 营养均衡）"
+        },
+        "hydration": {
+          "title": "你的补水",
+          "prompt": "你摄入了多少水和液体？（1 = 很少，5 = 全天持续）"
+        },
+        "exercise": {
+          "title": "你的运动",
+          "prompt": "这周你的身体有多活跃？（1 = 久坐，5 = 强壮且活跃）"
+        },
+        "sleep": {
+          "title": "你的睡眠",
+          "prompt": "醒来时你感觉休息得怎么样？（1 = 精疲力竭，5 = 完全恢复）"
+        },
+        "mental": {
+          "title": "你此刻的心境",
+          "prompt": "今天你的头脑有多清晰平静？（1 = 压力很大，5 = 清晰平静）"
+        }
+      }
     }
   }
 }

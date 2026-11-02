@@ -14,16 +14,13 @@
  * the pillar agents panel, the priority focus (weakest pillar), the
  * Autopilot guidance ("Action" opens the Health Actions popup) and "View My
  * Journey". Header: the StandardHeader twin (🌱, title, subtitle). Utility
- * bar: mode pill, Upload, the Vitana Index chip and the Autopilot chip.
+ * bar (HealthUtilityBar.tsx, web order): Search, mode pill, Calendar,
+ * Upload, Life Compass, Gift Voucher (hidden when IAP-restricted), the
+ * Vitana Index chip and the Autopilot chip. `VitanaBaselineSurveyModal`
+ * (Health.tsx:288) is mounted and auto-opens for members without a survey;
+ * its submit is disabled (reads only, plan.md:110).
  *
  * Documented deferrals (file:line evidence in docs/validation/VTID-05455/verification.md):
- *  - the utility bar's ExpandableSearchButton only stores a query nothing on
- *    the page reads (Health.tsx:316), and the Life Compass / Gift Voucher /
- *    Universal Calendar buttons are other lanes' surfaces with no native
- *    twin yet (utility-action-button.tsx:26-27, :116; Health.tsx:322) — the same
- *    deferral the home and diary lanes recorded;
- *  - `VitanaBaselineSurveyModal` (Health.tsx:288) auto-opens a survey whose
- *    submit writes the member's baseline (a health-data write) — not ported;
  *  - the Autopilot popup (Health.tsx:408-411) is the journey-autopilot lane's
  *    surface: the chip opens it over the overlay bus when that lane has
  *    registered it, else navigates to /autopilot (events.ts);
@@ -35,8 +32,8 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button, Text, useUITheme } from '../../ports/ui';
-import { HealthButtonIcon, HealthIcon, withAlpha } from '../../ports/health';
-import { MobileModePill, type ModeOption } from '../../shell/components/MobileModePill';
+import { HealthIcon } from '../../ports/health';
+import type { ModeOption } from '../../shell/components/MobileModePill';
 import { navigateToWebPath } from '../../navigation/navigate';
 import { useAuth } from '../../auth/AuthProvider';
 import { useHealthText } from './text';
@@ -49,6 +46,8 @@ import { MobileHealthSupplementsTab } from './MobileHealthSupplementsTab';
 import { AutopilotChip, VitanaIndexChip } from './MobileActionChips';
 import { HealthMasterActionPopup, HealthReportUploadSheet, QuickLabOrderSheet } from './sheets';
 import { VitanaIndexSheet } from './VitanaIndexSheet';
+import { HealthUtilityBar } from './HealthUtilityBar';
+import { VitanaBaselineSurveyModal } from './VitanaBaselineSurveyModal';
 import { openAutopilot, openVitanaIndex } from './events';
 
 export type HealthMode = 'overview' | 'medical' | 'supplements';
@@ -116,6 +115,7 @@ export function HealthScreen(): ReactElement {
 
   return (
     <View style={[styles.fill, { backgroundColor: colors.background }]}>
+      <VitanaBaselineSurveyModal />
       <ScrollView testID="screen-health" contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Text style={styles.emoji} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
@@ -129,14 +129,11 @@ export function HealthScreen(): ReactElement {
           </View>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bar} testID="health-utility-bar">
-          <MobileModePill modes={modes} activeMode={mode} onModeChange={changeMode} title={t('healthNative.selectMode')} />
-          <Button testID="health-upload-button" variant="ghost" size="sm" onPress={() => setUploadOpen(true)} style={[styles.upload, { backgroundColor: withAlpha(colors.statusSuccess, 0.6) }]}>
-            <HealthButtonIcon name="Plus" />
-            {t('healthNative.upload')}
-          </Button>
-          <VitanaIndexChip />
-          <AutopilotChip pendingCount={pendingCount} onPress={openAutopilot} />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bar}>
+          <HealthUtilityBar modes={modes} mode={mode} onModeChange={changeMode} onUpload={() => setUploadOpen(true)}>
+            <VitanaIndexChip />
+            <AutopilotChip pendingCount={pendingCount} onPress={openAutopilot} />
+          </HealthUtilityBar>
         </ScrollView>
 
         {mode === 'overview' ? (
@@ -194,8 +191,7 @@ const styles = StyleSheet.create({
   page: { paddingBottom: 128 },
   header: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingHorizontal: 16, paddingTop: 8 },
   emoji: { fontSize: 28, lineHeight: 34 },
-  bar: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 16, paddingVertical: 8 },
-  upload: { height: 36, borderRadius: 999, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  bar: { paddingHorizontal: 16, paddingVertical: 8 },
   section: { gap: 16 },
   px: { paddingHorizontal: 16 },
   flip: { transform: [{ scaleX: -1 }] },

@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "Die Synchronisierung deiner Gesundheitsdaten ist noch nicht aktiviert."
+    },
+    "searchPlaceholder": "Berichte, Nahrungsergänzungen suchen…",
+    "utility": {
+      "closeSearch": "Suche schließen",
+      "upcomingEvent": "{count} anstehender Termin",
+      "upcomingEvents": "{count} anstehende Termine"
+    },
+    "baselineSurvey": {
+      "next": "Weiter",
+      "finish": "Fertig",
+      "rating": "Bewertung {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Wie du isst",
+          "prompt": "Wie gut ernährst du dich zurzeit? (1 = schlecht, 5 = nährend und ausgewogen)"
+        },
+        "hydration": {
+          "title": "Deine Flüssigkeitszufuhr",
+          "prompt": "Wie viel Wasser und Flüssigkeit nimmst du zu dir? (1 = sehr wenig, 5 = gleichmäßig über den Tag)"
+        },
+        "exercise": {
+          "title": "Deine Bewegung",
+          "prompt": "Wie aktiv war dein Körper diese Woche? (1 = kaum Bewegung, 5 = stark und aktiv)"
+        },
+        "sleep": {
+          "title": "Dein Schlaf",
+          "prompt": "Wie erholt fühlst du dich beim Aufwachen? (1 = erschöpft, 5 = voll erholt)"
+        },
+        "mental": {
+          "title": "Dein Kopf gerade",
+          "prompt": "Wie klar und ruhig ist dein Kopf heute? (1 = sehr gestresst, 5 = klar und ruhig)"
+        }
+      }
     }
   }
 }

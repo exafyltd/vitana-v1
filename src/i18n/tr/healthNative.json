@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "Sağlık senkronizasyonu henüz etkin değil."
+    },
+    "searchPlaceholder": "Rapor, takviye ara...",
+    "utility": {
+      "closeSearch": "Aramayı kapat",
+      "upcomingEvent": "{count} yaklaşan etkinlik",
+      "upcomingEvents": "{count} yaklaşan etkinlik"
+    },
+    "baselineSurvey": {
+      "next": "İleri",
+      "finish": "Bitir",
+      "rating": "Puan {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Nasıl besleniyorsun",
+          "prompt": "Bu aralar ne kadar iyi beslendiğini düşünüyorsun? (1 = kötü, 5 = besleyici ve dengeli)"
+        },
+        "hydration": {
+          "title": "Sıvı alımın",
+          "prompt": "Ne kadar su ve sıvı alıyorsun? (1 = çok az, 5 = gün boyu düzenli)"
+        },
+        "exercise": {
+          "title": "Hareketin",
+          "prompt": "Bu hafta vücudun ne kadar aktifti? (1 = hareketsiz, 5 = güçlü ve aktif)"
+        },
+        "sleep": {
+          "title": "Uykun",
+          "prompt": "Uyandığında ne kadar dinlenmiş hissediyorsun? (1 = bitkin, 5 = tamamen dinlenmiş)"
+        },
+        "mental": {
+          "title": "Şu anki zihnin",
+          "prompt": "Bugün zihnin ne kadar berrak ve sakin? (1 = çok stresli, 5 = berrak ve sakin)"
+        }
+      }
     }
   }
 }

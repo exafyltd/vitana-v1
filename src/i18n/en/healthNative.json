@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "Health sync is not enabled yet."
+    },
+    "searchPlaceholder": "Search reports, supplements...",
+    "utility": {
+      "closeSearch": "Close search",
+      "upcomingEvent": "{count} upcoming event",
+      "upcomingEvents": "{count} upcoming events"
+    },
+    "baselineSurvey": {
+      "next": "Next",
+      "finish": "Finish",
+      "rating": "Rating {n}",
+      "questions": {
+        "nutrition": {
+          "title": "How you're eating",
+          "prompt": "How well do you feel you're eating these days? (1 = poorly, 5 = nourishing and balanced)"
+        },
+        "hydration": {
+          "title": "Your hydration",
+          "prompt": "How much water and fluids are you getting? (1 = very little, 5 = steady all day)"
+        },
+        "exercise": {
+          "title": "Your movement",
+          "prompt": "How active has your body been this week? (1 = sedentary, 5 = strong and active)"
+        },
+        "sleep": {
+          "title": "Your sleep",
+          "prompt": "How rested do you feel when you wake up? (1 = exhausted, 5 = fully rested)"
+        },
+        "mental": {
+          "title": "Your mind right now",
+          "prompt": "How clear and calm is your mind today? (1 = very stressed, 5 = clear and calm)"
+        }
+      }
     }
   }
 }

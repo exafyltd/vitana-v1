@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "Sinhronizacija zdravlja još nije uključena."
+    },
+    "searchPlaceholder": "Pretraži izveštaje, suplemente...",
+    "utility": {
+      "closeSearch": "Zatvori pretragu",
+      "upcomingEvent": "Predstojeći događaji: {count}",
+      "upcomingEvents": "Predstojeći događaji: {count}"
+    },
+    "baselineSurvey": {
+      "next": "Dalje",
+      "finish": "Završi",
+      "rating": "Ocena {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Kako se hraniš",
+          "prompt": "Koliko se dobro hraniš ovih dana? (1 = loše, 5 = hranljivo i uravnoteženo)"
+        },
+        "hydration": {
+          "title": "Tvoja hidratacija",
+          "prompt": "Koliko vode i tečnosti unosiš? (1 = vrlo malo, 5 = ravnomerno tokom dana)"
+        },
+        "exercise": {
+          "title": "Tvoje kretanje",
+          "prompt": "Koliko je tvoje telo bilo aktivno ove nedelje? (1 = neaktivno, 5 = snažno i aktivno)"
+        },
+        "sleep": {
+          "title": "Tvoj san",
+          "prompt": "Koliko se odmorno osećaš kad se probudiš? (1 = iscrpljeno, 5 = potpuno odmorno)"
+        },
+        "mental": {
+          "title": "Tvoj um trenutno",
+          "prompt": "Koliko je tvoj um danas bistar i miran? (1 = veoma pod stresom, 5 = bistar i miran)"
+        }
+      }
     }
   }
 }

@@ -119,7 +119,7 @@ describe('the whole dashboard reads only, scoped to the member', () => {
     // Nothing is written, by the health module or anything else on the screen.
     for (const r of sb.requests) expect({ table: r.table, method: r.method }).toEqual({ table: r.table, method: 'select' });
     const health = healthOnly(sb.requests);
-    expect([...new Set(health.map((r) => r.table))].sort()).toEqual(['lab_reports', 'life_compass', 'user_supplements', 'vitana_index_scores']);
+    expect([...new Set(health.map((r) => r.table))].sort()).toEqual(['calendar_events', 'lab_reports', 'life_compass', 'user_supplements', 'vitana_index_scores']);
     for (const r of health) {
       expect({ table: r.table, scoped: r.filters.some(([op, c, v]) => op === 'eq' && c === 'user_id' && v === USER_ID) }).toEqual({ table: r.table, scoped: true });
     }
@@ -135,6 +135,7 @@ describe('the whole dashboard reads only, scoped to the member', () => {
     const paths = new Set(gw.requests.map((r) => r.path));
     expect(paths).toContain('/pillar-agents/outputs');
     expect(paths).toContain('/autopilot/recommendations');
+    expect(paths).toContain('/health/baseline-survey/status');
     for (const r of gw.requests) {
       expect({ path: r.path, method: r.method, auth: r.headers.authorization }).toEqual({ path: r.path, method: 'GET', auth: `Bearer ${TOKEN}` });
     }

@@ -86,6 +86,45 @@ profile; `assertNotProduction()` refuses prod/staging hosts). Linux, worktree
 - Web: `npm run build` → built; `npx vitest run src/i18n scripts/native` → 3 files / 25 tests.
 - Red → green: `red-on-base.txt` (all 5 suites fail on origin/main: the modules do not exist).
 
+## Fix 1 — reviewer `changes` on 3afeca5 (R1.1: utility bar + baseline survey)
+
+Ported inside the lane paths, red first (`red-fix1.txt`: `tests/health/utility-bar.test.tsx`,
+11/11 failing on 3afeca5), then green:
+- `src/screens/health/HealthUtilityBar.tsx` (self-contained; the driver consolidates later): the web
+  rail order (`Health.tsx:303-333`, `utility-action-button.tsx:99-125`) — Search, mode pill,
+  Calendar, Upload, Life Compass, Gift Voucher, then the Vitana Index and Autopilot chips.
+  - ExpandableSearchButton (`Health.tsx:316`): expands to an input with the page placeholder, ✕
+    collapses and clears it; inert as on web (no `onSearch` on that page).
+  - UniversalCalendarButton (`Health.tsx:322`, `UniversalCalendarButton.tsx:59-87`): opens
+    `/calendar` via `navigateToWebPath` (the resolver's Unported screen until a native calendar route
+    exists); the upcoming-events badge (`getUpcomingEvents(10)`, `formatNotificationCount`) and the
+    conflict dot, from a read of the member's `calendar_events` (`data/calendar.ts`, select with
+    `user_id = auth.uid()`, the web query at `useCalendarEvents.ts:121-125`). `calendar:open` is
+    already routed by the shell (`MobileAppShell.tsx:50`), so the bar does not listen twice.
+  - Life Compass (`utility-action-button.tsx:108-118`) emits `vitana:open-life-compass` (`events.ts`).
+  - Gift Voucher (`:121-123`) is hidden when the native IAP-restricted check is true (iOS, the
+    drawer's `iapRestricted` rule, `shell/logic/drawer.ts:37`, `SideDrawer.tsx:105`), like
+    `isIAPRestricted()`. A tap emits `gift-voucher:open`; the MaxinaVoucherModal checkout itself (a
+    purchase surface with no route) is not ported in this lane.
+- `src/screens/health/VitanaBaselineSurveyModal.tsx`, mounted on `/health` (see the deviation above
+  for the disabled submit, `plan.md:110`).
+- Ports: `src/ports/health.tsx` adds the glyphs (Apple, Brain, Dumbbell, Gift, Moon, Search) and
+  `DialogDescription` / `DialogFooter`.
+- i18n: 16 new `healthNative.*` keys (`searchPlaceholder`, `utility.*`, `baselineSurvey.*` — the
+  web question copy is hard-coded English), DE first, all 11 locales. Everything else reuses
+  `actionBar.search|calendar|giftVoucher`, `lifeCompass.title`, `screens.health.back`,
+  `screens.health.fiveQuickQuestionsSetYourDay0`.
+- `tests/health/consent-no-write.test.tsx`: the expected read set now includes `calendar_events`
+  (still a select scoped to `user_id = auth.uid()`), and the status GET is asserted.
+- Confetti: kept out (reason above).
+
+Results (fix 1 code): `npm run typecheck` PASS; `npx jest tests/health --ci` 6 suites / 119 tests
+PASS; `npm test -- --ci` 90 suites / 2396 tests, 57 snapshots PASS; `APP_PROFILE=development npm run
+bundle` PASS; `deps:check` up to date; `parity:check` OK (435 rows, 33 native routes); core-closure,
+gen-core-extract, gen-tokens --check up to date; check-shell-pins OK; native script tests 68/0 and
+22/0; eslint clean; i18n register / long words / subscriptions / stamp / locale registry / chunking
+OK; `npx vitest run src/i18n scripts/native` 3 files / 25 tests.
+
 ## Not verified on staging
 
 Device runtime deferred to G1 (`staging-tests.json` `deferred_g1`, `next_actor: owner`):
@@ -107,19 +146,22 @@ Writes are not wired (plan "No health data is written", tasks.md task 3):
 - Opening a report file uses a storage signed URL (`MobileHealthMedicalTab.tsx:53-61`, a POST);
   the native rows are not pressable.
 - `completeBySourceRef('onboarding_health')` (`Health.tsx:129`, a gateway write) is not called.
-- `VitanaBaselineSurveyModal` (`Health.tsx:288`) auto-opens a survey whose submit POSTs
-  `/health/baseline-survey` (`VitanaBaselineSurveyModal.tsx:120-121`); not ported.
+- `VitanaBaselineSurveyModal` (`Health.tsx:288`): ported (fix 1) with the web trigger, auto-open
+  on `GET /health/baseline-survey/status` → `ok && !completed` (`VitanaBaselineSurveyModal.tsx:88-104`),
+  the five steps, Back / Next. **Submit disabled**: the web Finish POSTs `/health/baseline-survey`
+  (`:120-123`), a health-data write; the plan says "No health data is written to production. Reads
+  only" (`plan.md:110` on `origin/kiro/native-wave2-health-biology-r3/plan`), so the native Finish
+  renders disabled and never calls it, like the upload sheet's submit.
 - The Health Sync tap logs an activity row on web (`useHealthLogger.ts:48-54`); the native
   affordance does not.
 
 Other lanes' surfaces (no native twin yet; same deferral as the home and diary lanes):
-- Utility bar: ExpandableSearchButton (`Health.tsx:316`, stores a query nothing on the page
-  reads), Life Compass and Gift Voucher (`utility-action-button.tsx:26-27`, `:116`; the voucher is
-  also IAP-gated, `:43`), UniversalCalendarButton (`Health.tsx:322`).
 - The Autopilot popup (`Health.tsx:408-411`) belongs to the journey-autopilot lane: the chip and
   the sheet's "Open Autopilot" emit `autopilot:open` on the overlay bus when that lane has
   registered it, otherwise open `/autopilot` (the web "View My Journey" target, `Health.tsx:386`).
 - The Life Compass row emits `vitana:open-life-compass` (web window event, same name).
+- The Gift Voucher button emits `gift-voucher:open`; MaxinaVoucherModal (`utility-action-button.tsx:128-133`, a
+  checkout) has no native twin yet.
 
 Data / presentation:
 - Real-data standing: the web shows the server's "Top X%" only behind `VITE_HEALTH_REAL_DATA`
@@ -130,7 +172,10 @@ Data / presentation:
   (`GET /autopilot/recommendations?status=new,activated&limit=20&role=community`) on mount.
 - Lab reports are read with an explicit `user_id = auth.uid()` filter (the web relies on RLS
   only) so only the member's own reports are requested.
-- Index sheet: no confetti (`VitanaIndexSheet.tsx:258-273`; no native confetti canvas) — the
+- Index sheet: no confetti (`VitanaIndexSheet.tsx:258-273`; the web draws a 130-particle canvas
+  burst with `confettiManager` (`src/lib/confetti.ts:88-120`); there is no native canvas, and a
+  react-native `Animated` re-implementation of that particle system is not a small change, so it
+  stays out of this lane) — the
   banner shows and the day is marked in AsyncStorage; the streak is 0 because the web streak is a
   localStorage day log (`useVitanaStreaks.ts:29`) nothing writes natively, so no streak badge.
 - Hard-coded English on the web (sheet banner / Life Compass copy, Health Actions and lab-test

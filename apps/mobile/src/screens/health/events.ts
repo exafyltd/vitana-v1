@@ -11,6 +11,7 @@
  *    `/autopilot` (the web "View My Journey" target, Health.tsx:386), so the
  *    tap is never dead.
  *  - `vitana:open-life-compass` (LifeCompassPopupContext.tsx:14).
+ *  - `gift-voucher:open` (native only, see openGiftVoucher).
  */
 import { overlayBus } from '../../navigation/overlay-bus';
 import { navigateToWebPath } from '../../navigation/navigate';
@@ -30,4 +31,16 @@ export function openAutopilot(): void {
 
 export function openLifeCompass(): void {
   overlayBus.emit(LIFE_COMPASS_OPEN_EVENT);
+}
+
+/**
+ * The utility bar's Gift Voucher button (utility-action-button.tsx:121-123).
+ * The web opens MaxinaVoucherModal in place (a checkout, no route and no
+ * window event); the native bar emits `gift-voucher:open` for the lane that
+ * ports the voucher modal to register on the bus.
+ */
+export const GIFT_VOUCHER_OPEN_EVENT = 'gift-voucher:open';
+
+export function openGiftVoucher(): void {
+  overlayBus.emit(GIFT_VOUCHER_OPEN_EVENT);
 }

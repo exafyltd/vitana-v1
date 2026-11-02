@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "A sincronização de saúde ainda não está ativada."
+    },
+    "searchPlaceholder": "Pesquisar relatórios, suplementos...",
+    "utility": {
+      "closeSearch": "Fechar pesquisa",
+      "upcomingEvent": "{count} evento próximo",
+      "upcomingEvents": "{count} eventos próximos"
+    },
+    "baselineSurvey": {
+      "next": "Próximo",
+      "finish": "Concluir",
+      "rating": "Nota {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Como você está se alimentando",
+          "prompt": "Quão bem você sente que está se alimentando ultimamente? (1 = mal, 5 = nutritivo e equilibrado)"
+        },
+        "hydration": {
+          "title": "Sua hidratação",
+          "prompt": "Quanta água e líquidos você está tomando? (1 = muito pouco, 5 = constante o dia todo)"
+        },
+        "exercise": {
+          "title": "Seu movimento",
+          "prompt": "Quão ativo seu corpo esteve nesta semana? (1 = sedentário, 5 = forte e ativo)"
+        },
+        "sleep": {
+          "title": "Seu sono",
+          "prompt": "Quão descansado você se sente ao acordar? (1 = exausto, 5 = totalmente descansado)"
+        },
+        "mental": {
+          "title": "Sua mente agora",
+          "prompt": "Quão clara e calma está sua mente hoje? (1 = muito estressada, 5 = clara e calma)"
+        }
+      }
     }
   }
 }

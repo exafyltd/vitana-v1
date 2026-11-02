@@ -113,6 +113,39 @@
     },
     "sync": {
       "notEnabledHint": "La synchronisation santé n’est pas encore activée."
+    },
+    "searchPlaceholder": "Rechercher des rapports, des compléments...",
+    "utility": {
+      "closeSearch": "Fermer la recherche",
+      "upcomingEvent": "{count} événement à venir",
+      "upcomingEvents": "{count} événements à venir"
+    },
+    "baselineSurvey": {
+      "next": "Suivant",
+      "finish": "Terminer",
+      "rating": "Note {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Ton alimentation",
+          "prompt": "Comment estimes-tu ton alimentation ces temps-ci ? (1 = mauvaise, 5 = nourrissante et équilibrée)"
+        },
+        "hydration": {
+          "title": "Ton hydratation",
+          "prompt": "Combien d'eau et de liquides bois-tu ? (1 = très peu, 5 = régulièrement toute la journée)"
+        },
+        "exercise": {
+          "title": "Ton activité",
+          "prompt": "À quel point ton corps a-t-il été actif cette semaine ? (1 = sédentaire, 5 = fort et actif)"
+        },
+        "sleep": {
+          "title": "Ton sommeil",
+          "prompt": "À quel point te sens-tu reposé au réveil ? (1 = épuisé, 5 = pleinement reposé)"
+        },
+        "mental": {
+          "title": "Ton esprit en ce moment",
+          "prompt": "À quel point ton esprit est-il clair et calme aujourd'hui ? (1 = très stressé, 5 = clair et calme)"
+        }
+      }
     }
   }
 }

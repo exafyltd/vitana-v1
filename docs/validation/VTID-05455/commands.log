@@ -149,3 +149,32 @@ exit=0
 - "ORB parity — duplex gate, widget literals, protocol (vitana-platform main)": orb-parity --fetch got HTTP 403 fetching
   exafyltd/vitana-platform:services/gateway/src/orb/live/duplex/full-duplex-gate.ts@main — GitHub rate limit / token, infra (not this lane).
 - "Lane scope": the known lane-file-not-found red (spec on the plan branch, not on vitana-platform main).
+
+## Fix 1 — reviewer `changes` on 3afeca5 (R1.1 utility bar + VitanaBaselineSurveyModal)
+$ git fetch origin && git merge --ff-only origin/kiro/native-wave2-health-biology-r3/health-hub  -> already up to date
+$ git merge origin/main  -> already up to date (origin/main e530abd0d is in the branch)
+$ (apps/mobile) npm ci  -> added 941 packages
+## Red (head 3afeca5 + the new test file only) — see red-fix1.txt
+$ npx jest tests/health/utility-bar.test.tsx --ci  -> 11 failed / 11
+## Green (fix 1 code)
+$ npm run typecheck  -> tsc --noEmit, 0 errors
+$ npx jest tests/health --ci  -> 6 suites / 119 tests passed
+$ npm test -- --ci  -> 90 suites / 2396 tests passed, 57 snapshots
+$ HOME=<tmp> APP_PROFILE=development npm run bundle  -> Exported: dist
+$ HOME=<tmp> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> Dependencies are up to date
+$ npm run parity:check  -> OK — 435 rows, 33 native route(s)
+$ node scripts/native/core-closure.mjs --check  -> up to date (24 roots, 34 src files)
+$ node scripts/native/gen-core-extract.mjs --check  -> up to date
+$ node scripts/native/gen-tokens.mjs --check  -> up to date
+$ node scripts/native/check-shell-pins.mjs  -> OK
+$ node --test scripts/native/__tests__/*.test.mjs  -> 68 / 0
+$ node --test scripts/native/__tests__/eslint/*.test.mjs  -> 22 / 0
+$ npx eslint apps/mobile packages  -> clean
+$ node scripts/i18n-register-check.mjs --all  -> no violations
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22  -> 0
+$ node scripts/check-i18n-subscriptions.mjs  -> OK
+$ node scripts/i18n-stamp-source.mjs --check-all  -> OK
+$ node scripts/check-locale-registry.mjs  -> OK
+$ node scripts/check-locale-chunking.mjs  -> OK
+$ node scripts/i18n-audit.mjs --report-only  -> 0 healthNative findings
+$ npx vitest run src/i18n scripts/native  -> 3 files / 25 tests passed
