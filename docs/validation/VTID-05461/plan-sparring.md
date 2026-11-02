@@ -33,3 +33,18 @@ None were raised in the converged session. The premises the round-2 partner coul
 re-read are re-verified by this lane's own build: `node scripts/native/core-closure.mjs
 --check` admits the two helpers as class A (with the other pure entries this lane adds, see
 `verification.md`), and the parity ledger / route checks pass (`commands.log`).
+
+## Owner approval
+
+Owner approval: by policy. The converged plan is approved by policy `converged-auto-v1` (owner decision 2026-10-14,
+VTID-05214/05218): a plan sparred by CI whose session converged is approved by policy and
+not sent to the owner as Gate 1. The VTID was allocated by CI after convergence
+(`lanes/journey.md` log, 2026-11-02T07:38Z).
+
+## Scope of this lane (journey)
+
+Port `AUTOPILOT.MY_JOURNEY /autopilot` (web `src/pages/AutopilotDashboard.tsx`, mobile branch)
+to native; the parity row flips `not_started` → `native`. Owns the `@vitana/core` extraction
+of the pure helpers. `/autopilot/audiobook` and the audiobook player are the
+`autopilot-audiobook` lane's (it depends on this one). Requirements R0–R6 and design §2a are
+authoritative.
