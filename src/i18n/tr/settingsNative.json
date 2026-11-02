@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Sohbet",
+      "calendar": "Takvim",
+      "community": "Topluluk",
+      "updateFailed": "Tercih güncellenemedi"
+    },
+    "consent": {
+      "title": "Yapay zekâ veri paylaşımı bilgilendirmesi",
+      "subtitle": "Yapay zekâ özelliklerini kullanmadan önce verilerinin nasıl kullanıldığına göz at.",
+      "whatIsSent": "Hangi veriler gönderilebilir",
+      "voiceData": "Ses kayıtları ve dökümleri",
+      "diaryData": "Yazdığın istemler, sohbet mesajları ve günlük girdileri",
+      "memoryData": "Memory Garden girdileri ve sağlıklı yaşam hedefleri",
+      "profileData": "Profil bağlamı (ad, tercihler)",
+      "socialData": "Sosyal medya profili URL’leri ve biyografi metinleri (içe aktarma özelliklerini kullandığında)",
+      "recipientLabel": "Alıcı:",
+      "recipient": "Lovable AI Gateway üzerinden Google (Gemini yapay zekâ modelleri). Verilerin şifreli bağlantılarla güvenli şekilde aktarılır.",
+      "purposeLabel": "Amaç",
+      "purpose": "Kişiselleştirilmiş yapay zekâ yanıtları, ses sentezi, proaktif selamlamalar, sağlık koçluğu ve profil zenginleştirme önerileri oluşturmak.",
+      "notStored": "Veriler yapay zekâ sağlayıcısı tarafından kalıcı olarak saklanmaz",
+      "revokeAnytime": "Onayını istediğin zaman Ayarlar > Gizlilik bölümünden geri alabilirsin",
+      "gdprCompliant": "GDPR ve gizlilik kurallarıyla uyumlu",
+      "agreementFooter": "“Kabul ediyorum”a dokunarak Exafy LTD’ye yukarıda listelenen verileri adı geçen yapay zekâ sağlayıcılarına gönderme izni verirsin. Bu izni istediğin zaman Ayarlar > Gizlilik bölümünden geri çekebilirsin.",
+      "notNow": "Şimdi değil",
+      "iAgree": "Kabul ediyorum"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "%90",
+      "platformShare": "%10",
+      "redirecting": "Yönlendiriliyor…",
+      "completeSetup": "Kurulumu tamamla",
+      "enablePayments": "Ödemeleri etkinleştir",
+      "opening": "Açılıyor…",
+      "viewDashboard": "Paneli görüntüle"
+    },
+    "limitations": {
+      "description": "Bunlar her ürün önerisine uyguladığımız değişmez kurallardır. Alerjiler, tıbbi kontrendikasyonlar ve ilaç etkileşimleri asla göz ardı edilemez.",
+      "removeTag": "{v} kaldır",
+      "tag": "{v} ×",
+      "never": "hiç",
+      "allergens": "Alerjenler",
+      "medicationsLabel": "İlaçlar (etken madde veya grup, ör. SSRI, kan sulandırıcı)",
+      "accessibilityLabel": "Erişilebilirlik ihtiyaçları",
+      "ofActiveProducts": "{count} aktif üründen",
+      "maxPlaceholder": "ör. 40",
+      "capPlaceholder": "ör. 150",
+      "dietary": {
+        "vegan": "vegan",
+        "vegetarian": "vejetaryen",
+        "halal": "helal",
+        "kosher": "koşer",
+        "glutenFree": "glütensiz",
+        "dairyFree": "süt ürünsüz",
+        "nutFree": "kuruyemişsiz",
+        "soyFree": "soyasız",
+        "sugarFree": "şekersiz",
+        "organic": "organik"
+      }
+    },
+    "tenantRole": {
+      "description": "Bağlamını ve izinlerini yönet",
+      "noRoleSelected": "Rol seçilmedi",
+      "noOrganization": "Kuruluş yok",
+      "current": "Geçerli",
+      "available": "Kullanılabilir",
+      "switching": "Değiştiriliyor…",
+      "switchOrganization": "Kuruluş değiştir",
+      "roles": {
+        "community": "Topluluk üyesi",
+        "patient": "Hasta",
+        "professional": "Uzman",
+        "staff": "Personel",
+        "backoffice": "Arka ofis",
+        "admin": "Yönetici"
+      },
+      "roleDescriptions": {
+        "community": "Topluluk özelliklerine ve sosyal bağlantılara erişim",
+        "patient": "Tam sağlık takibi ve tıbbi özellikler",
+        "professional": "Doktorlar ve koçlar için profesyonel araçlar",
+        "staff": "Personel yönetimi ve operasyonel özellikler",
+        "backoffice": "ERP/CRM arka ofis araçları ve onaylar",
+        "admin": "Tam yönetici erişimi ve yönetim",
+        "default": "Role özel özelliklere erişim"
+      },
+      "permissions": {
+        "community": "Topluluk erişimi",
+        "health": "Sağlık verisi erişimi",
+        "professional": "Profesyonel araçlar",
+        "staff": "Personel özellikleri",
+        "admin": "Yönetici özellikleri"
+      }
+    }
+  }
+}

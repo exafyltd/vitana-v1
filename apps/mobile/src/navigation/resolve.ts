@@ -69,7 +69,11 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/profile/me/privacy',
   '/reset-password',
   '/search',
+  '/settings',
   '/settings/connected-apps',
+  '/settings/limitations',
+  '/settings/preferences',
+  '/settings/tenant-role',
   '/support',
 ];
 
