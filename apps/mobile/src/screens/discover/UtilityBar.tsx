@@ -14,8 +14,10 @@
  *    upcoming-count badge (first 10, NotificationBadge's 99+ rule) and the
  *    pulsing conflict dot. Its `calendar:open` listener is the shell's
  *    (MobileAppShell.tsx), so it is not registered twice here;
- *  - Life Compass (:102-112): the global popup through the overlay-bus event
- *    `vitana:open-life-compass` (LifeCompassPopupContext.tsx:14);
+ *  - Life Compass (:102-112): the global Life Compass popup. When a global
+ *    host listens for `vitana:open-life-compass` (LifeCompassPopupContext.tsx:14)
+ *    the pill emits it; with none registered (today's shell) the rail opens
+ *    its own LifeCompassPopup twin;
  *  - Gift Voucher (:115-117) + `MaxinaVoucherModal` (VoucherModal.tsx), hidden
  *    where IAP is restricted (`isIAPRestricted()`, :43). Natively that is the
  *    shell's `iapRestricted` rule, unchanged: `Platform.OS === 'ios'`
@@ -38,6 +40,7 @@ import { navigateToWebPath } from '../../navigation/navigate';
 import { overlayBus } from '../../navigation/overlay-bus';
 import { useI18n } from '../../i18n/I18nProvider';
 import { useCalendarEvents, useVitanaIndex } from './data/utility';
+import { LifeCompassPopup } from './LifeCompassPopup';
 import { VoucherModal } from './VoucherModal';
 
 export const LIFE_COMPASS_OPEN = 'vitana:open-life-compass';
@@ -225,12 +228,17 @@ export function UtilityBar({
   const { t } = useI18n();
   const { colors } = useUITheme();
   const [voucherOpen, setVoucherOpen] = useState(false);
+  const [compassOpen, setCompassOpen] = useState(false);
   const hideVoucher = isIAPRestricted();
+  const openLifeCompass = () => {
+    if (overlayBus.listenerCount(LIFE_COMPASS_OPEN) > 0) overlayBus.emit(LIFE_COMPASS_OPEN);
+    else setCompassOpen(true);
+  };
   return (
     <View testID="discover-utility-bar" style={compact ? styles.wrapCompact : styles.wrap}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.rail} testID="discover-utility-rail">
         {children}
-        <RailPill testID="discover-life-compass" label={t('lifeCompass.title')} onPress={() => overlayBus.emit(LIFE_COMPASS_OPEN)}>
+        <RailPill testID="discover-life-compass" label={t('lifeCompass.title')} onPress={openLifeCompass}>
           <DiscoverIcon name="Target" size={16} color={colors.mutedForeground} />
           <Text size="sm">{t('lifeCompass.title')}</Text>
         </RailPill>
@@ -244,6 +252,7 @@ export function UtilityBar({
         {trailing}
       </ScrollView>
       {!hideVoucher ? <VoucherModal open={voucherOpen} onOpenChange={setVoucherOpen} returnTo={returnTo} /> : null}
+      {compassOpen ? <LifeCompassPopup open={compassOpen} onOpenChange={setCompassOpen} /> : null}
     </View>
   );
 }

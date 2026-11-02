@@ -79,7 +79,7 @@ describe('i18n: all 11 locales', () => {
     }
   }, 60_000);
 
-  it('the quick actions, hidden-reason rows and sub-catalogue tabs resolve in every locale', async () => {
+  it('the quick actions, hidden-reason rows, category select and Life Compass popup resolve in every locale', async () => {
     for (const locale of LOCALES) {
       const { wrapper } = discoverWrapper(routes, { language: languageFromLocale(locale) });
       const r = render(<SupplementsScreen />, { wrapper });
@@ -87,9 +87,11 @@ describe('i18n: all 11 locales', () => {
         await flush();
         await flush();
       });
-      fireEvent.press(screen.getByTestId('hidden-by-limitations-toggle'));
-      fireEvent.press(screen.getByTestId('discover-action-button'));
-      fireEvent.press(screen.getByTestId('supplements-category'));
+      fireEvent.press(screen.getByTestId('discover-life-compass'));
+      expect(await screen.findByTestId('life-compass-goal-wealth')).toBeTruthy();
+      fireEvent.press(screen.getByTestId('hidden-by-limitations-toggle', { includeHiddenElements: true }));
+      fireEvent.press(screen.getByTestId('discover-action-button', { includeHiddenElements: true }));
+      fireEvent.press(screen.getByTestId('supplements-category', { includeHiddenElements: true }));
       const raw = allStrings(r.root).filter((s) => RAW_KEY.test(s.trim()));
       expect({ locale, raw }).toEqual({ locale, raw: [] });
       r.unmount();

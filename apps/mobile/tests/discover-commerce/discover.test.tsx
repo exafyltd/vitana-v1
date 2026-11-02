@@ -194,6 +194,24 @@ describe('/discover — utility rail', () => {
   });
 });
 
+describe('/discover — Life Compass popup (no global host registered)', () => {
+  it('opens the twin: current compass, suggested goals minus the active one; a goal deactivates the old row and inserts the new one', async () => {
+    const { wrapper, db } = discoverWrapper(routes(), {
+      tables: { life_compass: [{ id: 'lc1', user_id: 'u-1', is_active: true, primary_goal: 'Transform Health', category: 'health', alignment_score: 70, confidence_score: 60, version: 2 }] },
+    });
+    render(<DiscoverScreen />, { wrapper });
+    fireEvent.press(screen.getByTestId('discover-life-compass'));
+    expect(await screen.findByTestId('life-compass-current')).toBeTruthy();
+    expect(screen.queryByTestId('life-compass-goal-health')).toBeNull();
+    await act(async () => {
+      fireEvent.press(screen.getByTestId('life-compass-goal-career'));
+    });
+    await waitFor(() => expect(db.ops.some((o) => o.table === 'life_compass' && o.op === 'insert')).toBe(true));
+    expect(db.ops.find((o) => o.table === 'life_compass' && o.op === 'update')).toMatchObject({ values: { is_active: false }, filters: [['eq', 'id', 'lc1']] });
+    expect(db.ops.find((o) => o.table === 'life_compass' && o.op === 'insert')?.values).toEqual({ user_id: 'u-1', primary_goal: 'Advance Career', category: 'career', is_active: true, version: 3 });
+  });
+});
+
 describe('/discover — deep link + telemetry', () => {
   it('?m=<match> is cleared at once and ends in the "match not found" toast', () => {
     jest.useFakeTimers();
