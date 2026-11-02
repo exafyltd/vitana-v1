@@ -63,6 +63,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/memory/timeline',
   '/native-ui-catalogue',
   '/oauth/complete',
+  '/redeem',
   '/reset-password',
   '/search',
 ];
