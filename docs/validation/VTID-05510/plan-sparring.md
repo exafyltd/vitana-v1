@@ -20,6 +20,10 @@ A plan sparred by CI whose session converged is approved by policy `converged-au
 2026-10-14, VTID-05214/05218) and not sent to the owner as Gate 1. The VTID was allocated by CI after
 convergence (`lanes/discover.md` log, 2026-11-02T16:30Z).
 
+- **Owner approval:** policy approval `converged-auto-v1` (owner decision 2026-10-14,
+  VTID-05214/05218) stands in for Gate 1 for a CI-sparred plan that converged. Recorded here as the
+  audit line; the mechanical gate is the `vtid_ledger` trigger that admitted VTID-05510.
+
 ## Findings and how this lane answers them
 
 - **R1-F1 (minor, accepted)** — `/discover/ai-picks` (web `src/App.tsx:1034`, `AIPicksPage`, reached from
