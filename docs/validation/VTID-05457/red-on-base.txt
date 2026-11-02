@@ -1,0 +1,29 @@
+# VTID-05457 red on base — the lane's new tests run before the implementation existed.
+# Base 1 (the branch base, stacked on health-hub #1562): detached worktree at cda3e39f0faceaaf67e2b16c88a9f5f60427aab4
+#   + copied apps/mobile/tests/health/vitana-index-biology (apps/mobile node_modules from this worktree); npm run gen:i18n
+$ npx jest tests/health/vitana-index-biology --ci   -> exit=1
+FAIL tests/health/vitana-index-biology/consent-no-write.test.tsx
+    Cannot find module '../../../src/screens/health/VitanaIndexDetailScreen' from 'tests/health/vitana-index-biology/consent-no-write.test.tsx'
+FAIL tests/health/vitana-index-biology/biology.test.tsx
+    Cannot find module '../../../src/screens/health/MyBiologyScreen' from 'tests/health/vitana-index-biology/biology.test.tsx'
+FAIL tests/health/vitana-index-biology/index-detail.test.tsx
+    Cannot find module '../../../src/screens/health/VitanaIndexDetailScreen' from 'tests/health/vitana-index-biology/index-detail.test.tsx'
+FAIL tests/health/vitana-index-biology/i18n-routes.test.tsx
+    Cannot find module '../../../src/screens/health/VitanaIndexDetailScreen' from 'tests/health/vitana-index-biology/i18n-routes.test.tsx'
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+
+# Base 2: origin/main 5c75715e16ce360e2d96df28790f480e4582583f (no health-hub yet), same copied tests
+$ npx jest tests/health/vitana-index-biology --ci   -> exit=1
+FAIL tests/health/vitana-index-biology/consent-no-write.test.tsx
+    Cannot find module '../mocks' from 'tests/health/vitana-index-biology/consent-no-write.test.tsx'
+FAIL tests/health/vitana-index-biology/i18n-routes.test.tsx
+    Cannot find module '../mocks' from 'tests/health/vitana-index-biology/i18n-routes.test.tsx'
+FAIL tests/health/vitana-index-biology/biology.test.tsx
+    Cannot find module '../mocks' from 'tests/health/vitana-index-biology/biology.test.tsx'
+FAIL tests/health/vitana-index-biology/index-detail.test.tsx
+    Cannot find module '../mocks' from 'tests/health/vitana-index-biology/index-detail.test.tsx'
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+
+# Green on HEAD (code commits f2fd70095 / 8018270d6): npx jest tests/health/vitana-index-biology --ci -> 4 suites / 86 tests passed (commands.log).

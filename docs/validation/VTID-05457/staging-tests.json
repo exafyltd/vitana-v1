@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05457",
+  "service": "community-app",
+  "_note": "Native Wave 2 vitana-index-biology lane (/health/vitana-index, /health/my-biology + ?tab=omics / ?tab=supplements). Stacked on #1562 (health-hub). The port is proven offline (jest-expo + RNTL, recording Supabase double + fake gateway, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Health-data reads only, RLS-scoped user_id = auth.uid(); nothing is written (log-data, upload and supplement submits are disabled; no storage call; every gateway call a GET). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 READ-ONLY staging web pages) is DEFERRED to G1 as next_actor: owner (plan decision 5, tasks.md vitana-index-biology task 6). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/health", "cwd": "apps/mobile",
+      "reason": "health cluster unit tests (10 suites / 215 tests), incl. this lane's 4 suites / 86 tests: Index detail hero loaded / loading / error / no-Index, next steps order + Next up + done + CTAs, 90-day goal, pillar breakdown (biggest lever, strongest, balance), log-data dialog (pillar switch, metric picker, value, submit write-disabled, no POST), card strip (server E1 + G3 streak metric, G1 not placed, feature F3/F4/F6, 7-day device dismiss, server X disabled), Mission Alignment loaded / empty / error, How your Index grows; biology ?tab= medical / omics / supplements (default, unknown, write-back), sub-navigation, phone header, utility rail + IAP rule, reports loaded / empty / error + retry, upload sheet category, Health Sync affordance delegates to connect(), supplements loaded / loading / empty / filter / active-category chips, add / edit dialog write-disabled, Biomarker Actions; consent/no-write on the built requests; 11 locales no unresolved key, DE-first du-form + registers, RTL-safe styles, routes resolve native on a cold start, ledger rows — fixtures / fake gateway, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the two screens, the index-biology parts and the health-biology port type-check against health-hub's ports, @vitana/ui, @vitana/tokens and the new @vitana/core supplement-categories re-export" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /health/vitana-index and /health/my-biology routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "HEALTH.VITANA_INDEX, HEALTH.MY_BIOLOGY, HEALTH.BIOLOGY_OMICS and HEALTH.BIOLOGY_SUPPLEMENTS are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/health/05-vitana-index-detail.yaml", "target": "/health/vitana-index", "next_actor": "owner",
+      "reason": "sign in, open /health/vitana-index (also via the Index sheet's 'Understand' row): hero, card strip, next steps, goal, pillars, pillar agents, Mission Alignment, How your Index grows; open the log-data dialog (submit stays disabled); screenshot parity vs the read-only 390x844 staging web /health/vitana-index (never vitanaland.com); network guard aborts every non-GET except sign-in; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/health/06-my-biology-medical.yaml", "target": "/health/my-biology", "next_actor": "owner",
+      "reason": "sub-navigation, utility rail, the member's medical reports or the empty state; Upload PDF opens the sheet (submit disabled); Connect Device delegates to the dark Health Sync entry; Biomarker Actions; read only; needs G1" },
+    { "flow": "apps/mobile/maestro/health/07-my-biology-omics.yaml", "target": "/health/my-biology?tab=omics", "next_actor": "owner",
+      "reason": "omics reports or the empty state; Upload Results (genomics) and Connect API; read only; needs G1" },
+    { "flow": "apps/mobile/maestro/health/08-my-biology-supplements.yaml", "target": "/health/my-biology?tab=supplements", "next_actor": "owner",
+      "reason": "supplement cards, category filter, active-category chips, add / edit dialog (submit disabled), delete disabled; read only; needs G1" }
+  ]
+}
