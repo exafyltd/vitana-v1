@@ -46,6 +46,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  '/connectors',
   '/delete-account',
   '/daily-diary',
   '/discover/doctors-coaches',
@@ -70,6 +71,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/reset-password',
   '/search',
+  '/settings/connected-apps',
+  '/support',
 ];
 
 /**
