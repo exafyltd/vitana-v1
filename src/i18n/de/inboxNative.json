@@ -1,0 +1,42 @@
+{
+  "inboxNative": {
+    "selectContext": "Posteingang wählen",
+    "searchClose": "Suche schließen",
+    "unreadCount": "{count} ungelesen",
+    "unknown": "Unbekannt",
+    "conversation": "Unterhaltung",
+    "vitanaWelcome": "Hi! Ich bin Vitana. Schick mir eine Nachricht, um loszulegen.",
+    "removeRecipient": "{name} entfernen",
+    "moreOptions": "Weitere Optionen",
+    "archivedDescription": "Archivierte Unterhaltungen und Nachrichten ansehen",
+    "inspirationDescription": "Vorgefertigte Nachrichten und Vorlagen, die deine Wellness-Community inspirieren",
+    "subnav": {
+      "overview": "Übersicht",
+      "inspiration": "Inspiration",
+      "archived": "Archiviert"
+    },
+    "archiveCategory": {
+      "all": "Alle",
+      "healthcare": "Gesundheit",
+      "fitness": "Fitness",
+      "nutrition": "Ernährung",
+      "activities": "Aktivitäten"
+    },
+    "archiveType": {
+      "group": "Gruppe",
+      "direct": "Direkt"
+    },
+    "archiveSample": {
+      "johnsonName": "Dr. Johnson",
+      "johnsonMessage": "Danke für die Beratung!",
+      "yogaName": "Yoga für Einsteiger",
+      "yogaMessage": "Tolle Einheit, alle zusammen!",
+      "martinezName": "Sarah Martinez",
+      "martinezMessage": "Das Rezept war großartig!",
+      "warriorsName": "Wochenend-Krieger",
+      "warriorsMessage": "Die nächste Wanderung ist geplant für ...",
+      "kimName": "Dr. Kim",
+      "kimMessage": "Kontrolle in 2 Wochen"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "inboxNative": {
+    "selectContext": "Выбрать ящик",
+    "searchClose": "Закрыть поиск",
+    "unreadCount": "Непрочитанных: {count}",
+    "unknown": "Неизвестно",
+    "conversation": "Беседа",
+    "vitanaWelcome": "Привет! Я Vitana. Напиши мне сообщение, чтобы начать.",
+    "removeRecipient": "Убрать: {name}",
+    "moreOptions": "Другие действия",
+    "archivedDescription": "Просмотр архивных бесед и сообщений",
+    "inspirationDescription": "Готовые сообщения и шаблоны, чтобы вдохновлять твоё wellness-сообщество",
+    "subnav": {
+      "overview": "Обзор",
+      "inspiration": "Вдохновение",
+      "archived": "Архив"
+    },
+    "archiveCategory": {
+      "all": "Все",
+      "healthcare": "Здоровье",
+      "fitness": "Фитнес",
+      "nutrition": "Питание",
+      "activities": "Активности"
+    },
+    "archiveType": {
+      "group": "Группа",
+      "direct": "Личная"
+    },
+    "archiveSample": {
+      "johnsonName": "Д-р Джонсон",
+      "johnsonMessage": "Спасибо за консультацию!",
+      "yogaName": "Йога для начинающих",
+      "yogaMessage": "Отличное занятие, всем спасибо!",
+      "martinezName": "Сара Мартинес",
+      "martinezMessage": "Рецепт был потрясающий!",
+      "warriorsName": "Воины выходного дня",
+      "warriorsMessage": "Следующий поход запланирован на...",
+      "kimName": "Д-р Ким",
+      "kimMessage": "Повторный приём через 2 недели"
+    }
+  }
+}

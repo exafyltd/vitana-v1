@@ -1,0 +1,42 @@
+{
+  "inboxNative": {
+    "selectContext": "اختر صندوق الوارد",
+    "searchClose": "إغلاق البحث",
+    "unreadCount": "{count} غير مقروءة",
+    "unknown": "غير معروف",
+    "conversation": "محادثة",
+    "vitanaWelcome": "مرحبًا! أنا Vitana. أرسل لي رسالة لنبدأ.",
+    "removeRecipient": "إزالة {name}",
+    "moreOptions": "خيارات أخرى",
+    "archivedDescription": "عرض المحادثات والرسائل المؤرشفة",
+    "inspirationDescription": "رسائل وقوالب جاهزة لإلهام مجتمع العافية الخاص بك",
+    "subnav": {
+      "overview": "نظرة عامة",
+      "inspiration": "إلهام",
+      "archived": "المؤرشفة"
+    },
+    "archiveCategory": {
+      "all": "الكل",
+      "healthcare": "الرعاية الصحية",
+      "fitness": "اللياقة",
+      "nutrition": "التغذية",
+      "activities": "الأنشطة"
+    },
+    "archiveType": {
+      "group": "مجموعة",
+      "direct": "مباشرة"
+    },
+    "archiveSample": {
+      "johnsonName": "د. جونسون",
+      "johnsonMessage": "شكرًا على الاستشارة!",
+      "yogaName": "يوغا للمبتدئين",
+      "yogaMessage": "جلسة رائعة للجميع!",
+      "martinezName": "سارة مارتينيز",
+      "martinezMessage": "الوصفة كانت مذهلة!",
+      "warriorsName": "محاربو عطلة نهاية الأسبوع",
+      "warriorsMessage": "الرحلة القادمة مقررة في...",
+      "kimName": "د. كيم",
+      "kimMessage": "متابعة بعد أسبوعين"
+    }
+  }
+}

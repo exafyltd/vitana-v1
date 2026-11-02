@@ -1,0 +1,42 @@
+{
+  "inboxNative": {
+    "selectContext": "选择收件箱",
+    "searchClose": "关闭搜索",
+    "unreadCount": "{count} 条未读",
+    "unknown": "未知",
+    "conversation": "对话",
+    "vitanaWelcome": "你好！我是 Vitana。给我发条消息开始吧。",
+    "removeRecipient": "移除 {name}",
+    "moreOptions": "更多选项",
+    "archivedDescription": "查看已归档的对话和消息",
+    "inspirationDescription": "预先写好的消息和模板，激励你的健康社区",
+    "subnav": {
+      "overview": "概览",
+      "inspiration": "灵感",
+      "archived": "已归档"
+    },
+    "archiveCategory": {
+      "all": "全部",
+      "healthcare": "医疗健康",
+      "fitness": "健身",
+      "nutrition": "营养",
+      "activities": "活动"
+    },
+    "archiveType": {
+      "group": "群组",
+      "direct": "私聊"
+    },
+    "archiveSample": {
+      "johnsonName": "约翰逊医生",
+      "johnsonMessage": "谢谢你的咨询！",
+      "yogaName": "瑜伽入门",
+      "yogaMessage": "大家这节课都很棒！",
+      "martinezName": "Sarah Martinez",
+      "martinezMessage": "这个食谱太棒了！",
+      "warriorsName": "周末勇士",
+      "warriorsMessage": "下一次徒步安排在……",
+      "kimName": "金医生",
+      "kimMessage": "2 周后复诊"
+    }
+  }
+}

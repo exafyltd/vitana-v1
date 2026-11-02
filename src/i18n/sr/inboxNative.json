@@ -1,0 +1,42 @@
+{
+  "inboxNative": {
+    "selectContext": "Izaberi sanduče",
+    "searchClose": "Zatvori pretragu",
+    "unreadCount": "Nepročitano: {count}",
+    "unknown": "Nepoznato",
+    "conversation": "Razgovor",
+    "vitanaWelcome": "Zdravo! Ja sam Vitana. Pošalji mi poruku da počnemo.",
+    "removeRecipient": "Ukloni: {name}",
+    "moreOptions": "Još opcija",
+    "archivedDescription": "Pregledaj arhivirane razgovore i poruke",
+    "inspirationDescription": "Unapred napisane poruke i šabloni koji inspirišu tvoju wellness zajednicu",
+    "subnav": {
+      "overview": "Pregled",
+      "inspiration": "Inspiracija",
+      "archived": "Arhivirano"
+    },
+    "archiveCategory": {
+      "all": "Sve",
+      "healthcare": "Zdravlje",
+      "fitness": "Fitnes",
+      "nutrition": "Ishrana",
+      "activities": "Aktivnosti"
+    },
+    "archiveType": {
+      "group": "Grupa",
+      "direct": "Direktno"
+    },
+    "archiveSample": {
+      "johnsonName": "Dr Johnson",
+      "johnsonMessage": "Hvala na konsultaciji!",
+      "yogaName": "Joga za početnike",
+      "yogaMessage": "Odličan trening, svima!",
+      "martinezName": "Sarah Martinez",
+      "martinezMessage": "Recept je bio sjajan!",
+      "warriorsName": "Vikend ratnici",
+      "warriorsMessage": "Sledeće planinarenje je zakazano za...",
+      "kimName": "Dr Kim",
+      "kimMessage": "Kontrola za 2 nedelje"
+    }
+  }
+}
