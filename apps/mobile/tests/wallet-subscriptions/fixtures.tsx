@@ -9,13 +9,16 @@
  */
 import type { ReactElement, ReactNode } from 'react';
 import { Linking } from 'react-native';
-import { render } from '@testing-library/react-native';
+import { configure, render } from '@testing-library/react-native';
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import { makeWrapper } from '../helpers/providers';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { UIProvider } from '../../src/ports/ui';
 import type { BillingMe, FoundingStatus, RedeemResult } from '../../src/screens/wallet-subscriptions/data/billing';
 import { BillingActionsProvider, gatewayBillingActions } from '../../src/screens/wallet-subscriptions/data/actions';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 const FUTURE = '2099-03-01T00:00:00.000Z';
 

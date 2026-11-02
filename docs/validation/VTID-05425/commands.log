@@ -67,3 +67,9 @@ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22  
 node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-subscriptions --title "VTID-05425 (native-wave2-wallet-r2/wallet-subscriptions): native wallet subscriptions port"
 #   PASS: every check passed (Collab handoff, Lane scope, gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering)
 # No live endpoint was called by any test or command in this fix.
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 2006a8489 (origin head) + this commit; edits: tests/wallet-subscriptions/fixtures.tsx, tests/wallet-subscriptions/routing-i18n.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/wallet-subscriptions  (default workers, run 1 of 2)-> 4 suites, 106/106 pass (29s, 2026-11-02T21:28Z)
+$ npx jest tests/wallet-subscriptions  (default workers, run 2 of 2)-> 4 suites, 106/106 pass (10s, 2026-11-02T21:28Z)
