@@ -114,6 +114,9 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
   const Root = as as React.ElementType;
   const withIdentity = spotlightLabel && size === 'spotlight';
   const hasMedia = media !== undefined || mediaSlot !== undefined || withIdentity;
+  // A cover that fails to load falls back to the same art as no cover (never the broken-image icon).
+  const [failedSrc, setFailedSrc] = React.useState<string | null>(null);
+  const imgSrc = media?.src && media.src !== failedSrc ? media.src : null;
   const isStacked = size === 'spotlight' || size === 'standard';
 
   const mediaNode = hasMedia ? (
@@ -132,13 +135,14 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
           sizes the box (the box only has its token minimum and grows into the tile rows). */}
       <div className={cn('h-full w-full', withIdentity && 'md:absolute md:inset-0')} data-vcard-media-layer="">
         {mediaSlot ??
-          (media?.src ? (
+          (imgSrc ? (
             <img
-              src={media.src}
-              alt={media.alt ?? ''}
+              src={imgSrc}
+              alt={media?.alt ?? ''}
               loading={priority ? 'eager' : 'lazy'}
               decoding="async"
               className="h-full w-full object-cover"
+              onError={() => setFailedSrc(imgSrc)}
             />
           ) : withIdentity ? (
             <div className={cn('h-full w-full', SPOTLIGHT_ART)} data-vcard-spotlight-art="" aria-hidden="true" />
@@ -176,7 +180,8 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
         <div className={cn('line-clamp-2', TITLE[size])}>{title}</div>
         {meta && <div className="truncate text-xs text-muted-foreground">{meta}</div>}
         {body && isStacked && <div className="text-sm text-muted-foreground">{body}</div>}
-        {actions && isStacked && <div className="mt-auto flex items-center gap-2 pt-2">{actions}</div>}
+        {/* flex-wrap: a third action moves to the next line instead of being clipped by the card */}
+        {actions && isStacked && <div className="mt-auto flex flex-wrap items-center gap-2 pt-2" data-vcard-actions="">{actions}</div>}
       </div>
       {actions && !isStacked && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
       {badge && !isStacked && <div className="shrink-0">{badge}</div>}

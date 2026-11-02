@@ -2,7 +2,7 @@
  * VTID-05105 — VCard: four sizes, fixed media ratios, placeholder, text-only,
  * dimmed neighbours keep full text contrast, logical properties only (RTL).
  */
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { VCard, VCardSkeleton } from './index';
 
@@ -113,6 +113,30 @@ describe('VTID-05105 VCard', () => {
     rerender(<VCard size="spotlight" spotlightLabel title="Index" media={{ src: null }} />);
     expect(container.querySelector('[data-vcard-spotlight-art]')).not.toBeNull();
     expect(container.querySelector('[data-vcard-placeholder]')).toBeNull();
+  });
+
+  it('VTID-05420: stacked actions wrap instead of being clipped by the card', () => {
+    const { container } = render(
+      <VCard size="spotlight" spotlightLabel title="T" actions={<><button type="button">a</button><button type="button">b</button><button type="button">c</button></>} />,
+    );
+    const row = container.querySelector('[data-vcard-actions]') as HTMLElement;
+    expect(row).not.toBeNull();
+    expect(row.className.split(/\s+/)).toContain('flex-wrap');
+    expect(row.querySelectorAll('button').length).toBe(3);
+  });
+
+  it('VTID-05420: a cover that fails to load shows the token art (spotlight) or the placeholder, never a broken img', () => {
+    const { container, rerender } = render(<VCard size="spotlight" spotlightLabel title="T" media={{ src: 'broken.jpg' }} />);
+    fireEvent.error(container.querySelector('img')!);
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('[data-vcard-spotlight-art]')).not.toBeNull();
+    rerender(<VCard size="standard" title="T" media={{ src: 'broken-2.jpg' }} />);
+    fireEvent.error(container.querySelector('img')!);
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('[data-vcard-placeholder]')).not.toBeNull();
+    // a new src gets its own chance to load
+    rerender(<VCard size="standard" title="T" media={{ src: 'ok.jpg' }} />);
+    expect(container.querySelector('img')?.getAttribute('src')).toBe('ok.jpg');
   });
 
   it('VTID-05420: without spotlightLabel, or on another size, nothing changes', () => {

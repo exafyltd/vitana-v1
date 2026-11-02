@@ -172,6 +172,15 @@ describe('VTID-05111 dashboard hero — exactly one spotlight card, real data on
     expect(card.querySelector('[data-vcard-media]')!.className).toContain('from-category-1');
     expect(card.querySelector('[data-vitana-index-ring]')!.className).not.toMatch(/(^|\s)(bg-|from-|via-|to-)/);
     expect(card.querySelectorAll('li').length).toBe(5);
+    // VTID-05420: the five pillar names are shown in full, never truncated
+    const labels = [...card.querySelectorAll('[data-pillar-label]')] as HTMLElement[];
+    expect(labels.length).toBe(5);
+    for (const l of labels) {
+      expect(l.className).not.toMatch(/(^|\s)(truncate|text-ellipsis|line-clamp-\d)(\s|$)/);
+      expect(l.className.split(/\s+/)).toContain('shrink-0');
+      expect(l.className.split(/\s+/)).toContain('whitespace-nowrap');
+      expect(l.textContent!.length).toBeGreaterThan(1);
+    }
   });
 
   it('opens on Enter when it is interactive, but not when an inner button is used', () => {

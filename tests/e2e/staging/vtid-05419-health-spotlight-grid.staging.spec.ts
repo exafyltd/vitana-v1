@@ -112,6 +112,24 @@ test('VTID-05419: /health — one Vitana Index Spotlight card at ~40 %, six tile
     expect(m.spot.bottom, `spotlight bottom vs the last tile row bottom at ${width}px`).toBeLessThanOrEqual(lastTileBottom + 2);
     // … carries its art (token gradient or image) …
     expect(m.art, 'spotlight card has a gradient background-image or an img').toBe(true);
+    // … shows the five pillar names in full and no clipped action …
+    const text = await page.evaluate((spotSel) => {
+      const card = document.querySelector(spotSel)!;
+      const c = card.getBoundingClientRect();
+      const fits = (el: Element) => {
+        const r = el.getBoundingClientRect();
+        return r.left >= c.left - 1 && r.right <= c.right + 1 && el.scrollWidth <= el.clientWidth + 1;
+      };
+      const labels = [...card.querySelectorAll('[data-pillar-label]')];
+      return {
+        labels: labels.length,
+        truncatedLabels: labels.filter((el) => !fits(el) || getComputedStyle(el).textOverflow === 'ellipsis').map((el) => el.textContent),
+        clippedActions: [...card.querySelectorAll('[data-vcard-actions] button, [data-vcard-actions] a')].filter((el) => !fits(el)).map((el) => el.textContent),
+      };
+    }, SPOT);
+    if (text.labels > 0) expect(text.labels, 'five pillar labels').toBe(5);
+    expect(text.truncatedLabels, `truncated pillar labels at ${width}px`).toEqual([]);
+    expect(text.clippedActions, `clipped spotlight actions at ${width}px`).toEqual([]);
     // … and at 1400x900 the full-width bottom row starts above the fold.
     if (width === 1400 && m.row !== null) expect(m.row, 'bottom row top above the fold at 1400x900').toBeLessThan(m.viewport);
 

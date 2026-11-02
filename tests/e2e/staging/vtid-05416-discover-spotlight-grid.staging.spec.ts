@@ -99,6 +99,26 @@ for (const [width, height] of [
       [card, ...card.querySelectorAll('*')].some((el) => el.tagName === 'IMG' || /gradient\(/.test(getComputedStyle(el).backgroundImage)),
     );
     expect(hasArt, 'spotlight card has a gradient background-image or an img').toBe(true);
+    // No spotlight action is clipped: every button / link lies inside the card and shows its whole text (LTR + RTL).
+    for (const dir of ['ltr', 'rtl'] as const) {
+      await page.evaluate((d) => {
+        document.documentElement.dir = d;
+      }, dir);
+      await page.waitForTimeout(200);
+      const clipped = await spot.evaluate((card) => {
+        const c = card.getBoundingClientRect();
+        return [...card.querySelectorAll('[data-vcard-actions] button, [data-vcard-actions] a')]
+          .filter((el) => {
+            const r = el.getBoundingClientRect();
+            return r.left < c.left - 1 || r.right > c.right + 1 || el.scrollWidth > el.clientWidth + 1;
+          })
+          .map((el) => el.textContent?.trim());
+      });
+      expect(clipped, `clipped spotlight actions (${dir}, ${width}px)`).toEqual([]);
+    }
+    await page.evaluate(() => {
+      document.documentElement.dir = 'ltr';
+    });
 
     // The "Browse categories" row is rendered (static links) below the spotlight, compact cards only.
     const row = page.locator('[data-spotlight-grid] [data-slot="row"]');
