@@ -1,0 +1,47 @@
+# VTID-05431 red on base — origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce (no settings implementation)
+# The lane's new/changed tests copied onto a clean origin/main worktree, then (apps/mobile):
+#   npm ci && npm run gen:i18n && npx jest tests/settings tests/orb/nav-directive.test.ts tests/navigation.test.tsx --ci
+
+FAIL tests/orb/nav-directive.test.ts (18.42 s)
+FAIL tests/settings/settings-hub.test.tsx
+    Cannot find module '../../src/screens/settings/SettingsScreen' from 'tests/settings/settings-hub.test.tsx'
+FAIL tests/settings/i18n-rtl.test.tsx
+    Cannot find module '../../src/screens/settings/SettingsScreen' from 'tests/settings/i18n-rtl.test.tsx'
+FAIL tests/settings/sub-screens.test.tsx
+    Cannot find module '../../src/screens/settings/LimitationsScreen' from 'tests/settings/sub-screens.test.tsx'
+FAIL tests/navigation.test.tsx (32.189 s)
+Test Suites: 5 failed, 5 total
+Tests:       2 failed, 469 passed, 471 total
+
+## failing assertions
+  ● runNativeNavigation (pure mapping) › an overlay whose owning screen is native (VTID-05431 /settings) ⇒ the screen opens, then the overlay event fires
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 2
+
+      Object {
+    +   "reason": "native_screen_not_ported",
+        "route": "/settings?open=settings_section&section=privacy.security",
+    -   "status": "opened",
+    +   "status": "not_found",
+      }
+
+       98 |   it('an overlay whose owning screen is native (VTID-05431 /settings) ⇒ the screen opens, then the overlay event fires', () => {
+--
+  ● resolveWebPath › keeps the query string
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "href": "/settings?mode=billing.plan",
+    -   "kind": "native",
+    +   "kind": "unported",
+      }
+
+      33 |
+      34 |   it('keeps the query string', () => {
