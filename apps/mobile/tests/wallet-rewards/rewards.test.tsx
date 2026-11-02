@@ -28,6 +28,9 @@ import { RewardsScreen } from '../../src/screens/wallet-rewards/RewardsScreen';
 import { EARN_ACTION_ROUTES, itemText, nextGoal, stillEarnable } from '../../src/screens/wallet-rewards/data/rewards';
 import { ORDERS_PATH, RULES_PATH, SHOP_PATH, defaultRoutes, orders, overview, renderWithProviders, shop } from './fixtures';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 const APP = join(__dirname, '../..');
 
 beforeEach(() => {

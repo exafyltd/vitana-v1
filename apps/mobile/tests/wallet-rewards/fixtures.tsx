@@ -8,7 +8,7 @@
  * never happened.
  */
 import type { ReactElement, ReactNode } from 'react';
-import { render } from '@testing-library/react-native';
+import { configure, render } from '@testing-library/react-native';
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import { makeWrapper } from '../helpers/providers';
 import { __setGatewayForTests } from '../../src/auth/gateway';
@@ -16,6 +16,9 @@ import type { GatewayFetch } from '../../src/ports/core';
 import { UIProvider } from '../../src/ports/ui';
 import { RewardShopActionsProvider, type RewardShopActions } from '../../src/screens/wallet-rewards/data/actions';
 import type { RewardOverview, RewardShop, RewardOrder } from '../../src/screens/wallet-rewards/data/rewards';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 /** Relative to the gateway API root (the client prefixes /api/v1). */
 export const RULES_PATH = '/wallet/reward-rules';
