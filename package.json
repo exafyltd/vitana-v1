@@ -26,6 +26,7 @@
     "i18n:inventory": "node scripts/generate-screen-inventory.mjs",
     "i18n:audit:llm": "node scripts/i18n-audit-llm.mjs",
     "i18n:verify": "node scripts/verify-i18n-end-to-end.mjs",
+    "test:edge-function-auth": "node scripts/check-edge-function-auth.mjs",
     "test": "node scripts/check-edge-data-client.mjs && node scripts/check-realtime-helper.mjs && node scripts/check-edge-function-auth.mjs && vitest run",
     "test:realtime-helper": "node scripts/check-realtime-helper.mjs && vitest run src/integrations/supabase/realtime.test.ts src/integrations/supabase/realtime.call-sites.test.ts",
     "test:edge-data-client": "node scripts/check-edge-data-client.mjs && deno test --no-remote supabase/functions/_shared/data-client.test.ts",

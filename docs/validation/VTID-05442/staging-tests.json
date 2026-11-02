@@ -2,7 +2,7 @@
   "vtid": "VTID-05442",
   "service": "community-app",
   "tests": [
-    { "kind": "existing", "ref": "node scripts/check-edge-function-auth.mjs", "cwd": ".",
+    { "kind": "existing", "ref": "npm run test:edge-function-auth", "cwd": ".",
       "reason": "every edge function except the frozen LEGACY set imports and calls the shared caller-auth gate; linkedin-import is gone" },
     { "kind": "existing", "ref": "npx vitest run src/lib/edge-functions-caller-identity.s4.test.ts", "cwd": ".",
       "reason": "the remaining S-H functions keep their caller-identity assertions after the linkedin-import removal" }
