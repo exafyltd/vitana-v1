@@ -43,6 +43,19 @@ export interface AutopilotRecommendation {
   action?: { kind: string; params?: Record<string, unknown> } | null;
 }
 
+/**
+ * Why the list did not load. The web keeps the raw message ("Fetch failed: 500",
+ * the server's `error`, use-autopilot.ts:239-282) and prints it; natively the
+ * popup names it through the catalog, so the cause is kept as data.
+ */
+export type AutopilotLoadError = { kind: 'status'; status: number } | { kind: 'server' } | { kind: 'network' };
+
+class LoadError extends Error {
+  constructor(readonly detail: AutopilotLoadError) {
+    super(detail.kind);
+  }
+}
+
 export const DRAFT_KINDS = new Set(['post_to_feed', 'send_chat_message', 'media_upload']);
 
 const ROLE = encodeURIComponent(AUTOPILOT_ROLE);
@@ -101,7 +114,7 @@ export function useAutopilot() {
   const { hasConsent } = useAIConsent();
   const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AutopilotLoadError | null>(null);
   const [generating, setGenerating] = useState(false);
   const [generateReason, setGenerateReason] = useState<AutopilotGenerateReason | null>(null);
   const [fetchedOnce, setFetchedOnce] = useState(false);
@@ -178,9 +191,9 @@ export function useAutopilot() {
     setError(null);
     try {
       const res = await autopilotFetch(`/autopilot/recommendations?status=new,activated&limit=20&role=${ROLE}`, userId);
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+      if (!res.ok) throw new LoadError({ kind: 'status', status: res.status });
       const json = await res.json<{ ok?: boolean; recommendations?: AutopilotRecommendation[]; error?: string }>();
-      if (!json.ok) throw new Error(json.error ?? 'Unknown error');
+      if (!json.ok) throw new LoadError({ kind: 'server' });
       const recs = json.recommendations ?? [];
       setRecommendations(recs);
       setOverrides({});
@@ -194,7 +207,7 @@ export function useAutopilot() {
       });
       return recs;
     } catch (e) {
-      setError((e as Error).message || 'Failed to load recommendations');
+      setError(e instanceof LoadError ? e.detail : { kind: 'network' });
       return [];
     } finally {
       setLoading(false);

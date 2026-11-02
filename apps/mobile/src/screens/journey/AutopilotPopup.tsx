@@ -17,13 +17,15 @@
  * Selection, the client-dismissed set and snooze state persist through the
  * hook (native key-value store, see useAutopilot.ts).
  *
- * Deviations, recorded: the "+N VTNA earned!" success toast
- * (AutopilotPopup.tsx:342) is an English literal, so the native toast uses no
- * text of its own and is not raised; the media-caption clipboard copy
- * (:265) needs a clipboard module the app does not ship, so it is skipped.
+ * Also as the web: Complete with a reward toasts "+N VTNA earned!" (:340-343;
+ * the web literal is a catalog key here, `journeyAutopilotNative.autopilot.vtnaEarned`);
+ * a reviewed Media Hub caption is copied to the clipboard (:263-265, React
+ * Native's `Clipboard`); the error state's detail line (:520) names the
+ * failure through the catalog (HTTP status / server / connection) instead of
+ * printing the raw message.
  */
 import { useEffect, useRef, useState, type ReactElement } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Clipboard, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Badge, Button, Spinner, Text, useUITheme } from '../../ports/ui';
 import {
   alpha,
@@ -49,7 +51,7 @@ import {
 import { navigateToWebPath } from '../../navigation/navigate';
 import { overlayBus } from '../../navigation/overlay-bus';
 import { useI18n } from '../../i18n/I18nProvider';
-import { useAutopilot } from './hooks/useAutopilot';
+import { useAutopilot, type AutopilotLoadError } from './hooks/useAutopilot';
 import { useAIConsent } from './hooks/useAIConsent';
 import { useVitanaIndex } from './data/supabase';
 
@@ -402,6 +404,15 @@ export function AutopilotPopup({ open, onOpenChange }: { open: boolean; onOpenCh
   };
   const handleDraftConfirm = (id: string, text: string) => {
     if (!pendingRun) return;
+    // Media Hub has no caption prefill yet; the reviewed caption is copied.
+    const item = draftQueue.find((d) => d.id === id);
+    if (item?.kind === 'media_upload' && text) {
+      try {
+        Clipboard.setString(text);
+      } catch {
+        /* no clipboard — the run goes on */
+      }
+    }
     advanceDrafts({ ids: pendingRun.ids, drafts: { ...pendingRun.drafts, [id]: text } });
   };
   const handleDraftSkip = (id: string) => {
@@ -414,7 +425,8 @@ export function AutopilotPopup({ open, onOpenChange }: { open: boolean; onOpenCh
     setActionStatus(id, 'completed');
     setCompletingId(id);
     try {
-      await completeRecommendation(id);
+      const json = await completeRecommendation(id);
+      if (json?.ok && json.via === 'complete' && json.reward) notifySuccess('journeyAutopilotNative.autopilot.vtnaEarned', undefined, { reward: json.reward });
       void fetchRecommendations();
     } finally {
       setCompletingId(null);
@@ -513,6 +525,12 @@ export function AutopilotPopup({ open, onOpenChange }: { open: boolean; onOpenCh
     </View>
   );
 
+  const errorDetail = (e: AutopilotLoadError | null): string => {
+    if (e?.kind === 'status') return t('journeyAutopilotNative.autopilot.errorStatus', { status: e.status });
+    if (e?.kind === 'server') return t('journeyAutopilotNative.autopilot.errorServer');
+    return t('journeyAutopilotNative.autopilot.errorNetwork');
+  };
+
   const content = (() => {
     if (loading)
       return center(
@@ -524,6 +542,9 @@ export function AutopilotPopup({ open, onOpenChange }: { open: boolean; onOpenCh
         [
           <JourneyIcon key="i" name="WifiOff" size={40} color={colors.destructive} />,
           <Text key="t" size="sm" weight="500">{t('screens.common.couldNotLoadRecommendations')}</Text>,
+          <Text key="d" size="xs" muted style={styles.center} testID="autopilot-error-detail">
+            {errorDetail(error)}
+          </Text>,
           <Button key="b" size="sm" variant="outline" onPress={() => void fetchRecommendations()} testID="autopilot-retry">
             {t('screens.common.tryAgain')}
           </Button>,
