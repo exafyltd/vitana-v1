@@ -16,7 +16,7 @@ import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import type { ReactElement, ReactNode } from 'react';
 import { Platform } from 'react-native';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import type { ReactTestInstance } from 'react-test-renderer';
 import { router, mockParams } from './mocks';
 import { makeWrapper } from '../helpers/providers';
@@ -191,6 +191,7 @@ describe('wallet hub — WalletPopup overlay and the flows (fake WalletActions o
   it('exchange: the quote comes from core calculateExchange (USD → CREDITS, no fees)', async () => {
     renderUI(<WalletScreen />);
     fireEvent.press(screen.getByTestId('wallet-quick-exchange'));
+    fireEvent.press(within(await screen.findByTestId('wallet-flow-to')).getByTestId('radio-CREDITS'));
     fireEvent.changeText(await screen.findByTestId('wallet-flow-amount'), '12');
     expect(textOf('wallet-flow-quote')).toContain('1.200');
   });

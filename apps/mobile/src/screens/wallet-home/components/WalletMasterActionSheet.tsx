@@ -5,7 +5,10 @@
  * (send funds, exchange currency, exchange & send — the last with its "Quick"
  * badge). The web hides that whole section on iOS (`!restricted &&`); the
  * native sheet mirrors it, leaving only the title. Picking a step closes the
- * menu and opens that step's flow sheet (the web swaps the dialog body).
+ * menu and opens that step's flow sheet (the web swaps the dialog body): Send
+ * → `send-step` (web SendStep), Exchange → `exchange` (web ExchangeStep, no
+ * card currency), Exchange & Send → `exchange-and-send-step` (web
+ * ExchangeAndSendStep).
  */
 import type { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -15,12 +18,12 @@ import { useI18n } from '../../../i18n/I18nProvider';
 import { isIAPRestricted } from '../iap';
 import type { WalletFlowKind } from './WalletFlowSheet';
 
-type Step = { id: 'send' | 'exchange' | 'exchange-and-send'; icon: string; titleKey: string; subtitleKey: string; badgeKey?: string };
+type Step = { id: 'send' | 'exchange' | 'exchange-and-send'; kind: WalletFlowKind; icon: string; titleKey: string; subtitleKey: string; badgeKey?: string };
 
 const STEPS: Step[] = [
-  { id: 'send', icon: 'Send', titleKey: 'screens.wallet.sendFunds', subtitleKey: 'screens.wallet.sendCommunityMembers' },
-  { id: 'exchange', icon: 'ArrowUpDown', titleKey: 'screens.wallet.exchangeCurrency', subtitleKey: 'screens.wallet.convertBetweenCreditsVtnaUsd' },
-  { id: 'exchange-and-send', icon: 'Zap', titleKey: 'screens.wallet.exchangeSend', subtitleKey: 'screens.wallet.convertCurrencySendOneStep', badgeKey: 'screens.wallet.quick' },
+  { id: 'send', kind: 'send-step', icon: 'Send', titleKey: 'screens.wallet.sendFunds', subtitleKey: 'screens.wallet.sendCommunityMembers' },
+  { id: 'exchange', kind: 'exchange', icon: 'ArrowUpDown', titleKey: 'screens.wallet.exchangeCurrency', subtitleKey: 'screens.wallet.convertBetweenCreditsVtnaUsd' },
+  { id: 'exchange-and-send', kind: 'exchange-and-send-step', icon: 'Zap', titleKey: 'screens.wallet.exchangeSend', subtitleKey: 'screens.wallet.convertCurrencySendOneStep', badgeKey: 'screens.wallet.quick' },
 ];
 
 export function WalletMasterActionSheet({ open, onClose, onStep }: { open: boolean; onClose: () => void; onStep: (kind: WalletFlowKind) => void }): ReactElement {
@@ -38,7 +41,7 @@ export function WalletMasterActionSheet({ open, onClose, onStep }: { open: boole
             <PressableRow
               key={s.id}
               testID={`wallet-master-${s.id}`}
-              onPress={() => onStep(s.id)}
+              onPress={() => onStep(s.kind)}
               accessibilityLabel={t(s.titleKey)}
               style={[styles.step, { borderColor: colors.border }]}
             >

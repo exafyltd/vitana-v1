@@ -8,8 +8,11 @@
  *   spend-credits  SpendCreditsPopup (update_user_balance subtract 'purchase')
  *   send           MakePaymentPopup (process_wallet_transfer + a payment_confirmation message)
  *   request        PaymentRequestPopup (a payment_request message)
- *   exchange       ExchangeStep (process_wallet_exchange)
+ *   exchange       ExchangeStep (process_wallet_exchange with the selected pair)
  *   exchange-and-send  ExchangeAndSendPopup (activity + an exchange_and_send message; the web makes no RPC here)
+ *   send-step      the WalletPopup's SendStep (process_wallet_transfer + a payment_sent message)
+ *   exchange-and-send-step  the WalletPopup's ExchangeAndSendStep (process_wallet_exchange_and_send
+ *                  + an exchange_and_send message with both transaction ids)
  * The toasts the web hooks raise themselves (`toasts.hooks.*` in useWallet /
  * useMessages) are raised by the `*Hook` helpers below. A handler returns
  * true when the web closes the popup.
@@ -105,6 +108,38 @@ async function transferFundsHook(ctx: FlowContext, toUserId: string, currency: W
     return result;
   } catch {
     notifyError('toasts.hooks.transferFailed');
+    void ctx.refresh();
+    return null;
+  }
+}
+
+/** Web `exchangeAndSend`: the success toast first, the failure toast on error, never throws. */
+async function exchangeAndSendHook(ctx: FlowContext, toUserId: string, fromCurrency: WalletCurrency, toCurrency: WalletCurrency, amount: number, exchangeRate: number) {
+  if (!ctx.user) return null;
+  const user = ctx.user;
+  const convertedAmount = amount * exchangeRate;
+  notify('toasts.hooks.exchangeSendSuccessful');
+  try {
+    const result = await ctx.actions.exchangeAndSend({ userId: user.id, toUserId, fromCurrency, toCurrency, amount, exchangeRate });
+    if (!result) return null;
+    void ctx.actions.logActivity({
+      userId: user.id,
+      activityType: 'wallet.exchange',
+      activityData: { amount, from_currency: fromCurrency, to_currency: toCurrency, exchange_rate: exchangeRate, converted_amount: convertedAmount, transaction_id: result.exchangeTransactionId },
+      contextData: { transaction_id: result.exchangeTransactionId, from_currency: fromCurrency, to_currency: toCurrency },
+      dedupeKey: `exchange-${result.exchangeTransactionId}`,
+    });
+    void ctx.actions.logActivity({
+      userId: user.id,
+      activityType: 'wallet.transfer',
+      activityData: { amount: convertedAmount, currency: toCurrency, to_user_id: `${toUserId.substring(0, 8)}...`, transaction_id: result.transferTransactionId },
+      contextData: { transaction_id: result.transferTransactionId, from_currency: toCurrency, to_currency: toCurrency },
+      dedupeKey: `transfer-${result.transferTransactionId}`,
+    });
+    void ctx.refresh();
+    return result;
+  } catch {
+    notifyError('toasts.hooks.exchangeSendFailed');
     void ctx.refresh();
     return null;
   }
@@ -432,6 +467,85 @@ export async function submitExchangeAndSend(ctx: FlowContext, input: { amountTex
     return true;
   } catch {
     notifyError('toasts.payment.transactionFailed', 'toasts.payment.pleaseTryAgainContactSupport');
+    return false;
+  }
+}
+
+// ── the WalletPopup steps (web src/components/wallet/steps/*) ─────────────
+
+type StepRecipient = CommunityMember | null;
+
+/** Web SendStep `handleSend`: transferFunds, then a payment_sent message; the hooks raise the toasts. */
+export async function submitSendStep(ctx: FlowContext, input: { amountText: string; description: string; recipient: StepRecipient; currency: WalletCurrency }): Promise<boolean> {
+  const { amountText: amount, description, recipient, currency } = input;
+  if (!recipient || !amount || parseFloat(amount) <= 0) {
+    notifyError('toasts.wallet.missingInformation', 'toasts.wallet.pleaseSelectRecipientEnterAmount');
+    return false;
+  }
+  const sendAmount = parseFloat(amount);
+  if (sendAmount > (ctx.getBalance(currency) || 0)) {
+    notifyError('toasts.wallet.insufficientBalance2');
+    return false;
+  }
+  try {
+    await transferFundsHook(ctx, recipient.user_id, currency, sendAmount);
+    await sendMessageHook(ctx, `💸 Payment sent: ${sendAmount} ${currency}${description ? `\n📝 ${description}` : ''}`, recipient.user_id, 'payment_sent', {
+      type: 'transfer',
+      amount: sendAmount,
+      currency,
+      description,
+      recipientId: recipient.user_id,
+    });
+    return true;
+  } catch {
+    // The hooks raised the toast (web SendStep).
+    return false;
+  }
+}
+
+/** Web ExchangeAndSendStep `handleExchangeAndSend`: the atomic RPC, then the message with both transaction ids. */
+export async function submitExchangeAndSendStep(
+  ctx: FlowContext,
+  input: { amountText: string; description: string; recipient: StepRecipient; fromCurrency: WalletCurrency; toCurrency: WalletCurrency },
+): Promise<boolean> {
+  const { amountText: amount, description, recipient, fromCurrency, toCurrency } = input;
+  if (!recipient || !amount || parseFloat(amount) <= 0) {
+    notifyError('toasts.wallet.missingInformation', 'toasts.wallet.pleaseSelectRecipientEnterAmount');
+    return false;
+  }
+  const exchangeAmount = parseFloat(amount);
+  if (exchangeAmount > (ctx.getBalance(fromCurrency) || 0)) {
+    notifyError('toasts.wallet.insufficientBalance2');
+    return false;
+  }
+  try {
+    // Web: USD <-> CREDITS at 100:1.
+    const exchangeRate = fromCurrency === 'USD' && toCurrency === 'CREDITS' ? 100 : fromCurrency === 'CREDITS' && toCurrency === 'USD' ? 0.01 : 1.0;
+    const result = await exchangeAndSendHook(ctx, recipient.user_id, fromCurrency, toCurrency, exchangeAmount, exchangeRate);
+    if (result) {
+      await sendMessageHook(
+        ctx,
+        `💱➡ Exchange & Send completed: ${exchangeAmount} ${fromCurrency} → ${result.netAmount.toFixed(2)} ${toCurrency}${description ? `\n📝 ${description}` : ''}`,
+        recipient.user_id,
+        'exchange_and_send',
+        {
+          type: 'exchange_and_send',
+          fromAmount: exchangeAmount,
+          fromCurrency,
+          toAmount: result.netAmount,
+          toCurrency,
+          description,
+          recipientId: recipient.user_id,
+          exchangeTransactionId: result.exchangeTransactionId,
+          transferTransactionId: result.transferTransactionId,
+        },
+      );
+      notify('toasts.wallet.exchangeSendComplete');
+    }
+    // The web closes the step whether or not the RPC answered a row.
+    return true;
+  } catch {
+    // The hooks raised the toast (web ExchangeAndSendStep).
     return false;
   }
 }

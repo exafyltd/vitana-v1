@@ -9,6 +9,16 @@
  *   request        src/components/payment/PaymentRequestPopup.tsx
  *   exchange       src/components/wallet/steps/ExchangeStep.tsx
  *   exchange-and-send  src/components/payment/ExchangeAndSendPopup.tsx
+ *   send-step      src/components/wallet/steps/SendStep.tsx (WalletPopup step)
+ *   exchange-and-send-step  src/components/wallet/steps/ExchangeAndSendStep.tsx (WalletPopup step)
+ *
+ * The exchange sheet and the two WalletPopup steps follow the web steps:
+ * From / To currency selects (To lists the currencies other than From), the
+ * swap control (disabled while From = To), the from-currency balance line,
+ * the preview card, and the confirm button disabled while the amount is not
+ * above 0 and within the from-currency balance (or no recipient, or From =
+ * To). The exchange pair is seeded from the entry's `initialCurrency` like
+ * the web `getInitialFromCurrency` / `getInitialToCurrency`.
  *
  * Each sheet keeps the web title, the current-balance line, the amount field
  * with its quick amounts, and the confirm button; the exchange quote comes
@@ -16,8 +26,9 @@
  * web's description field, send and request its currency select, send its
  * community-member recipient search, withdraw its method select. Every web
  * `if (isIAPRestricted()) return null` is mirrored: add-funds, buy-credits,
- * withdraw, spend-credits, exchange and exchange-and-send render nothing on
- * iOS; send and request are ungated on the web and stay ungated. Confirm runs
+ * withdraw, spend-credits, exchange, exchange-and-send and
+ * exchange-and-send-step render nothing on iOS; send, request and send-step
+ * are ungated on the web and stay ungated. Confirm runs
  * the web popup's handler (../data/flows.ts: the same validation, calls and
  * toasts) and closes the sheet where the web closes the popup.
  * Not carried over (documented in the PR): the spend catalogue (the quick
@@ -26,13 +37,13 @@
  */
 import { useEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BottomSheet, Button, PressableRow, RadioGroup, Text, TextInput, useUITheme } from '../../../ports/ui';
+import { BottomSheet, Button, Icon, PressableRow, RadioGroup, Text, TextInput, useUITheme } from '../../../ports/ui';
 import { radius } from '../../../ports/tokens';
 import { calculateExchange, convertFromUsd, getCurrencySymbol } from '../../../ports/wallet';
 import { useAuth } from '../../../auth/AuthProvider';
 import { useI18n } from '../../../i18n/I18nProvider';
 import { isIAPRestricted } from '../iap';
-import { useWallet, useWalletRefresh } from '../data/wallet';
+import { useWallet, useWalletRefresh, type WalletCurrency } from '../data/wallet';
 import { useDisplayCurrency, useEurUsdRate } from '../data/currency';
 import { useWalletActions, type CommunityMember } from '../data/actions';
 import {
@@ -41,8 +52,10 @@ import {
   submitBuyCredits,
   submitExchange,
   submitExchangeAndSend,
+  submitExchangeAndSendStep,
   submitRequest,
   submitSend,
+  submitSendStep,
   submitSpendCredits,
   submitWithdraw,
   type FlowContext,
@@ -50,10 +63,39 @@ import {
 } from '../data/flows';
 import { fmtNumber } from '../format';
 
-export type WalletFlowKind = 'add-funds' | 'buy-credits' | 'withdraw' | 'spend-credits' | 'send' | 'request' | 'exchange' | 'exchange-and-send';
+export type WalletFlowKind =
+  | 'add-funds'
+  | 'buy-credits'
+  | 'withdraw'
+  | 'spend-credits'
+  | 'send'
+  | 'request'
+  | 'exchange'
+  | 'exchange-and-send'
+  | 'send-step'
+  | 'exchange-and-send-step';
 
-/** The web popups that `return null` under `isIAPRestricted()`. */
-export const IAP_GATED_FLOWS: readonly WalletFlowKind[] = ['add-funds', 'buy-credits', 'withdraw', 'spend-credits', 'exchange', 'exchange-and-send'];
+/** The web popups / steps that `return null` under `isIAPRestricted()`. */
+export const IAP_GATED_FLOWS: readonly WalletFlowKind[] = ['add-funds', 'buy-credits', 'withdraw', 'spend-credits', 'exchange', 'exchange-and-send', 'exchange-and-send-step'];
+
+/** The web steps' currency lists: ExchangeStep / SendStep use CURRENCY_CONFIGS, ExchangeAndSendStep its own (codes as labels). */
+const CONFIG_CURRENCIES: ReadonlyArray<{ value: WalletCurrency; labelKey: string }> = [
+  { value: 'USD', labelKey: 'currencies.usd' },
+  { value: 'CREDITS', labelKey: 'wallet.creditsLabel' },
+];
+const EXCHANGE_SEND_CURRENCIES: readonly WalletCurrency[] = ['CREDITS', 'USD'];
+
+/** Web ExchangeStep `getInitialFromCurrency` / `getInitialToCurrency`; ExchangeAndSendStep starts CREDITS → USD. */
+function initialPair(kind: WalletFlowKind, initialCurrency?: WalletCurrency): [WalletCurrency, WalletCurrency] {
+  if (kind === 'exchange-and-send-step') return ['CREDITS', 'USD'];
+  if (!initialCurrency) return ['CREDITS', 'VTNA'];
+  const to: Record<WalletCurrency, WalletCurrency> = { USD: 'VTNA', VTNA: 'CREDITS', CREDITS: 'USD' };
+  return [initialCurrency, to[initialCurrency]];
+}
+
+const STEP_KINDS: readonly WalletFlowKind[] = ['exchange', 'send-step', 'exchange-and-send-step'];
+const PAIR_KINDS: readonly WalletFlowKind[] = ['exchange', 'exchange-and-send-step'];
+const RECIPIENT_KINDS: readonly WalletFlowKind[] = ['send', 'send-step', 'exchange-and-send-step'];
 
 type Unit = 'cash' | 'credits' | 'usd';
 
@@ -130,12 +172,10 @@ const FLOWS: Record<WalletFlowKind, FlowConfig> = {
   },
   exchange: {
     titleKey: 'screens.wallet.exchangeCurrency',
-    descriptionKey: 'screens.wallet.convertBetweenCreditsVtnaUsd',
-    amountLabelKey: 'screens.wallet.youSend',
+    amountLabelKey: 'screens.wallet.from',
     placeholderKey: 'screens.wallet.enterAmount',
-    quickLabelKey: 'screens.wallet.quickAmounts',
-    quick: [10, 25, 50, 100],
-    submitKey: 'screens.wallet.convert',
+    quick: [],
+    submitKey: 'spotlightTierB.wallet.exchange',
     unit: 'usd',
   },
   'exchange-and-send': {
@@ -147,16 +187,34 @@ const FLOWS: Record<WalletFlowKind, FlowConfig> = {
     submitKey: 'screens.wallet.send',
     unit: 'usd',
   },
+  'send-step': {
+    titleKey: 'screens.wallet.sendFunds',
+    amountLabelKey: 'screens.wallet.amount',
+    placeholderKey: 'screens.wallet.enterAmount',
+    quick: [],
+    submitKey: 'screens.wallet.sendFunds',
+    unit: 'usd',
+  },
+  'exchange-and-send-step': {
+    titleKey: 'screens.wallet.exchangeSend',
+    amountLabelKey: 'screens.wallet.exchangeSendAmount',
+    placeholderKey: 'screens.wallet.enterAmount',
+    quick: [],
+    submitKey: 'screens.wallet.exchangeSend',
+    unit: 'usd',
+  },
 };
 
-export function WalletFlowSheet({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean; onClose: () => void }): ReactElement | null {
-  if (IAP_GATED_FLOWS.includes(kind) && isIAPRestricted()) return null;
-  return <FlowBody kind={kind} open={open} onClose={onClose} />;
+type FlowProps = { kind: WalletFlowKind; open: boolean; onClose: () => void; /** Exchange: the tapped card's currency (web `initialCurrency`). */ initialCurrency?: WalletCurrency };
+
+export function WalletFlowSheet(props: FlowProps): ReactElement | null {
+  if (IAP_GATED_FLOWS.includes(props.kind) && isIAPRestricted()) return null;
+  return <FlowBody {...props} />;
 }
 
 const DESCRIBED: readonly WalletFlowKind[] = ['send', 'request', 'exchange-and-send'];
 
-function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean; onClose: () => void }): ReactElement {
+function FlowBody({ kind, open, onClose, initialCurrency }: FlowProps): ReactElement {
   const { colors } = useUITheme();
   const { t, locale } = useI18n();
   const { user } = useAuth();
@@ -174,12 +232,19 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
   const [search, setSearch] = useState('');
   const [members, setMembers] = useState<CommunityMember[] | null>(null);
   const [busy, setBusy] = useState(false);
+  const [pair, setPair] = useState<[WalletCurrency, WalletCurrency]>(() => initialPair(kind, initialCurrency));
+  const [fromCurrency, toCurrency] = pair;
   const cfg = FLOWS[kind];
   const selfId = user?.id ?? null;
 
-  // Send: the web loads the default member list, then searches from 2 characters (or the empty term).
+  // The web mounts the step afresh on every open, seeded from the entry's currency.
   useEffect(() => {
-    if (kind !== 'send' || !open || !selfId) return;
+    if (open && PAIR_KINDS.includes(kind)) setPair(initialPair(kind, initialCurrency));
+  }, [open, kind, initialCurrency]);
+
+  // Send / the steps: the web loads the default member list, then searches from 2 characters (or the empty term).
+  useEffect(() => {
+    if (!RECIPIENT_KINDS.includes(kind) || !open || !selfId) return;
     const term = search.trim();
     if (term.length === 1) return;
     let live = true;
@@ -195,6 +260,9 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
   const cashSymbol = cfg.unit === 'cash' ? getCurrencySymbol(displayCurrency) : cfg.unit === 'usd' ? getCurrencySymbol('USD') : '';
   const currencyParam = { currency: displayCurrency };
   const balanceLine = (() => {
+    if (kind === 'exchange') return t('screens.wallet.availableFrombalanceFromcurrency', { fromBalance: fmtNumber(locale, getBalance(fromCurrency) || 0), fromCurrency });
+    if (kind === 'exchange-and-send-step') return t('screens.wallet.availableBalanceFromcurrency', { balance: fmtNumber(locale, getBalance(fromCurrency) || 0), fromCurrency });
+    if (kind === 'send-step') return t('screens.wallet.availableBalanceCurrency', { balance: fmtNumber(locale, getBalance(payCurrency) || 0), currency: payCurrency });
     if (cfg.unit === 'credits') return t('screens.wallet.availableValue0Credits', { value0: fmtNumber(locale, getBalance('CREDITS') ?? 0) });
     if (cfg.unit === 'cash') {
       const value = convertFromUsd(getBalance('USD') ?? 0, displayCurrency, eurPerUsd);
@@ -204,7 +272,22 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
   })();
 
   const parsed = parseFloat(amount.replace(',', '.'));
-  const quote = kind === 'exchange' && parsed > 0 ? calculateExchange(parsed, 'USD', 'CREDITS') : null;
+  const calculation = PAIR_KINDS.includes(kind) && amount ? calculateExchange(parsed, fromCurrency, toCurrency) : null;
+  // Web steps: the amount must be above 0 and within the from-currency balance.
+  const stepCurrency: WalletCurrency = kind === 'send-step' ? payCurrency : fromCurrency;
+  const isValidAmount = parsed > 0 && parsed <= (getBalance(stepCurrency) || 0);
+  const stepBlocked =
+    (STEP_KINDS.includes(kind) && !isValidAmount) || (PAIR_KINDS.includes(kind) && fromCurrency === toCurrency) || ((kind === 'send-step' || kind === 'exchange-and-send-step') && !recipient);
+  const fmt2 = (n: number) => fmtNumber(locale, n, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtRate = (n: number) => fmtNumber(locale, n, { maximumFractionDigits: 4 });
+  const pairOptions = (list: ReadonlyArray<WalletCurrency>, except?: WalletCurrency) =>
+    list
+      .filter((c) => c !== except)
+      .map((c) => {
+        const config = CONFIG_CURRENCIES.find((x) => x.value === c);
+        return { value: c, label: kind === 'exchange-and-send-step' || !config ? c : t(config.labelKey) };
+      });
+  const pairList = kind === 'exchange-and-send-step' ? EXCHANGE_SEND_CURRENCIES : CONFIG_CURRENCIES.map((c) => c.value);
 
   const run = (): Promise<boolean> => {
     const ctx: FlowContext = {
@@ -229,9 +312,13 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
       case 'request':
         return submitRequest(ctx, { amountText, description, currency: payCurrency });
       case 'exchange':
-        return submitExchange(ctx, { amountText, fromCurrency: 'USD', toCurrency: 'CREDITS' });
+        return submitExchange(ctx, { amountText, fromCurrency, toCurrency });
       case 'exchange-and-send':
         return submitExchangeAndSend(ctx, { amountText, description });
+      case 'send-step':
+        return submitSendStep(ctx, { amountText, description, recipient, currency: payCurrency });
+      case 'exchange-and-send-step':
+        return submitExchangeAndSendStep(ctx, { amountText, description, recipient, fromCurrency, toCurrency });
     }
   };
 
@@ -259,6 +346,7 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
   };
 
   const submitLabel = kind === 'withdraw' ? t(cfg.submitKey, { value0: (parsed > 0 ? parsed : 0).toFixed(2) }) : t(cfg.submitKey);
+  const busyLabel = kind === 'exchange' ? t('screens.wallet.exchanging') : kind === 'send-step' ? t('screens.wallet.sending') : t('screens.wallet.processing');
 
   return (
     <BottomSheet testID={`wallet-flow-${kind}`} open={open} onClose={onClose} title={t(cfg.titleKey, currencyParam)}>
@@ -289,15 +377,57 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
             </View>
           </View>
         ) : null}
-        {kind === 'exchange' ? (
-          <View testID="wallet-flow-quote" style={styles.quote}>
-            <Text variant="caption" muted>
-              {t('screens.wallet.youReceive')}
-            </Text>
-            <Text weight="600">{t('screens.wallet.vtnaCreditsAmount', { value0: fmtNumber(locale, quote?.toAmount ?? 0) })}</Text>
-            <Text variant="caption" muted>
-              {t('screens.wallet.noFeesFreeExchange')}
-            </Text>
+        {PAIR_KINDS.includes(kind) ? (
+          <View style={styles.quickBlock}>
+            <RadioGroup
+              testID="wallet-flow-from"
+              accessibilityLabel={t('screens.wallet.from')}
+              value={fromCurrency}
+              onChange={(v) => setPair([v as WalletCurrency, toCurrency])}
+              options={pairOptions(pairList)}
+            />
+            <View style={styles.swapRow}>
+              <Button
+                testID="wallet-flow-swap"
+                size="sm"
+                variant="outline"
+                disabled={fromCurrency === toCurrency}
+                onPress={() => setPair([toCurrency, fromCurrency])}
+                accessibilityLabel={t('walletActions.exchange')}
+              >
+                <Icon name="ArrowUpDown" size={16} color={colors.foreground} />
+              </Button>
+            </View>
+            <Text variant="label">{kind === 'exchange' ? t('screens.wallet.text') : t('screens.wallet.theyLlReceive')}</Text>
+            <RadioGroup
+              testID="wallet-flow-to"
+              accessibilityLabel={kind === 'exchange' ? t('screens.wallet.text') : t('screens.wallet.theyLlReceive')}
+              value={toCurrency}
+              onChange={(v) => setPair([fromCurrency, v as WalletCurrency])}
+              options={pairOptions(pairList, fromCurrency)}
+            />
+          </View>
+        ) : null}
+        {kind === 'exchange' && calculation ? (
+          <View testID="wallet-flow-quote" style={[styles.bullets, { borderColor: colors.border }]}>
+            <Text variant="caption">{`${t('screens.wallet.youLlReceive')} ${fmt2(calculation.toAmount)} ${toCurrency}`}</Text>
+            <Text variant="caption" muted>{`${t('screens.wallet.exchangeRate')} 1 ${fromCurrency} = ${fmtRate(calculation.rate)} ${toCurrency}`}</Text>
+            <Text variant="caption" muted>{`${t('screens.wallet.noFees2')} ${t('screens.wallet.freeExchange')}`}</Text>
+          </View>
+        ) : null}
+        {kind === 'exchange-and-send-step' && calculation ? (
+          <View testID="wallet-flow-quote" style={[styles.bullets, { borderColor: colors.border }]}>
+            <Text variant="caption">{`${t('screens.wallet.youSend2')} ${fmt2(parsed)} ${fromCurrency}`}</Text>
+            <Text variant="caption">{`${t('screens.wallet.theyReceive')} ${fmt2(calculation.toAmount)} ${toCurrency}`}</Text>
+            <Text variant="caption" muted>{`${t('screens.wallet.exchangeRate')} 1 ${fromCurrency} = ${fmtRate(calculation.rate)} ${toCurrency}`}</Text>
+            <Text variant="caption" muted>{`${t('screens.wallet.totalFees')} ${fmtNumber(locale, calculation.fees + calculation.toAmount * 0.005, { minimumFractionDigits: 3, maximumFractionDigits: 3 })} ${fromCurrency}`}</Text>
+          </View>
+        ) : null}
+        {kind === 'send-step' && parsed > 0 ? (
+          <View testID="wallet-flow-quote" style={[styles.bullets, { borderColor: colors.border }]}>
+            <Text variant="caption">{`${t('screens.wallet.amountSend')} ${fmt2(parsed)} ${payCurrency}`}</Text>
+            <Text variant="caption" muted>{`${t('screens.wallet.transferFees')} ${t('screens.wallet.free')}`}</Text>
+            <Text variant="caption" weight="600">{`${t('screens.wallet.totalDeducted2')} ${fmt2(parsed)} ${payCurrency}`}</Text>
           </View>
         ) : null}
         {kind === 'withdraw' ? (
@@ -309,6 +439,17 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
               value={methodId}
               onChange={setMethodId}
               options={WITHDRAWAL_METHODS.map((m) => ({ value: m.id, label: t(m.labelKey), subtitle: `${t(m.timeKey)} · ${t('screens.wallet.feeFee', { fee: m.fee })}` }))}
+            />
+          </View>
+        ) : null}
+        {kind === 'send-step' ? (
+          <View style={styles.quickBlock}>
+            <RadioGroup
+              testID="wallet-flow-currency"
+              accessibilityLabel={t('screens.wallet.amount')}
+              value={payCurrency}
+              onChange={(v) => setPayCurrency(v as PaymentCurrency)}
+              options={CONFIG_CURRENCIES.map((c) => ({ value: c.value, label: t(c.labelKey) }))}
             />
           </View>
         ) : null}
@@ -327,9 +468,9 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
             />
           </View>
         ) : null}
-        {kind === 'send' ? (
+        {RECIPIENT_KINDS.includes(kind) ? (
           <View style={styles.quickBlock} testID="wallet-flow-recipient">
-            <Text variant="label">{t('screens.payment.paymentRecipient')}</Text>
+            <Text variant="label">{kind === 'send' ? t('screens.payment.paymentRecipient') : t('screens.wallet.send')}</Text>
             {recipient ? (
               <View style={styles.selected}>
                 <Text weight="600" testID="wallet-flow-recipient-selected">
@@ -341,7 +482,13 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
               </View>
             ) : (
               <>
-                <TextInput testID="wallet-flow-recipient-search" value={search} onChangeText={setSearch} placeholder={t('screens.payment.searchForCommunityMember')} accessibilityLabel={t('screens.payment.paymentRecipient')} />
+                <TextInput
+                  testID="wallet-flow-recipient-search"
+                  value={search}
+                  onChangeText={setSearch}
+                  placeholder={kind === 'send' ? t('screens.payment.searchForCommunityMember') : t('screens.wallet.searchCommunityMembers')}
+                  accessibilityLabel={kind === 'send' ? t('screens.payment.paymentRecipient') : t('screens.wallet.send')}
+                />
                 {members && members.length === 0 ? (
                   <Text variant="caption" muted>
                     {t('screens.payment.noMembersFound')}
@@ -362,8 +509,14 @@ function FlowBody({ kind, open, onClose }: { kind: WalletFlowKind; open: boolean
             <TextInput testID="wallet-flow-description" value={description} onChangeText={setDescription} placeholder={t('screens.payment.whatThisPaymentFor')} accessibilityLabel={t('screens.payment.description')} />
           </View>
         ) : null}
-        <Button testID="wallet-flow-submit" onPress={submit} disabled={busy}>
-          {busy ? t('screens.wallet.processing') : submitLabel}
+        {kind === 'send-step' || kind === 'exchange-and-send-step' ? (
+          <View style={styles.quickBlock}>
+            <Text variant="label">{t('screens.wallet.descriptionOptional')}</Text>
+            <TextInput testID="wallet-flow-description" value={description} onChangeText={setDescription} placeholder={t('screens.wallet.whatSThisFor')} accessibilityLabel={t('screens.wallet.descriptionOptional')} />
+          </View>
+        ) : null}
+        <Button testID="wallet-flow-submit" onPress={submit} disabled={busy || stepBlocked}>
+          {busy ? busyLabel : submitLabel}
         </Button>
         {cfg.bulletKeys ? (
           <View style={[styles.bullets, { borderColor: colors.border }]}>
@@ -385,7 +538,7 @@ const styles = StyleSheet.create({
   balance: { padding: 16, borderRadius: radius.lg },
   quickBlock: { gap: 8 },
   quickRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  quote: { gap: 4 },
+  swapRow: { alignItems: 'center' },
   selected: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
   member: { paddingVertical: 8 },
   bullets: { gap: 4, padding: 12, borderRadius: radius.lg, borderWidth: 1 },

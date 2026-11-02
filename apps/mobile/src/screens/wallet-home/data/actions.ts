@@ -9,10 +9,11 @@
  *    community`, JSON body); a non-2xx or `{ ok: false }` answer throws;
  *  - `openCheckout`: the hosted Stripe Checkout page in the system browser
  *    (expo-web-browser), where the web assigns `window.location`;
- *  - `updateBalance` / `exchangeCurrency` / `transferFunds`: the Supabase
- *    RPCs of src/hooks/useWallet.ts (`update_user_balance`,
- *    `process_wallet_exchange`, `process_wallet_transfer`) with the same
- *    parameter names;
+ *  - `updateBalance` / `exchangeCurrency` / `transferFunds` /
+ *    `exchangeAndSend`: the Supabase RPCs of src/hooks/useWallet.ts
+ *    (`update_user_balance`, `process_wallet_exchange`,
+ *    `process_wallet_transfer`, `process_wallet_exchange_and_send`) with the
+ *    same parameter names;
  *  - `sendMessage`: the `messages` insert of src/hooks/useMessages.ts;
  *  - `logActivity`: the `user_activity_log` insert of
  *    src/hooks/useActivityLogger.ts;
@@ -63,6 +64,8 @@ export type ExchangeInput = { userId: string; fromCurrency: WalletCurrencyCode; 
 export type ExchangeResult = { id: string; from_balance: number; to_balance: number };
 export type TransferInput = { userId: string; toUserId: string; currency: WalletCurrencyCode; amount: number };
 export type TransferResult = { id: string; fromBalance: number; toBalance: number };
+export type ExchangeAndSendInput = { userId: string; toUserId: string; fromCurrency: WalletCurrencyCode; toCurrency: WalletCurrencyCode; amount: number; exchangeRate: number };
+export type ExchangeAndSendResult = { exchangeTransactionId: string; transferTransactionId: string; fromBalance: number; toBalance: number; netAmount: number };
 export type SendMessageInput = {
   senderId: string;
   tenantId: string;
@@ -82,6 +85,7 @@ export type WalletActions = {
   updateBalance: (input: UpdateBalanceInput) => Promise<unknown>;
   exchangeCurrency: (input: ExchangeInput) => Promise<ExchangeResult>;
   transferFunds: (input: TransferInput) => Promise<TransferResult | null>;
+  exchangeAndSend: (input: ExchangeAndSendInput) => Promise<ExchangeAndSendResult | null>;
   sendMessage: (input: SendMessageInput) => Promise<void>;
   logActivity: (input: ActivityInput) => Promise<void>;
   searchMembers: (term: string, selfId: string | null) => Promise<CommunityMember[]>;
@@ -169,6 +173,23 @@ export const liveWalletActions: WalletActions = {
     if (error) throw new Error(error.message);
     const row = (data as Array<{ transaction_id: string; from_balance: number; to_balance: number }> | null)?.[0];
     return row ? { id: row.transaction_id, fromBalance: row.from_balance, toBalance: row.to_balance } : null;
+  },
+  exchangeAndSend: async ({ userId, toUserId, fromCurrency, toCurrency, amount, exchangeRate }) => {
+    const { data, error } = await getSupabase().rpc('process_wallet_exchange_and_send', {
+      p_from_user_id: userId,
+      p_to_user_id: toUserId,
+      p_from_currency: fromCurrency.toUpperCase(),
+      p_to_currency: toCurrency.toUpperCase(),
+      p_amount: amount,
+      p_exchange_rate: exchangeRate,
+    });
+    if (error) throw new Error(error.message);
+    const row = (
+      data as Array<{ exchange_transaction_id: string; transfer_transaction_id: string; from_balance: number; to_balance: number; net_converted_amount: number }> | null
+    )?.[0];
+    return row
+      ? { exchangeTransactionId: row.exchange_transaction_id, transferTransactionId: row.transfer_transaction_id, fromBalance: row.from_balance, toBalance: row.to_balance, netAmount: row.net_converted_amount }
+      : null;
   },
   sendMessage: async ({ senderId, tenantId, body, recipientId, messageType, contentData, actionButtons }) => {
     const { error } = await getSupabase()

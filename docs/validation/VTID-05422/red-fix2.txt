@@ -1,0 +1,32 @@
+# VTID-05422 fix 2 — red on the previous head 1fef022a503ec300af3fb8b361991fcaf91bab86 (product code unchanged; origin/main already merged)
+# New test file apps/mobile/tests/wallet-home/wallet-steps.test.tsx + fixtures.ts (process_wallet_exchange_and_send fake row, fakeWalletActions.exchangeAndSend), before the product change. Fakes only.
+# All 9 fail: the exchange sheet has no From / To selects or swap control and is fixed to USD -> CREDITS; the WalletPopup Send /
+# Exchange & Send steps open MakePayment / ExchangeAndSendPopup (payment_confirmation, no RPC); submitSendStep / submitExchangeAndSendStep do not exist.
+$ cd apps/mobile && npx jest tests/wallet-home/wallet-steps.test.tsx --ci
+    ✕ CREDITS → USD: from the WalletPopup (no card currency) it starts on CREDITS; picking USD quotes 0.01 and sends the pair (6478 ms)
+    ✕ the quick action seeds the USD card currency; the balance check uses the from-currency (5098 ms)
+    ✕ the swap control exchanges From and To; it is disabled while both are the same currency (128 ms)
+    ✕ transfer, then a payment_sent message in the web body format; no step-level activity row (5140 ms)
+    ✕ USD without a description: the body has no description line (5144 ms)
+    ✕ the handler refuses a missing recipient / amount and a too-large amount with the web toasts (1 ms)
+    ✕ process_wallet_exchange_and_send with the useWallet p_ parameters, then the message with both transaction ids (5126 ms)
+    ✕ the balance check is the real from-currency balance (not a sample); the swap flips the pair (5130 ms)
+    ✕ the handler: web validation toasts, and an RPC failure shows the hook toast and sends no message (1 ms)
+  ● Exchange step (web ExchangeStep) › CREDITS → USD: from the WalletPopup (no card currency) it starts on CREDITS; picking USD quotes 0.01 and sends the pair
+  ● Exchange step (web ExchangeStep) › the quick action seeds the USD card currency; the balance check uses the from-currency
+  ● Exchange step (web ExchangeStep) › the swap control exchanges From and To; it is disabled while both are the same currency
+    Unable to find an element with testID: wallet-flow-to
+  ● Send step (web SendStep) › transfer, then a payment_sent message in the web body format; no step-level activity row
+    Unable to find an element with testID: wallet-flow-send-step
+  ● Send step (web SendStep) › USD without a description: the body has no description line
+    Unable to find an element with testID: wallet-flow-send-step
+  ● Send step (web SendStep) › the handler refuses a missing recipient / amount and a too-large amount with the web toasts
+    TypeError: flows.submitSendStep is not a function
+  ● Exchange & Send step (web ExchangeAndSendStep) › process_wallet_exchange_and_send with the useWallet p_ parameters, then the message with both transaction ids
+    Unable to find an element with testID: wallet-flow-exchange-and-send-step
+  ● Exchange & Send step (web ExchangeAndSendStep) › the balance check is the real from-currency balance (not a sample); the swap flips the pair
+    Unable to find an element with testID: wallet-flow-exchange-and-send-step
+  ● Exchange & Send step (web ExchangeAndSendStep) › the handler: web validation toasts, and an RPC failure shows the hook toast and sends no message
+    TypeError: flows.submitExchangeAndSendStep is not a function
+Test Suites: 1 failed, 1 total
+Tests:       9 failed, 9 total

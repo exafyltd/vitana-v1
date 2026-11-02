@@ -17,7 +17,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { AppState, Platform, type AppStateStatus } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import type { ReactTestInstance } from 'react-test-renderer';
 import { mockParams, router } from './mocks';
 import { makeWrapper } from '../helpers/providers';
@@ -223,6 +223,9 @@ describe('the app default WalletActions make the web calls from the sheets', () 
   it('exchange: process_wallet_exchange with the core rate; a failure shows the hook toast and keeps the sheet', async () => {
     const { fake } = renderApp(<WalletScreen />, { fixture: { failRpc: 'process_wallet_exchange' } });
     await openFlow('wallet-quick-exchange', 'exchange');
+    // The quick action seeds From = USD (web ExchangeStep initialCurrency); To is picked.
+    fireEvent.press(within(screen.getByTestId('wallet-flow-to')).getByTestId('radio-CREDITS'));
+    await waitFor(() => expect(textOf('wallet-flow-exchange')).toContain('120.5USD'));
     fireEvent.changeText(screen.getByTestId('wallet-flow-amount'), '12');
     await confirm();
     await waitFor(() => expect(toastKeys()).toContain('toasts.hooks.exchangeFailed'));
@@ -290,9 +293,8 @@ describe('the app default WalletActions make the web calls from the sheets', () 
   });
 
   it('exchange & send: the activity row and the exchange_and_send message (no RPC, as on the web)', async () => {
-    const { fake } = renderApp(<WalletScreen />);
-    fireEvent.press(screen.getByTestId('wallet-actions-button'));
-    fireEvent.press(await screen.findByTestId('wallet-master-exchange-and-send'));
+    // ExchangeAndSendPopup, the direct entry (the WalletPopup step is in wallet-steps.test.tsx); rendered on its own.
+    const { fake } = renderApp(<WalletFlowSheet kind="exchange-and-send" open onClose={jest.fn()} />);
     await screen.findByTestId('wallet-flow-exchange-and-send');
     fireEvent.changeText(screen.getByTestId('wallet-flow-amount'), '10');
     fireEvent.changeText(screen.getByTestId('wallet-flow-description'), 'Gift');

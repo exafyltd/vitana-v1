@@ -42,7 +42,7 @@ import { MobileModePill, type ModeOption } from '../../shell/components/MobileMo
 import { useI18n } from '../../i18n/I18nProvider';
 import { isIAPRestricted } from './iap';
 import { fmtNumber } from './format';
-import { useWallet, type WalletTransaction } from './data/wallet';
+import { useWallet, type WalletCurrency, type WalletTransaction } from './data/wallet';
 import { useDisplayCurrency, useEurUsdRate } from './data/currency';
 import { useDepositReturnLeg } from './data/depositReturn';
 import { BalanceCard } from './components/BalanceCard';
@@ -55,7 +55,7 @@ import { WalletFlowSheet, type WalletFlowKind } from './components/WalletFlowShe
 
 export type WalletMode = 'balances' | 'activity' | 'actions';
 
-const FLOW_KINDS: WalletFlowKind[] = ['add-funds', 'buy-credits', 'withdraw', 'spend-credits', 'send', 'request', 'exchange', 'exchange-and-send'];
+const FLOW_KINDS: WalletFlowKind[] = ['add-funds', 'buy-credits', 'withdraw', 'spend-credits', 'send', 'request', 'exchange', 'exchange-and-send', 'send-step', 'exchange-and-send-step'];
 
 const FILTER_KEYS: Record<string, string> = {
   reseller_commission: 'wallet.filters.commissions',
@@ -104,8 +104,11 @@ export function WalletScreen(): ReactElement {
 
   const [masterOpen, setMasterOpen] = useState(false);
   const [flow, setFlow] = useState<WalletFlowKind | null>(null);
-  const openFlow = (kind: WalletFlowKind) => {
+  // Web `selectedCurrencyForExchange`: the currency the exchange entry passes (the WalletPopup menu passes none).
+  const [exchangeCurrency, setExchangeCurrency] = useState<WalletCurrency | undefined>(undefined);
+  const openFlow = (kind: WalletFlowKind, currency?: WalletCurrency) => {
     setMasterOpen(false);
+    setExchangeCurrency(currency);
     setFlow(kind);
   };
 
@@ -180,7 +183,7 @@ export function WalletScreen(): ReactElement {
                 <QuickActions
                   onAddFunds={() => openFlow('add-funds')}
                   onSend={() => openFlow('send')}
-                  onExchange={() => openFlow('exchange')}
+                  onExchange={() => openFlow('exchange', 'USD')}
                   onWithdraw={() => openFlow('withdraw')}
                   onBuyCredits={() => openFlow('buy-credits')}
                 />
@@ -209,9 +212,9 @@ export function WalletScreen(): ReactElement {
         ) : null}
       </ScrollView>
 
-      <WalletMasterActionSheet open={masterOpen} onClose={() => setMasterOpen(false)} onStep={openFlow} />
+      <WalletMasterActionSheet open={masterOpen} onClose={() => setMasterOpen(false)} onStep={(kind) => openFlow(kind)} />
       {FLOW_KINDS.map((kind) => (
-        <WalletFlowSheet key={kind} kind={kind} open={flow === kind} onClose={() => setFlow(null)} />
+        <WalletFlowSheet key={kind} kind={kind} open={flow === kind} onClose={() => setFlow(null)} initialCurrency={kind === 'exchange' ? exchangeCurrency : undefined} />
       ))}
     </View>
   );

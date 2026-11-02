@@ -47,15 +47,20 @@ export const members = [
 ];
 
 const rpcRow = { transaction_id: 'wtx-1', from_balance: 10, to_balance: 500 };
+/** The row `process_wallet_exchange_and_send` answers (web useWallet.exchangeAndSend reads these columns). */
+export const exchangeAndSendRow = { exchange_transaction_id: 'xtx-1', transfer_transaction_id: 'ttx-1', from_balance: 1950, to_balance: 120.5, net_converted_amount: 4.95 };
 
 export function walletClient(fx: WalletFixture = {}) {
   const double = createSupabaseDouble({
     session: fakeSession('u-1', { user: { id: 'u-1', app_metadata: { active_tenant_id: 't-maxina' }, user_metadata: {} } }),
     tables: { tenants: [{ tenant_id: 't-maxina', slug: 'maxina', name: 'Maxina' }], profiles: [{ user_id: 'u-1', display_name: 'Ana', handle: null }] },
     rpc: Object.fromEntries(
-      ['update_user_balance', 'process_wallet_exchange', 'process_wallet_transfer'].map((name) => [
+      ['update_user_balance', 'process_wallet_exchange', 'process_wallet_transfer', 'process_wallet_exchange_and_send'].map((name) => [
         name,
-        () => (fx.failRpc === name ? { data: null, error: { message: 'permission denied' } } : { data: name === 'update_user_balance' ? 10 : [rpcRow], error: null }),
+        () =>
+          fx.failRpc === name
+            ? { data: null, error: { message: 'permission denied' } }
+            : { data: name === 'update_user_balance' ? 10 : name === 'process_wallet_exchange_and_send' ? [exchangeAndSendRow] : [rpcRow], error: null },
       ]),
     ),
   });
@@ -158,6 +163,7 @@ export function fakeWalletActions(overrides: Partial<WalletActions> = {}): { [K 
     updateBalance: jest.fn(async () => 10),
     exchangeCurrency: jest.fn(async () => ({ id: 'wtx-1', from_balance: 10, to_balance: 500 })),
     transferFunds: jest.fn(async () => ({ id: 'wtx-1', fromBalance: 10, toBalance: 0 })),
+    exchangeAndSend: jest.fn(async () => ({ exchangeTransactionId: 'xtx-1', transferTransactionId: 'ttx-1', fromBalance: 1950, toBalance: 120.5, netAmount: 4.95 })),
     sendMessage: jest.fn(async () => undefined),
     logActivity: jest.fn(async () => undefined),
     searchMembers: jest.fn(async () => []),
