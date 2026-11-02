@@ -143,6 +143,9 @@ describe('auth plugins', () => {
       // VTID-05426 (diary lane): the Daily Diary's photo / voice capture (tests/diary/app-config-plugins.test.ts).
       'expo-image-picker',
       'expo-audio',
+      // VTID-05459 (inbox-list lane): Find Friends contacts import (tests/inbox-chat/inbox-list/app-config-contacts.test.ts).
+      'expo-contacts',
+      'expo-document-picker',
     ]);
     expect(cfg.ios?.usesAppleSignIn).toBe(true);
     expect(cfg.ios?.bundleIdentifier).toBe(IDENTIFIERS.ios);
