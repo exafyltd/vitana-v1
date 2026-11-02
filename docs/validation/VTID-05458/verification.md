@@ -125,7 +125,7 @@ one-line plugin-list expectation in `apps/mobile/tests/app-config.test.ts`.
   - no engine is loaded;
   - the plugin is not in the resolved config.
 - Green on the lane head: `npx jest tests/inbox-chat/conversation-chat` gives 11 suites /
-  226 tests; the full `npm test` gives 95 suites / 2534 tests (`commands.log`).
+  232 tests; the counts of the full `npm test` are in `commands.log`.
 
 ## Not shown on the mobile web (not ported)
 
@@ -134,18 +134,34 @@ one-line plugin-list expectation in `apps/mobile/tests/app-config.test.ts`.
 | Star / Pin / Select and the desktop right-click menu | `src/components/messages/MessageContextMenu.tsx:66-69`: on mobile (`useIsMobile`) the menu renders only its children. Long press opens the drawer (Reply, Copy, Forward, Edit, Delete; `MessageBubble.tsx` drawer). Star and Pin are also `console.log` TODOs (`MessageBubble.tsx` handleStar / handlePin). |
 | The global Send Funds / Payment Request dialogs (recipient search) | `AttachmentMenu.tsx`: these open only when `conversationType` is not `direct`. The group composer never renders the AttachmentMenu (`MessageInput.tsx:700-716`), and a loaded DM is always `direct`. |
 
-## Native differences that need a package outside this lane (owner decision)
+## Media parity packages (driver decision after fix 1)
 
-Each surface below is ported. Each one differs from the mobile web only because the package
-that would match the web is not in `apps/mobile/package.json`. Driver authority covers only the
-two WebRTC packages, so none of these were added:
+The driver added four more packages under the same Option C instruction. They were installed with
+`npx expo install` and pinned: `expo-clipboard` 57.0.2, `expo-video` 57.0.5,
+`expo-document-picker` 57.0.3 and `@react-native-community/datetimepicker` 9.1.0. Each one is
+used behind `src/ports/chat-device.tsx`, and the tests replace it with a fake:
 
-| Surface | Native now | Package for 1:1 parity |
-|---|---|---|
-| Copy picture (viewer + picture-only Copy); paste a screenshot into the composer | the web's "unsupported" toast (`chatImageActions.ts:150-156`); text copy works (RN Clipboard) | `expo-clipboard` |
-| Video playback inside the viewer | the play tile opens the system player | `expo-video` |
-| Attaching documents (pdf, docx, zip…) | the library picker offers pictures and videos only | `expo-document-picker` |
-| Date / time entry (calendar invite, due date, search filters) | `YYYY-MM-DD` / `HH:MM` text fields, the same validation | `@react-native-community/datetimepicker` |
+| Surface (web) | Native |
+|---|---|
+| Copy picture (viewer, and Copy on a picture-only message; `chatImageActions.ts` copyImageToClipboard) | the picture is fetched and put on the clipboard as an image (`expo-clipboard` setImageAsync). "Picture copied" or "Could not copy" toast. Text copy uses `setStringAsync` |
+| Video in the viewer (`ChatImageViewer.tsx:338`, `<video controls>`) | `expo-video` VideoView with the system controls, on the page being viewed only. No copy or share for a video |
+| The file input's chooser (`MessageInput.tsx:767-774`: images, videos, audio, pdf, Office, text, archives) | Attach file and the group paperclip open the phone's choice: photo library, camera (`expo-image-picker`) or files (`expo-document-picker`, the web's accept list) |
+| `datetime-local` / `date` inputs (calendar invite, payment due date, search from / to with min / max) | the system date and time picker (Android dialog; iOS picker in a sheet), stored as the web's `YYYY-MM-DD` / `HH:MM` |
+
+Config plugins in `app.config.ts` `chatMediaPlugins()`:
+- `expo-video` with `supportsBackgroundPlayback: false` and `supportsPictureInPicture: false`, so
+  there is no background audio mode;
+- `@react-native-community/datetimepicker` with its default styles.
+
+`expo-clipboard` has no plugin. `expo-document-picker`'s plugin only sets an iCloud container
+entitlement, which the Files picker does not need, so it is not registered. No new usage string is
+needed: camera and photo library use the expo-image-picker strings. The resolved-config test runs
+every iOS Info.plist mod and checks there is still one camera string, one microphone string and
+no `audio` background mode.
+
+Remaining difference: pasting a screenshot into the composer (the web `onPaste`,
+`MessageInput.tsx:328-345`). React Native's TextInput has no paste event that carries an image,
+so the composer cannot catch it. The picture can be attached through the chooser.
 
 The Vitana companion cards F2 (live Index sheet), F7 (share invite) and F8 (server tip) show
 their copy without the web widget's own action. Those actions belong to Home / Index screens

@@ -143,3 +143,16 @@ $ node scripts/i18n-stamp-source.mjs --check-all  -> 0 changed keys
 $ node scripts/i18n-audit.mjs --report-only  -> errors mentioning chatNative / callsNative: 0
 $ npx vitest run src/i18n scripts/native  -> Test Files 3 passed (3); Tests 25 passed (25)
 $ npx eslint apps/mobile/src/screens/chat apps/mobile/src/ports apps/mobile/app/(app)/inbox apps/mobile/tests/inbox-chat apps/mobile/app.config.ts  -> exit=0
+
+## Fix 1b — driver decision: expo-clipboard, expo-video, expo-document-picker, @react-native-community/datetimepicker
+$ (apps/mobile) APP_PROFILE=development npx expo install expo-clipboard expo-video expo-document-picker @react-native-community/datetimepicker  -> pinned 57.0.2 / 57.0.5 / 57.0.3 / 9.1.0 (lock adds only these four)
+$ (apps/mobile) npm run typecheck  -> exit=0
+$ (apps/mobile) npx jest tests/inbox-chat/conversation-chat  -> Test Suites: 11 passed; Tests: 232 passed, 232 total
+$ (apps/mobile) npx jest tests/inbox-chat/conversation-chat/app-config-webrtc tests/app-config.test.ts tests/diary/app-config-plugins  -> 43 passed
+$ (apps/mobile) npm test  -> Test Suites: 94 passed, 1 failed; Tests: 2538 passed, 2 failed — the 2 failures are tests/memory/gateway-i18n.test.tsx (memory lane, not touched here): its waitFor (1 s default) for 'memory-card-skeleton' times out under the full parallel run; the suite passes on its own (3 of 3 runs: 42/42)
+$ (apps/mobile) APP_PROFILE=development npm run bundle  -> exit=0
+$ (apps/mobile) npm run parity:check  -> OK — 435 rows, 38 native route(s)
+$ (apps/mobile) node ../../scripts/native/core-closure.mjs --check  -> up to date
+$ (apps/mobile) APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> Dependencies are up to date
+$ npx eslint (chat screens, ports, inbox routes, inbox-chat tests, app.config.ts, tests/app-config.test.ts)  -> exit=0
+$ i18n register / long-words / subscriptions / stamp / audit (chatNative errors 0); gen-tokens --check; check-shell-pins; node --test scripts/native (68/0); vitest src/i18n scripts/native (25/25)  -> all pass
