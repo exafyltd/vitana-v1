@@ -1,0 +1,15 @@
+# VTID-05461 red on base — the lane's tests (tests/journey/*) copied onto a detached worktree at origin/main
+# base: e530abd0d82314092f4c4569e3582383bc1c7c8e ; cwd apps/mobile ; npm ci + npm run gen:i18n ; npx jest tests/journey --ci
+
+FAIL tests/journey/core-i18n-route.test.tsx
+  ● Test suite failed to run
+    Configuration error: Could not locate module @vitana/core/horizon-buckets (no core entry on base)
+FAIL tests/journey/journey.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/journey/JourneyScreen' from 'tests/journey/journey.test.tsx'
+      22 | import { FAIL, TOKEN, autopilotRecs, flush, fullRoutes, fullRpc, fullState, fullTables, goalPlan, guidedState, journeyNoGoal, journeyWrapper, topics } from './helpers';
+Test Suites: 2 failed, 2 total
+Tests:       0 total
+
+
+Both suites fail on base: the screen, the route and the core entries do not exist yet. After the implementation: 2 suites, 65 tests pass (commands.log).
