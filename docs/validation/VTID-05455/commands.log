@@ -134,3 +134,18 @@ SKIP  Not run by preflight (npm test / lint / build: run above)
 exit=1
 Both FAILs are the known "lane file not found" non-blocker: the spec is on the plan branch
 kiro/native-wave2-health-biology-r3/plan, not on vitana-platform main yet (brief "Known non-blockers"). Every other check passes.
+
+## CI fix 1 — PR #1562 "change-suite" red on 4d8976ee9 (real, inside the lane)
+$ node <vitana-platform main>/scripts/ci/staging-verify/run.mjs check-pr --service community-app --repo-root . --base origin/main --head HEAD --title "<PR title>"
+::error::staging-tests.json invalid:
+  VTID-05455: tests[1]: kind must be http, playwright or existing
+exit=1
+fix: tests[1] (npx jest tests/health) kind "new" -> "existing"
+$ (same command)
+[staging-verify] ✓ change suite present and valid for VTID-05455
+exit=0
+
+## CI on 4d8976ee9 — other reds
+- "ORB parity — duplex gate, widget literals, protocol (vitana-platform main)": orb-parity --fetch got HTTP 403 fetching
+  exafyltd/vitana-platform:services/gateway/src/orb/live/duplex/full-duplex-gate.ts@main — GitHub rate limit / token, infra (not this lane).
+- "Lane scope": the known lane-file-not-found red (spec on the plan branch, not on vitana-platform main).
