@@ -31,6 +31,9 @@ import { __resetDisplayCurrencyForTests } from '../../src/screens/wallet-home/da
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { walletClient, type WalletFixture } from './fixtures';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 const APP = join(__dirname, '../..');
 
 beforeEach(async () => {

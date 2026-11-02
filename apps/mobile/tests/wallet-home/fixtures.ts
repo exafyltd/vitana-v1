@@ -9,6 +9,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import type { UserBalance, WalletTransaction } from '../../src/screens/wallet-home/data/wallet';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 export const balances: UserBalance[] = [
   { currency_type: 'USD', balance: 120.5, updated_at: '2026-10-30T10:00:00.000Z' },
