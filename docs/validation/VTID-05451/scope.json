@@ -19,7 +19,6 @@
     "docs/validation/VTID-05451/**"
   ],
   "files_touched": [
-    "apps/mobile/app/(public)/index.tsx",
     "apps/mobile/app/(public)/privacy.tsx",
     "apps/mobile/app/(public)/terms.tsx",
     "apps/mobile/app/(public)/maxina_support.tsx",

@@ -2,8 +2,11 @@
  * VTID-05451 (native-wave2-public-auth-onboarding-r3/public-legal) — i18n
  * (no unresolved catalog key on any public screen in all 11 locales, Arabic
  * renders, every publicLegalNative key in all 11 shards, DE first), RTL-safe
- * styles in the lane's files, the seven route files and the parity rows (7
- * native, /download and /maxina/app kept `exception` with no route file).
+ * styles in the lane's files, the six route files and the parity rows (6
+ * native; PUBLIC.LANDING stays not_started because a cold `/` is N3's
+ * app/index.tsx, so the storefront is the PublicLandingScreen component with
+ * no route file yet; /download and /maxina/app kept `exception` with no route
+ * file).
  */
 import '../helpers/no-network';
 import { resetMocks, publicWrapper, allStrings, RAW_KEY } from './helpers';
@@ -74,7 +77,7 @@ describe('i18n: all 11 locales', () => {
 describe('RTL-safe styles', () => {
   const files = (dir: string): string[] =>
     !existsSync(dir) ? [] : readdirSync(dir).flatMap((n) => (statSync(join(dir, n)).isDirectory() ? files(join(dir, n)) : /\.tsx?$/.test(n) ? [join(dir, n)] : []));
-  const ROUTES = ['index', 'privacy', 'terms', 'maxina_support', 'apply', 'i/[code]', '_intro/[tenantSlug]'];
+  const ROUTES = ['privacy', 'terms', 'maxina_support', 'apply', 'i/[code]', '_intro/[tenantSlug]'];
   const laneFiles = [...files(join(APP, 'src/screens/public')), ...ROUTES.map((r) => join(APP, 'app/(public)', `${r}.tsx`)), join(APP, 'src/ports/public.tsx')];
 
   it('finds the lane files', () => {
@@ -89,8 +92,14 @@ describe('RTL-safe styles', () => {
 });
 
 describe('route files', () => {
+  it('PUBLIC.LANDING: the PublicLandingScreen component renders, with no shadowed (public)/index.tsx route file', async () => {
+    const { wrapper } = publicWrapper({ language: 'en-US' });
+    render(<PublicLandingScreen gatewayUrl={null} />, { wrapper });
+    expect(await screen.findByTestId('public-landing')).toBeTruthy();
+    expect(existsSync(join(APP, 'app/(public)/index.tsx'))).toBe(false);
+  });
+
   it.each([
-    ['index', 'PublicLandingScreen'],
     ['privacy', 'LegalScreens'],
     ['terms', 'LegalScreens'],
     ['maxina_support', 'MaxinaSupportScreen'],
@@ -114,7 +123,11 @@ describe('parity ledger', () => {
   const ledger = JSON.parse(readFileSync(join(APP, 'parity/ledger.json'), 'utf8')) as { rows: Array<{ key: string; lane: string; status: string; exception: string | null }> };
   const byKey = new Map(ledger.rows.map((r) => [r.key, r]));
 
-  it.each(['PUBLIC.LANDING', 'PUBLIC.PRIVACY', 'PUBLIC.TERMS', '/maxina_support', '/i/:code', '/apply', '/_intro/:tenantSlug'])('%s is native', (key) => {
+  it('PUBLIC.LANDING stays not_started until a cold `/` mounts the storefront (app/index.tsx, plan amendment)', () => {
+    expect(byKey.get('PUBLIC.LANDING')).toMatchObject({ lane: 'public-auth', status: 'not_started' });
+  });
+
+  it.each(['PUBLIC.PRIVACY', 'PUBLIC.TERMS', '/maxina_support', '/i/:code', '/apply', '/_intro/:tenantSlug'])('%s is native', (key) => {
     expect(byKey.get(key)).toMatchObject({ lane: 'public-auth', status: 'native' });
   });
 

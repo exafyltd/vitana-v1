@@ -8,14 +8,16 @@ prod/staging hosts). Linux, base `origin/main` ec8682fe. Every command and its c
 
 ## What was built
 
-- `app/(public)/{index,privacy,terms,maxina_support,apply}.tsx`, `app/(public)/i/[code].tsx`,
+- `app/(public)/{privacy,terms,maxina_support,apply}.tsx`, `app/(public)/i/[code].tsx`,
   `app/(public)/_intro/[tenantSlug].tsx` — one route file per web path, each rendering its
-  screen from `src/screens/public/`.
+  screen from `src/screens/public/`. `/` has no route file in this lane (see the follow-up).
 - `PublicLandingScreen.tsx` — `src/pages/Index.tsx` (ShareEntry fallback, App.tsx:818): VITANA
   wordmark, intro lines, the five portal cards (Maxina → `/_intro/maxina` keeping the query,
   AlKalma → `/alkalma`, Exafy Admin → `/exafy-admin`, Vitana DEV → `<gateway>/command-hub/` in
   the system browser or the web's "not configured" error toast, Commerce → `/commerce-login`),
-  footer. A resolving session paints a loader; a signed-in member goes on to `/home`.
+  footer. A resolving session paints a loader; a signed-in member goes on to `/home`. The
+  component and its tests ship, but it is not mounted: a cold `/` is N3's `app/index.tsx`, so
+  `PUBLIC.LANDING` stays `not_started`.
 - `LegalScreens.tsx` + `legal.tsx` + `legal-content.ts` — `PrivacyPolicy.tsx` / `TermsOfUse.tsx`:
   header (back, title, DE/EN toggle = `LegalLocaleToggle`), the article as data with the same
   `screens.legal.*` keys and order; `?lang=de|en` pins the copy (`useScopedT`).
@@ -37,7 +39,8 @@ prod/staging hosts). Linux, base `origin/main` ec8682fe. Every command and its c
 - `src/ports/public.tsx` — the kit's Accordion / Checkbox / sonner `toast`, category / ruby /
   status colours from `@vitana/tokens`, the lucide icons.
 - `NATIVE_ROUTES` in `src/navigation/resolve.ts` (+ `/apply`, `/maxina_support`, `/privacy`,
-  `/terms`, and `/` a second time for `(public)/index.tsx`); 7 ledger rows → `native`;
+  `/terms`); 6 ledger rows → `native` (`PUBLIC.PRIVACY`, `PUBLIC.TERMS`, `/maxina_support`,
+  `/i/:code`, `/apply`, `/_intro/:tenantSlug`); `PUBLIC.LANDING` stays `not_started`;
   `/download` and `/maxina/app` untouched (`exception`, no route file).
 - `src/i18n/*/publicLegalNative.json` — 10 new keys (brand words, DE/EN labels, list markers,
   © line), all 11 locales, DE first. Every other string reuses the web's keys
@@ -54,26 +57,34 @@ prod/staging hosts). Linux, base `origin/main` ec8682fe. Every command and its c
 - Landing: the DEV toast shows the catalog title only (the web's description is a hard-coded
   English developer hint).
 
-## Open item for the driver / owner
+## Follow-up (needs plan amendment)
 
-Expo Router ranks the N3 landing redirect `app/index.tsx` (ledger `native_only` `/`, signed out
-→ `/maxina`) above `app/(public)/index.tsx` for the bare `/` URL. The spec keeps that redirect
-"as N3 left it" and `app/index.tsx` is outside this lane's paths, so the storefront is built and
-tested but a cold `/` still lands on `/maxina`. Making `/` show the storefront to signed-out
-members (as the web does) is a one-line change in `app/index.tsx` and needs an owner decision.
+Review round 1 (head c1b4e18, blocking finding): a cold `/` is served by N3's landing redirect
+`app/index.tsx` (ledger `native_only` `/`, signed out → `/maxina`), which Expo Router ranks above
+`app/(public)/index.tsx`, so the storefront was unreachable while `PUBLIC.LANDING` was marked
+`native`. `app/index.tsx` is outside this lane's paths. Driver decision: `PUBLIC.LANDING` goes
+back to `not_started`, the shadowed `app/(public)/index.tsx` and the duplicate `/` in
+`NATIVE_ROUTES` are removed, and `PublicLandingScreen` plus its tests stay in
+`src/screens/public/**` / `tests/public/**` for a follow-up lane to mount.
 
-Similarly, `/i/:code` system links are delivered to `auth-port` by the link router; the screen
-consumes the delivered code when it mounts. An app-wide subscriber that opens `/i/:code` on a
-cold-start link belongs to `src/linking/**` / `app/_layout.tsx` (outside this lane's paths).
+1. **Mount the storefront at cold `/`.** Change `apps/mobile/app/index.tsx` so a signed-out user
+   sees `PublicLandingScreen` (as the web's `Index.tsx` does), and a signed-in member keeps
+   going to `/home`. Add a cold-start test (`renderRouter` with `initialUrl: '/'`, signed out →
+   `public-landing`; signed in → `/home`). Then flip `PUBLIC.LANDING` to `native`.
+2. **Cold-start `/i/:code` subscription (non-blocking).** `/i/:code` system links are delivered
+   to `auth-port` by the link router; the screen consumes the delivered code when it mounts. An
+   app-wide subscriber that opens `/i/:code` on a cold-start link belongs to `src/linking/**`
+   and `app/_layout.tsx`, both outside this lane's paths.
 
 ## Results
 
 - `npm run typecheck` → PASS.
-- `npx jest tests/public --ci` → PASS, 5 suites / 101 tests.
-- `npm test -- --ci` → PASS, 85 suites / 2263 tests, 57 snapshots.
+- `npx jest tests/public --ci` → PASS, 5 suites / 100 tests (fix round 1; was 101 with the
+  `(public)/index.tsx` RTL-style case).
+- `npm test -- --ci` → PASS, 85 suites / 2261 tests, 57 snapshots (fix round 1).
 - `APP_PROFILE=development npm run bundle` → PASS (ios + android `.hbc`, `Exported: dist`).
 - `APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check` → PASS.
-- `npm run parity:check` → PASS (435 rows, 37 native routes); `--sync` → no change.
+- `npm run parity:check` → PASS (435 rows, 36 native routes after fix round 1).
 - `core-closure --check` → up to date; NATIVE-CI script tests 68/68, eslint tests 22/22,
   `npx eslint apps/mobile packages` clean, gen-tokens / gen-core-extract / shell pins OK.
 - i18n (`i18n-check.yml` steps): register, long words, subscriptions, stamp, audit → PASS / exit 0.

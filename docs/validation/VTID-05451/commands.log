@@ -119,3 +119,28 @@ PASS  PR-GATE scope / sparring / weakening / red-green
 PASS  Kiro steering
 preflight: every check passed
 exit=0
+
+## fix round 1 (review on c1b4e18: PUBLIC.LANDING unreachable at cold `/`) — after `git merge origin/main` (a994fcfab)
+change: PUBLIC.LANDING -> not_started; removed app/(public)/index.tsx and the duplicate '/' in NATIVE_ROUTES; tests assert the PublicLandingScreen component renders and the row stays not_started.
+(apps/mobile)
+$ npm run gen:i18n && npm run typecheck
+exit=0
+$ npx jest tests/public --ci
+Test Suites: 5 passed, 5 total; Tests: 100 passed, 100 total
+exit=0
+$ npm test -- --ci
+Test Suites: 85 passed, 85 total; Tests: 2261 passed, 2261 total; Snapshots: 57 passed
+exit=0
+$ HOME=<writable dir> APP_PROFILE=development npm run bundle
+_expo/static/js/android/entry-cc4f2b066d2555a0d3a81ce4da62ccec.hbc (17MB)
+_expo/static/js/ios/entry-517c1c16b745b932887d0d0e46313f3b.hbc (17MB)
+Exported: dist
+exit=0
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 36 native route(s)
+exit=0
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+$ npx eslint .
+exit=0
+(no i18n catalog change in this round; the round-0 i18n checks still apply)

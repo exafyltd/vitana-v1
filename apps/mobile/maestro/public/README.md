@@ -13,7 +13,8 @@ Flows (to author on G1; signed out, navigate, read — nothing is submitted to a
 live system):
 
 - `01-public-landing.yaml` — the storefront: VITANA wordmark, the five portal
-  cards; tap Maxina → `/_intro/maxina`.
+  cards; tap Maxina → `/_intro/maxina`. Runs only after a follow-up lane mounts
+  `PublicLandingScreen` at cold `/` (`app/index.tsx`, plan amendment).
 - `02-legal.yaml` — `/privacy`, `/terms` (scroll, DE/EN toggle) and
   `/maxina_support` (open one FAQ answer).
 - `03-invite-apply-intro.yaml` — a `maxina://i/<code>` link lands on the Join

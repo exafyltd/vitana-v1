@@ -41,8 +41,6 @@ type Row = { key: string; web_path: string; scope: string; source: string };
  */
 export const NATIVE_ROUTES: readonly string[] = [
   '/',
-  // VTID-05451: `/` a second time — app/(public)/index.tsx (PUBLIC.LANDING) next to N3's app/index.tsx redirect.
-  '/',
   '/alkalma',
   '/apply',
   '/comm/find-partner',

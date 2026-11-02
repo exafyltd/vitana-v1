@@ -13,9 +13,10 @@
  * `?share=` and host-based redirects are link-router concerns on native
  * (resolve-link.ts), not this screen's.
  *
- * Note: Expo Router ranks the N3 landing redirect `app/index.tsx` (native_only
- * `/`) above this `(public)/index.tsx` for the bare `/` URL; this screen is
- * the PUBLIC.LANDING content the parity row tracks.
+ * Not mounted yet: a cold `/` is N3's landing redirect `app/index.tsx`
+ * (native_only `/`), outside this lane's paths, so there is no route file and
+ * the PUBLIC.LANDING row stays not_started. A follow-up lane (plan amendment)
+ * mounts this screen at `/` for signed-out users.
  */
 import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';

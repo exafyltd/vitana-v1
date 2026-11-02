@@ -1844,10 +1844,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "native",
+      "status": "not_started",
       "exception": null,
-      "owner": "kiro",
-      "last_parity_check": "2026-11-01"
+      "owner": null,
+      "last_parity_check": null
     },
     {
       "key": "PUBLIC.PRIVACY",
