@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05511",
+  "service": "community-app",
+  "_note": "Native Wave 2 marketplace-orders lane. The port is proven offline (jest-expo + RNTL, no network; the gateway and Supabase are fakes and every booking / voucher / order request is only built and asserted, never sent; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web screens) is DEFERRED to G1 as next_actor: owner (requirements R5b.3, tasks.md marketplace-orders task 8). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/discover-commerce", "cwd": "apps/mobile",
+      "reason": "marketplace-orders unit tests (6 suites / 118 tests): marketplace board load (both commercial kinds, limit 30, community role) / view=mine / view=open / empty / error, view sheet, composer, intent card + share request; doctors list, tabs, bookmarks, profile from list and deep link, back, not found; booking requests built (USD RPC, Credits exchange RPC, provider message, appointment insert, Stripe checkout Function) with nothing charged; orders active/history tab switch, ?tab, search, sample banner, empty, error, detail sheet (ticket QR, voucher PDF / e-mail requests); my-tickets list / tabs / detail / empty; every route opened cold through Expo Router; the utility rail order and the iOS gift-voucher gate; 11 locales, key parity, du-form, Arabic, start/end only — fake gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the five screens, the class-B data layer and the marketplace-orders port type-check against the shell ports, @vitana/ui, @vitana/tokens and @vitana/core/exchange-rates" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the five new routes, the vendored QR encoder and the exchange-rates core re-export (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the nine DISCOVER.* marketplace-orders rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/discover-commerce/marketplace-01-board.yaml", "target": "/discover/marketplace", "next_actor": "owner",
+      "reason": "sign in, open /discover/marketplace (?view=open and ?view=mine): header, compact rail, view sheet, intent cards, share sheet (read only — no post, no share sent); screenshot parity vs the 390x844 read-only staging web screen; needs the isolated G1 environment" },
+    { "flow": "apps/mobile/maestro/discover-commerce/marketplace-02-doctors-provider.yaml", "target": "/discover/doctors-coaches", "next_actor": "owner",
+      "reason": "directory tabs, provider cards, open /discover/provider/1 from the list and by deep link, back; the booking dialog opened and closed without confirming (no booking, no payment); screenshot parity; needs G1" },
+    { "flow": "apps/mobile/maestro/discover-commerce/marketplace-03-orders-tickets.yaml", "target": "/discover/orders", "next_actor": "owner",
+      "reason": "orders ?tab=active / ?tab=history, mode pill, order detail sheet with the ticket pass and QR, /my-tickets list and pass dialog (read only — no PDF, no e-mail sent); screenshot parity; needs G1 (+ macOS / G3 for iOS)" }
+  ]
+}
