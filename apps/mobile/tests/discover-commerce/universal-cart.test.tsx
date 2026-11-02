@@ -10,7 +10,7 @@
  * Every request goes to a fake gateway; no order or payment is ever placed.
  */
 import '../helpers/no-network';
-import { router } from './mocks';
+import { openBrowser, router } from './mocks';
 import './timing';
 import { Linking } from 'react-native';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
@@ -25,10 +25,6 @@ import { budget, discoverWrapper, emptyCart, FAIL, product, status, TOKEN, UUID,
 jest.setTimeout(30000);
 
 const openURL = jest.spyOn(Linking, 'openURL').mockImplementation(async () => true);
-// The shared test mocks register expo-web-browser with the OAuth session only;
-// the hosted Stripe checkout opens through openBrowserAsync (data/wallet.ts).
-const openBrowser = jest.fn(async () => ({ type: 'opened' }));
-(jest.requireMock('expo-web-browser') as Record<string, unknown>).openBrowserAsync = openBrowser;
 
 afterEach(() => {
   jest.clearAllMocks();
