@@ -14,15 +14,17 @@
  *    highlight it for 1.5 s; a target outside the loaded page is loaded with
  *    `loadAround` first (L693-727);
  *  - "Loading older messages…" / "Start of the conversation" at the top
- *    (L1323-1335), older pages when the top is reached.
+ *    (L1323-1335), older pages when the top is reached;
+ *  - "↓ N new messages" (NewMessagesPill, L1503 / GroupChat.tsx:926) while
+ *    the member reads further up.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Spinner, Text } from '../../ports/ui';
-import { groupPositions, isGroupEnd, isGroupStart, type GroupPosition } from '../../ports/chat';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { Spinner, Text, useUITheme } from '../../ports/ui';
+import { ChatIcon, groupPositions, isGroupEnd, isGroupStart, type GroupPosition } from '../../ports/chat';
 import { useChatText, sameDay } from './text';
 import { MessageDivider, SwipeableMessage } from './components';
-import { MessageBubble } from './MessageBubble';
+import { MessageBubble, type MessageBubbleProps } from './MessageBubble';
 import type { ChatViewMessage } from './data/types';
 
 export const HIGHLIGHT_MS = 1500;
@@ -48,7 +50,19 @@ export interface MessageListProps {
   onRetry?: (cid: string) => void;
   onEdit?: (id: string, body: string) => Promise<void> | void;
   onDelete?: (id: string) => Promise<void> | void;
+  onAction?: MessageBubbleProps['onAction'];
+  onSendReply?: MessageBubbleProps['onSendReply'];
+  onUpdateContentData?: MessageBubbleProps['onUpdateContentData'];
   testID?: string;
+}
+
+/** Scrolled further than this from the newest message = "away" (the pill counts new arrivals). */
+export const AWAY_OFFSET = 120;
+
+/** NewMessagesPill.tsx newMessagesLabel. */
+export function newMessagesLabel(count: number, t: (k: string, p?: Record<string, string | number>) => string): string {
+  if (count <= 0) return t('inbox.newMessages.none');
+  return count === 1 ? t('inbox.newMessages.one') : t('inbox.newMessages.other', { count });
 }
 
 export function MessageList({
@@ -66,14 +80,32 @@ export function MessageList({
   onRetry,
   onEdit,
   onDelete,
+  onAction,
+  onSendReply,
+  onUpdateContentData,
   testID = 'message-list',
 }: MessageListProps) {
   const { t, day } = useChatText();
+  const { colors } = useUITheme();
   const listRef = useRef<FlatList<Item>>(null);
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const [fetchedParents, setFetchedParents] = useState<Record<string, ChatViewMessage | null>>({});
   const triedAround = useRef<string | null>(null);
   const inFlight = useRef<Set<string>>(new Set());
+  // "↓ N new messages" (useChatScrollAnchor + NewMessagesPill): new messages from
+  // others that arrive while the member reads further up are counted; a tap
+  // returns to the newest and clears the count.
+  const away = useRef(false);
+  const seenIds = useRef<Set<string> | null>(null);
+  const [newCount, setNewCount] = useState(0);
+  useEffect(() => {
+    const ids = new Set(messages.map((m) => m.id));
+    if (seenIds.current && away.current) {
+      const fresh = messages.filter((m) => !seenIds.current?.has(m.id) && m.sender_id !== userId && !m.id.startsWith('temp-')).length;
+      if (fresh > 0) setNewCount((c) => c + fresh);
+    }
+    seenIds.current = ids;
+  }, [messages, userId]);
 
   const items = useMemo<Item[]>(() => {
     const positions = groupPositions(messages, { breakBefore: (m) => !!unreadAnchorId && m.id === unreadAnchorId });
@@ -177,6 +209,9 @@ export function MessageList({
             onJumpTo={onQuote}
             onEdit={onEdit}
             onDelete={onDelete}
+            onAction={onAction}
+            onSendReply={onSendReply}
+            onUpdateContentData={onUpdateContentData}
           />
         </SwipeableMessage>
       </View>
@@ -184,11 +219,17 @@ export function MessageList({
   };
 
   return (
+    <View style={styles.fill}>
     <FlatList
       ref={listRef}
       testID={testID}
       data={items}
       inverted
+      onScroll={(e) => {
+        away.current = e.nativeEvent.contentOffset.y > AWAY_OFFSET;
+        if (!away.current && newCount > 0) setNewCount(0);
+      }}
+      scrollEventThrottle={100}
       keyExtractor={(it) => it.key}
       renderItem={renderItem}
       contentContainerStyle={styles.content}
@@ -216,10 +257,29 @@ export function MessageList({
         ) : null
       }
     />
+    {newCount > 0 ? (
+      <Pressable
+        onPress={() => {
+          listRef.current?.scrollToOffset({ offset: 0, animated: true });
+          away.current = false;
+          setNewCount(0);
+        }}
+        accessibilityRole="button"
+        accessibilityLabel={newMessagesLabel(newCount, t)}
+        style={[styles.pill, { backgroundColor: colors.primary }]}
+        testID="new-messages-pill"
+      >
+        <ChatIcon name="ArrowDown" size={16} color={colors.primaryForeground} />
+        <Text style={[styles.small, { color: colors.primaryForeground }]}>{newMessagesLabel(newCount, t)}</Text>
+      </Pressable>
+    ) : null}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  fill: { flex: 1 },
+  pill: { position: 'absolute', bottom: 12, alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 999, paddingHorizontal: 14, paddingVertical: 8, minHeight: 44 },
   content: { paddingHorizontal: 8, paddingVertical: 4 },
   gapIn: { marginBottom: 2 },
   gapEnd: { marginBottom: 6 },

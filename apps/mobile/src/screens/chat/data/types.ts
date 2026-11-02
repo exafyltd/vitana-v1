@@ -34,6 +34,8 @@ export interface ChatViewMessage {
   client_message_id?: string | null;
   reply_to_message_id?: string | null;
   parent_message_id?: string | null;
+  /** Card buttons (payment / calendar / booking, tenant `messages.action_buttons`). */
+  action_buttons?: unknown[] | null;
   /** Only on local (outbox) rows: the send is in flight or failed. */
   send_status?: 'sending' | 'failed';
   sender?: MessageSender | null;

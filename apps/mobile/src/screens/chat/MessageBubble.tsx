@@ -1,36 +1,65 @@
 /**
  * VTID-05458 (native-wave2-inbox-chat-calls-r2/conversation-chat) — one chat
  * bubble, the native twin of web `src/components/messages/MessageBubble.tsx`
- * (mobile branch):
+ * (mobile branch; the desktop right-click MessageContextMenu with Star / Pin /
+ * Select is not mounted on phones, MessageContextMenu.tsx:66-69):
  *
- *  - system notices as a centred chip (describeGroupNotice, L1226-1234, L1383);
+ *  - system notices as a centred chip (describeGroupNotice);
  *  - own bubbles at the end, others at the start with avatar + name on the
- *    first bubble of a group (L1391-1440); corner shape per group position;
- *  - reply quote (L1474-1481), "Forwarded" label (L1484-1491);
- *  - text with @mentions (link to /u/:id) and URLs (opened outside the app)
- *    (L765-876); attachments: pictures from fresh `chat-attachments` signed
- *    URLs (L250-337) with a full-screen viewer, other files as a chip;
- *    calendar invites as a card (L1111-1176);
- *  - time + send status (failed / sending / sent / delivered / read, L398-454)
- *    and "Not sent · Retry" (L1539-1557);
- *  - reactions (useMessageReactions) and the long-press drawer: quick
- *    reactions, Reply, Edit, Delete with confirm (L1585-1696).
- * The web desktop context menu, Copy, Forward, Star/Pin, the voice player,
- * payment/service-booking/template cards and the Vitana companion card are
- * not part of this port (see docs/validation/VTID-05458/verification.md).
+ *    first bubble of a group; corner shape per group position;
+ *  - reply quote, "Forwarded" label;
+ *  - text with @mentions (→ /u/:id) and links: event links open the in-app
+ *    Events path (inAppLinks.ts, VTID-04902), other links open outside;
+ *    Vitana's replies render her Markdown subset (VTID-05193) and her
+ *    action buttons (VitanaMessageActions); her companion card sits under the
+ *    bubble (VTID-05100);
+ *  - every message type: payment_request / exchange_and_send /
+ *    payment_confirmation (PaymentCard), calendar_invite (v2 card or legacy
+ *    card with its status + Accept / Decline / Maybe), shared_content,
+ *    service_booking, template (+ quick replies), voice (VoicePlayer),
+ *    attachment (one picture / video, an album of 2+ media, file chips with
+ *    size + download, legacy `files`);
+ *  - pictures from fresh `chat-attachments` signed URLs, a skeleton until
+ *    signed, the full-screen ChatImageViewer;
+ *  - time + send status, "Not sent · Retry";
+ *  - reactions and the long-press drawer: quick reactions, Reply, Copy,
+ *    Forward (ForwardMessageSheet), Edit, Delete with confirm.
  */
-import { useEffect, useMemo, useState } from 'react';
-import { Image, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 import { Avatar, BottomSheet, Button, Text, useUITheme } from '../../ports/ui';
-import { ChatIcon, describeGroupNotice, splitMentionSegments, Textarea, type GroupPosition, type Mention } from '../../ports/chat';
+import { ChatIcon, describeGroupNotice, parseChatMarkdown, splitMentionSegments, Textarea, type GroupPosition, type MdInline, type Mention } from '../../ports/chat';
+import { getChatDevice } from '../../ports/chat-device';
 import { navigateToWebPath } from '../../navigation/navigate';
-import { getSupabase } from '../../auth/client';
 import { useChatText } from './text';
 import { ReactionCluster, ReplyQuote } from './components';
 import { QUICK_REACTIONS, useReactions } from './data/useReactions';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, type ChatViewMessage } from './data/types';
+import { recordRecentEmoji } from './data/emojiRecents';
+import { canForwardMessage, type ForwardPayload } from './data/forward';
+import { formatFileSize, getSignedAttachmentUrl } from './data/upload';
+import { isInviteCard } from './data/calendar';
+import { sharedRefOf } from './data/shared';
+import { resolveInAppEventPath } from './inAppLinks';
+import { ChatImageViewer, copyImageAndNotify, downloadChatFile, type ChatViewerImage } from './ChatImageViewer';
+import { ForwardMessageSheet } from './ForwardMessageSheet';
+import { VoicePlayer } from './bubble/VoicePlayer';
+import { PaymentCard } from './bubble/PaymentCard';
+import {
+  CalendarInviteCard,
+  isVideoAttachment,
+  isVitanaCardPayload,
+  LegacyCalendarInvite,
+  MediaAlbum,
+  QuickReplies,
+  ServiceBookingCard,
+  SharedContentCard,
+  VitanaCompanionCard,
+  VitanaMessageActions,
+  type CardAction,
+} from './bubble/Cards';
 
-type Attachment = { type?: string; mime?: string; filename?: string; name?: string; url?: string; path?: string; size?: number };
+type Attachment = { type?: string; mime?: string; filename?: string; name?: string; url?: string; path?: string; size?: number; duration?: number };
 
 const IMAGE_NAME_RX = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
 export function isImageAttachment(att: Attachment | null | undefined): boolean {
@@ -58,23 +87,17 @@ export function isLegacySharedPlaceholder(body: string | undefined, attachments:
 }
 
 const STATUS_ICON = { failed: 'AlertCircle', sending: 'Clock', sent: 'Check', delivered: 'CheckCheck', read: 'CheckCheck' } as const;
+const STRUCTURED = new Set(['voice', 'calendar_invite', 'service_booking', 'payment_request', 'exchange_and_send', 'payment_confirmation', 'exchange_and_send_confirmation', 'template']);
+const PAYMENT = new Set(['payment_request', 'exchange_and_send', 'payment_confirmation', 'exchange_and_send_confirmation']);
 
-async function signedUrl(path: string): Promise<string | null> {
-  try {
-    const { data, error } = await getSupabase().storage.from('chat-attachments').createSignedUrl(path, 3600);
-    return error || !data?.signedUrl ? null : data.signedUrl;
-  } catch {
-    return null;
-  }
-}
-
+/** Fresh signed URLs for stored paths; `undefined` = still signing, the stored URL when signing failed. */
 function useAttachmentUrls(attachments: Attachment[]) {
   const [urls, setUrls] = useState<Record<string, string | null>>({});
   useEffect(() => {
     let cancelled = false;
     attachments.forEach((a) => {
       if (a.path && !(a.path in urls)) {
-        void signedUrl(a.path).then((u) => {
+        void getSignedAttachmentUrl(a.path).then((u) => {
           if (!cancelled) setUrls((prev) => ({ ...prev, [a.path as string]: u }));
         });
       }
@@ -96,51 +119,101 @@ function useAttachmentUrls(attachments: Attachment[]) {
 const URL_RX = /https?:\/\/[^\s<]+/gi;
 const TRAILING = '.,!?;:)]}';
 
-function LinkedText({ text, mentions, isOwn }: { text: string; mentions: Mention[]; isOwn: boolean }) {
+function useLinkify(mentions: Mention[], isOwn: boolean) {
   const { colors } = useUITheme();
-  const fg = isOwn ? colors.primaryForeground : colors.foreground;
   const accent = isOwn ? colors.primaryForeground : colors.primary;
-  const nodes: React.ReactNode[] = [];
-  const pushPlain = (chunk: string, key: string) => {
-    if (!chunk) return;
-    if (mentions.length === 0) {
-      nodes.push(chunk);
-      return;
-    }
-    splitMentionSegments(chunk, mentions).forEach((seg, i) => {
-      if (seg.type === 'text') nodes.push(seg.text);
-      else
+  return (text: string, key: string): ReactNode[] => {
+    const nodes: ReactNode[] = [];
+    const pushPlain = (chunk: string, k: string) => {
+      if (!chunk) return;
+      if (mentions.length === 0) {
+        nodes.push(chunk);
+        return;
+      }
+      splitMentionSegments(chunk, mentions).forEach((seg, i) => {
+        if (seg.type === 'text') nodes.push(seg.text);
+        else
+          nodes.push(
+            <Text key={`${k}-m${i}`} testID="message-mention" accessibilityRole="link" style={[styles.bold, { color: accent }]} onPress={() => navigateToWebPath(`/u/${seg.mention.user_id}`)}>
+              {seg.text}
+            </Text>,
+          );
+      });
+    };
+    let last = 0;
+    let match: RegExpExecArray | null;
+    const rx = new RegExp(URL_RX.source, 'gi');
+    while ((match = rx.exec(text)) !== null) {
+      pushPlain(text.slice(last, match.index), `${key}p${last}`);
+      let url = match[0];
+      let trailing = '';
+      while (url.length > 0 && TRAILING.includes(url[url.length - 1])) {
+        trailing = url[url.length - 1] + trailing;
+        url = url.slice(0, -1);
+      }
+      if (url) {
+        const target = url;
+        const inApp = resolveInAppEventPath(target);
         nodes.push(
-          <Text key={`${key}-m${i}`} testID="message-mention" accessibilityRole="link" style={[styles.bold, { color: accent }]} onPress={() => navigateToWebPath(`/u/${seg.mention.user_id}`)}>
-            {seg.text}
+          <Text
+            key={`${key}u${match.index}`}
+            accessibilityRole="link"
+            testID={inApp ? 'message-event-link' : 'message-link'}
+            style={[styles.link, { color: accent }]}
+            onPress={() => (inApp ? navigateToWebPath(inApp) : void Linking.openURL(target))}
+          >
+            {url}
           </Text>,
         );
-    });
+      }
+      if (trailing) nodes.push(trailing);
+      last = match.index + match[0].length;
+    }
+    pushPlain(text.slice(last), `${key}p${last}`);
+    return nodes;
   };
-  let last = 0;
-  let match: RegExpExecArray | null;
-  const rx = new RegExp(URL_RX.source, 'gi');
-  while ((match = rx.exec(text)) !== null) {
-    pushPlain(text.slice(last, match.index), `p${last}`);
-    let url = match[0];
-    let trailing = '';
-    while (url.length > 0 && TRAILING.includes(url[url.length - 1])) {
-      trailing = url[url.length - 1] + trailing;
-      url = url.slice(0, -1);
-    }
-    if (url) {
-      const target = url;
-      nodes.push(
-        <Text key={`u${match.index}`} accessibilityRole="link" testID="message-link" style={[styles.link, { color: accent }]} onPress={() => void Linking.openURL(target)}>
-          {url}
-        </Text>,
-      );
-    }
-    if (trailing) nodes.push(trailing);
-    last = match.index + match[0].length;
-  }
-  pushPlain(text.slice(last), `p${last}`);
-  return <Text style={[styles.body, { color: fg }]}>{nodes}</Text>;
+}
+
+function LinkedText({ text, mentions, isOwn, markdown }: { text: string; mentions: Mention[]; isOwn: boolean; markdown?: boolean }) {
+  const { colors } = useUITheme();
+  const fg = isOwn ? colors.primaryForeground : colors.foreground;
+  const linkify = useLinkify(mentions, isOwn);
+  if (!markdown) return <Text style={[styles.body, { color: fg }]}>{linkify(text, 't')}</Text>;
+  const blocks = parseChatMarkdown(text);
+  if (blocks.length === 0) return <Text style={[styles.body, { color: fg }]}>{linkify(text, 't')}</Text>;
+  const inline = (nodes: MdInline[], key: string): ReactNode[] =>
+    nodes.flatMap((n, i): ReactNode[] => {
+      const k = `${key}${i}`;
+      if (n.type === 'text') return linkify(n.text, `${k}-`);
+      if (n.type === 'strong') return [<Text key={k} style={styles.bold}>{inline(n.children, `${k}-`)}</Text>];
+      if (n.type === 'em') return [<Text key={k} style={styles.italic}>{inline(n.children, `${k}-`)}</Text>];
+      if (n.type === 'code') return [<Text key={k} style={[styles.code, { backgroundColor: colors.muted }]}>{n.text}</Text>];
+      return [];
+    });
+  return (
+    <View style={styles.md} testID="vitana-markdown">
+      {blocks.map((b, bi) => {
+        const key = `md-${bi}`;
+        if (b.type === 'paragraph' || b.type === 'heading') {
+          return (
+            <Text key={key} style={[styles.body, { color: fg }, b.type === 'heading' ? styles.bold : null]}>
+              {inline(b.children, `${key}-`)}
+            </Text>
+          );
+        }
+        return (
+          <View key={key} style={styles.list}>
+            {b.items.map((item, ii) => (
+              <Text key={`${key}-${ii}`} style={[styles.body, { color: fg }]}>
+                {b.ordered ? `${(b.start ?? 1) + ii}. ` : '• '}
+                {inline(item, `${key}-${ii}-`)}
+              </Text>
+            ))}
+          </View>
+        );
+      })}
+    </View>
+  );
 }
 
 export interface MessageBubbleProps {
@@ -158,6 +231,12 @@ export interface MessageBubbleProps {
   onJumpTo?: (messageId: string) => void;
   onEdit?: (messageId: string, body: string) => Promise<void> | void;
   onDelete?: (messageId: string) => Promise<void> | void;
+  /** Card buttons (calendar Accept / Decline / Maybe, quick replies, bookings). */
+  onAction?: (action: CardAction) => Promise<void> | void;
+  /** A reply the card sends itself (payment confirmation / decline). */
+  onSendReply?: (content: string, messageType: string, contentData: Record<string, unknown>) => Promise<void>;
+  /** A card's own state (payment status). */
+  onUpdateContentData?: (messageId: string, updates: { content_data: Record<string, unknown> }) => Promise<void> | void;
 }
 
 export function MessageBubble({
@@ -175,6 +254,9 @@ export function MessageBubble({
   onJumpTo,
   onEdit,
   onDelete,
+  onAction,
+  onSendReply,
+  onUpdateContentData,
 }: MessageBubbleProps) {
   const { t, time } = useChatText();
   const { colors } = useUITheme();
@@ -183,11 +265,31 @@ export function MessageBubble({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState('');
-  const [viewer, setViewer] = useState<string | null>(null);
+  const [viewer, setViewer] = useState<number | null>(null);
+  const [forwardOpen, setForwardOpen] = useState(false);
   const cd = (message.content_data ?? {}) as Record<string, unknown>;
   const attachments = useMemo(() => (Array.isArray(cd.attachments) ? (cd.attachments as Attachment[]) : []), [cd.attachments]);
-  const urlFor = useAttachmentUrls(attachments);
+  // VTID-05138: legacy `content_data.files` entries with a link or a path render like attachments.
+  const legacyFiles = useMemo<Attachment[]>(
+    () =>
+      (Array.isArray(cd.files) ? (cd.files as Array<Record<string, unknown>>) : [])
+        .filter((f) => f && (f.url || f.path))
+        .map((f) => ({
+          type: typeof f.type === 'string' && f.type.startsWith('image/') ? 'image' : 'file',
+          mime: typeof f.type === 'string' ? f.type : undefined,
+          filename: (f.name || f.filename) as string | undefined,
+          name: (f.name || f.filename) as string | undefined,
+          size: f.size as number | undefined,
+          url: f.url as string | undefined,
+          path: f.path as string | undefined,
+        })),
+    [cd.files],
+  );
+  const allAttachments = useMemo(() => [...attachments, ...legacyFiles], [attachments, legacyFiles]);
+  const urlFor = useAttachmentUrls(allAttachments);
   const mentions = useMemo(() => (Array.isArray(cd.mentions) ? (cd.mentions as Mention[]) : []), [cd.mentions]);
+  const media = useMemo(() => allAttachments.filter((a) => isImageAttachment(a) || isVideoAttachment(a)), [allAttachments]);
+  const viewerImages: ChatViewerImage[] = media.map((a) => ({ url: urlFor(a) || '', filename: a.filename || a.name || '', kind: isVideoAttachment(a) ? 'video' : 'image' }));
 
   if (message.message_type === 'system') {
     const text = describeGroupNotice(message as never, t) ?? message.body;
@@ -213,50 +315,149 @@ export function MessageBubble({
   const corner = isOwn
     ? { borderTopEndRadius: continuesAbove ? tight : r, borderBottomEndRadius: continuesBelow ? tight : r, borderTopStartRadius: r, borderBottomStartRadius: r }
     : { borderTopStartRadius: continuesAbove ? tight : r, borderBottomStartRadius: continuesBelow ? tight : r, borderTopEndRadius: r, borderBottomEndRadius: r };
+  const forwardable = canForwardMessage(message);
+  const sharedRef = message.message_type === 'shared_content' ? sharedRefOf(message.content_data) : null;
+  const companionCard = isBot && isVitanaCardPayload(cd.card) ? cd.card : null;
+  const actionButtons = (Array.isArray(message.action_buttons) ? message.action_buttons : Array.isArray(cd.action_buttons) ? cd.action_buttons : null) as CardAction[] | null;
+  const body = message.body;
+  const forwardPayload: ForwardPayload = {
+    body: isLegacySharedPlaceholder(body, allAttachments) ? '' : body,
+    attachments: allAttachments,
+    shareImages: viewerImages.filter((img) => !!img.url && img.kind !== 'video').map((img) => ({ url: img.url, filename: img.filename })),
+  };
 
-  const renderContent = () => {
-    if (message.message_type === 'calendar_invite') {
-      const title = typeof cd.title === 'string' ? cd.title : message.body;
-      const date = typeof cd.date === 'string' ? cd.date : typeof cd.start_time === 'string' ? cd.start_time : '';
+  const copy = () => {
+    // VTID-05138: a picture-only message copies the picture itself.
+    const firstPicture = viewerImages.find((img) => img.kind !== 'video');
+    if (!forwardPayload.body.trim() && firstPicture) {
+      void copyImageAndNotify(firstPicture.url);
+      return;
+    }
+    getChatDevice().copyText(body || '');
+  };
+
+  const react = (emoji: string) => {
+    void recordRecentEmoji(emoji, userId ?? null);
+    void addReaction(emoji);
+  };
+
+  const text = (value: string | undefined) => (value ? <LinkedText text={value} mentions={mentions} isOwn={isOwn} markdown={isBot} /> : null);
+
+  const renderAttachment = (a: Attachment, key: string) => {
+    const url = urlFor(a);
+    if (isImageAttachment(a) || isVideoAttachment(a)) {
+      if (url === undefined) return <View key={key} style={[styles.image, { backgroundColor: colors.muted }]} accessibilityLabel={t('screens.messages.imageLoading')} testID="chat-image-skeleton" />;
+      const index = Math.max(0, media.indexOf(a));
+      if (isVideoAttachment(a) && !isImageAttachment(a)) {
+        return (
+          <Pressable key={key} onPress={() => setViewer(index)} accessibilityRole="button" accessibilityLabel={t('inbox.media.openVideo', { name: a.filename || a.name || '' })} style={[styles.image, styles.center, { backgroundColor: colors.muted }]} testID="chat-video">
+            <ChatIcon name="Play" size={28} />
+          </Pressable>
+        );
+      }
       return (
-        <View style={[styles.invite, { borderColor: colors.border, backgroundColor: colors.card }]} testID="bubble-calendar-invite">
-          <View style={styles.inviteBadge}>
-            <ChatIcon name="Calendar" size={12} />
-            <Text style={[styles.small, styles.bold]}>{t('screens.messages.calendarInvite')}</Text>
-          </View>
-          <Text style={styles.bold}>{title}</Text>
-          {date ? (
-            <Text muted style={styles.small}>
-              {date}
-            </Text>
-          ) : null}
-        </View>
+        <Pressable key={key} onPress={() => setViewer(index)} accessibilityRole="imagebutton" accessibilityLabel={t('screens.messages.viewFullscreen')} testID="chat-image">
+          <Image source={{ uri: url }} style={styles.image} resizeMode="cover" />
+        </Pressable>
       );
     }
     return (
+      <Pressable key={key} onPress={() => url && void getChatDevice().openUrl(url)} accessibilityRole="button" style={[styles.fileChip, { borderColor: colors.border }]} testID="chat-file">
+        <ChatIcon name="FileText" size={28} color={colors.mutedForeground} />
+        <View style={styles.fileText}>
+          <Text style={[styles.small, styles.bold, { color: fg }]} numberOfLines={1}>
+            {a.filename || a.name || t('inbox.reply.noText')}
+          </Text>
+          <Text muted style={styles.small}>
+            {a.size ? formatFileSize(a.size) : t('screens.messages.unknownSize')}
+          </Text>
+        </View>
+        <Pressable onPress={() => url && void downloadChatFile(url)} accessibilityRole="button" accessibilityLabel={t('screens.messages.downloadFile')} style={styles.download} testID="chat-file-download">
+          <ChatIcon name="Download" size={14} color={fg} />
+        </Pressable>
+      </Pressable>
+    );
+  };
+
+  const renderContent = () => {
+    const type = message.message_type;
+    if (PAYMENT.has(type)) return <PaymentCard message={message} userId={userId} onReply={onSendReply} onUpdate={onUpdateContentData} />;
+    if (type === 'calendar_invite') {
+      if (isInviteCard(cd)) return <CalendarInviteCard messageId={message.id} invite={cd} isOwn={isOwn} />;
+      return <LegacyCalendarInvite messageId={message.id} data={cd} body={body} senderId={message.sender_id} userId={userId} actionButtons={actionButtons} onAction={onAction} />;
+    }
+    if (type === 'shared_content') {
+      if (!sharedRef) return text(body);
+      return (
+        <View style={styles.content} testID="shared-content-message">
+          <SharedContentCard sharedRef={sharedRef} isOwn={isOwn} userId={userId} />
+          {text(body)}
+        </View>
+      );
+    }
+    if (type === 'service_booking') return <ServiceBookingCard messageId={message.id} data={cd} body={body} actionButtons={actionButtons} onAction={onAction} />;
+    if (type === 'template') {
+      return (
+        <View style={styles.content}>
+          {text(body)}
+          <QuickReplies messageId={message.id} replies={cd.quick_replies} onAction={onAction} />
+        </View>
+      );
+    }
+    if (type === 'voice') {
+      const voice = (attachments[0] ?? cd) as Attachment;
+      const url = voice.path ? urlFor(voice) || voice.url : voice.url;
+      return <VoicePlayer url={url} duration={voice.duration} isOwn={isOwn} />;
+    }
+    if (allAttachments.length === 0 && !(Array.isArray(cd.files) && cd.files.length > 0)) {
+      return (
+        <View>
+          {text(body)}
+          {isBot ? <VitanaMessageActions contentData={cd} /> : null}
+        </View>
+      );
+    }
+    const listMedia = attachments.filter((a) => isImageAttachment(a) || isVideoAttachment(a));
+    const metaFiles = (Array.isArray(cd.files) ? (cd.files as Array<Record<string, unknown>>) : []).filter((f) => !(f?.url || f?.path));
+    return (
       <View style={styles.content}>
-        {message.body && !isLegacySharedPlaceholder(message.body, attachments) ? <LinkedText text={message.body} mentions={mentions} isOwn={isOwn} /> : null}
-        {attachments.map((a, i) => {
-          if (isImageAttachment(a)) {
-            const url = urlFor(a);
-            if (url === undefined) return <View key={`a${i}`} style={[styles.image, { backgroundColor: colors.muted }]} accessibilityLabel={t('screens.messages.imageLoading')} testID="chat-image-skeleton" />;
-            return (
-              <Pressable key={`a${i}`} onPress={() => setViewer(url)} accessibilityRole="imagebutton" accessibilityLabel={t('screens.messages.viewFullscreen')} testID="chat-image">
-                <Image source={{ uri: url }} style={styles.image} resizeMode="cover" />
-              </Pressable>
-            );
-          }
-          return (
-            <View key={`a${i}`} style={[styles.fileChip, { borderColor: colors.border }]} testID="chat-file">
-              <Text style={[styles.small, { color: fg }]} numberOfLines={1}>
-                {a.filename || a.name || t('inbox.reply.noText')}
+        {body && !isLegacySharedPlaceholder(body, allAttachments) ? text(body) : null}
+        {listMedia.length < 2 ? (
+          attachments.map((a, i) => renderAttachment(a, `att-${i}`))
+        ) : (
+          <>
+            <MediaAlbum
+              items={listMedia.map((a, i) => ({ key: `album-${i}`, kind: isVideoAttachment(a) ? 'video' : 'image', url: urlFor(a), alt: a.filename || a.name || '' }))}
+              onOpen={(i) => setViewer(Math.max(0, media.indexOf(listMedia[i])))}
+            />
+            {attachments.filter((a) => !listMedia.includes(a)).map((a, i) => renderAttachment(a, `att-file-${i}`))}
+          </>
+        )}
+        {legacyFiles.map((a, i) => renderAttachment(a, `legacy-${i}`))}
+        {metaFiles.map((f, i) => (
+          <View key={`legacy-meta-${i}`} style={[styles.fileChip, { borderColor: colors.border }]} testID="chat-file-meta">
+            <ChatIcon name={typeof f.type === 'string' && f.type.startsWith('image/') ? 'Image' : 'FileText'} size={16} color={colors.mutedForeground} />
+            <View style={styles.fileText}>
+              <Text style={[styles.small, styles.bold, { color: fg }]} numberOfLines={1}>
+                {String(f.name ?? '')}
+              </Text>
+              <Text muted style={styles.small}>
+                {f.size ? formatFileSize(Number(f.size)) : t('screens.messages.unknownSize')}
               </Text>
             </View>
-          );
-        })}
+          </View>
+        ))}
       </View>
     );
   };
+
+  const structured = STRUCTURED.has(message.message_type) || (message.message_type === 'shared_content' && !!sharedRef);
+  const action = (key: string, icon: string, label: string, onPress: () => void, color?: string) => (
+    <Pressable key={key} onPress={onPress} accessibilityRole="button" style={styles.action} testID={`message-action-${key}`}>
+      <ChatIcon name={icon} size={20} color={color} />
+      <Text style={[styles.small, { color: color ?? colors.mutedForeground }]}>{label}</Text>
+    </Pressable>
+  );
 
   return (
     <View testID={`bubble-${message.id}`}>
@@ -312,7 +513,7 @@ export function MessageBubble({
               renderContent()
             )}
             {showTime || isOwn ? (
-              <View style={styles.meta}>
+              <View style={[styles.meta, structured ? styles.metaBelow : null]}>
                 {showTime ? <Text style={[styles.time, { color: isOwn ? colors.primaryForeground : colors.mutedForeground }]}>{time(message.created_at)}</Text> : null}
                 {isOwn ? (
                   <View accessible accessibilityRole="image" accessibilityLabel={t(`inbox.messageStatus.${status}`)} testID={`message-status-${status}`}>
@@ -322,7 +523,7 @@ export function MessageBubble({
               </View>
             ) : null}
           </Pressable>
-          <ReactionCluster reactions={summary} isOwn={isOwn} onAdd={(e) => void addReaction(e)} onRemove={(e) => void removeReaction(e)} />
+          <ReactionCluster reactions={summary} isOwn={isOwn} onAdd={react} onRemove={(e) => void removeReaction(e)} />
           {isOwn && status === 'failed' && message.client_message_id && onRetry ? (
             <View style={styles.failedRow} testID="message-failed-row">
               <Text style={[styles.small, { color: colors.destructive }]}>{t('inbox.messageStatus.failed')}</Text>
@@ -332,6 +533,7 @@ export function MessageBubble({
               </Pressable>
             </View>
           ) : null}
+          {companionCard ? <VitanaCompanionCard card={companionCard} /> : null}
         </View>
       </View>
 
@@ -344,7 +546,7 @@ export function MessageBubble({
         testID="message-actions"
       >
         {!showTime ? (
-          <Text muted style={[styles.small, styles.center]} testID="message-drawer-time">
+          <Text muted style={[styles.small, styles.centerText]} testID="message-drawer-time">
             {time(message.created_at)}
           </Text>
         ) : null}
@@ -353,7 +555,7 @@ export function MessageBubble({
             <Pressable
               key={emoji}
               onPress={() => {
-                void addReaction(emoji);
+                react(emoji);
                 setDrawer(false);
               }}
               accessibilityRole="button"
@@ -366,49 +568,34 @@ export function MessageBubble({
           ))}
         </View>
         <View style={styles.actions}>
-          {onReply ? (
-            <Pressable
-              onPress={() => {
+          {onReply
+            ? action('reply', 'Reply', t('screens.messages.reply'), () => {
                 onReply(message);
                 setDrawer(false);
-              }}
-              accessibilityRole="button"
-              style={styles.action}
-              testID="message-action-reply"
-            >
-              <ChatIcon name="Reply" size={20} />
-              <Text muted style={styles.small}>
-                {t('screens.messages.reply')}
-              </Text>
-            </Pressable>
-          ) : null}
-          {isOwn && onEdit ? (
-            <Pressable
-              onPress={() => {
+              })
+            : null}
+          {action('copy', 'Copy', t('screens.messages.copy'), () => {
+            copy();
+            setDrawer(false);
+          })}
+          {forwardable
+            ? action('forward', 'Forward', t('screens.messages.forward'), () => {
+                setDrawer(false);
+                setForwardOpen(true);
+              })
+            : null}
+          {isOwn && onEdit
+            ? action('edit', 'Pencil', t('screens.messages.edit'), () => {
                 setDraft(message.body);
                 setEditing(true);
                 setDrawer(false);
-              }}
-              accessibilityRole="button"
-              style={styles.action}
-              testID="message-action-edit"
-            >
-              <ChatIcon name="Pencil" size={20} />
-              <Text muted style={styles.small}>
-                {t('screens.messages.edit')}
-              </Text>
-            </Pressable>
-          ) : null}
-          {isOwn && onDelete && !confirmDelete ? (
-            <Pressable onPress={() => setConfirmDelete(true)} accessibilityRole="button" style={styles.action} testID="message-action-delete">
-              <ChatIcon name="Trash2" size={20} color={colors.destructive} />
-              <Text style={[styles.small, { color: colors.destructive }]}>{t('screens.messages.delete')}</Text>
-            </Pressable>
-          ) : null}
+              })
+            : null}
+          {isOwn && onDelete && !confirmDelete ? action('delete', 'Trash2', t('screens.messages.delete'), () => setConfirmDelete(true), colors.destructive) : null}
         </View>
         {confirmDelete ? (
           <View style={styles.confirm} testID="message-delete-confirm">
-            <Text style={[styles.center, styles.bold]}>{t('screens.messages.deleteThisMessage')}</Text>
+            <Text style={[styles.centerText, styles.bold]}>{t('screens.messages.deleteThisMessage')}</Text>
             <View style={styles.editActions}>
               <Button variant="outline" onPress={() => setConfirmDelete(false)}>
                 {t('screens.messages.cancel')}
@@ -429,16 +616,8 @@ export function MessageBubble({
         ) : null}
       </BottomSheet>
 
-      {viewer !== null ? (
-        <Modal visible transparent animationType="fade" onRequestClose={() => setViewer(null)}>
-          <View style={[styles.viewer, { backgroundColor: colors.foreground }]} testID="chat-image-viewer">
-            <Image source={{ uri: viewer }} style={styles.viewerImage} resizeMode="contain" />
-            <Pressable onPress={() => setViewer(null)} accessibilityRole="button" accessibilityLabel={t('screens.messages.cancel')} style={styles.viewerClose} testID="chat-image-viewer-close">
-              <ChatIcon name="X" size={24} color={colors.background} />
-            </Pressable>
-          </View>
-        </Modal>
-      ) : null}
+      {viewer !== null ? <ChatImageViewer images={viewerImages} initialIndex={viewer} onClose={() => setViewer(null)} onForward={forwardable ? () => setForwardOpen(true) : undefined} /> : null}
+      {forwardOpen ? <ForwardMessageSheet open={forwardOpen} onClose={() => setForwardOpen(false)} payload={forwardPayload} userId={userId} /> : null}
     </View>
   );
 }
@@ -451,15 +630,21 @@ const styles = StyleSheet.create({
   bubble: { paddingHorizontal: 12, paddingVertical: 6 },
   content: { gap: 8 },
   body: { fontSize: 15, lineHeight: 20 },
+  md: { gap: 4 },
+  list: { gap: 2, paddingStart: 4 },
   bold: { fontWeight: '600' },
+  italic: { fontStyle: 'italic' },
+  code: { fontFamily: 'monospace', fontSize: 12, borderRadius: 4 },
   link: { textDecorationLine: 'underline', fontWeight: '500' },
   small: { fontSize: 12 },
   time: { fontSize: 11 },
   meta: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', gap: 4, marginTop: 2 },
+  metaBelow: { marginTop: 4 },
   image: { width: 240, height: 180, borderRadius: 12 },
-  fileChip: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 6 },
-  invite: { borderWidth: 1, borderRadius: 12, padding: 12, gap: 4 },
-  inviteBadge: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  center: { alignItems: 'center', justifyContent: 'center' },
+  fileChip: { flexDirection: 'row', alignItems: 'center', gap: 10, borderWidth: 1, borderRadius: 8, padding: 10, maxWidth: 280 },
+  fileText: { flex: 1, minWidth: 0 },
+  download: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
   forwarded: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 4 },
   edit: { gap: 8, minWidth: 220 },
   editActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 8 },
@@ -467,14 +652,11 @@ const styles = StyleSheet.create({
   systemChip: { borderWidth: 1, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 2 },
   failedRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 },
   retry: { flexDirection: 'row', alignItems: 'center', gap: 4, minHeight: 44, paddingHorizontal: 8 },
-  center: { textAlign: 'center' },
+  centerText: { textAlign: 'center' },
   quickRow: { flexDirection: 'row', justifyContent: 'center', gap: 12, paddingVertical: 8 },
   quick: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center' },
   emoji: { fontSize: 24 },
-  actions: { flexDirection: 'row', justifyContent: 'space-around' },
-  action: { alignItems: 'center', gap: 6, paddingVertical: 12, flex: 1 },
+  actions: { flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' },
+  action: { alignItems: 'center', gap: 6, paddingVertical: 12, width: '25%' },
   confirm: { gap: 12, paddingTop: 12 },
-  viewer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  viewerImage: { width: '100%', height: '80%' },
-  viewerClose: { position: 'absolute', top: 48, end: 16, padding: 8 },
 });

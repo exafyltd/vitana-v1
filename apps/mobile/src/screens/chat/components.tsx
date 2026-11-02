@@ -2,15 +2,15 @@
  * VTID-05458 (native-wave2-inbox-chat-calls-r2/conversation-chat) — the small
  * chat parts, native twins of web `src/components/messages/`:
  * MessageDivider (date / unread chip), TypingIndicator, ReplyQuote,
- * ReplyPreview, ReactionCluster, GroupAvatarStack, SwipeableMessage (swipe
+ * ReplyPreview, ReactionCluster (+ ReactionPopover: who reacted), GroupAvatarStack, SwipeableMessage (swipe
  * towards the end to reply: 60 px threshold, 80 px max, vertical movement
  * cancels — SwipeableMessage.tsx:13-16) and ConversationErrorBoundary.
  * RTL-safe (logical start/end only); every string arrives translated.
  */
-import { Component, useMemo, useRef, type ErrorInfo, type ReactNode } from 'react';
+import { Component, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { Avatar, Badge, Button, Text, useUITheme } from '../../ports/ui';
+import { Avatar, Badge, BottomSheet, Button, Text, useUITheme } from '../../ports/ui';
 import { ChatIcon } from '../../ports/chat';
 import { useI18n } from '../../i18n/I18nProvider';
 import { typingText } from './text';
@@ -126,13 +126,17 @@ export function ReactionCluster({
 }) {
   const { t } = useI18n();
   const { colors } = useUITheme();
+  const [whoOpen, setWhoOpen] = useState(false);
   if (reactions.length === 0) return null;
+  const groups = reactions.filter((r) => r.users.length > 0);
   return (
+    <>
     <View style={[styles.reactions, { justifyContent: isOwn ? 'flex-end' : 'flex-start' }]} testID="reaction-cluster">
       {reactions.map((r) => (
         <Pressable
           key={r.emoji}
           onPress={() => (r.hasUserReacted ? onRemove(r.emoji) : onAdd(r.emoji))}
+          onLongPress={() => setWhoOpen(true)}
           accessibilityRole="button"
           accessibilityLabel={t('chatNative.reactions.count', { count: r.count, emoji: r.emoji })}
           style={[styles.reactionPill, { borderColor: r.hasUserReacted ? colors.primary : colors.border, backgroundColor: colors.background }]}
@@ -145,6 +149,23 @@ export function ReactionCluster({
         </Pressable>
       ))}
     </View>
+    {/* ReactionPopover.tsx: who reacted with what (long press on a pill). */}
+    <BottomSheet open={whoOpen} onClose={() => setWhoOpen(false)} title={t('screens.messages.reactions')} testID="reaction-popover">
+      {groups.map((g) => (
+        <View key={g.emoji} style={styles.whoGroup}>
+          <Text style={styles.bold}>
+            {g.emoji} {g.users.length}
+          </Text>
+          {g.users.map((u, i) => (
+            <View key={`${g.emoji}-${u.user_id}-${i}`} style={styles.whoRow}>
+              <Avatar uri={u.avatar_url} fallback={(u.display_name?.[0] || '?').toUpperCase()} size={24} />
+              <Text>{u.display_name || t('screens.messages.anonymous')}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
+    </BottomSheet>
+    </>
   );
 }
 
@@ -257,6 +278,8 @@ export function StatusBadge({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  whoGroup: { gap: 6, paddingVertical: 6 },
+  whoRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   fill: { flex: 1, minWidth: 0 },
   small: { fontSize: 12 },
   bold: { fontWeight: '600' },
