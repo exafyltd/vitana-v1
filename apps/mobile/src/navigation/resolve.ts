@@ -43,6 +43,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/',
   '/alkalma',
   '/autopilot',
+  '/autopilot/audiobook',
   '/comm/find-partner',
   '/comm/groups',
   '/comm/members',
