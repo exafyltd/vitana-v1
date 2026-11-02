@@ -944,10 +944,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.CATEGORIES",
@@ -1124,10 +1124,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.PROVIDER_PROFILE",
@@ -2456,10 +2456,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "/comm/my-groups/:id",
@@ -2768,10 +2768,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "/post/:source/:id",
@@ -2888,10 +2888,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "/admin/*",
