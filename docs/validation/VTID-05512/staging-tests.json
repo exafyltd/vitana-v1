@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05512",
+  "service": "community-app",
+  "_note": "Native Wave 2 product-cart-checkout lane (native-wave2-discover-commerce-r2/product-cart-checkout). The port is proven offline (jest-expo + RNTL with a fake gateway and a Supabase double, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every command runs with APP_PROFILE=development. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screens) is DEFERRED to G1 as next_actor: owner (tasks.md product-cart-checkout task 8). The purchase-flow specs are read-only: never complete a real checkout or a real wallet top-up against a live system.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "regenerate the static i18n catalog map so the new discoverCommerceNative.commerce keys are bundled (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npx jest tests/discover-commerce", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "product detail loaded / 404 / error, every section, add-to-cart through the discover twin, affiliate Buy with surface product_detail + rec id; universal cart role-blocked / loading / error / empty, steppers, remove, saved tab, budget meter + advisory, wallet card, checkout idempotency (same key on retry, new key on changed contents, cleared after success), duplicate / affiliate / unknown-code paths, INSUFFICIENT_BALANCE -> prefilled AddMoneyDialog -> Stripe deposit, the Vitana agent; /checkout/success ?checkout_id refresh and ?deposit_id poll; tickets / packages success; cold start of every route incl. the legacy /cart redirect; 11-locale key parity, registers and Arabic RTL — fake gateway, no network (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "React 19 ReactElement typing; the commerce screens, data layer, port and the @vitana/core checkout-idempotency re-export type-check against the shell (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the five new routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "the 5 lane rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check` (run with APP_PROFILE=development)" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/discover-commerce/cart-01-product.yaml", "target": "/discover/product/:id", "next_actor": "owner",
+      "reason": "hero, price, reward line, sections, Back; Buy observed only; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/discover-commerce/cart-02-universal-cart.yaml", "target": "/universal-cart | /cart", "next_actor": "owner",
+      "reason": "tabs, budget meter, wallet card, lines; no stepper / checkout / top-up tap (non-GET, blocked by the guard); screenshot parity vs read-only staging; needs G1" },
+    { "flow": "apps/mobile/maestro/discover-commerce/cart-03-success.yaml", "target": "/checkout/success | /tickets/success | /packages/success", "next_actor": "owner",
+      "reason": "the confirmation states readable without a purchase (no params, ?checkout_id, invalid / missing purchase); ?deposit_id only with a G1-seeded deposit; never a real payment; needs G1" }
+  ]
+}
