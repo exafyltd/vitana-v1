@@ -3,7 +3,7 @@
  * `/health/conditions` (HEALTH.CONDITIONS), twin of the phone branch of
  * `src/pages/health/ConditionsRisks.tsx:45-83`: the health sub-navigation, the
  * ⚠ header and the two condition cards (risk assessments, preventive plans).
- * The cards have no handler on the web (ConditionsRisks.tsx:64), so they are
+ * The cards have no handler on the web (ConditionsRisks.tsx:60), so they are
  * not pressable here. The header description is a literal on the web
  * (ConditionsRisks.tsx:54); natively it is the `healthNative` catalog key.
  * No health data is read.

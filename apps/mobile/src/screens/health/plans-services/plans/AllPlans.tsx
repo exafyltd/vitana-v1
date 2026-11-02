@@ -13,7 +13,7 @@
  *   `generate-personalized-plan` edge function. The reads-only twin shows
  *   Generate Plan disabled and has no wizard (plan decision 3a).
  * - The Vitana Score in the footer and the relationship rows sit inside Radix
- *   tooltips on the web (VitanaScoreTooltip.tsx, CrossPlanRelationshipWidget.tsx:47);
+ *   tooltips on the web (VitanaScoreTooltip.tsx, CrossPlanRelationshipWidget.tsx:51);
  *   Radix tooltips do not open on touch, so on the phone they are plain text
  *   and the native twin renders no tooltip.
  * - The footer toasts carry the web's English description and action label

@@ -9,7 +9,8 @@
  * service detail sheet; its Book / Add Plan / Ask AI buttons only stop the
  * tap on the web (WellnessServices.tsx:110-118), so here they do nothing
  * either. Not ported: the utility row's ExpandableSearchButton (no search
- * handler) and UniversalCalendarButton (the calendar lane's popup), as on /memory.
+ * handler, WellnessServices.tsx:205) and UniversalCalendarButton (the calendar
+ * lane's popup, :206), as on /memory.
  */
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';

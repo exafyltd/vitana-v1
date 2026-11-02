@@ -11,9 +11,9 @@
  *
  * Not ported (recorded in docs/validation/VTID-05456/verification.md): the
  * per-item detail overlays the cards open on the web — RecipeSheet + Cook Mode
- * (NutritionPlanView.tsx:108-112), WorkoutModal (ExercisePlanView.tsx:57-61),
- * HydrationModal (HydrationPlanView.tsx:64-68), SleepModal
- * (SleepPlanView.tsx:63-67) and MentalModal (MentalPlanView.tsx:65-69) — so the
+ * (NutritionPlanView.tsx:98,111), WorkoutModal (ExercisePlanView.tsx:42,54),
+ * HydrationModal (HydrationPlanView.tsx:45,63), SleepModal
+ * (SleepPlanView.tsx:45,62) and MentalModal (MentalPlanView.tsx:42,64) — so the
  * cards are not pressable here.
  */
 import { useMemo, useState } from 'react';

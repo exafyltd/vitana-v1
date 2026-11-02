@@ -7,7 +7,7 @@
  * pillar cards. The tile goes where the web tile goes: `/health-tracker/vitana-index`
  * redirects to `/health/my-health-tracker` and on to `/health`
  * (src/App.tsx:1169,1173), so the native tile opens `/health`. The pillar
- * cards have no handler on the web (no onClick, PillarsOfHealth.tsx:91), so
+ * cards have no handler on the web (no onClick, PillarsOfHealth.tsx:90), so
  * they are not pressable here either.
  */
 import { StyleSheet, View } from 'react-native';

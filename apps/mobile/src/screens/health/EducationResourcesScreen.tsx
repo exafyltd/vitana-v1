@@ -7,10 +7,10 @@
  * (`EducationMasterActionPopup`, every action closes it and opens
  * `/health/education`), and the Articles / Videos / Podcasts split bar
  * (`useUrlTab("tab", "articles")`). The web's literal header description and
- * video / podcast samples (EducationResources.tsx:104,163-170,193-200) come from
+ * video / podcast samples (EducationResources.tsx:108,167-172,199-204) come from
  * the `healthNative` catalog. Not ported: the utility row's
- * ExpandableSearchButton (no search handler, EducationResources.tsx:108) and
- * UniversalCalendarButton (the calendar lane's popup, :109), as on /memory.
+ * ExpandableSearchButton (no search handler, EducationResources.tsx:113) and
+ * UniversalCalendarButton (the calendar lane's popup, :114), as on /memory.
  */
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -23,7 +23,7 @@ const TABS = ['articles', 'videos', 'podcasts'] as const;
 type Tab = (typeof TABS)[number];
 
 /**
- * EducationResources.tsx:136-143 (rating is a literal on the web). The web asks
+ * EducationResources.tsx:134-141 (rating is a literal on the web). The web asks
  * for `screens.health.eduArticle_*`, `screens.health.eduCategory_*` and
  * `screens.health.eduReadTime`, which no catalog has — the shard keeps them
  * under `screens.ai.*` (src/i18n/<locale>/screens.json) — so the web shows the
@@ -38,7 +38,7 @@ const ARTICLES = [
   { id: 'preventiveCare', categoryKey: 'screens.ai.eduCategory_prevention', mins: '12', rating: '4.9' },
 ] as const;
 
-/** EducationResources.tsx:163-170. */
+/** EducationResources.tsx:166-173. */
 const VIDEOS = [
   { id: 'v1', duration: '15:30', views: '2.1K' },
   { id: 'v2', duration: '22:45', views: '5.8K' },
@@ -48,7 +48,7 @@ const VIDEOS = [
   { id: 'v6', duration: '12:40', views: '1.9K' },
 ] as const;
 
-/** EducationResources.tsx:193-200. */
+/** EducationResources.tsx:198-205. */
 const PODCASTS = [
   { id: 'p1', duration: '45:20', episode: 12 },
   { id: 'p2', duration: '38:15', episode: 8 },
@@ -58,7 +58,7 @@ const PODCASTS = [
   { id: 'p6', duration: '48:25', episode: 18 },
 ] as const;
 
-/** EducationMasterActionPopup.tsx:27-91 — every action navigates to /health/education. */
+/** EducationMasterActionPopup.tsx:27-90 — every action navigates to /health/education. */
 const ACTIONS: ReadonlyArray<{ id: string; icon: string }> = [
   { id: 'browseArticles', icon: 'BookOpen' },
   { id: 'watchVideos', icon: 'Video' },
