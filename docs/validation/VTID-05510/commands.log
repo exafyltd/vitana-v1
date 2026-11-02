@@ -79,3 +79,6 @@ $ (apps/mobile) npx jest
 PASS — 97/97 suites, 2635/2635 tests (90.2 s)
 $ (apps/mobile) npm run typecheck
 PASS — 0 errors
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-discover-commerce-r2/discover --title "VTID-05510 (native-wave2-discover-commerce-r2/discover): native discover port"
+PASS — gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering
+FAIL (not this lane) — Collab handoff + Lane scope: ".kiro/specs/native-wave2-discover-commerce-r2/lanes/discover.md not found" (spec on the plan branch, not merged)
