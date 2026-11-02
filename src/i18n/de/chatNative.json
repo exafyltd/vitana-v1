@@ -1,0 +1,23 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} schreibt…",
+      "two": "{first} und {second} schreiben…",
+      "many": "Mehrere Personen schreiben…"
+    },
+    "conversation": {
+      "fallbackTitle": "Unterhaltung"
+    },
+    "reply": {
+      "yourself": "dich selbst",
+      "contentUnavailable": "Nachrichteninhalt nicht verfügbar"
+    },
+    "reactions": {
+      "reactWith": "Mit {emoji} reagieren",
+      "count": "{count} {emoji}-Reaktionen"
+    },
+    "bubble": {
+      "longPressHint": "Lange drücken für Reaktionen und Aktionen"
+    }
+  }
+}

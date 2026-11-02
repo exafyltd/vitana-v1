@@ -1,0 +1,23 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} 正在输入…",
+      "two": "{first} 和 {second} 正在输入…",
+      "many": "多人正在输入…"
+    },
+    "conversation": {
+      "fallbackTitle": "对话"
+    },
+    "reply": {
+      "yourself": "自己",
+      "contentUnavailable": "消息内容不可用"
+    },
+    "reactions": {
+      "reactWith": "用 {emoji} 回应",
+      "count": "{count} 个 {emoji} 回应"
+    },
+    "bubble": {
+      "longPressHint": "长按以回应或操作"
+    }
+  }
+}

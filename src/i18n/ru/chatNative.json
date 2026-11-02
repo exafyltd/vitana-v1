@@ -1,0 +1,23 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} печатает…",
+      "two": "{first} и {second} печатают…",
+      "many": "Несколько человек печатают…"
+    },
+    "conversation": {
+      "fallbackTitle": "Беседа"
+    },
+    "reply": {
+      "yourself": "себе",
+      "contentUnavailable": "Содержимое сообщения недоступно"
+    },
+    "reactions": {
+      "reactWith": "Реакция {emoji}",
+      "count": "Реакции {emoji}: {count}"
+    },
+    "bubble": {
+      "longPressHint": "Нажми и удерживай для реакций и действий"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} يكتب…",
+      "two": "{first} و{second} يكتبان…",
+      "many": "عدة أشخاص يكتبون…"
+    },
+    "conversation": {
+      "fallbackTitle": "محادثة"
+    },
+    "reply": {
+      "yourself": "نفسك",
+      "contentUnavailable": "محتوى الرسالة غير متاح"
+    },
+    "reactions": {
+      "reactWith": "تفاعل بـ {emoji}",
+      "count": "{count} تفاعلات {emoji}"
+    },
+    "bubble": {
+      "longPressHint": "اضغط مطولاً للتفاعلات والإجراءات"
+    }
+  }
+}

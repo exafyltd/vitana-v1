@@ -1,0 +1,23 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} kuca…",
+      "two": "{first} i {second} kucaju…",
+      "many": "Nekoliko osoba kuca…"
+    },
+    "conversation": {
+      "fallbackTitle": "Razgovor"
+    },
+    "reply": {
+      "yourself": "sebe",
+      "contentUnavailable": "Sadržaj poruke nije dostupan"
+    },
+    "reactions": {
+      "reactWith": "Reaguj sa {emoji}",
+      "count": "Reakcije {emoji}: {count}"
+    },
+    "bubble": {
+      "longPressHint": "Dugo pritisni za reakcije i radnje"
+    }
+  }
+}

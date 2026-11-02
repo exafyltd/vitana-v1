@@ -1,0 +1,23 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} yazıyor…",
+      "two": "{first} ve {second} yazıyor…",
+      "many": "Birkaç kişi yazıyor…"
+    },
+    "conversation": {
+      "fallbackTitle": "Sohbet"
+    },
+    "reply": {
+      "yourself": "kendin",
+      "contentUnavailable": "Mesaj içeriği kullanılamıyor"
+    },
+    "reactions": {
+      "reactWith": "{emoji} ile tepki ver",
+      "count": "{count} {emoji} tepkisi"
+    },
+    "bubble": {
+      "longPressHint": "Tepkiler ve işlemler için basılı tut"
+    }
+  }
+}
