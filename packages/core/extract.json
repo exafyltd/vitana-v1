@@ -122,6 +122,46 @@
           ]
         }
       ]
+    },
+    "discover": {
+      "iconFields": ["icon"],
+      "sources": [
+        {
+          "file": "src/lib/discover-reason.ts",
+          "take": ["SUBCATEGORY_I18N_KEY", "ReasonSource", "hasPersonalizationSignal"],
+          "stubs": {
+            "MarketplaceProduct": {
+              "expression": "{ match_reasons?: Array<{ kind: string; text: string }>; rank_reasons?: string[]; subcategory: string | null }",
+              "reason": "VTID-05510: MarketplaceProduct is `import type`-only from the class-B src/hooks/useMarketplace.ts (runtime supabase + import.meta.env). ReasonSource only Picks match_reasons / rank_reasons / subcategory, so exactly those three fields are reproduced verbatim here; the web file stays out of the native strict TS program. getPersonalizedReason itself calls the web `t()` (class B) and is re-implemented natively over SUBCATEGORY_I18N_KEY."
+            }
+          }
+        },
+        { "file": "src/lib/currency-convert.ts", "take": [{ "name": "RATE_PER_EUR", "export": false }, "toEurCents"] },
+        { "file": "src/hooks/useMarketplace.ts", "take": ["formatPrice"] },
+        {
+          "file": "src/components/discover/CategoryShopSections.tsx",
+          "take": [{ "name": "SectionMeta", "as": "ShopSectionMeta" }, "SECTION_CONFIGS", "ITEMS_PER_SECTION", "FETCH_LIMIT"]
+        },
+        { "file": "src/components/discover/MobileDiscoverView.tsx", "take": [{ "name": "categoryConfig", "as": "MOBILE_DISCOVER_CATEGORIES" }] },
+        { "file": "src/components/cart/AddToCartButton.tsx", "take": [{ "name": "UUID_RE", "as": "CART_PRODUCT_UUID_RE" }] },
+        { "file": "src/pages/ShopFeed.tsx", "take": ["HOLD_THRESHOLD_MS"] },
+        {
+          "file": "src/hooks/useShopFeed.ts",
+          "take": ["shopFeedQueryKeys", "BATCHED_TYPES", "FLUSH_INTERVAL_MS", "MAX_BATCH"],
+          "stubs": {
+            "ShopEventType": {
+              "expression": "\"impression\" | \"hold_2s\" | \"anchor_tap\" | \"drawer_open\" | \"drawer_expand\" | \"pdp_view\" | \"variant_change\" | \"add_to_cart\" | \"buy_now\" | \"checkout_start\" | \"purchase\" | \"save\" | \"unsave\" | \"share\" | \"drawer_close\"",
+              "reason": "VTID-05510: ShopEventType is a type-only import from the class-B src/lib/shop-feed-client.ts (runtime community-gateway import). Its union is reproduced verbatim (shop-feed-client.ts ShopEventType) so BATCHED_TYPES keeps its exact type without the web class-B file entering the native strict TS program."
+            }
+          }
+        }
+      ]
+    },
+    "discover-category": {
+      "iconFields": ["icon"],
+      "sources": [
+        { "file": "src/pages/discover/CategoryProducts.tsx", "take": [{ "name": "SectionMeta", "as": "CategorySectionMeta" }, "SECTION_META"] }
+      ]
     }
   }
 }
