@@ -3,23 +3,25 @@
  * Groups tab bodies under the ID card on the web mobile `/me/profile`
  * (`EditProfilePage.tsx` mobile branch):
  *
- *   PostsTab   ← showcase header (`MobileShowcaseHeader`) + hint, then the
- *                member's posts (`ProfilePostsTab`, own posts + Create post)
+ *   PostsTab   ← showcase header (`MobileShowcaseHeader`) + hint, the Cover
+ *                Library tile, then the member's posts (`ProfilePostsTab`,
+ *                own posts + Create post)
  *   AboutTab   ← the tap-to-edit About card + `MilestoneTimeline`
- *   MediaTab   ← `PhotoGallery`
+ *   MediaTab   ← `PhotoGallery` (owner: Upload, the upload sheet, delete with confirm)
  *   GroupsTab  ← `MobileGroupsTabContent` (3-group preview, view all / discover)
  *
- * Reads only (data/profile.ts); "Create post" opens the native composer the
+ * Reads from data/profile.ts; the uploads are ProfileMedia.tsx. "Create post" opens the native composer the
  * home lane already ports (`MobileCreatePostSheet`, the same web component).
  * React 19: `ReactElement`.
  */
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { Avatar, Button, PressableRow, Spinner, Text, useUITheme } from '../../ports/ui';
+import { Avatar, Button, IconButton, PressableRow, Spinner, Text, useUITheme } from '../../ports/ui';
 import { useI18n } from '../../i18n/I18nProvider';
 import { navigateToWebPath } from '../../navigation/navigate';
 import { SectionCard } from './components';
 import { initialsOf } from './ProfileCards';
+import { CoverLibraryTile, GalleryDeleteSheet, GalleryUploadSheet } from './ProfileMedia';
 import { useProfileGallery, useProfileMilestones, useProfilePosts, useUserGroups, type MyProfile } from './data/profile';
 
 function Empty({ title, description, testID }: { title: string; description?: string; testID: string }): ReactElement {
@@ -35,7 +37,17 @@ function Empty({ title, description, testID }: { title: string; description?: st
   );
 }
 
-export function PostsTab({ profile, onManageShowcase, onCreatePost }: { profile: MyProfile; onManageShowcase: () => void; onCreatePost: () => void }): ReactElement {
+export function PostsTab({
+  profile,
+  onManageShowcase,
+  onCreatePost,
+  onCoverLibrary,
+}: {
+  profile: MyProfile;
+  onManageShowcase: () => void;
+  onCreatePost: () => void;
+  onCoverLibrary: () => void;
+}): ReactElement {
   const { t } = useI18n();
   const posts = useProfilePosts(profile.userId);
   return (
@@ -51,6 +63,7 @@ export function PostsTab({ profile, onManageShowcase, onCreatePost }: { profile:
       <Text variant="caption" muted>
         {t('editProfile.showcaseHint')}
       </Text>
+      <CoverLibraryTile onPress={onCoverLibrary} />
       <Button variant="outline" onPress={onCreatePost} testID="profile-create-post">
         {t('profilePosts.createPost')}
       </Button>
@@ -120,27 +133,40 @@ export function MediaTab({ profile }: { profile: MyProfile }): ReactElement {
   const { t } = useI18n();
   const gallery = useProfileGallery(profile.userId);
   const photos = gallery.data ?? [];
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   return (
     <View style={styles.tabBody} testID="profile-tab-media">
       <SectionCard title={t('gallery.title')}>
+        <View style={styles.galleryHeader}>
+          <Button variant="outline" size="sm" onPress={() => setUploadOpen(true)} testID="profile-gallery-upload">
+            {t('gallery.upload')}
+          </Button>
+        </View>
         {gallery.isLoading ? (
           <Spinner />
         ) : photos.length === 0 ? (
-          <Empty title={t('gallery.empty')} testID="profile-gallery-empty" />
+          <View style={styles.empty} testID="profile-gallery-empty">
+            <Text weight="600">{t('gallery.empty')}</Text>
+            <Button variant="ghost" size="sm" onPress={() => setUploadOpen(true)} testID="profile-gallery-upload-first">
+              {t('gallery.uploadFirst')}
+            </Button>
+          </View>
         ) : (
           <View style={styles.grid} testID="profile-gallery-grid">
             {photos.map((p) => (
-              <Image
-                key={p.id}
-                source={{ uri: p.image_url }}
-                style={styles.photo}
-                accessibilityLabel={p.caption ?? t('gallery.photo')}
-                testID={`profile-photo-${p.id}`}
-              />
+              <View key={p.id} style={styles.photo}>
+                <Image source={{ uri: p.image_url }} style={styles.photoImage} accessibilityLabel={p.caption ?? t('gallery.photo')} testID={`profile-photo-${p.id}`} />
+                <View style={styles.photoDelete}>
+                  <IconButton name="X" size={14} accessibilityLabel={t('common.delete')} onPress={() => setDeleteId(p.id)} testID={`profile-photo-delete-${p.id}`} />
+                </View>
+              </View>
             ))}
           </View>
         )}
       </SectionCard>
+      <GalleryUploadSheet open={uploadOpen} onClose={() => setUploadOpen(false)} userId={profile.userId} photoCount={photos.length} />
+      <GalleryDeleteSheet photoId={deleteId} onClose={() => setDeleteId(null)} userId={profile.userId} />
     </View>
   );
 }
@@ -197,7 +223,10 @@ const styles = StyleSheet.create({
   aboutCard: { borderWidth: StyleSheet.hairlineWidth, borderRadius: 12, padding: 16 },
   milestone: { flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  photo: { width: '31%', aspectRatio: 1, borderRadius: 8 },
+  photo: { width: '31%', aspectRatio: 1, borderRadius: 8, overflow: 'hidden' },
+  photoImage: { width: '100%', height: '100%' },
+  photoDelete: { position: 'absolute', top: 4, end: 4 },
+  galleryHeader: { flexDirection: 'row', justifyContent: 'flex-end' },
   groupRow: { paddingVertical: 6 },
   empty: { alignItems: 'center', gap: 6, paddingVertical: 24 },
   centerText: { textAlign: 'center' },

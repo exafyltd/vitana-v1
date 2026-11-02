@@ -2,8 +2,9 @@
  * VTID-05429 (Native Wave 2, profile lane) — test harness for the profile and
  * privacy screens. An in-memory Supabase double with the builder methods the
  * native profile data layer uses (select with head counts, eq/in/order/limit,
- * maybeSingle, update, rpc, auth.getSession) that RECORDS every write and
- * never sends one, a gateway fake (pathname match), and the provider wrapper
+ * maybeSingle, update, insert, delete, rpc, auth.getSession, storage
+ * upload / getPublicUrl) that RECORDS every write and never sends one, a
+ * gateway fake (pathname match, records method + body), and the provider wrapper
  * under the UI kit provider. No network: tests import `../helpers/no-network`
  * first, so any real fetch fails the test.
  */
@@ -35,6 +36,9 @@ export type ProfileDoubleOptions = {
 };
 
 export type RecordedWrite = { table: string; values: Row; filters: Array<[string, any]> };
+export type RecordedInsert = { table: string; values: Row };
+export type RecordedDelete = { table: string; filters: Array<[string, any]> };
+export type RecordedUpload = { bucket: string; path: string; bytes: number; options: Row };
 
 const ok = (data: any = null, count: number | null = null): Result => ({ data, error: null, count });
 const err = (message = 'error'): Result => ({ data: null, error: { message }, count: null });
@@ -43,15 +47,30 @@ export function createProfileDouble(opts: ProfileDoubleOptions = {}) {
   const tables = opts.tables ?? {};
   const userId = opts.userId === undefined ? 'u-1' : opts.userId;
   const writes: RecordedWrite[] = [];
+  const inserts: RecordedInsert[] = [];
+  const deletes: RecordedDelete[] = [];
+  const uploads: RecordedUpload[] = [];
   const reads: string[] = [];
+  let insertSeq = 0;
 
   function from(table: string) {
     const filters: Array<[string, string, any]> = [];
     let head = false;
     let limitN: number | null = null;
     let updateValues: Row | null = null;
+    let insertValues: Row | null = null;
+    let isDelete = false;
 
     const compute = (): Result => {
+      if (insertValues) {
+        inserts.push({ table, values: insertValues });
+        insertSeq += 1;
+        return opts.failWrites ? err('write failed') : ok({ id: `ins-${insertSeq}`, ...insertValues });
+      }
+      if (isDelete) {
+        deletes.push({ table, filters: filters.map(([, c, v]) => [c, v]) });
+        return opts.failWrites ? err('write failed') : ok(null);
+      }
       if (updateValues) {
         writes.push({ table, values: updateValues, filters: filters.map(([, c, v]) => [c, v]) });
         return opts.failWrites ? err('write failed') : ok(null);
@@ -68,6 +87,9 @@ export function createProfileDouble(opts: ProfileDoubleOptions = {}) {
     const builder: any = {
       select: (_cols?: string, o?: { head?: boolean }) => ((head = !!o?.head), builder),
       update: (values: Row) => ((updateValues = values), builder),
+      insert: (values: Row) => ((insertValues = values), builder),
+      delete: () => ((isDelete = true), builder),
+      single: async () => compute(),
       eq: (c: string, v: any) => (filters.push(['eq', c, v]), builder),
       in: (c: string, v: any) => (filters.push(['in', c, v]), builder),
       order: () => builder,
@@ -99,18 +121,30 @@ export function createProfileDouble(opts: ProfileDoubleOptions = {}) {
     return ok(null);
   });
 
-  return { client: { auth, rpc, from: jest.fn(from) } as any, writes, reads };
+  const storage = {
+    from: (bucket: string) => ({
+      upload: jest.fn(async (path: string, body: Uint8Array, options: Row) => {
+        uploads.push({ bucket, path, bytes: body?.length ?? 0, options });
+        return opts.failWrites ? err('upload failed') : ok({ path });
+      }),
+      getPublicUrl: (path: string) => ({ data: { publicUrl: `https://storage.test/${bucket}/${path}` } }),
+    }),
+  };
+
+  return { client: { auth, rpc, from: jest.fn(from), storage } as any, writes, inserts, deletes, uploads, reads };
 }
 
 /** A gateway fake that matches by pathname; records every path; never touches a network. */
 export function pathGateway(routes: Record<string, unknown>) {
   const calls: string[] = [];
-  const fetch = async (path: string) => {
+  const requests: Array<{ path: string; method: string; body?: string; headers: Record<string, string> }> = [];
+  const fetch = async (path: string, init: RequestInit = {}) => {
     calls.push(path);
+    requests.push({ path, method: init.method ?? 'GET', body: typeof init.body === 'string' ? init.body : undefined, headers: (init.headers as Record<string, string>) ?? {} });
     const body = Object.prototype.hasOwnProperty.call(routes, path.split('?')[0]) ? routes[path.split('?')[0]] : undefined;
     return { ok: body !== undefined, status: body !== undefined ? 200 : 404, text: async () => (body === undefined ? '' : JSON.stringify(body)) } as unknown as Response;
   };
-  return { fetch, calls };
+  return { fetch, calls, requests };
 }
 
 const qcs: QueryClient[] = [];
@@ -141,7 +175,7 @@ export function renderProfile(ui: ReactElement, opts: { client: unknown; gateway
       </QueryClientProvider>
     );
   }
-  return { ...render(ui, { wrapper: Wrapper }), gatewayCalls: gw.calls };
+  return { ...render(ui, { wrapper: Wrapper }), gatewayCalls: gw.calls, gatewayRequests: gw.requests };
 }
 
 /** The member's `profiles` row used across the screen tests. */

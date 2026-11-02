@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Objave za traženje partnera"
       },
       "partnerSeekNote": "Uvek privatno. Protokol uzajamnog otkrivanja štiti ove objave, bez obzira na podešavanje."
+    },
+    "media": {
+      "photosDenied": "Dozvoli pristup fotografijama u Podešavanjima da izabereš sliku.",
+      "unsupportedFormat": "Nepodržan format slike (.{ext}). Koristi JPG, PNG, GIF ili WebP."
+    },
+    "gallery": {
+      "photos": "Fotografije",
+      "selectMultiple": "Izaberi više fotografija",
+      "tapToAddMore": "Dodirni da dodaš još",
+      "uploadingProgress": "Otpremanje {current} od {total}...",
+      "deleteTitle": "Da li si siguran?",
+      "deleteDescription": "Ova fotografija će biti trajno obrisana. Ova radnja se ne može poništiti."
     }
   }
 }

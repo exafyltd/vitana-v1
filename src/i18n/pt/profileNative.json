@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Publicações de busca de parceiro"
       },
       "partnerSeekNote": "Sempre privado. O protocolo de revelação mútua protege essas publicações, independentemente da opção."
+    },
+    "media": {
+      "photosDenied": "Permita o acesso às suas fotos nos Ajustes para escolher uma imagem.",
+      "unsupportedFormat": "Formato de imagem não suportado (.{ext}). Use JPG, PNG, GIF ou WebP."
+    },
+    "gallery": {
+      "photos": "Fotos",
+      "selectMultiple": "Selecione várias fotos",
+      "tapToAddMore": "Toque para adicionar mais",
+      "uploadingProgress": "Carregando {current} de {total}...",
+      "deleteTitle": "Você tem certeza?",
+      "deleteDescription": "Esta foto será excluída permanentemente. Esta ação não pode ser desfeita."
     }
   }
 }

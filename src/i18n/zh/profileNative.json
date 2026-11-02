@@ -47,6 +47,18 @@
         "postsPartnerSeek": "寻找伴侣的帖子"
       },
       "partnerSeekNote": "始终私密。无论如何设置，相互揭示协议都会保护这些帖子。"
+    },
+    "media": {
+      "photosDenied": "请在“设置”中允许访问你的照片，以便选择图片。",
+      "unsupportedFormat": "不支持的图片格式（.{ext}）。请使用 JPG、PNG、GIF 或 WebP。"
+    },
+    "gallery": {
+      "photos": "张照片",
+      "selectMultiple": "选择多张照片",
+      "tapToAddMore": "点按以添加更多",
+      "uploadingProgress": "正在上传第 {current} 张，共 {total} 张...",
+      "deleteTitle": "确定吗？",
+      "deleteDescription": "此照片将被永久删除。此操作无法撤销。"
     }
   }
 }

@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Partnersuche-Beiträge"
       },
       "partnerSeekNote": "Immer privat. Das gegenseitige Freigabeprotokoll schützt diese Beiträge, egal wie du schaltest."
+    },
+    "media": {
+      "photosDenied": "Erlaube den Zugriff auf deine Fotos in den Einstellungen, um ein Bild auszuwählen.",
+      "unsupportedFormat": "Nicht unterstütztes Bildformat (.{ext}). Bitte verwende JPG, PNG, GIF oder WebP."
+    },
+    "gallery": {
+      "photos": "Fotos",
+      "selectMultiple": "Mehrere Fotos auswählen",
+      "tapToAddMore": "Tippe, um weitere hinzuzufügen",
+      "uploadingProgress": "Lade {current} von {total} hoch …",
+      "deleteTitle": "Bist du sicher?",
+      "deleteDescription": "Dieses Foto wird dauerhaft gelöscht. Das kann nicht rückgängig gemacht werden."
     }
   }
 }

@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Posty z szukaniem partnera"
       },
       "partnerSeekNote": "Zawsze prywatne. Protokół wzajemnego ujawnienia chroni te posty, niezależnie od ustawienia."
+    },
+    "media": {
+      "photosDenied": "Zezwól na dostęp do zdjęć w Ustawieniach, aby wybrać obraz.",
+      "unsupportedFormat": "Nieobsługiwany format obrazu (.{ext}). Użyj JPG, PNG, GIF lub WebP."
+    },
+    "gallery": {
+      "photos": "Zdjęcia",
+      "selectMultiple": "Wybierz kilka zdjęć",
+      "tapToAddMore": "Dotknij, aby dodać więcej",
+      "uploadingProgress": "Przesyłanie {current} z {total}...",
+      "deleteTitle": "Czy na pewno?",
+      "deleteDescription": "To zdjęcie zostanie trwale usunięte. Tej operacji nie można cofnąć."
     }
   }
 }

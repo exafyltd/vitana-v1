@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Partner-search posts"
       },
       "partnerSeekNote": "Always private. Mutual-reveal protocol gates these regardless of toggle."
+    },
+    "media": {
+      "photosDenied": "Allow access to your photos in Settings to choose an image.",
+      "unsupportedFormat": "Unsupported image format (.{ext}). Please use JPG, PNG, GIF, or WebP."
+    },
+    "gallery": {
+      "photos": "Photos",
+      "selectMultiple": "Select multiple photos",
+      "tapToAddMore": "Tap to add more",
+      "uploadingProgress": "Uploading {current} of {total}...",
+      "deleteTitle": "Are you sure?",
+      "deleteDescription": "This photo will be permanently deleted. This action cannot be undone."
     }
   }
 }

@@ -47,6 +47,18 @@
         "postsPartnerSeek": "منشورات البحث عن شريك"
       },
       "partnerSeekNote": "خاص دائمًا. بروتوكول الكشف المتبادل يحمي هذه المنشورات مهما كان الإعداد."
+    },
+    "media": {
+      "photosDenied": "اسمح بالوصول إلى صورك من الإعدادات لاختيار صورة.",
+      "unsupportedFormat": "تنسيق صورة غير مدعوم (.{ext}). يُرجى استخدام JPG أو PNG أو GIF أو WebP."
+    },
+    "gallery": {
+      "photos": "صور",
+      "selectMultiple": "اختر عدة صور",
+      "tapToAddMore": "انقر لإضافة المزيد",
+      "uploadingProgress": "جارٍ تحميل {current} من {total}...",
+      "deleteTitle": "هل أنت متأكد؟",
+      "deleteDescription": "سيتم حذف هذه الصورة نهائيًا. لا يمكن التراجع عن هذا الإجراء."
     }
   }
 }

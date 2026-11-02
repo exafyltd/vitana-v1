@@ -7,16 +7,18 @@
  * (Identity / Social / Account / Business, persisted in the `card` search
  * param like the web `?card=`), the active card, then — except on Business —
  * the content stats strip and the Posts / About / Media / Groups tabs. The
- * edit entry points open bottom-sheet twins of the web drawers (Identity,
- * About, Account; the Showcase "Manage" sheet), and Share opens the system
- * share sheet with the web's canonical share URL.
+ * edit entry points open bottom-sheet twins of the web drawers (Identity with
+ * the avatar upload, About with the links and languages editors, Account, the
+ * Cover Library; the Showcase "Manage" sheet), the Media tab uploads to the
+ * photo gallery, and Share opens the system share sheet with the web's
+ * canonical share URL. Photos come from `expo-image-picker` through
+ * `src/ports/profile-media.ts`.
  *
- * Data is read and written natively (data/profile.ts, plan decision 2). Not
- * ported in this lane (see docs/validation/VTID-05429/lane-brief.md): avatar /
- * cover / gallery uploads and the Cover Library (need the native image
- * picker), the Autopilot bio popup, the enrichment card strips, the QR share
- * screen, the interests picker, video / music galleries and milestone
- * editing. React 19: `ReactElement`.
+ * Data is read and written natively (data/profile.ts, data/uploads.ts, plan
+ * decision 2). Like the mobile web branch, this screen mounts no profile
+ * progress card and no dance / partner / service-offering drawer (those are
+ * desktop-only on the web; see docs/validation/VTID-05429/lane-brief.md).
+ * React 19: `ReactElement`.
  */
 import { useState, type ReactElement } from 'react';
 import { ScrollView, Share, StyleSheet, View } from 'react-native';
@@ -29,6 +31,7 @@ import { Segmented, StatsStrip, UnderlineTabs } from './components';
 import { AccountCard, BusinessCard, IdentityCard, SocialCard } from './ProfileCards';
 import { AboutSheet, AccountSheet, IdentitySheet } from './ProfileSheets';
 import { AboutTab, GroupsTab, MediaTab, PostsTab } from './ProfileTabs';
+import { CoverLibrarySheet } from './ProfileMedia';
 import { useMyProfile, useProfileStatsCount, type MyProfile } from './data/profile';
 
 export type CardSide = 'front' | 'back' | 'account' | 'business';
@@ -55,15 +58,16 @@ export function profileSharePath(profile: Pick<MyProfile, 'profileId' | 'avatarU
   return `/profiles/${encodeURIComponent(profile.profileId)}?v=${shareHash(`v2:${versionInput}`)}`;
 }
 
-type Sheet = 'identity' | 'about' | 'account' | 'showcase' | 'post' | null;
+type Sheet = 'identity' | 'about' | 'account' | 'showcase' | 'post' | 'cover-library' | null;
 
 export function MyProfileScreen(): ReactElement {
   const { t } = useI18n();
   const { colors } = useUITheme();
-  const params = useLocalSearchParams<{ card?: string }>();
+  const params = useLocalSearchParams<{ card?: string; drawer?: string }>();
   const [side, setSide] = useState<CardSide>(() => cardSideOf(params.card));
   const [tab, setTab] = useState<ProfileTab>('posts');
-  const [sheet, setSheet] = useState<Sheet>(null);
+  // Web `?drawer=cover-library` opens the Cover Library (IntentComposer links there); no other value opens anything on mobile web.
+  const [sheet, setSheet] = useState<Sheet>(() => (params.drawer === 'cover-library' ? 'cover-library' : null));
   const query = useMyProfile();
   const profile = query.data;
   const stats = useProfileStatsCount(profile?.userId);
@@ -127,7 +131,7 @@ export function MyProfileScreen(): ReactElement {
               ]}
             />
             <UnderlineTabs testID="profile-tabs" value={tab} onChange={setTab} tabs={TABS.map((id) => ({ id, label: t(`profileTabs.${id}`) }))} />
-            {tab === 'posts' ? <PostsTab profile={profile} onManageShowcase={() => setSheet('showcase')} onCreatePost={() => setSheet('post')} /> : null}
+            {tab === 'posts' ? <PostsTab profile={profile} onManageShowcase={() => setSheet('showcase')} onCreatePost={() => setSheet('post')} onCoverLibrary={() => setSheet('cover-library')} /> : null}
             {tab === 'about' ? <AboutTab profile={profile} onEditAbout={() => setSheet('about')} /> : null}
             {tab === 'media' ? <MediaTab profile={profile} /> : null}
             {tab === 'groups' ? <GroupsTab profile={profile} /> : null}
@@ -145,6 +149,7 @@ export function MyProfileScreen(): ReactElement {
         </Button>
       </BottomSheet>
       <MobileCreatePostSheet open={sheet === 'post'} onClose={close} />
+      <CoverLibrarySheet open={sheet === 'cover-library'} onClose={close} userId={profile.userId} />
     </>
   );
 }

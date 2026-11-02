@@ -1,7 +1,7 @@
 /**
  * VTID-05429 (Native Wave 2, profile lane) — module mocks for the profile
  * screen tests. Imported BEFORE the code under test so jest hoists the
- * jest.mock calls. expo-router is stubbed (no native router in jsdom) with
+ * jest.mock calls. The photo picker is faked; expo-router is stubbed (no native router in jsdom) with
  * controllable search params; safe-area insets are zero; storage is the
  * in-memory mock. `mock`-prefixed names are the ones a jest factory may use.
  */
@@ -38,6 +38,16 @@ jest.mock('react-native-safe-area-context', () => ({
   SafeAreaProvider: ({ children }: { children: unknown }) => children,
   SafeAreaInsetsContext: jest.requireActual('react').createContext(null),
 }));
+
+/** The photo library is faked (no device): each test sets the next pick result. */
+const mockPicker = {
+  requestMediaLibraryPermissionsAsync: jest.fn(async () => ({ granted: true })),
+  launchImageLibraryAsync: jest.fn(async (_opts?: unknown): Promise<unknown> => ({ canceled: true, assets: [] })),
+};
+jest.mock('expo-image-picker', () => mockPicker);
+
+/** The faked `expo-image-picker`. */
+export const picker = mockPicker;
 
 /** The stubbed expo-router `router`, for asserting navigation. */
 export const router = mockRouter;

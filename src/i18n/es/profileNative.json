@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Publicaciones de búsqueda de pareja"
       },
       "partnerSeekNote": "Siempre privado. El protocolo de revelación mutua protege estas publicaciones, sin importar el ajuste."
+    },
+    "media": {
+      "photosDenied": "Permite el acceso a tus fotos en Ajustes para elegir una imagen.",
+      "unsupportedFormat": "Formato de imagen no compatible (.{ext}). Usa JPG, PNG, GIF o WebP."
+    },
+    "gallery": {
+      "photos": "Fotos",
+      "selectMultiple": "Selecciona varias fotos",
+      "tapToAddMore": "Toca para añadir más",
+      "uploadingProgress": "Subiendo {current} de {total}...",
+      "deleteTitle": "¿Estás seguro?",
+      "deleteDescription": "Esta foto se eliminará de forma permanente. Esta acción no se puede deshacer."
     }
   }
 }

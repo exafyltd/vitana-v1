@@ -47,6 +47,18 @@
         "postsPartnerSeek": "Partner arama gönderileri"
       },
       "partnerSeekNote": "Her zaman gizli. Karşılıklı açıklama protokolü, ayar ne olursa olsun bu gönderileri korur."
+    },
+    "media": {
+      "photosDenied": "Bir görsel seçmek için Ayarlar'da fotoğraflarına erişime izin ver.",
+      "unsupportedFormat": "Desteklenmeyen görsel biçimi (.{ext}). Lütfen JPG, PNG, GIF veya WebP kullan."
+    },
+    "gallery": {
+      "photos": "Fotoğraf",
+      "selectMultiple": "Birden fazla fotoğraf seç",
+      "tapToAddMore": "Daha fazla eklemek için dokun",
+      "uploadingProgress": "{total} fotoğraftan {current}. yükleniyor...",
+      "deleteTitle": "Emin misin?",
+      "deleteDescription": "Bu fotoğraf kalıcı olarak silinecek. Bu işlem geri alınamaz."
     }
   }
 }

@@ -216,14 +216,22 @@ export function useMyProfile() {
 /** One UPDATE on the member's own `profiles` row. */
 export type ProfileUpdate = { table: 'profiles'; values: Row; match: { user_id: string } };
 
-export type IdentityForm = { displayName: string; handle: string; longevityArchetype: string };
+export type IdentityForm = {
+  displayName: string;
+  handle: string;
+  longevityArchetype: string;
+  /** The avatar the sheet shows (uploaded or removed there); omitted = the loaded one. */
+  avatarUrl?: string;
+  avatarOffsetX?: number;
+  avatarOffsetY?: number;
+};
 export type AboutForm = { bio: string; location: string; links: ProfileLink[]; languages: string[] };
 export type AccountForm = { firstName: string; lastName: string; phone: string; country: string; city: string };
 
 /**
- * Web `IdentityDrawer.handleSave` payload. The avatar fields are carried from
- * the loaded profile (the native sheet edits name / handle / archetype; the
- * avatar upload is the image-picker FEAT — see lane-brief.md).
+ * Web `IdentityDrawer.handleSave` payload. The avatar fields are the sheet's
+ * (an upload through the media port, or Remove → '' at 50/50), else the
+ * loaded profile's.
  */
 export function buildIdentityUpdate(userId: string, form: IdentityForm, current: MyProfile, now: Date = new Date()): ProfileUpdate {
   return {
@@ -231,9 +239,9 @@ export function buildIdentityUpdate(userId: string, form: IdentityForm, current:
     values: {
       display_name: form.displayName,
       handle: form.handle,
-      avatar_url: current.avatarUrl ?? '',
-      avatar_offset_x: current.avatarOffsetX,
-      avatar_offset_y: current.avatarOffsetY,
+      avatar_url: form.avatarUrl ?? current.avatarUrl ?? '',
+      avatar_offset_x: form.avatarOffsetX ?? current.avatarOffsetX,
+      avatar_offset_y: form.avatarOffsetY ?? current.avatarOffsetY,
       longevity_archetype: form.longevityArchetype,
       updated_at: now.toISOString(),
     },
