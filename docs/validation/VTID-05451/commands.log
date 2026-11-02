@@ -144,3 +144,9 @@ core-closure: 22 roots, 32 src files, 11 assets — up to date
 $ npx eslint .
 exit=0
 (no i18n catalog change in this round; the round-0 i18n checks still apply)
+
+## preflight (fix round 1, on 36a84934a)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-public-auth-onboarding-r3/public-legal --title "VTID-05451 (native-wave2-public-auth-onboarding-r3/public-legal): native public and legal screens port"
+PASS Collab handoff; PASS Lane scope; PASS gh for plan( PR / lane files; PASS PR-GATE scope / sparring / weakening / red-green; PASS Kiro steering
+preflight: every check passed
+exit=0
