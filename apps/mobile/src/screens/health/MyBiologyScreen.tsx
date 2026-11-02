@@ -2,8 +2,8 @@
  * VTID-05457 (native-wave2-health-biology-r3/vitana-index-biology) — the
  * biology screen (`HEALTH.MY_BIOLOGY /health/my-biology`, `HEALTH.BIOLOGY_OMICS
  * ?tab=omics`, `HEALTH.BIOLOGY_SUPPLEMENTS ?tab=supplements`), a 1:1 port of
- * the phone branch of `src/pages/health/MyBiology.tsx` (:456-763; the
- * Spotlight branch :240-454 is desktop + flag only, plan decision 6). One
+ * the phone branch of `src/pages/health/MyBiology.tsx` (:459-763; the
+ * Spotlight branch :242-457 is desktop + flag only, plan decision 6). One
  * route; the `tab` search param picks the tab like the web `useUrlTab("tab",
  * "medical")` (an unknown value falls back to medical; a change writes `?tab=`
  * back and keeps the default out of the URL).
@@ -18,7 +18,7 @@
  *    error state with retry, the report cards (type icon, title, type +
  *    status badges, date, provider) or the empty state with its CTA.
  *    Medical = blood_panel / hormones / cancer / allergy / imaging / other /
- *    untyped; omics = genomics / metabolomics / microbiome (:136-145).
+ *    untyped; omics = genomics / metabolomics / microbiome (:151-159).
  *  - My Supplements: "Add Supplement", the category filter (all + every
  *    catalogue category with its count), the cards (pencil opens the edit
  *    dialog), loading / empty, "Your Active Categories" chips that set the filter.
@@ -32,12 +32,12 @@
  * only"; lanes/vitana-index-biology.md "write-disabled upload/add
  * affordances"): the upload and supplement submits are disabled, a card's
  * delete is disabled, and a report card does not open its file — the web
- * opens it through a storage signed URL (`createSignedUrl`, :148-161, a
+ * opens it through a storage signed URL (`createSignedUrl`, :161-174, a
  * POST), which the network guard (GETs only) does not allow; health-hub's
  * Medical mode makes the same call. The web "Connect" taps only log an
  * activity row (useHealthLogger.ts, a write), which the native affordance
  * does not do. While the reports load the web shows the empty state
- * (HorizontalCardList gets no isLoading, :533-549); so does the twin.
+ * (HorizontalCardList gets no isLoading, :544-560); so does the twin.
  * React 19: typed with `ReactElement`.
  */
 import { useEffect, useState, type ReactElement } from 'react';
@@ -57,13 +57,13 @@ const DEFAULT_TAB: BiologyTab = 'medical';
 
 const asTab = (v: unknown): BiologyTab => ((BIOLOGY_TABS as readonly unknown[]).includes(v) ? (v as BiologyTab) : DEFAULT_TAB);
 
-/** MyBiology.tsx:136-145. */
+/** MyBiology.tsx:151-159. */
 export const MEDICAL_TYPES = ['blood_panel', 'hormones', 'cancer', 'allergy', 'imaging', 'other'];
 export const OMICS_TYPES = ['genomics', 'metabolomics', 'microbiome'];
 export const isMedical = (r: LabReport) => !r.report_type || MEDICAL_TYPES.includes(r.report_type);
 export const isOmics = (r: LabReport) => !!r.report_type && OMICS_TYPES.includes(r.report_type);
 
-/** MyBiology.tsx:73-95 report-type icons (labels from spotlightTierB.health.reportType.*). */
+/** MyBiology.tsx:74-96 report-type icons (labels from spotlightTierB.health.reportType.*). */
 const REPORT_TYPE_ICON: Record<string, string> = {
   blood_panel: 'Droplets',
   genomics: 'Dna',
@@ -76,7 +76,7 @@ const REPORT_TYPE_ICON: Record<string, string> = {
   other: 'MoreHorizontal',
 };
 
-/** MyBiology.tsx:97-102 STATUS_CONFIG (labels from spotlightTierB.health.reportStatus.*). */
+/** MyBiology.tsx:98-103 STATUS_CONFIG (labels from spotlightTierB.health.reportStatus.*). */
 const STATUS_VARIANT: Record<string, BadgeVariant> = { uploaded: 'secondary', processing: 'outline', parsed: 'default', failed: 'destructive' };
 
 function ReportCard({ report }: { report: LabReport }): ReactElement {

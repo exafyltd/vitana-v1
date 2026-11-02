@@ -14,7 +14,7 @@
  * READS ONLY (plan.md "No health data is written to production. Reads only";
  * lanes/vitana-index-biology.md "Upload / add-supplement affordances are
  * presented but write-disabled"). The log dialog's submit is a
- * `POST /integrations/manual/log` (VitanaLogDataDialog.tsx:84-98) and the
+ * `POST /integrations/manual/log` (VitanaLogDataDialog.tsx:92-102) and the
  * supplement submit an INSERT / UPDATE of `user_supplements`
  * (useUserSupplements.ts) — both buttons are rendered disabled and nothing
  * is wired to them, the same treatment health-hub gives the report upload
@@ -49,7 +49,7 @@ export interface FeatureOption {
   example: string;
 }
 
-/** VitanaLogDataDialog.tsx:22-50 FEATURES (labels from healthNative.indexDetail.logData.features.*). */
+/** VitanaLogDataDialog.tsx:24-51 FEATURES (labels from healthNative.indexDetail.logData.features.*). */
 export const LOG_FEATURES: Record<VitanaPillarKey, readonly FeatureOption[]> = {
   nutrition: [
     { feature_key: 'biomarker_glucose', unit: 'mg/dL', example: '92' },

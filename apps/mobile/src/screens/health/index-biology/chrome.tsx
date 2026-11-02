@@ -1,6 +1,6 @@
 /**
  * VTID-05457 (native-wave2-health-biology-r3/vitana-index-biology) — the page
- * chrome `MyBiology.tsx` renders on a phone (its mobile-web branch, :456-...):
+ * chrome `MyBiology.tsx` renders on a phone (its mobile-web branch, :459-763):
  *
  *  - `HealthSubNav`: `<SubNavigation items={healthNavigation} />`
  *    (src/components/SubNavigation.tsx, items src/config/navigation.ts:50-56).
@@ -86,7 +86,7 @@ function RailPill({ testID, onPress, icon, label }: { testID: string; onPress: (
   );
 }
 
-/** MyBiology.tsx:472-485 inside UtilityActionButton (utility-action-button.tsx:99-125). */
+/** MyBiology.tsx:476-487 inside UtilityActionButton (utility-action-button.tsx:99-125). */
 export function BiologyUtilityBar({ onAddData }: { onAddData: () => void }): ReactElement {
   const { t } = useHealthText();
   const hideVoucher = isIAPRestricted();
@@ -160,7 +160,7 @@ export function BiologyPanel({ icon, title, subtitle, children, testID }: { icon
   );
 }
 
-/** The centred icon + message + optional action of the panes' empty / error states (MyBiology.tsx:519-560). */
+/** The centred icon + message + optional action of the panes' empty / error states (MyBiology.tsx:534-560, :600-626). */
 export function PaneState({ icon, title, body, action, testID }: { icon: string; title: string; body?: string; action?: ReactNode; testID: string }): ReactElement {
   const { colors } = useUITheme();
   return (

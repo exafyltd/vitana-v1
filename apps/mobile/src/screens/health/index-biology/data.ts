@@ -4,15 +4,15 @@
  * (the Index, lab reports and supplements come from there, never re-fetched):
  *
  *  - "has the member uploaded a blood panel?" (`useHasBloodPanel`,
- *    VitanaIndexDetail.tsx:113-127). The web counts `lab_reports` rows with
+ *    VitanaIndexDetail.tsx:115-128). The web counts `lab_reports` rows with
  *    `report_type = 'blood_panel'` as a HEAD request and relies on RLS; the
  *    native read asks for at most one id with a GET (the network guard allows
  *    GETs only) and adds the explicit `user_id = auth.uid()` filter, like
  *    health-hub's `useLabReports`. Same answer: at least one row → done.
- *  - the Mission Alignment queue (`MissionAlignmentCard.tsx:136-162`,
+ *  - the Mission Alignment queue (`MissionAlignmentCard.tsx:137-170`,
  *    `GET /api/v1/autopilot/recommendations?limit=200&status=new` with the
  *    community role header), aggregated by the same pure `aggregate()`
- *    (:59-96).
+ *    (:62-99).
  *  - the per-device feature-card dismissals of the card strip
  *    (`useCardDismiss.ts`: key `vitana.card.<type>.dismissed_at`, 7-day TTL),
  *    over AsyncStorage. Device-local only; no server call.
@@ -65,7 +65,7 @@ export interface AggregateBuckets {
   economyCounts: Record<EconomicAxis, number>;
 }
 
-/** MissionAlignmentCard.tsx:59-96. */
+/** MissionAlignmentCard.tsx:62-99. */
 export function aggregate(rows: RecommendationRow[]): AggregateBuckets {
   const pillarCounts: AggregateBuckets['pillarCounts'] = { nutrition: 0, hydration: 0, exercise: 0, sleep: 0, mental: 0, none: 0 };
   const economyCounts: AggregateBuckets['economyCounts'] = { find_match: 0, marketplace: 0, income_generation: 0, business_formation: 0, none: 0 };

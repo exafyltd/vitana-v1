@@ -1,7 +1,7 @@
 /**
  * VTID-05457 (native-wave2-health-biology-r3/vitana-index-biology) — the
  * Unified Card System strip the Vitana Index page mounts
- * (`<EnrichmentCardStrip screen="vitana-index" />`, VitanaIndexDetail.tsx:707),
+ * (`<EnrichmentCardStrip screen="vitana-index" />`, VitanaIndexDetail.tsx:701),
  * a twin of `src/components/vitana/EnrichmentCardStrip.tsx` with
  * `maxCards = 3`, stacked:
  *

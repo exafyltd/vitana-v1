@@ -17,7 +17,7 @@ import { BiologyIcon } from '../../../ports/health-biology';
 import { useHealthText } from '../text';
 import { aggregate, ECONOMIC_AXES, PILLAR_ORDER, useMissionAlignment, type RecommendationRow } from './data';
 
-/** MissionAlignmentCard.tsx:57. */
+/** MissionAlignmentCard.tsx:60. */
 export const CONTRACT_URL = 'https://github.com/exafyltd/vitana-platform/blob/main/docs/GOVERNANCE/ULTIMATE-GOAL.md';
 
 function BarRow({ label, count, total, color, testID }: { label: string; count: number; total: number; color: string; testID: string }): ReactElement {
