@@ -117,6 +117,59 @@ counts: `commands.log`.
 11. **Bookmarked tab label** — the web passes `false` as `value0` when the count is 0
     (WellnessServices.tsx:322); natively an empty string.
 
+## Gift voucher after checkout (review finding discover-c68982e, blocking) — fixed natively, no backend change
+
+**Problem.** The dialog only called `stripe-create-voucher-checkout` and opened the browser. The web shows the
+post-purchase states on the Stripe return URL (`src/components/voucher/MaxinaVoucherModal.tsx:112-132`), but the
+function builds `success_url` from the request Origin (`supabase/functions/stripe-create-voucher-checkout/index.ts:147`,
+`:161`, fallback `https://vitana.app`), so a native member landed signed-out on the web origin and could not reach
+`voucher-download-pdf` (it needs the Authorization header, `supabase/functions/voucher-download-pdf/index.ts:250-274`).
+
+**Approach (read on vitana-v1 origin/main; no edge-function, schema or deploy change):**
+1. Keep the order id. The function already returns `{ url, session_id, order_id }`
+   (`stripe-create-voucher-checkout/index.ts:179-184`); `createVoucherCheckout` now types and returns it
+   (`apps/mobile/src/screens/discover/data/utility.ts` `createVoucherCheckout`).
+2. Open checkout with expo-web-browser `openBrowserAsync` (already on main, `apps/mobile/package.json`
+   `expo-web-browser 57.0.3`; no new package). iOS resolves when the member closes the browser; Android resolves
+   at once with `opened` (`node_modules/expo-web-browser/build/WebBrowser.js:112`).
+3. Return leg (brief "External checkout / portal return leg"): while a checkout is pending the dialog re-reads the
+   order when the browser closes (iOS), on AppState `active` (Android, and any resume) and on screen focus
+   (`apps/mobile/src/screens/discover/VoucherModal.tsx` `checkPending`, the AppState listener and `useFocusEffect`). The read is the web's own
+   `voucher_orders` read (`src/hooks/useVouchers.ts:76-80`: own rows by `buyer_user_id`, newest first) narrowed to
+   the order id (`apps/mobile/src/screens/discover/data/utility.ts` `fetchVoucherOrder`), polled 4 × 1 s for webhook lag (`waitForPaidVoucherOrder`; the
+   webhook sets `paid`, `stripe-webhook/index.ts:309-315`).
+4. `paid` → the web's success state (title, "Your {tier} voucher is ready", download, send by e-mail, view in
+   orders, done). Not paid → back to the selection, which is what the web shows on a cancel return
+   (`voucher_cancelled` has no handler on the web). A checkout error keeps `voucher.toast.checkoutFailed`.
+5. Download → `voucher-download-pdf` `{ orderId }` with the member's session (supabase `functions.invoke`, same as
+   `useDownloadVoucherPdf`, `src/hooks/useVouchers.ts:37-48`), then the web's mobile PDF preview (voucher card,
+   Save / Share, Download PDF, share hint; `MaxinaVoucherModal.tsx:642-760`, share-API branch). Download PDF opens
+   the signed URL in the in-app browser (system PDF viewer with save/share); Save / Share uses React Native
+   `Share.share` (the web's `navigator.share`).
+6. E-mail form → `voucher-send-email` `{ orderId, recipientEmail, recipientName, message }`
+   (`src/hooks/useVouchers.ts:50-66`), `voucher.toast.voucherSent` with `{email}`, then the dialog closes.
+7. Toasts are the web's `voucher.toast.*` keys from the existing catalog (`src/i18n/<locale>/voucher.json`,
+   all 11 locales); no new strings, no catalog change.
+8. The web's return params are handled too if such a link reaches the app: `voucher_success=true&order_id&tier`
+   opens the success state and clears the params; `voucher_cancelled` is cleared (`apps/mobile/src/screens/discover/VoucherModal.tsx` return-param effect).
+
+**Remaining deviations.**
+- Error toasts: the web toasts the raw server message on a download / e-mail failure
+  (`MaxinaVoucherModal.tsx:303-308`, `:341-346`); natively `voucher.toast.downloadFailed` (catalog key, no
+  untranslated server text on screen).
+- Copy link / Open in browser (the web's no-share-API branch) are not shown: the native share sheet is always
+  available, so the web's share-API branch is the one ported. No clipboard package is on main.
+- A webhook that trails the 4 s poll leaves the selection showing; the next app resume or screen focus re-reads
+  while the dialog is open, and the order stays in Orders → vouchers, whose download self-heals the status via
+  Stripe (`voucher-download-pdf/index.ts:161-226`).
+- Device runtime (real browser, real Stripe return) is deferred to G1; tests use fakes only.
+
+**Tests** (`apps/mobile/tests/discover-commerce/voucher.test.tsx`, red on the base head → green, `red-on-base.txt`): request builders (checkout keeps
+`order_id`; own-row `voucher_orders` read by id / newest / signed out; the paid poll; download and e-mail
+bodies) and the dialog: paid → success → PDF preview → download + share; e-mail form → send → toast → close;
+failed PDF read; not paid → selection; checkout failure; Android open → AppState active → refetch → success;
+the web's return params.
+
 ## UX acceptance (Commerce UX contract)
 
 - User steps: unchanged — the same taps as the mobile web on every screen.
