@@ -156,3 +156,9 @@ $ (apps/mobile) node ../../scripts/native/core-closure.mjs --check  -> up to dat
 $ (apps/mobile) APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> Dependencies are up to date
 $ npx eslint (chat screens, ports, inbox routes, inbox-chat tests, app.config.ts, tests/app-config.test.ts)  -> exit=0
 $ i18n register / long-words / subscriptions / stamp / audit (chatNative errors 0); gen-tokens --check; check-shell-pins; node --test scripts/native (68/0); vitest src/i18n scripts/native (25/25)  -> all pass
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on af5b97cb5 (origin head) + this commit; edits: tests/inbox-chat/conversation-chat/bubble.test.tsx, tests/inbox-chat/conversation-chat/helpers.tsx, tests/inbox-chat/conversation-chat/i18n-rtl.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/inbox-chat/conversation-chat  (default workers, run 1 of 2)-> 11 suites, 232/232 pass (56s, 2026-11-02T21:34Z)
+$ npx jest tests/inbox-chat/conversation-chat  (default workers, run 2 of 2)-> 11 suites, 232/232 pass (15s, 2026-11-02T21:34Z)

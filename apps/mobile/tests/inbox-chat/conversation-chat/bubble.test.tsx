@@ -16,6 +16,9 @@ import { MessageList } from '../../../src/screens/chat/MessageList';
 import type { ChatViewMessage } from '../../../src/screens/chat/data/types';
 import { createChatDouble, makeChatWrapper, ME, PEER } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 afterAll(() => __setSupabaseForTests(null));
 
 const base = (over: Partial<ChatViewMessage>): ChatViewMessage => ({

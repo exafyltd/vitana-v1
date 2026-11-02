@@ -16,6 +16,10 @@ import { __setGatewayForTests } from '../../../src/auth/gateway';
 import { TenantProvider } from '../../../src/identity/TenantProvider';
 import { LanguageProvider } from '../../../src/identity/LanguageProvider';
 import { ThemeProvider } from '../../../src/theme/ThemeProvider';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 type Row = Record<string, any>;
 type Result = { data: any; error: { message: string; code?: string } | null; count?: number | null };

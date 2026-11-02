@@ -18,6 +18,9 @@ import { languageFromLocale } from '../../../src/i18n/I18nProvider';
 import { ConversationScreen } from '../../../src/screens/chat/ConversationScreen';
 import { chatGateway, createChatDouble, dm, makeChatWrapper, ME, PEER, PROFILES } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 afterAll(() => __setSupabaseForTests(null));
 
 const APP = join(__dirname, '../../..');
