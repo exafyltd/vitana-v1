@@ -836,10 +836,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.AI",
@@ -848,10 +848,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.FITNESS",
@@ -860,10 +860,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.HEALTH",
@@ -872,10 +872,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.MEDIA",
@@ -884,10 +884,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.OTHER",
@@ -896,10 +896,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.PRODUCTIVITY",
@@ -908,10 +908,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "CONNECTORS.SOCIAL",
@@ -920,10 +920,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "DISCOVER.AI_PICKS",
@@ -1820,7 +1820,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -1832,7 +1832,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -1964,10 +1964,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.LIMITATIONS",
@@ -2108,10 +2108,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.SUPPORT",
@@ -2120,10 +2120,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.SUPPORT_COMMUNITY",
@@ -2132,10 +2132,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.SUPPORT_CONTACT",
@@ -2144,10 +2144,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.SUPPORT_FAQ",
@@ -2156,10 +2156,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.TENANT_ROLE",
@@ -2792,7 +2792,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null

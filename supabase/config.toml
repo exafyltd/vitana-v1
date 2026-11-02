@@ -69,9 +69,6 @@ verify_jwt = true
 [functions.social-media-import]
 verify_jwt = true
 
-[functions.linkedin-import]
-verify_jwt = true
-
 [functions.generate-enhanced-recommendations]
 verify_jwt = true
 

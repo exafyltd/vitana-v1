@@ -164,9 +164,20 @@ describe('VTID-05111 dashboard hero — exactly one spotlight card, real data on
     const { container } = render(<VitanaIndexHeroCard index={index} isLoading={false} spotlightLabel ringMedia />);
     const card = container.querySelector('[data-vcard-size="spotlight"]') as HTMLElement;
     expect(card.querySelector('[data-vcard-spotlight-label]')).not.toBeNull();
-    expect(card.className).toContain('ring-primary');
+    // the Spotlight identity ring and the media art come from VCard (asserted in VCard.test.tsx)
     expect(card.querySelector('[data-vcard-media] [data-vitana-index-ring]')).not.toBeNull();
+    // VTID-05420 round 2: the ring has no wash of its own, so the VCard media art shows through
+    expect(card.querySelector('[data-vitana-index-ring]')!.className).not.toMatch(/(^|\s)(bg-|from-|via-|to-)/);
     expect(card.querySelectorAll('li').length).toBe(5);
+    // VTID-05420: the five pillar names are shown in full, never truncated
+    const labels = [...card.querySelectorAll('[data-pillar-label]')] as HTMLElement[];
+    expect(labels.length).toBe(5);
+    for (const l of labels) {
+      expect(l.className).not.toMatch(/(^|\s)(truncate|text-ellipsis|line-clamp-\d)(\s|$)/);
+      expect(l.className.split(/\s+/)).toContain('shrink-0');
+      expect(l.className.split(/\s+/)).toContain('whitespace-nowrap');
+      expect(l.textContent!.length).toBeGreaterThan(1);
+    }
   });
 
   it('opens on Enter when it is interactive, but not when an inner button is used', () => {
