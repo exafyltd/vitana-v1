@@ -1,0 +1,5 @@
+{
+  "deleteAccountNative": {
+    "errorFallback": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  }
+}

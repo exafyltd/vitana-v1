@@ -46,6 +46,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  '/delete-account',
+  '/daily-diary',
   '/dev/orb-bench',
   '/home',
   '/home/comments',

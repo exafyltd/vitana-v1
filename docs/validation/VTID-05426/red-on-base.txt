@@ -1,0 +1,24 @@
+# VTID-05426 red on base: tests/diary/** + the updated tests/app-config.test.ts run against origin/main (no diary screen, no capture deps / plugins yet)
+# cmd (apps/mobile, detached worktree at origin/main + copied tests): npm ci && node ../../scripts/native/gen-i18n-map.mjs && npx jest tests/diary --ci ; npx jest tests/app-config.test.ts --ci
+base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+
+$ npx jest tests/diary --ci
+FAIL tests/diary/diary.test.tsx
+  ● Test suite failed to run
+    Cannot find module 'expo-image-picker' from 'tests/diary/mocks.ts'
+FAIL tests/diary/gateway-i18n.test.tsx
+  ● Test suite failed to run
+    Cannot find module 'expo-image-picker' from 'tests/diary/mocks.ts'
+FAIL tests/diary/app-config-plugins.test.ts
+  ● Test suite failed to run
+    Cannot find module '/projects/sandbox/vitana-v1/.worktrees/diary-red-base/src/i18n/en/diaryNative.json' from 'tests/diary/app-config-plugins.test.ts'
+Test Suites: 3 failed, 3 total
+Tests:       0 total
+
+$ npx jest tests/app-config.test.ts --ci
+FAIL tests/app-config.test.ts
+    ✕ adds SecureStore and Sign in with Apple, keeps the .dev ids (3 ms)
+    -   "expo-image-picker",
+    -   "expo-audio",
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 30 passed, 31 total

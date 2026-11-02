@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "يحتاج Vitana إلى الكاميرا لالتقاط صور لمذكراتك ولبلاغات الأخطاء.",
+      "photosUsage": "يحتاج Vitana إلى الوصول إلى صورك لإضافة صور إلى مذكراتك وإلى بلاغات الأخطاء.",
+      "deniedTitle": "الوصول غير مسموح",
+      "deniedCamera": "السماح بالوصول إلى الكاميرا من الإعدادات يتيح التقاط صورة.",
+      "deniedPhotos": "السماح بالوصول إلى الصور من الإعدادات يتيح اختيار صورة.",
+      "deniedMicrophone": "السماح بالوصول إلى الميكروفون من الإعدادات يتيح تسجيل إدخال صوتي."
+    },
+    "selectMode": "اختيار قسم من المذكرات",
+    "startRecording": "بدء التسجيل",
+    "stopRecording": "إيقاف التسجيل",
+    "close": "إغلاق",
+    "removePhoto": "إزالة الصورة",
+    "entriesLoadError": "تعذر تحميل الإدخالات.",
+    "photoSource": {
+      "title": "إضافة صورة",
+      "camera": "التقاط صورة",
+      "library": "الاختيار من المكتبة"
+    },
+    "indexSaved": {
+      "title": "تم الحفظ · Vitana Index +{n}",
+      "breakdown": "{breakdown}. الضغط على Index يعرض التغيير.",
+      "signals": "تم تسجيل {count} من الإشارات الصحية.",
+      "signalsCaption": "تم تسجيل {count} من الإشارات الصحية من التعليق على الصورة."
+    },
+    "screenOption": {
+      "home": "الرئيسية",
+      "community": "المجتمع",
+      "communityEvents": "المجتمع – الفعاليات",
+      "discover": "استكشاف",
+      "discoverMarketplace": "استكشاف – السوق",
+      "businessHub": "Business Hub",
+      "inbox": "البريد الوارد",
+      "inboxMessages": "البريد الوارد – الرسائل",
+      "health": "الصحة",
+      "healthDashboard": "الصحة – لوحة المعلومات",
+      "aiAssistant": "مساعد الذكاء الاصطناعي",
+      "aiAssistantOrb": "مساعد الذكاء الاصطناعي – ORB",
+      "wallet": "المحفظة",
+      "sharing": "المشاركة",
+      "memoryDiary": "الذاكرة – المذكرات",
+      "memoryGarden": "الذاكرة – الحديقة",
+      "calendar": "التقويم",
+      "settings": "الإعدادات",
+      "profile": "الملف الشخصي",
+      "liveRooms": "الغرف المباشرة",
+      "notifications": "الإشعارات",
+      "other": "أخرى"
+    }
+  }
+}

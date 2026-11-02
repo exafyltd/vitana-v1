@@ -1,0 +1,73 @@
+# VTID-05428 (native-wave2-profile-settings-r2/delete-account) — commands and results
+# Linux, worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-profile-settings-r2-delete-account
+# base origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce. Offline: fixtures / mocked client only.
+# HOME pointed at apps/mobile/.expo/home (gitignored) for the expo CLI, because /root/.expo is read-only here.
+
+## red on base (test written first, origin/main + only the test file)
+$ cd apps/mobile && npm run gen:i18n && npx jest tests/delete-account
+FAIL tests/delete-account/delete-account.test.tsx — Cannot find module '../../src/screens/delete-account/DeleteAccountScreen'
+Test Suites: 1 failed; Tests: 0 total            (full output: red-on-base.txt)
+
+## green (apps/mobile)
+$ npx jest tests/delete-account
+PASS — Test Suites: 1 passed, 1 total; Tests: 39 passed, 39 total (jest exits cleanly, ~28 s)
+
+$ npm run typecheck                      (pretypecheck: gen:i18n, 11 locales, 1419 shards)
+PASS — tsc --noEmit, 0 errors
+
+$ npm test -- --ci                       (full suite, once)
+PASS — Test Suites: 77 passed, 77 total; Tests: 2096 passed, 2096 total
+
+$ APP_PROFILE=development npm run bundle
+PASS — Metro + Hermes iOS and Android, "Exported: dist"
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+PASS — "Dependencies are up to date" (no dependency added)
+
+$ npm run parity:check                   (node ../../scripts/native/parity-ledger.mjs --check)
+PASS — "OK — 435 rows, 27 native route(s)"
+
+$ node ../../scripts/native/parity-ledger.mjs --sync
+PASS — 435 rows (added 0, updated 0, removed 0, stale kept 0); only the /delete-account status edit in the diff
+
+$ node ../../scripts/native/core-closure.mjs --check
+PASS — "22 roots, 32 src files, 11 assets — up to date" (core not changed; closure / mobile-ci-paths not regenerated)
+
+## repo root (i18n + web)
+$ node scripts/i18n-register-check.mjs --all          (npm run i18n:register)
+PASS — "No formal-register violations." (de du, fr tu, pt você, ru ты, tr sen, zh 你; ar skipped by design)
+
+$ node scripts/i18n-stamp-source.mjs --check-all      (i18n-check "No language left behind")
+PASS — exit 0, 0 keys stale in every locale
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+PASS — "No long words found."
+
+$ node scripts/check-locale-registry.mjs
+PASS — picker and supported_locales agree
+
+$ node scripts/i18n-audit.mjs --report-only
+report-only — 0 findings mention deleteAccountNative (the 17k+ pre-existing findings are other namespaces)
+
+$ node scripts/i18n-parity-gate.mjs --all             (npm run i18n:gate)
+FAIL (pre-existing, not this lane) — 10 failing checks, all "review-queue" counts in en/es/sr/fr/pt/ru/pl/ar/zh/tr;
+identical output on the untouched main checkout (origin/main a41e89a0d), so not caused by this lane
+
+$ npx vitest run src/i18n
+PASS — Test Files 3 passed; Tests 25 passed
+
+$ npm run lint -- --quiet
+FAIL (pre-existing) — 1329 errors repo-wide; 0 in any lane file (eslint -f unix | grep delete-account/deleteAccountNative → 0)
+
+$ npm run build
+PASS — vite "built in 31.40s"
+
+## governance
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD \
+    --branch kiro/native-wave2-profile-settings-r2/delete-account \
+    --title "VTID-05428 (native-wave2-profile-settings-r2/delete-account): native public delete-account port"
+run 1 (head 9ccdd4bad): 1 failed — PR-GATE sparring: plan-sparring.md had no owner-approval line → added (policy converged-auto-v1)
+run 2 (head caac92362dc854259cb45d3a8ff89e4db781e628): PASS — "preflight: every check passed"
+  PASS Collab handoff · PASS Lane scope · PASS gh for plan( PR / vitana-platform lane files · PASS PR-GATE scope
+  PASS PR-GATE sparring · PASS PR-GATE weakening · PASS PR-GATE red-green · PASS Kiro steering
+  (the only later commit adds this log entry under docs/validation/VTID-05428/)
