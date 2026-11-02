@@ -113,3 +113,60 @@ PASS  PR-GATE weakening
 PASS  PR-GATE red-green
 PASS  Kiro steering
 exit=1 (only the two lane-file-not-found reds)
+
+## Fix round 1 (review inbox-list-0835c65: R1.1 Contacts pill + ContactsTabContent, Search messages + MessageSearchPanel, PresenceIndicator)
+$ git fetch origin && git merge --ff-only origin/kiro/native-wave2-inbox-chat-calls-r2/inbox-list  -> Already up to date
+$ git merge origin/main  -> Already up to date (no conflicts)
+$ (apps/mobile) npm ci  -> exit=0
+
+## Red on the previous head (detached worktree at 0835c658c + the fix-1 tests copied in) — see red-fix1.txt
+$ (apps/mobile) npm ci && npm run gen:i18n && npx jest tests/inbox-chat --ci
+Test Suites: 4 failed, 3 passed, 7 total
+Tests:       17 failed, 68 passed, 85 total   (+ presence.test.tsx: Cannot find module src/screens/inbox/data/presence)
+exit=1
+
+## apps/mobile — fix-1 code
+$ npx jest tests/inbox-chat --ci
+Test Suites: 7 passed, 7 total
+Tests:       94 passed, 94 total
+exit=0
+(first run: presence tracked "away" because jest's AppState.currentState is not "active" -> the member is
+ away only when the app is background / inactive, the web's document.hidden; the presence teardown timer
+ re-created a real Supabase client after the test client was reset -> it now removes the channel on the
+ client it was created with)
+
+$ npm run typecheck
+exit=0
+
+$ npm test -- --ci
+Test Suites: 91 passed, 91 total
+Tests:       2376 passed, 2376 total
+exit=0
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/android/entry-84338a70ceb8fca51fc7127540e3d302.hbc (17MB)
+_expo/static/js/ios/entry-f6025277352b06cf0d33a1017c7f351d.hbc (17MB)
+Exported: dist
+exit=0 (dist/ and .expohome removed afterwards)
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 35 native route(s)
+exit=0
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0 (no core change)
+
+## repo root — i18n + ESLint
+$ node scripts/i18n-register-check.mjs --all          -> No formal-register violations. exit=0
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found. exit=0
+$ node scripts/check-i18n-subscriptions.mjs           -> OK. exit=0
+$ node scripts/check-locale-registry.mjs              -> OK. exit=0
+$ node scripts/i18n-stamp-source.mjs --check-all      -> 0 changed keys. exit=0
+$ node scripts/i18n-audit.mjs --report-only           -> errors mentioning inboxNative: 0. exit=0
+$ npx eslint apps/mobile/src/screens/inbox apps/mobile/src/ports/{inbox.tsx,links.ts,badges.ts} "apps/mobile/app/(app)/inbox" apps/mobile/tests/inbox-chat
+exit=0 (0 problems)

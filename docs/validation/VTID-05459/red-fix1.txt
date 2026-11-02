@@ -1,0 +1,38 @@
+# VTID-05459 fix round 1 — red on the previous head 0835c658c8c103305c6f8585d5afb921ec1e73ed
+# detached worktree at 0835c65, the fix-1 tests (contacts / message-search / presence + updated inbox.test + helpers) copied in, no implementation
+# $ (apps/mobile) npm ci && npm run gen:i18n && npx jest tests/inbox-chat --ci
+
+FAIL tests/inbox-chat/inbox-list/presence.test.tsx
+FAIL tests/inbox-chat/inbox-list/message-search.test.tsx (47.14 s)
+FAIL tests/inbox-chat/inbox-list/contacts.test.tsx (48.082 s)
+FAIL tests/inbox-chat/inbox-list/inbox.test.tsx (50.139 s)
+PASS tests/inbox-chat/inbox-list/new-conversation.test.tsx (52.559 s)
+PASS tests/inbox-chat/inbox-list/routes-i18n.test.tsx (52.686 s)
+PASS tests/inbox-chat/inbox-list/archived-inspiration.test.tsx (53.199 s)
+
+    Cannot find module '../../../src/screens/inbox/data/presence' from 'tests/inbox-chat/inbox-list/presence.test.tsx'
+  ● inbox Contacts pill › adds a contact by hand: the phone check RPC, then the insert of the member row
+  ● inbox Contacts pill › builds the web useContacts reads: own rows by name, member profiles, global profiles for the ones without an avatar
+  ● inbox Contacts pill › deletes a contact only after the confirmation, scoped to the member
+  ● inbox Contacts pill › invites through WhatsApp with the member invite link, then marks the contact invited
+  ● inbox Contacts pill › "Message" on a member with a DM opens that conversation
+  ● inbox Contacts pill › "Message" on a member without a DM opens the New sheet with them preselected (profiles read)
+  ● inbox Contacts pill › removes the phone contacts after the confirmation (gateway DELETE)
+  ● inbox Contacts pill › searches by name, phone or e-mail and shows the no-match line
+  ● inbox Contacts pill › shows the Contacts pill after Groups and renders the contacts instead of the conversation list
+  ● inbox Contacts pill › shows the empty state without contacts
+  ● inbox list: loaded › renders the header, the action row and one card per conversation, group rows first in time order
+  ● inbox message search › a hit opens its conversation at the message and closes the panel
+  ● inbox message search › applies the type filter and complete local days, and pages with the cursor
+  ● inbox message search › hints under 3 characters, then sends the web query and lists the hits with the conversation name
+  ● inbox message search › shows the button with its label in the Community context only
+  ● inbox message search › shows the empty and the error state
+  ● inbox message search › shows the error state when the gateway fails
+  ● inbox list: loaded › renders the header, the action row and one card per conversation, group rows first in time order
+
+    Unable to find an element with testID: inbox-filter-contacts
+
+
+Test Suites: 4 failed, 3 passed, 7 total
+Tests:       17 failed, 68 passed, 85 total
+exit=1
