@@ -2,21 +2,21 @@
  * VTID-05457 (native-wave2-health-biology-r3/vitana-index-biology) — the
  * Vitana Index detail page (`HEALTH.VITANA_INDEX /health/vitana-index`), a
  * 1:1 port of the phone branch of `src/pages/health/VitanaIndexDetail.tsx`
- * (:697-728; the Spotlight branch :652-694 is desktop + flag only, plan
+ * (:684-727; the Spotlight branch :645-682 is desktop + flag only, plan
  * decision 6). Top to bottom, as on web:
  *
- *  1. Hero (:133-246): eyebrow, title, the score (skeleton while loading),
+ *  1. Hero (:151-268): eyebrow, title, the score (skeleton while loading),
  *     "of 999", the tier badge and the up / down trend chip, the hero line,
  *     the 7-day sparkline, "Log today" + refresh, "Updated <date>".
- *  2. The load-error banner (:702-704).
- *  3. The Unified Card System strip, `screen="vitana-index"` (:707).
- *  4. "Let's improve your health" (:259-357): the "Next up" step, the other
+ *  2. The load-error banner (:696-698).
+ *  3. The Unified Card System strip, `screen="vitana-index"` (:701).
+ *  4. "Let's improve your health" (:270-361): the "Next up" step, the other
  *     open steps, finished steps struck through, "all done".
- *  5. The 90-day goal (:361-416). 6. The pillar breakdown (:420-511): bars,
+ *  5. The 90-day goal (:363-424). 6. The pillar breakdown (:426-506): bars,
  *     "biggest lever" / "strongest", the balance note, "Log data".
  *  7. The pillar agents panel (health-hub's twin) and the Mission Alignment
- *     card (:717-718). 8. "How the Index works" (:515-567), collapsible.
- *  Overlays: the log-data dialog and the blood-panel upload sheet (:720-728).
+ *     card (:710-711). 8. "How your Index grows" (:508-566), collapsible.
+ *  Overlays: the log-data dialog and the blood-panel upload sheet (:717-726).
  *
  * The Index comes from health-hub's native module (`useVitanaIndex`, one
  * shared react-query subscription), never re-fetched here. Reads only: the
@@ -44,10 +44,10 @@ const VITANA_INDEX_MAX = 999;
 const PILLAR_MAX = 200;
 const k = (key: string) => `vitanaIndexPage.${key}`;
 
-/** VitanaIndexDetail.tsx:76-82. */
+/** VitanaIndexDetail.tsx:78-84. */
 const PILLAR_ICONS: Record<VitanaPillarKey, string> = { nutrition: 'Apple', hydration: 'Droplets', exercise: 'Dumbbell', sleep: 'Moon', mental: 'Brain' };
 
-/** VitanaIndexDetail.tsx:84-90. */
+/** VitanaIndexDetail.tsx:86-92. */
 const PILLAR_DESCRIPTION_KEYS: Record<VitanaPillarKey, string> = {
   nutrition: 'screens.health.vitanaIndexPillar_food',
   hydration: 'screens.health.vitanaIndexPillar_water',
@@ -56,7 +56,7 @@ const PILLAR_DESCRIPTION_KEYS: Record<VitanaPillarKey, string> = {
   mental: 'screens.health.vitanaIndexPillar_mental',
 };
 
-/** Trackers members recognise. Brand names, so not translated (VitanaIndexDetail.tsx:92-93). */
+/** Trackers members recognise. Brand names, so not translated (VitanaIndexDetail.tsx:94-95). */
 export const TRACKERS = ['Apple Health', 'Samsung Health', 'Health Connect', 'Garmin', 'Oura', 'Fitbit'];
 
 function useCard() {
@@ -64,7 +64,7 @@ function useCard() {
   return [styles.card, { backgroundColor: colors.card, borderColor: colors.border }];
 }
 
-/** VitanaIndexDetail.tsx:129-150 Sparkline (mirrored in RTL like `rtl:-scale-x-100`). */
+/** VitanaIndexDetail.tsx:130-149 Sparkline (mirrored in RTL like `rtl:-scale-x-100`). */
 export function Sparkline({ history }: { history: Array<{ date: string; score: number }> }): ReactElement | null {
   const palette = useHealthPalette();
   const { rtl } = useHealthText();

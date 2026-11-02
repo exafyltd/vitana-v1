@@ -57,7 +57,7 @@ export function goalProgress(total: number): { target: number; remaining: number
   return { target, remaining, ratio };
 }
 
-/** VitanaIndexDetail.tsx:101-107 balanceKey. */
+/** VitanaIndexDetail.tsx:106-113 balanceKey. */
 export function balanceKey(factor: number | null): string | null {
   if (factor === null) return null;
   if (factor >= 1.0) return 'vitanaIndexPage.balance.even';
@@ -66,7 +66,7 @@ export function balanceKey(factor: number | null): string | null {
   return 'vitanaIndexPage.balance.veryUneven';
 }
 
-/** VitanaIndexDetail.tsx:94-99 heroLine. */
+/** VitanaIndexDetail.tsx:99-104 heroLine. */
 export function heroLineKey(index: VitanaIndexState | null): string {
   if (!index) return 'vitanaIndexPage.hero.lineNoIndex';
   if (index.trend === 'up') return 'vitanaIndexPage.hero.lineUp';
