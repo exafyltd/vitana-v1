@@ -1,0 +1,87 @@
+{
+  "supportNative": {
+    "connectors": {
+      "modes": {
+        "all": "All",
+        "shopping": "Shopping",
+        "ai": "AI",
+        "productivity": "Mail & Calendar",
+        "media": "Music & Video",
+        "agent": "Autopilot"
+      },
+      "sections": {
+        "shopping": "Shopping & Rewards",
+        "productivity": "Mail, Calendar & Contacts",
+        "media": "Music & Video"
+      },
+      "status": {
+        "rewardsActive": "Rewards active · checkout on merchant site",
+        "recommendationsOnly": "Recommendations only · opens on Amazon"
+      },
+      "lastSync": {
+        "oneHour": "1 hour ago",
+        "thirtyMin": "30 min ago",
+        "twoHours": "2 hours ago"
+      },
+      "linkedTo": "{app} is linked to {account}.",
+      "agent": {
+        "close": "Close",
+        "remove": "Remove channel",
+        "loadError": "The channels couldn't be loaded. Try again.",
+        "addError": "The channel couldn't be added. Try again."
+      },
+      "apps": {
+        "aliexpress": "Rewards active — shop in Discover to earn",
+        "bodylab24": "Rewards active — German supplements",
+        "alibaba": "Rewards active — global marketplace",
+        "rockbros": "Rewards active — fitness & outdoor gear",
+        "amazon": "Recommendations only — opens on Amazon",
+        "linkedin": "Professional network",
+        "instagram": "Photos, stories, reels",
+        "tiktok": "Short-form videos",
+        "youtube": "Video content",
+        "facebook": "Social sharing",
+        "x": "Posts and threads",
+        "apple-health": "Steps, heart rate, sleep",
+        "fitbit": "Activity, sleep, weight",
+        "strava": "Exercise and running data",
+        "oura": "Sleep quality, readiness, HRV",
+        "garmin": "GPS and fitness tracking",
+        "myfitnesspal": "Nutrition, calories, macros",
+        "lifespin": "Metabolic health insights",
+        "fhir": "Clinical health records",
+        "doctorbox": "Lab test results, biomarkers",
+        "gmail": "Email inbox, drafts, labels",
+        "google-calendar": "Events, meetings, availability",
+        "google-contacts": "Contact directory",
+        "apple-mail": "iOS Mail accounts and inbox",
+        "apple-calendar": "iOS Calendar events",
+        "iphone-contacts": "Address book from iOS",
+        "android-contacts": "Address book from Android",
+        "outlook-mail": "Microsoft email inbox",
+        "outlook-calendar": "Microsoft calendar events",
+        "spotify": "Music playback, playlists, listening history",
+        "apple-music": "Music playback and library",
+        "youtube-music": "Music streaming, playlists",
+        "youtube-playback": "Video playback, watch history",
+        "calm": "Meditation, mindfulness",
+        "headspace": "Guided meditation",
+        "smart-scales": "Weight, body composition",
+        "air-quality": "Indoor air quality",
+        "whatsapp": "Messaging integration",
+        "telegram": "Bot and messaging",
+        "csv-import": "Bulk data import",
+        "api-access": "Developer tools",
+        "chatgpt": "OpenAI API — chat, reasoning",
+        "claude": "Anthropic API — chat, reasoning",
+        "names": {
+          "fhir": "FHIR Providers",
+          "smartScales": "Smart Scales",
+          "airQuality": "Air Quality Sensors",
+          "csvImport": "CSV Import",
+          "apiAccess": "API Access"
+        }
+      }
+    }
+  }
+}
