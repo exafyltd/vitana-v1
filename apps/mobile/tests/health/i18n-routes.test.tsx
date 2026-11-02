@@ -21,6 +21,9 @@ import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
 import { HealthScreen } from '../../src/screens/health/HealthScreen';
 import { healthWrapper } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 const APP = join(__dirname, '../..');
 const REPO = join(APP, '../..');
 
