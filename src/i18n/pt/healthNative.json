@@ -1,0 +1,118 @@
+{
+  "healthNative": {
+    "subtitle": "Acompanhe e gerencie sua jornada de saúde",
+    "upload": "Enviar",
+    "selectMode": "Escolha uma seção",
+    "loading": "Carregando…",
+    "indexAria": "Vitana Index {score} de 999",
+    "indexLoadingAria": "Carregando o Vitana Index",
+    "chip": {
+      "openIndex": "Abrir o Vitana Index"
+    },
+    "agents": {
+      "noOutputYet": "ainda sem resultado"
+    },
+    "medical": {
+      "untitledReport": "Relatório de saúde",
+      "status": {
+        "uploaded": "Enviado",
+        "processing": "Processando",
+        "processed": "Processado",
+        "error": "Erro"
+      }
+    },
+    "supplements": {
+      "edit": "Editar suplemento",
+      "delete": "Excluir suplemento",
+      "filters": {
+        "all": "Todos",
+        "vitamins": "Vitaminas",
+        "minerals": "Minerais",
+        "aminoAcids": "Aminoácidos",
+        "adaptogens": "Adaptógenos",
+        "probiotics": "Probióticos",
+        "antioxidants": "Antioxidantes",
+        "other": "Outros"
+      }
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "Enviar resultados de exames",
+        "description": "Adicione seus resultados e biomarcadores mais recentes"
+      },
+      "orderBloodTest": {
+        "title": "Pedir exame de sangue",
+        "description": "Agende exames com laboratórios certificados"
+      },
+      "bookScreening": {
+        "title": "Agendar check-up de saúde",
+        "description": "Agende seu check-up anual"
+      },
+      "joinWellnessGroup": {
+        "title": "Entrar em um grupo de bem-estar",
+        "description": "Conecte-se com uma comunidade focada em saúde"
+      },
+      "trackToday": {
+        "title": "Registrar a saúde de hoje",
+        "description": "Registre suas métricas diárias de bem-estar"
+      },
+      "healthEducation": {
+        "title": "Educação em saúde",
+        "description": "Aprenda sobre nutrição e bem-estar"
+      }
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "Painel sanguíneo completo",
+        "description": "Hemograma, painel metabólico, lipídios, vitaminas e minerais"
+      },
+      "metabolicPanel": {
+        "name": "Painel de saúde metabólica",
+        "description": "Glicose, insulina, HbA1c, função hepática e renal"
+      },
+      "hormonesPanel": {
+        "name": "Painel hormonal",
+        "description": "Testosterona, estrogênio, cortisol, hormônios da tireoide"
+      },
+      "allergyPanel": {
+        "name": "Painel de alergias",
+        "description": "Níveis de IgE, sensibilidades alimentares, alérgenos ambientais"
+      }
+    },
+    "reportCategories": {
+      "blood_panel": "Painel sanguíneo",
+      "genomics": "Genômica",
+      "metabolomics": "Metabolômica",
+      "microbiome": "Microbioma",
+      "allergy": "Alergia",
+      "cancer": "Câncer",
+      "hormones": "Hormônios",
+      "imaging": "Imagem",
+      "other": "Outro"
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "Semana incrível: seu Index subiu {delta}. Continue assim!",
+        "roll": "Você está embalado: seu Index subiu {delta} esta semana.",
+        "streakWeek": "Sequência de {streak} dias e Index +{delta}. O embalo é real.",
+        "streakDays": "{streak} dias seguidos, Index +{delta}. Lindo! Continue somando conquistas.",
+        "up": "Index +{delta} esta semana. Cada ação conta. Continue!",
+        "habits": "Sequência de {streak} dias. Hábitos estão se formando. Continue!",
+        "streak": "{streak} dias seguidos. A sequência é real. Continue!"
+      },
+      "daily": {
+        "0": "Novo dia, nova chance: vamos fazer seu Index crescer juntos.",
+        "1": "Você está aqui, esse é o primeiro passo. Vamos subir um pouco seu Index hoje.",
+        "2": "Uma pequena ação e seu Index começa a subir. Vamos lá.",
+        "3": "Hoje é um ótimo dia para melhorar. Pode contar comigo: vamos fazê-lo crescer.",
+        "4": "Vamos fazer hoje valer. Escolha uma coisa e veja seu Index subir."
+      },
+      "horizonAria": "Projeção do Vitana Index em 30 dias: previsto {score}.",
+      "compassGoal": "Bússola: {goal} →",
+      "compassSet": "Defina sua bússola de vida →"
+    },
+    "sync": {
+      "notEnabledHint": "A sincronização de saúde ainda não está ativada."
+    }
+  }
+}

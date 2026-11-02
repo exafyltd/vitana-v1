@@ -1,0 +1,118 @@
+{
+  "healthNative": {
+    "subtitle": "Prati i upravljaj svojim putem ka zdravlju",
+    "upload": "Otpremi",
+    "selectMode": "Izaberi odeljak",
+    "loading": "Učitavanje…",
+    "indexAria": "Vitana Index {score} od 999",
+    "indexLoadingAria": "Učitavanje Vitana Indexa",
+    "chip": {
+      "openIndex": "Otvori Vitana Index"
+    },
+    "agents": {
+      "noOutputYet": "još nema rezultata"
+    },
+    "medical": {
+      "untitledReport": "Zdravstveni izveštaj",
+      "status": {
+        "uploaded": "Otpremljeno",
+        "processing": "Obrađuje se",
+        "processed": "Obrađeno",
+        "error": "Greška"
+      }
+    },
+    "supplements": {
+      "edit": "Izmeni suplement",
+      "delete": "Obriši suplement",
+      "filters": {
+        "all": "Sve",
+        "vitamins": "Vitamini",
+        "minerals": "Minerali",
+        "aminoAcids": "Aminokiseline",
+        "adaptogens": "Adaptogeni",
+        "probiotics": "Probiotici",
+        "antioxidants": "Antioksidansi",
+        "other": "Ostalo"
+      }
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "Otpremi laboratorijske nalaze",
+        "description": "Dodaj svoje najnovije nalaze i biomarkere"
+      },
+      "orderBloodTest": {
+        "title": "Naruči analizu krvi",
+        "description": "Zakaži analize kod sertifikovanih laboratorija"
+      },
+      "bookScreening": {
+        "title": "Zakaži preventivni pregled",
+        "description": "Zakaži svoj godišnji pregled"
+      },
+      "joinWellnessGroup": {
+        "title": "Pridruži se wellness grupi",
+        "description": "Poveži se sa zajednicom posvećenom zdravlju"
+      },
+      "trackToday": {
+        "title": "Zabeleži današnje zdravlje",
+        "description": "Beleži svoje dnevne pokazatelje"
+      },
+      "healthEducation": {
+        "title": "Zdravstveno obrazovanje",
+        "description": "Saznaj više o ishrani i dobrobiti"
+      }
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "Kompletna krvna slika",
+        "description": "Krvna slika, metabolički panel, lipidi, vitamini i minerali"
+      },
+      "metabolicPanel": {
+        "name": "Metabolički panel",
+        "description": "Glukoza, insulin, HbA1c, funkcija jetre i bubrega"
+      },
+      "hormonesPanel": {
+        "name": "Hormonski panel",
+        "description": "Testosteron, estrogen, kortizol, hormoni štitne žlezde"
+      },
+      "allergyPanel": {
+        "name": "Panel alergija",
+        "description": "Nivo IgE, osetljivost na hranu, alergeni iz okoline"
+      }
+    },
+    "reportCategories": {
+      "blood_panel": "Krvna slika",
+      "genomics": "Genomika",
+      "metabolomics": "Metabolomika",
+      "microbiome": "Mikrobiom",
+      "allergy": "Alergija",
+      "cancer": "Kancer",
+      "hormones": "Hormoni",
+      "imaging": "Snimanje",
+      "other": "Ostalo"
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "Sjajna nedelja – tvoj Index je porastao za {delta}. Samo napred!",
+        "roll": "Ide ti odlično – Index je ove nedelje porastao za {delta}.",
+        "streakWeek": "{streak} dana zaredom i Index +{delta}. Zamah je stvaran.",
+        "streakDays": "{streak} dana zaredom, Index +{delta}. Divno – nastavi da nižeš uspehe.",
+        "up": "Index +{delta} ove nedelje. Svaka akcija se računa – samo napred!",
+        "habits": "{streak} dana zaredom. Navike se stvaraju – samo napred!",
+        "streak": "{streak} dana zaredom. Niz je stvaran – samo napred!"
+      },
+      "daily": {
+        "0": "Novi dan, nova prilika – hajde zajedno da podignemo tvoj Index.",
+        "1": "Tu si – to je prvi korak. Hajde da danas malo podignemo tvoj Index.",
+        "2": "Jedna mala akcija i tvoj Index počinje da raste. Krenimo.",
+        "3": "Danas je odličan dan za napredak. Tu sam za tebe – hajde da ga podignemo.",
+        "4": "Neka se današnji dan računa. Izaberi jednu stvar i gledaj kako tvoj Index raste."
+      },
+      "horizonAria": "Projekcija Vitana Indexa za 30 dana – očekivano {score}.",
+      "compassGoal": "Kompas: {goal} →",
+      "compassSet": "Podesi svoj životni kompas →"
+    },
+    "sync": {
+      "notEnabledHint": "Sinhronizacija zdravlja još nije uključena."
+    }
+  }
+}

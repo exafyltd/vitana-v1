@@ -1,0 +1,118 @@
+{
+  "healthNative": {
+    "subtitle": "追踪并管理你的健康之旅",
+    "upload": "上传",
+    "selectMode": "选择板块",
+    "loading": "加载中…",
+    "indexAria": "Vitana Index {score} / 999",
+    "indexLoadingAria": "正在加载 Vitana Index",
+    "chip": {
+      "openIndex": "打开 Vitana Index"
+    },
+    "agents": {
+      "noOutputYet": "暂无输出"
+    },
+    "medical": {
+      "untitledReport": "健康报告",
+      "status": {
+        "uploaded": "已上传",
+        "processing": "处理中",
+        "processed": "已处理",
+        "error": "出错"
+      }
+    },
+    "supplements": {
+      "edit": "编辑补充剂",
+      "delete": "删除补充剂",
+      "filters": {
+        "all": "全部",
+        "vitamins": "维生素",
+        "minerals": "矿物质",
+        "aminoAcids": "氨基酸",
+        "adaptogens": "适应原",
+        "probiotics": "益生菌",
+        "antioxidants": "抗氧化剂",
+        "other": "其他"
+      }
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "上传化验结果",
+        "description": "添加你最新的检测结果和生物标志物"
+      },
+      "orderBloodTest": {
+        "title": "预约验血",
+        "description": "向认证机构预约化验"
+      },
+      "bookScreening": {
+        "title": "预约健康筛查",
+        "description": "安排你的年度体检"
+      },
+      "joinWellnessGroup": {
+        "title": "加入健康小组",
+        "description": "与关注健康的社区建立联系"
+      },
+      "trackToday": {
+        "title": "记录今天的健康",
+        "description": "记录你每天的健康指标"
+      },
+      "healthEducation": {
+        "title": "健康教育",
+        "description": "了解营养与健康"
+      }
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "全血检测",
+        "description": "血常规、代谢指标、血脂、维生素和矿物质"
+      },
+      "metabolicPanel": {
+        "name": "代谢健康检测",
+        "description": "血糖、胰岛素、糖化血红蛋白、肝肾功能"
+      },
+      "hormonesPanel": {
+        "name": "激素检测",
+        "description": "睾酮、雌激素、皮质醇、甲状腺激素"
+      },
+      "allergyPanel": {
+        "name": "过敏检测",
+        "description": "IgE 水平、食物敏感、环境过敏原"
+      }
+    },
+    "reportCategories": {
+      "blood_panel": "血液检测",
+      "genomics": "基因组学",
+      "metabolomics": "代谢组学",
+      "microbiome": "微生物组",
+      "allergy": "过敏",
+      "cancer": "癌症",
+      "hormones": "激素",
+      "imaging": "影像",
+      "other": "其他"
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "超棒的一周——你的 Index 上升了 {delta}。继续加油！",
+        "roll": "你状态正佳——本周 Index 上升了 {delta}。",
+        "streakWeek": "连续 {streak} 天，Index +{delta}。势头正劲。",
+        "streakDays": "连续 {streak} 天，Index +{delta}。太棒了——继续积累成果。",
+        "up": "本周 Index +{delta}。每一个行动都算数——继续加油！",
+        "habits": "连续 {streak} 天。习惯正在养成——继续加油！",
+        "streak": "连续 {streak} 天。连胜是真的——继续加油！"
+      },
+      "daily": {
+        "0": "新的一天，新的机会——一起提升你的 Index 吧。",
+        "1": "你来了，这就是第一步。今天让你的 Index 再升一点。",
+        "2": "一个小小的行动，你的 Index 就开始上升。出发吧。",
+        "3": "今天是进步的好日子。我会支持你——一起提升它。",
+        "4": "让今天有意义。选一件事，看着你的 Index 上升。"
+      },
+      "horizonAria": "Vitana Index 30 天预测——预计 {score}。",
+      "compassGoal": "指南针：{goal} →",
+      "compassSet": "设定你的人生指南针 →"
+    },
+    "sync": {
+      "notEnabledHint": "健康同步尚未启用。"
+    }
+  }
+}
