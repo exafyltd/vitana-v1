@@ -45,7 +45,7 @@ import { ProductDetailsDrawer, ProductSelectionProvider, useProductSelection } f
 import { AffiliateDisclosure, ProductImage, useFmtNumber } from './parts';
 import { shareContent } from './ShareButton';
 import { useUniversalCart } from './data/cart';
-import { PUBLIC_WEB_ORIGIN } from './data/client';
+import { publicWebOrigin } from './data/client';
 import type { MarketplaceProduct } from './data/marketplace';
 import { useShopEvents, useShopFeed, useShopVideoAnchor, type ShopAnchorLive, type ShopProduct, type VideoItem } from './data/shop';
 
@@ -424,7 +424,7 @@ function ShopFeedInner(): ReactElement {
   const onShare = useCallback(
     async (video: VideoItem) => {
       emit(video.id, { type: 'share' });
-      await shareContent({ title: video.title ?? '', url: `${PUBLIC_WEB_ORIGIN}/shop?v=${encodeURIComponent(video.id)}` });
+      await shareContent({ title: video.title ?? '', url: `${publicWebOrigin()}/shop?v=${encodeURIComponent(video.id)}` });
     },
     [emit],
   );

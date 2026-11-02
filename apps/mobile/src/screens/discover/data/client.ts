@@ -26,8 +26,15 @@ import { config, endpoints } from '../../../ports/env';
 
 export const ACTIVE_ROLE_HEADER = 'X-Vitana-Active-Role';
 
-/** The web's public origin (src/lib/shareUrl.ts builds product links on it; `/shop?v=` shares use the page origin). */
-export const PUBLIC_WEB_ORIGIN = 'https://vitanaland.com';
+/**
+ * The web origin share links are built on (web: src/lib/shareUrl.ts product
+ * links on the public site, `/shop?v=` on the page origin). Natively that is
+ * the profile's `webBaseUrl` (EXPO_PUBLIC_WEB_BASE_URL, checked by
+ * assertNotProduction); with none configured the link is the bare path.
+ */
+export function publicWebOrigin(): string {
+  return (config.webBaseUrl ?? '').replace(/\/+$/, '');
+}
 
 async function readJson(res: Response): Promise<{ text: string; body: unknown }> {
   const text = await res.text();

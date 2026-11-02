@@ -5,17 +5,17 @@
  * own share dialog only when the native share fails; React Native's
  * `Share.share` rejects only on a programming error and a dismiss resolves,
  * so the sheet is the whole flow natively). Product links are
- * `https://vitanaland.com/products/<id>` (src/lib/shareUrl.ts getShareUrl).
+ * `<web origin>/products/<id>` (src/lib/shareUrl.ts getShareUrl).
  */
 import { useState, type ReactElement } from 'react';
 import { Platform, Share, type StyleProp, type ViewStyle } from 'react-native';
 import { Button, Text, useUITheme } from '../../ports/ui';
 import { DiscoverIcon } from '../../ports/discover';
 import { useI18n } from '../../i18n/I18nProvider';
-import { PUBLIC_WEB_ORIGIN } from './data/client';
+import { publicWebOrigin } from './data/client';
 
 export function productShareUrl(id: string): string {
-  return `${PUBLIC_WEB_ORIGIN}/products/${encodeURIComponent(id)}`;
+  return `${publicWebOrigin()}/products/${encodeURIComponent(id)}`;
 }
 
 export async function shareContent(content: { title: string; text?: string; url: string }): Promise<void> {
