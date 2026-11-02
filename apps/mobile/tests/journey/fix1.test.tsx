@@ -25,7 +25,7 @@ import { __clearToastsForTests, __toastsForTests, UIProvider } from '../../src/p
 import { overlayBus } from '../../src/navigation/overlay-bus';
 import { translate } from '../../src/i18n';
 import { JourneyScreen } from '../../src/screens/journey/JourneyScreen';
-import { JourneySlotsContext } from '../../src/screens/journey/seams';
+import { JourneyOrbBridgeContext, JourneySlotsContext, type JourneyOrbBridge } from '../../src/screens/journey/seams';
 import { __resetGuidedProgressStorageForTests } from '../../src/screens/journey/hooks/useGuidedJourneyProgress';
 import { __resetCelebrateForTests } from '../../src/screens/journey/celebrate';
 import { __resetFeatureCardDismissMemory } from '../../src/screens/journey/EnrichmentStrip';
@@ -429,5 +429,52 @@ describe('motion (DreamNorthStar.tsx:516-527, :592-603; GoalProgressRing.tsx:140
     } finally {
       spy.mockRestore();
     }
+  });
+});
+
+describe('ORB hook point (GuidedJourneyCatalog.tsx:200-237, orbActivate.ts:79-93) — wired later by the ORB lane', () => {
+  const guidedRoutes = () => fullRoutes({ 'GET /journey/state': guidedState, 'POST /journey/session-listened': { ok: true }, 'POST /journey/practice-complete': { ok: true } });
+
+  it('default bridge: a topic tap opens Vitana generically', async () => {
+    const { wrapper } = journeyWrapper(guidedRoutes(), { tables, rpc: fullRpc });
+    render(<JourneyScreen />, { wrapper });
+    await waitFor(() => expect(screen.getByTestId('guided-topic-T002')).toBeTruthy());
+    fireEvent.press(screen.getByTestId('guided-topic-T002'));
+    expect(orb.open).toHaveBeenCalledTimes(1);
+  });
+
+  it('a wired bridge: the tap focuses the topic; a teaching-end signal marks it done, toasts and opens the congratulation view', async () => {
+    const focus = jest.fn();
+    let emit: ((d: { topicId: string | null; reason: string | null }) => void) | null = null;
+    const unsubscribe = jest.fn();
+    const bridge: JourneyOrbBridge = {
+      focusGuidedTopic: focus,
+      onGuidedTopicTeachingComplete: (cb) => {
+        emit = cb;
+        return unsubscribe;
+      },
+    };
+    const { wrapper, requests } = journeyWrapper(guidedRoutes(), { tables, rpc: fullRpc });
+    const view = render(
+      <JourneyOrbBridgeContext.Provider value={bridge}>
+        <JourneyScreen />
+      </JourneyOrbBridgeContext.Provider>,
+      { wrapper },
+    );
+    await waitFor(() => expect(screen.getByTestId('guided-topic-T002')).toBeTruthy());
+    fireEvent.press(screen.getByTestId('guided-topic-T002'));
+    expect(focus).toHaveBeenCalledWith('T002');
+    expect(orb.open).not.toHaveBeenCalled();
+    fireEvent.press(screen.getByTestId('guided-back'));
+    expect(emit).not.toBeNull();
+    await act(async () => {
+      emit?.({ topicId: 'T003', reason: 'model' });
+      await flush();
+    });
+    await waitFor(() => expect(requests.find((r) => r.path === '/journey/practice-complete')?.body).toEqual({ topicId: 'T003' }));
+    await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toContain('screens.guidedCatalog.doneToast'));
+    await waitFor(() => expect(screen.getByTestId('guided-reward')).toBeTruthy());
+    view.unmount();
+    expect(unsubscribe).toHaveBeenCalled();
   });
 });

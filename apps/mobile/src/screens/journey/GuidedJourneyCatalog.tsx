@@ -14,11 +14,13 @@
  * Audiobook player present a session header plays its episode instead (the
  * `autopilot-audiobook` lane provides the player, see seams.ts).
  *
- * Not carried: the window `vitana:guided-topic-teaching-complete` listener
- * (:200-237) — the native ORB emits no teaching-end event yet (its protocol
- * only ends the session on `end_guided_topic_teaching`), so nothing would fire.
+ * Teaching end (:200-237): subscribed through the ORB bridge (seams.ts) —
+ * marks the taught topic done, refreshes the journey state, toasts, and opens
+ * the drawer on its congratulation view. The native ORB does not emit the
+ * signal yet (follow-up for the ORB lane, verification.md); the default
+ * bridge's subscriber never fires.
  */
-import { useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Text, useUITheme } from '../../ports/ui';
@@ -42,7 +44,7 @@ import { overlayBus } from '../../navigation/overlay-bus';
 import { useI18n } from '../../i18n/I18nProvider';
 import { completePractice, practiceTargetAction, recordSessionListened, useJourneyChecklist, type PublicTopic } from './data/journey';
 import { JOURNEY_STATE_QUERY_KEY, markSessionListenedInJourneyState, useGuidedJourneyProgress } from './hooks/useGuidedJourneyProgress';
-import { useActivateOrb, useJourneyAudiobook } from './seams';
+import { useActivateOrb, useJourneyAudiobook, useJourneyOrbBridge } from './seams';
 
 const SESSION_INDEX_REWARD = 2;
 const MY_JOURNEY_PATH = '/autopilot';
@@ -121,6 +123,31 @@ export function GuidedJourneyCatalog(): ReactElement {
   const [activeChapter, setActiveChapter] = useState<string>('all');
   const [openTopic, setOpenTopic] = useState<PublicTopic | null>(null);
   const [practiceMode, setPracticeMode] = useState(false);
+  const orbBridge = useJourneyOrbBridge();
+  // VTID-03799: the latest checklist in a ref so the subscription is not torn down on refetch.
+  const sessionsRef = useRef(sessions);
+  useEffect(() => {
+    sessionsRef.current = sessions;
+  }, [sessions]);
+  useEffect(
+    () =>
+      orbBridge.onGuidedTopicTeachingComplete((detail) => {
+        const topicId = detail?.topicId;
+        if (!topicId) return;
+        void completePractice(topicId).then((ok) => {
+          if (ok) {
+            void queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+            notify('screens.guidedCatalog.doneToast');
+          }
+        });
+        const taught = sessionsRef.current.flatMap((s) => s.topics).find((x) => x.topicId === topicId);
+        if (taught) {
+          setPracticeMode(false);
+          setOpenTopic(taught);
+        }
+      }),
+    [orbBridge, queryClient],
+  );
 
   const chapterLabel = (id: string) => {
     const key = `screens.guidedCatalog.chapter_${id}`;
