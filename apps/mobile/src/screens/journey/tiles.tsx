@@ -8,16 +8,15 @@
  *  - `AutopilotCard.tsx`    the top 3 Autopilot actions with priority dots; tap opens the popup.
  * Standard tiles of the dashboard archetype (web `Card rounded-2xl`), tokens only.
  *
- * Deviation, recorded: EventsPreview's demo-event fallback (`useDemoMatches`
- * events, EventsPreview.tsx:44-52) is not carried — its titles are hardcoded
- * English literals (useDemoMatches.ts:613-743), which the native i18n rule
- * forbids; with no real events the tile shows its empty line (web :73-76).
- * The daily-goal celebration (`celebrate({ kind: "daily-goal" })`,
- * TodaysGoalCard.tsx:34-36) is the app-wide milestone modal + confetti layer
- * (src/lib/celebrate.ts:408-432), a shell surface with no native twin yet; the
- * card itself (all-done line) is ported, the global celebration is not.
+ * EventsPreview's demo fallback (EventsPreview.tsx:44-52): with no real
+ * events, the first `limit` demo events of `useDemoMatches()` (always enabled,
+ * useDemoMatches.ts:78; groups demo-group-1/-2, :613-638) — titles from the
+ * catalog (`journeyAutopilotNative.demoEvents.*`), times today 07:30 / 18:00,
+ * member counts, "online" for Mental / Community, the Unsplash images.
+ * TodaysGoalCard raises the daily-goal celebration when the last of today's
+ * actions is done (TodaysGoalCard.tsx:34-36 → celebrate.ts, MilestoneCelebration.tsx).
  */
-import { useMemo, type ReactElement } from 'react';
+import { useEffect, useMemo, type ReactElement } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Avatar, Button, Spinner, Text, useUITheme } from '../../ports/ui';
 import { alpha, ButtonIcon, JourneyIcon, Progress, useToneColor, type AutopilotAction, type MyJourneyGoal } from '../../ports/journey';
@@ -25,6 +24,8 @@ import { navigateToWebPath } from '../../navigation/navigate';
 import { useJourneyText } from './text';
 import { useCommunityEvents, useMarkMatchesViewed, useRealMatches } from './data/supabase';
 import { JourneyCard, Pill } from './components';
+import { celebrateDailyGoal } from './celebrate';
+import { Pulse } from './motion';
 
 // ── future self ──────────────────────────────────────────────────────────
 const FUTURE_TILES = [
@@ -97,6 +98,9 @@ export function TodaysGoalCard({ actions, loading, onOpenAutopilot }: { actions:
   const total = actions.length;
   const done = actions.filter((a) => a.status === 'completed').length;
   const allDone = total > 0 && done === total;
+  useEffect(() => {
+    if (allDone) void celebrateDailyGoal({ source: 'my-journey' });
+  }, [allDone]);
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   return (
     <JourneyCard tint={colors.statusWarning} testID="journey-todays-goal">
@@ -115,7 +119,9 @@ export function TodaysGoalCard({ actions, loading, onOpenAutopilot }: { actions:
           ) : null}
         </View>
         {loading ? (
-          <View testID="journey-today-loading" style={[styles.bar, { backgroundColor: alpha(colors.statusWarningSubtle, 0.6) }]} />
+          <Pulse testID="journey-today-loading" style={[styles.bar, { backgroundColor: alpha(colors.statusWarningSubtle, 0.6) }]}>
+            <View />
+          </Pulse>
         ) : total === 0 ? (
           <Text size="sm" muted testID="journey-today-empty">
             {t('empty.myJourneyOnePillar')}
@@ -231,24 +237,44 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }): ReactElement 
 }
 
 // ── events ───────────────────────────────────────────────────────────────
+/** useDemoMatches.ts:568-572 */
+function todayAt(hour: number, minute: number): string {
+  const d = new Date();
+  d.setHours(hour, minute, 0, 0);
+  return d.toISOString();
+}
+
+/** The first demo events of useDemoMatches (groups → events, :613-638, :720-744); titles are catalog keys. */
+const DEMO_EVENTS: ReadonlyArray<{ id: string; titleKey: string; at: readonly [number, number]; participant_count: number; event_type: string; image_url: string }> = [
+  { id: 'demo-group-1', titleKey: 'journeyAutopilotNative.demoEvents.sunriseYoga', at: [7, 30], participant_count: 128, event_type: 'Wellness', image_url: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop' },
+  { id: 'demo-group-2', titleKey: 'journeyAutopilotNative.demoEvents.mindfulWalk', at: [18, 0], participant_count: 54, event_type: 'Community', image_url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&h=600&fit=crop' },
+] as const;
+
 export function EventsPreview({ limit = 2 }: { limit?: number }): ReactElement {
   const { t, formatDate, fmtTime } = useJourneyText();
   const { colors } = useUITheme();
   const violet = useToneColor('category-2');
   const pink = useToneColor('category-4');
   const { todayEvents, upcomingEvents } = useCommunityEvents();
-  const items = useMemo(
-    () =>
-      [...todayEvents, ...upcomingEvents].slice(0, limit).map((e) => ({
-        id: e.id,
-        title: e.title,
-        start_time: e.start_time,
-        participant_count: e.participant_count,
-        online: !!e.virtual_link,
-        image_url: e.image_url,
-      })),
-    [todayEvents, upcomingEvents, limit],
-  );
+  const items = useMemo(() => {
+    const real = [...todayEvents, ...upcomingEvents].slice(0, limit).map((e) => ({
+      id: e.id,
+      title: e.title,
+      start_time: e.start_time,
+      participant_count: e.participant_count,
+      online: !!e.virtual_link,
+      image_url: e.image_url,
+    }));
+    if (real.length > 0) return real;
+    return DEMO_EVENTS.slice(0, limit).map((e) => ({
+      id: e.id,
+      title: t(e.titleKey),
+      start_time: todayAt(e.at[0], e.at[1]),
+      participant_count: e.participant_count,
+      online: e.event_type === 'Mental' || e.event_type === 'Community',
+      image_url: e.image_url as string | null,
+    }));
+  }, [todayEvents, upcomingEvents, limit, t]);
   const fills = [pink, violet];
   return (
     <JourneyCard tint={colors.statusWarning} testID="journey-events">

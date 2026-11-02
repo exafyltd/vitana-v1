@@ -47,6 +47,7 @@ import {
   type RingPhase,
 } from '../../ports/journey';
 import { useJourneyText } from './text';
+import { RingProgressCircle } from './motion';
 import { useCompleteGoalStep, useGenerateGoalPlan, useGoalPlan, localDateKey } from './data/journey';
 import { useLifeCompass } from './data/supabase';
 
@@ -129,7 +130,7 @@ export function GoalSetupDialog({ open, onOpenChange, onSaved }: { open: boolean
 }
 
 // ── plan sheet ───────────────────────────────────────────────────────────
-/** web GoalProgressRing (no glow): phase bands + today marker, else the single gradient. */
+/** web GoalProgressRing (no glow): phase bands + today marker, else the single gradient eased in over 1.1 s (GoalProgressRing.tsx:140-151). */
 function GoalProgressRing({ pct, day, daysLeft, phases, currentDay, totalDays, size = 164 }: { pct: number; day: number; daysLeft: number; phases: RingPhase[]; currentDay: number; totalDays: number; size?: number }) {
   const { t } = useJourneyText();
   const { colors } = useUITheme();
@@ -178,7 +179,7 @@ function GoalProgressRing({ pct, day, daysLeft, phases, currentDay, totalDays, s
                 <Stop offset="100%" stopColor={blue} />
               </LinearGradient>
             </Defs>
-            <Circle cx={cx} cy={cy} r={radius} fill="none" stroke="url(#goalprogress-gradient)" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={`${circumference}`} strokeDashoffset={offset} />
+            <RingProgressCircle cx={cx} cy={cy} r={radius} fill="none" stroke="url(#goalprogress-gradient)" strokeWidth={stroke} strokeLinecap="round" circumference={circumference} offset={offset} durationMs={1100} />
           </G>
         )}
       </Svg>

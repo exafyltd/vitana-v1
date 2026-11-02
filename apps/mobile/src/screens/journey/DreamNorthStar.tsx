@@ -14,17 +14,19 @@
  *  - the bottom tagline strip.
  * The ring is drawn with react-native-svg; colours are tokens (the web's
  * pastel hex gradients are expressed with `--category-*` / status tokens).
- * Motion (dashoffset ease, pulsing glow) is a platform animation the port
- * leaves static (R1.1 allows native transitions, never requires them).
+ * Motion (motion.tsx): the ring fill eases in over 1.4 s (:516-527) and the
+ * guided start button's violet glow pulses every 2.2 s (:592-603); reduced
+ * motion draws the filled ring and a steady glow.
  */
 import { useMemo, useState, type ReactElement } from 'react';
-import { Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
+import { Animated, Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import Svg, { Circle, Defs, G, LinearGradient, Path, Stop } from 'react-native-svg';
 import { Button, Spinner, Text, useUITheme } from '../../ports/ui';
 import { alpha, buildJourneyRing, buildPhases, JourneyIcon, useToneColor, type MyJourneyGoal, type MyJourneyJourney } from '../../ports/journey';
 import { useGoalPlan } from './data/journey';
 import { useJourneyText } from './text';
 import { HeartDivider, JourneyCard } from './components';
+import { RingProgressCircle, useLoop } from './motion';
 
 const RING_MAX = 220;
 const RING_MIN = 150;
@@ -93,6 +95,20 @@ function JourneyStep({
         {label}
       </Text>
     </View>
+  );
+}
+
+/** The guided start button's violet glow (DreamNorthStar.tsx:579-603): pulsing, steady under reduced motion. */
+function StartGlow({ inset, color }: { inset: number; color: string }) {
+  const loop = useLoop(true, 2200);
+  const frame = { top: inset - 4, bottom: inset - 4, start: inset - 4, end: inset - 4, backgroundColor: alpha(color, 0.3), shadowColor: color };
+  if (!loop) return <View pointerEvents="none" testID="journey-hero-start-halo" style={[styles.glow, frame, { opacity: 0.7 }]} />;
+  return (
+    <Animated.View
+      pointerEvents="none"
+      testID="journey-hero-start-glow"
+      style={[styles.glow, frame, { opacity: loop.interpolate({ inputRange: [0, 1], outputRange: [0.55, 0.9] }), transform: [{ scale: loop.interpolate({ inputRange: [0, 1], outputRange: [1, 1.04] }) }] }]}
+    />
   );
 }
 
@@ -264,7 +280,7 @@ export function DreamNorthStar({
               : showGuided || ring.hasCountdown
                 ? (
                     <G rotation={-90} origin={`${cx}, ${cy}`}>
-                      <Circle
+                      <RingProgressCircle
                         testID="journey-ring-progress"
                         cx={cx}
                         cy={cy}
@@ -273,8 +289,9 @@ export function DreamNorthStar({
                         stroke="url(#dreamRingGrad)"
                         strokeWidth={stroke}
                         strokeLinecap="round"
-                        strokeDasharray={`${circumference}`}
-                        strokeDashoffset={offset}
+                        circumference={circumference}
+                        offset={offset}
+                        durationMs={1400}
                       />
                     </G>
                   )
@@ -294,6 +311,7 @@ export function DreamNorthStar({
             </Pressable>
           ) : null}
 
+          {showGuided && guidedNextSession ? <StartGlow inset={innerInset} color={violet} /> : null}
           {showGuided ? (
             <Pressable
               testID="journey-hero-start"
@@ -462,6 +480,7 @@ export function DreamNorthStar({
 }
 
 const styles = StyleSheet.create({
+  glow: { position: 'absolute', borderRadius: 999, shadowOpacity: 0.7, shadowRadius: 18, shadowOffset: { width: 0, height: 8 } },
   hero: { borderRadius: 28, borderWidth: 1, overflow: 'hidden' },
   heroBody: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 28 },
   loading: { minHeight: 320, alignItems: 'center', justifyContent: 'center' },
