@@ -90,14 +90,20 @@ test('VTID-05418: /comm/find-partner — one Spotlight card at 30-45% beside the
       const spot = box(document.querySelector('[data-spotlight-grid] [data-vcard-size="spotlight"]:not([data-vcard-skeleton])'));
       const tiles = [...document.querySelectorAll('[data-spotlight-grid] [data-slot="tiles"] [data-vcard-size="standard"]')].map((el) => {
         const r = el.getBoundingClientRect();
-        return { top: r.top };
+        return { top: r.top, bottom: r.bottom };
       });
       const row = box(document.querySelector('[data-spotlight-grid] [data-slot="row"]'));
+      // Spotlight art: a token gradient (background-image) or a real image somewhere in the card.
+      const card = document.querySelector('[data-spotlight-grid] [data-vcard-size="spotlight"]:not([data-vcard-skeleton])');
+      const art = !!card && [card, ...card.querySelectorAll('*')].some(
+        (el) => el.tagName === 'IMG' || /gradient\(/.test(getComputedStyle(el).backgroundImage),
+      );
       return {
         layoutWidth: layout?.width ?? 0,
         spot: spot && { width: spot.width, top: spot.top, bottom: spot.bottom },
         tiles,
         row: row && { top: row.top },
+        art,
       };
     });
     expect(geo.layoutWidth).toBeGreaterThan(0);
@@ -109,6 +115,12 @@ test('VTID-05418: /comm/find-partner — one Spotlight card at 30-45% beside the
       expect(tile.top, 'tile beside the spotlight').toBeLessThan(geo.spot!.bottom);
     }
     if (geo.row) expect(geo.row.top, 'row below the spotlight').toBeGreaterThanOrEqual(geo.spot!.bottom - 1);
+    // VTID-05420 round 2: the spotlight spans exactly the tile rows (never taller than the last one) and carries art.
+    if (geo.tiles.length > 0) {
+      const lastTileBottom = Math.max(...geo.tiles.map((x) => x.bottom));
+      expect(geo.spot!.bottom, 'spotlight bottom vs the last tile row bottom').toBeLessThanOrEqual(lastTileBottom + 2);
+    }
+    expect(geo.art, 'spotlight card has a gradient background-image or an img').toBe(true);
     const actions = realSpotlight.getByRole('button');
     expect(await actions.count(), 'Say hello / View profile on the spotlight').toBeGreaterThanOrEqual(1);
   }
@@ -121,6 +133,13 @@ test('VTID-05418: /comm/find-partner — one Spotlight card at 30-45% beside the
   expect(await overflow(page), 'horizontal scroll (RTL)').toBeLessThanOrEqual(1);
   await page.evaluate(() => {
     document.documentElement.dir = 'ltr';
+  });
+
+  // Read-only evidence for STAGING-VERIFY: a full-page screenshot once every check above passed.
+  await page.waitForTimeout(300);
+  await test.info().attach('vtid-05418-find-match-1400x900.png', {
+    body: await page.screenshot({ fullPage: true }),
+    contentType: 'image/png',
   });
 
   // Board view: the shared result area, no Spotlight grid.
