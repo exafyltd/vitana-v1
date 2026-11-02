@@ -37,6 +37,12 @@
       "warriorsMessage": "La prochaine randonnée est prévue pour...",
       "kimName": "Dr Kim",
       "kimMessage": "Contrôle dans 2 semaines"
-    }
+    },
+    "presence": {
+      "online": "Actif",
+      "away": "Absent",
+      "offline": "Hors ligne"
+    },
+    "datePlaceholder": "AAAA-MM-JJ"
   }
 }

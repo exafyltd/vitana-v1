@@ -10,7 +10,7 @@ import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type Binding =
-  | { kind: 'postgres'; event: 'INSERT' | 'UPDATE'; table: string; filter?: string; handler: (payload: any) => void }
+  | { kind: 'postgres'; event: 'INSERT' | 'UPDATE' | '*'; table: string; filter?: string; handler: (payload: any) => void }
   | { kind: 'broadcast'; event: string; handler: (payload: any) => void };
 
 let seq = 0;

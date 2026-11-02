@@ -37,6 +37,12 @@
       "warriorsMessage": "Sledeće planinarenje je zakazano za...",
       "kimName": "Dr Kim",
       "kimMessage": "Kontrola za 2 nedelje"
-    }
+    },
+    "presence": {
+      "online": "Aktivan",
+      "away": "Odsutan",
+      "offline": "Van mreže"
+    },
+    "datePlaceholder": "GGGG-MM-DD"
   }
 }

@@ -4,10 +4,14 @@
  * `src/pages/Messages.tsx` (`useIsMobile()`, lines 1272-1431: list-first, a
  * tap opens the conversation full screen):
  *  - StandardHeader: `inbox.title` + `inbox.description`;
- *  - the action row: Search (filters the list by title / last message, with
- *    the matching-conversation dropdown), the Community / Network mode pill,
- *    the "New" button (the new-conversation sheet);
- *  - the All / Direct / Groups pills and the overflow menu with
+ *  - the action row: in the Community context the "Search messages" button
+ *    (VTID-05317, `MessageSearchSheet`: hits open the conversation at the
+ *    message), Search (filters the list by title / last message, with the
+ *    matching-conversation dropdown), the Community / Network mode pill, the
+ *    "New" button (the new-conversation sheet);
+ *  - the All / Direct / Groups / Contacts pills (Contacts shows `ContactsTab`;
+ *    its "Message" opens the existing direct chat, else the New sheet with the
+ *    member preselected, Messages.tsx:572-583) and the overflow menu with
  *    "Mark all as read" (disabled at 0 unread);
  *  - the list: skeleton while the first fetch runs, the empty state, the
  *    "no conversations matching" state, else the sorted + per-peer-deduped
@@ -17,9 +21,7 @@
  * Documented deferrals (file:line evidence in docs/validation/VTID-05459/verification.md):
  * the action-rail chips (gift voucher, VitanaIndexChip, AutopilotChip +
  * AutopilotPopup) and UniversalCalendarButton belong to other lanes' surfaces
- * (as in the home and diary lanes); the in-message search panel
- * (MessageSearchPanel, VTID-05317) and the Contacts pill (ContactsTabContent)
- * are separate features with their own data layers; CallManager rides with the
+ * (as in the home and diary lanes); CallManager rides with the
  * conversation-chat lane. React 19: typed with `ReactElement`.
  */
 import { useCallback, useMemo, useState, type ReactElement } from 'react';
@@ -30,6 +32,9 @@ import { openWebPath } from '../../ports/links';
 import { MobileModePill, type ModeOption } from '../../shell/components/MobileModePill';
 import { ConversationCard, ConversationSkeleton, InboxEmptyState, RowErrorBoundary, RowFallback } from './components';
 import { NewConversationSheet } from './NewConversationSheet';
+import { MessageSearchSheet } from './MessageSearchSheet';
+import { ContactsTab } from './ContactsTab';
+import { parseConversationKey, searchResultPath, type MessageSearchResult } from './data/message-search';
 import { useInboxText } from './text';
 import { useInboxThreads, useProgressiveCount, useUnreadSync } from './data/inbox';
 import { refreshInboxUnread } from './data/unread';
@@ -46,7 +51,8 @@ import {
   type InboxThread,
 } from './data/threads-model';
 
-const FILTERS: readonly ConversationFilter[] = ['all', 'direct', 'groups'];
+type InboxFilter = ConversationFilter | 'contacts';
+const FILTERS: readonly InboxFilter[] = ['all', 'direct', 'groups', 'contacts'];
 const NO_PINS: ReadonlySet<string> = new Set();
 
 /** The member's last explicit Community / Network choice for this app session (web sessionStorage). */
@@ -61,11 +67,14 @@ export function InboxScreen(): ReactElement {
   const { colors } = useUITheme();
   const { t, fallbacks } = useInboxText();
   const [context, setContextState] = useState<InboxContext>(lastContext);
-  const [filter, setFilter] = useState<ConversationFilter>('all');
+  const [filter, setFilter] = useState<InboxFilter>('all');
+  const listFilter: ConversationFilter = filter === 'contacts' ? 'all' : filter;
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [newOpen, setNewOpen] = useState(false);
+  const [contactRecipientId, setContactRecipientId] = useState<string | null>(null);
+  const [messageSearchOpen, setMessageSearchOpen] = useState(false);
   const [optimistic, setOptimistic] = useState<Record<string, number>>({});
   const { threads, userId, isLoading, isFetching, refetch, markAllRead } = useInboxThreads(context, t('inboxNative.vitanaWelcome'));
 
@@ -111,7 +120,7 @@ export function InboxScreen(): ReactElement {
   const title = useCallback((th: InboxThread) => getConversationDisplayTitle(th, userId, fallbacks), [userId, fallbacks]);
   const totalUnread = display.reduce((sum, th) => sum + (th.unread_count || 0), 0);
 
-  const visible = useMemo(() => sortAndDedupe(searchThreads(filterThreads(display, filter), search, title), NO_PINS, userId), [display, filter, search, title, userId]);
+  const visible = useMemo(() => sortAndDedupe(searchThreads(filterThreads(display, listFilter), search, title), NO_PINS, userId), [display, listFilter, search, title, userId]);
   const limit = useProgressiveCount(visible.length, { initial: 24, resetKey: context });
   const rows = search.trim() ? visible : visible.slice(0, limit);
 
@@ -132,11 +141,37 @@ export function InboxScreen(): ReactElement {
     openWebPath(conversationPathFor(th, context, userId));
   };
 
+  // "Message" on a contact: the existing direct chat with that member, else the New sheet with them selected.
+  const messageContact = (memberId: string) => {
+    const existing = threads.find((th) => th.type === 'direct' && th.participants?.some((p) => p.user_id === memberId));
+    if (existing) {
+      open(existing);
+      return;
+    }
+    setContactRecipientId(memberId);
+    setNewOpen(true);
+  };
+
+  // VTID-05317: a hit's conversation name, and the hit opens at the message.
+  const messageSearchLabel = useCallback(
+    (key: string) => {
+      const c = parseConversationKey(key);
+      if (!c) return undefined;
+      const thread = c.kind === 'group' ? threads.find((th) => th.id === `chat_group:${c.id}`) : threads.find((th) => th.id === c.id || getOtherParticipant(th, userId)?.user_id === c.id);
+      return thread ? getConversationDisplayTitle(thread, userId, fallbacks) : undefined;
+    },
+    [threads, userId, fallbacks],
+  );
+  const openMessageSearchResult = (r: MessageSearchResult) => {
+    const path = searchResultPath(r);
+    if (path) openWebPath(path);
+  };
+
   const onMarkAllRead = async () => {
     setMenuOpen(false);
     if (totalUnread === 0) return;
     try {
-      await markAllRead(filter);
+      await markAllRead(listFilter);
       refreshInboxUnread();
       notify('inbox.toast.allMarkedRead');
     } catch {
@@ -163,6 +198,11 @@ export function InboxScreen(): ReactElement {
       {showSkeleton ? null : (
         <>
           <View style={styles.bar}>
+            {context === 'global' ? (
+              <Button size="icon" variant="ghost" testID="inbox-message-search-button" accessibilityLabel={t('inbox.search.title')} onPress={() => setMessageSearchOpen(true)} style={styles.roundButton}>
+                <InboxIcon name="MessageSquareText" size={16} />
+              </Button>
+            ) : null}
             {searchOpen ? (
               <View style={[styles.searchBox, { borderColor: colors.input }]}>
                 <InboxIcon name="Search" size={16} color={colors.mutedForeground} />
@@ -273,10 +313,10 @@ export function InboxScreen(): ReactElement {
       ) : (
         <FlatList
           testID="screen-inbox"
-          data={rows}
+          data={filter === 'contacts' ? [] : rows}
           keyExtractor={(th) => th.id}
           ListHeaderComponent={header}
-          ListEmptyComponent={empty}
+          ListEmptyComponent={filter === 'contacts' ? <ContactsTab onStartConversation={messageContact} /> : empty}
           contentContainerStyle={styles.page}
           ItemSeparatorComponent={Separator}
           keyboardShouldPersistTaps="handled"
@@ -291,6 +331,7 @@ export function InboxScreen(): ReactElement {
                 lastMessage={item.last_message?.body}
                 timestamp={item.updated_at}
                 unreadCount={item.unread_count || 0}
+                isGroup={item.type === 'group'}
                 participantUserId={getOtherParticipant(item, userId)?.user_id}
                 onPress={() => open(item)}
               />
@@ -306,7 +347,17 @@ export function InboxScreen(): ReactElement {
         </PressableRow>
       </BottomSheet>
 
-      <NewConversationSheet open={newOpen} onClose={() => setNewOpen(false)} context={context} onGroupCreated={refetch} />
+      <MessageSearchSheet open={messageSearchOpen} onClose={() => setMessageSearchOpen(false)} onSelect={openMessageSearchResult} conversationLabel={messageSearchLabel} />
+      <NewConversationSheet
+        open={newOpen}
+        onClose={() => {
+          setNewOpen(false);
+          setContactRecipientId(null);
+        }}
+        context={context}
+        initialRecipientId={contactRecipientId}
+        onGroupCreated={refetch}
+      />
     </View>
   );
 }
@@ -325,6 +376,7 @@ const styles = StyleSheet.create({
   searchPill: { flexDirection: 'row', alignItems: 'center', gap: 4, height: 36, paddingHorizontal: 10, borderRadius: 18 },
   searchBox: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6, borderWidth: 1, borderRadius: 8, paddingHorizontal: 10 },
   searchInput: { flex: 1, borderWidth: 0, paddingHorizontal: 0 },
+  roundButton: { width: 36, height: 36, borderRadius: 18 },
   newButton: { borderRadius: 18, gap: 6 },
   dropdown: { borderWidth: 1, borderRadius: 8, overflow: 'hidden' },
   dropdownItem: { paddingHorizontal: 12, paddingVertical: 10 },

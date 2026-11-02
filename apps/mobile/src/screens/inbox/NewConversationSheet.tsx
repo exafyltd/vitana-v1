@@ -12,7 +12,9 @@
  * exclusion is inherited from them, NEVER rule 45). Start chat: a global DM
  * opens `/inbox/u/<member>`, a Network DM `/inbox/t/<thread>?context=tenant`,
  * a new group `/inbox/t/<thread>` — the conversation-chat lane's routes, by
- * path. React 19: typed with `ReactElement`.
+ * path. `initialRecipientId` (a contact's "Message", Messages.tsx:572-583)
+ * preselects that member from `profiles` (NewConversationPopup.tsx:62-88).
+ * React 19: typed with `ReactElement`.
  */
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View, type TextInput as RNTextInput } from 'react-native';
@@ -41,7 +43,19 @@ function dmErrorKey(message: string | undefined): string | undefined {
   return undefined;
 }
 
-export function NewConversationSheet({ open, onClose, context, onGroupCreated }: { open: boolean; onClose: () => void; context: 'global' | 'tenant'; onGroupCreated?: () => void }): ReactElement {
+export function NewConversationSheet({
+  open,
+  onClose,
+  context,
+  onGroupCreated,
+  initialRecipientId,
+}: {
+  open: boolean;
+  onClose: () => void;
+  context: 'global' | 'tenant';
+  onGroupCreated?: () => void;
+  initialRecipientId?: string | null;
+}): ReactElement {
   const { colors } = useUITheme();
   const { t, fallbacks } = useInboxText();
   const { user } = useAuth();
@@ -55,6 +69,22 @@ export function NewConversationSheet({ open, onClose, context, onGroupCreated }:
   const [groupName, setGroupName] = useState('');
   const groupNameRef = useRef<RNTextInput>(null);
   const searchSeq = useRef(0);
+
+  // Pre-fill the recipient the caller picked (a contact's "Message").
+  useEffect(() => {
+    if (!open || !initialRecipientId) return undefined;
+    let cancelled = false;
+    void (async () => {
+      const { data } = await getSupabase().from('profiles').select('user_id, display_name, avatar_url').eq('user_id', initialRecipientId).maybeSingle();
+      if (cancelled) return;
+      const row = data as { display_name?: string | null; avatar_url?: string | null } | null;
+      const recipient: DirectoryUser = { user_id: initialRecipientId, display_name: row?.display_name || '', avatar_url: row?.avatar_url || undefined };
+      setSelected((prev) => (prev.some((r) => r.user_id === initialRecipientId) ? prev : [recipient]));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, initialRecipientId]);
 
   // More than one member → group mode with a prefilled name; back to one → direct.
   useEffect(() => {

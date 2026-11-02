@@ -37,6 +37,12 @@
       "warriorsMessage": "Next hike scheduled for...",
       "kimName": "Dr. Kim",
       "kimMessage": "Follow up in 2 weeks"
-    }
+    },
+    "presence": {
+      "online": "Active",
+      "away": "Away",
+      "offline": "Offline"
+    },
+    "datePlaceholder": "YYYY-MM-DD"
   }
 }

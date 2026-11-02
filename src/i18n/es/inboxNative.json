@@ -37,6 +37,12 @@
       "warriorsMessage": "La próxima caminata está prevista para...",
       "kimName": "Dr. Kim",
       "kimMessage": "Revisión en 2 semanas"
-    }
+    },
+    "presence": {
+      "online": "Activo",
+      "away": "Ausente",
+      "offline": "Desconectado"
+    },
+    "datePlaceholder": "AAAA-MM-DD"
   }
 }

@@ -2,9 +2,10 @@
  * VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list) — the inbox list's
  * building blocks, native twins of the web mobile inbox components:
  *  - `ConversationCard` — `src/components/messages/mobile/MobileConversationCard.tsx`
- *    (48 px avatar that opens the other participant's profile, name + short
- *    time, last message, start-edge unread accent, round unread badge capped
- *    at "9+", pinned dot),
+ *    (48 px avatar that opens the other participant's profile, the
+ *    `PresenceIndicator` dot of a direct peer at the avatar's bottom-end
+ *    corner, name + short time, last message, start-edge unread accent, round
+ *    unread badge capped at "9+", pinned dot),
  *  - `ConversationSkeleton` — `MobileConversationSkeleton.tsx`,
  *  - `InboxEmptyState` — `MobileInboxEmptyState.tsx` (illustration, title,
  *    context description, "Start a conversation", "Discover people" → /community),
@@ -12,9 +13,7 @@
  *    (Messages.tsx:1242-1249),
  *  - `InboxSubNav` + `InboxPage` — `SubNavigation items={messagesNavigation}`
  *    and `StandardHeader` of the Archived / Inspiration pages.
- * Presence dots are not drawn: `PresenceIndicator` is realtime presence,
- * deferred to G1 with the conversation lane (R5.3). Ports only; RTL-safe
- * (logical start/end); every string arrives translated.
+ * Ports only; RTL-safe (logical start/end); every string arrives translated.
  */
 import { Component, type ReactElement, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -22,6 +21,23 @@ import { Avatar, Button, PressableRow, Skeleton, Text, useUITheme } from '../../
 import { InboxButtonIcon, InboxIcon } from '../../ports/inbox';
 import { openWebPath } from '../../ports/links';
 import { useInboxText } from './text';
+import { usePresenceStatus, type PresenceStatus } from './data/presence';
+
+/** `PresenceIndicator size="sm"` (MobileConversationCard.tsx:75-81): 12 px, 2 px background ring, green / amber / grey. */
+export function PresenceDot({ userId, testID }: { userId: string; testID?: string }): ReactElement {
+  const { colors } = useUITheme();
+  const { t } = useInboxText();
+  const status = usePresenceStatus(userId);
+  const tint: Record<PresenceStatus, string> = { online: colors.statusSuccess, away: colors.statusWarning, offline: colors.mutedForeground };
+  return (
+    <View
+      testID={testID}
+      accessibilityLabel={t(`inboxNative.presence.${status}`)}
+      accessibilityValue={{ text: status }}
+      style={[styles.presence, { backgroundColor: tint[status], borderColor: colors.background }]}
+    />
+  );
+}
 
 export function ConversationCard({
   id,
@@ -31,6 +47,7 @@ export function ConversationCard({
   timestamp,
   unreadCount = 0,
   isPinned = false,
+  isGroup = false,
   participantUserId,
   onPress,
 }: {
@@ -41,6 +58,7 @@ export function ConversationCard({
   timestamp?: string;
   unreadCount?: number;
   isPinned?: boolean;
+  isGroup?: boolean;
   /** The other participant: the avatar opens their profile (web ClickableAvatar → /u/<id>). */
   participantUserId?: string;
   onPress: () => void;
@@ -62,6 +80,7 @@ export function ConversationCard({
           ) : (
             <Avatar uri={avatarUrl ?? undefined} fallback={name?.[0]?.toUpperCase() || '?'} size={48} />
           )}
+          {!isGroup && participantUserId ? <PresenceDot userId={participantUserId} testID={`inbox-card-${id}-presence`} /> : null}
           {isPinned ? <View testID={`inbox-card-${id}-pinned`} style={[styles.pinned, { backgroundColor: colors.primary }]} /> : null}
         </View>
         <View style={styles.cardBody}>
@@ -236,6 +255,7 @@ const styles = StyleSheet.create({
   card: { borderRadius: 12, overflow: 'hidden' },
   cardPress: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12, minHeight: 64 },
   avatarWrap: { width: 48, height: 48 },
+  presence: { position: 'absolute', bottom: -2, end: -2, width: 12, height: 12, borderRadius: 6, borderWidth: 2 },
   pinned: { position: 'absolute', top: -4, end: -4, width: 12, height: 12, borderRadius: 6 },
   cardBody: { flex: 1, minWidth: 0, gap: 2 },
   cardTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },

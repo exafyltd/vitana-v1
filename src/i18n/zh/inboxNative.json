@@ -37,6 +37,12 @@
       "warriorsMessage": "下一次徒步安排在……",
       "kimName": "金医生",
       "kimMessage": "2 周后复诊"
-    }
+    },
+    "presence": {
+      "online": "在线",
+      "away": "离开",
+      "offline": "离线"
+    },
+    "datePlaceholder": "YYYY-MM-DD"
   }
 }

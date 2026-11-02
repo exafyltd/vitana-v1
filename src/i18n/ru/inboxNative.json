@@ -37,6 +37,12 @@
       "warriorsMessage": "Следующий поход запланирован на...",
       "kimName": "Д-р Ким",
       "kimMessage": "Повторный приём через 2 недели"
-    }
+    },
+    "presence": {
+      "online": "В сети",
+      "away": "Отошёл",
+      "offline": "Не в сети"
+    },
+    "datePlaceholder": "ГГГГ-ММ-ДД"
   }
 }

@@ -50,8 +50,9 @@ describe('inbox list: loaded', () => {
     expect(order).toEqual([`inbox-card-${ANNA}-open`, 'inbox-card-chat_group:g-1-open', `inbox-card-${BEN}-open`, `inbox-card-${VITANA_BOT_USER_ID}-open`]);
     expect(screen.getByTestId('inbox-new')).toBeTruthy();
     expect(screen.getByTestId('mode-pill')).toBeTruthy();
-    for (const f of ['all', 'direct', 'groups']) expect(screen.getByTestId(`inbox-filter-${f}`)).toBeTruthy();
-    expect(screen.queryByTestId('inbox-filter-contacts')).toBeNull();
+    // All / Direct / Groups / Contacts (Messages.tsx:1351-1353, VTID-04440).
+    for (const f of ['all', 'direct', 'groups', 'contacts']) expect(screen.getByTestId(`inbox-filter-${f}`)).toBeTruthy();
+    expect(screen.getByTestId('inbox-message-search-button')).toBeTruthy();
   });
 
   it('builds the web requests: gateway chat calls with the Bearer token, the same PostgREST reads', async () => {
@@ -81,7 +82,8 @@ describe('inbox list: loaded', () => {
     expect(queries.some((q) => q.table === 'global_thread_participants' && q.filters[0]?.[1] === 'user_id')).toBe(true);
     expect(queries.some((q) => q.table === 'global_community_profiles' && q.columns === 'user_id, display_name, avatar_url')).toBe(true);
     expect(queries.some((q) => q.table === 'profiles' && q.columns === 'user_id, display_name, full_name, avatar_url')).toBe(true);
-    expect(queries.every((q) => q.op === 'select')).toBe(true);
+    // The list itself only reads; the presence heartbeat (presence.test.tsx) is the web's one write.
+    expect(queries.filter((q) => q.table !== 'thread_presence').every((q) => q.op === 'select')).toBe(true);
   });
 
   it('drops a peer that has no profile row (no phantom "Unknown User")', async () => {

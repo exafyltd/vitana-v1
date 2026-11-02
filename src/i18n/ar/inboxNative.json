@@ -37,6 +37,12 @@
       "warriorsMessage": "الرحلة القادمة مقررة في...",
       "kimName": "د. كيم",
       "kimMessage": "متابعة بعد أسبوعين"
-    }
+    },
+    "presence": {
+      "online": "نشط",
+      "away": "بعيد",
+      "offline": "غير متصل"
+    },
+    "datePlaceholder": "YYYY-MM-DD"
   }
 }

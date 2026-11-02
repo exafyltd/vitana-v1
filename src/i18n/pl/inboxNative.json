@@ -37,6 +37,12 @@
       "warriorsMessage": "Następna wędrówka zaplanowana na...",
       "kimName": "dr Kim",
       "kimMessage": "Kontrola za 2 tygodnie"
-    }
+    },
+    "presence": {
+      "online": "Aktywny",
+      "away": "Zaraz wracam",
+      "offline": "Offline"
+    },
+    "datePlaceholder": "RRRR-MM-DD"
   }
 }

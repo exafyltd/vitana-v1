@@ -4,17 +4,21 @@
  * (Input, Label), the lucide glyphs the web inbox draws (`Messages.tsx`,
  * `MobileConversationCard.tsx`, `MobileInboxEmptyState.tsx`,
  * `NewConversationPopup.tsx`, `Archived.tsx`, `Inspiration.tsx`,
- * `InspirationMasterActionPopup.tsx`), and the clipboard write of the
- * Inspiration "Copy" button (web `navigator.clipboard.writeText`; React
- * Native's own Clipboard module — no extra dependency). Screen files read
+ * `InspirationMasterActionPopup.tsx`, `MessageSearchPanel.tsx`,
+ * `components/contacts/*`), the clipboard write of the Inspiration "Copy"
+ * button (web `navigator.clipboard.writeText`; React Native's own Clipboard
+ * module — no extra dependency), and the contact invite's hand-off to the
+ * member's own app (web `window.location.href = wa.me / sms: / mailto:` and
+ * `navigator.share`; React Native's Linking and Share). Screen files read
  * these only through this port (tests/ports.test.ts).
  */
 import type { ComponentType } from 'react';
-import { Clipboard, View } from 'react-native';
+import { Clipboard, Linking, Share, View } from 'react-native';
 import {
   Archive,
   Bookmark,
   CheckCheck,
+  CheckCircle2,
   Circle,
   Clock,
   Compass,
@@ -24,13 +28,19 @@ import {
   Heart,
   Lightbulb,
   Loader2,
+  Mail,
+  MessageCircle,
   MessageSquare,
+  MessageSquareText,
   MoreHorizontal,
   MoreVertical,
   Plus,
   Search,
+  SearchX,
   Send,
+  Share2,
   Sparkles,
+  Trash2,
   User,
   Users,
   X,
@@ -38,12 +48,24 @@ import {
 } from 'lucide-react-native';
 import { useButtonForeground, useTheme } from '@vitana/ui';
 
-export { Input, Label } from '@vitana/ui';
+export {
+  Input,
+  Label,
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from '@vitana/ui';
 
 const ICONS: Record<string, ComponentType<LucideProps>> = {
   Archive,
   Bookmark,
   CheckCheck,
+  CheckCircle2,
   Circle,
   Clock,
   Compass,
@@ -53,13 +75,19 @@ const ICONS: Record<string, ComponentType<LucideProps>> = {
   Heart,
   Lightbulb,
   Loader2,
+  Mail,
+  MessageCircle,
   MessageSquare,
+  MessageSquareText,
   MoreHorizontal,
   MoreVertical,
   Plus,
   Search,
+  SearchX,
   Send,
+  Share2,
   Sparkles,
+  Trash2,
   User,
   Users,
   X,
@@ -88,4 +116,15 @@ export function InboxButtonIcon({ name, size = 16 }: { name: string; size?: numb
 /** Writes `text` to the system clipboard (web `navigator.clipboard.writeText`). */
 export function copyToClipboard(text: string): void {
   Clipboard.setString(text);
+}
+
+/** Opens a wa.me / sms: / mailto: link in the member's own app (web `window.location.href = url`). */
+export async function openExternalUrl(url: string): Promise<void> {
+  await Linking.openURL(url);
+}
+
+/** The system share sheet with `message` (web `navigator.share({ text })`); false when the member dismissed it. */
+export async function shareText(message: string): Promise<boolean> {
+  const result = await Share.share({ message });
+  return result.action !== Share.dismissedAction;
 }

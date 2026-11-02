@@ -37,6 +37,12 @@
       "warriorsMessage": "Bir sonraki yürüyüş şu tarihe planlandı...",
       "kimName": "Dr. Kim",
       "kimMessage": "2 hafta sonra kontrol"
-    }
+    },
+    "presence": {
+      "online": "Aktif",
+      "away": "Uzakta",
+      "offline": "Çevrimdışı"
+    },
+    "datePlaceholder": "YYYY-AA-GG"
   }
 }

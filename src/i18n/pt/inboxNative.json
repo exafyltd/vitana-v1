@@ -37,6 +37,12 @@
       "warriorsMessage": "A próxima caminhada está marcada para...",
       "kimName": "Dr. Kim",
       "kimMessage": "Retorno em 2 semanas"
-    }
+    },
+    "presence": {
+      "online": "Ativo",
+      "away": "Ausente",
+      "offline": "Offline"
+    },
+    "datePlaceholder": "AAAA-MM-DD"
   }
 }

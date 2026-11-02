@@ -37,6 +37,12 @@
       "warriorsMessage": "Die nächste Wanderung ist geplant für ...",
       "kimName": "Dr. Kim",
       "kimMessage": "Kontrolle in 2 Wochen"
-    }
+    },
+    "presence": {
+      "online": "Aktiv",
+      "away": "Abwesend",
+      "offline": "Offline"
+    },
+    "datePlaceholder": "JJJJ-MM-TT"
   }
 }

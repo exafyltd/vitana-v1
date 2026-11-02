@@ -4,9 +4,10 @@
  * + `/api/v1` prefix are the production code path) over a fake `fetchImpl`
  * that answers by `METHOD /path` and records every request. The Supabase
  * client is an in-memory double of the PostgREST builder the inbox uses
- * (select / eq / neq / in / is / gt / or / not / order / limit / single /
- * maybeSingle / update / insert, `count: exact, head`), `rpc`, and realtime
- * channels whose handlers a test can fire. Every query, RPC and write is
+ * (select / eq / neq / in / is / gt / gte / or / not / order / limit /
+ * single / maybeSingle / update / insert / upsert / delete, `count: exact,
+ * head`), `rpc`, and realtime channels (postgres changes, broadcast, presence
+ * sync + track) whose handlers a test can fire. Every query, RPC and write is
  * logged, so tests assert the built requests. No network: the test files
  * import `../../helpers/no-network` first.
  */
@@ -56,7 +57,7 @@ export function inboxGateway(routes: Record<string, unknown>) {
 }
 
 type Row = Record<string, any>;
-export type Query = { table: string; op: 'select' | 'update' | 'insert'; columns?: string; head?: boolean; filters: Array<[string, string, any, any?]>; values?: any; limit?: number; single?: boolean };
+export type Query = { table: string; op: 'select' | 'update' | 'insert' | 'upsert' | 'delete'; columns?: string; head?: boolean; filters: Array<[string, string, any, any?]>; values?: any; options?: any; limit?: number; single?: boolean };
 type Result = { data: any; error: any; count?: number | null };
 
 export type SupabaseOpts = {
@@ -81,6 +82,8 @@ function matches(row: Row, [op, col, a, b]: [string, string, any, any?]): boolea
       return a === null ? row[col] == null : row[col] === a;
     case 'gt':
       return String(row[col]) > String(a);
+    case 'gte':
+      return String(row[col]) >= String(a);
     case 'not':
       return a === 'is' && b === null ? row[col] != null : true;
     case 'or':
@@ -102,7 +105,7 @@ export function inboxSupabase(opts: SupabaseOpts = {}) {
   const session = { ...base, user: { ...base.user, app_metadata: tenant ? { active_tenant_id: tenant } : {} } };
   const queries: Query[] = [];
   const rpcs: Array<{ name: string; args: any }> = [];
-  const channels: Array<{ name: string; bindings: Array<{ type: string; filter: any; handler: (p: any) => void }>; removed: boolean; sent: any[] }> = [];
+  const channels: Array<{ name: string; opts?: any; bindings: Array<{ type: string; filter: any; handler: (p: any) => void }>; removed: boolean; sent: any[]; tracked: any[]; presence: Record<string, any[]> }> = [];
   const tables = opts.tables ?? {};
 
   const run = (q: Query): Result => {
@@ -121,22 +124,21 @@ export function inboxSupabase(opts: SupabaseOpts = {}) {
   const from = jest.fn((table: string) => {
     const q: Query = { table, op: 'select', filters: [] };
     const b: any = {
-      select: (columns?: string, o?: { head?: boolean }) => ((q.columns = columns), (q.head = !!o?.head), b),
+      select: (columns?: string, o?: { head?: boolean }) => (q.op === 'select' ? ((q.columns = columns), (q.head = !!o?.head)) : undefined, b),
       eq: (c: string, v: any) => (q.filters.push(['eq', c, v]), b),
       neq: (c: string, v: any) => (q.filters.push(['neq', c, v]), b),
       in: (c: string, v: any[]) => (q.filters.push(['in', c, v]), b),
       is: (c: string, v: any) => (q.filters.push(['is', c, v]), b),
       gt: (c: string, v: any) => (q.filters.push(['gt', c, v]), b),
+      gte: (c: string, v: any) => (q.filters.push(['gte', c, v]), b),
       not: (c: string, o: string, v: any) => (q.filters.push(['not', c, o, v]), b),
       or: (expr: string) => (q.filters.push(['or', expr, null]), b),
       order: (c: string, o: any) => (q.filters.push(['order', c, o]), b),
       limit: (n: number) => ((q.limit = n), b),
       update: (values: any) => ((q.op = 'update'), (q.values = values), b),
-      insert: (values: any) => {
-        q.op = 'insert';
-        q.values = values;
-        return Promise.resolve(run(q));
-      },
+      insert: (values: any) => ((q.op = 'insert'), (q.values = values), b),
+      upsert: (values: any, options?: any) => ((q.op = 'upsert'), (q.values = values), (q.options = options), b),
+      delete: () => ((q.op = 'delete'), b),
       single: async () => run({ ...q, single: true }),
       maybeSingle: async () => {
         const r = run(q);
@@ -158,8 +160,10 @@ export function inboxSupabase(opts: SupabaseOpts = {}) {
     return { data: null, error: null };
   });
 
-  const channel = jest.fn((name: string) => {
-    const ch: any = { name, bindings: [], removed: false, sent: [] };
+  const channel = jest.fn((name: string, opts?: any) => {
+    const ch: any = { name, opts, bindings: [], removed: false, sent: [], tracked: [], presence: {} };
+    ch.presenceState = () => ch.presence;
+    ch.track = async (p: any) => (ch.tracked.push(p), 'ok');
     ch.on = (type: string, filter: any, handler: (p: any) => void) => (ch.bindings.push({ type, filter, handler }), ch);
     ch.subscribe = (cb?: (s: string) => void) => (cb?.('SUBSCRIBED'), ch);
     ch.send = async (msg: any) => (ch.sent.push(msg), 'ok');
@@ -184,7 +188,16 @@ export function inboxSupabase(opts: SupabaseOpts = {}) {
       for (const b of ch.bindings) if (!ch.removed && b.type === 'postgres_changes' && b.filter?.table === table && b.filter?.event === event) b.handler(payload);
   };
 
-  return { client, queries, rpcs, channels, emit };
+  /** Replaces the presence state of every live channel named `name` and fires its `sync` handlers. */
+  const syncPresence = (name: string, state: Record<string, any[]>) => {
+    for (const ch of channels)
+      if (!ch.removed && ch.name === name) {
+        ch.presence = state;
+        for (const b of ch.bindings) if (b.type === 'presence' && b.filter?.event === 'sync') b.handler({});
+      }
+  };
+
+  return { client, queries, rpcs, channels, emit, syncPresence };
 }
 
 /** Provider wrapper (signed-in member, tenant t-1) with the inbox gateway + Supabase installed. */
