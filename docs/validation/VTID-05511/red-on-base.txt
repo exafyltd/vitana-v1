@@ -76,3 +76,19 @@ Tests:       0 total
 Snapshots:   0 total
 Time:        48.149 s
 Ran all test suites matching /tests\/discover-commerce/i.
+
+=== voucher post-purchase (review discover-c68982e): tests/discover-commerce/voucher.test.tsx on 57b2489a7 (product code unchanged) ===
+    ✕ Android: the browser opens (resolves at once), the app comes back active → the order is re-read → the success state (1044 ms)
+    ✓ checkout failure: toasts checkoutFailed and returns to the selection (6739 ms)
+    ✓ createVoucherCheckout keeps the order id the function returns (33 ms)
+    ✓ downloadVoucherPdf and sendVoucherEmail call the web functions with the web bodies (2 ms)
+    ✕ fetchVoucherOrder reads the member's own voucher_orders row (by id, else the newest) (185 ms)
+    ✕ not paid (cancelled or still pending): back to the selection, no voucher calls (1398 ms)
+    ✕ paid: a failed PDF read toasts the error and keeps the success state (8856 ms)
+    ✕ paid: the e-mail form sends voucher-send-email, toasts voucherSent and closes (8215 ms)
+    ✕ paid: the success state, the PDF preview from voucher-download-pdf, its download and share (15967 ms)
+Tests:       8 failed, 3 passed, 11 total
+    ✕ the web's return params, if the link reaches the app: voucher_success opens the success state and clears them; voucher_cancelled is cleared (9 ms)
+    TypeError: (0 , _chrome.fetchVoucherOrder) is not a function
+    TypeError: (0 , _chrome.waitForPaidVoucherOrder) is not a function
+    ✕ waitForPaidVoucherOrder re-reads until the webhook marks the order paid, and gives up after the attempts (2 ms)

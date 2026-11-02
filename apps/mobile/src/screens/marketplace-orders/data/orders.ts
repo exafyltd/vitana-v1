@@ -133,9 +133,22 @@ export function useMyVouchers(userId: string | null) {
   return useQuery({ queryKey: ['my-vouchers', userId], queryFn: () => fetchMyVouchers(userId), enabled: !!userId });
 }
 
+/** `VoucherData` (`src/hooks/useVouchers.ts:25-35`), built by voucher-download-pdf/index.ts:356-366. */
+export interface VoucherPdfData {
+  code: string;
+  tier: string;
+  tierName: string;
+  price: string;
+  purchaseDate: string;
+  expiresAt: string;
+  benefits: string[];
+  buyerEmail: string;
+  orderId: string;
+}
+
 export interface VoucherPdf {
   success: boolean;
-  voucher: { code: string };
+  voucher: VoucherPdfData;
   signedPdfUrl: string;
 }
 

@@ -136,3 +136,15 @@ Test Suites: 1 failed, 94 passed, 95 total — Tests: 1 failed, 2622 passed, 262
   (the failure is tests/memory/gateway-i18n.test.tsx, another lane's file this branch does not touch; the same
    flake under full-suite load is recorded above after the origin/main merge)
 $ npx jest tests/memory/gateway-i18n.test.tsx  -> 1 suite / 42 passed
+
+## gift voucher after checkout (review discover-c68982e, same modal) — branch ff to origin, origin/main merged (57b2489a7)
+$ (apps/mobile) npx jest tests/discover-commerce/voucher.test.tsx   — on 57b2489a7 product code (red)
+FAIL — 8 failed, 3 passed, 11 total (red-on-base.txt)
+$ (apps/mobile) npm run typecheck   — after the origin/main merge and the fix
+PASS — 0 errors
+$ (apps/mobile) npx eslint <changed files>
+PASS — 0 problems
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 6/6 suites, 129/129 tests
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 6/6 suites, 129/129 tests
