@@ -121,3 +121,18 @@ exit=0
 $ npx jest tests/discover-commerce --ci  -> 118 passed
 $ node scripts/native/parity-ledger.mjs --check  -> OK — 435 rows, 42 native route(s)
 $ node scripts/native/core-closure.mjs --check   -> up to date
+
+## Review fix (review 67ba80c: lane tests had no async-timeout config)
+Change (apps/mobile/tests/discover-commerce/ only): timing.ts runs configure({ asyncUtilTimeout: 8000 }),
+imported first by helpers.tsx (which every lane test imports); jest.setTimeout(30000) in i18n-rtl, orders,
+providers and routes (multi-screen / 11-locale suites); removed the one-off { timeout: 8000 } at orders.test.tsx:48.
+No assertion changed, nothing skipped; jest.config.js / jest.setup.ts untouched.
+$ (apps/mobile) npm run typecheck  -> exit=0
+$ npx jest tests/discover-commerce   (default workers, run 1) -> Test Suites: 5 passed — Tests: 118 passed (61.3 s)
+$ npx jest tests/discover-commerce   (default workers, run 2) -> Test Suites: 5 passed — Tests: 118 passed (20.6 s)
+$ npx jest tests/discover-commerce   (default workers, run 3) -> Test Suites: 5 passed — Tests: 118 passed (18.5 s)
+$ npx jest   (full, default workers, once)
+Test Suites: 1 failed, 94 passed, 95 total — Tests: 1 failed, 2622 passed, 2623 total — Snapshots: 57 passed
+  (the failure is tests/memory/gateway-i18n.test.tsx, another lane's file this branch does not touch; the same
+   flake under full-suite load is recorded above after the origin/main merge)
+$ npx jest tests/memory/gateway-i18n.test.tsx  -> 1 suite / 42 passed

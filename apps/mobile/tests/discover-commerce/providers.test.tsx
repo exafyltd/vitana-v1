@@ -19,6 +19,9 @@ import { ProviderProfileScreen } from '../../src/screens/marketplace-orders/Prov
 import { requiredAmount, timeSlots } from '../../src/screens/marketplace-orders/BookingPaymentFlow';
 import { USER, appointmentRow, commerceWrapper, setOS } from './helpers';
 
+// Renders the directory, the profile and the booking dialog.
+jest.setTimeout(30000);
+
 afterEach(() => {
   searchParams.current = {};
   pathname.current = '/discover/doctors-coaches';

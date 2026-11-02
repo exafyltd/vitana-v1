@@ -10,6 +10,8 @@
  * request the screen would send; nothing is charged or ordered.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// RNTL asyncUtilTimeout 8000 ms (findBy / waitFor) for every lane test.
+import './timing';
 import { Platform } from 'react-native';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { createGatewayFetch } from '../../src/ports/core';

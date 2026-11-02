@@ -24,6 +24,9 @@ import { OrdersScreen } from '../../src/screens/marketplace-orders/OrdersScreen'
 import { MyTicketsScreen } from '../../src/screens/marketplace-orders/MyTicketsScreen';
 import { commerceWrapper, cjRow, intent, ticketRow, voucherRow, setOS } from './helpers';
 
+// The 11-locale loop renders five screens per locale.
+jest.setTimeout(30000);
+
 const APP = join(__dirname, '../..');
 const REPO = join(APP, '../..');
 

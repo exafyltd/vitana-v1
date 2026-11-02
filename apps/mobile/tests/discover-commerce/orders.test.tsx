@@ -22,6 +22,9 @@ import { qrMatrix, qrPath } from '../../src/screens/marketplace-orders/ticket/Qr
 import { ticketSerial } from '../../src/screens/marketplace-orders/ticket/EventTicket';
 import { FAIL, USER, commerceWrapper, cjRow, pastTicketRow, setOS, ticketRow, voucherRow } from './helpers';
 
+// Renders both the orders screen and /my-tickets.
+jest.setTimeout(30000);
+
 afterEach(() => {
   searchParams.current = {};
   router.navigate.mockClear();
@@ -45,7 +48,7 @@ describe('the web reads, unchanged', () => {
   it('cj_orders (all, newest first), the completed tickets with type + event, and the member’s voucher orders', async () => {
     const { wrapper, log } = commerceWrapper({}, { tables: tables() as never });
     render(<OrdersScreen />, { wrapper });
-    await waitFor(() => expect(screen.getByTestId('order-card-cj-1-aaaaaaaa')).toBeTruthy(), { timeout: 8000 });
+    await waitFor(() => expect(screen.getByTestId('order-card-cj-1-aaaaaaaa')).toBeTruthy());
     const sel = (t: string) => log.find((o) => o.op === 'select' && o.table === t)?.args;
     expect(sel('cj_orders')).toMatchObject({ select: '*', filters: [], order: ['created_at', { ascending: false }] });
     expect(sel('event_ticket_purchases').select.replace(/\s+/g, ' ').trim()).toBe('*, ticket_type:event_ticket_types(*), event:global_community_events(id, title, start_time, location, image_url)');
