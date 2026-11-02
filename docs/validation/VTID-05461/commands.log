@@ -129,3 +129,9 @@ $ npx vitest run src/i18n scripts/native -> Test Files 3 passed (3), Tests 25 pa
 $ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-journey-autopilot-r2/journey --title "VTID-05461 (native-wave2-journey-autopilot-r2/journey): native My Journey port"
 PASS gh for plan( PR / vitana-platform lane files; PASS PR-GATE scope / sparring / weakening / red-green; PASS Kiro steering
 FAIL Collab handoff + FAIL Lane scope — unchanged single cause: lanes/journey.md is on the plan branch, not on vitana-platform main (the brief's "lane file not found" allowance)
+
+### ORB hook point (driver decision: orb/** stays out; follow-up in verification.md)
+$ (apps/mobile) npx tsc --noEmit -> exit=0
+$ (apps/mobile) npx jest tests/journey --ci -> 3 suites, 96 passed (+2: ORB hook point)
+$ (apps/mobile) npm test -- --ci -> Test Suites 87 passed; Tests 2384 passed
+$ npx eslint apps/mobile/src/screens/journey apps/mobile/tests/journey -> exit=0

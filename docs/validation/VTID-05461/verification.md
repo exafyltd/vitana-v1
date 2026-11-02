@@ -85,15 +85,33 @@ Kept out, with proof that the mobile web does not show it:
 - The web calendar button's own `calendar:open` listener: the native shell already handles it
   (MobileAppShell.tsx:50); a second listener would navigate twice.
 
-**Blocked outside the lane paths (reported to the driver, not edited):** the ORB guided-topic
-teaching-end listener (GuidedJourneyCatalog.tsx:200-237) and `focusGuidedTopic(topicId)`
-(orbActivate.ts:79-83). The native ORB cannot start a session on a topic or report which topic's
-teaching ended: `buildStartPayload` leaves the guided-topic field to N6e
-(apps/mobile/src/orb/protocol.ts:239), `OrbController.open()` takes no arguments
-(ui/orb-controller.ts:72), and `end_guided_topic_teaching` ends the session as a plain
-`end_directive` with no topic id (session.ts:355-358). The fix needs `apps/mobile/src/orb/**`,
-which is not in this lane's `paths`. Until then the hero / catalog open the ORB generically (the
-web's own fallback for a widget without `focusGuidedTopic`, orbActivate.ts:85-93).
+### Follow-up (needs plan amendment, ORB lane)
+
+Driver decision (fix round 1): `apps/mobile/src/orb/**` is the ORB core, guarded by the
+ORB-parity and duplex-gate checks; a screen lane does not change it. Not ported here:
+
+- **Web source:** the teaching-end listener `vitana:guided-topic-teaching-complete`
+  (GuidedJourneyCatalog.tsx:200-237) and `activateOrb(topicId)` → `VitanaOrb.focusGuidedTopic`
+  (orbActivate.ts:74-83; fallback open :85-100).
+- **Native files and lines the ORB lane has to change:**
+  - `apps/mobile/src/orb/protocol.ts:239`: `buildStartPayload` leaves the guided-topic one-shot
+    field to N6e (no `guided_topic_id` in the start payload).
+  - `apps/mobile/src/orb/session.ts:355-358`: `end_guided_topic_teaching` ends the session as a
+    plain `end_directive`; no topic id reaches subscribers.
+  - `apps/mobile/src/orb/ui/orb-controller.ts:72`: `open()` takes no arguments, so a session
+    cannot be started on a topic.
+- **What a member sees without it:** tapping a topic or the hero's next session opens Vitana as
+  a normal conversation, not one that teaches that topic. When a lesson ends, the topic is not
+  marked done on its own, there is no "done" toast, and the Well-done drawer does not reopen; the
+  member marks it done in the drawer (Mark done / open the feature), which works as on the web.
+- **Screen-side hook point, in place and tested:** `JourneyOrbBridgeContext` (seams.ts) with
+  `focusGuidedTopic(topicId)` and `onGuidedTopicTeachingComplete(cb) → unsubscribe`. The default
+  bridge is a no-op subscriber with no focus, so the web's fallback runs (plain ORB open). The
+  catalog already subscribes: on a signal it posts `/journey/practice-complete`, refreshes the
+  journey state, toasts `screens.guidedCatalog.doneToast` and opens the topic's congratulation
+  view (practice off), as GuidedJourneyCatalog.tsx:204-236. Tests: fix1.test.tsx "ORB hook point"
+  (default bridge → generic open; wired fake bridge → focus, signal → request + toast + drawer,
+  unsubscribe on unmount). The ORB lane only has to provide the bridge.
 
 Not in the reviewer's list and unchanged: the Autopilot badge's last-seen pulse
 (use-autopilot.ts:182-232) feeds other surfaces' chips; PillarDeltaBadges' English pillar names
@@ -106,7 +124,7 @@ this lane does not touch it (its own provider calls `/journey/state`).
 ## Checks (counts in commands.log)
 
 Fix round 1 (head after the fix commits): `npm run typecheck` 0 errors; `npx jest tests/journey`
-3 suites / 94 tests; full `npm test` 87 suites / 2382 tests; the rest as below, all rerun green.
+3 suites / 96 tests; full `npm test` 87 suites / 2384 tests; the rest as below, all rerun green.
 First head: `npx jest tests/journey` 2 suites / 65 tests; full `npm test` 86
 suites / 2347 tests (one earlier full run had a load timeout in the untouched
 `tests/memory/gateway-i18n.test.tsx`; it passes alone and in the rerun); `APP_PROFILE=development
