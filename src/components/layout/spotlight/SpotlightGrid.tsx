@@ -18,6 +18,12 @@ import { cn } from '@/lib/utils';
  *
  * - Exactly one spotlight; at most 6 `standard` tiles (extra items are not
  *   rendered); one optional row of `compact` cards.
+ * - Height (desktop): the spotlight slot is a stretching grid cell over the
+ *   tile rows, so its top and bottom are tile row 1's top and the last tile
+ *   row's bottom. Its media has no fixed ratio there (VCard spotlight
+ *   identity): a token minimum (min-h-32) that grows into the room the tile
+ *   rows give it, so the card never makes the rows taller than its text needs
+ *   and the compact row stays in view at 1400x900.
  * - Fewer tiles (SR-13 / D4): tiles are never fabricated; the spotlight keeps
  *   its 2 columns and spans only the tile rows that exist (min 1). 0 tiles →
  *   `empty` fills the tile area. The spotlight is never widened.
