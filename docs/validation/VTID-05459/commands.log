@@ -1,0 +1,115 @@
+# VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-inbox-chat-calls-r2-inbox-list; base origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched (fake gateway + Supabase double; tests/helpers/no-network).
+
+## Setup
+$ git worktree add .worktrees/native-wave2-inbox-chat-calls-r2-inbox-list -b kiro/native-wave2-inbox-chat-calls-r2/inbox-list origin/main
+$ (apps/mobile) npm ci  -> added 941 packages
+$ (repo root) npm ci  -> added 872 packages (the repo scripts parity-ledger / i18n need typescript etc.)
+
+## Red on base (detached worktree at origin/main e530abd0d + the lane's tests copied in) — see red-on-base.txt
+$ (apps/mobile) npm ci && npm run gen:i18n && npx jest tests/inbox-chat --ci
+Test Suites: 4 failed, 4 total   (Cannot find module src/screens/inbox/InboxScreen | ArchivedScreen)
+Tests:       0 total
+exit=1
+
+## apps/mobile — code = 8992971cd (later commits are docs only)
+$ npm run typecheck
+> gen-i18n-map: 11 locales, 1452 shards → src/i18n/catalog-map.generated.ts
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/inbox-chat --ci
+Test Suites: 4 passed, 4 total
+Tests:       69 passed, 69 total
+exit=0
+(first runs: fixes in the tests and one product fix — the test session double lost user.id (fakeSession
+ spread), a module-level Community/Network choice leaked between tests (reset seam added), sheets unmount
+ after their exit animation (waitFor), the Inspiration EN text read from the catalog; product: the list
+ shows the skeleton until the session resolves instead of a flash of the empty state)
+
+$ npm test -- --ci
+Test Suites: 88 passed, 88 total
+Tests:       2346 passed, 2346 total
+exit=0
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/android/entry-fd9bcadf25ccf9e7c4f15e191bd7a92d.hbc (17MB)
+_expo/static/js/ios/entry-d86b043b289b5e5ab066b700b6d15ae3.hbc (17MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's home is read-only for ~/.expo; dist/ and .expohome removed afterwards)
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ node ../../scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change to the 3 hand-flipped rows)
+
+$ npm run parity:check
+> node ../../scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 35 native route(s)
+exit=0
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0 (no core change: manifest / closure.generated.json / extract.json / mobile-ci-paths.generated.json untouched)
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node scripts/check-locale-registry.mjs
+[locale-registry] OK — picker and supported_locales agree.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+0 key(s) whose EN source changed since translation in every locale
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+errors mentioning inboxNative: 0 (all reported errors are pre-existing)
+
+## repo root — web build + locale chunking + i18n vitest (the new shards are web catalog files; run on 51a432d56, shards unchanged since)
+$ npm run build
+✓ built in 1m 52s
+exit=0
+
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] OK — one chunk per lazy locale, de eager.
+exit=0
+
+$ npx vitest run src/i18n scripts/native
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0
+
+## repo root — ESLint on the lane's files
+$ npx eslint apps/mobile/src/screens/inbox apps/mobile/src/ports/{inbox.tsx,links.ts,badges.ts} "apps/mobile/app/(app)/inbox" apps/mobile/tests/inbox-chat
+exit=0 (0 problems)
+
+## Preflight (head 191de1278)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-inbox-chat-calls-r2/inbox-list --title "VTID-05459 (native-wave2-inbox-chat-calls-r2/inbox-list): native inbox list port"
+FAIL  Collab handoff   — lanes/inbox-list.md does not exist here or in vitana-platform main (spec on the unmerged plan branch; known non-blocker)
+FAIL  Lane scope       — lanes/inbox-list.md not found (same cause; known non-blocker)
+PASS  gh for plan( PR / vitana-platform lane files
+PASS  PR-GATE scope
+PASS  PR-GATE sparring  (first run: FAIL "no owner-approval line" -> fixed in 191de1278)
+PASS  PR-GATE weakening
+PASS  PR-GATE red-green
+PASS  Kiro steering
+exit=1 (only the two lane-file-not-found reds)
