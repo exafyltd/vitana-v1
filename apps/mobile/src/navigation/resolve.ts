@@ -46,6 +46,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  '/connectors',
+  '/delete-account',
   '/daily-diary',
   '/dev/orb-bench',
   '/home',
@@ -66,6 +68,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/profile/subscriptions',
   '/reset-password',
   '/search',
+  '/settings/connected-apps',
+  '/support',
   '/wallet/subscriptions',
 ];
 

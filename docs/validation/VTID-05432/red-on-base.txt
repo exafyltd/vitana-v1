@@ -1,0 +1,588 @@
+# VTID-05432 red on base: the lane's new tests (apps/mobile/tests/support/**) run on origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+# (git archive of origin/main + this lane's tests copied in; apps/mobile node_modules from the worktree).
+# Command (apps/mobile): npm run gen:i18n && npx jest tests/support --ci
+# Result: 4 suites failed. routes.test.ts: 31/31 fail for the reason the lane fixes (the 14 rows are not_started,
+# the 14 web paths resolve to 'unported', the 3 route files are missing). support / connectors / i18n suites fail
+# because the screens, the support port and the route files do not exist on main yet.
+
+FAIL tests/support/routes.test.ts (26.329 s)
+  ● support-connectors rows are native › SETTINGS.SUPPORT (/support) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › SETTINGS.SUPPORT_CONTACT (/support?tab=contact) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › SETTINGS.SUPPORT_COMMUNITY (/support?tab=community) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › SETTINGS.SUPPORT_FAQ (/support?tab=faqs) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › SETTINGS.SOCIAL (/connectors) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.AGENT (/connectors?tab=agent) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.AI (/connectors?tab=ai) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.FITNESS (/connectors?tab=fitness) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.HEALTH (/connectors?tab=health) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.MEDIA (/connectors?tab=media) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.OTHER (/connectors?tab=other) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.PRODUCTIVITY (/connectors?tab=productivity) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › CONNECTORS.SOCIAL (/connectors?tab=social) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › SETTINGS.CONNECTED_APPS (/settings/connected-apps) is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      35 |     const row = ledger.rows.find((r) => r.key === key);
+      36 |     expect(row?.web_path).toBe(path);
+    > 37 |     expect(row?.status).toBe('native');
+         |                         ^
+      38 |   });
+      39 |
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+
+      at toBe (tests/support/routes.test.ts:37:25)
+
+  ● support-connectors rows are native › /support resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /support?tab=contact resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /support?tab=community resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /support?tab=faqs resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=agent resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=ai resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=fitness resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=health resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=media resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=other resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=productivity resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /connectors?tab=social resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › /settings/connected-apps resolves to a native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      40 |   it.each(Object.values(ROWS))('%s resolves to a native route, query kept', (path) => {
+      41 |     const r = resolveWebPath(path);
+    > 42 |     expect(r.kind).toBe('native');
+         |                    ^
+      43 |     expect(r.href).toBe(path);
+      44 |   });
+      45 |
+
+      at toBe (tests/support/routes.test.ts:42:20)
+
+  ● support-connectors rows are native › route file app/(app)/support.tsx exists
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      45 |
+      46 |   it.each(['(app)/support.tsx', '(app)/connectors.tsx', '(app)/settings/connected-apps.tsx'])('route file app/%s exists', (file) => {
+    > 47 |     expect(existsSync(join(APP, file))).toBe(true);
+         |                                         ^
+      48 |   });
+      49 | });
+      50 |
+
+      at toBe (tests/support/routes.test.ts:47:41)
+
+  ● support-connectors rows are native › route file app/(app)/connectors.tsx exists
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      45 |
+      46 |   it.each(['(app)/support.tsx', '(app)/connectors.tsx', '(app)/settings/connected-apps.tsx'])('route file app/%s exists', (file) => {
+    > 47 |     expect(existsSync(join(APP, file))).toBe(true);
+         |                                         ^
+      48 |   });
+      49 | });
+      50 |
+
+      at toBe (tests/support/routes.test.ts:47:41)
+
+  ● support-connectors rows are native › route file app/(app)/settings/connected-apps.tsx exists
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      45 |
+      46 |   it.each(['(app)/support.tsx', '(app)/connectors.tsx', '(app)/settings/connected-apps.tsx'])('route file app/%s exists', (file) => {
+    > 47 |     expect(existsSync(join(APP, file))).toBe(true);
+         |                                         ^
+      48 |   });
+      49 | });
+      50 |
+
+      at toBe (tests/support/routes.test.ts:47:41)
+
+FAIL tests/support/i18n.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/support/SupportScreen' from 'tests/support/i18n.test.tsx'
+
+      15 | import { LOCALES } from '../../src/i18n';
+      16 | import { languageFromLocale, useI18n } from '../../src/i18n/I18nProvider';
+    > 17 | import { SupportScreen } from '../../src/screens/support/SupportScreen';
+         | ^
+      18 | import { ConnectorsScreen } from '../../src/screens/support/ConnectorsScreen';
+      19 | import { makeWrapper } from './helpers';
+      20 |
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/support/i18n.test.tsx:17:1)
+
+FAIL tests/support/support.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/ports/support' from 'tests/support/support.test.tsx'
+
+      10 | import { __setSupabaseForTests } from '../../src/auth/client';
+      11 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 12 | import { registerSupportReportHandler } from '../../src/ports/support';
+         | ^
+      13 | import { SupportScreen, normalizeTab } from '../../src/screens/support/SupportScreen';
+      14 | import { buildSupportContactBody, memberTicketStatus } from '../../src/screens/support/data/tickets';
+      15 | import SupportRoute from '../../app/(app)/support';
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/support/support.test.tsx:12:1)
+
+FAIL tests/support/connectors.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/ports/support' from 'tests/support/connectors.test.tsx'
+
+      12 | import { __setSupabaseForTests } from '../../src/auth/client';
+      13 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 14 | import { __setConsentOpenerForTests } from '../../src/ports/support';
+         | ^
+      15 | import { CONNECTOR_TABS, ConnectorsScreen, connectorTab } from '../../src/screens/support/ConnectorsScreen';
+      16 | import ConnectorsRoute from '../../app/(app)/connectors';
+      17 | import ConnectedAppsRoute from '../../app/(app)/settings/connected-apps';
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/support/connectors.test.tsx:14:1)
+
+Test Suites: 4 failed, 4 total
+Tests:       31 failed, 31 total
+Snapshots:   0 total
+Time:        33.616 s
+Ran all test suites matching /tests\/support/i.

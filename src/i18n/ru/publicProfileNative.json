@@ -1,0 +1,23 @@
+{
+  "publicProfileNative": {
+    "notFound": {
+      "body": "Профиль, который ты ищешь, не существует.",
+      "loadFailed": "Не удалось загрузить профиль",
+      "unexpected": "Произошла непредвиденная ошибка",
+      "noIdentifier": "Идентификатор профиля не указан"
+    },
+    "landing": {
+      "brand": "VITANA",
+      "vitanaIndex": "VITANA {score}",
+      "openSocial": "Открыть {network}"
+    },
+    "member": {
+      "noBio": "Пока нет описания",
+      "sections": "Разделы профиля"
+    },
+    "post": {
+      "likes": "Отметок «нравится»: {count}",
+      "comments": "Комментариев: {count}"
+    }
+  }
+}
