@@ -201,6 +201,30 @@
       "gutHealth": "صحة الأمعاء",
       "herbs": "أعشاب",
       "heartHealth": "صحة القلب"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "يُعلَن لاحقًا",
+        "eventFallback": "فعالية",
+        "generalAdmission": "دخول عام",
+        "loadError": "تعذّر تحميل تذكرتك. يُرجى التحقق من بريدك الإلكتروني للحصول على التأكيد."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 سأحضر {title}!",
+        "email": "البريد",
+        "emailSubject": "تذكرتي لـ {title}",
+        "sms": "رسالة نصية",
+        "copyLink": "نسخ الرابط",
+        "copied": "تم النسخ!",
+        "openingWhatsapp": "جارٍ فتح واتساب…",
+        "openingViber": "جارٍ فتح فايبر…",
+        "openingEmail": "جارٍ فتح البريد…",
+        "openingMessages": "جارٍ فتح الرسائل…"
+      },
+      "package": {
+        "failedToVerify": "تعذّر التحقق من الدفع",
+        "unableToVerify": "تعذّر التحقق من عملية الشراء. يُرجى التواصل مع الدعم."
+      }
     }
   }
 }
