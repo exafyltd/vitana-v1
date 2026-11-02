@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana a besoin de ton appareil photo pour que tu puisses prendre des photos pour ton journal et pour les signalements de bugs.",
+      "photosUsage": "Vitana a besoin d'accéder à tes photos pour que tu puisses ajouter des images à ton journal et aux signalements de bugs.",
+      "deniedTitle": "Accès non autorisé",
+      "deniedCamera": "Autorise l'accès à l'appareil photo dans les Réglages pour prendre une photo.",
+      "deniedPhotos": "Autorise l'accès à tes photos dans les Réglages pour choisir une image.",
+      "deniedMicrophone": "Autorise l'accès au micro dans les Réglages pour enregistrer une entrée vocale."
+    },
+    "selectMode": "Choisis une section du journal",
+    "startRecording": "Démarrer l'enregistrement",
+    "stopRecording": "Arrêter l'enregistrement",
+    "close": "Fermer",
+    "removePhoto": "Retirer la photo",
+    "entriesLoadError": "Tes entrées n'ont pas pu être chargées.",
+    "photoSource": {
+      "title": "Ajouter une photo",
+      "camera": "Prendre une photo",
+      "library": "Choisir dans la photothèque"
+    },
+    "indexSaved": {
+      "title": "Enregistré · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Touche ton Index pour voir l'évolution.",
+      "signals": "{count} signaux de santé enregistrés.",
+      "signalsCaption": "{count} signaux de santé enregistrés à partir de ta légende."
+    },
+    "screenOption": {
+      "home": "Accueil",
+      "community": "Communauté",
+      "communityEvents": "Communauté – Événements",
+      "discover": "Découvrir",
+      "discoverMarketplace": "Découvrir – Marché",
+      "businessHub": "Business Hub",
+      "inbox": "Boîte de réception",
+      "inboxMessages": "Boîte de réception – Messages",
+      "health": "Santé",
+      "healthDashboard": "Santé – Tableau de bord",
+      "aiAssistant": "Assistant IA",
+      "aiAssistantOrb": "Assistant IA – ORB",
+      "wallet": "Portefeuille",
+      "sharing": "Partage",
+      "memoryDiary": "Mémoire – Journal",
+      "memoryGarden": "Mémoire – Jardin",
+      "calendar": "Calendrier",
+      "settings": "Réglages",
+      "profile": "Profil",
+      "liveRooms": "Salons en direct",
+      "notifications": "Notifications",
+      "other": "Autre"
+    }
+  }
+}

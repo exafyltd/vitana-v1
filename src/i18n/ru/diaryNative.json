@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana нужна твоя камера, чтобы ты мог делать фото для дневника и для сообщений об ошибках.",
+      "photosUsage": "Vitana нужен доступ к твоим фото, чтобы ты мог добавлять изображения в дневник и в сообщения об ошибках.",
+      "deniedTitle": "Доступ не разрешён",
+      "deniedCamera": "Разреши доступ к камере в Настройках, чтобы сделать фото.",
+      "deniedPhotos": "Разреши доступ к фото в Настройках, чтобы выбрать изображение.",
+      "deniedMicrophone": "Разреши доступ к микрофону в Настройках, чтобы записать голосовую запись."
+    },
+    "selectMode": "Выбери раздел дневника",
+    "startRecording": "Начать запись",
+    "stopRecording": "Остановить запись",
+    "close": "Закрыть",
+    "removePhoto": "Удалить фото",
+    "entriesLoadError": "Не удалось загрузить твои записи.",
+    "photoSource": {
+      "title": "Добавить фото",
+      "camera": "Сделать фото",
+      "library": "Выбрать из медиатеки"
+    },
+    "indexSaved": {
+      "title": "Сохранено · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Нажми на свой Index, чтобы увидеть изменение.",
+      "signals": "Записано сигналов здоровья: {count}.",
+      "signalsCaption": "Записано сигналов здоровья из твоей подписи: {count}."
+    },
+    "screenOption": {
+      "home": "Главная",
+      "community": "Сообщество",
+      "communityEvents": "Сообщество – События",
+      "discover": "Обзор",
+      "discoverMarketplace": "Обзор – Маркетплейс",
+      "businessHub": "Business Hub",
+      "inbox": "Входящие",
+      "inboxMessages": "Входящие – Сообщения",
+      "health": "Здоровье",
+      "healthDashboard": "Здоровье – Панель",
+      "aiAssistant": "ИИ-ассистент",
+      "aiAssistantOrb": "ИИ-ассистент – ORB",
+      "wallet": "Кошелёк",
+      "sharing": "Поделиться",
+      "memoryDiary": "Память – Дневник",
+      "memoryGarden": "Память – Сад",
+      "calendar": "Календарь",
+      "settings": "Настройки",
+      "profile": "Профиль",
+      "liveRooms": "Прямые эфиры",
+      "notifications": "Уведомления",
+      "other": "Другое"
+    }
+  }
+}
