@@ -1,0 +1,55 @@
+# VTID-05432 (native-wave2-profile-settings-r2/support-connectors) — local verification
+# Session kiro-exafyltd-202611011658-9f52 · Linux · base origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+# Code head 49f249fdd (screens) / 680677239 (ledger); docs-only commits after it. No network in any test.
+
+## Red on base (origin/main a41e89a0d, lane tests copied in) — apps/mobile
+$ npm run gen:i18n && npx jest tests/support --ci
+  FAIL  4 suites failed; routes.test.ts 31 failed / 31 (rows not_started, paths 'unported', route files missing);
+        support / connectors / i18n suites: screens and src/ports/support.ts not on main  → red-on-base.txt
+
+## Lane head — apps/mobile
+$ npx jest tests/support --ci
+  PASS  Test Suites: 4 passed, 4 total · Tests: 158 passed, 158 total
+$ npm test -- --ci                      (full suite, final tree)
+  PASS  Test Suites: 80 passed, 80 total · Tests: 2225 passed, 2225 total · Snapshots: 57 passed, 57 total
+$ npm run typecheck                     (gen:i18n 11 locales, 1419 shards; tsc --noEmit)
+  PASS  0 errors
+$ APP_PROFILE=development npm run bundle   (HOME pointed at a writable dir: the sandbox has no /root/.expo)
+  PASS  ios entry-*.hbc 17MB, android entry-*.hbc 17MB, "Exported: dist"
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+  PASS  "Dependencies are up to date" (no dependency added)
+$ npm run parity:check
+  PASS  "parity-ledger --check: OK — 435 rows, 29 native route(s)"
+
+## Lane head — repo root
+$ node scripts/native/parity-ledger.mjs --sync
+  PASS  435 rows (added 0, updated 0, removed 0, stale kept 0) — no diff
+$ node scripts/native/core-closure.mjs --check     (core not changed)
+  PASS  "22 roots, 32 src files, 11 assets — up to date" (closure + mobile-ci-paths current)
+$ node scripts/native/check-shell-pins.mjs
+  PASS  every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ npx eslint apps/mobile/src/screens/support apps/mobile/src/ports/support.ts apps/mobile/src/ports/ui.tsx apps/mobile/app/(app)/{support,connectors,settings/connected-apps}.tsx apps/mobile/tests/support apps/mobile/src/navigation/resolve.ts
+  PASS  0 problems
+$ node scripts/i18n-register-check.mjs --all        (CI i18n-check "Formal-register guard")
+  PASS  "No formal-register violations."
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+  FAIL→PASS  first run flagged "Stoffwechselgesundheit" (supportNative lifespin); reworded; "No long words found."
+$ node scripts/i18n-stamp-source.mjs --check-all
+  PASS  exit 0
+$ node scripts/check-i18n-subscriptions.mjs
+  PASS  "OK — 776 components render catalog strings"
+$ node scripts/check-locale-registry.mjs
+  PASS  picker and supported_locales agree
+$ node scripts/i18n-audit.mjs                       (CI runs it --report-only)
+  exit 1 on base and head alike: 17148 pre-existing ERR lines (_pending_review on GA locales); 0 mention supportNative
+$ node scripts/i18n-parity-gate.mjs --all
+  exit 1 on base and head alike: "10 failing check(s)" (review-queue counts, DB surface unchecked); output identical to base
+$ npx vitest run src/i18n
+  PASS  Test Files 3 passed · Tests 25 passed
+$ npm run build                                     (web, vite)
+  PASS  "built in 1m 9s"
+
+## Governance
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-profile-settings-r2/support-connectors --title "VTID-05432 (native-wave2-profile-settings-r2/support-connectors): native support and connectors port"
+  run 1 (head d2ee78572): FAIL PR-GATE sparring — plan-sparring.md had no owner-approval line → added
+  run 2 (head a4ad72ff5): PASS every check (Collab handoff, Lane scope, plan PR / lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering)

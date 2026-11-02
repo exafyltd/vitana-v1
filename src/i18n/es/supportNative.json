@@ -1,0 +1,87 @@
+{
+  "supportNative": {
+    "connectors": {
+      "modes": {
+        "all": "Todo",
+        "shopping": "Compras",
+        "ai": "IA",
+        "productivity": "Correo y calendario",
+        "media": "Música y vídeo",
+        "agent": "Autopilot"
+      },
+      "sections": {
+        "shopping": "Compras y recompensas",
+        "productivity": "Correo, calendario y contactos",
+        "media": "Música y vídeo"
+      },
+      "status": {
+        "rewardsActive": "Recompensas activas · pago en la web del comercio",
+        "recommendationsOnly": "Solo recomendaciones · abre Amazon"
+      },
+      "lastSync": {
+        "oneHour": "hace 1 hora",
+        "thirtyMin": "hace 30 min",
+        "twoHours": "hace 2 horas"
+      },
+      "linkedTo": "{app} está vinculado a {account}.",
+      "agent": {
+        "close": "Cerrar",
+        "remove": "Eliminar canal",
+        "loadError": "No se pudieron cargar los canales. Inténtalo de nuevo.",
+        "addError": "No se pudo añadir el canal. Inténtalo de nuevo."
+      },
+      "apps": {
+        "aliexpress": "Recompensas activas — compra en Discover para ganar",
+        "bodylab24": "Recompensas activas — suplementos alemanes",
+        "alibaba": "Recompensas activas — mercado global",
+        "rockbros": "Recompensas activas — equipo de fitness y outdoor",
+        "amazon": "Solo recomendaciones — abre Amazon",
+        "linkedin": "Red profesional",
+        "instagram": "Fotos, historias, reels",
+        "tiktok": "Vídeos cortos",
+        "youtube": "Contenido de vídeo",
+        "facebook": "Compartir en redes",
+        "x": "Publicaciones e hilos",
+        "apple-health": "Pasos, frecuencia cardíaca, sueño",
+        "fitbit": "Actividad, sueño, peso",
+        "strava": "Datos de ejercicio y carrera",
+        "oura": "Calidad del sueño, preparación, VFC",
+        "garmin": "Seguimiento GPS y de fitness",
+        "myfitnesspal": "Nutrición, calorías, macros",
+        "lifespin": "Información sobre salud metabólica",
+        "fhir": "Historias clínicas",
+        "doctorbox": "Resultados de laboratorio, biomarcadores",
+        "gmail": "Bandeja de entrada, borradores, etiquetas",
+        "google-calendar": "Eventos, reuniones, disponibilidad",
+        "google-contacts": "Directorio de contactos",
+        "apple-mail": "Cuentas y bandeja de Mail de iOS",
+        "apple-calendar": "Eventos del Calendario de iOS",
+        "iphone-contacts": "Agenda de iOS",
+        "android-contacts": "Agenda de Android",
+        "outlook-mail": "Bandeja de entrada de Microsoft",
+        "outlook-calendar": "Eventos del calendario de Microsoft",
+        "spotify": "Reproducción de música, listas, historial de escucha",
+        "apple-music": "Reproducción de música y biblioteca",
+        "youtube-music": "Streaming de música, listas",
+        "youtube-playback": "Reproducción de vídeo, historial de visualización",
+        "calm": "Meditación, atención plena",
+        "headspace": "Meditación guiada",
+        "smart-scales": "Peso, composición corporal",
+        "air-quality": "Calidad del aire interior",
+        "whatsapp": "Integración de mensajería",
+        "telegram": "Bot y mensajería",
+        "csv-import": "Importación masiva de datos",
+        "api-access": "Herramientas para desarrolladores",
+        "chatgpt": "API de OpenAI — chat, razonamiento",
+        "claude": "API de Anthropic — chat, razonamiento",
+        "names": {
+          "fhir": "Proveedores FHIR",
+          "smartScales": "Básculas inteligentes",
+          "airQuality": "Sensores de calidad del aire",
+          "csvImport": "Importación CSV",
+          "apiAccess": "Acceso a la API"
+        }
+      }
+    }
+  }
+}
