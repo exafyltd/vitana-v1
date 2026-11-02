@@ -10,6 +10,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import { makeWrapper } from '../helpers/providers';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 export const USER = 'u-redeem';
 

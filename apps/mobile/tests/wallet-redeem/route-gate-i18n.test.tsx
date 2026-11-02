@@ -20,6 +20,9 @@ import { RedeemScreen } from '../../src/screens/wallet-redeem/RedeemScreen';
 import { TIERS } from '../../src/screens/wallet-redeem/tiers';
 import { FAIL, order, redeemWrapper, voucher } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 const APP = join(__dirname, '../..');
 const REPO = join(APP, '../..');
 

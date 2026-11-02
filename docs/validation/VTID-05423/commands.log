@@ -104,3 +104,9 @@ Both reds are the brief's known "lane file not found" false positive: the lane f
 (`git show origin/main:.kiro/specs/native-wave2-wallet-r2/lanes/wallet-redeem.md`, read at the start of this
 session), but GitHub answered HTTP 403 to every fetch / gh call at preflight time, so preflight could not see it.
 No lane path is missing: every touched file is inside the lane's `paths`.
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 1d93bfc84 (origin head) + this commit; edits: tests/wallet-redeem/helpers.tsx, tests/wallet-redeem/route-gate-i18n.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/wallet-redeem  (default workers, run 1 of 2) -> 2 suites, 44/44 pass (29s, 2026-11-02T21:29Z)
+$ npx jest tests/wallet-redeem  (default workers, run 2 of 2) -> 2 suites, 44/44 pass (10s, 2026-11-02T21:29Z)
