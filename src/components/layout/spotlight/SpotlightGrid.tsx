@@ -9,9 +9,9 @@ import { cn } from '@/lib/utils';
  * `ScreenFrame layout="spotlight-grid"` compose their stage with this:
  *
  *   ┌──────────────┬────┬────┬────┐
- *   │              │ t1 │ t2 │ t3 │   xl (≥1280): 5 columns, spotlight 2 (40%),
+ *   │              │ t1 │ t2 │ t3 │   ≥1280 px (lg:): 5 columns, spotlight 2 (40%),
  *   │  Spotlight   ├────┼────┼────┤   tiles 3 x 2 beside it
- *   │              │ t4 │ t5 │ t6 │   lg (1024-1279): 4 columns, spotlight 2 (50%),
+ *   │              │ t4 │ t5 │ t6 │   1024-1279 px (md:): 4 columns, spotlight 2 (50%),
  *   ├──────────────┴────┴────┴────┤   tiles 2 x 3 beside it
  *   │  compact row (full width)    │
  *   └──────────────────────────────┘
@@ -23,6 +23,9 @@ import { cn } from '@/lib/utils';
  *   `empty` fills the tile area. The spotlight is never widened.
  * - DOM contract read by tests and staging specs:
  *   `[data-spotlight-grid] > [data-slot="spotlight" | "tiles" | "row"]`.
+ * - Breakpoints are this repo's Tailwind screens (tailwind.config.ts):
+ *   md = 1024, lg = 1280, xl = 1536, not Tailwind's defaults. The pixel
+ *   bands above are the contract; the prefixes follow them.
  * - Tailwind scale classes and logical properties only (RTL mirrors).
  */
 export interface SpotlightGridRow {
@@ -50,9 +53,9 @@ export interface SpotlightGridProps {
 const MAX_TILES = 6;
 
 // Static class maps so Tailwind sees every class (no string building).
-// xl: 3 tiles per row → 1-2 rows; lg: 2 tiles per row → 1-3 rows.
-const XL_ROW_SPAN: Record<number, string> = { 1: 'xl:row-span-1', 2: 'xl:row-span-2' };
-const LG_ROW_SPAN: Record<number, string> = { 1: 'lg:row-span-1', 2: 'lg:row-span-2', 3: 'lg:row-span-3' };
+// ≥1280 px (lg:): 3 tiles per row → 1-2 rows; 1024-1279 px (md:): 2 tiles per row → 1-3 rows.
+const WIDE_ROW_SPAN: Record<number, string> = { 1: 'lg:row-span-1', 2: 'lg:row-span-2' };
+const NARROW_ROW_SPAN: Record<number, string> = { 1: 'md:row-span-1', 2: 'md:row-span-2', 3: 'md:row-span-3' };
 
 function SeeAll({ to }: { to: string }) {
   return (
@@ -74,18 +77,18 @@ function SectionHeading({ title, seeAllTo }: { title: string; seeAllTo?: string 
 export function SpotlightGrid({ label, seeAllTo, spotlight, tiles, row, empty }: SpotlightGridProps) {
   const shown = tiles.slice(0, MAX_TILES);
   const count = shown.length;
-  const xlRows = Math.max(1, Math.ceil(count / 3));
-  const lgRows = Math.max(1, Math.ceil(count / 2));
+  const wideRows = Math.max(1, Math.ceil(count / 3));
+  const narrowRows = Math.max(1, Math.ceil(count / 2));
   const rowItems = row?.items ?? [];
   const hasRow = row !== undefined && rowItems.length > 0;
 
   return (
     <section className="flex flex-col gap-3">
       {label && <SectionHeading title={label} seeAllTo={seeAllTo} />}
-      <div data-spotlight-grid="" className="grid grid-cols-1 gap-4 lg:grid-cols-4 xl:grid-cols-5">
+      <div data-spotlight-grid="" className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-5">
         <div
           data-slot="spotlight"
-          className={cn('grid min-w-0 lg:col-span-2 xl:col-span-2', LG_ROW_SPAN[lgRows], XL_ROW_SPAN[xlRows])}
+          className={cn('grid min-w-0 md:col-span-2 lg:col-span-2', NARROW_ROW_SPAN[narrowRows], WIDE_ROW_SPAN[wideRows])}
         >
           {spotlight}
         </div>
@@ -96,12 +99,12 @@ export function SpotlightGrid({ label, seeAllTo, spotlight, tiles, row, empty }:
                   {tile}
                 </div>
               ))
-            : empty != null && <div className="min-w-0 lg:col-span-2 xl:col-span-3">{empty}</div>}
+            : empty != null && <div className="min-w-0 md:col-span-2 lg:col-span-3">{empty}</div>}
         </div>
         {hasRow && (
           <div data-slot="row" className="col-span-full flex flex-col gap-3 pt-2">
             {row.title && <SectionHeading title={row.title} seeAllTo={row.seeAllTo} />}
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-5">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
               {rowItems.map((item, i) => (
                 <div key={i} className="grid min-w-0">
                   {item}
