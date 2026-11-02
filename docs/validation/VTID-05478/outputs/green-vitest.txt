@@ -1,0 +1,13 @@
+$ npx vitest run src/hooks/useNewMembersFeed.test.ts src/hooks/community-intro-feed.vtid-05206.test.ts src/hooks/useAllNewsFeed.new-members.test.ts src/hooks/useNewsFeed.community-error-logging.test.ts
+ ✓ src/hooks/useNewMembersFeed.test.ts (11 tests) 19ms
+ ✓ src/hooks/useNewsFeed.community-error-logging.test.ts (7 tests) 14ms
+ ✓ src/hooks/useAllNewsFeed.new-members.test.ts (4 tests) 13ms
+ ✓ src/hooks/community-intro-feed.vtid-05206.test.ts (9 tests) 16ms
+ Test Files  4 passed (4)
+      Tests  31 passed (31)
+$ npx vitest run src/hooks (79 files)
+Test Files 79 passed, Tests 422 passed
+$ npm run build
+built (exit 0)
+$ npx eslint (touched files)
+only pre-existing no-explicit-any in useNewsFeed.community-error-logging.test.ts:32 (baseline)

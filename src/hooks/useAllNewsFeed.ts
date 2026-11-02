@@ -39,7 +39,7 @@ import {
 } from "@/lib/news-feed-ranker";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
 import { fetchGreetedMemberIds } from "@/lib/new-member-greeted";
-import { COMMUNITY_INTRO_COLUMN } from "@/lib/community-intro";
+import { fetchNewMembers } from "@/hooks/useNewMembersFeed";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -194,18 +194,11 @@ export async function fetchNewsFeedCandidates(
       .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(5),
-    // Members who joined in the last 7 days (VTID-04584) — the same window
-    // the Community tab uses, so both tabs show the same newcomers. Only
-    // members who agreed to be introduced (VTID-05206; same filter in
-    // useNewsFeed.ts).
-    supabase
-      .from("global_community_profiles")
-      .select("user_id, display_name, avatar_url, bio, created_at, community_intro_opt_in")
-      .eq("is_visible", true)
-      .eq(COMMUNITY_INTRO_COLUMN, true)
-      .gte("created_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
-      .order("created_at", { ascending: false })
-      .limit(5),
+    // Members who joined in the last 7 days (VTID-04584) who agreed to be
+    // introduced (VTID-05206/05475), read through the gateway so test, service
+    // and bot accounts are excluded server-side (VTID-05478; same source in
+    // useNewsFeed.ts). Any failure yields no card.
+    fetchNewMembers(token),
   ]);
 
   const [[postsRes, mediaRes, performer, featureAnnouncementsRes, newMembersRes], viewerRes] =
@@ -251,12 +244,9 @@ export async function fetchNewsFeedCandidates(
     console.error("[useAllNewsFeed] Error fetching feature_announcements:", featureAnnouncementsRes.value.error);
   }
 
-  if (newMembersRes.status === "fulfilled" && newMembersRes.value.error) {
-    console.error("[useAllNewsFeed] Error fetching new-member global_community_profiles:", newMembersRes.value.error);
-  }
   const newMembers: NewMemberFeedItem[] = [];
   if (newMembersRes.status === "fulfilled") {
-    const memberRows = newMembersRes.value.data || [];
+    const memberRows = newMembersRes.value;
     // Hide members this viewer has already greeted (VTID-04590).
     const greeted = await fetchGreetedMemberIds(
       userId,
@@ -264,8 +254,6 @@ export async function fetchNewsFeedCandidates(
     );
     for (const m of memberRows) {
       if (!m.user_id || m.user_id === userId || suppressedAuthorIds.has(m.user_id) || greeted.has(m.user_id)) continue;
-      // VTID-05206: defence in depth next to the server filter — only an explicit yes.
-      if (m.community_intro_opt_in !== true) continue;
       newMembers.push({
         id: `new-member-${m.user_id}`,
         kind: "new_member",

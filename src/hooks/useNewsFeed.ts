@@ -13,7 +13,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n-toast";
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
 import { fetchGreetedMemberIds } from "@/lib/new-member-greeted";
-import { COMMUNITY_INTRO_COLUMN } from "@/lib/community-intro";
+import { fetchNewMembers } from "@/hooks/useNewMembersFeed";
 
 const GATEWAY_URL =
   GATEWAY_API_URL;
@@ -193,20 +193,10 @@ export async function fetchCommunityNews(
         }
       }
 
-      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: members, error: membersError } = await supabase
-        .from("global_community_profiles")
-        .select("id, user_id, display_name, avatar_url, bio, created_at")
-        .eq("is_visible", true)
-        // VTID-05206: only members who agreed to be introduced (same filter in useAllNewsFeed.ts).
-        .eq(COMMUNITY_INTRO_COLUMN, true)
-        .gte("created_at", weekAgo)
-        .order("created_at", { ascending: false })
-        .limit(5);
-
-      if (membersError) {
-        console.error("[useNewsFeed] Error fetching new-member global_community_profiles:", membersError);
-      }
+      // Members who joined in the last 7 days and agreed to be introduced
+      // (VTID-05206/05475), read through the gateway so test, service and bot
+      // accounts are excluded server-side (VTID-05478). Any failure: no card.
+      const members = await fetchNewMembers();
 
       if (members) {
         // Hide members this viewer has already greeted (VTID-04590).
@@ -221,7 +211,7 @@ export async function fetchCommunityNews(
           // profile link and no way to message them (VTID-04574).
           const name = member.display_name?.trim().replace(/\s+/g, " ") || t("newsCard.member.newMember");
           articles.push({
-            id: `member-${member.id}`,
+            id: `member-${member.user_id}`,
             source: "community",
             source_name: "MAXINA Community",
             title: t("newsCard.member.welcomeTitle", { name }),
