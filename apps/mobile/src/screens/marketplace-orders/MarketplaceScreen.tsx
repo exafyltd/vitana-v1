@@ -1,7 +1,7 @@
 /**
  * VTID-05511 (native-wave2-discover-commerce-r2/marketplace-orders) — native
  * port of `src/pages/discover/Marketplace.tsx`, the phone branch (the
- * non-Spotlight return, :160-296; Spotlight is desktop-only):
+ * non-Spotlight return, :167-279; Spotlight is desktop-only):
  *  - header: the title (StandardHeader on phones shows the title only);
  *  - the compact utility rail (`UtilityActionButton compact`): Search with the
  *    view chip ("🛒 Open marketplace" / "📝 My listings" + chevron, which opens
@@ -19,7 +19,7 @@
  *    the community lane's native IntentComposer twin), which refreshes the list
  *    after a post.
  * `?view=open|mine` picks the view (default open); a picked view is written
- * back to the param, like the web effect (:67-74), once the member picks it. No cart, checkout or purchase
+ * back to the param, like the web effect (:69-75), once the member picks it. No cart, checkout or purchase
  * control (no iOS-IAP-gate flag on this screen); the utility rail's gift
  * voucher keeps the shell's iOS gate.
  */
@@ -141,7 +141,7 @@ export function MarketplaceScreen(): ReactElement {
   );
 }
 
-/** Marketplace.tsx `EmptyState` (:281-296): the bag icon, title, body and CTA. */
+/** Marketplace.tsx `EmptyState` (:287-298): the bag icon, title, body and CTA. */
 function EmptyState({ title, body, cta, onCta, testID }: { title: string; body: string; cta: string; onCta: () => void; testID: string }): ReactElement {
   const { colors } = useUITheme();
   return (

@@ -1,15 +1,15 @@
 /**
  * VTID-05511 — the orders data, twins of the web reads `Orders.tsx` makes
- * (`supabase.from('cj_orders')` :186-202), `useMyTickets`
+ * (`supabase.from('cj_orders')` :212-228), `useMyTickets`
  * (`src/hooks/useEventTickets.ts:86-126`) and `useMyVouchers`
  * (`src/hooks/useVouchers.ts:79-97`), the voucher PDF / e-mail Edge Functions
  * (`useDownloadVoucherPdf`, `useSendVoucherEmail`) and the pure order
- * assembly of `Orders.tsx` (:205-372): ticket / CJ order / voucher → unified
+ * assembly of `Orders.tsx` (:230-394): ticket / CJ order / voucher → unified
  * order, active vs history split, newest first, and the mobile order shape
  * `MobileOrdersView` renders. Queries unchanged from the web.
  *
  * The web shows three sample tickets while the member has none
- * (`mockTickets`, :78-178, `isShowingMockData` :181-182 — always on phones);
+ * (`mockTickets`, :82-200, `isShowingMockData` :203-204 — always on phones);
  * MOCK_TICKETS is that list, its visible words through the catalog.
  */
 import { useQuery } from '@tanstack/react-query';
@@ -153,7 +153,7 @@ export async function sendVoucherEmail(input: { orderId: string; recipientEmail:
   return data;
 }
 
-// ── the sample tickets (Orders.tsx:78-178) ────────────────────────────────
+// ── the sample tickets (Orders.tsx:82-200) ────────────────────────────────
 export function mockTickets(userId: string | null, t: (k: string) => string, now: Date = new Date()): TicketPurchase[] {
   const base = (n: number, over: Partial<TicketPurchase>): TicketPurchase => ({
     id: `mock-${n}`,
@@ -205,7 +205,7 @@ export function mockTickets(userId: string | null, t: (k: string) => string, now
   ];
 }
 
-// ── assembly (Orders.tsx:205-372) ────────────────────────────────────────
+// ── assembly (Orders.tsx:230-394) ────────────────────────────────────────
 type Unified = Omit<UnifiedMobileOrder, 'statusLabel' | 'subtitle' | 'imageUrl'> & { provider: string; providerImage: string };
 
 /** The web placeholder images (`/placeholder.svg`, the CJ / voucher logo) are web-relative assets: no image natively, the type tile shows. */

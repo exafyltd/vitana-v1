@@ -1,7 +1,7 @@
 /**
  * VTID-05511 (native-wave2-discover-commerce-r2/marketplace-orders) — native
  * port of `src/pages/discover/Orders.tsx`, its phone branch (`if (isMobile)`,
- * :654-666): the unified orders of the member — CJ product orders
+ * :629-640): the unified orders of the member — CJ product orders
  * (`cj_orders`), event tickets (`useMyTickets`) and gift vouchers
  * (`useMyVouchers`) — split into Active / History and rendered by the
  * `MobileOrdersView` twin. While the member has no tickets the web shows its
