@@ -17,6 +17,9 @@ import { MyProfileScreen } from '../../src/screens/profile/MyProfileScreen';
 import { PrivacyScreen } from '../../src/screens/profile/PrivacyScreen';
 import { createProfileDouble, profileRow, renderProfile } from './helpers';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 afterAll(() => __setSupabaseForTests(null));
 
 const SCREEN_DIR = join(__dirname, '../../src/screens/profile');

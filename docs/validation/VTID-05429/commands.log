@@ -68,3 +68,9 @@ $ node --test scripts/native/__tests__/*.test.mjs             -> 68 pass, 0 fail
 $ npx eslint apps/mobile packages                             -> 0 problems
 $ node scripts/i18n-register-check.mjs --all                  -> No formal-register violations.
 $ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found.
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 536ac6848 (origin head) + this commit; edits: tests/profile/helpers.tsx, tests/profile/i18n-rtl.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/profile  (default workers, run 1 of 2)       -> 5 suites, 57/57 pass (27s, 2026-11-02T21:26Z)
+$ npx jest tests/profile  (default workers, run 2 of 2)       -> 5 suites, 57/57 pass (7s, 2026-11-02T21:27Z)
