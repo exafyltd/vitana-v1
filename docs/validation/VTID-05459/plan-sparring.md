@@ -28,3 +28,10 @@ classification) were re-measured on this worktree: `apps/mobile/parity/ledger.js
 `INBOX.ARCHIVED`, `INBOX.INSPIRATION` under `"lane": "inbox-chat-calls"`, all `not_started` on
 `origin/main` e530abd0d; `src/App.tsx:1352-1412` routes them; every hook above imports
 `@/integrations/supabase/client` or `@/integrations/supabase/realtime` (or reads `window`).
+
+## Owner approval
+
+Owner approval: by policy. The converged plan is approved by policy `converged-auto-v1` (owner decision 2026-10-14,
+VTID-05214/05218): a plan sparred by CI whose session converged is approved by policy and
+not sent to the owner as Gate 1. The VTID was allocated by CI after convergence
+(`lanes/inbox-list.md` log, 2026-11-02T07:32Z).
