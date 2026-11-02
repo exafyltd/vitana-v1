@@ -41,3 +41,24 @@ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <work
 # configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
 $ npx jest tests/wallet-home  (default workers, run 1 of 2)   -> 3 suites, 75/75 pass (25s, 2026-11-02T21:27Z)
 $ npx jest tests/wallet-home  (default workers, run 2 of 2)   -> 3 suites, 75/75 pass (7s, 2026-11-02T21:27Z)
+
+## fix 1: wire the wallet flows to the web's calls + the Stripe deposit return leg (2026-11-02)
+# start: origin head 52c0f1cb1 (git merge origin/main: already up to date); code commits d800f21f5 + a74b72305,
+# then merge of origin/main 6b9137ac5 (VTID-05431) -> 4da95aa359e780673cb3370bacf910e1e1afcd85; final runs below on 4da95aa35.
+# All tests use fakes only (fake gateway wallet rail, Supabase double, mocked expo-web-browser); no live system, no Stripe.
+$ npx jest tests/wallet-home/wallet-actions.test.tsx --ci (product code of 52c0f1cb1, new tests)  -> RED 22/22 fail — red-fix1.txt
+$ npm run typecheck                                        -> PASS (0 errors)
+$ npx jest tests/wallet-home --ci (default workers, run 1 of 2)  -> 4 suites, 96/96 pass (29s, 23:31Z)
+$ npx jest tests/wallet-home --ci (default workers, run 2 of 2)  -> 4 suites, 96/96 pass (9s, 23:32Z)
+$ npm test -- --ci                                         -> 97/97 suites, 2775/2775 tests (23:32Z)
+$ APP_PROFILE=development npm run bundle                   -> PASS: ios + android entry-*.hbc, Exported: dist (on a74b72305; HOME pointed at a writable dir)
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> PASS: Dependencies are up to date (no dependency added; expo-web-browser already a dependency)
+$ npm run parity:check                                     -> PASS: OK — 435 rows, 43 native route(s)
+$ node scripts/native/core-closure.mjs --check             -> PASS: up to date (core unchanged by fix 1)
+$ node scripts/i18n-register-check.mjs --all --max=500     -> PASS: no formal-register violations
+$ npx eslint apps/mobile/src/screens/wallet-home apps/mobile/tests/wallet-home  -> PASS: 0 problems
+$ preflight.mjs --base origin/main (6b9137ac5) --head 4da95aa35  -> every check passed
+# Load notes: during two earlier runs the host load average was 33 and later ~3400 (other sessions). Under that load one
+# run had iap-gate "master action popup" hit its 5 s Jest default timeout (file unchanged, IAP tests not touched), one had
+# wallet-home "empty" miss its 5 s wait, and one full run had the buy-credits close check (sheet animation) miss; the
+# latter was made deterministic (onClose spy, a74b72305). The final runs above were made after the load cleared.
