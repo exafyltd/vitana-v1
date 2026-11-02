@@ -67,7 +67,11 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/reset-password',
   '/search',
+  '/settings',
   '/settings/connected-apps',
+  '/settings/limitations',
+  '/settings/preferences',
+  '/settings/tenant-role',
   '/support',
 ];
 

@@ -85,13 +85,25 @@ describe('runNativeNavigation (pure mapping)', () => {
   });
 
   it('an overlay whose owning screen is not native ⇒ not_found native_screen_not_ported', () => {
+    // VTID-05431 made /settings native, so the owning screen is reported unported through the resolver here.
     const { deps, emitted } = navDeps({ 'vitana:settings-navigate': 1 });
+    deps.resolve = (url) => ({ ...resolveWebPath(url), kind: 'unported' });
     expect(runNativeNavigation('/settings?open=settings_section&section=privacy.security', ctx(), deps)).toEqual({
       status: 'not_found',
       route: '/settings?open=settings_section&section=privacy.security',
       reason: NAV_REASON.SCREEN_NOT_PORTED,
     });
     expect(emitted).toEqual([]);
+  });
+
+  it('an overlay whose owning screen is native (VTID-05431 /settings) ⇒ the screen opens, then the overlay event fires', () => {
+    const { deps, emitted, pushed } = navDeps({ 'vitana:settings-navigate': 1 });
+    expect(runNativeNavigation('/settings?open=settings_section&section=privacy.security', ctx(), deps)).toEqual({
+      status: 'opened',
+      route: '/settings?open=settings_section&section=privacy.security',
+    });
+    expect(pushed).toEqual(['/settings']);
+    expect(emitted).toEqual([{ event: 'vitana:settings-navigate', detail: { open: 'settings_section', section: 'privacy.security' } }]);
   });
 });
 
