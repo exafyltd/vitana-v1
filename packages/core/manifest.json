@@ -213,6 +213,13 @@
         "N6"
       ],
       "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/lib/checkout-idempotency.ts": {
+      "entry": "checkout-idempotency.ts",
+      "lanes": [
+        "product-cart-checkout"
+      ],
+      "reason": "Checkout idempotency key rule (cartSignature, nextIdempotency, mintIdempotencyKey): the cart retries a checkout under the same key until its contents change. Imports nothing; pure."
     }
   }
 }

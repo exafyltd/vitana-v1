@@ -31,6 +31,7 @@
     "src/integrations/supabase/data-routing.ts",
     "src/integrations/supabase/types.ts",
     "src/lib/business-mode.ts",
+    "src/lib/checkout-idempotency.ts",
     "src/lib/currency-convert.ts",
     "src/lib/discover-reason.ts",
     "src/lib/feed-compose.ts",
