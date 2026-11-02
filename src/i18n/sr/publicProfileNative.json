@@ -1,0 +1,23 @@
+{
+  "publicProfileNative": {
+    "notFound": {
+      "body": "Profil koji tražiš ne postoji.",
+      "loadFailed": "Učitavanje profila nije uspelo",
+      "unexpected": "Došlo je do neočekivane greške",
+      "noIdentifier": "Identifikator profila nije naveden"
+    },
+    "landing": {
+      "brand": "VITANA",
+      "vitanaIndex": "VITANA {score}",
+      "openSocial": "Otvori {network}"
+    },
+    "member": {
+      "noBio": "Još nema biografije",
+      "sections": "Odeljci profila"
+    },
+    "post": {
+      "likes": "{count} sviđanja",
+      "comments": "{count} komentara"
+    }
+  }
+}
