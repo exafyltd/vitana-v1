@@ -1,0 +1,87 @@
+{
+  "supportNative": {
+    "connectors": {
+      "modes": {
+        "all": "Sve",
+        "shopping": "Kupovina",
+        "ai": "AI",
+        "productivity": "Pošta i kalendar",
+        "media": "Muzika i video",
+        "agent": "Autopilot"
+      },
+      "sections": {
+        "shopping": "Kupovina i nagrade",
+        "productivity": "Pošta, kalendar i kontakti",
+        "media": "Muzika i video"
+      },
+      "status": {
+        "rewardsActive": "Nagrade aktivne · plaćanje na sajtu prodavca",
+        "recommendationsOnly": "Samo preporuke · otvara Amazon"
+      },
+      "lastSync": {
+        "oneHour": "pre 1 sat",
+        "thirtyMin": "pre 30 min",
+        "twoHours": "pre 2 sata"
+      },
+      "linkedTo": "{app} je povezan sa {account}.",
+      "agent": {
+        "close": "Zatvori",
+        "remove": "Ukloni kanal",
+        "loadError": "Kanali ne mogu da se učitaju. Pokušaj ponovo.",
+        "addError": "Kanal ne može da se doda. Pokušaj ponovo."
+      },
+      "apps": {
+        "aliexpress": "Nagrade aktivne — kupuj u Discover-u i zarađuj",
+        "bodylab24": "Nagrade aktivne — nemački suplementi",
+        "alibaba": "Nagrade aktivne — globalno tržište",
+        "rockbros": "Nagrade aktivne — oprema za fitnes i prirodu",
+        "amazon": "Samo preporuke — otvara Amazon",
+        "linkedin": "Profesionalna mreža",
+        "instagram": "Fotografije, priče, rilsovi",
+        "tiktok": "Kratki video snimci",
+        "youtube": "Video sadržaj",
+        "facebook": "Deljenje na mrežama",
+        "x": "Objave i niti",
+        "apple-health": "Koraci, puls, san",
+        "fitbit": "Aktivnost, san, težina",
+        "strava": "Podaci o vežbanju i trčanju",
+        "oura": "Kvalitet sna, spremnost, HRV",
+        "garmin": "GPS i praćenje fitnesa",
+        "myfitnesspal": "Ishrana, kalorije, makronutrijenti",
+        "lifespin": "Uvidi u metaboličko zdravlje",
+        "fhir": "Klinički zdravstveni zapisi",
+        "doctorbox": "Laboratorijski rezultati, biomarkeri",
+        "gmail": "Prijemno sanduče, nacrti, oznake",
+        "google-calendar": "Događaji, sastanci, dostupnost",
+        "google-contacts": "Imenik kontakata",
+        "apple-mail": "iOS Mail nalozi i prijemno sanduče",
+        "apple-calendar": "iOS Calendar događaji",
+        "iphone-contacts": "Imenik sa iOS-a",
+        "android-contacts": "Imenik sa Androida",
+        "outlook-mail": "Microsoft prijemno sanduče",
+        "outlook-calendar": "Microsoft događaji u kalendaru",
+        "spotify": "Puštanje muzike, plejliste, istorija slušanja",
+        "apple-music": "Puštanje muzike i biblioteka",
+        "youtube-music": "Strimovanje muzike, plejliste",
+        "youtube-playback": "Puštanje videa, istorija gledanja",
+        "calm": "Meditacija, svesnost",
+        "headspace": "Vođena meditacija",
+        "smart-scales": "Težina, sastav tela",
+        "air-quality": "Kvalitet vazduha u prostoru",
+        "whatsapp": "Integracija poruka",
+        "telegram": "Bot i poruke",
+        "csv-import": "Masovni uvoz podataka",
+        "api-access": "Alati za programere",
+        "chatgpt": "OpenAI API — čet, rezonovanje",
+        "claude": "Anthropic API — čet, rezonovanje",
+        "names": {
+          "fhir": "FHIR provajderi",
+          "smartScales": "Pametne vage",
+          "airQuality": "Senzori kvaliteta vazduha",
+          "csvImport": "CSV uvoz",
+          "apiAccess": "API pristup"
+        }
+      }
+    }
+  }
+}
