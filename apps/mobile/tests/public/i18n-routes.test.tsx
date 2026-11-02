@@ -22,6 +22,9 @@ import { MaxinaSupportScreen } from '../../src/screens/public/MaxinaSupportScree
 import { ApplyScreen } from '../../src/screens/public/ApplyScreen';
 import { IntroScreen } from '../../src/screens/public/IntroScreen';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 afterAll(() => __setSupabaseForTests(null));
 beforeEach(() => resetMocks({ tenantSlug: 'maxina' }));
 

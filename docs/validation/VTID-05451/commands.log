@@ -150,3 +150,9 @@ $ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <wo
 PASS Collab handoff; PASS Lane scope; PASS gh for plan( PR / lane files; PASS PR-GATE scope / sparring / weakening / red-green; PASS Kiro steering
 preflight: every check passed
 exit=0
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 069e842a6 (origin head) + this commit; edits: tests/public/helpers.tsx, tests/public/i18n-routes.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/public  (default workers, run 1 of 2)        -> 5 suites, 100/100 pass (35s, 2026-11-02T21:30Z)
+$ npx jest tests/public  (default workers, run 2 of 2)        -> 5 suites, 100/100 pass (7s, 2026-11-02T21:30Z)
