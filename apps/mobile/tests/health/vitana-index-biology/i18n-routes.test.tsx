@@ -23,6 +23,9 @@ import { VitanaIndexDetailScreen } from '../../../src/screens/health/VitanaIndex
 import { MyBiologyScreen } from '../../../src/screens/health/MyBiologyScreen';
 import { biologyWrapper } from './fixtures';
 
+// Several screens or locales per test: more than the 5 s Jest default.
+jest.setTimeout(30_000);
+
 const APP = join(__dirname, '../../..');
 const REPO = join(APP, '../..');
 

@@ -6,6 +6,10 @@
  * network: each test file imports `../../helpers/no-network` first.
  */
 import { agentOutputs, fullTables, gatewayRoutes, healthWrapper, recommendations, type GwReq, type Route, type TableFixture } from '../helpers';
+import { configure } from '@testing-library/react-native';
+
+// Screens load async (kit, catalogs, queries); give findBy/waitFor room on a loaded runner.
+configure({ asyncUtilTimeout: 5000 });
 
 /** The Mission Alignment queue: 4 rows — 2 pillars, 2 economic axes, 1 row with neither. */
 export const missionRows = [

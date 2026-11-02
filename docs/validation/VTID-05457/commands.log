@@ -144,3 +144,9 @@ FAIL  Collab handoff + Lane scope â€” "one PR per lane: commits name 2 lanes (â€
 every other check PASS; exit=1
 This is the stack: against main the range still contains health-hub's #1562 commits. It clears when #1562 merges
 (the PR diff to main is then this lane's commits only). Not a defect of this lane.
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 34e1dda92 (origin head) + this commit; edits: tests/health/vitana-index-biology/fixtures.ts, tests/health/vitana-index-biology/i18n-routes.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/health/vitana-index-biology  (default workers, run 1 of 2)-> 4 suites, 86/86 pass (35s, 2026-11-02T21:37Z)
+$ npx jest tests/health/vitana-index-biology  (default workers, run 2 of 2)-> 4 suites, 86/86 pass (12s, 2026-11-02T21:37Z)
