@@ -1,0 +1,106 @@
+# VTID-05423 (native-wave2-wallet-r2/wallet-redeem) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-wallet-r2-wallet-redeem; base origin/main 514e06a8bb57294b6e1bc88d021be03176d5d705
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched (Supabase is a fake in every test).
+
+## Setup
+$ (apps/mobile) npm ci  -> exit 0
+$ (repo root) npm ci  -> exit 0 (core-closure, the web build and the i18n scripts need typescript / vite)
+
+## Red on base (detached worktree at origin/main + the branch's tests/wallet-redeem copied) — see red-on-base.txt
+$ npx jest tests/wallet-redeem --ci  -> Test Suites: 2 failed, 2 total (Cannot find module '../../src/screens/wallet-redeem/RedeemScreen')
+
+## apps/mobile (code = d84a13555; docs-only commits after it)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/wallet-redeem --ci
+Test Suites: 2 passed, 2 total
+Tests:       44 passed, 44 total
+exit=0
+(first run: 1 failure fixed in the code — RedeemScreen's header comment named `iapRestricted`, which the
+ "no IAP gate in the redeem files" test rejects; reworded. Two sync tests made async so AuthProvider settles inside act.)
+
+$ npm test -- --ci
+Test Suites: 85 passed, 85 total
+Tests:       2267 passed, 2267 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-95b57387c553a1924679b0e545cd3bc7.hbc (17MB)
+_expo/static/js/android/entry-c4e2bcf383851707342de440559dbe50.hbc (17MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's home is read-only for ~/.expo; dist/ removed afterwards)
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ node ../../scripts/native/parity-ledger.mjs --sync   (repo root)
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change beyond the hand-flipped /redeem row)
+
+$ npm run parity:check
+> node ../../scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 32 native route(s)
+exit=0
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0 (no core change: closure.generated.json and mobile-ci-paths.generated.json untouched)
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node scripts/check-locale-registry.mjs
+[locale-registry] OK — picker and supported_locales agree.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+0 key(s) whose EN source changed since translation in every locale
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+exit=0
+errors mentioning walletRedeemNative: 0 (all reported errors are pre-existing)
+
+## repo root — web build + locale chunking + i18n vitest + ESLint on the lane files
+$ npm run build
+✓ built in 1m
+exit=0
+
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] OK — one chunk per lazy locale, de eager.
+exit=0
+
+$ npx vitest run src/i18n scripts/native
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0
+
+$ npx eslint apps/mobile/src/screens/wallet-redeem apps/mobile/src/ports/wallet-redeem.tsx "apps/mobile/app/(public)/redeem.tsx" apps/mobile/tests/wallet-redeem
+exit=0 (no findings)
+
+## preflight (HEAD c2aaf4b9c)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-redeem --title "VTID-05423 (native-wave2-wallet-r2/wallet-redeem): native redeem port"
+FAIL  Collab handoff [report-only] — "lanes/wallet-redeem.md does not exist here or in vitana-platform"
+FAIL  Lane scope [required]        — "lanes/wallet-redeem.md not found in this repo, an open plan( PR or vitana-platform"
+PASS  gh for plan( PR / vitana-platform lane files; PR-GATE scope; PR-GATE sparring; PR-GATE weakening; PR-GATE red-green; Kiro steering
+exit=1
+Both reds are the brief's known "lane file not found" false positive: the lane file IS on vitana-platform origin/main
+(`git show origin/main:.kiro/specs/native-wave2-wallet-r2/lanes/wallet-redeem.md`, read at the start of this
+session), but GitHub answered HTTP 403 to every fetch / gh call at preflight time, so preflight could not see it.
+No lane path is missing: every touched file is inside the lane's `paths`.
