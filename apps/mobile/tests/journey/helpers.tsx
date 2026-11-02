@@ -42,11 +42,14 @@ export function journeyGateway(routes: Record<string, Route>) {
 export type DbCall = { table: string; op: 'select' | 'update' | 'insert'; values?: any; filters: Array<[string, string, any]> };
 
 /** A chainable supabase-js double: every builder method records, `await` answers from `tables[table]`. */
-export function journeySupabase(opts: { tables?: Record<string, any[] | ((call: DbCall) => any[] | null)>; rpc?: Record<string, (args: any) => any>; userId?: string } = {}) {
+export function journeySupabase(
+  opts: { tables?: Record<string, any[] | ((call: DbCall) => any[] | null)>; rpc?: Record<string, (args: any) => any>; functions?: Record<string, (body: any) => { data?: any; error?: any }>; userId?: string } = {},
+) {
   const session = fakeSession(opts.userId ?? 'u-1');
   const calls: DbCall[] = [];
   const rpcCalls: Array<{ name: string; args: any }> = [];
   const functions: string[] = [];
+  const functionCalls: Array<{ name: string; body: any }> = [];
   const answer = (call: DbCall): any => {
     const t = opts.tables?.[call.table];
     if (typeof t === 'function') return t(call);
@@ -89,20 +92,28 @@ export function journeySupabase(opts: { tables?: Record<string, any[] | ((call: 
       return h ? { data: h(args), error: null } : { data: null, error: null };
     }),
     functions: {
-      invoke: jest.fn(async (name: string) => {
+      invoke: jest.fn(async (name: string, init?: { body?: any }) => {
         functions.push(name);
-        return { data: null, error: null };
+        functionCalls.push({ name, body: init?.body });
+        const h = opts.functions?.[name];
+        const r = h ? h(init?.body) : {};
+        return { data: r.data ?? null, error: r.error ?? null };
       }),
     },
   };
-  return { client, calls, rpcCalls, functions };
+  return { client, calls, rpcCalls, functions, functionCalls };
 }
 
 export function journeyWrapper(
   routes: Record<string, Route>,
-  opts: { language?: string; tables?: Record<string, any[] | ((call: DbCall) => any[] | null)>; rpc?: Record<string, (args: any) => any> } = {},
+  opts: {
+    language?: string;
+    tables?: Record<string, any[] | ((call: DbCall) => any[] | null)>;
+    rpc?: Record<string, (args: any) => any>;
+    functions?: Record<string, (body: any) => { data?: any; error?: any }>;
+  } = {},
 ) {
-  const db = journeySupabase({ tables: opts.tables, rpc: opts.rpc });
+  const db = journeySupabase({ tables: opts.tables, rpc: opts.rpc, functions: opts.functions });
   const wrapper = makeWrapper({ client: db.client, language: opts.language ?? 'en-US' });
   const gw = journeyGateway(routes);
   __setGatewayForTests(gw.gateway);
