@@ -59,6 +59,25 @@ import {
   Wallet,
   X,
   Zap,
+  // VTID-05432 (N-W2 support-connectors): the support + connectors glyphs.
+  Apple as AppleIcon,
+  Brain as BrainIcon,
+  CircleCheck as CircleCheckIcon,
+  Code as CodeIcon,
+  Contact as ContactIcon,
+  Hospital as HospitalIcon,
+  House as HouseIcon,
+  MessageCircle as MessageCircleIcon,
+  Mic as MicIcon,
+  Moon as MoonIcon,
+  Music as MusicIcon,
+  Phone as PhoneIcon,
+  Plus as PlusIcon,
+  Send as SendIcon,
+  Share2 as Share2Icon,
+  Sparkles as SparklesIcon,
+  Trash2 as Trash2Icon,
+  Watch as WatchIcon,
   type LucideProps,
 } from 'lucide-react-native';
 import {
@@ -90,6 +109,27 @@ export { notify, notifyError } from '@vitana/ui';
 // contracts match the screens' needs, so these are plain re-exports.
 export { Button, Badge, Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, Skeleton, Slider } from '@vitana/ui';
 export type { ButtonProps, ButtonVariant, ButtonSize, BadgeProps, BadgeVariant, SliderProps } from '@vitana/ui';
+
+// VTID-05432 (N-W2 support-connectors) — the kit primitives the support and
+// connectors screens render (FAQ accordion, contact form, category select,
+// collapsible connector sections, mail-hub switches). Plain re-exports.
+export {
+  Accordion,
+  Checkbox,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  Switch,
+  Textarea,
+} from '@vitana/ui';
 
 // ── provider and theme ──────────────────────────────────────────────────
 /** The kit's root provider with the member's colour scheme and the language's direction. */
@@ -189,6 +229,24 @@ const ICONS: Record<string, ComponentType<LucideProps>> = {
   Wallet,
   X,
   Zap,
+  Apple: AppleIcon,
+  Brain: BrainIcon,
+  CircleCheck: CircleCheckIcon,
+  Code: CodeIcon,
+  Contact: ContactIcon,
+  Hospital: HospitalIcon,
+  House: HouseIcon,
+  MessageCircle: MessageCircleIcon,
+  Mic: MicIcon,
+  Moon: MoonIcon,
+  Music: MusicIcon,
+  Phone: PhoneIcon,
+  Plus: PlusIcon,
+  Send: SendIcon,
+  Share2: Share2Icon,
+  Sparkles: SparklesIcon,
+  Trash2: Trash2Icon,
+  Watch: WatchIcon,
 };
 
 /** The icon names this port can draw (tests check the nav data against it). */
