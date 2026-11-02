@@ -1,0 +1,67 @@
+{
+  "discoverCommerceNative": {
+    "searchShort": "Pretraži…",
+    "indexPill": "Vitana Index {value} – otvori Zdravlje",
+    "calendar": {
+      "upcomingCount": "Predstojeći događaji: {count}"
+    },
+    "bookmark": {
+      "add": "Dodaj obeleživač",
+      "remove": "Ukloni obeleživač"
+    },
+    "product": {
+      "outOfStock": "Nema na stanju"
+    },
+    "hidden": {
+      "product": "proizvod",
+      "products": "proizvodi",
+      "allergies": "sadrže alergen koji si naveo",
+      "contraindications": "su kontraindikovani uz zdravstveno stanje koje si naveo",
+      "medications": "mogu da reaguju sa lekom koji uzimaš",
+      "dietary": "ne odgovaraju tvojim prehrambenim željama",
+      "budget": "su iznad tvog budžeta po proizvodu",
+      "sensitivities": "sadrže sastojak na koji si osetljiv",
+      "geo": "se ne isporučuju u tvoj region",
+      "excluded_region": "su regionalno ograničeni",
+      "past_purchases": "si nedavno kupio"
+    },
+    "quickShop": {
+      "viewCart": "Pogledaj korpu",
+      "quickCheckout": "Brzo plaćanje",
+      "reorderPrevious": "Poruči ponovo",
+      "managePayment": "Upravljaj plaćanjem",
+      "trackOrders": "Prati porudžbine",
+      "setPriceAlert": "Podesi obaveštenje o ceni",
+      "viewSavedItems": "Sačuvani artikli",
+      "applyCoupon": "Primeni kupon"
+    },
+    "quickBook": {
+      "bookAppointment": "Zakaži termin",
+      "rebookPrevious": "Zakaži ponovo",
+      "findNearMe": "Pronađi u blizini",
+      "messageProvider": "Piši pružaocu",
+      "viewMyBookings": "Moje rezervacije",
+      "setReminders": "Podesi podsetnike",
+      "leaveReview": "Ostavi recenziju",
+      "paymentHistory": "Istorija plaćanja"
+    },
+    "supplementCategories": {
+      "all": "Sve",
+      "multivitamins": "Multivitamini",
+      "vitamins": "Vitamini",
+      "minerals": "Minerali",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptogeni",
+      "nootropics": "Nootropici",
+      "longevity": "Dugovečnost",
+      "immunity": "Imunitet",
+      "antioxidants": "Antioksidansi",
+      "sleep": "San",
+      "performance": "Performanse",
+      "beauty": "Lepota",
+      "gutHealth": "Zdravlje creva",
+      "herbs": "Bilje",
+      "heartHealth": "Zdravlje srca"
+    }
+  }
+}

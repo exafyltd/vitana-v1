@@ -1,0 +1,67 @@
+{
+  "discoverCommerceNative": {
+    "searchShort": "Ara…",
+    "indexPill": "Vitana Index {value} – Sağlık'ı aç",
+    "calendar": {
+      "upcomingCount": "{count} yaklaşan etkinlik"
+    },
+    "bookmark": {
+      "add": "Yer imi ekle",
+      "remove": "Yer imini kaldır"
+    },
+    "product": {
+      "outOfStock": "Stokta yok"
+    },
+    "hidden": {
+      "product": "ürün",
+      "products": "ürün",
+      "allergies": "belirttiğin bir alerjen içeriyor",
+      "contraindications": "belirttiğin bir sağlık durumuyla kontrendike",
+      "medications": "kullandığın bir ilaçla etkileşebilir",
+      "dietary": "beslenme tercihlerine uymuyor",
+      "budget": "ürün başına bütçenin üzerinde",
+      "sensitivities": "hassas olduğun bir içerik barındırıyor",
+      "geo": "bölgene gönderilmiyor",
+      "excluded_region": "bölgesel olarak kısıtlı",
+      "past_purchases": "yakın zamanda satın aldın"
+    },
+    "quickShop": {
+      "viewCart": "Sepeti görüntüle",
+      "quickCheckout": "Hızlı ödeme",
+      "reorderPrevious": "Yeniden sipariş ver",
+      "managePayment": "Ödemeyi yönet",
+      "trackOrders": "Siparişleri takip et",
+      "setPriceAlert": "Fiyat alarmı kur",
+      "viewSavedItems": "Kaydedilenler",
+      "applyCoupon": "Kupon uygula"
+    },
+    "quickBook": {
+      "bookAppointment": "Randevu al",
+      "rebookPrevious": "Yeniden rezervasyon",
+      "findNearMe": "Yakınımda bul",
+      "messageProvider": "Hizmet sağlayıcıya yaz",
+      "viewMyBookings": "Rezervasyonlarım",
+      "setReminders": "Hatırlatıcı kur",
+      "leaveReview": "Değerlendirme yaz",
+      "paymentHistory": "Ödeme geçmişi"
+    },
+    "supplementCategories": {
+      "all": "Tümü",
+      "multivitamins": "Multivitaminler",
+      "vitamins": "Vitaminler",
+      "minerals": "Mineraller",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptojenler",
+      "nootropics": "Nootropikler",
+      "longevity": "Uzun ömür",
+      "immunity": "Bağışıklık",
+      "antioxidants": "Antioksidanlar",
+      "sleep": "Uyku",
+      "performance": "Performans",
+      "beauty": "Güzellik",
+      "gutHealth": "Bağırsak sağlığı",
+      "herbs": "Bitkiler",
+      "heartHealth": "Kalp sağlığı"
+    }
+  }
+}

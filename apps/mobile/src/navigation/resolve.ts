@@ -48,6 +48,13 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/open-asks',
   '/delete-account',
   '/daily-diary',
+  // VTID-05510: `/discover` also serves `/discover/ai-picks` (sparring R1-F1) —
+  // the registry alias DISCOVER.AI_PICKS route → mobileRoute `/discover?tab=suggested`
+  // (screens.json) now resolves `native` instead of the Unported fallback.
+  '/discover',
+  '/discover/deals-offers',
+  '/discover/supplements',
+  '/discover/wellness-services',
   '/dev/orb-bench',
   '/home',
   '/home/comments',
@@ -66,6 +73,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/reset-password',
   '/search',
+  '/shop',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

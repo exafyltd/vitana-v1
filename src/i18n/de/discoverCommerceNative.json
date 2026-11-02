@@ -1,0 +1,67 @@
+{
+  "discoverCommerceNative": {
+    "searchShort": "Suchen…",
+    "indexPill": "Vitana Index {value} — Gesundheit öffnen",
+    "calendar": {
+      "upcomingCount": "{count} anstehende Termine"
+    },
+    "bookmark": {
+      "add": "Lesezeichen hinzufügen",
+      "remove": "Lesezeichen entfernen"
+    },
+    "product": {
+      "outOfStock": "Nicht vorrätig"
+    },
+    "hidden": {
+      "product": "Produkt",
+      "products": "Produkte",
+      "allergies": "enthalten ein Allergen, das du angegeben hast",
+      "contraindications": "sind bei einer deiner angegebenen Erkrankungen kontraindiziert",
+      "medications": "könnten mit einem deiner Medikamente wechselwirken",
+      "dietary": "passen nicht zu deinen Ernährungsvorlieben",
+      "budget": "liegen über deinem Budget pro Produkt",
+      "sensitivities": "enthalten einen Inhaltsstoff, auf den du empfindlich reagierst",
+      "geo": "werden nicht in deine Region geliefert",
+      "excluded_region": "sind regional eingeschränkt",
+      "past_purchases": "hast du kürzlich gekauft"
+    },
+    "quickShop": {
+      "viewCart": "Warenkorb ansehen",
+      "quickCheckout": "Schnell bezahlen",
+      "reorderPrevious": "Erneut bestellen",
+      "managePayment": "Zahlung verwalten",
+      "trackOrders": "Bestellungen verfolgen",
+      "setPriceAlert": "Preisalarm setzen",
+      "viewSavedItems": "Gemerkte Artikel",
+      "applyCoupon": "Gutschein einlösen"
+    },
+    "quickBook": {
+      "bookAppointment": "Termin buchen",
+      "rebookPrevious": "Erneut buchen",
+      "findNearMe": "In meiner Nähe finden",
+      "messageProvider": "Anbieter anschreiben",
+      "viewMyBookings": "Meine Buchungen",
+      "setReminders": "Erinnerungen setzen",
+      "leaveReview": "Bewertung abgeben",
+      "paymentHistory": "Zahlungsverlauf"
+    },
+    "supplementCategories": {
+      "all": "Alle",
+      "multivitamins": "Multivitamine",
+      "vitamins": "Vitamine",
+      "minerals": "Mineralstoffe",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptogene",
+      "nootropics": "Nootropika",
+      "longevity": "Langlebigkeit",
+      "immunity": "Immunsystem",
+      "antioxidants": "Antioxidantien",
+      "sleep": "Schlaf",
+      "performance": "Leistung",
+      "beauty": "Schönheit",
+      "gutHealth": "Darmgesundheit",
+      "herbs": "Kräuter",
+      "heartHealth": "Herzgesundheit"
+    }
+  }
+}

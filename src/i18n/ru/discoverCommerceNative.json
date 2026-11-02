@@ -1,0 +1,67 @@
+{
+  "discoverCommerceNative": {
+    "searchShort": "Поиск…",
+    "indexPill": "Vitana Index {value} — открыть «Здоровье»",
+    "calendar": {
+      "upcomingCount": "Предстоящие события: {count}"
+    },
+    "bookmark": {
+      "add": "Добавить в закладки",
+      "remove": "Убрать из закладок"
+    },
+    "product": {
+      "outOfStock": "Нет в наличии"
+    },
+    "hidden": {
+      "product": "товар",
+      "products": "товары",
+      "allergies": "содержат аллерген, который ты указал",
+      "contraindications": "противопоказаны при указанном тобой заболевании",
+      "medications": "могут взаимодействовать с лекарством, которое ты принимаешь",
+      "dietary": "не подходят под твои пищевые предпочтения",
+      "budget": "дороже твоего бюджета на товар",
+      "sensitivities": "содержат ингредиент, к которому ты чувствителен",
+      "geo": "не доставляются в твой регион",
+      "excluded_region": "ограничены по региону",
+      "past_purchases": "ты недавно купил"
+    },
+    "quickShop": {
+      "viewCart": "Корзина",
+      "quickCheckout": "Быстрая оплата",
+      "reorderPrevious": "Заказать снова",
+      "managePayment": "Управлять оплатой",
+      "trackOrders": "Отследить заказы",
+      "setPriceAlert": "Уведомить о цене",
+      "viewSavedItems": "Сохранённое",
+      "applyCoupon": "Применить купон"
+    },
+    "quickBook": {
+      "bookAppointment": "Записаться",
+      "rebookPrevious": "Записаться снова",
+      "findNearMe": "Найти рядом",
+      "messageProvider": "Написать специалисту",
+      "viewMyBookings": "Мои записи",
+      "setReminders": "Напоминания",
+      "leaveReview": "Оставить отзыв",
+      "paymentHistory": "История платежей"
+    },
+    "supplementCategories": {
+      "all": "Все",
+      "multivitamins": "Мультивитамины",
+      "vitamins": "Витамины",
+      "minerals": "Минералы",
+      "omega3": "Омега-3",
+      "adaptogens": "Адаптогены",
+      "nootropics": "Ноотропы",
+      "longevity": "Долголетие",
+      "immunity": "Иммунитет",
+      "antioxidants": "Антиоксиданты",
+      "sleep": "Сон",
+      "performance": "Работоспособность",
+      "beauty": "Красота",
+      "gutHealth": "Здоровье кишечника",
+      "herbs": "Травы",
+      "heartHealth": "Здоровье сердца"
+    }
+  }
+}

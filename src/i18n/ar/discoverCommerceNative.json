@@ -1,0 +1,67 @@
+{
+  "discoverCommerceNative": {
+    "searchShort": "بحث…",
+    "indexPill": "مؤشر Vitana ‏{value} – افتح الصحة",
+    "calendar": {
+      "upcomingCount": "الأحداث القادمة: {count}"
+    },
+    "bookmark": {
+      "add": "إضافة إشارة مرجعية",
+      "remove": "إزالة الإشارة المرجعية"
+    },
+    "product": {
+      "outOfStock": "غير متوفر"
+    },
+    "hidden": {
+      "product": "منتج",
+      "products": "منتجات",
+      "allergies": "تحتوي على مادة مسببة للحساسية ذكرتها",
+      "contraindications": "موانع استعمال مع حالة صحية ذكرتها",
+      "medications": "قد تتفاعل مع دواء تتناوله",
+      "dietary": "لا تتوافق مع تفضيلاتك الغذائية",
+      "budget": "تتجاوز ميزانيتك لكل منتج",
+      "sensitivities": "تحتوي على مكوّن لديك حساسية تجاهه",
+      "geo": "لا تُشحن إلى منطقتك",
+      "excluded_region": "مقيدة إقليميًا",
+      "past_purchases": "اشتريتها مؤخرًا"
+    },
+    "quickShop": {
+      "viewCart": "عرض السلة",
+      "quickCheckout": "دفع سريع",
+      "reorderPrevious": "إعادة الطلب",
+      "managePayment": "إدارة الدفع",
+      "trackOrders": "تتبع الطلبات",
+      "setPriceAlert": "تنبيه السعر",
+      "viewSavedItems": "العناصر المحفوظة",
+      "applyCoupon": "تطبيق قسيمة"
+    },
+    "quickBook": {
+      "bookAppointment": "حجز موعد",
+      "rebookPrevious": "إعادة الحجز",
+      "findNearMe": "البحث بالقرب مني",
+      "messageProvider": "مراسلة مقدم الخدمة",
+      "viewMyBookings": "حجوزاتي",
+      "setReminders": "ضبط التذكيرات",
+      "leaveReview": "كتابة تقييم",
+      "paymentHistory": "سجل المدفوعات"
+    },
+    "supplementCategories": {
+      "all": "الكل",
+      "multivitamins": "فيتامينات متعددة",
+      "vitamins": "فيتامينات",
+      "minerals": "معادن",
+      "omega3": "أوميغا 3",
+      "adaptogens": "مكيفات",
+      "nootropics": "منشطات ذهنية",
+      "longevity": "طول العمر",
+      "immunity": "المناعة",
+      "antioxidants": "مضادات الأكسدة",
+      "sleep": "النوم",
+      "performance": "الأداء",
+      "beauty": "الجمال",
+      "gutHealth": "صحة الأمعاء",
+      "herbs": "أعشاب",
+      "heartHealth": "صحة القلب"
+    }
+  }
+}

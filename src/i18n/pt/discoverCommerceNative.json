@@ -1,0 +1,67 @@
+{
+  "discoverCommerceNative": {
+    "searchShort": "Pesquisar…",
+    "indexPill": "Vitana Index {value}: abrir Saúde",
+    "calendar": {
+      "upcomingCount": "{count} próximos eventos"
+    },
+    "bookmark": {
+      "add": "Adicionar favorito",
+      "remove": "Remover favorito"
+    },
+    "product": {
+      "outOfStock": "Esgotado"
+    },
+    "hidden": {
+      "product": "produto",
+      "products": "produtos",
+      "allergies": "contêm um alérgeno que você informou",
+      "contraindications": "são contraindicados para uma condição de saúde que você informou",
+      "medications": "podem interagir com um medicamento que você toma",
+      "dietary": "não combinam com suas preferências alimentares",
+      "budget": "estão acima do seu orçamento por produto",
+      "sensitivities": "contêm um ingrediente ao qual você é sensível",
+      "geo": "não são enviados para a sua região",
+      "excluded_region": "têm restrição regional",
+      "past_purchases": "que você comprou recentemente"
+    },
+    "quickShop": {
+      "viewCart": "Ver carrinho",
+      "quickCheckout": "Pagamento rápido",
+      "reorderPrevious": "Pedir de novo",
+      "managePayment": "Gerenciar pagamento",
+      "trackOrders": "Acompanhar pedidos",
+      "setPriceAlert": "Criar alerta de preço",
+      "viewSavedItems": "Ver salvos",
+      "applyCoupon": "Aplicar cupom"
+    },
+    "quickBook": {
+      "bookAppointment": "Agendar consulta",
+      "rebookPrevious": "Agendar de novo",
+      "findNearMe": "Encontrar perto de mim",
+      "messageProvider": "Falar com o prestador",
+      "viewMyBookings": "Ver meus agendamentos",
+      "setReminders": "Criar lembretes",
+      "leaveReview": "Deixar avaliação",
+      "paymentHistory": "Histórico de pagamentos"
+    },
+    "supplementCategories": {
+      "all": "Todos",
+      "multivitamins": "Multivitamínicos",
+      "vitamins": "Vitaminas",
+      "minerals": "Minerais",
+      "omega3": "Ômega-3",
+      "adaptogens": "Adaptógenos",
+      "nootropics": "Nootrópicos",
+      "longevity": "Longevidade",
+      "immunity": "Imunidade",
+      "antioxidants": "Antioxidantes",
+      "sleep": "Sono",
+      "performance": "Desempenho",
+      "beauty": "Beleza",
+      "gutHealth": "Saúde intestinal",
+      "herbs": "Ervas",
+      "heartHealth": "Saúde do coração"
+    }
+  }
+}
