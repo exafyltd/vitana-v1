@@ -5,7 +5,7 @@
  * requests, and a hosted URL must be handed to the system the way the web
  * assigns `window.location` / `window.open`. No network: the no-network guard
  * is imported first, every request lands in the fake gateway, and
- * `Linking.openURL` is spied (a URL is recorded, never opened).
+ * expo-web-browser is spied (a URL is recorded, never opened).
  */
 import '../helpers/no-network';
 import './mocks';
@@ -18,7 +18,7 @@ import { __clearToastsForTests } from '../../src/ports/ui';
 import { gatewayBillingActions } from '../../src/screens/wallet-subscriptions/data/actions';
 import { SubscriptionsScreen } from '../../src/screens/wallet-subscriptions/SubscriptionsScreen';
 import { ProfileSubscriptionsScreen } from '../../src/screens/wallet-subscriptions/ProfileSubscriptionsScreen';
-import { billingGateway, premiumActive, renderWithBilling, spyOpenURL } from './fixtures';
+import { billingGateway, premiumActive, renderWithBilling, spyOpenBrowser } from './fixtures';
 
 afterAll(() => __setSupabaseForTests(null));
 afterEach(async () => {
@@ -70,7 +70,7 @@ describe('request builders (gatewayBillingActions → fake gateway)', () => {
 
 describe('the app default BillingActions make the web requests and open the hosted page', () => {
   it('overview, free member: Choose / Buy / larger-plan Choose / Redeem post the web requests; checkout URLs are opened', async () => {
-    const open = spyOpenURL();
+    const open = spyOpenBrowser();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />, { actions: 'app' });
     fireEvent.press(await screen.findByTestId('subs-plan-premium-choose'));
     await waitFor(() => expect(open).toHaveBeenCalledWith('https://checkout.example.invalid/sub'));
@@ -91,7 +91,7 @@ describe('the app default BillingActions make the web requests and open the host
   });
 
   it('paid member: Manage and Withdraw open the billing portal', async () => {
-    const open = spyOpenURL();
+    const open = spyOpenBrowser();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />, { me: premiumActive, actions: 'app' });
     fireEvent.press(await screen.findByTestId('subs-state-manage'));
     await waitFor(() => expect(open).toHaveBeenCalledWith('https://portal.example.invalid/session'));

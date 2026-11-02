@@ -19,7 +19,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, BillingIc
 import { useI18n } from '../../../i18n/I18nProvider';
 import { deviceStorage } from '../../../identity/device-storage';
 import { fmtDate } from '../format';
-import { openBillingUrl, useBilling, useFoundingStatus, useStartCreditsCheckout, type BillingMe } from '../data/billing';
+import { useOpenBillingUrl, useBilling, useFoundingStatus, useStartCreditsCheckout, type BillingMe } from '../data/billing';
 
 const PROMISES: ReadonlyArray<{ icon: BillingGlyph; key: string }> = [
   { icon: 'Shield', key: 'owned' },
@@ -160,6 +160,7 @@ export function AddExtraMinutesTile(): ReactElement {
   const { t } = useI18n();
   const { colors } = useUITheme();
   const checkout = useStartCreditsCheckout();
+  const openBillingUrl = useOpenBillingUrl();
 
   const handleBuy = async (packKey: string) => {
     try {

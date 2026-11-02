@@ -16,12 +16,13 @@ import { BillingIcon, Progress } from '../../../ports/billing';
 import { useI18n } from '../../../i18n/I18nProvider';
 import { navigateToWebPath } from '../../../navigation/navigate';
 import { fmtDate, fmtNumber } from '../format';
-import { openBillingUrl, useOpenPortal, type BillingMe } from '../data/billing';
+import { useOpenBillingUrl, useOpenPortal, type BillingMe } from '../data/billing';
 
 export function SubscriptionStateCard({ data }: { data: BillingMe }): ReactElement {
   const { t, language } = useI18n();
   const { colors } = useUITheme();
   const openPortal = useOpenPortal();
+  const openBillingUrl = useOpenBillingUrl();
   const plan = data.plan;
   const isFree = plan.plan_key === 'free' || plan.status === 'free';
   const isPastDue = plan.status === 'past_due' || plan.status === 'unpaid';
@@ -141,6 +142,7 @@ export function YourEarningsWidget({ data }: { data: BillingMe }): ReactElement 
   const { colors } = useUITheme();
   // The web calls useOpenPortal after its early return (a hook-order bug); native calls it first.
   const portal = useOpenPortal();
+  const openBillingUrl = useOpenBillingUrl();
   const earnedCents = data.earnings.year_in_cents;
   const cashBalanceCents = data.wallet.cash_balance;
 

@@ -32,8 +32,9 @@ refuses prod/staging hosts. Not verified on staging: device runtime deferred to 
   portal, redeem) goes to `BillingActions`, whose app default is `gatewayBillingActions`: the web
   `src/lib/billingApi.ts` requests on the native gateway client (`POST /billing/checkout/subscription`
   `{price_key}`, `POST /billing/checkout/credits` `{pack_key}`, `POST /billing/portal` with no body,
-  `POST /billing/redeem` `{code}`, JSON). A returned hosted Stripe URL is opened with
-  `Linking.openURL` (`openBillingUrl`), where the web assigns `window.location` / `window.open`.
+  `POST /billing/redeem` `{code}`, JSON). A returned hosted Stripe URL is opened in the
+  in-app browser (expo-web-browser `openBrowserAsync`, `useOpenBillingUrl`), where the web assigns
+  `window.location` / `window.open`; the return leg refreshes billing/me (fix 2, below).
   The plan names no surface where the web defers a billing write, so no deferred variant is kept.
 - `apps/mobile/src/ports/billing.tsx`: the N2 `Accordion*` / `Progress` and the lucide glyphs these
   screens draw, in their own port so the parallel wallet lanes do not edit the same
@@ -64,11 +65,36 @@ The shipped screens make the web's billing requests. `tests/wallet-subscriptions
 asserts them against the fake gateway: the four request builders (path, method, JSON body,
 `Content-Type`), and the app default `BillingActions` with no provider injected (Choose, Buy,
 larger-plan Choose, Redeem, Manage, Withdraw and the `?code=` deep link post the web requests and
-hand the hosted URL to the spied `Linking.openURL`). Red on the previous head: `red-fix1.txt`
+hand the hosted URL to the system; since fix 2 the spied expo-web-browser `openBrowserAsync`). Red on the previous head: `red-fix1.txt`
 (3 app-default tests failed, 4 builder tests passed). The earlier "app default makes no call"
 tests asserted the misread behaviour and were replaced by these; the "only GET reads on render"
 test is kept. The IAP tests (`iap-parity.test.tsx`) are unchanged. All tests run on the fake
 gateway behind the no-network guard; no test and no verification command calls a live endpoint.
+
+## Return leg after a hosted billing page (fix 2)
+
+The gateway's Stripe success / cancel URLs are web URLs
+(`/wallet/subscriptions?checkout=success&session_id=…` / `?checkout=cancelled`; the credits
+success URL is `/wallet?credits_purchased=true`; the portal returns to `/wallet/subscriptions`).
+On the web the page loads `/billing/me` fresh on that return and shows the refreshed plan card; it
+reads no `checkout` param and shows no toast for success or cancel. Native now matches that:
+
+- `useOpenBillingUrl` (data/billing.ts) opens the URL with expo-web-browser (already on main,
+  57.0.3; no package.json / lock / app.config change) and marks an external flow pending, keyed to
+  the QueryClient, with the plan + credits as they were.
+- `useBillingReturnLeg`, mounted by both screens: when the in-app browser closes (iOS `cancel` /
+  `dismiss`), on AppState `active` and on screen focus while a flow is pending, it invalidates
+  `BILLING_ME_KEY` (refetching the active query) and polls up to 5 reads, 2 s apart, stopping as
+  soon as the plan or credits change; the flow closes afterwards.
+- `/wallet/subscriptions` reads `checkout` with `useLocalSearchParams`: `success` refreshes with
+  the poll, `cancelled` reads billing/me once and closes the flow (old plan, no toast, as on the
+  web).
+
+Tests: `tests/wallet-subscriptions/return-leg.test.tsx` (fakes only: fake gateway, stubbed
+expo-web-browser, captured AppState listeners). Red on the previous head 849523c: `red-fix2.txt`
+(5 failed, the "nothing pending" guard passed). The existing Linking spy became the
+expo-web-browser spy with the same URL assertions; no assertion was loosened. iOS IAP gates are
+unchanged.
 
 ## Deviations from the spec (also in the PR body)
 

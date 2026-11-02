@@ -16,7 +16,7 @@ import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Text, useUIThe
 import { BillingIcon } from '../../../ports/billing';
 import { useI18n } from '../../../i18n/I18nProvider';
 import { fmtNumber } from '../format';
-import { openBillingUrl, useStartSubscriptionCheckout } from '../data/billing';
+import { useOpenBillingUrl, useStartSubscriptionCheckout } from '../data/billing';
 import { IntervalToggle, type Interval } from './IntervalToggle';
 
 const PREMIUM_PRICE_CENTS: Record<Interval, number> = { month: 999, year: 8900 };
@@ -54,6 +54,7 @@ export function PlansGridHeadline({ currentPlanKey, hideCta }: { currentPlanKey:
   const { colors } = useUITheme();
   const [interval, setInterval] = useState<Interval>('month');
   const checkout = useStartSubscriptionCheckout();
+  const openBillingUrl = useOpenBillingUrl();
   const isFreeCurrent = currentPlanKey === 'free';
 
   const handleChoosePremium = async () => {
@@ -156,6 +157,7 @@ export function PlansGridExpanded({ currentPlanKey }: { currentPlanKey: string }
   const [expanded, setExpanded] = useState(currentPlanKey === 'premium_5x' || currentPlanKey === 'premium_20x');
   const [interval, setInterval] = useState<Interval>('month');
   const checkout = useStartSubscriptionCheckout();
+  const openBillingUrl = useOpenBillingUrl();
 
   const handleChoose = async (planKey: BigPlan) => {
     try {

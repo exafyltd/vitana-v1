@@ -7,8 +7,9 @@
  * gateway client: the same endpoints (`/billing/checkout/subscription`,
  * `/billing/checkout/credits`, `/billing/portal`, `/billing/redeem`), the same
  * JSON bodies. It is the app default. The screens open a returned hosted
- * Stripe URL with the system (`openBillingUrl`), where the web assigns
- * `window.location`. The CTAs stay exactly where the web shows them, on iOS
+ * Stripe URL in the in-app browser (`useOpenBillingUrl`, expo-web-browser),
+ * where the web assigns `window.location`, and refresh billing/me on the
+ * return (`useBillingReturnLeg`). The CTAs stay exactly where the web shows them, on iOS
  * too (no gate added — requirements R3.2).
  *
  * `BillingActionsProvider` lets a test inject its own actions; tests run

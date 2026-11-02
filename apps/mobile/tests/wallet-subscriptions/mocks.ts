@@ -5,7 +5,8 @@
  * `router` + `useLocalSearchParams` the redeem card reads for `?code=`),
  * react-native-safe-area-context (zero insets) and the secure-store /
  * async-storage the auth + language providers (and the launch-grant
- * dismissal) touch.
+ * dismissal) touch. expo-web-browser is a stub (tests spy on it; nothing
+ * opens) and `useFocusEffect` runs its callback like a mount effect.
  */
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -29,8 +30,14 @@ const mockRouter = {
   setParams: jest.fn(),
 };
 
+jest.mock('expo-web-browser', () => ({
+  openBrowserAsync: async () => ({ type: 'opened' }),
+  openAuthSessionAsync: async () => ({ type: 'cancel' }),
+}));
+
 jest.mock('expo-router', () => ({
   router: mockRouter,
+  useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(cb, [cb]),
   useLocalSearchParams: () => mockParams.current,
   usePathname: () => '/wallet/subscriptions',
   useGlobalSearchParams: () => ({}),

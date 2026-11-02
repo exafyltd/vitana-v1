@@ -4,11 +4,13 @@
  * `billingGateway()` is a FAKE gateway: it answers the billing paths from
  * fixtures and records every call (method, path, JSON body). Checkout /
  * portal / redeem answers are canned; nothing leaves the process (the
- * no-network guard is imported first by every test file, and `Linking.openURL`
- * is spied, so a "hosted checkout" URL is only recorded, never opened).
+ * no-network guard is imported first by every test file, and expo-web-browser
+ * is mocked + spied, so a "hosted checkout" URL is only recorded, never opened).
+ * `setMe()` swaps the /billing/me answer mid-test (the webhook landing while
+ * the member is in the hosted page).
  */
 import type { ReactElement, ReactNode } from 'react';
-import { Linking } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { configure, render } from '@testing-library/react-native';
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import { makeWrapper } from '../helpers/providers';
@@ -76,13 +78,13 @@ function isFailure(v: unknown): v is { status: number; body: unknown } {
 /** The fake billing gateway: canned answers per path, every call recorded. */
 export function billingGateway(opts: BillingGatewayOpts = {}) {
   const calls: GatewayCall[] = [];
+  let me = opts.me ?? freePlan;
   const answer = (status: number, body: unknown) =>
     ({ ok: status >= 200 && status < 300, status, text: async () => (body === undefined ? '' : JSON.stringify(body)) }) as unknown as Response;
   const fetch = async (path: string, init?: RequestInit) => {
     const method = (init?.method ?? 'GET').toUpperCase();
     calls.push({ method, path, body: typeof init?.body === 'string' ? JSON.parse(init.body) : undefined });
     if (path === '/billing/me') {
-      const me = opts.me ?? freePlan;
       return isFailure(me) ? answer(me.status, me.body) : answer(200, me);
     }
     if (path === '/billing/founding-status') return opts.founding ? answer(200, opts.founding) : answer(404, undefined);
@@ -95,7 +97,17 @@ export function billingGateway(opts: BillingGatewayOpts = {}) {
     }
     return answer(404, undefined);
   };
-  return { fetch, calls, posts: () => calls.filter((c) => c.method === 'POST') };
+  return {
+    fetch,
+    calls,
+    posts: () => calls.filter((c) => c.method === 'POST'),
+    /** How many times /billing/me was read. */
+    meReads: () => calls.filter((c) => c.path === '/billing/me').length,
+    /** Swap the /billing/me answer (the webhook landed). */
+    setMe: (next: BillingMe) => {
+      me = next;
+    },
+  };
 }
 
 const session = fakeSession('u-1', { user: { id: 'u-1', app_metadata: { active_tenant_id: 't-maxina' }, user_metadata: {} } });
@@ -111,9 +123,13 @@ function supabase() {
   }).client;
 }
 
-/** Spy on Linking.openURL so a hosted checkout / portal URL is recorded, never opened. */
-export function spyOpenURL() {
-  return jest.spyOn(Linking, 'openURL').mockResolvedValue(true as never);
+/**
+ * Spy on the (mocked) expo-web-browser `openBrowserAsync` so a hosted checkout / portal URL is
+ * recorded, never opened. By default it answers `opened` (Android: the tab is open, the app is in
+ * the background); pass a result to simulate the in-app browser closing (iOS `cancel` / `dismiss`).
+ */
+export function spyOpenBrowser(result: { type: string } = { type: 'opened' }) {
+  return jest.spyOn(WebBrowser, 'openBrowserAsync').mockResolvedValue(result as never);
 }
 
 /**

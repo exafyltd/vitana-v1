@@ -15,12 +15,18 @@
  *
  * The writes (checkout, portal, redeem) go through `BillingActions`
  * (./actions.ts, the web requests by default). When an action answers with
- * a hosted URL, native opens it with the system
- * (`openBillingUrl`; the web assigns `window.location`). Tests use the fake
- * gateway only.
+ * a hosted URL, native opens it in the in-app browser (`useOpenBillingUrl`,
+ * expo-web-browser; the web assigns `window.location`) and marks an external
+ * flow pending. `useBillingReturnLeg` is the return leg: when the browser
+ * closes, and on AppState 'active' / screen focus while a flow is pending, it
+ * invalidates + refetches billing/me, polling briefly for webhook lag
+ * (`refreshAfterExternalFlow`). Tests use the fake gateway only.
  */
-import { Linking } from 'react-native';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import { useFocusEffect } from 'expo-router';
+import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import { gatewayJson } from '../../../ports/core';
 import { getGateway } from '../../../auth/gateway';
 import { useBillingActions, type PortalResult } from './actions';
@@ -156,9 +162,119 @@ export function useRedeemCode() {
   });
 }
 
-/** The hosted checkout / portal page (web: `window.location.assign(url)` / `window.open`). */
-export function openBillingUrl(url: string | undefined | null): void {
-  if (url) void Linking.openURL(url);
+/** Webhook lag: up to 5 reads of billing/me, 2 s apart, stopping as soon as the plan or credits change. */
+const RETURN_POLL_ATTEMPTS = 5;
+const RETURN_POLL_INTERVAL_MS = 2_000;
+
+/** An external billing flow (hosted checkout / portal) the member has not come back from yet. */
+type PendingFlow = { baseline: string | null; polling: boolean };
+const pendingFlows = new WeakMap<QueryClient, PendingFlow>();
+
+/** What a finished checkout / portal visit changes: the plan and the credit balances. */
+function billingSignature(me: BillingMe | undefined): string | null {
+  if (!me) return null;
+  const { plan, wallet } = me;
+  return JSON.stringify([
+    plan.plan_key,
+    plan.status,
+    plan.price_key,
+    plan.current_period_end,
+    plan.cancel_at_period_end,
+    wallet.purchased_credits,
+    wallet.balance_total,
+  ]);
+}
+
+function markPendingFlow(qc: QueryClient): void {
+  const current = pendingFlows.get(qc);
+  if (current?.polling) return;
+  pendingFlows.set(qc, { baseline: billingSignature(qc.getQueryData<BillingMe>(BILLING_ME_KEY)), polling: false });
+}
+
+const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/**
+ * The member is back from a pending external flow: invalidate + refetch billing/me, then poll
+ * (webhooks lag) until the plan or credits differ from what the screen showed when the page
+ * opened, at most RETURN_POLL_ATTEMPTS reads. The flow is closed afterwards either way.
+ */
+export async function refreshAfterExternalFlow(qc: QueryClient): Promise<void> {
+  const flow = pendingFlows.get(qc);
+  if (!flow || flow.polling) return;
+  flow.polling = true;
+  try {
+    for (let attempt = 0; attempt < RETURN_POLL_ATTEMPTS; attempt += 1) {
+      if (attempt > 0) await wait(RETURN_POLL_INTERVAL_MS);
+      if (pendingFlows.get(qc) !== flow) break; // closed meanwhile (?checkout=cancelled)
+      await qc.invalidateQueries({ queryKey: BILLING_ME_KEY });
+      if (billingSignature(qc.getQueryData<BillingMe>(BILLING_ME_KEY)) !== flow.baseline) break;
+    }
+  } finally {
+    if (pendingFlows.get(qc) === flow) pendingFlows.delete(qc);
+  }
+}
+
+/**
+ * Opens the hosted checkout / portal page (web: `window.location.assign(url)` / `window.open`)
+ * in the in-app browser and marks the flow pending. iOS resolves when the member closes the
+ * browser (`cancel` / `dismiss`): that is the return, so billing/me is refreshed then. Android
+ * resolves `opened` at once; its return is the AppState 'active' handled by `useBillingReturnLeg`.
+ */
+export function useOpenBillingUrl(): (url: string | undefined | null) => void {
+  const qc = useQueryClient();
+  return useCallback(
+    (url: string | undefined | null) => {
+      if (!url) return;
+      markPendingFlow(qc);
+      void WebBrowser.openBrowserAsync(url)
+        .then((result) => {
+          if (String(result?.type) !== 'opened') void refreshAfterExternalFlow(qc);
+        })
+        .catch(() => undefined);
+    },
+    [qc],
+  );
+}
+
+/**
+ * The return leg the screens mount: while an external flow is pending, coming back to the
+ * foreground (AppState 'active') or to the screen (focus) refreshes billing/me. `checkout` is the
+ * web's return param (`/wallet/subscriptions?checkout=success|cancelled`, the gateway's success /
+ * cancel URLs): `success` refreshes with the webhook poll, `cancelled` reads billing/me once and
+ * closes the flow. The web shows no toast for either; the result is the refreshed plan card.
+ */
+export function useBillingReturnLeg(checkout?: string | string[]): void {
+  const qc = useQueryClient();
+  const { data } = useBilling();
+  const loaded = data !== undefined;
+  const value = Array.isArray(checkout) ? checkout[0] : checkout;
+  const handled = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next === 'active') void refreshAfterExternalFlow(qc);
+    });
+    return () => sub.remove();
+  }, [qc]);
+
+  // A `?checkout=` link is handled below (it decides poll vs single read), so focus defers to it.
+  useFocusEffect(
+    useCallback(() => {
+      if (!value) void refreshAfterExternalFlow(qc);
+    }, [qc, value]),
+  );
+
+  useEffect(() => {
+    if (!loaded || !value || handled.current === value) return;
+    handled.current = value;
+    if (value === 'success') {
+      if (!pendingFlows.has(qc)) markPendingFlow(qc);
+      void refreshAfterExternalFlow(qc);
+    } else if (value === 'cancelled') {
+      pendingFlows.delete(qc);
+      void qc.invalidateQueries({ queryKey: BILLING_ME_KEY });
+    }
+  }, [loaded, value, qc]);
 }
 
 /** The backend error code of a failed call (web `BillingApiError.errorCode`). */

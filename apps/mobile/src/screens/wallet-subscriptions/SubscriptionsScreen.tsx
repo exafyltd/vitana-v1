@@ -13,13 +13,17 @@
  * Subscriptions are flagged as digital content for the owner's decision-5
  * call (documentation only). The drawer's Wallet-row gate
  * (src/shell/logic/drawer.ts `iapRestricted`) is untouched.
- * React 19: typed with `ReactElement`.
+ * Return leg: `?checkout=success|cancelled` (the gateway's Stripe success /
+ * cancel URLs) and coming back from a hosted page refresh billing/me
+ * (`useBillingReturnLeg`); like the web, the result is the refreshed plan
+ * card, with no toast. React 19: typed with `ReactElement`.
  */
 import type { ReactElement } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { useUITheme } from '../../ports/ui';
 import { useI18n } from '../../i18n/I18nProvider';
-import { useBilling } from './data/billing';
+import { useBilling, useBillingReturnLeg } from './data/billing';
 import { MobileHeader, SubscriptionsError, SubscriptionsLoading, WalletSubNav, errorMessageOf } from './components/Frame';
 import { AddExtraMinutesTile, FoundingBanner, LaunchGrantBanner, PrivacyFirstPromises, WhySubscribeFAQ } from './components/Banners';
 import { FeatureComparisonTable, SubscriptionStateCard, YourEarningsWidget } from './components/PlanState';
@@ -30,6 +34,8 @@ export function SubscriptionsScreen(): ReactElement {
   const { t } = useI18n();
   const { colors } = useUITheme();
   const { data, isLoading, isError, error } = useBilling();
+  const { checkout } = useLocalSearchParams<{ checkout?: string }>();
+  useBillingReturnLeg(checkout);
 
   return (
     <View testID="wallet-subscriptions" style={[styles.root, { backgroundColor: colors.background }]}>

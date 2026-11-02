@@ -4,7 +4,7 @@
  * `/profile/subscriptions` storefront (tasks 1, 2, 4). No network: the
  * no-network guard is imported first, Supabase is the in-memory double, the
  * gateway is the fake billing gateway from ./fixtures (every call recorded),
- * and `Linking.openURL` is spied, so every checkout, portal or redeem request
+ * and expo-web-browser is spied, so every checkout, portal or redeem request
  * lands in the fake gateway and nothing leaves the process. React 19: components are typed with
  * `ReactElement`; no global `JSX`.
  */
@@ -29,7 +29,7 @@ import {
   premiumPastDue,
   premiumTrialing,
   renderWithBilling,
-  spyOpenURL,
+  spyOpenBrowser,
 } from './fixtures';
 
 afterAll(() => __setSupabaseForTests(null));
@@ -160,7 +160,7 @@ describe('plan state card', () => {
   });
 
   it('active: renewal line + Manage opens the hosted billing portal (fake gateway, POST /billing/portal)', async () => {
-    const open = spyOpenURL();
+    const open = spyOpenBrowser();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />, { me: premiumActive });
     expect(await screen.findByTestId('subs-state-period')).toHaveTextContent(/^Verlängert sich am /);
     fireEvent.press(screen.getByTestId('subs-state-manage'));
@@ -188,7 +188,7 @@ describe('plan state card', () => {
 
 describe('plan grids — web wire format through gatewayBillingActions + fake gateway', () => {
   it('headline: Premium monthly by default; the year switch shows the annual price + save badge and checks out premium_annual', async () => {
-    const open = spyOpenURL();
+    const open = spyOpenBrowser();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />);
     expect(await screen.findByTestId('subs-plan-premium-price')).toHaveTextContent('€9,99/Monat');
     expect(screen.getByTestId('subs-plan-free-current')).toBeTruthy();
@@ -201,7 +201,7 @@ describe('plan grids — web wire format through gatewayBillingActions + fake ga
   });
 
   it('expanded: collapsed by default; opening it shows Host + Community and checks out the monthly Host price', async () => {
-    spyOpenURL();
+    spyOpenBrowser();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />);
     await screen.findByTestId('subs-plans-expanded');
     expect(screen.queryByTestId('subs-plans-expanded-content')).toBeNull();
@@ -223,7 +223,7 @@ describe('plan grids — web wire format through gatewayBillingActions + fake ga
   });
 
   it('credit packs: Buy checks out the pack key and opens the hosted page', async () => {
-    const open = spyOpenURL();
+    const open = spyOpenBrowser();
     const { gateway } = renderWithBilling(<SubscriptionsScreen />);
     fireEvent.press(await screen.findByTestId('subs-pack-boost-buy'));
     await waitFor(() => expect(open).toHaveBeenCalledWith('https://checkout.example.invalid/credits'));
@@ -241,7 +241,7 @@ describe('usage + earnings', () => {
   });
 
   it('earnings: amounts in the viewer locale; Withdraw opens the portal', async () => {
-    const open = spyOpenURL();
+    const open = spyOpenBrowser();
     renderWithBilling(<SubscriptionsScreen />, { me: premiumActive });
     expect(await screen.findByTestId('subs-earnings-earned')).toHaveTextContent('€42,00');
     expect(screen.getByTestId('subs-earnings-net')).toHaveTextContent('€12,50');

@@ -6,7 +6,7 @@
     { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
       "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
     { "kind": "existing", "ref": "npx jest tests/wallet-subscriptions", "cwd": "apps/mobile",
-      "reason": "subscriptions overview loaded / empty / error, the storefront in the web storefront order, /profile/subscriptions renders the storefront (not the desktop redirect), plan grids, redeem card, banners, the app default BillingActions building the web checkout / portal / redeem requests (fake gateway); iOS tree equals Android tree with no gate added, the drawer gate unchanged; 11 locales + RTL — fixtures and a fake gateway, no network" },
+      "reason": "subscriptions overview loaded / empty / error, the storefront in the web storefront order, /profile/subscriptions renders the storefront (not the desktop redirect), plan grids, redeem card, banners, the app default BillingActions building the web checkout / portal / redeem requests (fake gateway); the return leg after a hosted page (browser close, AppState active, ?checkout=success|cancelled → billing/me refetched, new plan rendered); iOS tree equals Android tree with no gate added, the drawer gate unchanged; 11 locales + RTL — fixtures and a fake gateway, no network" },
     { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
       "reason": "React 19 ReactElement typing; the two screens, the data layer and the billing port type-check against @vitana/core, @vitana/tokens and the shell ports" },
     { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },

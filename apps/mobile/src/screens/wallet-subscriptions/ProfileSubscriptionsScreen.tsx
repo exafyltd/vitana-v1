@@ -14,7 +14,9 @@
  * `/settings?mode=billing` (destructive when past due).
  *
  * iOS IAP: `MobileSubscriptions` carries no `isIAPRestricted()` branch today,
- * so this screen has none either (requirements R3.2). React 19: `ReactElement`.
+ * so this screen has none either (requirements R3.2). Coming back from a hosted
+ * checkout / portal page refreshes billing/me (`useBillingReturnLeg`).
+ * React 19: `ReactElement`.
  */
 import type { ReactElement } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -23,7 +25,7 @@ import { Button, useUITheme } from '../../ports/ui';
 import { BillingIcon } from '../../ports/billing';
 import { useI18n } from '../../i18n/I18nProvider';
 import { navigateToWebPath } from '../../navigation/navigate';
-import { useBilling } from './data/billing';
+import { useBilling, useBillingReturnLeg } from './data/billing';
 import { MobileHeader, SubscriptionsError, SubscriptionsLoading, errorMessageOf } from './components/Frame';
 import { AddExtraMinutesTile, FoundingBanner, LaunchGrantBanner, PrivacyFirstPromises, WhySubscribeFAQ } from './components/Banners';
 import { FeatureComparisonTable, SubscriptionStateCard, YourEarningsWidget } from './components/PlanState';
@@ -34,6 +36,7 @@ export function ProfileSubscriptionsScreen(): ReactElement {
   const { t, rtl } = useI18n();
   const { colors } = useUITheme();
   const { data, isLoading, isError, error } = useBilling();
+  useBillingReturnLeg();
 
   const isFree = data?.plan.plan_key === 'free' || data?.plan.status === 'free';
   const isPastDue = data?.plan.status === 'past_due' || data?.plan.status === 'unpaid';
