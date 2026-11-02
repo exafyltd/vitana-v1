@@ -1,0 +1,20 @@
+# VTID-05427 red on base: tests/memory/** run against origin/main (no memory screens yet)
+# cmd (apps/mobile, detached worktree at origin/main + copied tests/memory): npm ci && node ../../scripts/native/gen-i18n-map.mjs && npx jest tests/memory --ci
+base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+FAIL tests/memory/timeline.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/memory/MemoryTimeline' from 'tests/memory/timeline.test.tsx'
+      13 | import { FAIL, memoryWrapper, moment, spotlight, todayIso, type Req } from './helpers';
+FAIL tests/memory/gateway-i18n.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/memory/MemoryOverview' from 'tests/memory/gateway-i18n.test.tsx'
+FAIL tests/memory/recall-permissions.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/memory/MemoryRecall' from 'tests/memory/recall-permissions.test.tsx'
+      16 | import { FAIL, memoryWrapper } from './helpers';
+FAIL tests/memory/overview.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/memory/MemoryOverview' from 'tests/memory/overview.test.tsx'
+      14 | import { FAIL, gardenRoutes, memoryWrapper, overviewRoutes } from './helpers';
+Test Suites: 4 failed, 4 total
+Tests:       0 total
