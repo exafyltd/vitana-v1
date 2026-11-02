@@ -140,6 +140,9 @@ describe('auth plugins', () => {
       './modules/vitana-voice/plugin/withVitanaVoice',
       'expo-secure-store',
       'expo-apple-authentication',
+      // VTID-05426 (diary lane): the Daily Diary's photo / voice capture (tests/diary/app-config-plugins.test.ts).
+      'expo-image-picker',
+      'expo-audio',
     ]);
     expect(cfg.ios?.usesAppleSignIn).toBe(true);
     expect(cfg.ios?.bundleIdentifier).toBe(IDENTIFIERS.ios);
