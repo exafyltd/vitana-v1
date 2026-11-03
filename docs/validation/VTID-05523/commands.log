@@ -111,3 +111,48 @@ PASS  gh for plan( PR / vitana-platform lane files
 PASS  PR-GATE scope / sparring / weakening / red-green
 PASS  Kiro steering
 SKIP  Not run by preflight
+
+## fix round 1 (review ai-coach-0a726a3: big-lift confetti + success toast), code head 666bf14d2
+$ git fetch origin && git merge origin/main   (origin/main 6b9137ac5)
+Already up to date.
+exit=0
+
+## red on 0a726a3 — see red-fix1.txt
+$ npx jest tests/ai-coach/companion.test.tsx -t 'big-lift'   (new tests, app code as on 0a726a3)
+Tests: 2 failed, 9 skipped, 2 passed (magnitude 12 + throttle fail: no toasts.common.success, no confetti; the two absence checks pass on base by design)
+exit=1
+
+$ cd apps/mobile && npm run typecheck
+exit=0
+
+$ npx eslint src/screens/ai-coach tests/ai-coach
+exit=0
+
+$ npx jest tests/ai-coach --ci   (run 1, default workers)
+Test Suites: 4 passed, 4 total; Tests: 93 passed, 93 total; Time: 37.954 s (wall 39 s)
+exit=0
+
+$ npx jest tests/ai-coach --ci   (run 2, default workers)
+Test Suites: 4 passed, 4 total; Tests: 93 passed, 93 total; Time: 19.064 s (wall 20 s)
+exit=0
+
+## per-test durations (npx jest tests/ai-coach --ci --verbose, default workers; 93/93 passed, 62.3 s)
+93 tests timed: median 260 ms, max 2953 ms — every test far inside the 30 s jest.setTimeout and the 5 s asyncUtilTimeout.
+Over 1 s:
+  2953 ms  companion: without AI consent the sheet opens; "I agree" saves consent and the next send goes out
+  1976 ms  companion: a second big lift inside 5 minutes is throttled (stored timestamp)
+  1956 ms  companion: renders a fake chat thread and sends the web request body
+  1639 ms  companion: renders the sidebar and the card stack (loaded)
+  1616 ms  overview-insights: renders the seven web cards in order with the mock data (loaded)
+  1518 ms  companion: magnitude 12: the lift toast, then the confetti overlay and the extra success toast
+  1515 ms  companion: completes the open onboarding_maxina recommendation once and toasts the reward
+  1134 ms  i18n-rtl: /ai overview has no raw key
+  1086 ms  companion: the Autopilot widget is paused with the enable hint when autopilot is off (empty)
+  1040 ms  i18n-rtl: /ai companion has no raw key
+(an earlier run 1 failed 1/93 on the lane's own no-physical-left/right check for Confetti.tsx `left:`; fixed to `start:` before the two runs above)
+
+## preflight (head 666bf14d2)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-ai-pages-r2/ai-coach --title "VTID-05523 (native-wave2-ai-pages-r2/ai-coach): native AI coach port"
+PASS Collab handoff, Lane scope, gh for plan, PR-GATE scope / sparring / weakening / red-green, Kiro steering; SKIP Not run by preflight
+preflight: every check passed
+exit=0
