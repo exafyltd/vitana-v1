@@ -34,6 +34,7 @@
     "src/lib/retired-tenants.ts",
     "src/lib/role-switch-destination.ts",
     "src/lib/tenant-registry.ts",
+    "src/mocks/ai.ts",
     "src/navigation/orb-navigation.ts",
     "src/navigation/registry/index.ts",
     "src/navigation/registry/locales/ar.json",
