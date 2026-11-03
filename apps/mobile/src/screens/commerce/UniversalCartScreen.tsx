@@ -16,7 +16,10 @@
  *    state or the wallet balance card, the buyable lines (stepper, Remove,
  *    Save for later), the affiliate links panel and Checkout;
  *  - Saved: the empty state or the saved lines (Remove, Move to cart);
- *  - the AddMoneyDialog, opened prefilled on a 402 INSUFFICIENT_BALANCE.
+ *  - the AddMoneyDialog, opened prefilled on a 402 INSUFFICIENT_BALANCE, and
+ *    the Stripe deposit return leg (data/depositReturn.ts): browser close,
+ *    AppState 'active' and focus refetch the balance / cart / budget and poll
+ *    the pending deposit (8 × 2.5 s) to the web's toast and state.
  *
  * Checkout idempotency (VTID-03919) is the web rule from
  * `@vitana/core/checkout-idempotency`: the key is held across attempts and
@@ -52,6 +55,7 @@ import { AgentProposalCard, BudgetMeter, CartLineHeader, QuantityStepper } from 
 import { checkoutErrorKey, isInsufficientBalanceError, mintCheckoutKey, useCommerceCart, type CheckoutAffiliateRedirect } from './data/cart';
 import { useShoppingAgent } from './data/agent';
 import type { WalletCurrency } from './data/wallet';
+import { useDepositReturnLeg } from './data/depositReturn';
 import { toMajorUnits } from './format';
 import { goBack, Notice, Panel, PanelBody, PulseBlock } from './parts';
 import { AddMoneyDialog } from './wallet/AddMoneyDialog';
@@ -115,6 +119,7 @@ export function UniversalCartScreen({ mintKey = mintCheckoutKey }: { mintKey?: (
   const [addMoneyAmount, setAddMoneyAmount] = useState<number | undefined>(undefined);
   const [affiliateRedirects, setAffiliateRedirects] = useState<CheckoutAffiliateRedirect[]>([]);
   const [prompt, setPrompt] = useState('');
+  useDepositReturnLeg();
 
   if (roleBlocked) {
     return (
