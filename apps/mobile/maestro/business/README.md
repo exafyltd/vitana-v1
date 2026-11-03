@@ -27,7 +27,8 @@ Flows (to author on G1):
   `/commerce/connect/authorize?authorization_id=<unknown>` and
   `/commerce/connections/<id>`: the native screens, error states only.
 - `04-public-pages.yaml` — signed out: `/commerce/join`, `/commerce-login`,
-  `/commerce/connect`, `/commerce/connect/privacy?lang=en`.
+  `/commerce/connect`, `/commerce/connect/privacy?lang=en`. Runs once the
+  `native-shell-fixes` lane mounts these screens under `app/(public)/`.
 
 Until G1, the port is proven offline by the jest-expo + RNTL unit tests in
 `apps/mobile/tests/business/` and the typecheck / bundle / deps / parity gates.

@@ -1,8 +1,11 @@
 # Verification — VTID-05524 (native-wave2-role-modes-r2 / business)
 
 Native business / commerce-mode port: the 11 `role-modes` commerce ledger rows (10
-`source: role-route` + the `source: exclusion` row `/commerce/connect/authorize`), 11 route
-files. Spec: `.kiro/specs/native-wave2-role-modes-r2/` in vitana-platform (plan PR #4635; read
+`source: role-route` + the `source: exclusion` row `/commerce/connect/authorize`); 11 screens,
+7 route files. The 4 public pages (`/commerce-login`, `/commerce/join`, `/commerce/connect`,
+`/commerce/connect/privacy`) ship as exported screens; their `app/(public)/` route files are
+outside this lane's paths and move to the `native-shell-fixes` lane, so their ledger rows stay
+`not_started` with a note. Spec: `.kiro/specs/native-wave2-role-modes-r2/` in vitana-platform (plan PR #4635; read
 from `origin/kiro/native-wave2-role-modes-r2/plan` while that PR is open). The plan block and
 `tasks.md` `<!-- lane: business -->` govern.
 
@@ -16,13 +19,13 @@ the built request against a mocked gateway / Supabase double and nothing reaches
 
 | Area | Files |
 |---|---|
-| Routes | `app/(app)/commerce/{index,team}.tsx`, `health-orders/{index,inbox}.tsx`, `connections/[id].tsx` (redirect to `/commerce?connection=`), `invites/[token]/accept.tsx`, `connect/authorize.tsx`; `app/(public)/commerce/{join,connect/index,connect/privacy}.tsx`, `app/(public)/commerce-login.tsx`; `src/navigation/resolve.ts` `NATIVE_ROUTES` + the 9 static paths |
+| Routes | `app/(app)/commerce/{index,team}.tsx`, `health-orders/{index,inbox}.tsx`, `connections/[id].tsx` (redirect to `/commerce?connection=`), `invites/[token]/accept.tsx`, `connect/authorize.tsx`; `src/navigation/resolve.ts` `NATIVE_ROUTES` + the 5 static paths. No `app/(public)/` file: the 4 public route files move to `native-shell-fixes` |
 | Screens | `src/screens/business/` — `CommercePortalScreen`, `CommerceTeamScreen`, `CommerceHealthOrdersScreen`, `CommerceAcceptInviteScreen`, `CommerceConnectAuthorizeScreen` (+ the Community consent), `CommerceJoinScreen`, `CommerceConnectDocsScreen` (+ privacy), `CommercePortalLoginScreen`; `components/` — every web commerce component the phone renders (AgentConnectCard, McpConnectPanel, CommerceGuestLanding + "What happens next", MyOrgCard, ConnectionCard, ConnectionProgress, SetupHub + ProfileSheet + TermsRow, PartnerTermsSheet, SetupChooser, RegisterOrgDialog, AiSetupSheet, AddProductSheet, ProductForm + VerticalFieldInput + ListingStrength + ProductImageField, SalesSetupSheet, CatalogueImportSheet, ManualConnectDialog, ConnectionWorkbench, PartnerOrgRoster, BusinessContext) |
 | Data | `data/client.ts` (the web `adminFetch` / `gatewayCall` / `fetchMcpReady` natively: same paths, headers incl. `X-Vitana-Tenant`, same error messages), `data/hooks.ts` (class-B web hooks re-implemented: `usePartnerHealthOrders` family, `useOrgMembers` family, `useCommerceVerticals`, the membership query), `data/consent.ts` (Supabase OAuth 2.1 consent + the two `ai_connection_*` RPCs), `data/external.ts` (hosted-page return leg) |
 | Core | `packages/core/extract.json` — 7 new entries (`commerce-host`, `-ai-setup`, `-register`, `-catalogue`, `-suggestions`, `-mcp`, `-data`): only IO-free declarations copied verbatim, `packages/core/src/commerce.ts` re-exports them; `gen-core-extract` + `core-closure --write` run, `scripts/native/mobile-ci-paths.generated.json` regenerated |
 | Ports | `src/ports/commerce.ts` (`@vitana/core/commerce`), `src/ports/business-ui.tsx` (kit re-exports, lucide glyphs, entrance fade + breathing halo with reduced motion, share sheet, photo library, document picker, in-app browser) |
 | i18n | `src/i18n/*/businessNative.json` — 1 key (photo permission denied), DE first (du-form), all 11 locales; all other strings reuse the web's `screens.commerceportal.*`, `commerceConnect.*`, `screens.commerceconnect.*`, `aiConnect.*`, `screens.admin.*`, `toasts.admin.*`, `screens.partnerportal.*`, `screens.portals.*`, `common.*` keys |
-| Ledger | `apps/mobile/parity/ledger.json` — the 11 rows `not_started` → `native` (owner kiro, 2026-11-03); the exclusion row's `scope` stays `in` |
+| Ledger | `apps/mobile/parity/ledger.json` — 7 rows `not_started` → `native` (owner kiro, 2026-11-03); the exclusion row's `scope` stays `in`; the 4 public rows stay `not_started` with an `exception` note pointing to `native-shell-fixes` (route file not mounted) |
 | Tests | `apps/mobile/tests/business/**` (9 suites, new); no shared test changed |
 
 No shell / identity / ORB / web file changed, no backend, no migration.

@@ -125,8 +125,8 @@ it('Arabic renders right-to-left with the Arabic catalog', async () => {
 
 it('no physical left/right in the business lane styles (logical start/end only)', () => {
   const app = join(__dirname, '../../app');
-  const roots = [join(__dirname, '../../src/screens/business'), join(app, '(app)/commerce'), join(app, '(public)/commerce')];
-  const files = [join(__dirname, '../../src/ports/business-ui.tsx'), join(app, '(public)/commerce-login.tsx')];
+  const roots = [join(__dirname, '../../src/screens/business'), join(app, '(app)/commerce')];
+  const files = [join(__dirname, '../../src/ports/business-ui.tsx')];
   const walk = (dir: string) => {
     for (const name of readdirSync(dir)) {
       const full = join(dir, name);

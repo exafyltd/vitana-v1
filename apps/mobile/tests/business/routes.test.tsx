@@ -1,9 +1,13 @@
 /**
  * VTID-05524 (native-wave2-role-modes-r2/business) — the 11 commerce
- * destinations on a cold start: each has its own route file (no resolver
- * fallback, no shadowing file), Expo Router really lands on it from a deep
- * link (the connect/authorize and invite/accept links included), the parity
- * rows are `native`, the business bottom tabs come with the business routes
+ * destinations on a cold start: the 7 signed-in ones each have their own route
+ * file (no resolver fallback, no shadowing file), Expo Router really lands on
+ * it from a deep link (the connect/authorize and invite/accept links included)
+ * and their parity rows are `native`. The 4 public pages (/commerce-login,
+ * /commerce/join, /commerce/connect, /commerce/connect/privacy) ship as
+ * exported screens only; their app/(public) route files belong to the
+ * native-shell-fixes lane, so their rows stay `not_started` with that note.
+ * Also the business bottom tabs that come with the business routes
  * (design §2a), and the role-switch landing helper from `@vitana/core`.
  */
 import '../helpers/no-network';
@@ -25,32 +29,53 @@ const ledger = JSON.parse(readFileSync(join(__dirname, '../../parity/ledger.json
 
 const ROUTE_FILES: Record<string, string> = {
   '/commerce': '(app)/commerce/index.tsx',
-  '/commerce-login': '(public)/commerce-login.tsx',
-  '/commerce/connect': '(public)/commerce/connect/index.tsx',
-  '/commerce/connect/privacy': '(public)/commerce/connect/privacy.tsx',
   '/commerce/connect/authorize': '(app)/commerce/connect/authorize.tsx',
   '/commerce/connections/:id': '(app)/commerce/connections/[id].tsx',
   '/commerce/health-orders': '(app)/commerce/health-orders/index.tsx',
   '/commerce/health-orders/inbox': '(app)/commerce/health-orders/inbox.tsx',
   '/commerce/invites/:token/accept': '(app)/commerce/invites/[token]/accept.tsx',
-  '/commerce/join': '(public)/commerce/join.tsx',
   '/commerce/team': '(app)/commerce/team.tsx',
+};
+
+/**
+ * Public pages whose route files move to native-shell-fixes. Their screens
+ * (CommercePortalLoginScreen, CommerceConnectDocsScreen,
+ * CommerceConnectPrivacyScreen, CommerceJoinScreen) are exported and rendered
+ * directly in public-pages.test.tsx.
+ */
+const UNMOUNTED: Record<string, string[]> = {
+  '/commerce-login': ['(public)/commerce-login.tsx', '(app)/commerce-login.tsx'],
+  '/commerce/connect': ['(public)/commerce/connect/index.tsx', '(app)/commerce/connect/index.tsx'],
+  '/commerce/connect/privacy': ['(public)/commerce/connect/privacy.tsx', '(app)/commerce/connect/privacy.tsx'],
+  '/commerce/join': ['(public)/commerce/join.tsx', '(app)/commerce/join.tsx'],
 };
 
 describe('the 11 commerce rows', () => {
   const rows = ledger.rows.filter((r) => r.lane === 'role-modes' && (r.web_path === '/commerce' || r.web_path === '/commerce-login' || r.web_path.startsWith('/commerce/')));
 
-  it('are exactly the lane\'s rows, all native, scope unchanged (the exclusion row included)', () => {
-    expect(rows.map((r) => r.web_path).sort()).toEqual(Object.keys(ROUTE_FILES).sort());
-    expect(rows.every((r) => r.status === 'native' && r.scope === 'in')).toBe(true);
+  it('are exactly the lane\'s rows, scope unchanged (the exclusion row included): mounted ones native, public ones not_started → native-shell-fixes', () => {
+    expect(rows.map((r) => r.web_path).sort()).toEqual([...Object.keys(ROUTE_FILES), ...Object.keys(UNMOUNTED)].sort());
+    expect(rows.every((r) => r.scope === 'in')).toBe(true);
+    for (const r of rows) {
+      if (r.web_path in ROUTE_FILES) expect(r.status).toBe('native');
+      else {
+        expect(r.status).toBe('not_started');
+        expect((r as { exception?: string }).exception).toMatch(/native-shell-fixes/);
+      }
+    }
     expect(rows.find((r) => r.web_path === '/commerce/connect/authorize')?.source).toBe('exclusion');
+  });
+
+  it.each(Object.entries(UNMOUNTED))('%s: no route file in this lane (native-shell-fixes mounts it), not resolved native', (path, files) => {
+    for (const f of files) expect(existsSync(join(APP, f))).toBe(false);
+    expect(resolveWebPath(path).kind).not.toBe('native');
   });
 
   it.each(Object.entries(ROUTE_FILES))('%s has its own route file %s', (_path, file) => {
     expect(existsSync(join(APP, file))).toBe(true);
   });
 
-  it.each(['/commerce', '/commerce-login', '/commerce/connect', '/commerce/connect/privacy', '/commerce/connect/authorize', '/commerce/health-orders', '/commerce/health-orders/inbox', '/commerce/join', '/commerce/team'])('%s resolves native (query kept)', (path) => {
+  it.each(['/commerce', '/commerce/connect/authorize', '/commerce/health-orders', '/commerce/health-orders/inbox', '/commerce/team'])('%s resolves native (query kept)', (path) => {
     const r = resolveWebPath(`${path}?x=1`);
     expect(r.kind).toBe('native');
     expect(r.href).toBe(`${path}?x=1`);
@@ -72,10 +97,6 @@ describe('Expo Router lands on the commerce files from a deep link (cold start)'
     '(app)/commerce/connections/[id]': () => <Text>connection-redirect</Text>,
     '(app)/commerce/invites/[token]/accept': () => <Text>accept-invite</Text>,
     '(app)/commerce/connect/authorize': () => <Text>authorize</Text>,
-    '(public)/commerce/join': () => <Text>join</Text>,
-    '(public)/commerce/connect/index': () => <Text>connect-docs</Text>,
-    '(public)/commerce/connect/privacy': () => <Text>connect-privacy</Text>,
-    '(public)/commerce-login': () => <Text>commerce-login</Text>,
   };
   it.each([
     ['/commerce', 'portal'],
@@ -86,10 +107,6 @@ describe('Expo Router lands on the commerce files from a deep link (cold start)'
     ['/commerce/connections/c-1', 'connection-redirect'],
     ['/commerce/invites/tok-123/accept', 'accept-invite'],
     ['/commerce/connect/authorize?authorization_id=az-1', 'authorize'],
-    ['/commerce/join?redirectTo=%2Fcommerce', 'join'],
-    ['/commerce/connect', 'connect-docs'],
-    ['/commerce/connect/privacy?lang=en', 'connect-privacy'],
-    ['/commerce-login', 'commerce-login'],
   ])('%s → %s', (url, label) => {
     renderRouter(routes, { initialUrl: url });
     expect(screen.getByText(label)).toBeTruthy();

@@ -116,3 +116,13 @@ exit=0
 ## red on base (origin/main dc8233663) — see red-on-base.txt
 $ npm test -- tests/business
 Test Suites: 9 failed, 9 total; Tests: 22 failed, 26 passed, 48 total (8 suites: Cannot find module; routes.test: route files / native resolutions / ledger rows)
+
+## fix pass 2026-11-03: the 4 app/(public) route files leave this PR (→ native-shell-fixes); merged origin/main aac65bfeb
+$ cd apps/mobile && npm run typecheck
+exit=0
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 48 native route(s)
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+$ npx jest tests/business tests/navigation.test.ts --runInBand
+9 suites PASS, 547 tests; routes.test.tsx (needed a fix, then) $ npx jest tests/business/routes.test.tsx --runInBand → PASS, 40 tests

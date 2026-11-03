@@ -44,14 +44,11 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/alkalma',
   '/comm/find-partner',
   // VTID-05524 (role-modes business lane) — the commerce / business-mode screens.
+  // The public /commerce-login, /commerce/join, /commerce/connect(/privacy) route files land in native-shell-fixes.
   '/commerce',
-  '/commerce-login',
-  '/commerce/connect',
   '/commerce/connect/authorize',
-  '/commerce/connect/privacy',
   '/commerce/health-orders',
   '/commerce/health-orders/inbox',
-  '/commerce/join',
   '/commerce/team',
   '/comm/groups',
   '/comm/members',
