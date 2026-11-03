@@ -1,0 +1,24 @@
+# VTID-05512 fix round 1 — red on 9c29439c3da261fd9d46928674e1f622aeefdf52 (review product-cart-checkout-9c29439.md)
+# new test file tests/discover-commerce/deposit-return.test.tsx run against the unchanged lane code
+$ npx jest tests/discover-commerce/deposit-return.test.tsx
+FAIL tests/discover-commerce/deposit-return.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/commerce/data/depositReturn' from 'tests/discover-commerce/deposit-return.test.tsx'
+
+      18 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+      19 | import { UniversalCartScreen } from '../../src/screens/commerce/UniversalCartScreen';
+    > 20 | import {
+         | ^
+      21 |   __resetDepositReturnForTests,
+      22 |   DEPOSIT_RETURN_POLLS,
+      23 |   depositReturnTiming,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/discover-commerce/deposit-return.test.tsx:20:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        19.901 s
+Ran all test suites matching /tests\/discover-commerce\/deposit-return.test.tsx/i.

@@ -6,7 +6,9 @@
  * opens (a failed INSUFFICIENT_BALANCE checkout passes the missing amount and
  * the currency). A non-positive amount → the invalid-amount toast; a failed
  * create → the failed toast. On success the Stripe hosted checkout opens
- * (data/wallet.ts `useCreateDeposit`).
+ * (data/wallet.ts `useCreateDeposit`); when the browser returns the dialog
+ * closes (the web has left the page for Stripe) and the cart's return leg
+ * shows the outcome (data/depositReturn.ts).
  *
  * iOS IAP gate flag (requirements R5, highest priority): the wallet top-up.
  * Today's behaviour — shown on every platform like the web; the shell's
@@ -66,6 +68,7 @@ export function AddMoneyDialog({
     }
     try {
       await createDeposit({ amount_minor: toMinorUnits(major), currency });
+      onOpenChange(false);
     } catch {
       notifyError('marketplaceCheckout.addMoney.failed');
     }

@@ -15,17 +15,21 @@
  * non-2xx → `WalletGatewayApiError`. On a created deposit the web navigates
  * the window to Stripe (`window.location.assign`); natively the hosted
  * checkout opens in the system browser (expo-web-browser), like the voucher.
+ * The created `deposit_id` is kept and, once the browser resolves, the
+ * balance / cart / budget / deposit queries are invalidated and the return
+ * leg runs (./depositReturn.ts: bounded poll, AppState 'active', focus).
  *
  * iOS IAP gate flag (requirements R5, highest priority): the deposit is the
  * `AddMoneyDialog` wallet top-up. Today's behaviour is kept — the web shows
  * it on every platform; the shell's `iapRestricted` (drawer.ts:37-38) hides
  * only the wallet drawer row; gate extension deferred (program decision 5).
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { openBrowserAsync } from 'expo-web-browser';
 import { getGateway } from '../../../auth/gateway';
 import { getAccessToken } from '../../../auth/client';
 import { ACTIVE_ROLE_HEADER } from '../../../ports/commerce';
+import { markDepositPending, refreshAfterDeposit, requestDepositReturn } from './depositReturn';
 
 export type WalletCurrency = 'EUR' | 'USD';
 
@@ -125,16 +129,21 @@ export function useWalletBalance(opts?: { enabled?: boolean }) {
 }
 
 export function useCreateDeposit() {
+  const qc = useQueryClient();
   const m = useMutation({
     mutationFn: (input: CreateDepositInput) => createDeposit(input),
     onSuccess: async (res) => {
-      await openBrowserAsync(res.checkout_url);
+      markDepositPending(res.deposit_id);
+      try {
+        await openBrowserAsync(res.checkout_url);
+      } finally {
+        refreshAfterDeposit(qc, res.deposit_id);
+        requestDepositReturn();
+      }
     },
   });
   return {
-    createDeposit: async (input: CreateDepositInput) => {
-      await m.mutateAsync(input);
-    },
+    createDeposit: async (input: CreateDepositInput): Promise<CreateDepositResponse> => m.mutateAsync(input),
     isCreating: m.isPending,
   };
 }
