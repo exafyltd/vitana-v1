@@ -98,3 +98,19 @@ FAIL (stacking, not fixable in this lane) — Collab handoff + Lane scope: "one 
 $ … same with --base origin/kiro/native-wave2-discover-commerce-r2/discover
 FAIL (merge artifact) — Collab handoff: 6b9137ac (main's squash commit of VTID-05431) has no trailers; Lane scope / PR-GATE scope:
        VTID-05431's settings files — both come from merging origin/main, not from this lane
+
+## fix round 1 (review product-cart-checkout-9c29439: Stripe deposit return leg) — code commit 7754a6fb8
+$ npx jest tests/discover-commerce/deposit-return.test.tsx   (on 9c29439, before the fix)
+FAIL — red recorded in docs/validation/VTID-05512/red-fix1.txt (data/depositReturn module missing; no return leg)
+$ npx jest tests/discover-commerce   (run 1, default workers)
+PASS — 14 suites, 262/262
+$ npx jest tests/discover-commerce   (run 2, default workers)
+PASS — 14 suites, 262/262
+$ npm run typecheck
+PASS
+$ npx eslint apps/mobile/src/screens/commerce apps/mobile/tests/discover-commerce
+PASS — 0 problems
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-discover-commerce-r2/product-cart-checkout --title "VTID-05512 (…): native product, cart and checkout port"
+PASS — gh lane files, PR-GATE sparring / weakening / red-green, Kiro steering
+FAIL (stacking, unchanged from the previous run) — Collab handoff, Lane scope, PR-GATE scope: the discover lane's (#1573) commits
+       and files are in the diff to main until #1573 merges
