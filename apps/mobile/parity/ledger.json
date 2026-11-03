@@ -224,7 +224,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -236,7 +236,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -248,7 +248,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -260,7 +260,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -272,7 +272,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -284,7 +284,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
