@@ -12,11 +12,13 @@ import '../helpers/no-network';
 import { router } from './mocks';
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AccessibilityInfo } from 'react-native';
 import { createCoachGateway, createCoachSupabase, renderCoach } from './helpers';
 import { CompanionScreen } from '../../src/screens/ai-coach/CompanionScreen';
-import { __toastsForTests } from '../../src/ports/ui';
+import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { chat } from '../../src/ports/ai-coach';
-import { completionToast } from '../../src/screens/ai-coach/data/celebrate';
+import { BIG_LIFT_STORAGE_KEY, completionToast } from '../../src/screens/ai-coach/data/celebrate';
+import { __resetAutopilotRefsForTests } from '../../src/screens/ai-coach/data/gateway';
 import { AI_CONSENT_KEY } from '../../src/screens/ai-coach/data/hooks';
 
 const consented = (extra: Record<string, unknown> = {}) => createCoachSupabase({ tables: { user_preferences: [{ user_id: 'u-1', ai_data_consent_given: true, autopilot_enabled: true, ...extra }] } });
@@ -168,5 +170,65 @@ describe('/ai/companion — onboarding completion on open', () => {
     const single = completionToast({ title: 'x', reward: undefined, vector: { mental: 2 } }, null, t);
     expect(single?.params).toMatchObject({ lead: '🧠 vitanaIndex.mental +2', vtna: '', total: '' });
     expect(completionToast({ title: 'x', reward: 0, vector: undefined }, null, t)).toBeNull();
+  });
+});
+
+describe('/ai/companion — big-lift celebration (web celebrate.ts:287-296, confetti.ts:114-127)', () => {
+  const liftGateway = (vector: Record<string, number>) =>
+    createCoachGateway({
+      'GET /autopilot/recommendations': { recommendations: [{ id: 'r-9', source_ref: 'onboarding_maxina', status: 'pending', title: 'Meet Vitana', contribution_vector: vector }] },
+      'POST /autopilot/recommendations/r-9/complete': { ok: true, reward: 3 },
+    });
+  const kinds = () => __toastsForTests().map((t) => t.titleKey);
+  let reduceMotion: jest.SpyInstance;
+
+  beforeEach(() => {
+    reduceMotion = jest.spyOn(AccessibilityInfo, 'isReduceMotionEnabled').mockResolvedValue(false);
+  });
+  afterEach(() => reduceMotion.mockRestore());
+
+  it('magnitude 12: the lift toast, then the confetti overlay and the extra success toast', async () => {
+    renderCoach(<CompanionScreen />, { gateway: liftGateway({ exercise: 7, sleep: 5 }), supabase: consented(), language: 'en-US' });
+    await waitFor(() => expect(kinds()).toEqual(['aiCoachNative.lift.title', 'toasts.common.success']));
+    expect(__toastsForTests()[1]).toMatchObject({ kind: 'success', titleKey: 'toasts.common.success' });
+    expect(await screen.findByTestId('ai-coach-confetti', { includeHiddenElements: true })).toBeTruthy();
+    expect(Number(await AsyncStorage.getItem(BIG_LIFT_STORAGE_KEY))).toBeGreaterThan(0);
+  });
+
+  it('magnitude 5: only the lift toast, no confetti', async () => {
+    renderCoach(<CompanionScreen />, { gateway: liftGateway({ exercise: 3, sleep: 2 }), supabase: consented(), language: 'en-US' });
+    await waitFor(() => expect(kinds()).toContain('aiCoachNative.lift.title'));
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 50));
+    });
+    expect(kinds()).toEqual(['aiCoachNative.lift.title']);
+    expect(screen.queryByTestId('ai-coach-confetti', { includeHiddenElements: true })).toBeNull();
+  });
+
+  it('reduced motion on: no confetti and no extra toast', async () => {
+    reduceMotion.mockResolvedValue(true);
+    renderCoach(<CompanionScreen />, { gateway: liftGateway({ exercise: 7, sleep: 5 }), supabase: consented(), language: 'en-US' });
+    await waitFor(() => expect(kinds()).toContain('aiCoachNative.lift.title'));
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 50));
+    });
+    expect(kinds()).toEqual(['aiCoachNative.lift.title']);
+    expect(screen.queryByTestId('ai-coach-confetti', { includeHiddenElements: true })).toBeNull();
+    expect(await AsyncStorage.getItem(BIG_LIFT_STORAGE_KEY)).toBeNull();
+  });
+
+  it('a second big lift inside 5 minutes is throttled (stored timestamp)', async () => {
+    const first = renderCoach(<CompanionScreen />, { gateway: liftGateway({ exercise: 7, sleep: 5 }), supabase: consented(), language: 'en-US' });
+    await waitFor(() => expect(kinds()).toEqual(['aiCoachNative.lift.title', 'toasts.common.success']));
+    first.unmount();
+    __resetAutopilotRefsForTests();
+    __clearToastsForTests();
+    renderCoach(<CompanionScreen />, { gateway: liftGateway({ mental: 15 }), supabase: consented(), language: 'en-US' });
+    await waitFor(() => expect(kinds()).toContain('aiCoachNative.lift.title'));
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 50));
+    });
+    expect(kinds()).toEqual(['aiCoachNative.lift.title']);
+    expect(screen.queryByTestId('ai-coach-confetti', { includeHiddenElements: true })).toBeNull();
   });
 });

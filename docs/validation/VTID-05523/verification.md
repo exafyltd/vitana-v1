@@ -63,6 +63,18 @@ Spotlight Tier B is desktop + flag only (`useSpotlightEnabled`), so the phone br
   the core re-export once it is on main.
 - Not ported (no native client yet): the card / navigation analytics (`withCardId`
   `analytics.trackImpression/trackClick`, `track('recommendation_clicked' / 'navigation_clicked')`,
-  the pages' `console.log` events) and the celebrate layer's big-lift confetti + sound (the toast is ported).
+  the pages' `console.log` events).
+- `/ai/companion` big lift (web `src/lib/celebrate.ts:287-296`, `src/lib/confetti.ts:114-127`): when
+  the lift magnitude is >= 10 (`BIG_LIFT_THRESHOLD`, celebrate.ts:97), reduce motion is off
+  (`AccessibilityInfo.isReduceMotionEnabled`) and 5 minutes have passed since the last burst
+  (celebrate.ts:99; timestamp in device storage under `vitana:celebrate:lastConfettiAt`), the lift
+  toast is followed by a react-native `Animated` confetti burst (`cards/Confetti.tsx`, the web
+  `reward_earned` physics: 150 particles, spread 90°, velocity 45, decay 0.94, gravity 0.3, 200 ticks)
+  and the extra `toasts.common.success` toast. The web's three raw purples are the purple
+  `--domain-discover-accent` token at three opacities. Tests: `tests/ai-coach/companion.test.tsx`
+  "big-lift celebration" (red on 0a726a3: `red-fix1.txt`).
+- Not ported: the big-lift sound `playSound("/audio/lift.mp3", 0.08)` (src/lib/celebrate.ts:295). The
+  asset is not in the repo (`public/audio/` does not exist; `git ls-files | grep lift.mp3` is empty),
+  so there is no file to bundle.
 - The web `LabTestCard` category pill uses raw `bg-red-100 text-red-800`; native uses the
   destructive token. The RewardDot's raw purple is the purple `--domain-discover-accent` token.
