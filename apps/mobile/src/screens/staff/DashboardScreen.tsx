@@ -6,7 +6,7 @@
  * priority badge each (destructive "Urgent", outline "Normal" ×2), and
  * "Quick actions" with three outline buttons. The web screen fetches nothing
  * and its figures and rows are fixed copy from the catalog; so is this one.
- * The quick-action buttons have no `onClick` on the web (Dashboard.tsx:111-125),
+ * The quick-action buttons have no `onClick` on the web (Dashboard.tsx:112-123),
  * so they have no `onPress` here either. Behind the
  * `ProtectedRoute requiredRole="staff"` twin.
  */

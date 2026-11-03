@@ -81,7 +81,7 @@ describe('/staff/dashboard — loaded', () => {
     expect(within(buttons[2]).getByTestId('staff-icon-Activity', { includeHiddenElements: true })).toBeTruthy();
   });
 
-  it('quick actions have no destination on the web (Dashboard.tsx:111-125, no onClick): a tap navigates nowhere', async () => {
+  it('quick actions have no destination on the web (Dashboard.tsx:112-123, no onClick): a tap navigates nowhere', async () => {
     renderStaff(<StaffDashboardScreen />);
     const actions = await screen.findByTestId('staff-dashboard-quick-actions');
     for (const b of within(actions).getAllByRole('button')) fireEvent.press(b);
@@ -175,7 +175,7 @@ describe('/staff/queue — loaded', () => {
     });
   });
 
-  it('queue buttons have no handler on the web (Queue.tsx:107-108, 138-139, 169): a tap navigates nowhere', async () => {
+  it('queue buttons have no handler on the web (Queue.tsx:108-109, 138-139, 168): a tap navigates nowhere', async () => {
     renderStaff(<StaffQueueScreen />);
     const queue = await screen.findByTestId('staff-current-queue');
     const buttons = within(queue).getAllByRole('button');

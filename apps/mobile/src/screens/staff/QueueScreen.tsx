@@ -9,7 +9,7 @@
  * actions sharing the row width (`flex-1`). The web shows demo copy from the
  * catalog — there is no backing table for a staff patient queue (Queue.tsx:11-16)
  * — so nothing is fetched. The buttons have no `onClick` on the web
- * (Queue.tsx:107-108, 138-139, 169), so they have no `onPress` here either.
+ * (Queue.tsx:108-109, 138-139, 168), so they have no `onPress` here either.
  * Behind the `ProtectedRoute requiredRole="staff"` twin.
  */
 import type { ReactElement } from 'react';
@@ -35,7 +35,7 @@ type QueueEntry = {
   actions: Array<[string, boolean]>;
 };
 
-/** Queue.tsx:83-178, in order. */
+/** Queue.tsx:83-176, in order. */
 const ENTRIES: QueueEntry[] = [
   {
     tone: 'error',
