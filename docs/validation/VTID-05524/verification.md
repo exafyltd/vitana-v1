@@ -89,24 +89,54 @@ into core.
   prefill country / website exactly as on the web; the short name is still derived).
 - **Can the user always tell what to do next:** yes — same single dominant action per screen.
 - **Friction vs. before:** the same as the mobile web inside the app, with one exception owned
-  by the shell (below).
+  by the shell (see "Shell follow-up" below).
 
-## Open item for the owner (outside this lane's paths)
+## Shell follow-up (fix-forward plan native-shell-fixes)
 
-- **Signed-out deep link to a protected `/commerce/*` page.** The web's AuthGuard sends a
-  signed-out visitor on any `/commerce` path to `/commerce/join?redirectTo=<path>` (VTID-03894);
-  the native shell's `src/shell/AuthGate.tsx` sends every protected path to
-  `/maxina?redirectTo=<path>` (the community sign-in). So a signed-out supplier who opens an org
-  invite or an AI-assistant consent link on the phone meets the community sign-in, not the
-  supplier front door. The fix is a one-line branch in `AuthGate.tsx` (shell, not in this lane's
-  paths). Not changed here; reported for a decision.
-- **Shell membership query path.** `src/identity/useMyPartnerOrgs.ts` and
-  `GuidedModeProvider.tsx` call `gatewayGet('/api/v1/…')`, but the native gateway fetch already
-  prepends `/api/v1` (`gatewayApiUrl`), so on a device the request goes to
-  `/api/v1/api/v1/partner-orgs/mine`. The shell tests' gateway fake accepts both forms, which
-  hides it. Effect: the shell's business modes (switcher entries, business bottom bar, business
-  drawer) would not appear on a device. This lane's screens use their own correct call
-  (`/partner-orgs/mine`); the shell file is outside the lane's paths. Reported for a decision.
+Driver decision (2026-11-03): both are real shell bugs, outside this lane's paths, and are NOT
+fixed in this PR. They go into the shell fix-forward plan `native-shell-fixes`. Both add
+friction compared with the web today.
+
+1. **Signed-out `/commerce/*` deep link lands on the community sign-in.**
+   - Native: `apps/mobile/src/shell/AuthGate.tsx:46` — every protected path a signed-out
+     visitor opens (all but `GUEST_PATHS`) redirects to `/maxina?redirectTo=<path>`.
+   - Web: `src/components/AuthGuard.tsx:65` — `if (window.location.pathname.startsWith('/commerce'))
+     return '/commerce/join';`, used at `AuthGuard.tsx:204`
+     (`navigate(`${loginRoute}?redirectTo=…`)`) (VTID-03894).
+   - User impact: a signed-out supplier who opens an org invite
+     (`/commerce/invites/:token/accept`), an AI-assistant consent
+     (`/commerce/connect/authorize?authorization_id=`), `/commerce/team` or
+     `/commerce/health-orders` on the phone sees the Maxina community sign-in instead of the
+     supplier front door (`/commerce/join`: Google / Apple / e-mail, supplier wording). They can
+     still sign in there and come back to the page, but it is the wrong product's sign-in — the
+     exact problem VTID-03894 fixed on the web.
+2. **Doubled `/api/v1` in the shell's gateway reads.**
+   - Native: `apps/mobile/src/identity/useMyPartnerOrgs.ts:23` —
+     `gatewayGet('/api/v1/partner-orgs/mine')`, and
+     `apps/mobile/src/identity/GuidedModeProvider.tsx:71` — `gatewayGet('/api/v1/journey/state')`.
+     The gateway fetch already appends `/api/v1` to the origin
+     (`packages/core/src/config.ts:24` `gatewayApiUrl`, used at `packages/core/src/gateway.ts:22`),
+     so on a device the requests go to `/api/v1/api/v1/partner-orgs/mine` and
+     `/api/v1/api/v1/journey/state`.
+   - Web: `src/hooks/useOrgMembers.ts:87` — `adminFetch(`${PARTNER_ORGS_API}/mine`)` with
+     `PARTNER_ORGS_API = '/api/v1/partner-orgs'` (`src/lib/commerce-host.ts:28`) on a base that has
+     `/api/v1` stripped (`src/lib/admin-api.ts:29`) → one `/api/v1`; journey state:
+     `src/context/GuidedModeProvider.tsx:160` `communityFetch('/api/v1/journey/state')`.
+   - User impact: on a device the membership query 404s, so a business member gets no business
+     entries in the role switcher, no business bottom bar and no business drawer section — they
+     cannot enter business mode from the shell (the commerce screens themselves still work, and
+     `/commerce/team` / health orders are reachable through the portal). The guided-mode journey
+     state never loads (guided mode falls back to its default). The shell tests' fake
+     (`apps/mobile/tests/helpers/providers.tsx:24`) is installed as the raw gateway fetch and
+     matches the literal path, which hides the bug.
+
+**This lane's tests do not depend on either bug.** The business screens use their own
+membership query (`src/screens/business/data/hooks.ts` `useCommerceOrgs` →
+`/partner-orgs/mine`, no double prefix) and never render the shell; the lane's gateway fake sits
+under N1's real `createGatewayFetch` and strips `/api/v1` exactly once
+(`tests/business/helpers.tsx`), so a doubled prefix would 404 there. No lane test fakes
+`useMyPartnerOrgs` or renders `AuthGate`; `tests/business/routes.test.tsx` checks the business
+bottom bar through the pure `resolveBottomNav` / `shouldHideBottomNav`, not the shell query.
 
 ## Red → green
 
