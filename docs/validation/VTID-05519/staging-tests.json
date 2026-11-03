@@ -1,10 +1,9 @@
 {
   "vtid": "VTID-05519",
+  "service": "community-app",
   "tests": [
-    {
-      "kind": "existing",
-      "ref": "npx vitest run src/lib/eng-platform-stage-oidc.test.ts",
-      "reason": "OIDC path inert until the owner sets the role variables; the merge redeploys staging frontend on the unchanged key path"
-    }
+    { "kind": "existing", "ref": "npx vitest run src/lib/eng-platform-stage-oidc.test.ts", "cwd": ".",
+      "reason": "workflow credential steps only: OIDC when the role variable is set, the unchanged static keys while it is unset; proven on the workflow text" },
+    { "kind": "http", "name": "app shell is served (the staging deploy of this merge ran on the unchanged key path)", "target": "frontend", "path": "/", "expect_content_type": "text/html", "expect_body_contains": "<div id=\"root\"" }
   ]
 }
