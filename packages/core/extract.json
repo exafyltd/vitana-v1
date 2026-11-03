@@ -122,6 +122,406 @@
           ]
         }
       ]
+    },
+    "commerce-host": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-host.ts",
+          "take": [
+            "MY_PORTAL_API",
+            "PARTNER_ORGS_API",
+            "PARTNER_ONBOARDING_API",
+            "normalizeMcpUrl",
+            "slugifyOrgKey"
+          ]
+        }
+      ]
+    },
+    "commerce-ai-setup": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-ai-setup.ts",
+          "take": [
+            "AI_SETUP_API",
+            "BusinessCategory",
+            "DraftProduct",
+            "SetupDraft",
+            "ReviewState",
+            {
+              "name": "Fetcher",
+              "export": false
+            },
+            "newSetupKey",
+            "centsToText",
+            "textToCents",
+            "reviewFromDraft",
+            "reviewProblem",
+            "applyPayload",
+            "fetchAiSetupEnabled",
+            "requestDraft",
+            "ApplyOutcome",
+            "applyDraft",
+            "draftErrorKey",
+            "VOICE_SETUP_EVENTS",
+            "draftFromVoiceEvent",
+            "errorFromVoiceEvent"
+          ],
+          "stubs": {
+            "RequestInit": {
+              "expression": "RequestInit",
+              "reason": "VTID-05524: the injected fetcher type names the fetch RequestInit type (a DOM lib global on the web); React Native declares the same global type, so it is kept as is — type only, erased from the bundle."
+            },
+            "crypto": {
+              "expression": "{ randomUUID: (): string => { throw new Error(\"@vitana/core: pass rand to newSetupKey on native\"); } }",
+              "reason": "VTID-05524: newSetupKey reads crypto.randomUUID only through its default parameter; Hermes has no Web Crypto, so the native AI-setup sheet always passes expo-crypto randomUUID."
+            }
+          }
+        }
+      ]
+    },
+    "commerce-register": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-register.ts",
+          "take": [
+            "MAX_KEY_ATTEMPTS",
+            "normalizeWebsite",
+            "isValidWebsite",
+            {
+              "name": "randomSuffix",
+              "export": false
+            },
+            "orgKeyCandidate",
+            "RegisterInput",
+            {
+              "name": "Fetcher",
+              "export": false
+            },
+            "registerBusiness"
+          ],
+          "stubs": {
+            "RequestInit": {
+              "expression": "RequestInit",
+              "reason": "VTID-05524: the injected fetcher type names the fetch RequestInit type (a DOM lib global on the web); React Native declares the same global type, so it is kept as is — type only, erased from the bundle."
+            }
+          }
+        }
+      ]
+    },
+    "commerce-catalogue": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-catalogue.ts",
+          "take": [
+            {
+              "name": "Fetcher",
+              "export": false
+            },
+            "addOrgProduct"
+          ],
+          "stubs": {
+            "RequestInit": {
+              "expression": "RequestInit",
+              "reason": "VTID-05524: the injected fetcher type names the fetch RequestInit type (a DOM lib global on the web); React Native declares the same global type, so it is kept as is — type only, erased from the bundle."
+            }
+          }
+        }
+      ]
+    },
+    "commerce-suggestions": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-suggestions.ts",
+          "take": [
+            "CountrySource",
+            "WebsiteSource",
+            "CompanySuggestions",
+            "NO_SUGGESTIONS",
+            {
+              "name": "Fetcher",
+              "export": false
+            },
+            {
+              "name": "COUNTRY_SOURCES",
+              "export": false
+            },
+            {
+              "name": "parse",
+              "as": "parseCompanySuggestions"
+            },
+            "fetchCompanySuggestions",
+            "suggestionSourceKey"
+          ],
+          "stubs": {
+            "RequestInit": {
+              "expression": "RequestInit",
+              "reason": "VTID-05524: the injected fetcher type names the fetch RequestInit type (a DOM lib global on the web); React Native declares the same global type, so it is kept as is — type only, erased from the bundle."
+            }
+          }
+        }
+      ]
+    },
+    "commerce-mcp": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-mcp.ts",
+          "take": [
+            "SUPPORTED_ASSISTANTS",
+            "COMMERCE_MCP_TOOL_NAMES",
+            "CONNECT_AUTHORIZE_PATH",
+            "ConsentDetails",
+            "ConsentLookup",
+            "parseConsentDetails",
+            "redirectHostOf",
+            "parseConsentDecision"
+          ]
+        },
+        {
+          "file": "src/lib/ai-connections.ts",
+          "take": [
+            "COMMUNITY_CATEGORIES",
+            "CommunityCategory",
+            "GrantCategory",
+            "ConnectProduct",
+            "AuthorizationInfo",
+            "parseAuthorizationInfo"
+          ]
+        }
+      ]
+    },
+    "commerce-data": {
+      "sources": [
+        {
+          "file": "src/lib/commerce-categories.ts",
+          "take": [
+            "CommerceVertical",
+            "CommerceCategory",
+            "COMMERCE_CATEGORIES",
+            "findCommerceCategory",
+            "commerceVerticalForCategory"
+          ]
+        },
+        {
+          "file": "src/lib/commerce-platforms.ts",
+          "take": [
+            {
+              "name": "PLATFORM_NAMES",
+              "export": false
+            },
+            "platformName"
+          ]
+        },
+        {
+          "file": "src/lib/commerce-countries.ts",
+          "take": [
+            "COUNTRY_CODES",
+            "guessCountry"
+          ],
+          "stubs": {
+            "navigator": {
+              "expression": "{ languages: [] as readonly string[] }",
+              "reason": "VTID-05524: guessCountry reads navigator.languages only through its default parameter; native always passes the device languages (expo-localization), so the browser global is never read."
+            }
+          }
+        },
+        {
+          "file": "src/lib/commerce-sales.ts",
+          "take": [
+            "DELIVERY_REGIONS",
+            "DeliveryKey",
+            "DeliveryColumn",
+            "EMPTY_DELIVERY",
+            "deliveryDaysPayload",
+            "deliveryFromSimple",
+            "verticalForOrgType",
+            "AffiliateNetwork",
+            "SalesDraft",
+            "salesPayload",
+            "salesDraftValid"
+          ]
+        },
+        {
+          "file": "src/lib/commerce-terms.ts",
+          "take": [
+            "TermsText",
+            "TERMS_LOCALES",
+            "TERMS_LANGUAGE_NAMES",
+            "BINDING_TERMS_LOCALE",
+            "PartnerTerms",
+            "TermsStatus",
+            {
+              "name": "asText",
+              "export": false
+            },
+            "parseTermsStatus",
+            "acceptBody",
+            "sameTermsVersion",
+            "isStaleTermsError",
+            "TermsBlock",
+            "termsBlocks"
+          ]
+        },
+        {
+          "file": "src/lib/catalogue-import.ts",
+          "take": [
+            "CSV_MAX_CHARS",
+            "CSV_MAX_ROWS",
+            "CSV_TEMPLATE",
+            "FILE_ERROR_CODES",
+            "ROW_ERROR_CODES",
+            "LOCAL_ERROR_CODES",
+            "ErrorParams",
+            "ImportRowError",
+            "ImportOutcome",
+            {
+              "name": "KEY",
+              "export": false
+            },
+            "errorMessageKey",
+            "checkCsvFile",
+            "toOutcome"
+          ]
+        },
+        {
+          "file": "src/lib/partner-portal.ts",
+          "take": [
+            "CONNECTION_STEPS",
+            "ConnectionStep",
+            "connectionStepIndex",
+            "isConnectionLive"
+          ]
+        },
+        {
+          "file": "src/lib/use-scoped-t.ts",
+          "take": [
+            "LegalLang"
+          ]
+        },
+        {
+          "file": "src/lib/commerce-connect-lang.ts",
+          "take": [
+            "privacyLang"
+          ]
+        },
+        {
+          "file": "src/hooks/usePartnerHealthOrders.ts",
+          "take": [
+            "PartnerHealthOrder",
+            "PartnerHealthInboxRow",
+            "MemberLinkStatus",
+            "memberLinkBadgeKey",
+            "ConfirmMatchResponse",
+            "confirmMatchErrorKey"
+          ]
+        },
+        {
+          "file": "src/hooks/useOrgMembers.ts",
+          "take": [
+            "OrgMemberRow",
+            "OrgInviteRow"
+          ]
+        },
+        {
+          "file": "src/hooks/useCommerceVerticals.ts",
+          "take": [
+            "VerticalFieldType",
+            "VerticalField",
+            "Vertical",
+            "VocabularyOptions"
+          ]
+        },
+        {
+          "file": "src/components/commerce/MyOrgCard.tsx",
+          "take": [
+            "MyOrgRow"
+          ]
+        },
+        {
+          "file": "src/components/commerce/ConnectionCard.tsx",
+          "take": [
+            "ConnectionRow"
+          ]
+        },
+        {
+          "file": "src/components/commerce/VerticalFieldInput.tsx",
+          "take": [
+            "AttributeValue"
+          ]
+        },
+        {
+          "file": "src/components/commerce/ListingStrength.tsx",
+          "take": [
+            "computeStrength"
+          ]
+        },
+        {
+          "file": "src/components/commerce/ManualConnectDialog.tsx",
+          "take": [
+            "parseOpenApi"
+          ]
+        },
+        {
+          "file": "src/components/commerce/SetupChooser.tsx",
+          "take": [
+            "SetupOption"
+          ]
+        },
+        {
+          "file": "src/components/commerce/CommerceGuestLanding.tsx",
+          "take": [
+            "guestCtaKey"
+          ]
+        },
+        {
+          "file": "src/components/commerce/RegisterOrgDialog.tsx",
+          "take": [
+            "REGISTER_DRAFT_KEY"
+          ]
+        },
+        {
+          "file": "src/components/commerce/SetupHub.tsx",
+          "take": [
+            "StepState",
+            "ChecklistStepFact",
+            "ChecklistFacts",
+            "HubFacts",
+            "parseChecklist",
+            "reviewNote",
+            "OpenItem",
+            "openSteps",
+            {
+              "name": "OPEN_STEP_LABEL",
+              "export": false
+            },
+            "submitMode",
+            "HubStep",
+            "deriveSetupSteps",
+            {
+              "name": "verificationFromChecklist",
+              "export": false
+            },
+            {
+              "name": "verificationFromLifecycle",
+              "export": false
+            },
+            "readinessPercent",
+            {
+              "name": "STEP_COPY",
+              "as": "SETUP_STEP_COPY"
+            },
+            {
+              "name": "STATE_LABEL",
+              "as": "SETUP_STATE_LABEL"
+            },
+            "SubmitResult",
+            "submitResultFor",
+            {
+              "name": "SUBMIT_RESULT_COPY",
+              "as": "SETUP_SUBMIT_RESULT_COPY"
+            }
+          ]
+        }
+      ]
     }
   }
 }
