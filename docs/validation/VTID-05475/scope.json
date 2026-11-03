@@ -1,0 +1,22 @@
+{
+  "vtid": "VTID-05475",
+  "kind": "feature",
+  "paths": [
+    "supabase/migrations/20261103120000_vtid_05475_community_intro_explicit_choice.sql",
+    ".github/workflows/apply-vtid-05475-community-intro-explicit-choice-migration.yml",
+    "src/lib/community-intro.ts",
+    "src/lib/community-intro.explicit-choice.test.ts",
+    "src/lib/community-intro.vtid-05206.test.ts",
+    "src/components/settings/CommunityIntroToggle.tsx",
+    "src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx",
+    "src/components/onboarding/OnboardingNameForm.tsx",
+    "src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx",
+    "src/integrations/supabase/types.ts",
+    "src/i18n/*/onboarding.json",
+    "tests/e2e/staging/vtid-05475-community-intro-choice.staging.spec.ts",
+    "docs/validation/VTID-05475/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05475/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

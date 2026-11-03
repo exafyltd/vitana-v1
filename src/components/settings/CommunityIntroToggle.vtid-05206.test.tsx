@@ -65,22 +65,28 @@ describe("CommunityIntroToggle (VTID-05206)", () => {
     expect((await screen.findByTestId("community-intro-switch")).getAttribute("aria-checked")).toBe("false");
   });
 
-  it("switching off writes only community_intro_opt_in=false on the member's own row", async () => {
+  it("switching off records false + the choice marker on the member's own row (VTID-05475)", async () => {
     renderToggle();
     fireEvent.click(await screen.findByTestId("community-intro-switch"));
     await waitFor(() => expect(screen.getByTestId("community-intro-switch").getAttribute("aria-checked")).toBe("false"));
     const updates = calls.filter((c) => c.op === "update");
-    expect(updates).toEqual([{ table: "global_community_profiles", op: "update", args: [{ community_intro_opt_in: false }] }]);
+    expect(updates).toHaveLength(1);
+    const payload = updates[0].args[0] as Record<string, unknown>;
+    // VTID-05475: a withdrawal is an explicit false + marker, not an absence.
+    expect(payload.community_intro_opt_in).toBe(false);
+    expect(typeof payload.community_intro_choice_at).toBe("string");
     const eqs = calls.filter((c) => c.op === "eq").map((c) => c.args);
     expect(eqs.every(([col, val]) => col === "user_id" && val === "me")).toBe(true);
   });
 
-  it("switching on again writes true", async () => {
+  it("switching on again records true + the choice marker (VTID-05475)", async () => {
     readResult = { data: { community_intro_opt_in: false }, error: null };
     renderToggle();
     fireEvent.click(await screen.findByTestId("community-intro-switch"));
     await waitFor(() => expect(calls.some((c) => c.op === "update")).toBe(true));
-    expect(calls.find((c) => c.op === "update")?.args).toEqual([{ community_intro_opt_in: true }]);
+    const payload = calls.find((c) => c.op === "update")?.args[0] as Record<string, unknown>;
+    expect(payload.community_intro_opt_in).toBe(true);
+    expect(typeof payload.community_intro_choice_at).toBe("string");
   });
 
   it("a failed save tells the member and keeps the old state", async () => {

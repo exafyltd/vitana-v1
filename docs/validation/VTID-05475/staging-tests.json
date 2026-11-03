@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05475",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Settings → Privacy (phone) shows \"Introduce me to the community\" OFF for the test account; read-only, the switch is never flipped",
+      "spec": "tests/e2e/staging/vtid-05475-community-intro-choice.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "Explicit-choice write + backward-compatible fallback, registration two-choice UI, the Settings switch records on every change, the i18n keys",
+      "ref": "npx vitest run src/lib/community-intro.explicit-choice.test.ts src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx src/lib/community-intro.vtid-05206.test.ts src/pages/settings/__tests__/privacy-community-intro.vtid-05206.test.tsx src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx",
+      "cwd": ".",
+      "reason": "Staging writes to the production database (CLAUDE.md rules 31-32, 48), so choosing Yes/Not now and registering a member cannot run there. These suites prove what the read-only staging spec cannot: setCommunityIntroOptIn writes both community_intro_opt_in and community_intro_choice_at, and retries with opt-in only on a PGRST204/42703 unknown-column error (so the toggle keeps working before the migration is applied) and throws any other error; registration offers two unselected choices and never blocks when none is chosen; the Settings switch records the choice on every toggle (on AND off). The migration's backfill — recorded choices preserved, unmarked inclusion cleared, idempotent, self-check firing — is proven on PGlite: docs/validation/VTID-05475/outputs/pglite-community-intro-choice-check.txt (22 checks). Nobody is introduced until they choose Yes only AFTER the owner approves and applies the migration (owner stop, collaboration.md §7d)."
+    }
+  ]
+}

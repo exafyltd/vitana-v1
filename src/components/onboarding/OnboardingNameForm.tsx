@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
@@ -39,9 +38,12 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
   const [handleStatus, setHandleStatus] = useState<HandleStatus>('idle');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  // VTID-05206: "Introduce me to the community" — on by default (owner D1);
-  // the member's new global_community_profiles row already defaults to true.
-  const [introduceMe, setIntroduceMe] = useState(true);
+  // VTID-05475: "Introduce me to the community" is an explicit choice (owner
+  // decision 2026-10-30, supersedes D1). Two options, NEITHER pre-selected;
+  // null = the member has not chosen. Choosing records it; skipping records
+  // nothing (opt-in stays false by the migration default) and never blocks
+  // registration.
+  const [introChoice, setIntroChoice] = useState<'yes' | 'no' | null>(null);
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-suggest handle from display name (only if user hasn't typed a handle)
@@ -160,13 +162,15 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
           if (error) console.warn('[Onboarding] app_users update failed:', error.message);
         });
 
-      // VTID-05206: only an explicit "no" is written. Leaving the switch on keeps
-      // the row's default, so this step can never opt in a member who existed
-      // before the rollout (their row is false). Non-fatal like app_users above;
-      // the member can change it any time in Settings → Privacy.
-      if (!introduceMe) {
-        await setCommunityIntroOptIn(user.id, false).catch((err: unknown) => {
-          console.warn('[Onboarding] community intro opt-out failed:', err instanceof Error ? err.message : err);
+      // VTID-05475: record the explicit choice, if the member made one.
+      // "Yes" writes opt-in true + marker; "Not now" writes false + marker.
+      // No choice writes nothing — opt-in stays false by the migration default,
+      // so the member is simply not introduced. Non-fatal like app_users above;
+      // a failed write never blocks finishing registration and the member can
+      // change it any time in Settings → Privacy.
+      if (introChoice === 'yes' || introChoice === 'no') {
+        await setCommunityIntroOptIn(user.id, introChoice === 'yes').catch((err: unknown) => {
+          console.warn('[Onboarding] community intro choice failed:', err instanceof Error ? err.message : err);
         });
       }
 
@@ -267,25 +271,47 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
           )}
         </div>
 
-        {/* VTID-05206: Introduce me to the community */}
+        {/* VTID-05475: Introduce me to the community — an explicit choice,
+            neither option pre-selected. A labelled radio group: the member
+            chooses Yes or Not now, or skips (registration is never blocked). */}
         {/* design-allow-next-line: same palette as the rest of this always-white card (bg-white/95); theme tokens would turn light-on-white in dark mode */}
-        <div className="flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3" data-testid="onb-community-intro">
-          <div className="space-y-1">
-            {/* design-allow-next-line: label colour of the other fields on this always-white card */}
-            <Label htmlFor="onb-community-intro" className="text-sm font-medium text-gray-700">
-              {translate('onboarding.nameForm.communityIntroLabel', 'Introduce me to the community')}
-            </Label>
-            {/* design-allow-next-line: hint colour of the subtitle on this always-white card */}
-            <p className="text-xs text-gray-500">
-              {translate('onboarding.nameForm.communityIntroHint', 'During your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.')}
-            </p>
+        <div className="space-y-2 rounded-xl border border-gray-200 p-3" data-testid="onb-community-intro">
+          {/* design-allow-next-line: label colour of the other fields on this always-white card */}
+          <p className="text-sm font-medium text-gray-700" id="onb-community-intro-question">
+            {translate('onboarding.nameForm.communityIntroQuestion', 'May we introduce you to the community?')}
+          </p>
+          {/* design-allow-next-line: hint colour of the subtitle on this always-white card */}
+          <p className="text-xs text-gray-500" id="onb-community-intro-hint">
+            {translate('onboarding.nameForm.communityIntroHint', 'During your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.')}
+          </p>
+          <div
+            role="radiogroup"
+            aria-labelledby="onb-community-intro-question"
+            aria-describedby="onb-community-intro-hint"
+            className="flex flex-col gap-2 pt-1 sm:flex-row"
+          >
+            {([
+              { value: 'yes' as const, testid: 'onb-community-intro-yes', label: translate('onboarding.nameForm.communityIntroYes', 'Yes, introduce me 👋') },
+              { value: 'no' as const, testid: 'onb-community-intro-no', label: translate('onboarding.nameForm.communityIntroNo', 'Not now') },
+            ]).map((opt) => {
+              const selected = introChoice === opt.value;
+              // design-allow-next-line: explicit light palette to match this always-white card (bg-white/95); the selected state uses the brand category-4 accent, theme tokens would be light-on-white in dark mode
+              const stateClass = selected ? 'border-category-4 bg-category-4/10 text-gray-900' : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300';
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  data-testid={opt.testid}
+                  onClick={() => setIntroChoice(opt.value)}
+                  className={`flex min-h-11 flex-1 items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-category-4/40 ${stateClass}`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
           </div>
-          <Switch
-            id="onb-community-intro"
-            data-testid="onb-community-intro-switch"
-            checked={introduceMe}
-            onCheckedChange={setIntroduceMe}
-          />
         </div>
 
         {/* Error */}

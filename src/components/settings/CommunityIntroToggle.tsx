@@ -1,8 +1,13 @@
 /**
- * VTID-05206 — Settings → Privacy: "Introduce me to the community".
- * On: during the first 7 days the News Feed shows a "new member" card so other
- * members can say hello. Off: no card. Reads and writes the member's own
- * global_community_profiles row (src/lib/community-intro.ts). Hides itself
+ * VTID-05475 — Settings → Privacy: "Introduce me to the community" (explicit
+ * choice). Default off: nobody is introduced until they choose Yes (owner
+ * decision 2026-10-30, supersedes VTID-05206 D1). On: during the first 7 days
+ * the News Feed shows a "new member" card so other members can say hello; the
+ * member becomes Say-Hello eligible. Off: no card, not eligible. Reads and
+ * writes the member's own global_community_profiles row (src/lib/community-intro.ts).
+ * Every toggle — on AND off — is recorded via setCommunityIntroOptIn, which
+ * writes both community_intro_opt_in and the community_intro_choice_at marker
+ * (so a withdrawal is an explicit false + marker, not an absence). Hides itself
  * while loading or when the setting cannot be read, like the phone switch.
  */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
