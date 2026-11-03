@@ -33,11 +33,15 @@ other error (including a PGRST204 that does not name the marker column) is throw
 TEST: src/lib/community-intro.explicit-choice.test.ts
 
 AC-4 Registration step (`OnboardingNameForm`): the name step offers two explicit choices as a labelled radio group
-(`role="radiogroup"`, each option `role="radio"`, keyboard-accessible with a visible focus ring, tap target min-h-11 =
-44px), NEITHER pre-selected. Choosing "Yes, introduce me 👋" records opt-in true (+ marker, via the lib); "Not now"
-records false (+ marker); submitting with NO choice records nothing and still completes registration. canSubmit does
-not require a choice, and a failed write never blocks finishing. The Yes label keeps the 👋 emoji.
-TEST: src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx
+(`role="radiogroup"`, each option `role="radio"`, native keyboard behaviour with a visible focus ring, tap target
+min-h-11 = 44px), NEITHER pre-selected. Native radiogroup keyboard behaviour (R2 review Issue 3): roving tabindex so
+the group is a SINGLE tab stop (the selected option, or the first option when none is selected, is tabbable and the
+other is not — Tab never auto-selects); ArrowDown/ArrowRight move to AND select the next option and ArrowUp/ArrowLeft
+the previous, wrapping around; Space/Enter selects the focused option; a keyboard selection records the choice through
+the exact same handler as a click. Choosing "Yes, introduce me 👋" records opt-in true (+ marker, via the lib); "Not
+now" records false (+ marker); submitting with NO choice records nothing and still completes registration. canSubmit
+does not require a choice, and a failed write never blocks finishing. The Yes label keeps the 👋 emoji.
+TEST: src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx (9 tests incl. roving tabindex + arrow/Space/Enter; outputs/vitest-green-r2.txt)
 
 AC-5 Settings off-switch (`CommunityIntroToggle`): the switch is off until the member chooses Yes (reads
 `getCommunityIntroOptIn`, false until chosen). Every toggle — on AND off — records the choice via

@@ -53,6 +53,70 @@ describe("OnboardingNameForm — community introductions are an explicit choice 
     expect(yes.textContent).toContain("👋");
   });
 
+  it("is a single tab stop: with nothing selected the first option is tabbable and the second is not (roving tabindex)", () => {
+    render(<OnboardingNameForm onComplete={vi.fn()} />);
+    const yes = screen.getByTestId("onb-community-intro-yes");
+    const no = screen.getByTestId("onb-community-intro-no");
+    // Exactly one option is in the tab order so the whole group is a single tab stop.
+    expect(yes.getAttribute("tabindex")).toBe("0");
+    expect(no.getAttribute("tabindex")).toBe("-1");
+  });
+
+  it("after selecting, only the selected option is tabbable (roving tabindex moves with selection)", () => {
+    render(<OnboardingNameForm onComplete={vi.fn()} />);
+    const yes = screen.getByTestId("onb-community-intro-yes");
+    const no = screen.getByTestId("onb-community-intro-no");
+    fireEvent.click(no);
+    expect(no.getAttribute("tabindex")).toBe("0");
+    expect(yes.getAttribute("tabindex")).toBe("-1");
+  });
+
+  it("ArrowDown both moves focus and SELECTS the next option, wrapping around, and records the choice", async () => {
+    const onComplete = vi.fn();
+    render(<OnboardingNameForm onComplete={onComplete} />);
+    const yes = screen.getByTestId("onb-community-intro-yes");
+    const no = screen.getByTestId("onb-community-intro-no");
+    // ArrowDown from the first option selects the second (standard radiogroup: move + select).
+    fireEvent.keyDown(yes, { key: "ArrowDown" });
+    expect(no.getAttribute("aria-checked")).toBe("true");
+    expect(yes.getAttribute("aria-checked")).toBe("false");
+    // Wrap around: ArrowDown from the last option selects the first.
+    fireEvent.keyDown(no, { key: "ArrowDown" });
+    expect(yes.getAttribute("aria-checked")).toBe("true");
+    expect(no.getAttribute("aria-checked")).toBe("false");
+    // The keyboard-made choice records exactly like a click (same handler/path).
+    fireEvent.click(screen.getByRole("button", { name: "Let's get started!" }));
+    await waitFor(() => expect(onComplete).toHaveBeenCalled());
+    expect(setOptIn).toHaveBeenCalledWith("new-1", true);
+    expect(setOptIn).toHaveBeenCalledTimes(1);
+  });
+
+  it("ArrowUp/ArrowLeft and ArrowRight move+select, and Space/Enter selects the focused option", async () => {
+    const onComplete = vi.fn();
+    render(<OnboardingNameForm onComplete={onComplete} />);
+    const yes = screen.getByTestId("onb-community-intro-yes");
+    const no = screen.getByTestId("onb-community-intro-no");
+    // ArrowRight behaves like ArrowDown (next + select).
+    fireEvent.keyDown(yes, { key: "ArrowRight" });
+    expect(no.getAttribute("aria-checked")).toBe("true");
+    // ArrowLeft behaves like ArrowUp (previous + select), wrapping to the first here.
+    fireEvent.keyDown(no, { key: "ArrowLeft" });
+    expect(yes.getAttribute("aria-checked")).toBe("true");
+    // Space selects the focused option.
+    fireEvent.keyDown(no, { key: " " });
+    expect(no.getAttribute("aria-checked")).toBe("true");
+    // Enter selects the focused option.
+    fireEvent.keyDown(yes, { key: "Enter" });
+    expect(yes.getAttribute("aria-checked")).toBe("true");
+    // Records "Not now" → false after the last selection is the first option... re-select "no" to assert a clean write.
+    fireEvent.keyDown(yes, { key: "ArrowDown" });
+    expect(no.getAttribute("aria-checked")).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "Let's get started!" }));
+    await waitFor(() => expect(onComplete).toHaveBeenCalled());
+    expect(setOptIn).toHaveBeenCalledWith("new-1", false);
+    expect(setOptIn).toHaveBeenCalledTimes(1);
+  });
+
   it("choosing Yes writes opt-in true (with marker written by the lib) and completes registration", async () => {
     const onComplete = vi.fn();
     render(<OnboardingNameForm onComplete={onComplete} />);

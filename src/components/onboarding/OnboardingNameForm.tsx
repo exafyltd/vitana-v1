@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,9 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
   // registration.
   const [introChoice, setIntroChoice] = useState<'yes' | 'no' | null>(null);
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // VTID-05475: refs to the two intro radios so arrow-key navigation can move
+  // DOM focus as it changes selection (native radiogroup behaviour).
+  const introOptionRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   // Auto-suggest handle from display name (only if user hasn't typed a handle)
   const handleAutoSuggested = useRef(!metaName); // don't auto-suggest if pre-filled
@@ -111,6 +115,39 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
     // Strip spaces and special chars on the fly
     const cleaned = value.toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, HANDLE_MAX);
     setHandle(cleaned);
+  };
+
+  // VTID-05475: the two community-intro choices, index 0 = yes, index 1 = no.
+  // Kept as a stable, ordered list so roving tabindex and arrow-key navigation
+  // can address each option by index.
+  const introOptions = [
+    { value: 'yes' as const, testid: 'onb-community-intro-yes', label: translate('onboarding.nameForm.communityIntroYes', 'Yes, introduce me 👋') },
+    { value: 'no' as const, testid: 'onb-community-intro-no', label: translate('onboarding.nameForm.communityIntroNo', 'Not now') },
+  ];
+
+  // VTID-05475: native radiogroup keyboard behaviour. Arrow keys move focus AND
+  // selection (standard radiogroup pattern), wrapping around; Space/Enter
+  // selects the focused option. Keyboard selection records the choice through
+  // exactly the same state update as a click.
+  const selectIntroByIndex = (index: number) => {
+    const opt = introOptions[index];
+    if (!opt) return;
+    setIntroChoice(opt.value);
+    introOptionRefs.current[index]?.focus();
+  };
+
+  const handleIntroKeyDown = (e: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+    const count = introOptions.length;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      selectIntroByIndex((index + 1) % count);
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      selectIntroByIndex((index - 1 + count) % count);
+    } else if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      selectIntroByIndex(index);
+    }
   };
 
   const canSubmit =
@@ -290,21 +327,26 @@ export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
             aria-describedby="onb-community-intro-hint"
             className="flex flex-col gap-2 pt-1 sm:flex-row"
           >
-            {([
-              { value: 'yes' as const, testid: 'onb-community-intro-yes', label: translate('onboarding.nameForm.communityIntroYes', 'Yes, introduce me 👋') },
-              { value: 'no' as const, testid: 'onb-community-intro-no', label: translate('onboarding.nameForm.communityIntroNo', 'Not now') },
-            ]).map((opt) => {
+            {introOptions.map((opt, index) => {
               const selected = introChoice === opt.value;
+              // VTID-05475: roving tabindex — the radiogroup is a single tab
+              // stop. The selected option is tabbable; with no selection yet the
+              // FIRST option is tabbable so Tab lands on the group once. Focusing
+              // never auto-selects — selection is only on explicit activation.
+              const rovingTabIndex = selected || (introChoice === null && index === 0) ? 0 : -1;
               // design-allow-next-line: explicit light palette to match this always-white card (bg-white/95); the selected state uses the brand category-4 accent, theme tokens would be light-on-white in dark mode
               const stateClass = selected ? 'border-category-4 bg-category-4/10 text-gray-900' : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300';
               return (
                 <button
                   key={opt.value}
+                  ref={(el) => { introOptionRefs.current[index] = el; }}
                   type="button"
                   role="radio"
                   aria-checked={selected}
+                  tabIndex={rovingTabIndex}
                   data-testid={opt.testid}
                   onClick={() => setIntroChoice(opt.value)}
+                  onKeyDown={(e) => handleIntroKeyDown(e, index)}
                   className={`flex min-h-11 flex-1 items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-category-4/40 ${stateClass}`}
                 >
                   {opt.label}
