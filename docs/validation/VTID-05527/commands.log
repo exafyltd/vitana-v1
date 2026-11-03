@@ -1,0 +1,79 @@
+# VTID-05527 (native-wave2-role-modes-r2/staff) — local verification, 2026-11-03T15:15Z, Linux sandbox
+# verified on the branch with the implementation, tests, ledger and validation docs (commits 62f24f8ac..c2c8863ff, base origin/main aac65bfeb); only this log was committed after
+# apps/mobile commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+# setup: npm ci (apps/mobile) exit=0; npm ci --ignore-scripts (repo root, for the scripts/native tooling) exit=0
+
+## red on base (origin/main aac65bfeb + only the new tests/staff/** files) — docs/validation/VTID-05527/red-on-base.txt
+$ npm run gen:i18n && npx jest tests/staff
+Test Suites: 4 failed, 4 total   (Cannot find module '../../src/screens/staff/StaffGate'; route files missing, rows not_started)
+
+## apps/mobile
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/staff --ci          # run 1, default workers
+Test Suites: 4 passed, 4 total
+Tests:       188 passed, 188 total
+exit=0
+
+$ npx jest tests/staff --ci          # run 2, default workers
+Test Suites: 4 passed, 4 total
+Tests:       188 passed, 188 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 97 passed, 97 total
+Tests:       2863 passed, 2863 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ APP_PROFILE=development npm run bundle
+Exported: dist
+exit=0
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 49 native route(s)
+exit=0
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+$ node scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 49 native route(s)
+exit=0
+
+$ node scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ npx eslint apps/mobile packages
+exit=0
+
+$ npx vitest run src/i18n src/pages/staff
+Test Files  5 passed (5)
+Tests       39 passed (39)
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+exit=0   (0 lines mention staffNative)
+
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+0 key(s) whose EN source changed since translation in each of the 10 non-DE source-checked locales (ar en es fr pl pt ru sr tr zh)
+exit=0
+
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-role-modes-r2/staff --title "VTID-05527 (native-wave2-role-modes-r2/staff): native staff mode port"
+FAIL  Collab handoff — lanes/staff.md does not exist here or in vitana-platform (spec still on the plan branch: plan PR #4635 open)
+FAIL  Lane scope    — lanes/staff.md not found (same cause, the known non-blocker)
+PASS  gh for plan( PR / vitana-platform lane files; PR-GATE scope / sparring / weakening / red-green; Kiro steering
