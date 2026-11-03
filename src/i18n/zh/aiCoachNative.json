@@ -1,0 +1,67 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "AI 板块",
+      "overview": "概览",
+      "insights": "洞察",
+      "recommendations": "推荐",
+      "dailySummary": "每日总结",
+      "companion": "AI 伙伴"
+    },
+    "priority": {
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "suggestions": {
+      "title": "AI 洞察与建议"
+    },
+    "reward": {
+      "suggestions": "按照 AI 建议行动，赢取健康奖励",
+      "index": "提升你的健康分数，获得更多积分"
+    },
+    "index": {
+      "computing": "计算中…"
+    },
+    "streak": {
+      "meditation": "冥想"
+    },
+    "companion": {
+      "suggestionDescription": "AI 生成的健康建议",
+      "recall": "回想",
+      "autopilotMeditation": "安排一次冥想休息",
+      "autopilotHydration": "15 分钟后提醒喝水"
+    },
+    "motivation": {
+      "defaultQuote": "迈向健康的每一小步，都是值得庆祝的胜利。",
+      "defaultAuthor": "今日灵感"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "健康养生"
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "血液指标"
+    },
+    "chat": {
+      "voice": "开始语音通话",
+      "video": "开始视频通话",
+      "send": "发送消息"
+    },
+    "autopilot": {
+      "settings": "自动驾驶设置",
+      "toggle": "开启或关闭自动驾驶"
+    },
+    "autopilotDone": {
+      "reward": "已获得 +{reward} VTNA！",
+      "task": "任务已完成：{title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": "。指数现为 {n}"
+    }
+  }
+}
