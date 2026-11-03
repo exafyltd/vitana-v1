@@ -5,7 +5,7 @@
  * a one-column card stack on phones (`columns-1` below `md`). `CoachScaffold`
  * is the sub-navigation (web `aiNavigation` / `aiSubItems`), the page
  * padding and the header: the overview's mobile `StandardHeader` (title
- * only, `StandardHeader.tsx:40-48`) or the other pages' header card + the
+ * only, `StandardHeader.tsx:42-50`) or the other pages' header card + the
  * small Vitana Index circle card that opens the Index. `RewardDot` is the
  * web `ui/reward-dot.tsx` (pulse + ping; the hover tooltip is the kit's
  * long-press hint). Ports only; logical start/end; every string arrives
