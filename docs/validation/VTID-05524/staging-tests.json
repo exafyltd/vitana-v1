@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05524",
+  "service": "community-app",
+  "_note": "Native Wave 2 business / commerce-mode lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every write (register a business, AI setup apply, add product + photo upload, CSV import, sales setup, profile, terms accept, submit for verification, connect a shop, workbench actions, invite, accept invite, health-order status / upload / confirm-match, AI-assistant consent) is asserted as the BUILT request against a mocked gateway / Supabase double and fires nothing. The Shopify / SMART-on-FHIR authorize page return leg (in-app browser → back → re-read with a bounded poll) is tested with fakes. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 7); at G1 the flows only open and read.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not" },
+    { "kind": "existing", "ref": "npx jest tests/business", "cwd": "apps/mobile",
+      "reason": "the 11 commerce destinations: portal guest / member (hero CTA order per gateway flag, orgs loaded / empty / error, setup hub, first-visit register sheet, voice draft, ?connection= / ?org= drawers), every setup sheet driven to its built request, the hosted-page return leg, health orders, team + invite accept, AI-assistant consent, join / login / connect docs / privacy, cold-start deep links, business bottom tabs, role-switch-destination, 11 locales without a raw key, Arabic RTL, no physical left/right — fake-gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the business screens, data layer and ports type-check against @vitana/core (incl. the new commerce extracts), @vitana/tokens and the shell" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the 11 commerce route files (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 11 commerce rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/business/01-commerce-portal.yaml", "target": "/commerce (guest and member)", "next_actor": "owner",
+      "reason": "open as a guest and as a member with a business; read the hero, the setup hub and the org list; open each setup sheet and close it without saving; screenshot parity vs 390x844 read-only staging /commerce; needs the isolated G1 environment" },
+    { "flow": "apps/mobile/maestro/business/02-business-mode.yaml", "target": "/commerce/team, /commerce/health-orders, /commerce/health-orders/inbox", "next_actor": "owner",
+      "reason": "switch into a business mode through the role switcher; the business bottom bar per role; read the roster and the orders; nothing saved; needs G1" },
+    { "flow": "apps/mobile/maestro/business/03-deep-links.yaml", "target": "/commerce/invites/:token/accept, /commerce/connect/authorize?authorization_id=, /commerce/connections/:id", "next_actor": "owner",
+      "reason": "cold-start deep links land on the native screens (an expired test invite, an unknown authorization id: read the error state only); needs G1" },
+    { "flow": "apps/mobile/maestro/business/04-public-pages.yaml", "target": "/commerce/join, /commerce-login, /commerce/connect, /commerce/connect/privacy", "next_actor": "owner",
+      "reason": "signed out: the pages render; no sign-up or sign-in submitted; screenshot parity; needs G1" }
+  ]
+}

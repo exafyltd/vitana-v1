@@ -1,0 +1,118 @@
+# VTID-05524 (native-wave2-role-modes-r2/business) — local verification, 2026-11-03T14:41Z, Linux sandbox
+# verified on the branch with the implementation, tests and ledger (code commits b43cebefe..4a189daf3 + merge of origin/main dc8233663); docs/validation and maestro/business docs committed after
+# apps/mobile: expo commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+
+## apps/mobile
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/business
+  (console.error lines: React act() warnings from the shell providers in the harness, e.g. TenantProvider; no failure)
+  Test Suites: 9 passed, 9 total
+  Tests:       138 passed, 138 total
+  Time:        42.998 s
+exit=0
+
+$ npx jest tests/business
+  (console.error lines: React act() warnings from the shell providers in the harness, e.g. TenantProvider; no failure)
+  Test Suites: 9 passed, 9 total
+  Tests:       138 passed, 138 total
+  Time:        9.791 s, estimated 43 s
+exit=0
+
+$ npm test
+  (console.error lines: React act() warnings from the shell providers in the harness, e.g. TenantProvider; no failure)
+  A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+  Test Suites: 102 passed, 102 total
+  Tests:       2840 passed, 2840 total
+  Time:        35.244 s
+exit=0
+
+$ HOME=/tmp/biz-home APP_PROFILE=development npm run bundle
+  node_modules/expo-router/assets/error.png (469B)
+  Exported: dist
+exit=0
+
+$ HOME=/tmp/biz-home APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+  Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+  > @vitana/mobile@0.0.0 parity:check
+  > node ../../scripts/native/parity-ledger.mjs --check
+  parity-ledger --check: OK — 435 rows, 52 native route(s)
+exit=0
+
+# the 'worker process has failed to exit gracefully' notice of npm test also appears with tests/business excluded (2702/2702) — pre-existing, not this lane
+
+## repo root
+$ node scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 18 files from 43 sources, 35 icons, 11 assets — up to date
+exit=0
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+  ...and 17143 more
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+
+$ node scripts/i18n-register-check.mjs --all
+  ~ (correct plural) screens.screens.crossover.matchReasonSharedPillar: de="Ihr seid beide stark im Bereich {pillar}"
+
+[register] pl (Polish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+           rule: ty-form. Never Pan/Pani.
+
+[register] tr (Turkish) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+           rule: sen-form. Never siz/sizin when addressing one reader.
+
+[register] zh (Chinese) — 0 violation(s), 0 correct-plural (excluded), 0 grey-area
+           rule: Simplified zh-CN, 你-form. Never 您.
+[register] ar (Arabic) — register check deliberately skipped: No fixed lexical formal-address marker to check — see comment above.
+
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+Flagged values:       0
+Flagged unique words: 0
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node --test scripts/native/__tests__/*.test.mjs
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1929.942286
+exit=0
+
+$ git diff --name-only -z origin/main...HEAD -- "*.ts" "*.tsx" | xargs -0 npx eslint   (63 files)
+✖ 7 problems (0 errors, 7 warnings)  — the 7 warnings: generated packages/core/src/extracted/*.generated.ts are eslint-ignored
+exit=0
+
+$ npm run build   (vite, web; the new src/i18n/*/businessNative.json shards are bundled)
+✓ built in 32.28s
+exit=0
+
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] OK — one chunk per lazy locale, de eager.
+exit=0
+
+$ npm test   (root: vitest run)
+ Test Files  487 passed (487)
+      Tests  3915 passed (3915)
+exit=0
+
+## red on base (origin/main dc8233663) — see red-on-base.txt
+$ npm test -- tests/business
+Test Suites: 9 failed, 9 total; Tests: 22 failed, 26 passed, 48 total (8 suites: Cannot find module; routes.test: route files / native resolutions / ledger rows)

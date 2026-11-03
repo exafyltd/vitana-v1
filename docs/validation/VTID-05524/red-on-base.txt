@@ -1,0 +1,53 @@
+# VTID-05524 (native-wave2-role-modes-r2/business) — red on base
+# The lane's tests (apps/mobile/tests/business/**, copied unchanged) run on a clean
+# origin/main checkout dc82336631846fe23d51eee4d7a2f2d5e642deec (detached worktree,
+# node_modules linked from the lane worktree), before any lane code exists.
+
+$ cd apps/mobile && npm test -- tests/business
+FAIL tests/business/portal.test.tsx
+    Cannot find module '../../src/screens/business/CommercePortalScreen' from 'tests/business/portal.test.tsx'
+FAIL tests/business/sheets.test.tsx
+    Cannot find module '../../src/screens/business/components/AddProductSheet' from 'tests/business/sheets.test.tsx'
+FAIL tests/business/public-pages.test.tsx
+    Cannot find module '../../src/screens/business/CommerceJoinScreen' from 'tests/business/public-pages.test.tsx'
+FAIL tests/business/health-orders.test.tsx
+    Cannot find module '../../src/screens/business/CommerceHealthOrdersScreen' from 'tests/business/health-orders.test.tsx'
+FAIL tests/business/workbench-return.test.tsx
+    Cannot find module '../../src/screens/business/components/ConnectionWorkbench' from 'tests/business/workbench-return.test.tsx'
+FAIL tests/business/i18n-rtl.test.tsx
+    Cannot find module '../../src/screens/business/CommercePortalScreen' from 'tests/business/i18n-rtl.test.tsx'
+FAIL tests/business/team-invite.test.tsx
+    Cannot find module '../../src/screens/business/CommerceTeamScreen' from 'tests/business/team-invite.test.tsx'
+FAIL tests/business/authorize.test.tsx
+    Cannot find module '../../src/screens/business/CommerceConnectAuthorizeScreen' from 'tests/business/authorize.test.tsx'
+FAIL tests/business/routes.test.tsx
+Test Suites: 9 failed, 9 total
+Tests:       22 failed, 26 passed, 48 total
+
+$ npx jest tests/business/routes.test.tsx   (the one suite that loads on base)
+    ✕ are exactly the lane's rows, all native, scope unchanged (the exclusion row included)
+    ✕ /commerce has its own route file (app)/commerce/index.tsx
+    ✕ /commerce-login has its own route file (public)/commerce-login.tsx
+    ✕ /commerce/connect has its own route file (public)/commerce/connect/index.tsx
+    ✕ /commerce/connect/privacy has its own route file (public)/commerce/connect/privacy.tsx
+    ✕ /commerce/connect/authorize has its own route file (app)/commerce/connect/authorize.tsx
+    ✕ /commerce/connections/:id has its own route file (app)/commerce/connections/[id].tsx
+    ✕ /commerce/health-orders has its own route file (app)/commerce/health-orders/index.tsx
+    ✕ /commerce/health-orders/inbox has its own route file (app)/commerce/health-orders/inbox.tsx
+    ✕ /commerce/invites/:token/accept has its own route file (app)/commerce/invites/[token]/accept.tsx
+    ✕ /commerce/join has its own route file (public)/commerce/join.tsx
+    ✕ /commerce/team has its own route file (app)/commerce/team.tsx
+    ✕ /commerce resolves native (query kept)
+    ✕ /commerce-login resolves native (query kept)
+    ✕ /commerce/connect resolves native (query kept)
+    ✕ /commerce/connect/privacy resolves native (query kept)
+    ✕ /commerce/connect/authorize resolves native (query kept)
+    ✕ /commerce/health-orders resolves native (query kept)
+    ✕ /commerce/health-orders/inbox resolves native (query kept)
+    ✕ /commerce/join resolves native (query kept)
+    ✕ /commerce/team resolves native (query kept)
+    ✓ /commerce stays a guest destination (App.tsx allowGuest)
+    ✓ /commerce → portal …  (the 12 Expo Router ranking cases use stand-in route maps, so they pass on base too)
+    ✓ business-mode / role-switch-destination helper cases (already in @vitana/core on main)
+
+# Green: the same suites on the lane branch — see commands.log (9 suites, all passing).

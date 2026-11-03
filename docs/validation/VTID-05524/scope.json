@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05524",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/commerce/**",
+    "apps/mobile/app/(public)/commerce/**",
+    "apps/mobile/app/(public)/commerce-login.tsx",
+    "apps/mobile/src/screens/business/**",
+    "apps/mobile/src/ports/commerce.ts",
+    "apps/mobile/src/ports/business-ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/business/**",
+    "apps/mobile/maestro/business/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/extract.json",
+    "packages/core/src/commerce.ts",
+    "packages/core/src/extracted/commerce-*.generated.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/*/businessNative.json",
+    "docs/validation/VTID-05524/**"
+  ],
+  "_note": "The four web routes without an AuthGuard (/commerce-login, /commerce/join, /commerce/connect, /commerce/connect/privacy) live in the (public) route group, like the other public sign-in routes (/maxina, /delete-account, /profile/[id]): under (app) the AuthGate would bounce a signed-out supplier to the community /maxina sign-in, which the web deliberately does not do (VTID-03894). The lane file names apps/mobile/app/(app)/commerce-login.tsx; Lane scope flags the (public) paths — noted in the PR body. No shell, identity or ORB file is changed.",
+  "sparring_record": "docs/validation/VTID-05524/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
