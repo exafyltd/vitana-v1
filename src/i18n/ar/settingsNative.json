@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "الدردشة",
+      "calendar": "التقويم",
+      "community": "المجتمع",
+      "updateFailed": "تعذّر تحديث الإعداد"
+    },
+    "consent": {
+      "title": "إفصاح مشاركة البيانات مع الذكاء الاصطناعي",
+      "subtitle": "قبل استخدام ميزات الذكاء الاصطناعي، راجع كيفية استخدام بياناتك.",
+      "whatIsSent": "البيانات التي قد تُرسل",
+      "voiceData": "التسجيلات الصوتية والنصوص المفرّغة",
+      "diaryData": "الطلبات المكتوبة ورسائل الدردشة ومدخلات اليوميات",
+      "memoryData": "مدخلات Memory Garden وأهداف العافية",
+      "profileData": "سياق الملف الشخصي (الاسم، التفضيلات)",
+      "socialData": "روابط ملفات وسائل التواصل الاجتماعي ونصوص النبذة (عند استخدام ميزات الاستيراد)",
+      "recipientLabel": "المستلم:",
+      "recipient": "Google (نماذج Gemini للذكاء الاصطناعي) عبر Lovable AI Gateway. تُنقل بياناتك بأمان عبر اتصالات مشفّرة.",
+      "purposeLabel": "الغرض",
+      "purpose": "إنشاء ردود ذكاء اصطناعي مخصّصة وتحويل النص إلى كلام وتحيات استباقية وتدريب صحي واقتراحات لإثراء الملف الشخصي.",
+      "notStored": "لا يخزّن مزوّد الذكاء الاصطناعي البيانات بشكل دائم",
+      "revokeAnytime": "يمكنك سحب موافقتك في أي وقت من الإعدادات > الخصوصية",
+      "gdprCompliant": "متوافق مع اللائحة العامة لحماية البيانات وقواعد الخصوصية",
+      "agreementFooter": "بالنقر على «أوافق» تمنح Exafy LTD الإذن بإرسال البيانات المذكورة أعلاه إلى مزوّدي الذكاء الاصطناعي المذكورين. يمكنك سحب هذا الإذن في أي وقت من الإعدادات > الخصوصية.",
+      "notNow": "ليس الآن",
+      "iAgree": "أوافق"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90%",
+      "platformShare": "10%",
+      "redirecting": "جارٍ إعادة التوجيه…",
+      "completeSetup": "إكمال الإعداد",
+      "enablePayments": "تفعيل المدفوعات",
+      "opening": "جارٍ الفتح…",
+      "viewDashboard": "عرض لوحة التحكم"
+    },
+    "limitations": {
+      "description": "هذه قواعد غير قابلة للتفاوض نطبّقها على كل توصية منتج. لا يمكن أبدًا تجاوز الحساسية وموانع الاستعمال الطبية والتداخلات الدوائية.",
+      "removeTag": "إزالة {v}",
+      "tag": "{v} ×",
+      "never": "أبدًا",
+      "allergens": "مسببات الحساسية",
+      "medicationsLabel": "الأدوية (الاسم العلمي أو الفئة، مثل SSRI أو مميّع الدم)",
+      "accessibilityLabel": "احتياجات إمكانية الوصول",
+      "ofActiveProducts": "من أصل {count} منتجًا نشطًا",
+      "maxPlaceholder": "مثلًا 40",
+      "capPlaceholder": "مثلًا 150",
+      "dietary": {
+        "vegan": "نباتي صرف",
+        "vegetarian": "نباتي",
+        "halal": "حلال",
+        "kosher": "كوشر",
+        "glutenFree": "خالٍ من الغلوتين",
+        "dairyFree": "خالٍ من الألبان",
+        "nutFree": "خالٍ من المكسرات",
+        "soyFree": "خالٍ من الصويا",
+        "sugarFree": "خالٍ من السكر",
+        "organic": "عضوي"
+      }
+    },
+    "tenantRole": {
+      "description": "أدِر سياقك وصلاحياتك",
+      "noRoleSelected": "لم يتم اختيار دور",
+      "noOrganization": "لا توجد مؤسسة",
+      "current": "الحالي",
+      "available": "متاح",
+      "switching": "جارٍ التبديل…",
+      "switchOrganization": "تبديل المؤسسة",
+      "roles": {
+        "community": "عضو في المجتمع",
+        "patient": "مريض",
+        "professional": "مختص",
+        "staff": "موظف",
+        "backoffice": "المكتب الخلفي",
+        "admin": "مسؤول"
+      },
+      "roleDescriptions": {
+        "community": "الوصول إلى ميزات المجتمع والتواصل الاجتماعي",
+        "patient": "تتبّع صحي كامل وميزات طبية",
+        "professional": "أدوات مهنية للأطباء والمدرّبين",
+        "staff": "إدارة الموظفين والميزات التشغيلية",
+        "backoffice": "أدوات المكتب الخلفي ERP/CRM والموافقات",
+        "admin": "وصول إداري كامل وإدارة",
+        "default": "الوصول إلى ميزات خاصة بالدور"
+      },
+      "permissions": {
+        "community": "الوصول إلى المجتمع",
+        "health": "الوصول إلى البيانات الصحية",
+        "professional": "الأدوات المهنية",
+        "staff": "ميزات الموظفين",
+        "admin": "ميزات المسؤول"
+      }
+    }
+  }
+}
