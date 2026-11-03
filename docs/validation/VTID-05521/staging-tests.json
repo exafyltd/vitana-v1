@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05521",
+  "service": "community-app",
+  "_note": "Native Wave 2 ai-assistants lane (/assistant + ?tab=voice|ai|autopilot|proactive|referrals, and the useAIAssistants connect flow). The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every write (user_preferences updates and the default-row insert, PUT /vaea/config, POST /orb/tts, the generate-proactive-greeting edge function, POST apikey / verify, DELETE disconnect) is asserted as the BUILT request against a mocked gateway / Supabase double and fires nothing. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 7); at G1 the flows only open and read — no switch, slider, select, preview, greeting or connect is pressed.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/ai-assistants", "cwd": "apps/mobile",
+      "reason": "the tab param selects each of the five panels (default voice = the voice settings panel, not the ORB session); each control's built user_preferences write, a toggle round-trip and a failed-write rollback; N2 Slider ranges; /orb/tts and generate-proactive-greeting bodies; /vaea/config read/write and error; useAIAssistants providers / connections loaded-empty-error, connect + verify, disconnect; 11 locales without a raw key, Arabic RTL, no physical left/right — fake gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the /assistant screen, panels, data hooks and the assistant port type-check against the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /assistant route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 6 ASSISTANT.* rows are native with the (app)/assistant/index.tsx route present — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/ai-assistants/01-assistant-tabs.yaml", "target": "/assistant (+ ?tab=voice|ai|autopilot|proactive|referrals)", "next_actor": "owner",
+      "reason": "open /assistant, then each tab through the tab strip and read; screenshot parity vs 390x844 read-only staging /assistant?tab=…; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/ai-assistants/02-voice-preview-audio.yaml", "target": "/assistant?tab=voice", "next_actor": "owner",
+      "reason": "on the G1 test backend only: the gateway preview audio plays through expo-audio from a data: URI on iOS and Android (not provable offline); needs G1" }
+  ]
+}
