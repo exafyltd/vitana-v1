@@ -5288,10 +5288,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/dashboard",
@@ -5300,10 +5300,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/queue",
@@ -5312,10 +5312,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/reports",
@@ -5324,10 +5324,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/schedule",
@@ -5336,10 +5336,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/tasks",
@@ -5348,10 +5348,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/time",
@@ -5360,10 +5360,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/tools",
@@ -5372,10 +5372,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     }
   ]
 }
