@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05432",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/support.tsx",
+    "apps/mobile/app/(app)/connectors.tsx",
+    "apps/mobile/app/(app)/settings/connected-apps.tsx",
+    "apps/mobile/src/screens/support/**",
+    "apps/mobile/src/ports/support.ts",
+    "apps/mobile/src/ports/ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/support/**",
+    "apps/mobile/maestro/support/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/supportNative.json",
+    "docs/validation/VTID-05432/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05432/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
