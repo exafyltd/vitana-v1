@@ -72,6 +72,14 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/settings/limitations',
   '/settings/preferences',
   '/settings/tenant-role',
+  '/staff/communications',
+  '/staff/dashboard',
+  '/staff/queue',
+  '/staff/reports',
+  '/staff/schedule',
+  '/staff/tasks',
+  '/staff/time',
+  '/staff/tools',
   '/support',
 ];
 
