@@ -1,0 +1,121 @@
+# VTID-05525 (native-wave2-role-modes-r2/patient) — local verification, 2026-11-03T14:00Z, Linux sandbox
+# verified on the branch with the implementation, tests and ledger (code commits ce584778b..52d205271, base origin/main 6b9137ac5); only docs/validation and maestro/patient docs were committed after
+# apps/mobile commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+
+## apps/mobile
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/patient --ci        (run 1, default workers)
+Test Suites: 3 passed, 3 total
+Tests:       158 passed, 158 total
+exit=0
+
+$ npx jest tests/patient --ci        (run 2, default workers)
+Test Suites: 3 passed, 3 total
+Tests:       158 passed, 158 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 96 passed, 96 total
+Tests:       2838 passed, 2838 total
+exit=0
+
+$ APP_PROFILE=development npm run bundle
+iOS Bundled node_modules/expo-router/entry.js (5527 modules)
+Android Bundled node_modules/expo-router/entry.js (5648 modules)
+Exported: dist
+exit=0
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 49 native route(s)
+exit=0
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0
+
+$ node scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets — up to date
+exit=0
+
+$ node scripts/native/gen-tokens.mjs --check
+gen-tokens: 166 light / 134 dark overrides, 117 colour classes, 12 excluded — up to date
+exit=0
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ node --test scripts/native/__tests__/*.test.mjs
+# pass 68
+# fail 0
+exit=0
+
+$ node --test scripts/native/__tests__/eslint/*.test.mjs
+# pass 22
+# fail 0
+exit=0
+
+$ npx eslint apps/mobile packages
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.   (no finding names patientNative)
+exit=0
+
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node scripts/i18n-parity-gate.mjs --all
+[gate] 10 failing check(s).   (review-queue counts en 11, es 1176, sr 1477, fr 2108, pt 1962, ru 2302, pl 2173, ar 1315, zh 2336, tr 2333 — identical on a clean origin/main, not this lane)
+exit=1
+
+$ npx vitest run src/i18n
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0
+
+$ npm run build   (vite, web; the new src/i18n/*/patientNative.json shards are bundled)
+✓ built in 33.69s
+exit=0
+
+## red on base (detached worktree at origin/main 6b9137ac5, apps/mobile)
+$ npx jest tests/patient --ci
+Test Suites: 3 failed, 3 total   (Cannot find module '../../src/screens/patient/PatientGate') — see red-on-base.txt
+exit=1
+
+## preflight
+$ node vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-role-modes-r2/patient --title "VTID-05525 (native-wave2-role-modes-r2/patient): native patient mode port"
+FAIL  Collab handoff [report-only in CI (vitana-v1 Collab handoff step)]
+FAIL  Lane scope [required]
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE sparring [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE weakening [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE red-green [report-only in CI (until config.enforce=true)]
+PASS  Kiro steering [report-only in CI (until config.enforce=true)]
+SKIP  Not run by preflight [report-only in CI]
+# Collab handoff + Lane scope: ".kiro/specs/native-wave2-role-modes-r2/lanes/patient.md not found" — the spec is still on the open plan PR vitana-platform #4635 (not on main yet); known lane-file-not-found case
+exit=1
