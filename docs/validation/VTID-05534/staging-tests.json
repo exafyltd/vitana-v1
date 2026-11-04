@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05534",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx playwright test tests/e2e/staging/vtid-04921-group-chat-latest.staging.spec.ts", "cwd": ".",
+      "reason": "read-only regression check that the Alle Beisammen group thread still opens at its newest message on the deployed build (the staging guard aborts every write); it does not exercise the reconnect path, which is covered by the Vitest suite in this PR" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the GroupChat change is served" }
+  ]
+}
