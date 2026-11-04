@@ -1,0 +1,53 @@
+{
+  "diaryNative": {
+    "permissions": {
+      "cameraUsage": "Vitana braucht deine Kamera, damit du Fotos für dein Tagebuch und für Fehlermeldungen aufnehmen kannst.",
+      "photosUsage": "Vitana braucht Zugriff auf deine Fotos, damit du Bilder zu deinem Tagebuch und zu Fehlermeldungen hinzufügen kannst.",
+      "deniedTitle": "Zugriff nicht erlaubt",
+      "deniedCamera": "Erlaube den Kamerazugriff in den Einstellungen, um ein Foto aufzunehmen.",
+      "deniedPhotos": "Erlaube den Zugriff auf deine Fotos in den Einstellungen, um ein Bild auszuwählen.",
+      "deniedMicrophone": "Erlaube den Mikrofonzugriff in den Einstellungen, um einen Spracheintrag aufzunehmen."
+    },
+    "selectMode": "Tagebuch-Bereich wählen",
+    "startRecording": "Aufnahme starten",
+    "stopRecording": "Aufnahme stoppen",
+    "close": "Schließen",
+    "removePhoto": "Foto entfernen",
+    "entriesLoadError": "Deine Einträge konnten nicht geladen werden.",
+    "photoSource": {
+      "title": "Foto hinzufügen",
+      "camera": "Foto aufnehmen",
+      "library": "Aus der Mediathek wählen"
+    },
+    "indexSaved": {
+      "title": "Gespeichert · Vitana Index +{n}",
+      "breakdown": "{breakdown}. Tippe auf deinen Index, um die Veränderung zu sehen.",
+      "signals": "{count} Gesundheitssignale erfasst.",
+      "signalsCaption": "{count} Gesundheitssignale aus deiner Bildunterschrift erfasst."
+    },
+    "screenOption": {
+      "home": "Startseite",
+      "community": "Community",
+      "communityEvents": "Community – Events",
+      "discover": "Entdecken",
+      "discoverMarketplace": "Entdecken – Marktplatz",
+      "businessHub": "Business Hub",
+      "inbox": "Posteingang",
+      "inboxMessages": "Posteingang – Nachrichten",
+      "health": "Gesundheit",
+      "healthDashboard": "Gesundheit – Dashboard",
+      "aiAssistant": "KI-Assistent",
+      "aiAssistantOrb": "KI-Assistent – ORB",
+      "wallet": "Wallet",
+      "sharing": "Teilen",
+      "memoryDiary": "Erinnerungen – Tagebuch",
+      "memoryGarden": "Erinnerungen – Garten",
+      "calendar": "Kalender",
+      "settings": "Einstellungen",
+      "profile": "Profil",
+      "liveRooms": "Live-Räume",
+      "notifications": "Benachrichtigungen",
+      "other": "Sonstiges"
+    }
+  }
+}

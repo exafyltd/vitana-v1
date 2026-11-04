@@ -905,6 +905,7 @@ const EventsAndMeetups = () => {
 
   // VTID-05110 — desktop Spotlight: same data, handlers, drawers and dialogs;
   // only the in-screen chrome and the list render differently.
+  // VTID-05417 — the body uses the SR-31 Spotlight grid (`layout="spotlight-grid"`, width `full`).
   const spotlightLoading = activeTab === 'following'
     ? followingLoading || (loading && followingIds.length > 0 && followedEvents.length === 0)
     : loading;
@@ -917,6 +918,7 @@ const EventsAndMeetups = () => {
     <AppLayout>
       <ScreenFrame
         archetype="collection"
+        layout="spotlight-grid"
         subNav={{ items: communityNavigation }}
         header={{ title: t('spotlightSocial.events.title'), description: t('spotlightSocial.events.description'), emoji: '📅' }}
         utility={{

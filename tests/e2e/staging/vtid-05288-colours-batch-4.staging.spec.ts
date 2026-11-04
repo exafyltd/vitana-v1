@@ -105,7 +105,9 @@ for (const [path, archetype] of ROUTES) {
 
     // Mobile: the content mounts (no app shell sidebar assert); the colour swap
     // must not add horizontal scroll or throw.
-    await expect(page.locator('main, [data-archetype], #root > div').first()).toBeVisible({ timeout: 25_000 });
+    // AppLayout always renders a <main>; #root's own first children can be
+    // hidden injected nodes (toast region), so wait for <main>.
+    await expect(page.locator('main').first()).toBeVisible({ timeout: 25_000 });
     await expect(page.getByTestId('delayed-loader')).toHaveCount(0, { timeout: 15_000 });
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);

@@ -23,6 +23,36 @@
         "keyboardHint": true
       },
       "keyboardHint": "J / K or ↑ ↓: next card"
+    },
+    "grid": {
+      "label": "U fokusu",
+      "seeAll": "Pogledaj sve",
+      "emptyTiles": "Ovde još nema ničega za prikaz.",
+      "health": {
+        "section": "Tvoje zdravlje",
+        "upNext": "Sledeće · Za tebe",
+        "viewBreakdown": "Pogledaj detalje",
+        "askVitana": "Pitaj Vitanu",
+        "biology": "Moja biologija",
+        "trend": "Trend za 7 dana",
+        "todayPlan": "Tvoj plan za danas"
+      },
+      "discover": {
+        "section": "Preporučeno za tebe",
+        "browseCategories": "Pregledaj kategorije"
+      },
+      "events": {
+        "featured": "Izdvojeno",
+        "thisWeek": "Ove nedelje",
+        "upcoming": "Uskoro",
+        "join": "Pridruži se"
+      },
+      "match": {
+        "topMatch": "Tvoje najbolje poklapanje",
+        "sayHello": "Pozdravi",
+        "viewProfile": "Pogledaj profil",
+        "morePeople": "Još ljudi za tebe"
+      }
     }
   }
 }

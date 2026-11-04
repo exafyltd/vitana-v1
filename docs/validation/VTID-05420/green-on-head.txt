@@ -1,0 +1,10 @@
+02:06:22 [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 <wt>
+
+
+ Test Files  8 passed (8)
+      Tests  78 passed (78)
+   Start at  02:06:22
+   Duration  38.33s (transform 38.11s, setup 24.83s, import 94.71s, tests 2.10s, environment 111.56s)
+

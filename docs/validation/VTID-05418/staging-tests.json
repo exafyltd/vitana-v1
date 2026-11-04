@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05418",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "signed in, /comm/find-partner?view=matches at 1400x900 ?spotlight=1: collection frame marked data-screen-layout=spotlight-grid, compact header with 2 buttons and the utility bar visible; with matches exactly one real spotlight card in [data-spotlight-grid] at 30-45% of [data-spotlight-layout] width, tiles beside it, the row below it, an action on it; with no matches no spotlight card (empty state); no horizontal scroll LTR/RTL; ?view=board has no Spotlight grid; 390x844 has no Spotlight frame and shows the mobile bottom nav. Read-only, Say hello is never clicked.",
+      "spec": "tests/e2e/staging/vtid-05418-find-match-spotlight-grid.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "name": "FindMatchSpotlightBody: 1 labelled spotlight (top match) + 6 standard tiles + compact row, fewer matches never invent tiles, 0 matches = page empty state, loading = grid skeleton, Say hello / View profile / tile clicks call the page handlers, anonymous and mutual matches; matchToVCard mapping; FindPartner flag off = legacy match cards and no VCards, flag on = spotlight grid with exactly one spotlight, board view = shared result area; Groups keep 0 spotlight",
+      "ref": "npx vitest run src/components/community/spotlight/find-match-spotlight.test.tsx src/pages/community/social-spotlight-pages.vtid-05110.test.tsx",
+      "cwd": ".",
+      "reason": "The flag-on/flag-off render, the slot contents and the handlers are deterministic in jsdom; staging proves the proportion and chrome on the deployed build without writing anything."
+    }
+  ]
+}

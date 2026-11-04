@@ -2,7 +2,7 @@
   "kind": "design",
   "note": "VTID-04948 ratchet: per-file error counts may only go down",
   "counts": {
-    "C:\\Users\\dstev\\AppData\\Local\\Temp\\wt\\cb2\\src\\components\\AppLayout.tsx": 15,
+    "C:\\Users\\dstev\\AppData\\Local\\Temp\\wt\\cb2\\src\\components\\AppLayout.tsx": 7,
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\wt\\cb2\\src\\components\\dev\\DevSidebar.tsx": 14,
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\wt\\cb2\\src\\components\\mobile\\MobileBottomNav.tsx": 5,
     "C:\\Users\\dstev\\AppData\\Local\\Temp\\wt\\cb2\\src\\components\\mobile\\SideDrawerNav.tsx": 16,

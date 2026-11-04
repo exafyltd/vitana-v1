@@ -1,0 +1,17 @@
+# VTID-05415 (ci-dockerhub-mirror/v1-service-images) — commands
+base: origin/main 77ec05316 (vitana-v1), session kiro-exafyltd-202610311247-830c, Windows/pwsh
+
+$ npx vitest run src/lib/pr-ci-service-images.test.ts        # before the workflow edit
+  1 failed | 2 passed: the public.ecr.aws assertion names PR-GATE.yml:36, SQL-CALENDAR-ENTRY-SHARE.yml:28,
+  SQL-EVENT-SHARE-POSTS.yml:27, SQL-GROUP-PARTICIPANTS.yml:26, SQL-THREAD-JOIN-HARDENING.yml:27 (red-on-base.txt)
+
+$ npx vitest run src/lib/pr-ci-service-images.test.ts        # lane head
+  3 passed (green-on-head.txt)
+
+$ npm run test:unit                                           # local, Windows
+  Not usable as evidence on this host: ~31 files fail locally that this lane does not touch (source-text guards,
+  path separators, timeouts on Windows, e.g. no-dead-gcp-hosts, registry, gateway-tts). The lane changes only five
+  workflow image lines and adds one test file. The Linux CI check `Vitest (jsdom)` on the lane PR is the authority.
+
+CI proof: pr-gate on the lane PR passes "Initialize containers" with postgres:16 (Docker Hub); the four SQL-* workflows
+run on the PR (their paths filters list their own workflow file) and must be green.

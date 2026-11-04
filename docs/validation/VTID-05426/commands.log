@@ -1,0 +1,102 @@
+# VTID-05426 (native-wave2-memory-diary-r2/diary) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-memory-diary-r2-diary; base origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched.
+
+## Setup
+$ (apps/mobile) npm ci  -> added 938 packages
+$ (apps/mobile) npm install --save-exact expo-image-picker@57.0.20 expo-audio@57.0.5  -> added 3 packages
+  (versions = expo/bundledNativeModules.json for SDK 57: expo-image-picker ~57.0.20, expo-audio ~57.0.5; expo-av is not in SDK 57)
+$ (repo root) npm ci  -> added 872 packages
+
+## Red on base (detached worktree at origin/main + copied tests) — see red-on-base.txt
+$ npx jest tests/diary --ci  -> Test Suites: 3 failed, 3 total (Cannot find module 'expo-image-picker' / en/diaryNative.json)
+$ npx jest tests/app-config.test.ts --ci  -> Tests: 1 failed, 30 passed (plugin list lacks expo-image-picker, expo-audio)
+
+## apps/mobile (code = e96fae188; docs-only commits after it)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/diary --ci
+Test Suites: 3 passed, 3 total
+Tests:       60 passed, 60 total
+exit=0
+(first run: 2 failures fixed in the tests — a duplicate-text query and withPlugins needing _internal.projectRoot;
+ a toast auto-dismiss timer kept jest alive after gateway-i18n until its afterEach cleared the toasts)
+
+$ npx jest tests/orb/nav-directive --ci
+Tests:       13 passed, 13 total
+exit=0
+(first full run: 3 failures here — the test used MEMORY.DIARY as its "not ported yet" example, which this lane ports;
+ the example is now COMM.OVERVIEW -> /comm/events-meetups?tab=hot with the same assertions)
+
+$ npm test -- --ci   (HEAD 3249db50d)
+Test Suites: 79 passed, 79 total
+Tests:       2127 passed, 2127 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-6b0f6ae39481fa156245e97c6f75b4c1.hbc (17MB)
+_expo/static/js/android/entry-ec4eaf2fcaf755be4798e54042869545.hbc (17MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's home is read-only for ~/.expo; dist/ removed afterwards)
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ node ../../scripts/native/parity-ledger.mjs --sync   (repo root)
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change to the hand-flipped rows)
+
+$ npm run parity:check
+> node ../../scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 27 native route(s)
+exit=0
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0 (no core change: closure.generated.json and mobile-ci-paths.generated.json untouched)
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node scripts/check-locale-registry.mjs
+[locale-registry] OK — picker and supported_locales agree.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+0 key(s) whose EN source changed since translation in every locale
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+errors mentioning diaryNative: 0 (all reported errors are pre-existing)
+
+## repo root — web build + locale chunking + i18n vitest (the new shards are web catalog files)
+$ npm run build
+✓ built in 30.03s
+exit=0
+
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] OK — one chunk per lazy locale, de eager.
+exit=0
+
+$ npx vitest run src/i18n scripts/native
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0

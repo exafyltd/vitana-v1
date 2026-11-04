@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05415",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/lib/pr-ci-service-images.test.ts",
+      "reason": "CI-only change, the app bundle is unchanged: five PR CI service images move from public.ecr.aws to the same official postgres:16 on Docker Hub"
+    }
+  ]
+}

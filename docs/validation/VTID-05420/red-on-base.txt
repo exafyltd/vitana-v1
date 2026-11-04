@@ -1,0 +1,25 @@
+# Red on base: new tests run with only the test files changed (implementation = origin/main 988a3c507)
+# command: npx vitest run src/components/layout/spotlight src/components/ui/vcard
+
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+Warning: React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > renders 1 spotlight in its slot, 6 standard tiles and compact cards only in the row
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > places the spotlight at 2 of 5 columns (xl) / 2 of 4 (lg), spanning the tile rows
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > never renders more than 6 tiles
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > 3 tiles ΓåÆ 3 rendered, spotlight keeps col-span-2 and spans only the rows that exist
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > 0 tiles ΓåÆ the empty state fills the tile area and the spotlight is not widened
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > an omitted or empty row is not rendered
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > renders "See all" links for the section and the row when given
+ FAIL  src/components/layout/spotlight/spotlight-grid.test.tsx > VTID-05420 SpotlightGrid > uses logical properties only ΓÇö no physical left/right classes (RTL)
+ FAIL  src/components/layout/spotlight/spotlight.vtid-05105.test.tsx > VTID-05105 ScreenFrame > VTID-05420: layout="spotlight-grid" uses the full width and marks the frame; chrome is unchanged
+AssertionError: expected null to be 'spotlight-grid' // Object.is equality
+- Expected:
+ FAIL  src/components/layout/spotlight/spotlight.vtid-05105.test.tsx > VTID-05105 archetype skeletons > VTID-05420: layout="spotlight-grid" renders the grid shape (1 spotlight + 6 standard + 5 compact)
+AssertionError: expected null not to be null
+ FAIL  src/components/ui/vcard/VCard.test.tsx > VTID-05105 VCard > VTID-05420: spotlightLabel on a spotlight card adds the text label and the accent ring
+AssertionError: expected 'flex flex-col overflow-hidden roundedΓÇª' to contain 'ring-1'
+Expected: "ring-1"
+ FAIL  src/components/ui/vcard/VCard.test.tsx > VTID-05105 VCard > VTID-05420: spotlightLabel without a media src renders the token gradient art
+ FAIL  src/components/layout/spotlight/skeletons/SpotlightLoading.test.tsx > SpotlightLoading > VTID-05420: desktop layout="spotlight-grid" renders the grid skeleton shape
+ Test Files  4 failed | 4 passed (8)
+      Tests  13 failed | 65 passed (78)

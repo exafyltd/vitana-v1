@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05420",
+  "service": "community-app",
+  "lane": "spotlight-card-proportion/layout-core",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "SpotlightGrid, ScreenFrame layout opt-in, VCard spotlightLabel, grid skeletons (Vitest)",
+      "ref": "npx vitest run src/components/layout/spotlight src/components/ui/vcard",
+      "reason": "The lane adds opt-in layout primitives only (SR-31 SpotlightGrid, ScreenFrame layout=\"spotlight-grid\", the VCard Spotlight identity, grid skeletons); no screen uses them yet, so these Vitest suites are the proof and the staging bundle renders every current screen unchanged"
+    }
+  ],
+  "not_verified_on_staging": "The SR-31 Spotlight grid is opt-in (ScreenFrame layout=\"spotlight-grid\") and no screen uses it until a page lane (health, discover, events, find-a-match) lands; every current screen renders as before. The page lanes' read-only staging specs carry the visible proof."
+}
