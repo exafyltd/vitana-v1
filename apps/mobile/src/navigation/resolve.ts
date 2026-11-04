@@ -77,6 +77,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/support',
   '/wallet',
   '/wallet/balance',
+  '/wallet/rewards',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
