@@ -1,6 +1,8 @@
 # Plan sparring record — group-chat-realtime-status (VTID-05534)
 
-Copied from vitana-platform `.kiro/specs/group-chat-realtime-status/sparring` on branch kiro/group-chat-realtime-status/plan (head c3ad676950). Partner verdict: converged, approved by policy converged-auto-v1.
+Copied from vitana-platform `.kiro/specs/group-chat-realtime-status/sparring` on branch kiro/group-chat-realtime-status/plan (head c3ad676950). Partner verdict: CONVERGED after 3 rounds.
+
+**Owner approval:** not given by the owner. The plan was approved by policy `converged-auto-v1` at 2026-11-04T17:11:10Z (CI PLAN-SPAR), per the platform collaboration rule §7 that replaces Gate 1 for CI-sparred plans. Final plan hash `315c0db1bb642d5c4a62cd6a0a54faa8908c9597dd7d80c86928c712b3beae18`.
 
 ---
 
