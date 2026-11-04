@@ -1784,10 +1784,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PROFILE.ME",
@@ -1796,10 +1796,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PROFILE.PRIVACY",
@@ -1808,10 +1808,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PROFILE.PUBLIC",
@@ -1904,10 +1904,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.BILLING_CREATOR",
@@ -1916,10 +1916,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.BILLING_INVOICES",
@@ -1928,10 +1928,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.BILLING_PAYMENT",
@@ -1940,10 +1940,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.BILLING_PLAN",
@@ -1952,10 +1952,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.CONNECTED_APPS",
@@ -1976,10 +1976,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.NOTIFICATIONS",
@@ -1988,10 +1988,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.OVERVIEW",
@@ -2000,10 +2000,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PREFERENCES",
@@ -2012,10 +2012,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PREFERENCES_ACCESSIBILITY",
@@ -2024,10 +2024,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PREFERENCES_APPEARANCE",
@@ -2036,10 +2036,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PREFERENCES_LANGUAGE",
@@ -2048,10 +2048,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PRIVACY",
@@ -2060,10 +2060,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PRIVACY_DATA",
@@ -2072,10 +2072,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PRIVACY_SECURITY",
@@ -2084,10 +2084,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.PRIVACY_VISIBILITY",
@@ -2096,10 +2096,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SETTINGS.SOCIAL",
@@ -2168,10 +2168,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "SHARING.CAMPAIGNS",
@@ -2240,10 +2240,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.ACTIVITY",
@@ -2252,10 +2252,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE",
@@ -2264,10 +2264,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE_MEMBERSHIP",
@@ -2276,10 +2276,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE_OPTIMIZATION",
@@ -2288,10 +2288,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE_TOKENS",
@@ -2300,10 +2300,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.OVERVIEW",
@@ -2312,10 +2312,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.REWARDS",
@@ -2324,7 +2324,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2336,7 +2336,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2348,7 +2348,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null

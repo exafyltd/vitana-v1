@@ -1,0 +1,76 @@
+# VTID-05429 (native-wave2-profile-settings-r2/profile) — local verification log
+# Worktree: /projects/sandbox/vitana-v1/.worktrees/native-wave2-profile-settings-r2-profile
+# Base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce · Linux · Node v22.23.4 · 2026-11-01 (UTC)
+# Session: kiro-exafyltd-202611011658-9f52
+
+## setup
+$ cd apps/mobile && npm ci                                   -> added 938 packages (exit 0)
+$ npm ci   (repo root, for typescript / eslint / i18n scripts) -> added 872 packages (exit 0)
+
+## red on base (new tests on origin/main, before the implementation)
+$ cd apps/mobile && APP_PROFILE=development npm run gen:i18n && APP_PROFILE=development npx jest tests/profile
+  -> FAIL: Test Suites: 4 failed, 4 total; Tests: 0 total (Cannot find module src/screens/profile/*) — red-on-base.txt
+
+## apps/mobile (green)
+$ npm run typecheck                                          -> PASS (gen:i18n 11 locales, 1419 shards; tsc --noEmit 0 errors)
+$ APP_PROFILE=development npx jest tests/profile             -> PASS: Test Suites 4 passed / 4; Tests 38 passed / 38
+$ APP_PROFILE=development npm test                           -> PASS: Test Suites 80 passed / 80; Tests 2102 passed / 2102
+$ APP_PROFILE=development npm run bundle                     -> PASS: ios + android Hermes bundles exported to dist (dist removed after)
+    (run with HOME=<writable dir>: the sandbox cannot create /root/.expo; first attempt failed with ENOENT mkdir /root/.expo only)
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> PASS: "Dependencies are up to date"
+$ npm run parity:check                                       -> PASS: parity-ledger --check OK — 435 rows, 28 native route(s)
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync               -> 435 rows (added 0, updated 0, removed 0, stale kept 0)
+$ node scripts/native/parity-ledger.mjs --check              -> OK — 435 rows, 28 native route(s)
+$ node scripts/native/core-closure.mjs --check               -> up to date (22 roots, 32 src files, 11 assets; core unchanged)
+$ node scripts/native/check-shell-pins.mjs                   -> OK
+$ node scripts/native/gen-tokens.mjs --check                 -> up to date
+$ node --test scripts/native/__tests__/*.test.mjs            -> pass 68, fail 0
+$ node scripts/native/gen-core-extract.mjs --check           -> FAIL (pre-existing on origin/main: feed-compose.generated.ts,
+                                                               news-feed-ranker.generated.ts out of date; packages/core untouched by this lane)
+$ npx eslint apps/mobile packages                            -> PASS (0 problems)
+$ node scripts/i18n-register-check.mjs --all  (npm run i18n:register) -> PASS: "No formal-register violations."
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+                                                             -> first FAIL (profileNative "Dienstleistungsangebote", 23 chars),
+                                                                fixed to "Leistungsangebote" -> PASS "No long words found."
+$ node scripts/i18n-audit.mjs --report-only                  -> exit 0 (17k pre-existing _pending_review findings; none in profileNative)
+$ node scripts/i18n-stamp-source.mjs --check-all             -> exit 0 (0 stale keys)
+$ node scripts/check-locale-registry.mjs                     -> OK — picker and supported_locales agree
+$ npm run i18n:gate                                          -> 10 failing locale review-queue checks, pre-existing on origin/main
+                                                                (none in profileNative)
+$ node -e 'validateManifest(staging-tests.json)'  (vitana-platform scripts/ci/staging-verify/lib.cjs)
+                                                             -> {"ok":true,"errors":[]}
+
+## preflight
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD \
+    --branch kiro/native-wave2-profile-settings-r2/profile \
+    --title "VTID-05429 (native-wave2-profile-settings-r2/profile): native profile port"
+  -> first run: FAIL Collab handoff + Lane scope ("lanes/profile.md not found": GitHub API rate limit 0/5000, HTTP 403),
+     PR-GATE sparring ("no owner-approval line" — fixed in plan-sparring.md)
+  -> after the rate-limit reset: PASS Collab handoff, Lane scope, plan( PR lane files, PR-GATE scope / sparring /
+     weakening / red-green, Kiro steering — "preflight: every check passed"
+
+## review fix 1 (2026-11-01)
+$ git merge origin/main                                       -> conflict apps/mobile/src/navigation/resolve.ts (kept both sides) -> 20116662c
+$ cd apps/mobile && npm ci                                    -> added 941 packages
+$ npx jest tests/profile/uploads.test.tsx  (on 85861633 and 20116662c, temp worktree) -> FAIL: suite cannot run (red-fix1.txt)
+$ npx jest tests/profile/uploads.test.tsx --verbose           -> 19/19 pass
+$ npx jest tests/profile                                      -> 5 suites, 57/57 pass
+$ npx jest                                                    -> 88 suites, 2288/2288 pass
+$ npm run typecheck                                           -> pass
+$ APP_PROFILE=development npm run bundle                      -> PASS (needed __UNSAFE_EXPO_HOME_DIRECTORY: sandbox $HOME read-only); dist removed
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check   -> "Dependencies are up to date"
+$ npm run parity:check                                        -> OK — 435 rows, 33 native route(s)
+$ node scripts/native/core-closure.mjs --check                -> up to date
+$ node scripts/native/check-shell-pins.mjs                    -> OK
+$ node --test scripts/native/__tests__/*.test.mjs             -> 68 pass, 0 fail
+$ npx eslint apps/mobile packages                             -> 0 problems
+$ node scripts/i18n-register-check.mjs --all                  -> No formal-register violations.
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found.
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 536ac6848 (origin head) + this commit; edits: tests/profile/helpers.tsx, tests/profile/i18n-rtl.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/profile  (default workers, run 1 of 2)       -> 5 suites, 57/57 pass (27s, 2026-11-02T21:26Z)
+$ npx jest tests/profile  (default workers, run 2 of 2)       -> 5 suites, 57/57 pass (7s, 2026-11-02T21:27Z)
