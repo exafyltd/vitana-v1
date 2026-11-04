@@ -75,6 +75,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/settings/preferences',
   '/settings/tenant-role',
   '/support',
+  '/wallet',
+  '/wallet/balance',
 ];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');

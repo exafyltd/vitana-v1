@@ -1,0 +1,24 @@
+{
+  "vtid": "VTID-05422",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/wallet/index.tsx",
+    "apps/mobile/app/(app)/wallet/balance.tsx",
+    "apps/mobile/src/screens/wallet-home/**",
+    "apps/mobile/src/ports/wallet.ts",
+    "apps/mobile/src/ports/ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/wallet-home/**",
+    "apps/mobile/maestro/wallet-home/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/exchangeRates.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/walletHomeNative.json",
+    "docs/validation/VTID-05422/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05422/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

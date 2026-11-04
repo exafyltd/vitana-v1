@@ -1,0 +1,23 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Wybierz widok portfela",
+    "flow": {
+      "bankTransfer": "Przelew bankowy",
+      "bankTransferTime": "1–3 dni robocze",
+      "debitCard": "Karta debetowa",
+      "debitCardTime": "Natychmiast"
+    },
+    "balance": {
+      "tabsLabel": "Sekcje konta",
+      "statusActive": "Aktywne",
+      "statusHealthy": "Zdrowe",
+      "statusGrowing": "Rosnące",
+      "tierPremium": "Premium",
+      "creditsDescription": "Używaj kredytów na usługi zdrowotne, badania laboratoryjne i funkcje premium",
+      "creditsStatusDescription": "Twoje kredyty są aktywne i gotowe do użycia",
+      "tokensDescription": "Tokeny Vitana Network do współdecydowania i nagród",
+      "usdDescription": "Środki w dolarach amerykańskich i operacje fiat",
+      "membershipDescription": "75% pokrycia + ekskluzywne korzyści zdrowotne"
+    }
+  }
+}
