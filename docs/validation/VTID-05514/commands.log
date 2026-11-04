@@ -1,0 +1,2 @@
+$ git diff --numstat -- .github/workflows/     # six files, +6 lines each, 0 deletions
+$ grep -c "cancel-in-progress: ${{ github.event_name == 'pull_request' }}" <six files>   # 1 each
