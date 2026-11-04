@@ -486,6 +486,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   // bubbles the time inside it is revealed on hover / focus only.
   const revealTimeClass = showTime ? undefined : 'opacity-0 transition-opacity group-hover/bubble:opacity-100 group-focus-visible/bubble:opacity-100';
   const showSenderHeader = showAvatar && groupStart;
+  // The Vitana orb stays next to every Vitana bubble, not only the first of a group.
+  const isFromVitanaBot = isVitanaBot(message.sender_id || (message.sender as any)?.user_id);
+  const showOrbAvatar = showAvatar && (groupStart || isFromVitanaBot);
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
     : 'text-muted-foreground';
@@ -1399,7 +1402,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
         )}>
-          {showSenderHeader && (() => {
+          {showOrbAvatar && (() => {
             // VTID-04992: the sender's avatar opens their profile (the
             // Vitana assistant has none, so it stays a plain picture).
             const senderId = message.sender_id || (message.sender as any)?.user_id;
