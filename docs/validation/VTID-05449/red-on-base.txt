@@ -1,0 +1,64 @@
+# VTID-05449 red on base: tests/auth/* copied into a detached worktree at origin/main ec8682fec4ea06072b80c8a7ece1e729a3de4135
+# (cd apps/mobile && npm run gen:i18n && npx jest tests/auth/ --ci)  — stack frames trimmed
+
+FAIL tests/auth/confirm-links.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/auth/ConfirmedScreen' from 'tests/auth/confirm-links.test.tsx'
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { withDiscountCodes } from './helpers';
+    > 16 | import { ConfirmedScreen, CONFIRMED_REDIRECT_MS } from '../../src/screens/auth/ConfirmedScreen';
+         | ^
+      17 | import { confirmationState, roleRedirectUrl } from '../../src/auth/post-confirm';
+      18 | import { handleAuthLink, authLinkTarget } from '../../src/auth/link-bridge';
+      19 | import { resolveLink } from '../../src/linking/resolve-link';
+
+
+FAIL tests/auth/oauth-reset-logout.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/auth/OAuthConsentScreen' from 'tests/auth/oauth-reset-logout.test.tsx'
+
+      16 | import { G1_AUTH } from './helpers';
+      17 | import { OAuthCompleteScreen, OAUTH_COMPLETE_TIMEOUT_MS } from '../../src/screens/auth/OAuthCompleteScreen';
+    > 18 | import { OAuthConsentScreen } from '../../src/screens/auth/OAuthConsentScreen';
+         | ^
+      19 | import { ResetPasswordScreen } from '../../src/screens/auth/ResetPasswordScreen';
+      20 | import { LogoutScreen } from '../../src/screens/auth/LogoutScreen';
+      21 | import { consentAsBase, parseConsentRequest, submitConsentDecision } from '../../src/auth/oauth-consent';
+
+
+FAIL tests/auth/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    ENOENT: no such file or directory, open '/projects/sandbox/vitana-v1/.worktrees/auth-portals-redbase/src/i18n/de/authPortalsNative.json'
+
+      34 |   Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' ? flatten(v as Record<string, unknown>, `${p}${k}.`) : [`${p}${k}`]));
+      35 |
+    > 36 | const shard = (locale: string) => JSON.parse(readFileSync(join(REPO, 'src/i18n', locale, 'authPortalsNative.json'), 'utf8')) as Record<string, unknown>;
+         |                                                          ^
+      37 |
+      38 | const LANE_FILES = [
+      39 |   ...readdirSync(join(APP, 'src/screens/auth')).filter((f) => /\.tsx?$/.test(f)).map((f) => join(APP, 'src/screens/auth', f)),
+
+
+FAIL tests/auth/portals.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/auth/TenantPortalScreen' from 'tests/auth/portals.test.tsx'
+
+      16 | import { G1_AUTH, portalDouble, tenantRow } from './helpers';
+      17 | import { PortalScreen } from '../../src/screens/auth/PortalScreen';
+    > 18 | import { TenantPortalScreen } from '../../src/screens/auth/TenantPortalScreen';
+         | ^
+      19 | import { translate } from '../../src/i18n';
+      20 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+      21 | import { __setSupabaseForTests } from '../../src/auth/client';
+
+
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        19.848 s
+Ran all test suites matching /tests\/auth\//i.

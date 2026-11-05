@@ -9,6 +9,20 @@ import { useEffect, useState, type ComponentType, type ReactNode } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View, type StyleProp, type TextInputProps, type ViewStyle } from 'react-native';
 import {
   Activity,
+  ArrowDownLeft,
+  ArrowUpDown,
+  ArrowUpRight,
+  CirclePlus,
+  Coins,
+  CreditCard,
+  DollarSign,
+  Euro,
+  Gift,
+  Plus,
+  RefreshCw,
+  Send,
+  Sparkles,
+  TrendingUp,
   BarChart3,
   Bell,
   BookOpen,
@@ -59,6 +73,22 @@ import {
   Wallet,
   X,
   Zap,
+  // VTID-05432 (N-W2 support-connectors): the support + connectors glyphs.
+  Apple as AppleIcon,
+  Brain as BrainIcon,
+  CircleCheck as CircleCheckIcon,
+  Code as CodeIcon,
+  Contact as ContactIcon,
+  Hospital as HospitalIcon,
+  House as HouseIcon,
+  MessageCircle as MessageCircleIcon,
+  Mic as MicIcon,
+  Moon as MoonIcon,
+  Music as MusicIcon,
+  Phone as PhoneIcon,
+  Share2 as Share2Icon,
+  Trash2 as Trash2Icon,
+  Watch as WatchIcon,
   type LucideProps,
 } from 'lucide-react-native';
 import {
@@ -90,6 +120,27 @@ export { notify, notifyError } from '@vitana/ui';
 // contracts match the screens' needs, so these are plain re-exports.
 export { Button, Badge, Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, Skeleton, Slider } from '@vitana/ui';
 export type { ButtonProps, ButtonVariant, ButtonSize, BadgeProps, BadgeVariant, SliderProps } from '@vitana/ui';
+
+// VTID-05432 (N-W2 support-connectors) — the kit primitives the support and
+// connectors screens render (FAQ accordion, contact form, category select,
+// collapsible connector sections, mail-hub switches). Plain re-exports.
+export {
+  Accordion,
+  Checkbox,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  Switch,
+  Textarea,
+} from '@vitana/ui';
 
 // ── provider and theme ──────────────────────────────────────────────────
 /** The kit's root provider with the member's colour scheme and the language's direction. */
@@ -139,6 +190,21 @@ export function Text({ variant = 'body', ...rest }: KitTextProps & { variant?: V
  */
 const ICONS: Record<string, ComponentType<LucideProps>> = {
   Activity,
+  // VTID-05422 (wallet-home): the wallet hub / balance glyphs.
+  ArrowDownLeft,
+  ArrowUpDown,
+  ArrowUpRight,
+  CirclePlus,
+  Coins,
+  CreditCard,
+  DollarSign,
+  Euro,
+  Gift,
+  Plus,
+  RefreshCw,
+  Send,
+  Sparkles,
+  TrendingUp,
   BarChart3,
   Bell,
   BookOpen,
@@ -189,6 +255,21 @@ const ICONS: Record<string, ComponentType<LucideProps>> = {
   Wallet,
   X,
   Zap,
+  Apple: AppleIcon,
+  Brain: BrainIcon,
+  CircleCheck: CircleCheckIcon,
+  Code: CodeIcon,
+  Contact: ContactIcon,
+  Hospital: HospitalIcon,
+  House: HouseIcon,
+  MessageCircle: MessageCircleIcon,
+  Mic: MicIcon,
+  Moon: MoonIcon,
+  Music: MusicIcon,
+  Phone: PhoneIcon,
+  Share2: Share2Icon,
+  Trash2: Trash2Icon,
+  Watch: WatchIcon,
 };
 
 /** The icon names this port can draw (tests check the nav data against it). */

@@ -1,0 +1,20 @@
+# VTID-05425 fix 1 — red on the previous head (code of 9ad8c2d55, after merging origin/main ec8682fec; merge commit 8d8c0c6a9)
+# New test file apps/mobile/tests/wallet-subscriptions/billing-requests.test.tsx, before the actions.ts change.
+# The 3 'app default' tests fail: deferredBillingActions makes no call and shows the finishOnWeb toast. The 4 request-builder tests pass (gatewayBillingActions already had the web wire format, but was not wired).
+$ cd apps/mobile && npx jest tests/wallet-subscriptions/billing-requests.test.tsx --ci
+    ✓ choose plan: POST /billing/checkout/subscription {price_key}, JSON, answers the hosted URL (4 ms)
+    ✓ credit pack: POST /billing/checkout/credits {pack_key} (14 ms)
+    ✓ billing portal: POST /billing/portal with no body (1 ms)
+    ✓ redeem: POST /billing/redeem {code}
+    ✕ overview, free member: Choose / Buy / larger-plan Choose / Redeem post the web requests; checkout URLs are opened (1195 ms)
+    ✕ paid member: Manage and Withdraw open the billing portal (1069 ms)
+    ✕ storefront: a ?code= deep link redeems once and clears the param (1020 ms)
+  ● the app default BillingActions make the web requests and open the hosted page › overview, free member: Choose / Buy / larger-plan Choose / Redeem post the web requests; checkout URLs are opened
+    Expected: "https://checkout.example.invalid/sub"
+    Number of calls: 0
+  ● the app default BillingActions make the web requests and open the hosted page › paid member: Manage and Withdraw open the billing portal
+    Expected: "https://portal.example.invalid/session"
+    Number of calls: 0
+  ● the app default BillingActions make the web requests and open the hosted page › storefront: a ?code= deep link redeems once and clears the param
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 4 passed, 7 total

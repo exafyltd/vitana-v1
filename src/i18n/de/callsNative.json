@@ -1,0 +1,19 @@
+{
+  "callsNative": {
+    "incomingAudio": "Eingehender Audioanruf…",
+    "incomingVideo": "Eingehender Videoanruf…",
+    "accept": "Anruf annehmen",
+    "reject": "Anruf ablehnen",
+    "endCall": "Anruf beenden",
+    "calling": "Anruf läuft",
+    "videoCalling": "Videoanruf läuft",
+    "initializing": "Wird vorbereitet…",
+    "connecting": "Verbindung wird hergestellt…",
+    "connectionFailed": "Verbindung fehlgeschlagen",
+    "mute": "Mikrofon stummschalten",
+    "unmute": "Mikrofon einschalten",
+    "cameraOff": "Kamera ausschalten",
+    "cameraOn": "Kamera einschalten",
+    "unknownUser": "Unbekanntes Mitglied"
+  }
+}
