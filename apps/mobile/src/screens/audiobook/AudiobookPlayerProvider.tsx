@@ -121,6 +121,11 @@ export const RATE_KEY = 'vitana.audiobook.rate.v1';
 export const POSITION_PREFIX = 'vitana.audiobook.position.v1';
 /** How many rendered tracks to keep fetched ahead (current + prefetched), web BLOB_CACHE_MAX. */
 const PRELOAD_MAX = 3;
+/** A cached stream older than this is minted again: its Bearer token is the member's token from the moment it was minted. */
+const STREAM_MAX_AGE_MS = 5 * 60 * 1000;
+/** A stream descriptor in the preload cache, and when its Bearer token was read. */
+type CachedStream = { source: AudiobookSource; mintedAt: number };
+const isFresh = (stream: CachedStream) => Date.now() - stream.mintedAt < STREAM_MAX_AGE_MS;
 
 export function audiobookTrackPath(topicId: string, locale: string): string {
   return `/journey/audiobook/topics/${encodeURIComponent(topicId)}/audio?lang=${encodeURIComponent(locale)}`;
@@ -162,7 +167,10 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
   /** Awaiting the player's first status for this load (clears `loading`, reports errors). */
   const pendingLoadRef = useRef<{ seq: number; topicId: string } | null>(null);
   const finishedSeqRef = useRef(-1);
-  const preloaded = useRef(new Map<string, AudiobookSource>());
+  const preloaded = useRef(new Map<string, CachedStream>());
+  /** Bumped whenever the cache is emptied (account change, close): a stream minted before that is not cached. */
+  const cacheGenRef = useRef(0);
+  const streamUserRef = useRef(userId);
   const recordedRef = useRef(new Set<string>());
   const sleepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const loadSeq = useRef(0);
@@ -243,32 +251,52 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
 
   const trackKey = useCallback((topicId: string) => `${locale}:${topicId}`, [locale]);
 
+  /** Forgets one cached stream and clears its native preload (expo-audio keys preloads by URI alone). */
+  const dropStream = useCallback((key: string) => {
+    const stream = preloaded.current.get(key);
+    if (!stream) return;
+    preloaded.current.delete(key);
+    void clearAudiobookPreload(stream.source).catch(() => undefined);
+  }, []);
+
+  /** Empties the cache: every entry carries the Bearer token of the member it was minted for. */
+  const evictStreams = useCallback(() => {
+    cacheGenRef.current++;
+    for (const key of Array.from(preloaded.current.keys())) dropStream(key);
+  }, [dropStream]);
+
   const prefetchNext = useCallback(async () => {
     const nextTrack = queueRef.current[indexRef.current + 1];
     if (!nextTrack) return;
     const key = trackKey(nextTrack.topicId);
-    if (preloaded.current.has(key)) return;
+    const cached = preloaded.current.get(key);
+    if (cached && isFresh(cached)) return;
+    dropStream(key);
+    const gen = cacheGenRef.current;
     try {
       const source = await audiobookStreamSource(audiobookTrackPath(nextTrack.topicId, locale));
-      preloaded.current.set(key, source);
+      if (gen !== cacheGenRef.current) return; // the account changed or the player closed while minting
+      preloaded.current.set(key, { source, mintedAt: Date.now() });
       await preloadAudiobookSource(source);
+      if (gen !== cacheGenRef.current) void clearAudiobookPreload(source).catch(() => undefined);
     } catch {
       /* best effort */
     }
     // Bounded: drop the oldest fetched track that is not playing.
     while (preloaded.current.size > PRELOAD_MAX) {
-      const [oldKey, oldSource] = preloaded.current.entries().next().value as [string, AudiobookSource];
+      const [oldKey, oldStream] = preloaded.current.entries().next().value as [string, CachedStream];
       if (oldKey === loadedKeyRef.current) break;
       preloaded.current.delete(oldKey);
-      void clearAudiobookPreload(oldSource).catch(() => undefined);
+      void clearAudiobookPreload(oldStream.source).catch(() => undefined);
     }
-  }, [locale, trackKey]);
+  }, [dropStream, locale, trackKey]);
 
   const playIndex = useCallback(
-    async (index: number, resumeAt = 0) => {
+    async (index: number, resumeAt = 0, fromPrefetch = false): Promise<void> => {
       const target = queueRef.current[index];
       if (!target) return;
       const seq = ++loadSeq.current;
+      const gen = cacheGenRef.current;
       indexRef.current = index;
       setTrack(target);
       setPosition(resumeAt);
@@ -279,12 +307,26 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
       const audio = getAudio();
       try {
         const key = trackKey(target.topicId);
-        const source = preloaded.current.get(key) ?? (await audiobookStreamSource(audiobookTrackPath(target.topicId, locale)));
+        // Only the track right after the current one may reuse its prefetched stream. Every other load (start, retry,
+        // toggle, previous, a replay after an error) mints a stream with the member's current token.
+        const cached = preloaded.current.get(key);
+        let stream: CachedStream;
+        if (fromPrefetch && cached && isFresh(cached)) {
+          stream = cached;
+        } else {
+          dropStream(key);
+          stream = { source: await audiobookStreamSource(audiobookTrackPath(target.topicId, locale)), mintedAt: Date.now() };
+        }
         if (seq !== loadSeq.current) return; // a newer request won
+        if (gen !== cacheGenRef.current) {
+          // The account changed while minting: the stream may carry the previous member's token, so mint again.
+          void playIndex(index, resumeAt);
+          return;
+        }
         preloaded.current.delete(key);
-        preloaded.current.set(key, source);
+        preloaded.current.set(key, stream);
         pendingLoadRef.current = { seq, topicId: target.topicId };
-        audio.replace(source);
+        audio.replace(stream.source);
         loadedKeyRef.current = key;
         audio.setRate(rateRef.current);
         if (resumeAt > 0) await audio.seekTo(resumeAt);
@@ -299,11 +341,13 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
         setLoading(false);
       }
     },
-    [getAudio, locale, prefetchNext, trackKey],
+    [dropStream, getAudio, locale, prefetchNext, trackKey],
   );
 
   // web fetchTrackUrl's status rule (:184-185), asked when the player fails.
   classifyRef.current = (seq: number, topicId: string) => {
+    // The player failed on this topic's stream, so its token may be stale: the next play mints a new stream.
+    dropStream(trackKey(topicId));
     void (async () => {
       let kind: Exclude<AudiobookError, null> = 'network';
       try {
@@ -348,7 +392,7 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
       emitAudiobookEvent('audiobook_finished', {});
       return;
     }
-    void playIndex(nextIndex);
+    void playIndex(nextIndex, 0, true);
   }, [playIndex, recordListened, userId]);
   advanceRef.current = advance;
 
@@ -404,7 +448,7 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
   }, [getAudio, playIndex, trackKey]);
 
   const next = useCallback(() => {
-    if (indexRef.current + 1 < queueRef.current.length) void playIndex(indexRef.current + 1);
+    if (indexRef.current + 1 < queueRef.current.length) void playIndex(indexRef.current + 1, 0, true);
   }, [playIndex]);
 
   const previous = useCallback(() => {
@@ -447,6 +491,7 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
     audio.pause();
     loadSeq.current++;
     pendingLoadRef.current = null;
+    evictStreams();
     if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
     setSleepMinutes(0);
     setActive(false);
@@ -454,7 +499,7 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
     setEpisodeSummary(null);
     setError(null);
     setLoading(false);
-  }, [getAudio]);
+  }, [getAudio, evictStreams]);
 
   const retry = useCallback(() => {
     if (indexRef.current >= 0) void playIndex(indexRef.current, positionRef.current);
@@ -474,6 +519,13 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
     }
   }, [track, t]);
 
+  // Each cached stream carries the Bearer token of the member it was minted for: a change of member empties the cache.
+  useEffect(() => {
+    if (streamUserRef.current === userId) return;
+    streamUserRef.current = userId;
+    evictStreams();
+  }, [userId, evictStreams]);
+
   // Signing out stops playback.
   useEffect(() => {
     if (!userId && active) close();
@@ -482,7 +534,7 @@ export function AudiobookPlayerProvider({ children }: { children: ReactNode }): 
   useEffect(() => {
     const cache = preloaded.current;
     return () => {
-      cache.forEach((source) => void clearAudiobookPreload(source).catch(() => undefined));
+      cache.forEach((stream) => void clearAudiobookPreload(stream.source).catch(() => undefined));
       cache.clear();
       if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
       audioRef.current?.remove();

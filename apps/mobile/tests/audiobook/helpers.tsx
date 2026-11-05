@@ -52,12 +52,21 @@ export function audiobookGateway(routes: Record<string, Route>) {
   return { gateway: createGatewayFetch({ origin: ORIGIN, getAccessToken: () => TOKEN, fetchImpl }), requests };
 }
 
-function sessionClient(userId: string | null) {
-  const session = userId ? { ...fakeSession(userId), access_token: TOKEN } : null;
+/**
+ * The fake member's Supabase client. `getSession` reads the member at each call, so a test can rotate the token
+ * (`setToken`); `signIn` and `signOut` change the member and emit the auth events the app's AuthProvider listens to.
+ */
+function sessionClient(userId: string | null, token: string) {
+  let member = { userId, token };
+  const listeners = new Set<(event: string, session: unknown) => void>();
+  const current = () => (member.userId ? { ...fakeSession(member.userId), access_token: member.token } : null);
   return {
     auth: {
-      getSession: jest.fn(async () => ({ data: { session }, error: null })),
-      onAuthStateChange: jest.fn(() => ({ data: { subscription: { unsubscribe: () => undefined } } })),
+      getSession: jest.fn(async () => ({ data: { session: current() }, error: null })),
+      onAuthStateChange: jest.fn((cb: (event: string, session: unknown) => void) => {
+        listeners.add(cb);
+        return { data: { subscription: { unsubscribe: () => listeners.delete(cb) } } };
+      }),
       startAutoRefresh: jest.fn(),
       stopAutoRefresh: jest.fn(),
       signOut: jest.fn(async () => ({ error: null })),
@@ -69,19 +78,37 @@ function sessionClient(userId: string | null) {
     }),
     rpc: jest.fn(async () => ({ data: null, error: null })),
     functions: { invoke: jest.fn(async () => ({ data: null, error: null })) },
+    /** The member's token from now on (a refresh, or a rotated token). */
+    setToken(next: string) {
+      member = { ...member, token: next };
+    },
+    /** A member signs in: the app's auth listener gets SIGNED_IN with that member's session. */
+    signIn(nextUserId: string, nextToken: string) {
+      member = { userId: nextUserId, token: nextToken };
+      listeners.forEach((l) => l('SIGNED_IN', current()));
+    },
+    /** The member signs out: the app's auth listener gets SIGNED_OUT. */
+    signOut() {
+      member = { userId: null, token: member.token };
+      listeners.forEach((l) => l('SIGNED_OUT', null));
+    },
   };
 }
 
-/** Providers + the Audiobook player, a signed-in member (u-1) and the fake gateway. */
-export function audiobookWrapper(routes: Record<string, Route>, opts: { language?: string; signedIn?: boolean; client?: unknown; withPlayer?: boolean } = {}) {
-  const client = opts.client ?? sessionClient(opts.signedIn === false ? null : 'u-1');
+/**
+ * Providers + the Audiobook player, a signed-in member (u-1, with `token`) and the fake gateway. `member` drives the
+ * default session (`client` replaces it): `setToken`, `signIn` and `signOut` change the session under the player.
+ */
+export function audiobookWrapper(routes: Record<string, Route>, opts: { language?: string; signedIn?: boolean; token?: string; client?: unknown; withPlayer?: boolean } = {}) {
+  const member = sessionClient(opts.signedIn === false ? null : 'u-1', opts.token ?? TOKEN);
+  const client = opts.client ?? member;
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity }, mutations: { gcTime: Infinity } } });
   const Base = makeWrapper({ client, language: opts.language ?? 'en-US', queryClient });
   const gw = audiobookGateway(routes);
   __setGatewayForTests(gw.gateway);
   __setAudiobookOriginForTests(ORIGIN);
   const wrapper = ({ children }: { children: ReactNode }) => <Base>{opts.withPlayer === false ? children : <AudiobookPlayerProvider>{children}</AudiobookPlayerProvider>}</Base>;
-  return { wrapper, requests: gw.requests, queryClient };
+  return { wrapper, requests: gw.requests, queryClient, member };
 }
 
 // ── fixtures ─────────────────────────────────────────────────────────────

@@ -306,3 +306,54 @@ describe('Audiobook player — sign out', () => {
     session = undefined;
   });
 });
+
+describe('Audiobook player — stream tokens', () => {
+  const topicUri = (topicId: string) => `${ORIGIN}/api/v1/journey/audiobook/topics/${topicId}/audio?lang=en`;
+
+  it("a replay after an error sends the member's current token, not the one the stream was first minted with", async () => {
+    const { wrapper, member } = audiobookWrapper(baseRoutes({ 'GET /journey/audiobook/topics/T001/audio': withStatus(500) }));
+    render(<Harness />, { wrapper });
+    await settle();
+    await act(async () => fireEvent.press(screen.getByTestId('start')));
+    await settle();
+    expect(lastSource().headers.authorization).toBe(`Bearer ${TOKEN}`);
+    await act(async () => audio.emit({ isLoaded: false, error: 'HTTP 500' }));
+    await settle();
+    expect(screen.getByText(en('screens.audiobook.network'))).toBeTruthy();
+    // The session token rotates while the error is on screen.
+    member.setToken('token-rotated');
+    await act(async () => fireEvent.press(screen.getByTestId('audiobook-retry')));
+    await settle();
+    expect(lastSource()).toEqual({ uri: topicUri('T001'), headers: { 'x-vitana-active-role': 'community', authorization: 'Bearer token-rotated' } });
+  });
+
+  it("a second member who signs in within the same provider is never sent the first member's cached stream", async () => {
+    const { wrapper, member } = audiobookWrapper(baseRoutes(), { token: 'token-u-1' });
+    render(<Harness />, { wrapper });
+    await settle();
+    await act(async () => fireEvent.press(screen.getByTestId('start')));
+    await settle();
+    expect(lastSource().headers.authorization).toBe('Bearer token-u-1');
+    // The next topic is already fetched with the first member's token.
+    expect(audio.preload).toHaveBeenLastCalledWith(expect.objectContaining({ uri: topicUri('T002'), headers: expect.objectContaining({ authorization: 'Bearer token-u-1' }) }));
+    await act(async () => member.signOut());
+    await settle();
+    expect(screen.queryByTestId('audiobook-mini-player')).toBeNull();
+    expect(audio.clearPreloadedSource).toHaveBeenCalledWith(expect.objectContaining({ uri: topicUri('T002') }));
+
+    const replaced = player().replace.mock.calls.length;
+    const preloaded = audio.preload.mock.calls.length;
+    await act(async () => member.signIn('u-2', 'token-u-2'));
+    await settle();
+    await act(async () => fireEvent.press(screen.getByTestId('start')));
+    await settle();
+    await act(async () => fireEvent.press(screen.getByTestId('audiobook-next')));
+    await settle();
+    expect(lastSource()).toEqual({ uri: topicUri('T002'), headers: expect.objectContaining({ authorization: 'Bearer token-u-2' }) });
+    const sent = [...player().replace.mock.calls.slice(replaced), ...audio.preload.mock.calls.slice(preloaded)].map(
+      ([source]) => (source as { headers: Record<string, string> }).headers.authorization,
+    );
+    expect(sent).toContain('Bearer token-u-2');
+    expect(sent).not.toContain('Bearer token-u-1');
+  });
+});
