@@ -39,6 +39,13 @@
       ],
       "reason": "News cover-image selection and longevity-pillar mapping (getNewsImage, getArticlePillar, LONGEVITY_PILLARS). Imports nothing; pure. Used by the native NewsArticleCard twin and the news reader."
     },
+    "src/lib/exchangeRates.ts": {
+      "entry": "exchangeRates.ts",
+      "lanes": [
+        "wallet-home"
+      ],
+      "reason": "Wallet exchange-rate helpers (getCurrentExchangeRates, getExchangeRate, calculateExchange, getCurrencySymbol, convertFromUsd, convertToUsd, EUR_PER_USD). Imports nothing; pure. Used by the native wallet hub and balance screens."
+    },
     "src/components/vitana/vitana-card-catalog.ts": {
       "entry": "vitana-card-catalog.ts",
       "lanes": [
@@ -249,6 +256,41 @@
         "autopilot-audiobook"
       ],
       "reason": "Audiobook season order and queue helpers (AUDIOBOOK_SEASONS, seasonNumber). Imports nothing; pure. The native guided-journey catalog orders and labels its chapters with it."
+    },
+    "src/lib/messaging/grouping.ts": {
+      "entry": "messaging-grouping.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Message grouping positions (groupPositions, isGroupStart, isGroupEnd). Imports nothing; pure. Used by the native conversation and group chat lists."
+    },
+    "src/lib/mentions.ts": {
+      "entry": "mentions.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "@mention helpers (findActiveMentionToken, insertMention, addMention, pruneMentions, splitMentionSegments, filterLocalCandidates). Imports nothing; pure. Used by the native composer and message bubble."
+    },
+    "src/lib/messaging/groupSystemNotice.ts": {
+      "entry": "group-notice.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Group system-notice text (describeGroupNotice, noticeName). Imports nothing; pure. Used by the native message bubble and members modal."
+    },
+    "src/lib/messaging/groupManagement.ts": {
+      "entry": "group-management.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Group rename / participant deactivate over an injected client (renameGlobalGroup, deactivateParticipant). Imports nothing; pure. Used by the native members modal."
+    },
+    "src/lib/chatMarkdown.ts": {
+      "entry": "chat-markdown.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Vitana chat-reply Markdown parser (parseChatMarkdown, parseChatInline, MdBlock, MdInline). Imports nothing; pure. Used by the native message bubble for the Vitana bot's replies (VTID-05193)."
     }
   }
 }

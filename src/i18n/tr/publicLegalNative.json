@@ -1,0 +1,14 @@
+{
+  "publicLegalNative": {
+    "brandVitana": "VITANA",
+    "brandMaxina": "Maxina",
+    "brandMaxinaCaps": "MAXINA",
+    "maxinaInitial": "M",
+    "localeDe": "DE",
+    "localeEn": "EN",
+    "fullStop": ".",
+    "listNumber": "{n}.",
+    "bullet": "•",
+    "copyright": "© 2026 {text}"
+  }
+}
