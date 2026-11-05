@@ -8,6 +8,7 @@
  * this port.
  */
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 import { useAuth } from '../../auth/AuthProvider';
 import { Button, Spinner, Text, useUITheme } from '../../ports/events';
 import { eventGamePhase } from './data/eventGame';
@@ -16,7 +17,7 @@ import { useEventsText } from './text';
 
 const BULLETS = ['eventGame.landing.bulletClimb', 'eventGame.landing.bulletLikes', 'eventGame.landing.bulletPost', 'eventGame.landing.bulletWin'];
 
-export function EventGameScreen({ slug }: { slug?: string; publicLanding?: boolean }) {
+export function EventGameScreen({ slug, publicLanding = false }: { slug?: string; publicLanding?: boolean }) {
   const text = useEventsText();
   const { colors } = useUITheme();
   const { user } = useAuth();
@@ -26,8 +27,16 @@ export function EventGameScreen({ slug }: { slug?: string; publicLanding?: boole
   const phase = g ? eventGamePhase(g, new Date()) : null;
   const join = useEventGameJoin(g?.id);
   const board = useEventGameLeaderboard(g?.id, phase === 'live' || phase === 'ended');
+  // With no active tenant the flag query never runs: the public landing still shows the game, the signed-in game does not.
+  const flagOff = publicLanding ? flag.data === false : flag.data !== true;
+  // A guest who taps Join goes through sign-in and comes back to this game (web EventGamePublicLanding.handleJoin).
+  const gamePath = publicLanding && slug ? `/e/game/${slug}` : '/community/event-game';
+  const onJoin = () => {
+    if (user) join.join.mutate();
+    else router.push(`/maxina?redirectTo=${encodeURIComponent(gamePath)}` as never);
+  };
 
-  if (game.isPending || flag.isPending) {
+  if (game.isLoading || flag.isLoading) {
     return (
       <View testID="event-game-loading" style={styles.center}>
         <Spinner />
@@ -41,7 +50,7 @@ export function EventGameScreen({ slug }: { slug?: string; publicLanding?: boole
       </View>
     );
   }
-  if (flag.data !== true || !g) {
+  if (flagOff || !g) {
     return (
       <View testID="event-game-disabled" style={styles.center}>
         <Text variant="body">{text.t('eventGame.landing.disabled')}</Text>
@@ -74,11 +83,11 @@ export function EventGameScreen({ slug }: { slug?: string; publicLanding?: boole
             <Text testID="event-game-joined" variant="title">
               {text.t('eventGame.join.celebrateTitle')}
             </Text>
-          ) : user ? (
-            <Button testID="event-game-join" disabled={join.join.isPending} onPress={() => join.join.mutate()}>
+          ) : (
+            <Button testID="event-game-join" disabled={join.join.isPending} onPress={onJoin}>
               {text.t('eventGame.landing.ctaJoin')}
             </Button>
-          ) : null}
+          )}
         </View>
       ) : null}
 
