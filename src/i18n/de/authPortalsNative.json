@@ -1,0 +1,28 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "Die E-Mail-Bestätigung wurde abgebrochen oder der Link ist abgelaufen.",
+        "linkExpired": "Der Bestätigungslink ist abgelaufen. Bitte fordere einen neuen an.",
+        "generic": "Bei der E-Mail-Bestätigung ist ein Fehler aufgetreten.",
+        "signInToContinue": "Bitte melde dich an, um fortzufahren."
+      }
+    },
+    "alkalmaConfirmed": {
+      "title": "Willkommen bei AlKalma!",
+      "body": "Deine E-Mail-Adresse wurde erfolgreich bestätigt",
+      "journey": "Deine Gesundheitsreise auf Arabisch beginnt jetzt",
+      "redirecting": "Du wirst in wenigen Sekunden zu deinem Dashboard weitergeleitet …",
+      "continue": "Weiter zum Dashboard",
+      "footer": "Eine umfassende Gesundheitsplattform auf Arabisch"
+    },
+    "reset": {
+      "updatePassword": "Passwort aktualisieren",
+      "showPassword": "Passwort anzeigen",
+      "hidePassword": "Passwort verbergen"
+    },
+    "resend": {
+      "prompt": "E-Mail nicht erhalten? Erneut senden"
+    }
+  }
+}
