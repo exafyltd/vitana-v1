@@ -1016,10 +1016,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MARKETPLACE",
@@ -1028,10 +1028,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MARKETPLACE_MINE",
@@ -1040,10 +1040,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MARKETPLACE_OPEN",
@@ -1052,10 +1052,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MY_TICKETS",
@@ -1064,10 +1064,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.ORDERS",
@@ -1076,10 +1076,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.ORDERS_ACTIVE",
@@ -1088,10 +1088,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.ORDERS_HISTORY",
@@ -1100,10 +1100,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.OVERVIEW",
@@ -1136,10 +1136,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.SHARE_EARN",
@@ -2432,10 +2432,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "journey-autopilot",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "/calendar/entry/:entryId",

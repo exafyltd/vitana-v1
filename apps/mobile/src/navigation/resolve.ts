@@ -46,6 +46,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/apply',
   '/auth/confirmed',
   '/autopilot',
+  '/autopilot/audiobook',
   '/comm/events-meetups',
   '/comm/find-partner',
   '/comm/groups',
@@ -55,6 +56,9 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/connectors',
   '/delete-account',
   '/daily-diary',
+  '/discover/doctors-coaches',
+  '/discover/marketplace',
+  '/discover/orders',
   '/dev/orb-bench',
   '/home',
   '/home/comments',
@@ -75,6 +79,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/memory/permissions',
   '/memory/recall',
   '/memory/timeline',
+  '/my-tickets',
   '/native-ui-catalogue',
   '/oauth/complete',
   '/oauth/consent',
@@ -96,6 +101,13 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/wallet/rewards',
   '/wallet/subscriptions',
 ];
+
+/**
+ * Dynamic native route files (`app/**\/[param].tsx`) a lane resolves as native, so
+ * the ORB and deep links treat them like the concrete routes above (the
+ * catch-all would otherwise call them unported). VTID-05511: the provider profile.
+ */
+export const NATIVE_PATTERNS: readonly string[] = ['/discover/provider/:id'];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 
@@ -141,6 +153,7 @@ export function resolveWebPath(url: string, depth = 0): Resolution {
   const { path, query } = split(url.startsWith('/') ? url : `/${url}`);
 
   if (NATIVE_ROUTES.includes(path)) return { kind: 'native', href: href(path, query), path, query };
+  if (NATIVE_PATTERNS.some((p) => matchPattern(p, path))) return { kind: 'native', href: href(path, query), path, query };
 
   // A web route the phone shows elsewhere: follow the alias (most specific query first).
   const alias = ALIASES.filter((a) => matchPattern(a.route, path) && queryMatches(split(a.route).query, query)).sort(

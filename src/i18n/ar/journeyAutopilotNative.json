@@ -36,6 +36,10 @@
     },
     "calendar": {
       "upcomingCount": "{count} أحداث قادمة"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
     }
   }
 }

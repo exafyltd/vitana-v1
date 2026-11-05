@@ -70,9 +70,10 @@
     "src/lib/exchangeRates.ts": {
       "entry": "exchangeRates.ts",
       "lanes": [
-        "wallet-home"
+        "wallet-home",
+        "marketplace-orders"
       ],
-      "reason": "Wallet exchange-rate helpers (getCurrentExchangeRates, getExchangeRate, calculateExchange, getCurrencySymbol, convertFromUsd, convertToUsd, EUR_PER_USD). Imports nothing; pure. Used by the native wallet hub and balance screens."
+      "reason": "Wallet exchange-rate helpers (getCurrentExchangeRates, getExchangeRate, calculateExchange, getCurrencySymbol, convertFromUsd, convertToUsd, EUR_PER_USD). Imports nothing; pure. Used by the native BookingPaymentFlow twin (marketplace-orders: getExchangeRate, formatCurrency) and the native wallet hub and balance screens."
     },
     "src/components/vitana/vitana-card-catalog.ts": {
       "entry": "vitana-card-catalog.ts",
