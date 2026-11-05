@@ -57,7 +57,7 @@ export function selectTabEvents(tab: EventsTab, events: CommunityEvent[], follow
       return s >= today && s < tomorrow;
     }).sort(byStart);
   }
-  if (tab === 'upcoming') return events.filter((e) => new Date(e.start_time).getTime() >= tomorrow).sort(byStart);
+  if (tab === 'upcoming') return events.filter((e) => new Date(e.start_time).getTime() >= now.getTime()).sort(byStart);
   if (tab === 'following') {
     const followed = new Set(followingIds);
     return events.filter((e) => followed.has(e.created_by) && new Date(e.start_time).getTime() >= today).sort(byStart);
