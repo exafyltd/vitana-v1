@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05531",
+  "service": "community-app",
+  "_note": "Native events and meetups lane (native-wave2-events-calendar-r3/events-meetups). The port is proven offline: jest-expo + RNTL with the Supabase double and a fake gateway, no network. The native app has no production profile. Device runtime (Maestro, simulator and emulator screenshots, parity against the read-only staging web) waits for G1 and is listed under deferred_g1; nothing here runs against staging.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suites import; npm test runs it as pretest, a direct npx jest does not" },
+    { "kind": "existing", "ref": "npx jest tests/events", "cwd": "apps/mobile",
+      "reason": "events and meetups unit tests (5 suites, 46 tests): data layer (list read and enrichment, following feed, public resolver, writes, form rules), hub states and tabs, card to drawer, create and edit forms, public and game landings, core entries, route wiring, eventsNative shard in 11 locales, and the lane source rules (no physical left/right, no raw locale calls)" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the events screens, the events port and the data layer type-check against the shell ports, the N2 kit and the core entries" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the twelve events-calendar rows of this lane are native and their routes exist under apps/mobile/app/" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the five route files and the core entries (run with APP_PROFILE=development and EXPO_NO_TELEMETRY=1 in the sandbox)" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/events/01-events-hub.yaml", "target": "/comm/events-meetups", "next_actor": "owner",
+      "reason": "sign in, open the hub, switch hot, today, upcoming and following, open a card and close its drawer (read only); screenshot parity at 390x844 against the read-only staging web /comm/events-meetups; needs G1 and macOS minutes for iOS" },
+    { "flow": "apps/mobile/maestro/events/02-public-and-game.yaml", "target": "/e/:slug, /pub/events/:id, /e/game/:slug", "next_actor": "owner",
+      "reason": "open a public event landing and the game landing by its share link (read only; the game join is not pressed against staging); needs G1" }
+  ]
+}

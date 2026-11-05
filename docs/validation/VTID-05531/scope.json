@@ -1,0 +1,32 @@
+{
+  "vtid": "VTID-05531",
+  "lane": "native-wave2-events-calendar-r3/events-meetups",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/comm/events-meetups/index.tsx",
+    "apps/mobile/app/(app)/community/event-game.tsx",
+    "apps/mobile/app/(app)/e/[slug].tsx",
+    "apps/mobile/app/(app)/e/game/[slug].tsx",
+    "apps/mobile/app/(app)/pub/events/[id].tsx",
+    "apps/mobile/src/screens/events/**",
+    "apps/mobile/src/ports/events.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/events/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/events-hot.ts",
+    "packages/core/src/virtual-link.ts",
+    "packages/core/src/event-cover-image.ts",
+    "packages/core/src/profile-path.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/*/eventsNative.json",
+    "docs/validation/VTID-05531/**"
+  ],
+  "outside_lane_paths": [
+    "apps/mobile/tests/orb/nav-directive.test.ts (not changed here; its unported example COMM.OVERVIEW is now native, see verification.md)"
+  ],
+  "protected_gate_files_changed": [],
+  "migrations": [],
+  "web_files_changed": []
+}

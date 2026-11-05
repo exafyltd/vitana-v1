@@ -1,0 +1,30 @@
+VTID-05531 · native-wave2-events-calendar-r3/events-meetups · branch kiro/vtid-05531-events-meetups-lane
+Base: origin/main 488dd8db6. Session kiro-exafyltd-202611011658-9f52.
+Sandbox note: /tmp is a per-call tmpfs, so logs were written under /projects/sandbox/.lane-logs-05531 (outside the repo).
+
+Setup
+- git fetch origin main: ok. The plan branch exists in vitana-platform (not vitana-v1): git -C vitana-platform fetch origin: ok.
+- git worktree add /projects/sandbox/wt-vtid-05531-events-meetups-lane -b kiro/vtid-05531-events-meetups-lane origin/main: ok.
+- apps/mobile: npm ci: ok (531 entries). Repo root: npm ci --ignore-scripts: ok (872 packages, needed for core-closure's typescript).
+
+Red on base (first commit of this branch, "test(VTID-05531): events hub, forms, landings, data and wiring tests (red on base)")
+- npx jest tests/events --ci on origin/main code + the new tests: 5 suites FAIL to run, 0 tests executed (missing @vitana/core/events-hot, virtual-link, event-cover-image, profile-path entries; missing screens/events data layer, ports/events, EventFormSheet, PublicEventScreen). Output: docs/validation/VTID-05531/red-on-base.txt.
+
+Implementation and checks (final head: see the PR)
+- npm run gen:i18n + npm run typecheck (apps/mobile): exit 0, 0 TS errors. (One earlier run failed on a test fixture type; fixed with a typed fixture helper.)
+- node scripts/native/core-closure.mjs --write: 37 roots, 47 src files, 11 assets. --check: up to date. (Re-run after the four core entries.)
+- npx jest tests/events --ci (run A, default workers): 5 suites PASS, 46/46 tests PASS, 26.4 s.
+- npx jest tests/events --ci (run B, default workers): 5 suites PASS, 46/46 tests PASS, 28.7 s.
+- npm test (full, apps/mobile): 150 suites: 149 PASS, 1 FAIL (tests/orb/nav-directive.test.ts, 3 failing tests). Total 4048 passed / 4051. All three failures pin COMM.OVERVIEW (/comm/events-meetups?tab=hot) as the example of an unported screen (lines 42, 147-154, 213). This lane ports that screen, so the resolver now returns "opened". The file is outside this lane's paths; see verification.md.
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: exit 0 (dependencies match the pinned SDK).
+- APP_PROFILE=development npm run bundle: exit 7 in the sandbox with telemetry on (ENOENT mkdir /root/.expo from Expo's telemetry, not from the code). With EXPO_NO_TELEMETRY=1: exit 0; iOS 5972 modules, Android 6075 modules, exported to dist/.
+- npm run parity:check: OK, 435 rows, 75 native routes (12 events-calendar rows flipped to native, owner kiro, last_parity_check 2026-11-05).
+- node --test on the 10 files in scripts/native/__tests__/: 69 tests, 69 pass. (`node --test <directory>` is not supported by this Node version, so the files were passed one by one.)
+- node scripts/native/check-shell-pins.mjs: OK (guest paths match App.tsx).
+- npm run i18n:register (root): exit 0, no formal-register violations (the eventsNative shard uses du-form in DE; no Sie/Ihr).
+- npm run i18n:stale (root): exit 0.
+- npm run i18n:gate (root): exit 1, 10 failing checks, all review-queue counts and admin keys in existing shards (none mention eventsNative). The gate also needs SUPABASE_SERVICE_ROLE, which this sandbox does not have. Not caused by this lane; not fixed here.
+- git status after the checks: only the intended files; dist/ is build output (ignored).
+
+Not run (G1 or owner gates)
+- Maestro, simulator and emulator screenshots, real sign-in, staging reads: deferred to G1 (task 8, next_actor owner).
