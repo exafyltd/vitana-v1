@@ -73,6 +73,8 @@ export interface EventForm {
   date: string;
   startTime: string;
   endTime: string;
+  /** Whole days from the start date to the end date (1 when the event ends after midnight). Absent means 0. */
+  endDayOffset?: number;
   location: string;
   isVirtual: boolean;
   virtualLink: string;
@@ -221,11 +223,20 @@ function validTime(value: string): boolean {
   return !!m && Number(m[1]) <= 23 && Number(m[2]) <= 59;
 }
 
-/** A local Date from the form's date (YYYY-MM-DD) and time (HH:MM) strings. */
-export function localDateTime(date: string, time: string): Date {
+/** A local Date from the form's date (YYYY-MM-DD) and time (HH:MM) strings, `dayOffset` days after that date. */
+export function localDateTime(date: string, time: string, dayOffset = 0): Date {
   const [y, mo, d] = date.trim().split('-').map(Number);
   const [h, mi] = time.trim().split(':').map(Number);
-  return new Date(y, mo - 1, d, h, mi, 0, 0);
+  return new Date(y, mo - 1, d + dayOffset, h, mi, 0, 0);
+}
+
+/** Whole local calendar days from the start's date to the end's date: 0 for a same-day event, 1 when it ends after midnight. */
+export function calendarDaysBetween(start: string, end: string): number {
+  const s = new Date(start);
+  const e = new Date(end);
+  const startDay = new Date(s.getFullYear(), s.getMonth(), s.getDate()).getTime();
+  const endDay = new Date(e.getFullYear(), e.getMonth(), e.getDate()).getTime();
+  return Math.round((endDay - startDay) / DAY_MS);
 }
 
 /** The first field that blocks submit, or null. Order matches the form. */
@@ -237,7 +248,7 @@ export function validateEventForm(form: EventForm, now: Date): EventFormField | 
   const start = localDateTime(form.date, form.startTime);
   if (start.getTime() < now.getTime()) return 'startTime';
   if (form.endTime.trim()) {
-    if (!validTime(form.endTime) || localDateTime(form.date, form.endTime) <= start) return 'endTime';
+    if (!validTime(form.endTime) || localDateTime(form.date, form.endTime, form.endDayOffset) <= start) return 'endTime';
   }
   if (!form.isVirtual && !form.location.trim()) return 'location';
   return null;
@@ -253,7 +264,7 @@ export function buildEventInput(form: EventForm): EventInput {
     location: form.isVirtual ? null : form.location.trim() || null,
     virtual_link: form.isVirtual && isHttpUrl(link) ? toVirtualLink(true, link) ?? null : null,
     start_time: localDateTime(form.date, form.startTime).toISOString(),
-    end_time: form.endTime.trim() ? localDateTime(form.date, form.endTime).toISOString() : null,
+    end_time: form.endTime.trim() ? localDateTime(form.date, form.endTime, form.endDayOffset).toISOString() : null,
     max_participants: form.capacity.trim() ? Number.parseInt(form.capacity, 10) : null,
   };
 }

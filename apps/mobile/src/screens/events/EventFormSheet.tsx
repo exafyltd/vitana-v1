@@ -9,7 +9,7 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BottomSheet, Button, Text, TextInput, notify, notifyError, useUITheme } from '../../ports/events';
-import { buildEventInput, validateEventForm, type CommunityEvent, type EventForm, type EventFormField } from './data/events';
+import { buildEventInput, calendarDaysBetween, validateEventForm, type CommunityEvent, type EventForm, type EventFormField } from './data/events';
 import { useEventMutations } from './data/hooks';
 import { useEventsText } from './text';
 
@@ -29,6 +29,7 @@ export function initialEventForm(kind: 'event' | 'meetup', event?: CommunityEven
     date: toDateInput(start),
     startTime: toTimeInput(start),
     endTime: event.end_time ? toTimeInput(new Date(event.end_time)) : '',
+    endDayOffset: event.end_time ? calendarDaysBetween(event.start_time, event.end_time) : 0,
     location: event.location ?? '',
     isVirtual: !!event.virtual_link,
     virtualLink: event.virtual_link ?? '',
