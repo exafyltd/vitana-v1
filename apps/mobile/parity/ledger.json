@@ -2840,9 +2840,9 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
+      "owner": "kiro",
       "last_parity_check": null
     },
     {

@@ -68,6 +68,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/oauth/complete',
   '/profile/me/privacy',
   '/profile/subscriptions',
+  '/redeem',
   '/reset-password',
   '/search',
   '/settings',
