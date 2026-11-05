@@ -42,3 +42,20 @@ Head e28ccc7e3 (CI lint fix, pushed to kiro/native-wave2-events-calendar-r3/even
 - npm run typecheck: exit 0, 0 TS errors.
 - npx jest tests/events --ci: 5 suites, 46/46 PASS.
 - npm test (full): 150/150 suites, 4051/4051 tests PASS, exit 0.
+
+Review findings a to d (fix pass, from head ed809943; fast-forward push)
+- git fetch origin main: vitana-v1 fcc1e451b; vitana-platform 9f239e17 (plan commit 2b7a6ee9 is an ancestor). Lane spec read from origin/main: .kiro/specs/native-wave2-events-calendar-r3/lanes/events-meetups.md.
+- git merge --no-ff origin/main: one conflict, apps/mobile/src/navigation/resolve.ts. Both route lines kept in sorted order (/autopilot/audiobook, /comm/events-meetups). Merge commit 15319773d. Generated files were already current after the merge (gen:i18n output is gitignored).
+- Typecheck after the merge (npm run typecheck, apps/mobile): exit 0. parity:check: OK, 435 rows, 81 native routes. core-closure --check: up to date.
+- Red tests first (commit 7000245c9): npx jest tests/events --ci on the merge: 6 failed, 45 passed, 51 total. The six are the tests for findings a to d. Output: docs/validation/VTID-05531/review-fixes-red.txt.
+- Fixes: (a) 8f5e9afbc, (b) b95a7ea0e, (c) 6dd721ff5, (d) c5f0efa9f.
+- Typecheck on the fixed code (npm run typecheck, apps/mobile): exit 0, 0 TS errors.
+- npx jest tests/events --ci, run 1 (default workers): 5 suites PASS, 51/51 tests PASS.
+- npx jest tests/events --ci, run 2 (default workers): 5 suites PASS, 51/51 tests PASS.
+- npx jest tests/orb/nav-directive.test.ts tests/orb/url-polyfill.test.ts tests/core/reexports.test.ts tests/orb/session.test.ts tests/orb/fake-gateway.test.ts --ci: 5 suites PASS, 71/71 tests PASS.
+- parity:check: OK, 435 rows, 81 native routes. core-closure --check: up to date.
+- npm test (full, apps/mobile) on code at c5f0efa9f: 157/159 suites, 4276/4282 tests, exit 1, 365 s. The two failing suites are tests/journey/fix1.test.tsx and tests/memory/gateway-i18n.test.tsx (6 tests). Neither is in the lane paths and neither was changed. Both timed out under load: loadavg was 11 to 18 on 8 cores during the run. Run alone, both pass: 2/2 suites, 67/67 tests.
+- npm run lint (eslint on src/screens/events, tests/events, src/ports/events.tsx, src/navigation/resolve.ts and the lane route files): exit 0.
+- APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle: exit 0 (iOS and Android exported to dist/). Output: docs/validation/VTID-05531/review-fixes-bundle.txt.
+- preflight (vitana-platform/scripts/collab/preflight.mjs, --base origin/main, --branch kiro/native-wave2-events-calendar-r3/events-meetups): exit 1. Lane scope and PR-GATE scope both name only apps/mobile/tests/orb/nav-directive.test.ts, the approved Option C file, which sits outside the lane paths. The earlier "lane file not found" error is gone because the spec is on vitana-platform main. Output: docs/validation/VTID-05531/review-fixes-preflight.txt.
+- Not rerun in this pass: deps:check and the i18n checks (no i18n files changed), Maestro and device runs (deferred to G1).
