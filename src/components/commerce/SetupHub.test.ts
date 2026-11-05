@@ -2,7 +2,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, expect, it } from 'vitest';
-import { deriveSetupSteps, openSteps, parseChecklist, readinessPercent, reviewNote, submitMode, submitResultFor } from './SetupHub';
+import { deriveSetupSteps, groupOpenSteps, openSteps, parseChecklist, readinessPercent, reviewNote, submitMode, submitResultFor } from './SetupHub';
 
 const fresh = { country: 'DE', website: null, lifecycleState: 'draft', productCount: 0, hasMerchant: false };
 const state = (f: Parameters<typeof deriveSetupSteps>[0]) => Object.fromEntries(deriveSetupSteps(f).map((s) => [s.id, s.state]));
@@ -82,7 +82,7 @@ describe('VTID-05136 verification row follows the checklist', () => {
 });
 
 describe('VTID-05136 still needed', () => {
-  it('lists required todo/failed steps only — never done, in_progress or not_required', () => {
+  it('lists required todo/failed steps only — never done or not_required, and no in_progress step the server gave no owner (VTID-05237)', () => {
     const c = checklist([
       ...withStep('verification', { status: 'in_progress' }).map((s) => (s.key === 'terms' ? { ...s, status: 'failed' } : s)),
       { key: 'dpa', status: 'todo' },
@@ -145,5 +145,84 @@ describe('Commerce portal: first-time suppliers start registering right away', (
   it('shows the setup hub to a business admin', () => {
     expect(portal).toContain('{user && hubOrg && (');
     expect(portal).toContain('<SetupHub');
+  });
+});
+
+// VTID-05237: who can finish each open step. The gateway decides (`owner` on the step); the screen only groups.
+describe('VTID-05237 who finishes each open step', () => {
+  const owned = (key: string, owner: unknown, patch: Partial<Raw> = {}): Raw & { owner?: unknown } => ({ key, status: 'todo', owner, ...patch });
+
+  it('parseChecklist keeps the gateway owner; an owner it does not know counts as the supplier; none stays none', () => {
+    const c = parseChecklist({
+      steps: [
+        { key: 'company', required: true, status: 'todo', owner: 'assistant' },
+        { key: 'terms', required: true, status: 'todo', owner: 'supplier' },
+        { key: 'verification', required: true, status: 'in_progress', owner: 'vitanaland' },
+        { key: 'catalogue', required: true, status: 'todo', owner: 'robot' },
+        { key: 'mapping', required: true, status: 'todo', owner: 42 },
+        { key: 'team', required: true, status: 'todo' },
+      ],
+      submit_ready: true,
+    });
+    expect(c?.steps.map((s) => s.owner)).toEqual(['assistant', 'supplier', 'vitanaland', 'supplier', 'supplier', undefined]);
+  });
+
+  it('openSteps carries the owner of every item', () => {
+    const c = checklist([owned('company', 'assistant'), owned('terms', 'supplier')] as Raw[]);
+    expect(openSteps(c).map((o) => [o.key, o.owner])).toEqual([['company', 'assistant'], ['terms', 'supplier']]);
+  });
+
+  it('an in_progress step is listed when the gateway names its owner', () => {
+    const c = checklist([owned('verification', 'vitanaland', { status: 'in_progress' })] as Raw[]);
+    expect(openSteps(c).map((o) => [o.key, o.owner])).toEqual([['verification', 'vitanaland']]);
+  });
+
+  it('an in_progress step without an owner stays out of the list (an older gateway: today\'s list)', () => {
+    const c = checklist([{ key: 'verification', status: 'in_progress' }, { key: 'terms', status: 'todo' }]);
+    expect(openSteps(c).map((o) => o.key)).toEqual(['terms']);
+  });
+
+  it('done, not_required and not-required steps are never listed, whatever their owner', () => {
+    const c = checklist([
+      owned('company', 'assistant', { status: 'done' }),
+      owned('dpa', 'supplier', { status: 'not_required' }),
+      owned('terms', 'supplier', { required: false }),
+    ] as Raw[]);
+    expect(openSteps(c)).toEqual([]);
+  });
+
+  const items = openSteps(
+    checklist([
+      owned('company', 'assistant'),
+      owned('verification', 'vitanaland', { status: 'in_progress' }),
+      owned('catalogue', 'assistant'),
+      owned('terms', 'supplier'),
+    ] as Raw[]),
+  );
+
+  it('groupOpenSteps: supplier first, then assistant, then Vitanaland; checklist order inside a group', () => {
+    const g = groupOpenSteps(items, true);
+    expect(g.map((x) => x.owner)).toEqual(['supplier', 'assistant', 'vitanaland']);
+    expect(g.map((x) => x.items.map((i) => i.key))).toEqual([['terms'], ['company', 'catalogue'], ['verification']]);
+  });
+
+  it('groupOpenSteps: a group with no items is left out', () => {
+    expect(groupOpenSteps(items.filter((i) => i.owner === 'assistant'), true).map((x) => x.owner)).toEqual(['assistant']);
+    expect(groupOpenSteps([], true)).toEqual([]);
+  });
+
+  it('groupOpenSteps: while the assistant cannot be reached its items join the supplier group, in checklist order', () => {
+    const g = groupOpenSteps(items, false);
+    expect(g.map((x) => x.owner)).toEqual(['supplier', 'vitanaland']);
+    expect(g[0].items.map((i) => i.key)).toEqual(['company', 'catalogue', 'terms']);
+  });
+
+  it('groupOpenSteps: a checklist with no owners is one supplier group (today\'s single list), reachable or not', () => {
+    const legacy = openSteps(checklist([{ key: 'verification', status: 'todo' }, { key: 'terms', status: 'todo' }]));
+    for (const reachable of [true, false]) {
+      const g = groupOpenSteps(legacy, reachable);
+      expect(g.map((x) => x.owner)).toEqual(['supplier']);
+      expect(g[0].items.map((i) => i.key)).toEqual(['verification', 'terms']);
+    }
   });
 });
