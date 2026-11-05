@@ -46,6 +46,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/apply',
   '/auth/confirmed',
   '/autopilot',
+  '/autopilot/audiobook',
   '/comm/find-partner',
   '/comm/groups',
   '/comm/members',

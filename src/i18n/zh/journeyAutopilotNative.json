@@ -36,6 +36,10 @@
     },
     "calendar": {
       "upcomingCount": "{count} 个即将到来的活动"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
     }
   }
 }
