@@ -85,7 +85,7 @@ export {
   Label,
   Separator,
 } from '@vitana/ui';
-export { getExchangeRate, formatCurrency } from '@vitana/core/exchange-rates';
+export { getExchangeRate, formatCurrency } from '@vitana/core/exchangeRates';
 
 /** A token colour of a fixed scheme (the ticket pass is theme-independent). */
 export const tokenColor = (name: string, scheme: 'light' | 'dark'): string => color(name, scheme);

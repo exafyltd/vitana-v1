@@ -1,0 +1,19 @@
+{
+  "callsNative": {
+    "incomingAudio": "Przychodzące połączenie głosowe…",
+    "incomingVideo": "Przychodzące połączenie wideo…",
+    "accept": "Odbierz połączenie",
+    "reject": "Odrzuć połączenie",
+    "endCall": "Zakończ połączenie",
+    "calling": "Dzwonienie",
+    "videoCalling": "Połączenie wideo",
+    "initializing": "Przygotowywanie…",
+    "connecting": "Łączenie…",
+    "connectionFailed": "Nie udało się połączyć",
+    "mute": "Wycisz mikrofon",
+    "unmute": "Włącz mikrofon",
+    "cameraOff": "Wyłącz kamerę",
+    "cameraOn": "Włącz kamerę",
+    "unknownUser": "Nieznany członek"
+  }
+}
