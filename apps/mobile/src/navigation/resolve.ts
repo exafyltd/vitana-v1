@@ -45,6 +45,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/alkalma/confirmed',
   '/apply',
   '/auth/confirmed',
+  '/autopilot',
   '/comm/find-partner',
   '/comm/groups',
   '/comm/members',

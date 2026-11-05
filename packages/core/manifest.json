@@ -221,6 +221,42 @@
       ],
       "reason": "Shared domain types (type-only re-export, erased from the bundle)."
     },
+    "src/lib/horizonBuckets.ts": {
+      "entry": "horizon-buckets.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "My Journey horizon bucketing (bucketFromWaveId, bucketActions, HORIZON_BUCKETS). Pure; its one import is the type-only @/types/autopilot. The native dashboard buckets the onboarding recommendations into \"today\" with it."
+    },
+    "src/lib/vitana-projection.ts": {
+      "entry": "vitana-projection.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "Vitana Index slope helpers (trend7d, projectDays, projectDay90, buildHorizonPoints). Imports nothing; pure. The native \"how you are doing\" card reads the 7-day trend through it."
+    },
+    "src/lib/goalPhases.ts": {
+      "entry": "goal-phases.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "Goal-plan phase segments (buildPhases, RingPhase). Imports nothing; pure. The native hero ring and plan-sheet ring colour their phases with it."
+    },
+    "src/lib/vitanaIndex.ts": {
+      "entry": "vitana-index-tiers.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "The Vitana Index tier table (VITANA_INDEX_TIERS, getVitanaIndexTier). Imports nothing; pure. The native My Journey Index cards label the tier with it."
+    },
+    "src/lib/audiobook/queue.ts": {
+      "entry": "audiobook-queue.ts",
+      "lanes": [
+        "journey",
+        "autopilot-audiobook"
+      ],
+      "reason": "Audiobook season order and queue helpers (AUDIOBOOK_SEASONS, seasonNumber). Imports nothing; pure. The native guided-journey catalog orders and labels its chapters with it."
+    },
     "src/lib/messaging/grouping.ts": {
       "entry": "messaging-grouping.ts",
       "lanes": [

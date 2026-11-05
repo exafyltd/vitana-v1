@@ -123,6 +123,14 @@
           ]
         }
       ]
+    },
+    "journey": {
+      "sources": [
+        { "file": "src/hooks/useMyJourney.ts", "take": ["MyJourneyGoal", "MyJourneyPhase", "MyJourneyJourney", "MyJourneyIndex", "MyJourneyResponse"] },
+        { "file": "src/lib/journeyRing.ts", "take": ["RingCountdownSource", "JourneyRingModel", "buildJourneyRing"] },
+        { "file": "src/hooks/useGoalPlan.ts", "take": ["GoalStepKind", "GoalPlanStep", "GoalPlanView", "ClarificationAnswer"] },
+        { "file": "src/lib/goalTrend.ts", "take": ["GoalTrend", "computeGoalTrend"] }
+      ]
     }
   }
 }

@@ -1,0 +1,41 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "Aviso sobre o compartilhamento de dados com IA",
+      "subtitle": "Antes de usar os recursos de IA, veja como seus dados são usados.",
+      "whatIsSent": "Quais dados podem ser enviados",
+      "voiceData": "Gravações de voz e transcrições",
+      "diaryData": "Textos digitados, mensagens de chat e entradas do diário",
+      "memoryData": "Entradas do Memory Garden e metas de bem-estar",
+      "profileData": "Contexto do perfil (nome, preferências)",
+      "socialData": "URLs de perfis em redes sociais e textos de bio (ao usar recursos de importação)",
+      "recipientLabel": "Destinatário:",
+      "recipient": "Google (modelos de IA Gemini) via Lovable AI Gateway. Seus dados são transmitidos com segurança por conexões criptografadas.",
+      "purposeLabel": "Finalidade",
+      "purpose": "Gerar respostas de IA personalizadas, síntese de voz, saudações proativas, coaching de saúde e sugestões para completar o perfil.",
+      "notStored": "O provedor de IA não armazena os dados permanentemente",
+      "revokeAnytime": "Você pode revogar o consentimento a qualquer momento em Configurações > Privacidade",
+      "gdprCompliant": "Em conformidade com o RGPD e as normas de privacidade",
+      "agreementFooter": "Ao tocar em “Concordo”, você autoriza a Exafy LTD a enviar os dados acima aos provedores de IA indicados. Você pode retirar essa autorização a qualquer momento em Configurações > Privacidade.",
+      "notNow": "Agora não",
+      "iAgree": "Concordo"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA ganhos!",
+      "errorStatus": "O servidor respondeu com o status {status}.",
+      "errorServer": "O servidor não conseguiu entregar suas recomendações agora.",
+      "errorNetwork": "Sem conexão. Verifique sua internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Yoga ao nascer do sol à beira-mar",
+      "mindfulWalk": "Caminhada consciente e conversa"
+    },
+    "indexChip": {
+      "open": "Abrir o Vitana Index",
+      "openWithStreak": "Abrir o Vitana Index – sequência de {days} dias"
+    },
+    "calendar": {
+      "upcomingCount": "{count} eventos futuros"
+    }
+  }
+}
