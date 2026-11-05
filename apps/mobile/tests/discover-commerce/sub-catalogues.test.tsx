@@ -8,7 +8,7 @@
  * add-to-cart surface renders the shared twin.
  */
 import '../helpers/no-network';
-import { router, searchParams } from './mocks';
+import { router, searchParams } from './discover-mocks';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __setGatewayForTests } from '../../src/auth/gateway';
@@ -18,7 +18,7 @@ import { WellnessServicesScreen } from '../../src/screens/discover/WellnessServi
 import { DealsOffersScreen, toFlashDeals } from '../../src/screens/discover/DealsOffersScreen';
 import { CategoryProductsScreen } from '../../src/screens/discover/CategoryProductsScreen';
 import { searchQueryString } from '../../src/screens/discover/data/marketplace';
-import { budget, discoverWrapper, emptyCart, product, searchResult, UUID } from './helpers';
+import { budget, discoverWrapper, emptyCart, product, searchResult, UUID } from './discover-helpers';
 
 jest.setTimeout(30000);
 

@@ -1,22 +1,23 @@
 /**
- * VTID-05510 (native-wave2-discover-commerce-r2/discover) — module mocks for
- * the Discover screen tests, imported BEFORE the code under test (jest hoists
- * the jest.mock calls). expo-router's router and params, the safe area,
- * expo-video (a recording fake player per source), expo-web-browser and the
- * React Native share sheet / Linking are stubbed; the `mock`-prefixed names
- * are the ones a jest factory may reference. No network anywhere.
+ * VTID-05511 — module mocks for the marketplace-orders tests, imported BEFORE
+ * the code under test (jest hoists the jest.mock calls). expo-router's router
+ * and search params are stubbed; the system browser (`expo-web-browser`) is a
+ * recorder (a Stripe page is never opened); the share sheet and the URL
+ * opener are recorders too.
  */
 import '../helpers/mocks';
+import { Linking, Share } from 'react-native';
 
-const mockRouter = { navigate: jest.fn(), replace: jest.fn(), push: jest.fn(), back: jest.fn(), canGoBack: jest.fn(() => true), setParams: jest.fn() };
-const mockParams: { current: Record<string, string | undefined> } = { current: {} };
+const mockRouter = { navigate: jest.fn(), replace: jest.fn(), push: jest.fn(), back: jest.fn(), setParams: jest.fn(), canGoBack: jest.fn(() => true) };
+const mockParams: { current: Record<string, string> } = { current: {} };
+const mockPath: { current: string } = { current: '/discover/doctors-coaches' };
 
 jest.mock('expo-router', () => ({
   router: mockRouter,
   useLocalSearchParams: () => mockParams.current,
   useGlobalSearchParams: () => mockParams.current,
+  usePathname: () => mockPath.current,
   useFocusEffect: (cb: () => void) => jest.requireActual('react').useEffect(() => cb(), [cb]),
-  usePathname: () => '/discover',
   Redirect: () => null,
 }));
 
@@ -26,32 +27,14 @@ jest.mock('react-native-safe-area-context', () => ({
   SafeAreaInsetsContext: jest.requireActual('react').createContext(null),
 }));
 
-export type FakePlayer = { source: string; loop: boolean; muted: boolean; play: jest.Mock; pause: jest.Mock };
-const mockPlayers: FakePlayer[] = [];
+// '../helpers/mocks' already mocks expo-web-browser (auth sessions); the system-browser opener is added to that mock.
+const mockBrowser = jest.requireMock('expo-web-browser') as { openAuthSessionAsync: jest.Mock; openBrowserAsync: jest.Mock };
+mockBrowser.openBrowserAsync = jest.fn(async (_url: string) => ({ type: 'opened' }));
 
-jest.mock('expo-video', () => {
-  const React = jest.requireActual('react');
-  const { View } = jest.requireActual('react-native');
-  return {
-    useVideoPlayer: (source: string, setup?: (p: FakePlayer) => void) => {
-      const ref = React.useRef(null);
-      if (!ref.current) {
-        const p: FakePlayer = { source, loop: false, muted: false, play: jest.fn(), pause: jest.fn() };
-        setup?.(p);
-        mockPlayers.push(p);
-        ref.current = p;
-      }
-      return ref.current;
-    },
-    VideoView: (props: { testID?: string }) => React.createElement(View, { testID: props.testID }),
-  };
-});
-
-const mockOpenBrowser = jest.fn(async (_url: string): Promise<{ type: string }> => ({ type: 'opened' }));
-// doMock (not hoisted) so it runs after ../helpers/mocks, whose hoisted expo-web-browser mock has no openBrowserAsync.
-jest.doMock('expo-web-browser', () => ({ openAuthSessionAsync: jest.fn(), openBrowserAsync: mockOpenBrowser }));
+export const share = jest.spyOn(Share, 'share').mockImplementation(async () => ({ action: Share.sharedAction }));
+export const openURL = jest.spyOn(Linking, 'openURL').mockImplementation(async () => true);
 
 export const router = mockRouter;
 export const searchParams = mockParams;
-export const players = mockPlayers;
-export const openBrowser = mockOpenBrowser;
+export const pathname = mockPath;
+export const browser = mockBrowser;

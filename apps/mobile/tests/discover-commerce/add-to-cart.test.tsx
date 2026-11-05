@@ -6,7 +6,7 @@
  * and the port the product-cart-checkout lane consumes it through.
  */
 import '../helpers/no-network';
-import { router } from './mocks';
+import { router } from './discover-mocks';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __setGatewayForTests } from '../../src/auth/gateway';
@@ -14,7 +14,7 @@ import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import * as port from '../../src/ports/add-to-cart';
 import { AddToCartButton } from '../../src/screens/discover/AddToCartButton';
 import { MobileDiscoverView } from '../../src/screens/discover/MobileDiscoverView';
-import { budget, discoverWrapper, emptyCart, status, TOKEN, UUID } from './helpers';
+import { budget, discoverWrapper, emptyCart, status, TOKEN, UUID } from './discover-helpers';
 
 afterEach(() => {
   jest.clearAllMocks();

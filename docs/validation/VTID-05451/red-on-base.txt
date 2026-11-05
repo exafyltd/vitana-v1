@@ -1,0 +1,26 @@
+# VTID-05451 red on base: tests/public/** run against origin/main (no public screens yet)
+# cmd (apps/mobile, detached worktree at origin/main + copied tests/public): npm ci && npm run gen:i18n && npx jest tests/public --ci
+base: origin/main ec8682fec4ea06072b80c8a7ece1e729a3de4135
+FAIL tests/public/i18n-routes.test.tsx
+    Cannot find module '../../src/screens/public/PublicLandingScreen' from 'tests/public/i18n-routes.test.tsx'
+FAIL tests/public/landing-invite.test.tsx
+    Cannot find module '../../src/screens/public/PublicLandingScreen' from 'tests/public/landing-invite.test.tsx'
+FAIL tests/public/apply-intro.test.tsx
+    Cannot find module '../../src/screens/public/ApplyScreen' from 'tests/public/apply-intro.test.tsx'
+FAIL tests/public/legal.test.tsx
+    Cannot find module '../../src/screens/public/LegalScreens' from 'tests/public/legal.test.tsx'
+FAIL tests/public/routing.test.tsx (26.864 s)
+  ● resolveWebPath › /privacy is native
+    Expected: "native"
+    Received: "unported"
+  ● resolveWebPath › /terms is native
+    Expected: "native"
+    Received: "unported"
+  ● resolveWebPath › /maxina_support is native
+    Expected: "native"
+    Received: "unported"
+  ● resolveWebPath › /apply is native
+    Expected: "native"
+    Received: "unported"
+Test Suites: 5 failed, 5 total
+Tests:       4 failed, 10 passed, 14 total

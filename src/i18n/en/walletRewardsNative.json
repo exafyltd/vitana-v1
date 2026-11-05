@@ -1,0 +1,8 @@
+{
+  "walletRewardsNative": {
+    "tabsLabel": "Reward sections",
+    "shop": {
+      "birthDatePlaceholder": "YYYY-MM-DD"
+    }
+  }
+}

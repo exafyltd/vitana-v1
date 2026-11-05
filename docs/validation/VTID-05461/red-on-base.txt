@@ -1,0 +1,32 @@
+# VTID-05461 red on base — the lane's tests (tests/journey/*) copied onto a detached worktree at origin/main
+# base: e530abd0d82314092f4c4569e3582383bc1c7c8e ; cwd apps/mobile ; npm ci + npm run gen:i18n ; npx jest tests/journey --ci
+
+FAIL tests/journey/core-i18n-route.test.tsx
+  ● Test suite failed to run
+    Configuration error: Could not locate module @vitana/core/horizon-buckets (no core entry on base)
+FAIL tests/journey/journey.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/journey/JourneyScreen' from 'tests/journey/journey.test.tsx'
+      22 | import { FAIL, TOKEN, autopilotRecs, flush, fullRoutes, fullRpc, fullState, fullTables, goalPlan, guidedState, journeyNoGoal, journeyWrapper, topics } from './helpers';
+Test Suites: 2 failed, 2 total
+Tests:       0 total
+
+
+Both suites fail on base: the screen, the route and the core entries do not exist yet. After the implementation: 2 suites, 65 tests pass (commands.log).
+
+=== voucher post-purchase (review discover-c68982e): tests/journey/voucher.test.tsx on 011c8349f (product code unchanged) ===
+    ✕ Android: the browser opens (resolves at once), the app comes back active → the order is re-read → the success state (333 ms)
+    ✓ checkout failure: toasts checkoutFailed and returns to the selection (330 ms)
+    ✓ createVoucherCheckout keeps the order id the function returns (3 ms)
+    ✕ downloadVoucherPdf and sendVoucherEmail call the web functions with the web bodies (1 ms)
+    ✕ fetchVoucherOrder reads the member's own voucher_orders row (by id, else the newest) (17 ms)
+    ✕ not paid (cancelled or still pending): back to the selection, no voucher calls (614 ms)
+    ✕ paid: a failed PDF read toasts the error and keeps the success state (8231 ms)
+    ✕ paid: the e-mail form sends voucher-send-email, toasts voucherSent and closes (8106 ms)
+    ✕ paid: the success state, the PDF preview from voucher-download-pdf, its download and share (9628 ms)
+Tests:       9 failed, 2 passed, 11 total
+    ✕ the web's return params, if the link reaches the app: voucher_success opens the success state and clears them; voucher_cancelled is cleared (31 ms)
+    TypeError: (0 , _supabase.downloadVoucherPdf) is not a function
+    TypeError: (0 , _supabase.fetchVoucherOrder) is not a function
+    TypeError: (0 , _supabase.waitForPaidVoucherOrder) is not a function
+    ✕ waitForPaidVoucherOrder re-reads until the webhook marks the order paid, and gives up after the attempts (1 ms)

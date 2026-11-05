@@ -69,7 +69,8 @@
             "SLUG_RE", "COMPILED_MAXINA_FALLBACK", "FALLBACK_REGISTRY", "ResolvedTenant",
             "safeHex", "safeInternalPath",
             { "name": "normalizeLanding", "export": false }, { "name": "normalizeBrand", "export": false }, "normalizeEntry",
-            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant"
+            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant",
+            "isTenantPortalPath", "communityLandingPath", "portalLandingTarget"
           ]
         },
         { "file": "src/lib/retired-tenants.ts", "take": ["RETIRED_TENANT_SLUGS", "canonicalTenantSlug"] }
@@ -121,6 +122,14 @@
             "composeFeed", "HOME_NEW_CARD_CAP", "withHomeNewCards"
           ]
         }
+      ]
+    },
+    "journey": {
+      "sources": [
+        { "file": "src/hooks/useMyJourney.ts", "take": ["MyJourneyGoal", "MyJourneyPhase", "MyJourneyJourney", "MyJourneyIndex", "MyJourneyResponse"] },
+        { "file": "src/lib/journeyRing.ts", "take": ["RingCountdownSource", "JourneyRingModel", "buildJourneyRing"] },
+        { "file": "src/hooks/useGoalPlan.ts", "take": ["GoalStepKind", "GoalPlanStep", "GoalPlanView", "ClarificationAnswer"] },
+        { "file": "src/lib/goalTrend.ts", "take": ["GoalTrend", "computeGoalTrend"] }
       ]
     },
     "discover": {

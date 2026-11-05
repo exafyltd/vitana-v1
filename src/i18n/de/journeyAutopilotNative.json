@@ -1,0 +1,45 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "Hinweis zur Weitergabe von Daten an KI",
+      "subtitle": "Bevor du KI-Funktionen nutzt, sieh dir bitte an, wie deine Daten verwendet werden.",
+      "whatIsSent": "Welche Daten gesendet werden können",
+      "voiceData": "Sprachaufnahmen und Transkripte",
+      "diaryData": "Getippte Eingaben, Chatnachrichten und Tagebucheinträge",
+      "memoryData": "Einträge im Memory Garden und Gesundheitsziele",
+      "profileData": "Profilkontext (Name, Vorlieben)",
+      "socialData": "URLs von Social-Media-Profilen und Bio-Texte (bei Importfunktionen)",
+      "recipientLabel": "Empfänger:",
+      "recipient": "Google (Gemini-KI-Modelle) über das Lovable AI Gateway. Deine Daten werden sicher über verschlüsselte Verbindungen übertragen.",
+      "purposeLabel": "Zweck",
+      "purpose": "Personalisierte KI-Antworten, Sprachausgabe, proaktive Begrüßungen, Gesundheitscoaching und Vorschläge zur Profilergänzung.",
+      "notStored": "Der KI-Anbieter speichert die Daten nicht dauerhaft",
+      "revokeAnytime": "Du kannst deine Einwilligung jederzeit unter Einstellungen > Datenschutz widerrufen",
+      "gdprCompliant": "Konform mit der DSGVO und weiteren Datenschutzregeln",
+      "agreementFooter": "Mit „Ich stimme zu“ erlaubst du Exafy LTD, die oben genannten Daten an die genannten KI-Anbieter zu senden. Du kannst diese Erlaubnis jederzeit unter Einstellungen > Datenschutz widerrufen.",
+      "notNow": "Nicht jetzt",
+      "iAgree": "Ich stimme zu"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA verdient!",
+      "errorStatus": "Der Server hat mit Status {status} geantwortet.",
+      "errorServer": "Der Server konnte die Empfehlungen gerade nicht liefern.",
+      "errorNetwork": "Keine Verbindung. Prüfe dein Internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Sonnenaufgangs-Yoga am Meer",
+      "mindfulWalk": "Achtsamer Spaziergang mit Gespräch"
+    },
+    "indexChip": {
+      "open": "Vitana Index öffnen",
+      "openWithStreak": "Vitana Index öffnen – {days} Tage in Folge"
+    },
+    "calendar": {
+      "upcomingCount": "{count} anstehende Termine"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Abrechnungszeitraum",
+    "subnavAria": "Wallet-Bereiche",
+    "loading": "Abonnements werden geladen …",
+    "subnav": {
+      "overview": "Übersicht",
+      "balance": "Guthaben & Vorteile",
+      "subscriptions": "Abonnements",
+      "rewards": "Prämien & Provisionen"
+    },
+    "plans": {
+      "freeLiveRooms": "40 Min./Monat · 1 Sitzung"
+    }
+  }
+}

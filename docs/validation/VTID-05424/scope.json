@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05424",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/wallet/rewards.tsx",
+    "apps/mobile/src/screens/wallet-rewards/**",
+    "apps/mobile/src/ports/wallet-rewards.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/wallet-rewards/**",
+    "apps/mobile/maestro/wallet-rewards/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/walletRewardsNative.json",
+    "docs/validation/VTID-05424/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05424/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

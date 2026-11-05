@@ -60,6 +60,37 @@ async function testUserHandle(request: import('@playwright/test').APIRequestCont
   expect(handle, 'test user has no handle').toBeTruthy();
   return String(handle).replace(/^@/, '');
 }
+// `/u/:identifier` loads its profile with the read-only SECURITY DEFINER RPC
+// `get_user_profile_by_identifier`, which supabase-js sends as a POST. The
+// staging guard aborts every guarded POST, so on staging that page always fell
+// through to "user not found" and the ID card never rendered. Answer that one
+// RPC, for the test user's own handle only, with the same row read by a GET on
+// `profiles` (the columns the page reads; the RPC returns the same names).
+// Nothing reaches Supabase except GETs; any other RPC stays guarded.
+const PROFILE_LOOKUP_COLUMNS = 'user_id,display_name,full_name,handle,avatar_url,cover_url,bio,location,created_at,longevity_archetype';
+async function answerProfileLookupWithGet(
+  page: import('@playwright/test').Page,
+  request: import('@playwright/test').APIRequestContext,
+  key: string,
+  session: Session,
+  handle: string,
+) {
+  await page.route(/\/rest\/v1\/rpc\/get_user_profile_by_identifier(\?|$)/, async (route) => {
+    const req = route.request();
+    const identifier = String((req.postDataJSON() as { identifier?: unknown } | null)?.identifier ?? '').replace(/^@/, '');
+    if (req.method() !== 'POST' || identifier !== handle) return route.fallback();
+    const res = await request.get(`${SUPABASE}/rest/v1/profiles?user_id=eq.${TEST_USER_ID}&select=${PROFILE_LOOKUP_COLUMNS}`, {
+      headers: { apikey: key, Authorization: `Bearer ${session.access_token}` },
+    });
+    expect(res.ok(), `profiles GET for the profile lookup: HTTP ${res.status()}`).toBeTruthy();
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      headers: { 'access-control-allow-origin': '*' },
+      body: JSON.stringify(await res.json()),
+    });
+  });
+}
 for (const vp of VIEWPORTS) {
   for (const which of ['public', 'own'] as const) {
     test(`public-profile: ${which === 'public' ? '/u/:identifier' : '/me/profile'} at ${vp.width}px`, async ({ page, request }) => {
@@ -67,7 +98,9 @@ for (const vp of VIEWPORTS) {
       await page.setViewportSize({ width: vp.width, height: vp.height });
       const { key, session } = await signIn(page, request);
       await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
-      const path = which === 'public' ? `/u/${await testUserHandle(request, key, session)}` : '/me/profile';
+      const handle = which === 'public' ? await testUserHandle(request, key, session) : '';
+      if (which === 'public') await answerProfileLookupWithGet(page, request, key, session, handle);
+      const path = which === 'public' ? `/u/${handle}` : '/me/profile';
       // /u/:identifier treats a not-yet-signed-in viewer as a shared link
       // (immersive landing, no ID card). The token is seeded into localStorage
       // but the auth context hydrates async. Visit the auth-gated /me/profile

@@ -98,3 +98,26 @@ $ (apps/mobile) npx jest   — full, default workers
 8 suites red on load timeouts (shell 135 s, discover i18n-rtl 324 s, memory gateway-i18n 273 s …); none touch the voucher files
 $ (apps/mobile) npx jest tests/ui/catalogue.test.tsx tests/shell.test.tsx tests/memory/timeline.test.tsx tests/community/intents.test.tsx tests/i18n-rtl.test.tsx tests/memory/recall-permissions.test.tsx
 PASS — 6/6 suites, 293/293 tests (the same suites alone)
+
+## merge origin/main (fcc1e451, VTID-05511 marketplace-orders) into the discover branch — merge commit
+$ git merge --no-ff --no-commit origin/main — 16 add/add files and 3 content conflicts (resolve.ts, extract.json, mobile-ci-paths.generated.json); timing.ts identical on both sides
+$ (apps/mobile) npm ci — installs the merged lockfile; npm ls --depth=0: no problems
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors
+$ (apps/mobile) npx jest tests/discover-commerce — default workers
+PASS — 14/14 suites, 263/263 tests: discover 8 suites / 134 tests; marketplace-orders 6 suites / 129 tests (main's record counts 118 in 5 suites; voucher.test.tsx adds 11)
+$ (apps/mobile) npx jest — full, default workers, run 1
+FAIL — 4 suites, 7 tests, 4380/4387 passed: gateway-i18n, billing-requests, archived-inspiration, settings i18n-rtl (load timeouts); each of the four PASS when run alone
+$ (apps/mobile) npx jest — full, default workers, run 2
+PASS — 162/162 suites, 4387/4387 tests
+$ (apps/mobile) npm run parity:check
+PASS — 435 rows, 82 native routes
+$ node scripts/native/core-closure.mjs --check
+PASS — up to date (33 roots, 43 src files, 11 assets)
+$ node scripts/native/gen-core-extract.mjs --check
+PASS — up to date (14 files, 28 sources, 48 icons)
+$ (root) npm run i18n:stale; npm run i18n:register
+PASS — exit 0
+$ (root) npm run i18n:audit
+FAIL, not from this merge — 17193 errors; the same total on an origin/main snapshot (git archive). The first 50 printed errors are all admin.rewardsShop keys.
+$ git diff --cached origin/main — the 6 non-i18n shared files are identical to main; the 11 i18n shards add 63 lines each and remove none
