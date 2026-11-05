@@ -37,6 +37,17 @@ Environment note: the sandbox gives the root home a read-only filesystem, so `np
   are own-class A but class C: "blocked transitively via src/lib/i18n-toast.ts". i18n-toast imports sonner (web-only package) and
   import.meta.env. src/lib/locale-format.ts is blocked the same way. Both helpers are re-implemented natively (data/rules.ts, format.ts).
 
+== Preflight (collab)
+- node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD
+  --branch kiro/vtid-05532-live-rooms-lane --title "VTID-05532 (native-wave2-events-calendar-r3/live-rooms): native live rooms port"
+  First run on the feat + validation commits: exit 1. Failures:
+  - Lane scope [required] and Collab handoff: lanes/live-rooms.md not found here or in vitana-platform (the lane spec lives on the
+    plan branch until the plan merges). Expected, named in the PR body.
+  - PR-GATE sparring: no owner-approval line in plan-sparring.md. Fixed by adding the Approval section (the next commit).
+  - Warning, not an error: branch name not in the <kiro|claude>/<slug>/<lane-id> form. The branch name follows the prompt
+    (kiro/vtid-05532-live-rooms-lane); the lane is matched by its Collab-Lane trailers.
+  All other checks passed: queue validate, gh for plan lane files, PR-GATE scope, PR-GATE weakening, PR-GATE red-green, Kiro steering.
+
 == Not run (G1 or owner work)
 - Maestro device journeys, simulator and emulator screenshots, the Daily.co video join: deferred to G1 (staging-tests.json deferred_g1).
 - No live call, no Supabase or gateway write from any test or script in this lane.
