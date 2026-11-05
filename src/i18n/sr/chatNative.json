@@ -1,0 +1,69 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} kuca…",
+      "two": "{first} i {second} kucaju…",
+      "many": "Nekoliko osoba kuca…"
+    },
+    "conversation": {
+      "fallbackTitle": "Razgovor"
+    },
+    "reply": {
+      "yourself": "sebe",
+      "contentUnavailable": "Sadržaj poruke nije dostupan"
+    },
+    "reactions": {
+      "reactWith": "Reaguj sa {emoji}",
+      "count": "Reakcije {emoji}: {count}"
+    },
+    "bubble": {
+      "longPressHint": "Dugo pritisni za reakcije i radnje"
+    },
+    "emoji": {
+      "open": "Izaberi emodži",
+      "recent": "Nedavno",
+      "smileys": "Smajliji",
+      "people": "Ljudi",
+      "nature": "Priroda",
+      "food": "Hrana",
+      "activity": "Aktivnost",
+      "travel": "Putovanja",
+      "objects": "Predmeti"
+    },
+    "voice": {
+      "discard": "Obriši snimak",
+      "play": "Pusti",
+      "pause": "Pauziraj",
+      "stop": "Zaustavi snimanje"
+    },
+    "composer": {
+      "removeFile": "Ukloni {name}",
+      "pickerDone": "Gotovo"
+    },
+    "payment": {
+      "status": {
+        "pending": "Na čekanju",
+        "completed": "Završeno",
+        "declined": "Odbijeno"
+      },
+      "accept": "Prihvati",
+      "decline": "Odbij",
+      "pay": "Plati sada",
+      "refreshBalance": "Osveži stanje"
+    },
+    "invite": {
+      "untitled": "Pozivnica"
+    },
+    "booking": {
+      "untitled": "Zahtev za uslugu"
+    },
+    "companion": {
+      "indexScore": "Tvoj indeks: {score}"
+    },
+    "attach": {
+      "library": "Biblioteka fotografija",
+      "camera": "Kamera",
+      "files": "Datoteke"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# VTID-05519 commands (2026-11-02T19:15:45Z)
+$ npx vitest run src/lib/eng-platform-stage-oidc.test.ts src/lib/supabase-functions-retire.vtid-05008.test.ts
+ ✓ src/lib/eng-platform-stage-oidc.test.ts (10 tests) 14ms
+ ✓ src/lib/supabase-functions-retire.vtid-05008.test.ts (6 tests) 532ms
+     ✓ never names a function something still calls  522ms
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+$ js-yaml load of the 3 workflows
+parsed .github/workflows/AWS-STAGE-DEPLOY-FRONTEND.yml
+parsed .github/workflows/PREVIEW-DEPLOY-FRONTEND.yml
+parsed .github/workflows/PREVIEW-TEARDOWN-FRONTEND.yml
+red on base: red-on-base.txt

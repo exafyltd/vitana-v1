@@ -1,0 +1,21 @@
+# VTID-05460 red on base — the lane's tests (tests/audiobook/*) and the updated journey route assertion copied onto a detached worktree at the stacked base
+# base: ea78f0835fea3b420d5882d16771dda3828afcbf (origin/kiro/native-wave2-journey-autopilot-r2/journey, PR #1565 head) ; cwd apps/mobile ; npm ci + npm run gen:i18n
+# $ npx jest tests/audiobook --ci --silent
+
+FAIL tests/audiobook/route-i18n.test.tsx
+    Cannot find module '../../src/ports/audiobook' from 'tests/audiobook/route-i18n.test.tsx'
+FAIL tests/audiobook/player.test.tsx
+    Cannot find module '../../src/ports/audiobook' from 'tests/audiobook/player.test.tsx'
+FAIL tests/audiobook/deeplink-reminder.test.tsx
+    Cannot find module '../../src/ports/audiobook' from 'tests/audiobook/deeplink-reminder.test.tsx'
+Test Suites: 3 failed, 3 total
+Tests:       0 total
+
+# $ npx jest tests/journey/core-i18n-route --ci --silent -t 'cold start'
+  ✕ cold start: /autopilot resolves native (not the Unported resolver) and is a concrete route file
+    expect(resolveWebPath('/autopilot/audiobook').kind).toBe('native')
+    Expected: "native"
+    Received: "unported"
+Tests:       1 failed, 48 skipped, 49 total
+
+All three audiobook suites fail on base (the ports, the player, the reminder control and the route do not exist), and /autopilot/audiobook still resolves to the Unported resolver. After the implementation: 3 suites / 57 tests pass and the journey route test passes (commands.log).

@@ -1,0 +1,28 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "Email confirmation was cancelled or the link has expired.",
+        "linkExpired": "The confirmation link has expired. Please request a new one.",
+        "generic": "An error occurred during email confirmation.",
+        "signInToContinue": "Please sign in to continue."
+      }
+    },
+    "alkalmaConfirmed": {
+      "title": "Welcome to AlKalma!",
+      "body": "Your email has been confirmed successfully",
+      "journey": "Your health journey in Arabic starts now",
+      "redirecting": "You'll be redirected to your dashboard in a few seconds...",
+      "continue": "Continue to dashboard",
+      "footer": "A comprehensive health platform in Arabic"
+    },
+    "reset": {
+      "updatePassword": "Update password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "resend": {
+      "prompt": "Didn't receive the email? Resend"
+    }
+  }
+}
