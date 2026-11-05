@@ -1,0 +1,41 @@
+{
+  "vtid": "VTID-05450",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/onboarding/welcome.tsx",
+    "apps/mobile/src/screens/onboarding/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/onboarding/**",
+    "apps/mobile/maestro/onboarding/**",
+    "src/i18n/*/onboardingNative.json",
+    "docs/validation/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/extract.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/onboarding/welcome.tsx",
+    "apps/mobile/src/screens/onboarding/OnboardingWelcomeScreen.tsx",
+    "apps/mobile/src/screens/onboarding/OnboardingSpeech.tsx",
+    "apps/mobile/src/screens/onboarding/OnboardingNameForm.tsx",
+    "apps/mobile/src/screens/onboarding/onboarding-data.ts",
+    "apps/mobile/src/ports/onboarding.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/onboarding/helpers.ts",
+    "apps/mobile/tests/onboarding/welcome.test.tsx",
+    "apps/mobile/tests/onboarding/i18n-rtl.test.tsx",
+    "apps/mobile/maestro/onboarding/README.md",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/onboardingNative.json",
+    "docs/validation/VTID-05450/**"
+  ],
+  "stacked_on": "VTID-05449 (native-wave2-public-auth-onboarding-r3/auth-portals), vitana-v1 PR #1554 — this branch is based on kiro/native-wave2-public-auth-onboarding-r3/auth-portals and must land after it; the files above are this lane's own diff against that branch",
+  "core_change": "none: the web modules this screen uses (useOnboardingStatus.ts, OnboardingNameForm.tsx queries, community-intro.ts) import the web Supabase client (class-B) and are re-implemented natively in src/screens/onboarding/onboarding-data.ts; no manifest / extract / closure change (core-closure --check and gen-core-extract --check up to date).",
+  "sparring_record": "docs/validation/VTID-05450/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

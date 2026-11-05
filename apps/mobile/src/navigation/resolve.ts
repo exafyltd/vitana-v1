@@ -72,6 +72,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/native-ui-catalogue',
   '/oauth/complete',
   '/oauth/consent',
+  '/onboarding/welcome',
   '/privacy',
   '/profile/me/privacy',
   '/profile/subscriptions',

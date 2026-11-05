@@ -1,0 +1,138 @@
+# VTID-05450 red on base — origin/main 514e06a8b (detached worktree), tests/onboarding copied in, npm run gen:i18n then npx jest --ci
+# 1) the committed suites: both fail — the screen module and the onboardingNative shards do not exist on main
+
+FAIL tests/onboarding/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/onboarding/OnboardingWelcomeScreen' from 'tests/onboarding/i18n-rtl.test.tsx'
+
+      15 | import { translate } from '../../src/i18n';
+      16 | import { NATIVE_ROUTES } from '../../src/navigation/resolve';
+    > 17 | import { OnboardingWelcomeScreen } from '../../src/screens/onboarding/OnboardingWelcomeScreen';
+         | ^
+      18 | import { __setSupabaseForTests } from '../../src/auth/client';
+      19 |
+      20 | jest.mock('expo-router', () => ({
+
+
+FAIL tests/onboarding/welcome.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/onboarding/OnboardingWelcomeScreen' from 'tests/onboarding/welcome.test.tsx'
+
+      21 | import { resolveWebPath } from '../../src/navigation/resolve';
+      22 | import { AuthGate } from '../../src/shell/AuthGate';
+    > 23 | import { OnboardingWelcomeScreen } from '../../src/screens/onboarding/OnboardingWelcomeScreen';
+         | ^
+      24 | import { BASE_INTERVAL, FINAL_DELAY, FIRST_DELAY, SKIP_DELAY, SPEECH_KEYS, getMessageDelay } from '../../src/screens/onboarding/OnboardingSpeech';
+      25 | import {
+      26 |   AUDIOBOOK_START_ROUTE,
+
+
+Test Suites: 2 failed, 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        22.702 s
+Ran all test suites matching /tests\/onboarding/i.
+
+# 2) probe (not committed): the behaviours of tests/onboarding that need no new module, run on origin/main — 5/5 fail for the reason the lane fixes
+
+FAIL tests/onboarding/seam-on-base.test.ts (13.63 s)
+  ✕ postSignInTarget (auth-portals) resolves to this native route, query kept (7 ms)
+  ✕ NATIVE_ROUTES lists /onboarding/welcome (1 ms)
+  ✕ app/(app)/onboarding/welcome.tsx exists
+  ✕ the ledger row is native (1 ms)
+  ✕ src/i18n/de/onboardingNative.json exists
+
+  ● postSignInTarget (auth-portals) resolves to this native route, query kept
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 5
+
+    - ObjectContaining {
+    -   "kind": "native",
+    + Object {
+    +   "href": "/onboarding/welcome",
+    +   "key": "/onboarding/welcome",
+    +   "kind": "unported",
+        "path": "/onboarding/welcome",
+    +   "query": "",
+      }
+
+       7 | import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
+       8 | it('postSignInTarget (auth-portals) resolves to this native route, query kept', () => {
+    >  9 |   expect(resolveWebPath(postSignInTarget(null))).toEqual(expect.objectContaining({ kind: 'native', path: '/onboarding/welcome' }));
+         |                                                  ^
+      10 | });
+      11 | it('NATIVE_ROUTES lists /onboarding/welcome', () => expect(NATIVE_ROUTES).toContain('/onboarding/welcome'));
+      12 | it('app/(app)/onboarding/welcome.tsx exists', () => expect(existsSync(join(__dirname, '../../app/(app)/onboarding/welcome.tsx'))).toBe(true));
+
+
+  ● NATIVE_ROUTES lists /onboarding/welcome
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected value: "/onboarding/welcome"
+    Received array: ["/", "/alkalma", "/comm/find-partner", "/comm/groups", "/comm/members", "/comm/open-asks", "/daily-diary", "/dev/orb-bench", "/home", "/home/comments", …]
+
+       9 |   expect(resolveWebPath(postSignInTarget(null))).toEqual(expect.objectContaining({ kind: 'native', path: '/onboarding/welcome' }));
+      10 | });
+    > 11 | it('NATIVE_ROUTES lists /onboarding/welcome', () => expect(NATIVE_ROUTES).toContain('/onboarding/welcome'));
+         |                                                                           ^
+      12 | it('app/(app)/onboarding/welcome.tsx exists', () => expect(existsSync(join(__dirname, '../../app/(app)/onboarding/welcome.tsx'))).toBe(true));
+      13 | it('the ledger row is native', () => expect((ledger.rows as Array<{ key: string; status: string }>).find((r) => r.key === '/onboarding/welcome')?.status).toBe('native'));
+      14 | it('src/i18n/de/onboardingNative.json exists', () => expect(existsSync(join(__dirname, '../../../../src/i18n/de/onboardingNative.json'))).toBe(true));
+
+
+  ● app/(app)/onboarding/welcome.tsx exists
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      10 | });
+      11 | it('NATIVE_ROUTES lists /onboarding/welcome', () => expect(NATIVE_ROUTES).toContain('/onboarding/welcome'));
+    > 12 | it('app/(app)/onboarding/welcome.tsx exists', () => expect(existsSync(join(__dirname, '../../app/(app)/onboarding/welcome.tsx'))).toBe(true));
+         |                                                                                                                                   ^
+      13 | it('the ledger row is native', () => expect((ledger.rows as Array<{ key: string; status: string }>).find((r) => r.key === '/onboarding/welcome')?.status).toBe('native'));
+      14 | it('src/i18n/de/onboardingNative.json exists', () => expect(existsSync(join(__dirname, '../../../../src/i18n/de/onboardingNative.json'))).toBe(true));
+      15 |
+
+
+  ● the ledger row is native
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      11 | it('NATIVE_ROUTES lists /onboarding/welcome', () => expect(NATIVE_ROUTES).toContain('/onboarding/welcome'));
+      12 | it('app/(app)/onboarding/welcome.tsx exists', () => expect(existsSync(join(__dirname, '../../app/(app)/onboarding/welcome.tsx'))).toBe(true));
+    > 13 | it('the ledger row is native', () => expect((ledger.rows as Array<{ key: string; status: string }>).find((r) => r.key === '/onboarding/welcome')?.status).toBe('native'));
+         |                                                                                                                                                           ^
+      14 | it('src/i18n/de/onboardingNative.json exists', () => expect(existsSync(join(__dirname, '../../../../src/i18n/de/onboardingNative.json'))).toBe(true));
+      15 |
+
+
+  ● src/i18n/de/onboardingNative.json exists
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      12 | it('app/(app)/onboarding/welcome.tsx exists', () => expect(existsSync(join(__dirname, '../../app/(app)/onboarding/welcome.tsx'))).toBe(true));
+      13 | it('the ledger row is native', () => expect((ledger.rows as Array<{ key: string; status: string }>).find((r) => r.key === '/onboarding/welcome')?.status).toBe('native'));
+    > 14 | it('src/i18n/de/onboardingNative.json exists', () => expect(existsSync(join(__dirname, '../../../../src/i18n/de/onboardingNative.json'))).toBe(true));
+         |                                                                                                                                           ^
+      15 |
+
+
+Test Suites: 1 failed, 1 total
+Tests:       5 failed, 5 total
+Snapshots:   0 total
+Time:        14.251 s
+Ran all test suites matching /tests\/onboarding\/seam-on-base.test.ts/i.
