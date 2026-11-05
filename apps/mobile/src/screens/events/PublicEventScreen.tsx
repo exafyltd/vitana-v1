@@ -72,7 +72,7 @@ export function PublicEventScreen({ identifier }: { identifier: string | undefin
         <Text variant="label" color={colors.mutedForeground}>
           {text.t('screens.publiceventlanding.hostedBy')}
         </Text>
-        <Text variant="body">{event.creator_display_name ?? text.t('eventDrawer.communityHost')}</Text>
+        <Text variant="body">{event.organizer_name}</Text>
         {typeof event.participant_count === 'number' ? (
           <Text variant="body">{text.t('eventDrawer.attendingCount', { current: event.participant_count })}</Text>
         ) : null}

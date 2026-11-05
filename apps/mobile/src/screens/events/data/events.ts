@@ -161,11 +161,33 @@ export async function fetchEventByIdOrSlug(ref: string, userId: string | null = 
   return event ?? null;
 }
 
+/** One row of the `resolve_event_by_slug` RPC (supabase/migrations/20251218141717_62e91ac0-9b81-4944-b430-254bc2db1e53.sql). */
+export interface PublicEventRow {
+  id: string;
+  title: string;
+  description: string | null;
+  event_type: string;
+  location: string | null;
+  start_time: string;
+  end_time: string | null;
+  max_participants: number | null;
+  participant_count: number;
+  image_url: string | null;
+  slug: string | null;
+  organizer_name: string;
+  organizer_avatar: string | null;
+  metadata: Record<string, any> | null;
+  has_tickets: boolean;
+  lowest_ticket_price: number | null;
+  is_paid_event: boolean;
+  is_sold_out: boolean;
+}
+
 /** The public landing's resolver: a slug or an id, through the same RPC the web calls. */
-export async function resolvePublicEvent(identifier: string): Promise<CommunityEvent | null> {
+export async function resolvePublicEvent(identifier: string): Promise<PublicEventRow | null> {
   const { data, error } = await db().rpc('resolve_event_by_slug', { identifier });
   if (error) throw error;
-  const rows = (data ?? []) as CommunityEvent[];
+  const rows = (data ?? []) as PublicEventRow[];
   return rows[0] ?? null;
 }
 
