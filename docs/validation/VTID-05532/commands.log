@@ -48,6 +48,18 @@ Environment note: the sandbox gives the root home a read-only filesystem, so `np
     (kiro/vtid-05532-live-rooms-lane); the lane is matched by its Collab-Lane trailers.
   All other checks passed: queue validate, gh for plan lane files, PR-GATE scope, PR-GATE weakening, PR-GATE red-green, Kiro steering.
 
+== PR #1607 checks on head 6c3c4126d (REST check-runs; gh pr checks needs GraphQL, which the gateway rejects)
+- 13 success (apps/mobile typecheck/test/bundle, pr-gate, change-suite, ESLint native override, Parity ledger generators, Vitest jsdom,
+  Edge data client, Realtime helper, preview-e2e, ORB parity, vitana-voice Android, Which native jobs run)
+- 1 skipped (Extraction dependency analysis (artefact))
+- 1 failure: Lane scope (lane file not found: lanes/live-rooms.md is on the plan branch, not main). Expected, named in the PR body.
+
+== After the guard fix (lane-guards.test.ts now calls configure({ asyncUtilTimeout: 5000 }) like the other lane tests)
+- npx jest tests/liverooms, run 1 -> exit 0, 4 suites / 39 tests passed, act() warnings 0
+- npx jest tests/liverooms, run 2 -> exit 0, 4 suites / 39 tests passed, act() warnings 0
+- npm run typecheck -> exit 0
+- npx eslint apps/mobile/tests/liverooms -> exit 0
+
 == Not run (G1 or owner work)
 - Maestro device journeys, simulator and emulator screenshots, the Daily.co video join: deferred to G1 (staging-tests.json deferred_g1).
 - No live call, no Supabase or gateway write from any test or script in this lane.

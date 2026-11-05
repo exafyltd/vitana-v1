@@ -9,7 +9,9 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import { catalogs, LOCALES } from '../../src/i18n';
 import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
+import { configure } from '@testing-library/react-native';
 
+configure({ asyncUtilTimeout: 5000 });
 jest.setTimeout(30000);
 
 const APP = resolve(__dirname, '../..');
