@@ -21,7 +21,7 @@ import type { Database } from "@/integrations/supabase/types";
 import { t } from '@/lib/i18n-toast';
 
 const ALL_CHANNELS = [
-  { type: "email" as const, name: "Email", icon: Mail, color: "text-gray-600" },
+  { type: "email" as const, name: "Email", icon: Mail, color: "text-muted-foreground" },
   { type: "sms" as const, name: "SMS", icon: Phone, color: "text-green-600" },
   { type: "whatsapp" as const, name: "WhatsApp", icon: MessageSquare, color: "text-green-600" },
   { type: "slack" as const, name: "Slack", icon: MessageSquare, color: "text-purple-600" },
