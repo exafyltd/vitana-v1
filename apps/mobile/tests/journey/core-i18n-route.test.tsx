@@ -96,8 +96,8 @@ describe('route', () => {
     expect(NATIVE_ROUTES).toContain('/autopilot');
     expect(resolveWebPath('/autopilot')).toMatchObject({ kind: 'native', href: '/autopilot' });
     expect(resolveWebPath('/autopilot?tab=x').kind).toBe('native');
-    // The audiobook deep link stays the sibling lane's row (still unported here).
-    expect(resolveWebPath('/autopilot/audiobook').kind).toBe('unported');
+    // The audiobook deep link is the sibling lane's own route file (VTID-05460), native too.
+    expect(resolveWebPath('/autopilot/audiobook').kind).toBe('native');
     // No other app/ file claims /autopilot (index.tsx / the [...path] catch-all rank below a concrete file).
     expect(existsSync(join(APP, 'app/(app)/autopilot.tsx'))).toBe(false);
     expect(existsSync(join(APP, 'app/autopilot'))).toBe(false);

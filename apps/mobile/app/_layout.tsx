@@ -14,6 +14,9 @@
  * bottom-bar slot and the ORB provider + overlay sit inside the shell root.
  * Without a G1 gateway URL the ORB says it is not reachable and connects to
  * nothing.
+ *
+ * VTID-05460 (autopilot-audiobook) — the app-wide Audiobook player + mini
+ * player around the router (web App.tsx:809-810), inside the ORB provider.
  */
 import 'react-native-url-polyfill/auto';
 import { Stack } from 'expo-router';
@@ -31,6 +34,7 @@ import { useRemoteConfigRefresh } from '../src/config/remote-config';
 import { useLinkRouting } from '../src/linking/link-router';
 import { usePushLifecycle } from '../src/push/registration';
 import { OrbOverlay, OrbProvider, registerOrbUi } from '../src/orb/ui';
+import { AudiobookHost } from '../src/screens/audiobook/AudiobookHost';
 
 // Arabic is right-to-left; layouts use start/end, never left/right.
 I18nManager.allowRTL(true);
@@ -53,7 +57,9 @@ export default function RootLayout() {
                   <GuidedModeProvider>
                     <ShellRoot>
                       <OrbProvider>
-                        <Stack screenOptions={{ headerShown: false }} />
+                        <AudiobookHost>
+                          <Stack screenOptions={{ headerShown: false }} />
+                        </AudiobookHost>
                         <OrbOverlay />
                       </OrbProvider>
                     </ShellRoot>
