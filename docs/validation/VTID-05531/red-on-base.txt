@@ -1,0 +1,97 @@
+FAIL tests/events/core-routes-i18n.test.ts
+  ● Test suite failed to run
+
+    Configuration error:
+
+    Could not locate module @vitana/core/events-hot mapped as:
+    /projects/sandbox/wt-vtid-05531-events-meetups-lane/packages/core/src/$1.
+
+    Please check your configuration for these entries:
+    {
+      "moduleNameMapper": {
+        "/^@vitana\/core\/(.*)$/": "/projects/sandbox/wt-vtid-05531-events-meetups-lane/packages/core/src/$1"
+      },
+      "resolver": /projects/sandbox/wt-vtid-05531-events-meetups-lane/apps/mobile/resolution.js
+    }
+
+      10 | import { join, relative } from 'path';
+      11 | import { configure } from '@testing-library/react-native';
+    > 12 | import { selectHotEvents } from '@vitana/core/events-hot';
+         | ^
+      13 | import { isHttpUrl, toVirtualLink } from '@vitana/core/virtual-link';
+      14 | import { resolveEventCover } from '@vitana/core/event-cover-image';
+      15 | import { profilePath } from '@vitana/core/profile-path';
+
+      at createNoMappedModuleFoundError (node_modules/jest-resolve/build/resolver.js:759:17)
+      at Object.require (tests/events/core-routes-i18n.test.ts:12:1)
+
+FAIL tests/events/events-hub.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/events/EventsMeetupsScreen' from 'tests/events/events-hub.test.tsx'
+
+       6 |  */
+       7 | import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
+    >  8 | import { EventsMeetupsScreen } from '../../src/screens/events/EventsMeetupsScreen';
+         | ^
+       9 | import { mockParams, renderWithEvents, standardTables } from './helpers';
+      10 | import { configure } from '@testing-library/react-native';
+      11 |
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/events/events-hub.test.tsx:8:1)
+
+FAIL tests/events/landings.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/events/PublicEventScreen' from 'tests/events/landings.test.tsx'
+
+       6 |  */
+       7 | import { fireEvent, screen, waitFor, act } from '@testing-library/react-native';
+    >  8 | import { PublicEventScreen } from '../../src/screens/events/PublicEventScreen';
+         | ^
+       9 | import { EventGameScreen } from '../../src/screens/events/EventGameScreen';
+      10 | import { eventRow, mockParams, renderWithEvents } from './helpers';
+      11 | import { configure } from '@testing-library/react-native';
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/events/landings.test.tsx:8:1)
+
+FAIL tests/events/event-form.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/events/EventFormSheet' from 'tests/events/event-form.test.tsx'
+
+       5 |  */
+       6 | import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
+    >  7 | import { EventFormSheet } from '../../src/screens/events/EventFormSheet';
+         | ^
+       8 | import { EventsMeetupsScreen } from '../../src/screens/events/EventsMeetupsScreen';
+       9 | import { eventRow, HOST, inThreeDays, mockParams, renderWithEvents, standardTables, VIEWER } from './helpers';
+      10 | import { configure } from '@testing-library/react-native';
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/events/event-form.test.tsx:7:1)
+
+FAIL tests/events/events-data.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/events/data/events' from 'tests/events/events-data.test.ts'
+
+       7 | import { configure } from '@testing-library/react-native';
+       8 | import { __setSupabaseForTests } from '../../src/auth/client';
+    >  9 | import {
+         | ^
+      10 |   buildEventInput,
+      11 |   canDeleteEvent,
+      12 |   canEditEvent,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/events/events-data.test.ts:9:1)
+
+Test Suites: 5 failed, 5 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        16.645 s
+Ran all test suites matching /tests\/events/i.
+exit: 1
