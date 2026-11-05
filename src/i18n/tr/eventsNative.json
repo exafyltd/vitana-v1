@@ -1,0 +1,8 @@
+{
+  "eventsNative": {
+    "filterTitle": "Etkinlikleri filtrele",
+    "eventUpdated": "Etkinlik güncellendi! ✏",
+    "eventCreateFailed": "Etkinlik oluşturulamadı. Lütfen tekrar dene.",
+    "requiredField": "Bu alanı doldur."
+  }
+}
