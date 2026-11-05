@@ -220,6 +220,41 @@
         "N6"
       ],
       "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/lib/messaging/grouping.ts": {
+      "entry": "messaging-grouping.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Message grouping positions (groupPositions, isGroupStart, isGroupEnd). Imports nothing; pure. Used by the native conversation and group chat lists."
+    },
+    "src/lib/mentions.ts": {
+      "entry": "mentions.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "@mention helpers (findActiveMentionToken, insertMention, addMention, pruneMentions, splitMentionSegments, filterLocalCandidates). Imports nothing; pure. Used by the native composer and message bubble."
+    },
+    "src/lib/messaging/groupSystemNotice.ts": {
+      "entry": "group-notice.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Group system-notice text (describeGroupNotice, noticeName). Imports nothing; pure. Used by the native message bubble and members modal."
+    },
+    "src/lib/messaging/groupManagement.ts": {
+      "entry": "group-management.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Group rename / participant deactivate over an injected client (renameGlobalGroup, deactivateParticipant). Imports nothing; pure. Used by the native members modal."
+    },
+    "src/lib/chatMarkdown.ts": {
+      "entry": "chat-markdown.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Vitana chat-reply Markdown parser (parseChatMarkdown, parseChatInline, MdBlock, MdInline). Imports nothing; pure. Used by the native message bubble for the Vitana bot's replies (VTID-05193)."
     }
   }
 }

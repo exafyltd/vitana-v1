@@ -71,8 +71,45 @@ export function buildPlugins(env: Record<string, string | undefined>, profile: P
   const scheme = googleIosUrlScheme(env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID);
   if (scheme) plugins.push(['@react-native-google-signin/google-signin', { iosUrlScheme: scheme }]);
   plugins.push(...diaryCapturePlugins());
+  plugins.push(...callPlugins());
+  plugins.push(...chatMediaPlugins());
   plugins.push(...contactsImportPlugins());
   return plugins;
+}
+
+/**
+ * VTID-05458 (conversation-chat fix 1, driver decision) — the chat's media
+ * parity packages that ship a config plugin:
+ *   expo-video — the picture viewer plays videos inline (no background
+ *     playback, no Picture-in-Picture: no UIBackgroundModes `audio`, the
+ *     ORB's F9 rule);
+ *   @react-native-community/datetimepicker — the calendar-invite, due-date
+ *     and search date fields (default styles).
+ * expo-clipboard needs no plugin; expo-document-picker's plugin only sets an
+ * iCloud container entitlement, which the Files picker does not need, so it is
+ * not registered. No new usage string: the camera / library strings are the
+ * expo-image-picker ones above.
+ */
+export function chatMediaPlugins(): PluginEntry[] {
+  return [['expo-video', { supportsBackgroundPlayback: false, supportsPictureInPicture: false }], '@react-native-community/datetimepicker'];
+}
+
+/**
+ * VTID-05458 (native-wave2-inbox-chat-calls-r2/conversation-chat) — the
+ * embedded 1:1 call's WebRTC engine (`react-native-webrtc`, registered in
+ * src/ports/webrtc.ts). Its config plugin writes the camera and microphone
+ * usage strings; they are the SAME catalog strings the diary capture and the
+ * ORB already write (`diaryNative.permissions.cameraUsage`,
+ * `orbNative.micUsageDescription`), so NSCameraUsageDescription and
+ * NSMicrophoneUsageDescription never get two different values.
+ */
+export function callPlugins(): PluginEntry[] {
+  /* eslint-disable @typescript-eslint/no-require-imports */
+  const base = (require('./modules/vitana-voice/plugin/native-locales.json') as { baseLocale: string }).baseLocale;
+  const diary = (require(`../../src/i18n/${base}/diaryNative.json`) as { diaryNative: { permissions: { cameraUsage: string } } }).diaryNative.permissions;
+  const orb = (require(`../../src/i18n/${base}/orbNative.json`) as { orbNative: { micUsageDescription: string } }).orbNative;
+  /* eslint-enable @typescript-eslint/no-require-imports */
+  return [['@config-plugins/react-native-webrtc', { cameraPermission: diary.cameraUsage, microphonePermission: orb.micUsageDescription }]];
 }
 
 /**

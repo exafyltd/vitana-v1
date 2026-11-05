@@ -1,0 +1,19 @@
+{
+  "callsNative": {
+    "incomingAudio": "مكالمة صوتية واردة…",
+    "incomingVideo": "مكالمة فيديو واردة…",
+    "accept": "قبول المكالمة",
+    "reject": "رفض المكالمة",
+    "endCall": "إنهاء المكالمة",
+    "calling": "جارٍ الاتصال",
+    "videoCalling": "جارٍ الاتصال بالفيديو",
+    "initializing": "جارٍ التحضير…",
+    "connecting": "جارٍ الاتصال…",
+    "connectionFailed": "فشل الاتصال",
+    "mute": "كتم الميكروفون",
+    "unmute": "إلغاء كتم الميكروفون",
+    "cameraOff": "إيقاف الكاميرا",
+    "cameraOn": "تشغيل الكاميرا",
+    "unknownUser": "عضو غير معروف"
+  }
+}
