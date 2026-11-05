@@ -1,0 +1,10 @@
+{
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npm run test:unit",
+      "reason": "CI-only change: workflow concurrency keys. The app bundle and runtime are unchanged. The unit suite runs on the PR (UNIT-TESTS)."
+    }
+  ]
+}
