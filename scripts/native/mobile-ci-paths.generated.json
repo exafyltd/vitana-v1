@@ -27,6 +27,7 @@
     "src/integrations/supabase/types.ts",
     "src/lib/business-mode.ts",
     "src/lib/chatMarkdown.ts",
+    "src/lib/exchangeRates.ts",
     "src/lib/feed-compose.ts",
     "src/lib/mentions.ts",
     "src/lib/messaging/groupManagement.ts",

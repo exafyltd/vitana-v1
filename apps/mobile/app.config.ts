@@ -73,6 +73,7 @@ export function buildPlugins(env: Record<string, string | undefined>, profile: P
   plugins.push(...diaryCapturePlugins());
   plugins.push(...callPlugins());
   plugins.push(...chatMediaPlugins());
+  plugins.push(...contactsImportPlugins());
   return plugins;
 }
 
@@ -138,6 +139,24 @@ export function diaryCapturePlugins(): PluginEntry[] {
   ];
 }
 
+/**
+ * VTID-05459 (inbox-list lane, review fix 1) — the inbox Contacts tab's
+ * "Find Friends" import (web ContactSyncModal): the phone's address book
+ * (expo-contacts; read only) and a .vcf file the member picks
+ * (expo-document-picker; no iCloud container). The contacts usage string comes
+ * from the i18n catalog in the base locale (`inboxNative.permissions.
+ * contactsUsage`), never from this file. The app only reads contacts, so the
+ * WRITE_CONTACTS permission the plugin adds is blocked (`CONTACTS_BLOCKED_PERMISSIONS`).
+ */
+export const CONTACTS_BLOCKED_PERMISSIONS = ['android.permission.WRITE_CONTACTS'] as const;
+
+export function contactsImportPlugins(): PluginEntry[] {
+  /* eslint-disable @typescript-eslint/no-require-imports */
+  const base = (require('./modules/vitana-voice/plugin/native-locales.json') as { baseLocale: string }).baseLocale;
+  const inbox = (require(`../../src/i18n/${base}/inboxNative.json`) as { inboxNative: { permissions: { contactsUsage: string } } }).inboxNative.permissions;
+  /* eslint-enable @typescript-eslint/no-require-imports */
+  return [['expo-contacts', { contactsPermission: inbox.contactsUsage }], 'expo-document-picker'];
+}
 
 /** The four link paths the app handles from a universal link / App Link. */
 export const LINK_PATHS = {
@@ -175,7 +194,7 @@ export function buildConfig(
   const linkHosts = resolveLinkHosts(profile, linkHostsValue);
   // usesAppleSignIn: Sign in with Apple (VTID-05186); the App ID capability waits for G3.
   const ios: ExpoConfig['ios'] = { bundleIdentifier: IDENTIFIERS.ios, supportsTablet: false, usesAppleSignIn: true };
-  const android: ExpoConfig['android'] = { package: IDENTIFIERS.android };
+  const android: ExpoConfig['android'] = { package: IDENTIFIERS.android, blockedPermissions: [...CONTACTS_BLOCKED_PERMISSIONS] };
   if (linkHosts.length > 0) {
     ios.associatedDomains = linkHosts.map((host) => `applinks:${host}`);
     android.intentFilters = [
