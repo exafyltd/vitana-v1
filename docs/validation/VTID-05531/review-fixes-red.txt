@@ -1,0 +1,243 @@
+FAIL tests/events/events-data.test.ts (32.456 s)
+  ● form validation and ownership rules › accepts an end on the next day and stores it on that day
+
+    expect(received).toBeNull()
+
+    Received: "endTime"
+
+      177 |   it('accepts an end on the next day and stores it on that day', () => {
+      178 |     const night: EventForm = { ...base, startTime: '23:00', endTime: '01:00', endDayOffset: 1 };
+    > 179 |     expect(validateEventForm(night, new Date('2030-01-01T00:00:00Z'))).toBeNull();
+          |                                                                        ^
+      180 |     expect(buildEventInput(night).end_time).toBe(new Date(2031, 4, 5, 1, 0).toISOString());
+      181 |   });
+      182 |
+
+      at Object.toBeNull (tests/events/events-data.test.ts:179:72)
+
+PASS tests/events/core-routes-i18n.test.ts (32.494 s)
+FAIL tests/events/events-hub.test.tsx (36.287 s)
+  ● upcoming tab at a fixed time › lists everything still ahead, including later today, and leaves out what started earlier today
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+    -   "later-today",
+        "tomorrow",
+      ]
+
+      101 |     const tomorrow = eventRow('tomorrow', { start_time: new Date(2031, 4, 5, 10, 0).toISOString() });
+      102 |     const ids = selectTabEvents('upcoming', [tomorrow, earlier, later], [], now).map((e) => e.id);
+    > 103 |     expect(ids).toEqual(['later-today', 'tomorrow']);
+          |                 ^
+      104 |   });
+      105 | });
+      106 |
+
+      at Object.toEqual (tests/events/events-hub.test.tsx:103:17)
+
+FAIL tests/events/event-form.test.tsx (39.458 s)
+  ● Console
+
+    console.error
+      An update to AuthProvider inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      57 |     const settle = (session: Session | null) => {
+      58 |       resolved = true;
+    > 59 |       if (active) setState((s) => ({ ...s, session, loading: false }));
+         |                   ^
+      60 |     };
+      61 |     const timer = setTimeout(() => {
+      62 |       if (!resolved && active) setState((s) => ({ ...s, loading: false }));
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setState (src/auth/AuthProvider.tsx:59:19)
+      at settle (src/auth/AuthProvider.tsx:71:30)
+
+  ● edit owned event › keeps the end of an event that ends on the next day when only the title changes
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      87 |     fireEvent.press(screen.getByTestId('event-form-submit'));
+      88 |
+    > 89 |     await waitFor(() => expect(dbl.writes.some((w) => w.op === 'update')).toBe(true));
+         |                  ^
+      90 |     const upd = dbl.writes.find((w) => w.op === 'update')!;
+      91 |     expect(upd.values).toMatchObject({ title: 'Late session, renamed', end_time: end.toISOString() });
+      92 |     expect(screen.queryByTestId('event-form-error')).toBeNull();
+
+      at Object.<anonymous> (tests/events/event-form.test.tsx:89:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL tests/events/landings.test.tsx (42.989 s)
+  ● Console
+
+    console.error
+      An update to LanguageProvider inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at forceStoreRerender (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5432:24)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5417:11
+      at node_modules/@tanstack/query-core/src/notifyManager.ts:73:11
+      at notifyFn (node_modules/@tanstack/query-core/src/notifyManager.ts:21:5)
+      at node_modules/@tanstack/query-core/src/notifyManager.ts:44:13
+          at Array.forEach (<anonymous>)
+      at node_modules/@tanstack/query-core/src/notifyManager.ts:43:25
+      at batchNotifyFn (node_modules/@tanstack/query-core/src/notifyManager.ts:24:5)
+      at Timeout._onTimeout (node_modules/@tanstack/query-core/src/notifyManager.ts:42:9)
+
+  ● public event landing › shows the event resolved by the slug with the organizer name from the resolver row
+
+    Unable to find an element with text: Maria Host
+
+    [36m<RCTScrollView[39m
+      [33mtestID[39m=[32m"public-event"[39m
+    [36m>[39m
+      [36m<View>[39m
+        [36m<Image />[39m
+        [36m<Text[39m
+          [33mtestID[39m=[32m"public-event-title"[39m
+        [36m>[39m
+          [0mOpen air yoga[0m
+        [36m</Text>[39m
+        [36m<View>[39m
+          [36m<Text>[39m
+            [0mDate & Time[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0mSun, Nov 8 · 19:17[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0mLocation[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0mBerlin[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0mHosted by[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0mCommunity Host[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0m2 attending[0m
+          [36m</Text>[39m
+        [36m</View>[39m
+        [36m<Text>[39m
+          [0mAbout pub-1[0m
+        [36m</Text>[39m
+        [36m<View[39m
+          [33maccessibilityRole[39m=[32m"button"[39m
+          [33maccessibilityState[39m=[32m{
+            {
+              "disabled": false,
+            }
+          }[39m
+          [33maccessible[39m=[32m{true}[39m
+          [33mtestID[39m=[32m"public-event-join"[39m
+        [36m>[39m
+          [36m<Text>[39m
+            [0mJoin this event[0m
+          [36m</Text>[39m
+        [36m</View>[39m
+      [36m</View>[39m
+    [36m</RCTScrollView>[39m
+
+      57 |     });
+      58 |     expect((await screen.findByTestId('public-event-title')).props.children).toBe('Open air yoga');
+    > 59 |     expect(screen.getByText('Maria Host')).toBeTruthy();
+         |                   ^
+      60 |   });
+      61 |
+      62 |   it('shows not found when the resolver returns no row', async () => {
+
+      at Object.getByText (tests/events/landings.test.tsx:59:19)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● event game landing without a tenant (the flag query never runs) › shows the pitch to a guest on /e/game/:slug, and Join sends the guest to sign-in with no join write
+
+    Unable to find an element with testID: event-game-live
+
+    [36m<View[39m
+      [33mtestID[39m=[32m"event-game-loading"[39m
+    [36m>[39m
+      [36m<ActivityIndicator />[39m
+    [36m</View>[39m
+
+      118 |       userId: null,
+      119 |     });
+    > 120 |     expect(await screen.findByTestId('event-game-live')).toBeTruthy();
+          |                         ^
+      121 |     expect(screen.queryByTestId('event-game-loading')).toBeNull();
+      122 |     mockRouter.push.mockClear();
+      123 |     fireEvent.press(screen.getByTestId('event-game-join'));
+
+      at Object.findByTestId (tests/events/landings.test.tsx:120:25)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● event game landing without a tenant (the flag query never runs) › shows the disabled message, not the spinner, to a signed-in member on /community/event-game
+
+    Unable to find an element with testID: event-game-disabled
+
+    [36m<View[39m
+      [33mtestID[39m=[32m"event-game-loading"[39m
+    [36m>[39m
+      [36m<ActivityIndicator />[39m
+    [36m</View>[39m
+
+      128 |   it('shows the disabled message, not the spinner, to a signed-in member on /community/event-game', async () => {
+      129 |     renderWithEvents(<EventGameScreen />, { tables: { event_games: [game()] }, userId: 'u-1' });
+    > 130 |     expect(await screen.findByTestId('event-game-disabled')).toBeTruthy();
+          |                         ^
+      131 |     expect(screen.queryByTestId('event-game-loading')).toBeNull();
+      132 |   });
+      133 | });
+
+      at Object.findByTestId (tests/events/landings.test.tsx:130:25)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+Test Suites: 4 failed, 1 passed, 5 total
+Tests:       6 failed, 45 passed, 51 total
+Snapshots:   0 total
+Time:        44.149 s
+Ran all test suites matching /tests\/events/i.

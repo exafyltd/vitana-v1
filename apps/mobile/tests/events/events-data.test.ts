@@ -21,7 +21,7 @@ import {
   validateEventForm,
   type EventForm,
 } from '../../src/screens/events/data/events';
-import { eventRow, HOST, inThreeDays, makeEventsDouble, standardTables, todayAt23, VIEWER } from './helpers';
+import { eventRow, HOST, inThreeDays, makeEventsDouble, publicEventRow, standardTables, todayAt23, VIEWER } from './helpers';
 
 configure({ asyncUtilTimeout: 5000 });
 
@@ -95,7 +95,7 @@ describe('deep-link and public resolvers', () => {
   it('resolves a public identifier through the resolve_event_by_slug RPC', async () => {
     const dbl = makeEventsDouble({
       rpc: {
-        resolve_event_by_slug: ({ identifier }) => ({ data: identifier === 'known' ? [eventRow('p-1')] : [], error: null }),
+        resolve_event_by_slug: ({ identifier }) => ({ data: identifier === 'known' ? [publicEventRow('p-1')] : [], error: null }),
       },
     });
     __setSupabaseForTests(dbl.client);
@@ -172,6 +172,12 @@ describe('form validation and ownership rules', () => {
     expect(validateEventForm({ ...base, endTime: '09:00' }, new Date('2030-01-01T00:00:00Z'))).toBe('endTime');
     expect(validateEventForm({ ...base, location: '' }, new Date('2030-01-01T00:00:00Z'))).toBe('location');
     expect(validateEventForm(base, new Date('2030-01-01T00:00:00Z'))).toBeNull();
+  });
+
+  it('accepts an end on the next day and stores it on that day', () => {
+    const night: EventForm = { ...base, startTime: '23:00', endTime: '01:00', endDayOffset: 1 };
+    expect(validateEventForm(night, new Date('2030-01-01T00:00:00Z'))).toBeNull();
+    expect(buildEventInput(night).end_time).toBe(new Date(2031, 4, 5, 1, 0).toISOString());
   });
 
   it('lets the owner or a co-creator edit an upcoming event, and only the owner delete it', () => {

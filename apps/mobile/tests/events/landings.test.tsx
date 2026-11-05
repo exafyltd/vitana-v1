@@ -8,16 +8,17 @@ import './helpers';
 import { fireEvent, screen, waitFor, act } from '@testing-library/react-native';
 import { PublicEventScreen } from '../../src/screens/events/PublicEventScreen';
 import { EventGameScreen } from '../../src/screens/events/EventGameScreen';
-import { eventRow, mockParams, renderWithEvents } from './helpers';
+import { mockParams, mockRouter, publicEventRow, renderWithEvents } from './helpers';
 import { configure } from '@testing-library/react-native';
 
 configure({ asyncUtilTimeout: 5000 });
 jest.setTimeout(30000);
 
 // The game flag is read for the active tenant; the test wrapper has no tenant registry, so pin one.
+const mockTenant: { activeTenantId: string | null } = { activeTenantId: 'tenant-test' };
 jest.mock('../../src/identity/TenantProvider', () => {
   const actual = jest.requireActual('../../src/identity/TenantProvider');
-  return { ...actual, useTenant: () => ({ activeTenantId: 'tenant-test' }) };
+  return { ...actual, useTenant: () => ({ activeTenantId: mockTenant.activeTenantId }) };
 });
 
 const DAY = 86_400_000;
@@ -44,14 +45,18 @@ const game = (overrides: Record<string, unknown> = {}) => ({
 
 beforeEach(() => {
   mockParams.current = {};
+  mockTenant.activeTenantId = 'tenant-test';
 });
 
 describe('public event landing', () => {
-  it('shows the event resolved by the slug', async () => {
+  it('shows the event resolved by the slug with the organizer name from the resolver row', async () => {
     renderWithEvents(<PublicEventScreen identifier="my-event" />, {
-      rpc: { resolve_event_by_slug: () => ({ data: [eventRow('pub-1', { title: 'Open air yoga' })], error: null }) },
+      rpc: {
+        resolve_event_by_slug: () => ({ data: [publicEventRow('pub-1', { title: 'Open air yoga', organizer_name: 'Maria Host' })], error: null }),
+      },
     });
     expect((await screen.findByTestId('public-event-title')).props.children).toBe('Open air yoga');
+    expect(screen.getByText('Maria Host')).toBeTruthy();
   });
 
   it('shows not found when the resolver returns no row', async () => {
@@ -99,5 +104,30 @@ describe('event game landing', () => {
       tables: { event_games: [game()], tenant_settings: [{ tenant_id: 'tenant-test', feature_flags: {} }] },
     });
     expect(await screen.findByTestId('event-game-disabled')).toBeTruthy();
+  });
+});
+
+describe('event game landing without a tenant (the flag query never runs)', () => {
+  beforeEach(() => {
+    mockTenant.activeTenantId = null;
+  });
+
+  it('shows the pitch to a guest on /e/game/:slug, and Join sends the guest to sign-in with no join write', async () => {
+    const { dbl } = renderWithEvents(<EventGameScreen slug="longevity-game" publicLanding />, {
+      tables: { event_games: [game()] },
+      userId: null,
+    });
+    expect(await screen.findByTestId('event-game-live')).toBeTruthy();
+    expect(screen.queryByTestId('event-game-loading')).toBeNull();
+    mockRouter.push.mockClear();
+    fireEvent.press(screen.getByTestId('event-game-join'));
+    expect(mockRouter.push).toHaveBeenCalledWith(`/maxina?redirectTo=${encodeURIComponent('/e/game/longevity-game')}`);
+    expect(dbl.writes.filter((w) => w.table === 'event_game_participants')).toHaveLength(0);
+  });
+
+  it('shows the disabled message, not the spinner, to a signed-in member on /community/event-game', async () => {
+    renderWithEvents(<EventGameScreen />, { tables: { event_games: [game()] }, userId: 'u-1' });
+    expect(await screen.findByTestId('event-game-disabled')).toBeTruthy();
+    expect(screen.queryByTestId('event-game-loading')).toBeNull();
   });
 });

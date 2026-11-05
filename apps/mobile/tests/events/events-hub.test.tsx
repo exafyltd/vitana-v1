@@ -6,8 +6,8 @@
  */
 import './helpers';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
-import { EventsMeetupsScreen } from '../../src/screens/events/EventsMeetupsScreen';
-import { mockParams, renderWithEvents, standardTables } from './helpers';
+import { EventsMeetupsScreen, selectTabEvents } from '../../src/screens/events/EventsMeetupsScreen';
+import { eventRow, mockParams, renderWithEvents, standardTables } from './helpers';
 import { configure } from '@testing-library/react-native';
 
 configure({ asyncUtilTimeout: 5000 });
@@ -90,5 +90,16 @@ describe('create entry', () => {
       fireEvent.press(screen.getByTestId('create-meetup'));
     });
     expect(await screen.findByTestId('event-form')).toBeTruthy();
+  });
+});
+
+describe('upcoming tab at a fixed time', () => {
+  it('lists everything still ahead, including later today, and leaves out what started earlier today', () => {
+    const now = new Date(2031, 4, 4, 14, 0);
+    const earlier = eventRow('earlier-today', { start_time: new Date(2031, 4, 4, 9, 0).toISOString() });
+    const later = eventRow('later-today', { start_time: new Date(2031, 4, 4, 18, 0).toISOString() });
+    const tomorrow = eventRow('tomorrow', { start_time: new Date(2031, 4, 5, 10, 0).toISOString() });
+    const ids = selectTabEvents('upcoming', [tomorrow, earlier, later], [], now).map((e) => e.id);
+    expect(ids).toEqual(['later-today', 'tomorrow']);
   });
 });

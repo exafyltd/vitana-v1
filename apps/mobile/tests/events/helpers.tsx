@@ -64,6 +64,31 @@ export function eventRow(id: string, overrides: Row = {}): any {
   };
 }
 
+/** A row shaped like the `resolve_event_by_slug` RPC result (not a global_community_events row). */
+export function publicEventRow(id: string, overrides: Row = {}): any {
+  return {
+    id,
+    title: `Event ${id}`,
+    description: `About ${id}`,
+    event_type: 'meetup',
+    location: 'Berlin',
+    start_time: new Date(Date.now() + 3 * 86_400_000).toISOString(),
+    end_time: null,
+    max_participants: 10,
+    participant_count: 2,
+    image_url: null,
+    slug: `slug-${id}`,
+    organizer_name: 'Host Person',
+    organizer_avatar: null,
+    metadata: {},
+    has_tickets: false,
+    lowest_ticket_price: null,
+    is_paid_event: false,
+    is_sold_out: false,
+    ...overrides,
+  };
+}
+
 /** A start time today, at 23:00 local time (always "today", also after midnight-free runs). */
 export function todayAt23(): string {
   const d = new Date();

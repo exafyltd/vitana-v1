@@ -70,4 +70,25 @@ describe('edit owned event', () => {
     expect(upd.values).toMatchObject({ title: 'New title' });
     expect(upd.filters).toEqual([['id', 'owned-1']]);
   });
+
+  it('keeps the end of an event that ends on the next day when only the title changes', async () => {
+    const end = new Date(2031, 4, 5, 1, 0);
+    const owned = eventRow('night-1', {
+      title: 'Late session',
+      created_by: HOST,
+      start_time: new Date(2031, 4, 4, 23, 0).toISOString(),
+      end_time: end.toISOString(),
+    });
+    const { dbl } = renderWithEvents(<EventsMeetupsScreen />, { tables: standardTables({ global_community_events: [owned] }), userId: HOST });
+
+    fireEvent.press(await screen.findByTestId('event-card-night-1'));
+    fireEvent.press(await screen.findByTestId('event-drawer-edit'));
+    fireEvent.changeText(await screen.findByTestId('event-form-title'), 'Late session, renamed');
+    fireEvent.press(screen.getByTestId('event-form-submit'));
+
+    await waitFor(() => expect(dbl.writes.some((w) => w.op === 'update')).toBe(true));
+    const upd = dbl.writes.find((w) => w.op === 'update')!;
+    expect(upd.values).toMatchObject({ title: 'Late session, renamed', end_time: end.toISOString() });
+    expect(screen.queryByTestId('event-form-error')).toBeNull();
+  });
 });
