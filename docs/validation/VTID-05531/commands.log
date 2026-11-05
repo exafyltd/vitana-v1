@@ -28,3 +28,10 @@ Implementation and checks (final head: see the PR)
 
 Not run (G1 or owner gates)
 - Maestro, simulator and emulator screenshots, real sign-in, staging reads: deferred to G1 (task 8, next_actor owner).
+
+Final state (after the driver decisions, 2026-11-05)
+- Option C: apps/mobile/tests/orb/nav-directive.test.ts, the three COMM.OVERVIEW assertions move to /admin/activity; not_found kept. Commit 4e37bcbb2. No ORB source change.
+- npx jest tests/orb/nav-directive.test.ts --ci: 14/14 PASS.
+- npm test (full, apps/mobile, code at 4e37bcbb2): 150/150 suites PASS, 4051/4051 tests PASS, exit 0, 88 s. Replaces the earlier 149/150 run.
+- Lane tests (tests/events) are unchanged since the two default-worker runs above.
+- Preflight: rerun before push; Collab handoff and Lane scope report the lane file as missing on vitana-platform main, and Lane scope names the Option C file. Details in the PR body.

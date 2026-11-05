@@ -1,6 +1,6 @@
 # VTID-05531 — verification
 
-Lane: native-wave2-events-calendar-r3/events-meetups. Spec: lanes/events-meetups.md on the plan branch (vitana-platform).
+Lane: native-wave2-events-calendar-r3/events-meetups. Spec: lanes/events-meetups.md on the plan branch (vitana-platform). The lane file is not on vitana-platform main yet, so Lane scope reports "lane file not found" until the plan merges.
 
 ## What is built
 - `/comm/events-meetups` (COMM.EVENTS, COMM.EVENTS_HOT, COMM.EVENTS_TODAY, COMM.EVENTS_UPCOMING, COMM.FEED, COMM.OVERVIEW): tab from the `tab` param and the filter sheet, card list with pull-to-refresh and incremental loading, loaded, empty and error states, search by title and place, a card opens the drawer, the `event` param opens a linked event.
@@ -9,25 +9,35 @@ Lane: native-wave2-events-calendar-r3/events-meetups. Spec: lanes/events-meetups
 - `/community/event-game` and `/e/game/:slug`: event game landing with the tenant flag, pre, live and ended phases, join and leaderboard.
 - `@vitana/core` entries: events-hot, virtual-link, event-cover-image, profile-path (all class-A).
 
-## Parity with the web (what is not in this port)
-- Ticket sales and checkout (CreateEventPopup ticket types, the Stripe purchase, the "buy ticket" CTA). Purchase surface, so it is not ported here.
-- Generated cover images (`generate-event-image`) and the image upload in the create and edit forms.
+## Checks on the final code
+- `npm run typecheck`: exit 0, 0 TS errors.
+- `npx jest tests/events --ci`: 5 suites, 46/46 tests, two runs at default workers.
+- `npx jest tests/orb/nav-directive.test.ts --ci`: 14/14 after the Option C change.
+- `npm test` (full, apps/mobile): 150/150 suites, 4051/4051 tests, exit 0.
+- `npm run parity:check`: OK, 435 rows, 75 native routes; the 12 events rows are native.
+- `node scripts/native/core-closure.mjs --check`: up to date.
+- `APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check`: exit 0.
+- `APP_PROFILE=development npm run bundle` with `EXPO_NO_TELEMETRY=1`: exit 0 (iOS and Android). Without that variable the sandbox fails on Expo telemetry (`/root/.expo`).
+- NATIVE-CI node tests (10 files in scripts/native/__tests__): 69/69. Shell pins: OK.
+- Root `npm run i18n:register` and `i18n:stale`: exit 0.
+- Root `npm run i18n:gate`: exit 1 with 10 review-queue and admin-key checks in existing shards; none mention eventsNative. It also needs SUPABASE_SERVICE_ROLE, which this sandbox lacks.
+
+## Option C file (driver decision)
+`apps/mobile/tests/orb/nav-directive.test.ts` is outside the lane paths. Its three assertions used COMM.OVERVIEW (`/comm/events-meetups?tab=hot`) as the unported example, which this port makes native. The example is now `/admin/activity`: a web console route that the browser opens (ledger out:system-browser), with no native route and no Wave 2 lane owner. The `not_found` and `native_screen_not_ported` expectations are unchanged. No ORB source changed.
+
+## Parity gaps (not in this port)
+- Ticket sales and checkout (ticket types, Stripe purchase, "buy ticket" CTA). A purchase surface, so it is not ported here.
+- Generated cover images and cover upload in the create and edit forms.
 - Live-room cards in the hub list and the Go Live entry. They belong to the live-rooms lane (VTID-05532).
-- Campaign promotion dialog, share dialog and the Autopilot chip (the chip navigates nowhere in this port).
-- Drawer previous and next navigation, add-to-calendar and the attendee chat in the drawer.
+- Campaign promotion dialog, share dialog, and the Autopilot chip (it does not navigate in this port).
+- Drawer previous and next, add-to-calendar, and the attendee chat in the drawer.
 - Game celebration overlay, rules sheet and post CTA.
 - Date and time fields are typed text (YYYY-MM-DD, HH:MM), not native pickers.
-- End time on the same day as the start only.
+- An event that ends on another day is saved with its end on the start date.
 
-## Known parity gap (needs an owner decision)
-- `/e/:slug` and `/pub/events/:id` are public on the web (no AuthGuard). The lane spec places their native routes under `app/(app)/`, and `(app)` sends signed-out visitors to sign-in unless the path is in `GUEST_PATHS`. Native signed-out visitors therefore land on sign-in for shared event links. The fix is a `(public)` route, which is outside the lane paths, or a web-side change; `GUEST_PATHS` cannot take these paths because check-shell-pins compares it with App.tsx `allowGuest` routes.
+## Owner decision recorded (driver, 2026-11-05)
+- `/e/:slug` and `/pub/events/:id` stay under `app/(app)/`, as the lane spec says. Web serves them without sign-in; native signed-out visitors are sent to sign-in. Moving the two routes to the public group is a follow-up for the public-entry lane.
 - `/e/game/:slug` is in GUEST_PATHS, so guests reach it.
-
-## Checks
-See commands.log. Summary: typecheck green; lane tests 46/46 on two default-worker runs; parity:check OK; core-closure --check up to date; deps:check green; bundle green with EXPO_NO_TELEMETRY=1; NATIVE-CI node tests 69/69; shell pins OK; i18n register and stale checks green. Full `npm test`: 149 of 150 suites pass; the one failing suite is outside the lane (tests/orb/nav-directive.test.ts, see below).
-
-## Outside the lane: tests/orb/nav-directive.test.ts
-Three assertions use `COMM.OVERVIEW` (`/comm/events-meetups?tab=hot`) as the example of a registry screen that is not ported yet, expecting `not_found` with `native_screen_not_ported`. With this port the same call returns `opened`. The fix is to use another unported destination, for example `COMM.LIVE_ROOMS` (`/comm/live-rooms`, live-rooms lane), in those three places. That file is not in the lane paths, so it is not changed in this PR.
 
 ## Not verified on staging
 Device runtime (Maestro, simulator and emulator screenshots, real sign-in and reads against staging) is deferred to G1 (task 8, next_actor owner). The offline tests use the Supabase double and a fake gateway; no network call is made.
