@@ -114,21 +114,21 @@ export function EventFormSheet({
           testID="event-form-date"
           value={form.date}
           onChangeText={set('date')}
-          placeholder="YYYY-MM-DD"
+          placeholder={text.t('screens.settings.yyyymmdd')}
           accessibilityLabel={text.t('screens.common.date')}
         />
         <TextInput
           testID="event-form-start"
           value={form.startTime}
           onChangeText={set('startTime')}
-          placeholder="HH:MM"
+          placeholder={text.t('screens.common.hhMm')}
           accessibilityLabel={text.t('screens.common.time')}
         />
         <TextInput
           testID="event-form-end"
           value={form.endTime}
           onChangeText={set('endTime')}
-          placeholder="HH:MM"
+          placeholder={text.t('screens.common.hhMm')}
           accessibilityLabel={text.t('createEventPopup.endTime')}
         />
         {form.isVirtual ? (

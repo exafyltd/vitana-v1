@@ -5,6 +5,7 @@
  * gt, is, order, limit, insert, update, delete, rpc), fixture rows and a render
  * wrapper. Fakes only; no network (tests/helpers/no-network is imported first).
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import '../helpers/no-network';
 import '../helpers/mocks';
 import { configure, render } from '@testing-library/react-native';
