@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Chat",
+      "calendar": "Kalender",
+      "community": "Community",
+      "updateFailed": "Die Einstellung konnte nicht aktualisiert werden"
+    },
+    "consent": {
+      "title": "Hinweis zur KI-Datenweitergabe",
+      "subtitle": "Bevor du KI-Funktionen nutzt, sieh dir bitte an, wie deine Daten verwendet werden.",
+      "whatIsSent": "Welche Daten gesendet werden können",
+      "voiceData": "Sprachaufnahmen und Transkripte",
+      "diaryData": "Eingegebene Prompts, Chatnachrichten und Tagebucheinträge",
+      "memoryData": "Einträge im Memory Garden und Wellness-Ziele",
+      "profileData": "Profilkontext (Name, Präferenzen)",
+      "socialData": "URLs von Social-Media-Profilen und Bio-Texte (wenn du Importfunktionen nutzt)",
+      "recipientLabel": "Empfänger:",
+      "recipient": "Google (Gemini-KI-Modelle) über das Lovable AI Gateway. Deine Daten werden sicher über verschlüsselte Verbindungen übertragen.",
+      "purposeLabel": "Zweck",
+      "purpose": "Um personalisierte KI-Antworten, Sprachsynthese, proaktive Begrüßungen, Gesundheitscoaching und Vorschläge zur Profil-Anreicherung zu erzeugen.",
+      "notStored": "Der KI-Anbieter speichert die Daten nicht dauerhaft",
+      "revokeAnytime": "Du kannst deine Einwilligung jederzeit unter Einstellungen > Datenschutz widerrufen",
+      "gdprCompliant": "Konform mit der DSGVO und den Datenschutzvorgaben",
+      "agreementFooter": "Wenn du auf „Ich stimme zu“ tippst, erlaubst du der Exafy LTD, die oben genannten Daten an die genannten KI-Dienstleister zu senden. Du kannst diese Erlaubnis jederzeit unter Einstellungen > Datenschutz widerrufen.",
+      "notNow": "Nicht jetzt",
+      "iAgree": "Ich stimme zu"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90 %",
+      "platformShare": "10 %",
+      "redirecting": "Wird weitergeleitet …",
+      "completeSetup": "Einrichtung abschließen",
+      "enablePayments": "Zahlungen aktivieren",
+      "opening": "Wird geöffnet …",
+      "viewDashboard": "Dashboard ansehen"
+    },
+    "limitations": {
+      "description": "Das sind die festen Regeln, die wir auf jede Produktempfehlung anwenden. Allergien, medizinische Kontraindikationen und Wechselwirkungen mit Medikamenten können nie überschrieben werden.",
+      "removeTag": "{v} entfernen",
+      "tag": "{v} ×",
+      "never": "nie",
+      "allergens": "Allergene",
+      "medicationsLabel": "Medikamente (Wirkstoff oder Klasse, z. B. SSRI, Blutverdünner)",
+      "accessibilityLabel": "Bedürfnisse zur Barrierefreiheit",
+      "ofActiveProducts": "von {count} aktiven Produkten",
+      "maxPlaceholder": "z. B. 40",
+      "capPlaceholder": "z. B. 150",
+      "dietary": {
+        "vegan": "vegan",
+        "vegetarian": "vegetarisch",
+        "halal": "halal",
+        "kosher": "koscher",
+        "glutenFree": "glutenfrei",
+        "dairyFree": "milchfrei",
+        "nutFree": "nussfrei",
+        "soyFree": "sojafrei",
+        "sugarFree": "zuckerfrei",
+        "organic": "bio"
+      }
+    },
+    "tenantRole": {
+      "description": "Verwalte deinen Kontext und deine Berechtigungen",
+      "noRoleSelected": "Keine Rolle ausgewählt",
+      "noOrganization": "Keine Organisation",
+      "current": "Aktuell",
+      "available": "Verfügbar",
+      "switching": "Wird gewechselt …",
+      "switchOrganization": "Organisation wechseln",
+      "roles": {
+        "community": "Community-Mitglied",
+        "patient": "Patient",
+        "professional": "Fachkraft",
+        "staff": "Mitarbeiter",
+        "backoffice": "Backoffice",
+        "admin": "Administrator"
+      },
+      "roleDescriptions": {
+        "community": "Zugriff auf Community-Funktionen und soziale Kontakte",
+        "patient": "Vollständiges Gesundheits-Tracking und medizinische Funktionen",
+        "professional": "Profi-Werkzeuge für Ärzte und Coaches",
+        "staff": "Mitarbeiterverwaltung und betriebliche Funktionen",
+        "backoffice": "ERP/CRM-Backoffice-Tools und Freigaben",
+        "admin": "Voller Verwaltungszugriff",
+        "default": "Zugriff auf rollenspezifische Funktionen"
+      },
+      "permissions": {
+        "community": "Community-Zugriff",
+        "health": "Zugriff auf Gesundheitsdaten",
+        "professional": "Profi-Werkzeuge",
+        "staff": "Mitarbeiter-Funktionen",
+        "admin": "Admin-Funktionen"
+      }
+    }
+  }
+}
