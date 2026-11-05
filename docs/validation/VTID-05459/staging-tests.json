@@ -1,0 +1,72 @@
+{
+  "vtid": "VTID-05459",
+  "service": "community-app",
+  "_note": "Native Wave 2 inbox-list lane. The port is proven offline (jest-expo + RNTL, no network; the gateway is N1's createGatewayFetch over a fake fetch, Supabase is an in-memory double; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web /inbox, /inbox/archived, /inbox/inspiration) and the live realtime unread updates are DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md inbox-list task 7). Read-only: the spec never starts a conversation, creates a group or marks anything read. Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npm run gen:i18n",
+      "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)"
+    },
+    {
+      "kind": "existing",
+      "ref": "npx jest tests/inbox-chat/inbox-list",
+      "cwd": "apps/mobile",
+      "reason": "inbox-list unit tests (9 suites / 110 tests; fix round 1 added contacts, message-search, presence, find-friends and app-config-contacts): Find Friends (consent, the phone address book faked and imported as native, a refused prompt -> Open Settings, .vcf on a device without an address book imported as vcf, an account off -> Connected Apps, on -> hub sync, results with Message / Invite, verify-phone hint + code request, the .vcf reader); the resolved app config registers expo-contacts (catalog usage string) + expo-document-picker and blocks WRITE_CONTACTS; the Contacts pill (useContacts reads, Message -> DM or the New sheet with the member preselected, add with check_phone_on_platform, delete after confirmation, invite via the invite link + invite_sent_at, remove phone contacts, search, empty); Search messages (Community only, GET /chat/search q/limit/type/from/cursor, hint, hits with the conversation name, a hit -> /inbox/u|g/<id>/msg/<id>, Show more, empty, error); the presence dot on direct cards (thread_presence read, presence_global sync, own track + heartbeat upsert, Vitana online, no dot on groups); /inbox loaded (cards, order, Vitana seed, short times), skeleton, empty (Network), error (all sources fail -> Vitana row only; Network read fails -> empty state), the built gateway requests (Bearer, JSON) and PostgREST reads of the web hooks, phantom peers dropped, row unread badges (9+) and the shell inboxUnread total (direct + groups), a realtime DM bumping its row, search + dropdown, Direct/Groups pills, row -> /inbox/u|g|t by path, avatar -> /u/<id>, Mark all as read (gateway read-all, notifications, group reads; disabled at 0); the New sheet opens, the member search calls exactly search_global_directory({search_term}) / search_tenant_directory({search_term, tenant_id_param}) and renders no service bot / test actor (NEVER rule 45), start chat (is_community_user + create_or_get_global_dm), group mode + the web inserts; Archived and Inspiration loaded / empty tabs / clipboard copy / actions sheet; route files, native resolution, ledger rows; no unresolved key in 11 locales; Arabic; inboxNative key parity; RTL-safe styles — fake gateway / fixtures, no network"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run typecheck",
+      "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the inbox screens, the class-B data layer and the inbox port type-check against the shell ports and @vitana/ui"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run bundle",
+      "cwd": "apps/mobile",
+      "env": {
+        "APP_PROFILE": "development"
+      },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /inbox, /inbox/archived and /inbox/inspiration routes (run with APP_PROFILE=development)"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run parity:check",
+      "cwd": "apps/mobile",
+      "reason": "INBOX.OVERVIEW, INBOX.ARCHIVED and INBOX.INSPIRATION are native with their route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`"
+    }
+  ],
+  "deferred_g1": [
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/inbox-list/01-inbox-list.yaml",
+      "target": "/inbox",
+      "next_actor": "owner",
+      "reason": "sign in, open /inbox: header, Search messages, Search, Community/Network pill, New, All/Direct/Groups/Contacts, overflow menu, conversation cards with unread badges and presence dots (read only — never sends, never marks read); screenshot parity vs the 390x844 read-only staging web /inbox; needs the isolated G1 environment (iOS simulator + Android emulator)"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/inbox-list/02-inbox-new-sheet.yaml",
+      "target": "/inbox",
+      "next_actor": "owner",
+      "reason": "open the New sheet and search a member (read only: the sheet is dismissed, no conversation or group is created); the G1 directory must contain a service bot and a test actor and neither may appear; needs G1"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/inbox-list/03-archived-inspiration.yaml",
+      "target": "/inbox/archived, /inbox/inspiration",
+      "next_actor": "owner",
+      "reason": "sub-navigation, Archived tabs and sample list, Inspiration templates and empty tabs; screenshot parity vs the read-only staging web pages; needs G1"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/inbox-list/04-unread-realtime.yaml",
+      "target": "/inbox",
+      "next_actor": "owner",
+      "reason": "live unread realtime (a DM from a second G1 test member bumps the row and the bottom-bar badge): needs two sessions in the isolated G1 environment only, never a live system (R5.3)"
+    },
+    {
+      "flow": "apps/mobile/maestro/inbox-chat/inbox-list/05-find-friends.yaml",
+      "target": "/inbox (Contacts)",
+      "next_actor": "owner",
+      "reason": "Find Friends on a G1 simulator / emulator with a seeded test address book only: the OS contacts prompt shows the catalog usage string, the import reaches the G1 gateway, results list the G1 test members; per-language InfoPlist strings checked on the device build; never a real address book, never a live system"
+    }
+  ]
+}

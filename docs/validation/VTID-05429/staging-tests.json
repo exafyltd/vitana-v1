@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05429",
+  "service": "community-app",
+  "_note": "Native Wave 2 profile lane (/me/profile, /profile/me/privacy). The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every write (identity / about / account sheet saves, visibility tier cycles) is asserted as the BUILT request on an in-memory client double and never sent (requirements R5.2). Every command runs with APP_PROFILE=development. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 6); for this write-heavy cluster it runs only on the isolated G1 environment, never against a live backend as the test account. Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "writes the native i18n catalog map (gitignored) that the jest run and the bundle read, including the new profileNative shards (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npx jest tests/profile", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "profile + privacy unit tests: my-profile loaded / empty / error, ID-card segments + card param, tabs, every edit sheet save and tier cycle asserted as the built request on a client double (nothing sent), privacy sections / cycle / read-only partner-search row, i18n key parity + RTL (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "React 19 ReactElement typing; the profile screens, data layer and the profile type port type-check against @vitana/core types, @vitana/tokens and the shell ports (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the new /me/profile and /profile/me/privacy routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "PROFILE.ME and PROFILE.PRIVACY are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check` (run with APP_PROFILE=development)" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/profile/01-my-profile.yaml", "target": "/me/profile", "next_actor": "owner",
+      "reason": "open the own profile -> Identity card, stats and Posts tab render; switch Identity / Social / Account / Business; About / Media / Groups tabs; open each edit sheet and CANCEL (never save); screenshot parity vs 390x844 read-only staging; isolated G1 environment only (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/profile/02-privacy.yaml", "target": "/profile/me/privacy", "next_actor": "owner",
+      "reason": "open privacy -> five sections with their tier badges render (no tap: a tap is a write); back returns; screenshot parity vs 390x844 read-only staging; isolated G1 environment only (iOS simulator + Android emulator)" }
+  ]
+}

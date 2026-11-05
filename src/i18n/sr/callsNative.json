@@ -1,0 +1,19 @@
+{
+  "callsNative": {
+    "incomingAudio": "Dolazni audio poziv…",
+    "incomingVideo": "Dolazni video poziv…",
+    "accept": "Prihvati poziv",
+    "reject": "Odbij poziv",
+    "endCall": "Završi poziv",
+    "calling": "Pozivanje",
+    "videoCalling": "Video poziv",
+    "initializing": "Priprema…",
+    "connecting": "Povezivanje…",
+    "connectionFailed": "Povezivanje nije uspelo",
+    "mute": "Isključi mikrofon",
+    "unmute": "Uključi mikrofon",
+    "cameraOff": "Isključi kameru",
+    "cameraOn": "Uključi kameru",
+    "unknownUser": "Nepoznat član"
+  }
+}
