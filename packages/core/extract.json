@@ -69,7 +69,8 @@
             "SLUG_RE", "COMPILED_MAXINA_FALLBACK", "FALLBACK_REGISTRY", "ResolvedTenant",
             "safeHex", "safeInternalPath",
             { "name": "normalizeLanding", "export": false }, { "name": "normalizeBrand", "export": false }, "normalizeEntry",
-            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant"
+            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant",
+            "isTenantPortalPath", "communityLandingPath", "portalLandingTarget"
           ]
         },
         { "file": "src/lib/retired-tenants.ts", "take": ["RETIRED_TENANT_SLUGS", "canonicalTenantSlug"] }

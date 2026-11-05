@@ -1,0 +1,85 @@
+# VTID-05422 fix 1 — red on the previous head (product code of 52c0f1cb1be8625ed9d4d32f5d66b90f74d6066c; origin/main already merged, nothing new to merge)
+# New test file apps/mobile/tests/wallet-home/wallet-actions.test.tsx (+ fixtures.ts / mocks.ts fakes), before the product change.
+# data/flows.ts does not exist on that head; for this run only, a 2-line stub exporting __resetPendingDepositForTests / getPendingDeposit
+# was placed so the suite loads and each test reports its own failure (stub removed afterwards, never committed).
+# All 22 fail: liveWalletActions does not exist, the default WalletActions (deferredWalletActions) makes no call and toasts
+# walletHomeNative.flow.finishOnWeb, the sheets lack the web fields (method / currency / description / recipient), and there is no deposit return leg.
+$ cd apps/mobile && npx jest tests/wallet-home/wallet-actions.test.tsx --ci
+    ✕ deposit: POST /wallet/deposits/create {amount_minor, currency}, JSON + community role, answers the checkout (11 ms)
+    ✕ deposit status: GET /wallet/deposits/:id (encoded), no body (172 ms)
+    ✕ a non-2xx or { ok: false } answer throws WalletGatewayApiError with the gateway code (1 ms)
+    ✕ checkout: opened in the system browser; iOS resolves on close, Android resolves "opened" (1 ms)
+    ✕ the wallet RPCs carry the web parameter names (2 ms)
+    ✕ an RPC error is thrown
+    ✕ message, activity and member search are the web inserts / read (1 ms)
+    ✕ buy credits: USD → CREDITS through process_wallet_exchange, then the web toasts (7138 ms)
+    ✕ withdraw: needs a method, then debits amount + fee through update_user_balance (143 ms)
+    ✕ withdraw: more than the USD balance is refused with the web toast (170 ms)
+    ✕ spend credits: a quick amount debits CREDITS as a named purchase (5076 ms)
+    ✕ exchange: process_wallet_exchange with the core rate; a failure shows the hook toast and keeps the sheet (5121 ms)
+    ✕ send: search a member, transfer through process_wallet_transfer, then the payment_confirmation message (262 ms)
+    ✕ request: a payment_request message with the web action buttons and no recipient (37 ms)
+    ✕ exchange & send: the activity row and the exchange_and_send message (no RPC, as on the web) (344 ms)
+    ✕ Android: open → AppState active → deposit read → wallet refetch → new balance + the web success toast (334 ms)
+    ✕ iOS-style close: the return leg runs when the browser closes; a failed deposit shows the web failure toast (5244 ms)
+    ✕ webhook lag: pending reads are polled until the deposit settles (5427 ms)
+    ✕ a canceled deposit shows the web depositCanceled toast; a create failure shows transactionFailed (5556 ms)
+    ✕ the web return params: ?depositResult=success reads the deposit and clears the params (5132 ms)
+    ✕ the web return params: ?depositResult=canceled shows depositCanceled with no call (5126 ms)
+    ✕ their confirm buttons have no handler on the web, so they make no call (223 ms)
+  ● request builders (liveWalletActions → fakes) › deposit: POST /wallet/deposits/create {amount_minor, currency}, JSON + community role, answers the checkout
+    TypeError: Cannot read properties of undefined (reading 'createDeposit')
+  ● request builders (liveWalletActions → fakes) › deposit status: GET /wallet/deposits/:id (encoded), no body
+    TypeError: Cannot read properties of undefined (reading 'getDeposit')
+  ● request builders (liveWalletActions → fakes) › a non-2xx or { ok: false } answer throws WalletGatewayApiError with the gateway code
+    TypeError: Cannot read properties of undefined (reading 'createDeposit')
+  ● request builders (liveWalletActions → fakes) › checkout: opened in the system browser; iOS resolves on close, Android resolves "opened"
+    TypeError: Cannot read properties of undefined (reading 'openCheckout')
+  ● request builders (liveWalletActions → fakes) › the wallet RPCs carry the web parameter names
+    TypeError: Cannot read properties of undefined (reading 'updateBalance')
+  ● request builders (liveWalletActions → fakes) › an RPC error is thrown
+    TypeError: Cannot read properties of undefined (reading 'updateBalance')
+  ● request builders (liveWalletActions → fakes) › message, activity and member search are the web inserts / read
+    TypeError: Cannot read properties of undefined (reading 'sendMessage')
+  ● the app default WalletActions make the web calls from the sheets › buy credits: USD → CREDITS through process_wallet_exchange, then the web toasts
+    Expected value: "toasts.wallet.creditsPurchasedSuccessfully"
+    Received array: []
+  ● the app default WalletActions make the web calls from the sheets › withdraw: needs a method, then debits amount + fee through update_user_balance
+    Expected value: "toasts.wallet.missingInformation"
+    Received array: ["walletHomeNative.flow.finishOnWeb"]
+  ● the app default WalletActions make the web calls from the sheets › withdraw: more than the USD balance is refused with the web toast
+    Unable to find an element with testID: radio-bank_transfer
+  ● the app default WalletActions make the web calls from the sheets › spend credits: a quick amount debits CREDITS as a named purchase
+    Expected value: "toasts.wallet.success"
+    Received array: []
+  ● the app default WalletActions make the web calls from the sheets › exchange: process_wallet_exchange with the core rate; a failure shows the hook toast and keeps the sheet
+    Expected value: "toasts.hooks.exchangeFailed"
+    Received array: []
+  ● the app default WalletActions make the web calls from the sheets › send: search a member, transfer through process_wallet_transfer, then the payment_confirmation message
+    Unable to find an element with testID: wallet-flow-description
+  ● the app default WalletActions make the web calls from the sheets › request: a payment_request message with the web action buttons and no recipient
+    Unable to find an element with testID: radio-USD
+  ● the app default WalletActions make the web calls from the sheets › exchange & send: the activity row and the exchange_and_send message (no RPC, as on the web)
+    Unable to find an element with testID: wallet-flow-description
+  ● Stripe deposit: checkout and the return leg › Android: open → AppState active → deposit read → wallet refetch → new balance + the web success toast
+    Expected value: "toasts.wallet.redirectingToCheckout"
+    Received array: ["walletHomeNative.flow.finishOnWeb"]
+  ● Stripe deposit: checkout and the return leg › iOS-style close: the return leg runs when the browser closes; a failed deposit shows the web failure toast
+    Expected value: "toasts.wallet.transactionFailed"
+    Received array: []
+  ● Stripe deposit: checkout and the return leg › webhook lag: pending reads are polled until the deposit settles
+    Expected value: "toasts.wallet.fundsAddedSuccessfully"
+    Received array: []
+  ● Stripe deposit: checkout and the return leg › a canceled deposit shows the web depositCanceled toast; a create failure shows transactionFailed
+    Expected value: "toasts.wallet.depositCanceled"
+    Received array: []
+  ● Stripe deposit: checkout and the return leg › the web return params: ?depositResult=success reads the deposit and clears the params
+    Expected value: "toasts.wallet.fundsAddedSuccessfully"
+    Received array: []
+  ● Stripe deposit: checkout and the return leg › the web return params: ?depositResult=canceled shows depositCanceled with no call
+    Expected value: "toasts.wallet.depositCanceled"
+    Received array: []
+  ● balance detail dialogs › their confirm buttons have no handler on the web, so they make no call
+    TypeError: actions.submit is not a function
+Test Suites: 1 failed, 1 total
+Tests:       22 failed, 22 total

@@ -1,0 +1,45 @@
+# Red on base — VTID-05422 (native-wave2-wallet-r2/wallet-home)
+# base: origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce; the new tests only (no implementation), run from apps/mobile:
+# npx jest tests/wallet-home --ci   (after npm run gen:i18n)
+# Expected: every suite fails — the port, the core re-export and the screens do not exist on main.
+
+    >  9 | import {
+         | ^
+      10 |   EUR_PER_USD,
+      11 |   calculateExchange,
+      12 |   convertFromUsd,
+
+
+FAIL tests/wallet-home/iap-gate.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/wallet-home/iap' from 'tests/wallet-home/iap-gate.test.tsx'
+
+      30 | import { UIProvider } from '../../src/ports/ui';
+      31 | import { composeDrawerRows, type DrawerInput } from '../../src/shell/logic/drawer';
+    > 32 | import { isIAPRestricted } from '../../src/screens/wallet-home/iap';
+         | ^
+      33 | import { WalletScreen } from '../../src/screens/wallet-home/WalletScreen';
+      34 | import { BalanceScreen } from '../../src/screens/wallet-home/BalanceScreen';
+      35 | import { QuickActions } from '../../src/screens/wallet-home/components/QuickActions';
+
+
+FAIL tests/wallet-home/wallet-home.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/wallet-home/WalletScreen' from 'tests/wallet-home/wallet-home.test.tsx'
+
+      25 | import { languageFromLocale } from '../../src/i18n/I18nProvider';
+      26 | import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
+    > 27 | import { WalletScreen } from '../../src/screens/wallet-home/WalletScreen';
+         | ^
+      28 | import { BalanceScreen } from '../../src/screens/wallet-home/BalanceScreen';
+      29 | import { WalletActionsProvider, type WalletActions, type WalletActionRequest } from '../../src/screens/wallet-home/data/actions';
+      30 | import { walletClient, type WalletFixture } from './fixtures';
+
+
+Test Suites: 3 failed, 3 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        17.311 s
+Ran all test suites matching /tests\/wallet-home/i.
