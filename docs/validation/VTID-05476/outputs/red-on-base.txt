@@ -1,0 +1,13 @@
+$ git rev-parse origin/main
+e1ab28b1f75a24924365cbc474d0a5f8f879b73a
+exit=0
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets — up to date
+exit=0
+$ node scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+$ git log --format=%h\ %ad\ %s --date=short -2 -- packages/core/src/extracted/news-feed-ranker.generated.ts
+ec8682fec 2026-11-01 VTID-05427 (native-wave2-memory-diary-r2/memory): native memory garden port
+a705e2182 2026-10-22 VTID-05297 (native-wave2-home-feed-news/home): native Home / feed port (#1493)
+exit=0
