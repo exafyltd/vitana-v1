@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Czat",
+      "calendar": "Kalendarz",
+      "community": "Społeczność",
+      "updateFailed": "Nie udało się zaktualizować ustawienia"
+    },
+    "consent": {
+      "title": "Informacja o udostępnianiu danych AI",
+      "subtitle": "Zanim skorzystasz z funkcji AI, sprawdź, jak wykorzystujemy twoje dane.",
+      "whatIsSent": "Jakie dane mogą zostać wysłane",
+      "voiceData": "Nagrania głosowe i transkrypcje",
+      "diaryData": "Wpisane prompty, wiadomości z czatu i wpisy w dzienniku",
+      "memoryData": "Wpisy w Memory Garden i cele wellness",
+      "profileData": "Kontekst profilu (imię, preferencje)",
+      "socialData": "Adresy URL profili w mediach społecznościowych i teksty bio (przy korzystaniu z funkcji importu)",
+      "recipientLabel": "Odbiorca:",
+      "recipient": "Google (modele AI Gemini) przez Lovable AI Gateway. Twoje dane są przesyłane bezpiecznie przez szyfrowane połączenia.",
+      "purposeLabel": "Cel",
+      "purpose": "Tworzenie spersonalizowanych odpowiedzi AI, syntezy mowy, proaktywnych powitań, coachingu zdrowotnego i propozycji wzbogacenia profilu.",
+      "notStored": "Dostawca AI nie przechowuje danych na stałe",
+      "revokeAnytime": "Możesz w każdej chwili wycofać zgodę w Ustawienia > Prywatność",
+      "gdprCompliant": "Zgodne z RODO i przepisami o prywatności",
+      "agreementFooter": "Dotykając „Zgadzam się”, pozwalasz Exafy LTD wysyłać powyższe dane do wymienionych dostawców AI. Możesz w każdej chwili wycofać tę zgodę w Ustawienia > Prywatność.",
+      "notNow": "Nie teraz",
+      "iAgree": "Zgadzam się"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90%",
+      "platformShare": "10%",
+      "redirecting": "Przekierowywanie…",
+      "completeSetup": "Dokończ konfigurację",
+      "enablePayments": "Włącz płatności",
+      "opening": "Otwieranie…",
+      "viewDashboard": "Zobacz panel"
+    },
+    "limitations": {
+      "description": "To nienegocjowalne zasady, które stosujemy przy każdej rekomendacji produktu. Alergii, przeciwwskazań medycznych i interakcji z lekami nigdy nie można pominąć.",
+      "removeTag": "Usuń {v}",
+      "tag": "{v} ×",
+      "never": "nigdy",
+      "allergens": "Alergeny",
+      "medicationsLabel": "Leki (nazwa ogólna lub grupa, np. SSRI, lek przeciwzakrzepowy)",
+      "accessibilityLabel": "Potrzeby w zakresie dostępności",
+      "ofActiveProducts": "z {count} aktywnych produktów",
+      "maxPlaceholder": "np. 40",
+      "capPlaceholder": "np. 150",
+      "dietary": {
+        "vegan": "wegańskie",
+        "vegetarian": "wegetariańskie",
+        "halal": "halal",
+        "kosher": "koszerne",
+        "glutenFree": "bez glutenu",
+        "dairyFree": "bez nabiału",
+        "nutFree": "bez orzechów",
+        "soyFree": "bez soi",
+        "sugarFree": "bez cukru",
+        "organic": "ekologiczne"
+      }
+    },
+    "tenantRole": {
+      "description": "Zarządzaj swoim kontekstem i uprawnieniami",
+      "noRoleSelected": "Nie wybrano roli",
+      "noOrganization": "Brak organizacji",
+      "current": "Bieżąca",
+      "available": "Dostępna",
+      "switching": "Przełączanie…",
+      "switchOrganization": "Zmień organizację",
+      "roles": {
+        "community": "Członek społeczności",
+        "patient": "Pacjent",
+        "professional": "Specjalista",
+        "staff": "Personel",
+        "backoffice": "Back Office",
+        "admin": "Administrator"
+      },
+      "roleDescriptions": {
+        "community": "Dostęp do funkcji społeczności i kontaktów",
+        "patient": "Pełne śledzenie zdrowia i funkcje medyczne",
+        "professional": "Narzędzia dla lekarzy i coachów",
+        "staff": "Zarządzanie personelem i funkcje operacyjne",
+        "backoffice": "Narzędzia back office ERP/CRM i zatwierdzenia",
+        "admin": "Pełny dostęp administracyjny i zarządzanie",
+        "default": "Dostęp do funkcji właściwych dla roli"
+      },
+      "permissions": {
+        "community": "Dostęp do społeczności",
+        "health": "Dostęp do danych zdrowotnych",
+        "professional": "Narzędzia specjalisty",
+        "staff": "Funkcje personelu",
+        "admin": "Funkcje administratora"
+      }
+    }
+  }
+}

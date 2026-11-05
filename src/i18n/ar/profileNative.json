@@ -1,0 +1,64 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "القسم بالكامل",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "تفضيلات الرقص",
+          "description": "الأنماط والمستوى والدور وما تبحث عنه."
+        },
+        "partnerPreferences": {
+          "label": "تفضيلات الشريك",
+          "description": "من تبحث عنه. خاص افتراضيًا. تبقى الحقول الفرعية خاصة حتى لو فتحت القسم."
+        },
+        "serviceOfferings": {
+          "label": "الخدمات المقدمة",
+          "description": "ما تقدمه. عام افتراضيًا — إخفاؤه يُفقده الغرض."
+        },
+        "myPosts": {
+          "label": "منشوراتي",
+          "description": "النوايا المفتوحة التي أمليتها. منشورات البحث عن شريك لا تظهر هنا أبدًا مهما كان الإعداد."
+        },
+        "derivedAgeBand": {
+          "label": "الفئة العمرية",
+          "description": "اعرض فئتك العمرية فقط (مثل الثلاثينيات) بدل عمرك الدقيق. الافتراضي: جهات الاتصال فقط."
+        }
+      },
+      "fields": {
+        "danceVarieties": "أنماطي",
+        "danceLevel": "مستواي",
+        "danceLookingFor": "ما أبحث عنه",
+        "partnerGender": "تفضيل الجنس",
+        "partnerAgeRange": "النطاق العمري",
+        "partnerRelationshipIntent": "نية العلاقة",
+        "partnerLocationRadius": "الموقع والنطاق",
+        "servicePriceRange": "نطاق السعر",
+        "postsCommercial": "منشورات السوق",
+        "postsPartnerSeek": "منشورات البحث عن شريك"
+      },
+      "partnerSeekNote": "خاص دائمًا. بروتوكول الكشف المتبادل يحمي هذه المنشورات مهما كان الإعداد."
+    },
+    "media": {
+      "photosDenied": "اسمح بالوصول إلى صورك من الإعدادات لاختيار صورة.",
+      "unsupportedFormat": "تنسيق صورة غير مدعوم (.{ext}). يُرجى استخدام JPG أو PNG أو GIF أو WebP."
+    },
+    "gallery": {
+      "photos": "صور",
+      "selectMultiple": "اختر عدة صور",
+      "tapToAddMore": "انقر لإضافة المزيد",
+      "uploadingProgress": "جارٍ تحميل {current} من {total}...",
+      "deleteTitle": "هل أنت متأكد؟",
+      "deleteDescription": "سيتم حذف هذه الصورة نهائيًا. لا يمكن التراجع عن هذا الإجراء."
+    }
+  }
+}

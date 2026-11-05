@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Chat",
+      "calendar": "Calendario",
+      "community": "Comunidad",
+      "updateFailed": "No se pudo actualizar la preferencia"
+    },
+    "consent": {
+      "title": "Aviso sobre el uso compartido de datos con IA",
+      "subtitle": "Antes de usar las funciones de IA, revisa cómo se usan tus datos.",
+      "whatIsSent": "Qué datos pueden enviarse",
+      "voiceData": "Grabaciones de voz y transcripciones",
+      "diaryData": "Prompts escritos, mensajes de chat y entradas del diario",
+      "memoryData": "Entradas del Memory Garden y objetivos de bienestar",
+      "profileData": "Contexto del perfil (nombre, preferencias)",
+      "socialData": "URL de perfiles de redes sociales y textos de biografía (al usar las funciones de importación)",
+      "recipientLabel": "Destinatario:",
+      "recipient": "Google (modelos de IA Gemini) a través de Lovable AI Gateway. Tus datos se transmiten de forma segura mediante conexiones cifradas.",
+      "purposeLabel": "Finalidad",
+      "purpose": "Generar respuestas de IA personalizadas, síntesis de voz, saludos proactivos, coaching de salud y sugerencias para enriquecer tu perfil.",
+      "notStored": "El proveedor de IA no almacena los datos de forma permanente",
+      "revokeAnytime": "Puedes revocar tu consentimiento en cualquier momento en Ajustes > Privacidad",
+      "gdprCompliant": "Cumple con el RGPD y la normativa de privacidad",
+      "agreementFooter": "Al tocar «Acepto», das permiso a Exafy LTD para enviar los datos indicados arriba a los proveedores de IA mencionados. Puedes retirar este permiso en cualquier momento en Ajustes > Privacidad.",
+      "notNow": "Ahora no",
+      "iAgree": "Acepto"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90 %",
+      "platformShare": "10 %",
+      "redirecting": "Redirigiendo…",
+      "completeSetup": "Completar configuración",
+      "enablePayments": "Activar pagos",
+      "opening": "Abriendo…",
+      "viewDashboard": "Ver panel"
+    },
+    "limitations": {
+      "description": "Estas son las reglas innegociables que aplicamos a cada recomendación de producto. Las alergias, las contraindicaciones médicas y las interacciones con medicamentos nunca se pueden anular.",
+      "removeTag": "Quitar {v}",
+      "tag": "{v} ×",
+      "never": "nunca",
+      "allergens": "Alérgenos",
+      "medicationsLabel": "Medicamentos (genérico o clase, p. ej., ISRS, anticoagulante)",
+      "accessibilityLabel": "Necesidades de accesibilidad",
+      "ofActiveProducts": "de {count} productos activos",
+      "maxPlaceholder": "p. ej., 40",
+      "capPlaceholder": "p. ej., 150",
+      "dietary": {
+        "vegan": "vegano",
+        "vegetarian": "vegetariano",
+        "halal": "halal",
+        "kosher": "kosher",
+        "glutenFree": "sin gluten",
+        "dairyFree": "sin lácteos",
+        "nutFree": "sin frutos secos",
+        "soyFree": "sin soja",
+        "sugarFree": "sin azúcar",
+        "organic": "ecológico"
+      }
+    },
+    "tenantRole": {
+      "description": "Gestiona tu contexto y tus permisos",
+      "noRoleSelected": "Ningún rol seleccionado",
+      "noOrganization": "Sin organización",
+      "current": "Actual",
+      "available": "Disponible",
+      "switching": "Cambiando…",
+      "switchOrganization": "Cambiar de organización",
+      "roles": {
+        "community": "Miembro de la comunidad",
+        "patient": "Paciente",
+        "professional": "Profesional",
+        "staff": "Personal",
+        "backoffice": "Back Office",
+        "admin": "Administrador"
+      },
+      "roleDescriptions": {
+        "community": "Acceso a las funciones de la comunidad y a las conexiones sociales",
+        "patient": "Seguimiento completo de la salud y funciones médicas",
+        "professional": "Herramientas profesionales para médicos y coaches",
+        "staff": "Gestión del personal y funciones operativas",
+        "backoffice": "Herramientas de back office ERP/CRM y aprobaciones",
+        "admin": "Acceso administrativo y gestión completos",
+        "default": "Acceso a funciones específicas del rol"
+      },
+      "permissions": {
+        "community": "Acceso a la comunidad",
+        "health": "Acceso a datos de salud",
+        "professional": "Herramientas profesionales",
+        "staff": "Funciones del personal",
+        "admin": "Funciones de administración"
+      }
+    }
+  }
+}

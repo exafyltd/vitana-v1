@@ -39,6 +39,13 @@
       ],
       "reason": "News cover-image selection and longevity-pillar mapping (getNewsImage, getArticlePillar, LONGEVITY_PILLARS). Imports nothing; pure. Used by the native NewsArticleCard twin and the news reader."
     },
+    "src/lib/exchangeRates.ts": {
+      "entry": "exchangeRates.ts",
+      "lanes": [
+        "wallet-home"
+      ],
+      "reason": "Wallet exchange-rate helpers (getCurrentExchangeRates, getExchangeRate, calculateExchange, getCurrencySymbol, convertFromUsd, convertToUsd, EUR_PER_USD). Imports nothing; pure. Used by the native wallet hub and balance screens."
+    },
     "src/components/vitana/vitana-card-catalog.ts": {
       "entry": "vitana-card-catalog.ts",
       "lanes": [

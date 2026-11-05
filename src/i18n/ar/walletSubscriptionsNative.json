@@ -1,0 +1,16 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "فترة الفوترة",
+    "subnavAria": "أقسام المحفظة",
+    "loading": "جارٍ تحميل الاشتراكات…",
+    "subnav": {
+      "overview": "نظرة عامة",
+      "balance": "الرصيد والمزايا",
+      "subscriptions": "الاشتراكات",
+      "rewards": "المكافآت والعمولات"
+    },
+    "plans": {
+      "freeLiveRooms": "40 دقيقة/شهر · جلسة واحدة"
+    }
+  }
+}
