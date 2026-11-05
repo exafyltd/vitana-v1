@@ -54,6 +54,10 @@ export function MobileAppShell({ children }: { children: ReactNode }) {
       Gesture.Pan()
         .withTestId('shell-edge-swipe')
         .runOnJS(true)
+        // Only a rightward horizontal drag activates this pan. A vertical drag fails it,
+        // so nested ScrollViews (e.g. the matches list) keep the touch and scroll.
+        .activeOffsetX(EDGE_MIN_DX / 5)
+        .failOffsetY([-15, 15])
         .onBegin((e) => {
           start.current = { x: e.absoluteX, y: e.absoluteY };
         })

@@ -1,0 +1,49 @@
+# VTID-05429 review fix 1 — red before the fix
+# The new suite tests/profile/uploads.test.tsx (+ its helpers.tsx / mocks.ts) run on the
+# merge of the previous head 85861633 with origin/main (20116662c: expo-image-picker present, no fix).
+# Command (apps/mobile): npx jest tests/profile/uploads.test.tsx
+# Result: suite fails — the upload port src/ports/profile-media.ts does not exist.
+
+FAIL tests/profile/uploads.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/ports/profile-media' from 'tests/profile/uploads.test.tsx'
+
+      13 | import { __setSupabaseForTests } from '../../src/auth/client';
+      14 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 15 | import {
+         | ^
+      16 |   INTENT_CATEGORIES_CALL,
+      17 |   buildAvatarUpload,
+      18 |   buildCoverUpload,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/profile/uploads.test.tsx:15:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        19.065 s
+Ran all test suites matching /tests\/profile\/uploads.test.tsx/i.
+
+# Same suite on the previous head 85861633 itself (before merging main):
+FAIL tests/profile/uploads.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module 'expo-image-picker' from 'tests/profile/mocks.ts'
+
+    Require stack:
+      tests/profile/mocks.ts
+      tests/profile/uploads.test.tsx
+
+      45 |   launchImageLibraryAsync: jest.fn(async (_opts?: unknown): Promise<unknown> => ({ canceled: true, assets: [] })),
+      46 | };
+    > 47 | jest.mock('expo-image-picker', () => mockPicker);
+         |      ^
+      48 |
+      49 | /** The faked `expo-image-picker`. */
+      50 | export const picker = mockPicker;
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.mock (tests/profile/mocks.ts:47:6)
+      at Object.require (tests/profile/uploads.test.tsx:11:1)

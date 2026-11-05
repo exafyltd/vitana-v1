@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Čet",
+      "calendar": "Kalendar",
+      "community": "Zajednica",
+      "updateFailed": "Podešavanje nije moguće ažurirati"
+    },
+    "consent": {
+      "title": "Obaveštenje o deljenju podataka sa AI",
+      "subtitle": "Pre nego što koristiš AI funkcije, pogledaj kako se tvoji podaci koriste.",
+      "whatIsSent": "Koji podaci mogu biti poslati",
+      "voiceData": "Glasovni snimci i transkripti",
+      "diaryData": "Uneti promptovi, poruke u četu i unosi u dnevnik",
+      "memoryData": "Unosi u Memory Garden i wellness ciljevi",
+      "profileData": "Kontekst profila (ime, preferencije)",
+      "socialData": "URL adrese profila na društvenim mrežama i bio tekstovi (kada koristiš funkcije uvoza)",
+      "recipientLabel": "Primalac:",
+      "recipient": "Google (Gemini AI modeli) preko Lovable AI Gateway-a. Tvoji podaci se bezbedno prenose šifrovanim vezama.",
+      "purposeLabel": "Svrha",
+      "purpose": "Za personalizovane AI odgovore, sintezu govora, proaktivne pozdrave, zdravstveni coaching i predloge za dopunu profila.",
+      "notStored": "AI dobavljač ne čuva podatke trajno",
+      "revokeAnytime": "Saglasnost možeš povući u bilo kom trenutku u Podešavanja > Privatnost",
+      "gdprCompliant": "U skladu sa GDPR-om i pravilima o privatnosti",
+      "agreementFooter": "Dodirom na „Slažem se” daješ dozvolu kompaniji Exafy LTD da gore navedene podatke pošalje navedenim AI dobavljačima. Ovu dozvolu možeš povući u bilo kom trenutku u Podešavanja > Privatnost.",
+      "notNow": "Ne sada",
+      "iAgree": "Slažem se"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90%",
+      "platformShare": "10%",
+      "redirecting": "Preusmeravanje…",
+      "completeSetup": "Završi podešavanje",
+      "enablePayments": "Uključi plaćanja",
+      "opening": "Otvaranje…",
+      "viewDashboard": "Prikaži kontrolnu tablu"
+    },
+    "limitations": {
+      "description": "Ovo su pravila o kojima se ne pregovara i koja primenjujemo na svaku preporuku proizvoda. Alergije, medicinske kontraindikacije i interakcije sa lekovima nikada se ne mogu zaobići.",
+      "removeTag": "Ukloni {v}",
+      "tag": "{v} ×",
+      "never": "nikad",
+      "allergens": "Alergeni",
+      "medicationsLabel": "Lekovi (generički naziv ili grupa, npr. SSRI, lek za razređivanje krvi)",
+      "accessibilityLabel": "Potrebe pristupačnosti",
+      "ofActiveProducts": "od {count} aktivnih proizvoda",
+      "maxPlaceholder": "npr. 40",
+      "capPlaceholder": "npr. 150",
+      "dietary": {
+        "vegan": "vegansko",
+        "vegetarian": "vegetarijansko",
+        "halal": "halal",
+        "kosher": "košer",
+        "glutenFree": "bez glutena",
+        "dairyFree": "bez mlečnih proizvoda",
+        "nutFree": "bez orašastih plodova",
+        "soyFree": "bez soje",
+        "sugarFree": "bez šećera",
+        "organic": "organsko"
+      }
+    },
+    "tenantRole": {
+      "description": "Upravljaj svojim kontekstom i dozvolama",
+      "noRoleSelected": "Nije izabrana uloga",
+      "noOrganization": "Nema organizacije",
+      "current": "Trenutna",
+      "available": "Dostupna",
+      "switching": "Prebacivanje…",
+      "switchOrganization": "Promeni organizaciju",
+      "roles": {
+        "community": "Član zajednice",
+        "patient": "Pacijent",
+        "professional": "Stručnjak",
+        "staff": "Osoblje",
+        "backoffice": "Back Office",
+        "admin": "Administrator"
+      },
+      "roleDescriptions": {
+        "community": "Pristup funkcijama zajednice i društvenim vezama",
+        "patient": "Potpuno praćenje zdravlja i medicinske funkcije",
+        "professional": "Stručni alati za lekare i coacheve",
+        "staff": "Upravljanje osobljem i operativne funkcije",
+        "backoffice": "ERP/CRM back office alati i odobrenja",
+        "admin": "Potpun administrativni pristup i upravljanje",
+        "default": "Pristup funkcijama za ulogu"
+      },
+      "permissions": {
+        "community": "Pristup zajednici",
+        "health": "Pristup zdravstvenim podacima",
+        "professional": "Stručni alati",
+        "staff": "Funkcije osoblja",
+        "admin": "Administratorske funkcije"
+      }
+    }
+  }
+}

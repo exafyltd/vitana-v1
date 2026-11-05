@@ -26,6 +26,7 @@
     "src/integrations/supabase/data-routing.ts",
     "src/integrations/supabase/types.ts",
     "src/lib/business-mode.ts",
+    "src/lib/exchangeRates.ts",
     "src/lib/feed-compose.ts",
     "src/lib/news-feed-ranker.ts",
     "src/lib/news-images.ts",
