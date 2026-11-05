@@ -4,6 +4,7 @@
  * error states render, a card opens the detail drawer and the drawer closes,
  * and the `event` search param opens a linked event. Fake client, no network.
  */
+import './helpers';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import { EventsMeetupsScreen } from '../../src/screens/events/EventsMeetupsScreen';
 import { mockParams, renderWithEvents, standardTables } from './helpers';
@@ -19,9 +20,9 @@ beforeEach(() => {
 describe('events hub states', () => {
   it('renders the loaded list with one card per event', async () => {
     renderWithEvents(<EventsMeetupsScreen />, { tables: standardTables() });
-    expect(await screen.findByTestId('events-list')).toBeTruthy();
-    expect(screen.getByTestId('event-card-today-1')).toBeTruthy();
-    expect(screen.getByTestId('event-card-upcoming-1')).toBeTruthy();
+    expect(screen.getByTestId('events-list')).toBeTruthy();
+    expect(await screen.findByTestId('event-card-upcoming-1')).toBeTruthy();
+    expect(await screen.findByTestId('event-card-followed-1')).toBeTruthy();
   });
 
   it('renders the empty state when no event is listed', async () => {
@@ -48,10 +49,10 @@ describe('tab selection', () => {
 
   it('switches to the following tab from the filter sheet', async () => {
     renderWithEvents(<EventsMeetupsScreen />, { tables: standardTables() });
-    await screen.findByTestId('event-card-today-1');
+    await screen.findByTestId('event-card-upcoming-1');
     fireEvent.press(screen.getByTestId('events-filter'));
     fireEvent.press(await screen.findByTestId('events-tab-following'));
-    await waitFor(() => expect(screen.queryByTestId('event-card-today-1')).toBeNull());
+    await waitFor(() => expect(screen.queryByTestId('event-card-upcoming-1')).toBeNull());
     expect(screen.getByTestId('event-card-followed-1')).toBeTruthy();
   });
 
@@ -82,7 +83,7 @@ describe('card to drawer', () => {
 describe('create entry', () => {
   it('offers event and meetup and opens the matching form', async () => {
     renderWithEvents(<EventsMeetupsScreen />, { tables: standardTables() });
-    await screen.findByTestId('event-card-today-1');
+    await screen.findByTestId('event-card-upcoming-1');
     fireEvent.press(screen.getByTestId('events-create'));
     expect(await screen.findByTestId('create-selection')).toBeTruthy();
     await act(async () => {

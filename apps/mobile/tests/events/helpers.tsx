@@ -41,7 +41,7 @@ export type Write = { table: string; op: 'insert' | 'update' | 'delete'; values?
 const ok = (data: unknown) => ({ data, error: null });
 
 /** A fixed event row; `overrides` replace any field. */
-export function eventRow(id: string, overrides: Row = {}): Row {
+export function eventRow(id: string, overrides: Row = {}): any {
   const now = Date.now();
   return {
     id,
@@ -121,6 +121,10 @@ export function makeEventsDouble(opts: { tables?: Tables; rpc?: RpcHandlers; use
       if (op === 'insert') {
         const withId = (r: Row) => ({ id: `new-${writes.length}`, created_at: new Date().toISOString(), ...r });
         return ok(Array.isArray(payload) ? payload.map(withId) : withId(payload));
+      }
+      if (op === 'update') {
+        const matched = (tables[table] ?? []).filter((r) => filters.every(([o, c, v]) => matches(o, r[c], v)));
+        return ok(matched.map((r) => ({ ...r, ...payload })));
       }
       return ok(null);
     };

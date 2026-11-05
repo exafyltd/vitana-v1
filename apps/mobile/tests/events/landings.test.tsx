@@ -4,6 +4,7 @@
  * live and ended phases, with the join write and the feature flag. Fake
  * client, no network.
  */
+import './helpers';
 import { fireEvent, screen, waitFor, act } from '@testing-library/react-native';
 import { PublicEventScreen } from '../../src/screens/events/PublicEventScreen';
 import { EventGameScreen } from '../../src/screens/events/EventGameScreen';
@@ -67,7 +68,7 @@ describe('public event landing', () => {
 describe('event game landing', () => {
   it('shows the join action while the game is live and joins with an insert', async () => {
     const { dbl } = renderWithEvents(<EventGameScreen slug="longevity-game" publicLanding />, {
-      tables: { event_games: [game()], tenant_settings: [{ tenant_id: 't', feature_flags: { enable_event_game: true } }], event_game_participants: [] },
+      tables: { event_games: [game()], tenant_settings: [{ tenant_id: 'tenant-test', feature_flags: { enable_event_game: true } }], event_game_participants: [] },
       userId: 'u-1',
     });
     fireEvent.press(await screen.findByTestId('event-game-join'));
@@ -78,14 +79,14 @@ describe('event game landing', () => {
 
   it('shows the pre-start message before the game starts', async () => {
     renderWithEvents(<EventGameScreen slug="longevity-game" publicLanding />, {
-      tables: { event_games: [game({ status: 'scheduled', starts_at: new Date(Date.now() + DAY).toISOString() })], tenant_settings: [{ tenant_id: 't', feature_flags: { enable_event_game: true } }] },
+      tables: { event_games: [game({ status: 'scheduled', starts_at: new Date(Date.now() + DAY).toISOString() })], tenant_settings: [{ tenant_id: 'tenant-test', feature_flags: { enable_event_game: true } }] },
     });
     expect(await screen.findByTestId('event-game-pre')).toBeTruthy();
   });
 
   it('shows the ended state with the leaderboard after the game ended', async () => {
     renderWithEvents(<EventGameScreen slug="longevity-game" publicLanding />, {
-      tables: { event_games: [game({ status: 'ended', starts_at: new Date(Date.now() - 2 * DAY).toISOString(), ends_at: new Date(Date.now() - DAY).toISOString() })], tenant_settings: [{ tenant_id: 't', feature_flags: { enable_event_game: true } }] },
+      tables: { event_games: [game({ status: 'ended', starts_at: new Date(Date.now() - 2 * DAY).toISOString(), ends_at: new Date(Date.now() - DAY).toISOString() })], tenant_settings: [{ tenant_id: 'tenant-test', feature_flags: { enable_event_game: true } }] },
       rpc: { get_event_game_leaderboard: () => ({ data: [], error: null }) },
     });
     expect(await screen.findByTestId('event-game-ended')).toBeTruthy();
@@ -95,7 +96,7 @@ describe('event game landing', () => {
 
   it('shows the disabled message when the tenant feature flag is off', async () => {
     renderWithEvents(<EventGameScreen slug="longevity-game" publicLanding />, {
-      tables: { event_games: [game()], tenant_settings: [{ tenant_id: 't', feature_flags: {} }] },
+      tables: { event_games: [game()], tenant_settings: [{ tenant_id: 'tenant-test', feature_flags: {} }] },
     });
     expect(await screen.findByTestId('event-game-disabled')).toBeTruthy();
   });

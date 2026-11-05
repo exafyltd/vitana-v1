@@ -4,6 +4,7 @@
  * following feed, the public slug/id resolver, the create/update/delete writes
  * and the form validation + payload rules. Fixture and fake-client tests only.
  */
+import './helpers';
 import { configure } from '@testing-library/react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import {

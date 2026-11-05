@@ -3,6 +3,7 @@
  * and validation messages, the insert payload of a new meetup, the update of
  * an owned event, and the cancel path. Fake client, no network.
  */
+import './helpers';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import { EventFormSheet } from '../../src/screens/events/EventFormSheet';
 import { EventsMeetupsScreen } from '../../src/screens/events/EventsMeetupsScreen';

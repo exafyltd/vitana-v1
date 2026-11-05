@@ -5,7 +5,7 @@
  * locales (German first, du-form), and the lane's source rules (no physical
  * left/right, no raw locale calls, every t() key present in the German shard).
  */
-import '../helpers/no-network';
+import './helpers';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { join, relative } from 'path';
 import { configure } from '@testing-library/react-native';
@@ -23,6 +23,7 @@ jest.setTimeout(30000);
 const APP = join(__dirname, '../..');
 const SRC = join(APP, 'src');
 const EVENTS_SCREENS = join(SRC, 'screens/events');
+const WEB_I18N = join(APP, '../../src/i18n');
 const ROUTE_DIRS = [join(APP, 'app/(app)/comm/events-meetups'), join(APP, 'app/(app)/community'), join(APP, 'app/(app)/e'), join(APP, 'app/(app)/pub/events')];
 
 /** Source files (not tests) under a directory. */
@@ -88,7 +89,7 @@ describe('route files and resolver', () => {
 });
 
 describe('eventsNative shard', () => {
-  const de = JSON.parse(readFileSync(join(SRC, 'i18n/de/eventsNative.json'), 'utf8')) as Record<string, unknown>;
+  const de = JSON.parse(readFileSync(join(WEB_I18N, 'de/eventsNative.json'), 'utf8')) as Record<string, unknown>;
   const flat = (o: Record<string, unknown>, p = ''): string[] =>
     Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' ? flat(v as Record<string, unknown>, `${p}${k}.`) : [`${p}${k}`]));
 
@@ -96,7 +97,7 @@ describe('eventsNative shard', () => {
     const keys = flat(de).sort();
     expect(keys.length).toBeGreaterThan(0);
     for (const locale of LOCALES) {
-      const shard = JSON.parse(readFileSync(join(SRC, `i18n/${locale}/eventsNative.json`), 'utf8')) as Record<string, unknown>;
+      const shard = JSON.parse(readFileSync(join(WEB_I18N, `${locale}/eventsNative.json`), 'utf8')) as Record<string, unknown>;
       expect(flat(shard).sort()).toEqual(keys);
     }
   });
@@ -122,7 +123,7 @@ describe('lane source rules', () => {
   });
 
   it('every translation key the lane reads exists in the German catalogs', () => {
-    const catalogs = readdirSync(join(SRC, 'i18n/de')).map((n) => JSON.parse(readFileSync(join(SRC, 'i18n/de', n), 'utf8')) as Record<string, unknown>);
+    const catalogs = readdirSync(join(WEB_I18N, 'de')).map((n) => JSON.parse(readFileSync(join(WEB_I18N, 'de', n), 'utf8')) as Record<string, unknown>);
     const has = (key: string) =>
       catalogs.some((c) => key.split('.').reduce<unknown>((v, p) => (v && typeof v === 'object' ? (v as Record<string, unknown>)[p] : undefined), c) !== undefined);
     const missing: string[] = [];
