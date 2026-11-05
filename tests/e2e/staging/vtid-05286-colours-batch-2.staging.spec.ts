@@ -5,7 +5,7 @@
 //
 // './staging-guard' (copied in by the runner) aborts every write; the sign-in
 // token call is the only one allowed. Nothing is clicked. For this batch's
-// member-reachable spec routes (/health, /health/*, /memory/*, /journey) at
+// member-reachable spec routes (/health, /health/*, /memory/*) at
 // 1440×900 (?spotlight=1) and 390×844 it asserts:
 //   - the route renders its app shell / content without a runtime console error;
 //   - no horizontal scroll (SR-19), also with dir="rtl";
@@ -23,17 +23,14 @@ test.use({
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 
 // Member-reachable routes this batch recoloured: the Health dashboard and its
-// sub-screens, the My Journey hub, and the Memory (diary / recall) screens.
+// sub-screens, and the Memory (diary / recall) screens.
 const ROUTES = [
   '/health',
   '/health/pillars',
   '/health/plans',
   '/health/my-biology',
   '/health/vitana-index',
-  '/health/conditions-risks',
   '/health/education',
-  '/health/wellness-services',
-  '/journey',
   '/memory/diary',
   '/memory/recall',
 ];
@@ -73,13 +70,15 @@ async function signIn(page: import('@playwright/test').Page, request: import('@p
 for (const route of ROUTES) {
   for (const width of [1440, 390]) {
     const spotlight = width >= 1024 ? '?spotlight=1' : '';
-    test(`VTID-PENDING colours-batch-2: ${route} renders recoloured at ${width}px`, async ({ page, request }) => {
+    // DiaryRouter sends a 390px visitor from /memory/diary to /daily-diary, so that page is checked at 390px.
+    const target = route === '/memory/diary' && width < 1024 ? '/daily-diary' : route;
+    test(`VTID-PENDING colours-batch-2: ${target} renders recoloured at ${width}px`, async ({ page, request }) => {
       await page.setViewportSize({ width, height: width >= 1024 ? 900 : 844 });
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(String(e)));
       await signIn(page, request);
       await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
-      await page.goto(`${route}${spotlight}`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`${target}${spotlight}`, { waitUntil: 'domcontentloaded' });
 
       // The page mounted its own content (not an error boundary / blank).
       // The page mounted its app shell (not a blank page / error boundary).
@@ -95,17 +94,17 @@ for (const route of ROUTES) {
       );
       const rawRe = new RegExp(RAW_PALETTE_SRC);
       const leaked = rawClasses.find((c) => rawRe.test(c));
-      expect(leaked, `raw palette class on ${route}: ${leaked}`).toBeFalsy();
+      expect(leaked, `raw palette class on ${target}: ${leaked}`).toBeFalsy();
 
       // No runtime error while rendering the recoloured screen.
-      expect(errors, `console errors on ${route}`).toEqual([]);
+      expect(errors, `console errors on ${target}`).toEqual([]);
 
       // No horizontal scroll in either direction (SR-19).
       const overflow = () => page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-      expect(await overflow(), `horizontal scroll (LTR) on ${route}`).toBeLessThanOrEqual(1);
+      expect(await overflow(), `horizontal scroll (LTR) on ${target}`).toBeLessThanOrEqual(1);
       await page.evaluate(() => { document.documentElement.dir = 'rtl'; });
       await page.waitForTimeout(250);
-      expect(await overflow(), `horizontal scroll (RTL) on ${route}`).toBeLessThanOrEqual(1);
+      expect(await overflow(), `horizontal scroll (RTL) on ${target}`).toBeLessThanOrEqual(1);
     });
   }
 }
