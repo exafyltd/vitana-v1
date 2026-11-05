@@ -35,3 +35,10 @@ Final state (after the driver decisions, 2026-11-05)
 - npm test (full, apps/mobile, code at 4e37bcbb2): 150/150 suites PASS, 4051/4051 tests PASS, exit 0, 88 s. Replaces the earlier 149/150 run.
 - Lane tests (tests/events) are unchanged since the two default-worker runs above.
 - Preflight: rerun before push; Collab handoff and Lane scope report the lane file as missing on vitana-platform main, and Lane scope names the Option C file. Details in the PR body.
+
+Head e28ccc7e3 (CI lint fix, pushed to kiro/native-wave2-events-calendar-r3/events-meetups)
+- CI ESLint (npx eslint apps/mobile packages) reported 10 errors in two lane files: i18n/no-raw-jsx-text on three placeholders in EventFormSheet.tsx, and no-explicit-any in tests/events/helpers.tsx. Fixed: the placeholders use screens.settings.yyyymmdd and screens.common.hhMm (present in all 11 locales); the helper carries the suppression that tests/helpers/supabase-double.ts already uses.
+- npx eslint on the lane paths (src/screens/events, tests/events, src/ports/events.tsx, the five route files, src/navigation/resolve.ts): exit 0.
+- npm run typecheck: exit 0, 0 TS errors.
+- npx jest tests/events --ci: 5 suites, 46/46 PASS.
+- npm test (full): 150/150 suites, 4051/4051 tests PASS, exit 0.
