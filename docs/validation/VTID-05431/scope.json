@@ -1,0 +1,24 @@
+{
+  "vtid": "VTID-05431",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/settings/index.tsx",
+    "apps/mobile/app/(app)/settings/preferences.tsx",
+    "apps/mobile/app/(app)/settings/limitations.tsx",
+    "apps/mobile/app/(app)/settings/tenant-role.tsx",
+    "apps/mobile/src/screens/settings/**",
+    "apps/mobile/src/ports/settings-ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/settings/**",
+    "apps/mobile/tests/navigation.test.tsx",
+    "apps/mobile/tests/orb/nav-directive.test.ts",
+    "apps/mobile/maestro/settings/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/settingsNative.json",
+    "docs/validation/VTID-05431/**"
+  ],
+  "_note": "apps/mobile/tests/navigation.test.tsx and apps/mobile/tests/orb/nav-directive.test.ts are shared shell tests outside the lane paths: each asserted that /settings is NOT native, which this lane makes false. Both were updated to the new fact without loosening (see verification.md).",
+  "sparring_record": "docs/validation/VTID-05431/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

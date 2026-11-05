@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05429",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/me/profile.tsx",
+    "apps/mobile/app/(app)/profile/me/privacy.tsx",
+    "apps/mobile/src/screens/profile/**",
+    "apps/mobile/src/ports/profile.ts",
+    "apps/mobile/src/ports/profile-media.ts",
+    "apps/mobile/src/ports/profile-ui.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/profile/**",
+    "apps/mobile/maestro/profile/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/profileNative.json",
+    "docs/validation/VTID-05429/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05429/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

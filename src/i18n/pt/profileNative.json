@@ -1,0 +1,64 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Seção inteira",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Preferências de dança",
+          "description": "Estilos, nível, papel e o que você procura."
+        },
+        "partnerPreferences": {
+          "label": "Preferências de parceiro",
+          "description": "Quem você procura. Privado por padrão. Os subcampos continuam privados mesmo que você abra a seção."
+        },
+        "serviceOfferings": {
+          "label": "Serviços oferecidos",
+          "description": "O que você oferece. Público por padrão — ocultar perde o sentido."
+        },
+        "myPosts": {
+          "label": "Minhas publicações",
+          "description": "Intenções abertas que você ditou. Publicações de busca de parceiro NUNCA aparecem aqui, independentemente da opção."
+        },
+        "derivedAgeBand": {
+          "label": "Faixa etária",
+          "description": "Mostre só a sua faixa etária (ex.: 30+) em vez da idade exata. Padrão: só conexões."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Meus estilos",
+        "danceLevel": "Meu nível",
+        "danceLookingFor": "O que eu procuro",
+        "partnerGender": "Preferência de gênero",
+        "partnerAgeRange": "Faixa de idade",
+        "partnerRelationshipIntent": "Intenção de relacionamento",
+        "partnerLocationRadius": "Local e raio",
+        "servicePriceRange": "Faixa de preço",
+        "postsCommercial": "Publicações do marketplace",
+        "postsPartnerSeek": "Publicações de busca de parceiro"
+      },
+      "partnerSeekNote": "Sempre privado. O protocolo de revelação mútua protege essas publicações, independentemente da opção."
+    },
+    "media": {
+      "photosDenied": "Permita o acesso às suas fotos nos Ajustes para escolher uma imagem.",
+      "unsupportedFormat": "Formato de imagem não suportado (.{ext}). Use JPG, PNG, GIF ou WebP."
+    },
+    "gallery": {
+      "photos": "Fotos",
+      "selectMultiple": "Selecione várias fotos",
+      "tapToAddMore": "Toque para adicionar mais",
+      "uploadingProgress": "Carregando {current} de {total}...",
+      "deleteTitle": "Você tem certeza?",
+      "deleteDescription": "Esta foto será excluída permanentemente. Esta ação não pode ser desfeita."
+    }
+  }
+}

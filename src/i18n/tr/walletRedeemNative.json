@@ -1,0 +1,28 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "wellness",
+    "claimFailed": "Kupon kullanılamadı. Daha önce kullanılmış olabilir.",
+    "tiers": {
+      "test": {
+        "name": "Test Kuponu",
+        "benefit1": "Sadece ödeme akışı testi",
+        "benefit2": "Gerçek bir kupon değil"
+      },
+      "experience": {
+        "name": "Deneyim Kuponu",
+        "benefit1": "1 premium topluluk etkinliği erişimi",
+        "benefit2": "Kişiselleştirilmiş wellness danışmanlığı",
+        "benefit3": "30 günlük Vitana+ deneme sürümü dahil",
+        "benefit4": "Güzelce tasarlanmış e-kupon"
+      },
+      "exclusive": {
+        "name": "Özel Kupon",
+        "benefit1": "3 premium topluluk etkinliği",
+        "benefit2": "Birebir uzman koçluk seansı",
+        "benefit3": "90 günlük Vitana+ aboneliği",
+        "benefit4": "Öncelikli rezervasyon + VIP ayrıcalıkları"
+      }
+    }
+  }
+}

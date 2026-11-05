@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05425",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/wallet/subscriptions.tsx",
+    "apps/mobile/app/(app)/profile/subscriptions.tsx",
+    "apps/mobile/src/screens/wallet-subscriptions/**",
+    "apps/mobile/src/ports/billing.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/wallet-subscriptions/**",
+    "apps/mobile/maestro/wallet-subscriptions/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/walletSubscriptionsNative.json",
+    "docs/validation/VTID-05425/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05425/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

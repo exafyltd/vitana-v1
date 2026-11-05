@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "聊天",
+      "calendar": "日历",
+      "community": "社区",
+      "updateFailed": "偏好设置更新失败"
+    },
+    "consent": {
+      "title": "AI 数据共享说明",
+      "subtitle": "使用 AI 功能前，请先了解你的数据如何被使用。",
+      "whatIsSent": "可能发送的数据",
+      "voiceData": "语音录音和转写文本",
+      "diaryData": "输入的提示、聊天消息和日记条目",
+      "memoryData": "Memory Garden 条目和健康目标",
+      "profileData": "个人资料信息（姓名、偏好）",
+      "socialData": "社交媒体个人主页链接和简介文字（使用导入功能时）",
+      "recipientLabel": "接收方：",
+      "recipient": "通过 Lovable AI Gateway 发送给 Google（Gemini AI 模型）。你的数据通过加密连接安全传输。",
+      "purposeLabel": "用途",
+      "purpose": "用于生成个性化 AI 回复、语音合成、主动问候、健康指导和个人资料完善建议。",
+      "notStored": "AI 服务商不会永久存储这些数据",
+      "revokeAnytime": "你可以随时在“设置 > 隐私”中撤回同意",
+      "gdprCompliant": "符合 GDPR 及隐私法规",
+      "agreementFooter": "点击“我同意”即表示你允许 Exafy LTD 将上述数据发送给所列 AI 服务商。你可以随时在“设置 > 隐私”中撤回此许可。",
+      "notNow": "暂不",
+      "iAgree": "我同意"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90%",
+      "platformShare": "10%",
+      "redirecting": "正在跳转…",
+      "completeSetup": "完成设置",
+      "enablePayments": "启用收款",
+      "opening": "正在打开…",
+      "viewDashboard": "查看控制台"
+    },
+    "limitations": {
+      "description": "这些是我们对每条商品推荐都执行的硬性规则。过敏、医学禁忌和药物相互作用绝不会被忽略。",
+      "removeTag": "移除 {v}",
+      "tag": "{v} ×",
+      "never": "从未",
+      "allergens": "过敏原",
+      "medicationsLabel": "药物（通用名或类别，例如 SSRI、抗凝药）",
+      "accessibilityLabel": "无障碍需求",
+      "ofActiveProducts": "共 {count} 件在售商品",
+      "maxPlaceholder": "例如 40",
+      "capPlaceholder": "例如 150",
+      "dietary": {
+        "vegan": "纯素",
+        "vegetarian": "素食",
+        "halal": "清真",
+        "kosher": "犹太洁食",
+        "glutenFree": "无麸质",
+        "dairyFree": "无乳制品",
+        "nutFree": "无坚果",
+        "soyFree": "无大豆",
+        "sugarFree": "无糖",
+        "organic": "有机"
+      }
+    },
+    "tenantRole": {
+      "description": "管理你的使用环境和权限",
+      "noRoleSelected": "未选择角色",
+      "noOrganization": "无组织",
+      "current": "当前",
+      "available": "可用",
+      "switching": "正在切换…",
+      "switchOrganization": "切换组织",
+      "roles": {
+        "community": "社区成员",
+        "patient": "患者",
+        "professional": "专业人士",
+        "staff": "员工",
+        "backoffice": "后台",
+        "admin": "管理员"
+      },
+      "roleDescriptions": {
+        "community": "使用社区功能和社交联系",
+        "patient": "完整的健康追踪和医疗功能",
+        "professional": "面向医生和教练的专业工具",
+        "staff": "员工管理和运营功能",
+        "backoffice": "ERP/CRM 后台工具和审批",
+        "admin": "完整的管理访问权限",
+        "default": "使用角色专属功能"
+      },
+      "permissions": {
+        "community": "社区访问",
+        "health": "健康数据访问",
+        "professional": "专业工具",
+        "staff": "员工功能",
+        "admin": "管理功能"
+      }
+    }
+  }
+}

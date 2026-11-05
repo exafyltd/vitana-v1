@@ -1,0 +1,62 @@
+# VTID-05424 (native-wave2-wallet-r2/wallet-rewards) — commands run, with results
+# Worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-wallet-r2-wallet-rewards (Linux), base origin/main a41e89a0d.
+# Final runs on code commit 474d38f5a (only verification.md and this log are added after it). All offline; no network, no live system.
+
+## red on base (tests only, origin/main a41e89a0d, before any implementation; commit d95ee0e95)
+cd apps/mobile && npx jest tests/wallet-rewards --ci          # FAIL: 2/2 suites fail to run (modules missing) — red-on-base.txt
+
+## parity ledger (repo root)
+node scripts/native/parity-ledger.mjs --sync               # 435 rows (added 0, updated 0, removed 0, stale kept 0); 3 wallet-rewards rows flipped to native by hand
+node scripts/native/parity-ledger.mjs --check              # PASS: OK — 435 rows, 27 native route(s)
+node scripts/native/core-closure.mjs --check               # PASS: 22 roots, 32 src files, 11 assets — up to date (no core change in this lane)
+#   (npm run gen:core NOT run: no core entry here, and gen-core-extract would rewrite the feed-compose / news-feed-ranker extracts — main's known red, #1545)
+
+## apps/mobile
+npm run gen:i18n                                           # PASS: 11 locales, 1419 shards → src/i18n/catalog-map.generated.ts
+npx jest tests/wallet-rewards --ci                         # PASS: 2 suites, 54/54 tests (rewards 44, iap-gate 10)
+npm run typecheck                                          # PASS: tsc --noEmit, 0 errors
+npm test -- --ci                                           # PASS: 78/78 suites, 2118/2118 tests
+APP_PROFILE=development npm run bundle                     # PASS: ios + android exported to dist (HOME pointed at a writable dir: the sandbox's ~/.expo is read-only); dist removed after
+APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  # PASS: Dependencies are up to date (no dependency added)
+npm run parity:check                                       # PASS: OK — 435 rows, 27 native route(s)
+
+## repo root: i18n + lint
+npm run i18n:audit                                         # exit 1 with 17193 errors on HEAD; the same 17193 the wallet-home lane recorded on origin/main a41e89a0d (pre-existing _pending_review keys); 0 mention walletRewardsNative
+node scripts/i18n-register-check.mjs --all --max=500       # PASS: No formal-register violations (de fr sr es pt ru pl tr zh: 0 violations; ar skipped by design)
+npm run i18n:gate                                          # 10 failing checks, all "review-queue N" per GA locale (pre-existing _pending_review keys; 0 mention walletRewardsNative); My Journey DB surface not checked (no service role, by design)
+npx eslint apps/mobile/src/screens/wallet-rewards "apps/mobile/app/(app)/wallet" apps/mobile/src/ports/wallet-rewards.ts apps/mobile/src/navigation/resolve.ts apps/mobile/tests/wallet-rewards   # PASS: 0 problems
+
+## preflight
+node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-rewards --title "VTID-05424 (native-wave2-wallet-r2/wallet-rewards): native wallet rewards port"
+#   PASS: gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering
+#   FAIL: Collab handoff + Lane scope — "lanes/wallet-rewards.md not found" — the GitHub API was unreachable from the sandbox when this ran
+#         (first run: rate limit remaining 0; second run: every gh/git call to exafyltd/* returned HTTP 403 "resource match not found" from the connections gateway).
+#         The lane file exists on vitana-platform origin/main (read with git show at the start of this lane).
+
+## fix round 1 (driver finding: redeem must call the gateway like the web) — code commit cf4652c76
+git merge origin/main                                      # merged ec8682fec (#1544, regenerated core extract headers); no conflict
+# red on the previous head 98877f016 (+ the merge), new tests only, implementation unchanged:
+cd apps/mobile && npx jest tests/wallet-rewards -t "redeem request"   # FAIL: 3 failed, 53 skipped, 56 total — red-fix1.txt
+# after the fix (all offline; redeem tested only against a fake fetch, never a live endpoint):
+npm run gen:i18n                                           # PASS: 11 locales, 1430 shards
+npx jest tests/wallet-rewards                              # PASS: 2 suites, 56/56 tests (rewards 46, iap-gate 10, iap-gate unchanged)
+npm run typecheck                                          # PASS: tsc --noEmit, 0 errors
+npm test -- --ci                                           # PASS: 82/82 suites, 2211/2211 tests
+APP_PROFILE=development npm run bundle                     # PASS: ios + android exported (HOME pointed at a writable dir); dist removed after
+npm run parity:check                                       # PASS: OK — 435 rows, 31 native route(s)
+node ../../scripts/native/core-closure.mjs --check         # PASS: up to date (no core change)
+# repo root:
+npx eslint <lane paths as above>                           # PASS: 0 problems
+node scripts/i18n-register-check.mjs --all --max=500       # PASS: No formal-register violations
+npm run i18n:audit                                         # exit 1, 17193 pre-existing _pending_review errors (same as before); 0 mention walletRewardsNative
+node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-wallet-r2/wallet-rewards --title "VTID-05424 (native-wave2-wallet-r2/wallet-rewards): native wallet rewards port"
+#   PASS: every check passed (Collab handoff, Lane scope, gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering)
+
+## not run (deferred to G1, next_actor: owner)
+# Maestro flows apps/mobile/maestro/wallet-rewards/*.yaml, iOS simulator / Android emulator screenshots, parity vs 390x844 read-only staging.
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on 8135cd496 (origin head) + this commit; edits: tests/wallet-rewards/fixtures.tsx, tests/wallet-rewards/rewards.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/wallet-rewards  (default workers, run 1 of 2)-> 2 suites, 56/56 pass (25s, 2026-11-02T21:27Z)
+$ npx jest tests/wallet-rewards  (default workers, run 2 of 2)-> 2 suites, 56/56 pass (9s, 2026-11-02T21:28Z)
