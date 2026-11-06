@@ -224,7 +224,7 @@ export const cssVars = {
     "--domain-health-accent": "42 35% 78%",
     "--domain-health-tint": "42 65% 97%",
     "--domain-messages-accent": "330 75% 45%",
-    "--domain-messages-bubble": "203 89% 76%",
+    "--domain-messages-bubble": "203 89% 90%",
     "--domain-messages-bubble-foreground": "222 47% 11%",
     "--domain-messages-tint": "330 85% 95%",
     "--domain-tracker-accent": "42 30% 75%",
