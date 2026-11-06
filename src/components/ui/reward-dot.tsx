@@ -25,7 +25,7 @@ export function RewardDot({
   const dotElement = (
     <div
       className={cn(
-        "absolute rounded-full bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg z-[9999]",
+        "absolute rounded-full bg-gradient-to-br from-category-2 to-category-2/80 shadow-lg z-[9999]",
         {
           // Size variants
           "w-2 h-2": size === "sm",
@@ -54,7 +54,7 @@ export function RewardDot({
       
       {/* Glow effect */}
       <div className={cn(
-        "absolute inset-0 rounded-full bg-purple-400 opacity-20 scale-150",
+        "absolute inset-0 rounded-full bg-category-2 opacity-20 scale-150",
         animate && "animate-ping"
       )} />
     </div>
