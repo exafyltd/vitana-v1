@@ -7735,7 +7735,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "Тестовая карточка (только для админов)",
+          "desc": "Vitana сейчас отправит тебе сообщение с карточкой Vitana Index в твой чат с Vitana – так, как участники получают его утром. Получишь его только ты.",
+          "button": "Отправить тестовую карточку",
+          "sending": "Отправка …",
+          "sent": "Тестовая карточка отправлена – открой свой чат с Vitana.",
+          "open": "Открыть чат с Vitana",
+          "errorTitle": "Тестовая карточка не отправлена",
+          "unavailable": "Сообщения Vitana здесь сейчас выключены, например на staging.",
+          "noIndex": "У тебя ещё нет Vitana Index, поэтому карточки Index пока нет.",
+          "rateLimited": "Подожди минуту до следующей тестовой карточки.",
+          "failed": "Не получилось. Попробуй ещё раз."
+        }
       },
       "communityIntroTitle": "Представить меня сообществу",
       "communityIntroBody": "В течение первой недели другие участники видят короткую приветственную карточку о тебе и могут поздороваться.",
