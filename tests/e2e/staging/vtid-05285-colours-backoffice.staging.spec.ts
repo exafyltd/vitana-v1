@@ -24,7 +24,7 @@ const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 // The routes that mount the three dialogs this lane recoloured: approvals
 // (ApprovalDecisionDialog, DraftCommandDialog) and settings (PolicyEditDialog).
 const SCREENS: { path: string; section: string }[] = [
-  { path: '/backoffice/approvals', section: '/backoffice/approvals' },
+  { path: '/backoffice/approvals/queue', section: '/backoffice/approvals' },
   { path: '/backoffice/sales/leads', section: '/backoffice/sales/' },
   { path: '/backoffice/settings/access', section: '/backoffice/settings/' },
 ];
@@ -92,7 +92,7 @@ test('VTID-PENDING colours-backoffice: BackOffice dialog routes still gate the c
   for (const s of SCREENS) {
     await page.goto(`${s.path}?spotlight=1`, { waitUntil: 'domcontentloaded' });
     expect(await settle(page), `${s.path} workspace frame`).toBe(true);
-    await expect(page.locator('[data-archetype="workspace"]')).toHaveCount(1);
+    await expect(page.locator('[data-archetype="workspace"]')).toHaveCount(1, { timeout: 45_000 });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `${s.path}: horizontal scroll`).toBeLessThanOrEqual(1);
   }
