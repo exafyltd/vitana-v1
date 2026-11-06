@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05237",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "Commerce setup hub at 390x844 and 1280x900: 'Still needed' shows the three owner groups in order with the right steps (demo business and its owner-tagged checklist served in the browser, MCP metadata answered as reachable), and at 390x844 with the MCP metadata failing the assistant steps join 'Only you can do this'; every write is aborted and none is recorded (read-only)",
+      "spec": "tests/e2e/staging/vtid-05237-step-owner.staging.spec.ts",
+      "cwd": "."
+    },
+    {
+      "kind": "existing",
+      "ref": "npx vitest run src/components/commerce/SetupHub.step-owner.vtid-05237.test.tsx src/components/commerce/SetupHub.test.ts src/components/commerce/SetupHub.vtid-05136.test.tsx",
+      "cwd": ".",
+      "reason": "Submitting and onboarding steps are writes to the database staging shares with production, and the owner field comes from a gateway that staging serves for real businesses only; the grouping, the MCP-reachability gate, the in_progress rule, the no-owner fallback and the 11-locale strings are proven in CI with a mocked adminFetch and fetchMcpReady"
+    }
+  ]
+}

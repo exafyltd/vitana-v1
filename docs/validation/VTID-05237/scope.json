@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05237",
+  "kind": "feature",
+  "paths": [
+    "src/components/commerce/SetupHub.tsx",
+    "src/components/commerce/SetupHub.test.ts",
+    "src/components/commerce/SetupHub.step-owner.vtid-05237.test.tsx",
+    "tests/e2e/staging/vtid-05237-step-owner.staging.spec.ts",
+    "src/i18n/*/screens.json",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05237/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": [],
+  "sparring_record": "docs/validation/VTID-05237/plan-sparring.md"
+}
