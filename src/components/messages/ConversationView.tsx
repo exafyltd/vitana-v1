@@ -1183,11 +1183,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       <div className={cn("flex flex-col h-full min-h-0 min-w-0 overflow-hidden w-full", className)}>
         {/* Header - Sticky at top */}
         <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-          <div className="flex items-center justify-between px-3 py-1.5">
+          <div className="flex items-center justify-between px-3 py-1">
             <div className="flex items-center gap-2 min-w-0">
               {onBack && (
                 <Button size="sm" variant="ghost" onClick={onBack}>
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="w-4 h-4 rtl:rotate-180" />
                 </Button>
               )}
               
@@ -1211,7 +1211,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   src={getConversationAvatar() || undefined}
                   fallback={getConversationTitle()[0]?.toUpperCase() || 'U'}
                   alt={getConversationTitle()}
-                  className="shrink-0"
+                  className="h-8 w-8 shrink-0"
                 />
               )}
               
@@ -1239,7 +1239,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-11 w-11 p-0"
+                  className="h-9 w-9 p-0"
                   onClick={() => setSearchOpen(true)}
                   aria-label={t('inbox.search.titleConversation')}
                   data-testid="conversation-search-button"
@@ -1410,6 +1410,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         parentMessage={resolvedParentMessage}
                         parentUnavailable={parentUnavailable}
                         groupPosition={groupPosition}
+                        showAvatar={!isDirectThread}
                         onUpdateMessage={async (messageId: string, updates: any) => {
                           try {
                             // Route to correct table based on thread type
