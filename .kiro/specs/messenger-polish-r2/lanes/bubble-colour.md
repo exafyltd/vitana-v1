@@ -4,7 +4,7 @@ state: ready
 next_actor: kiro
 depends_on: []
 vtid: VTID-05586
-executor: kiro
+executor: claude
 seat: exafyltd
 area: messenger
 reviewer_seat: claude
@@ -29,3 +29,6 @@ no test against production. Staging specs are read-only.
 ## Log
 ### 2026-11-06T14:30Z · claude-code · created → ready
 VTID VTID-05586 allocated (sparring record `plan-sparring.md`, owner approval 2026-11-06). Handed to Kiro.
+
+### 2026-11-06T15:20Z · claude-code · ready (executor kiro → claude)
+Owner decision 2026-11-06: Kiro too slow for these small lanes; Claude Code builds them as exceptions (executor: claude). The reviewer agent still accepts each lane before merge.
