@@ -29,3 +29,6 @@ no test against production. Staging specs are read-only.
 ## Log
 ### 2026-11-06T14:30Z · claude-code · created → ready
 VTID VTID-05584 allocated (sparring record `plan-sparring.md`, owner approval 2026-11-06). Handed to Kiro.
+
+### 2026-11-06T15:40Z · claude-code · ready → ready (switch pending)
+Executor switch to claude requested; it waits for a trusted route to main, so the executor stays kiro on this PR (owner decision 2026-11-06). Built: showAvatar gate, own-message avatar gate, compact header (32 px avatar, 36 px search button, py-1), RTL back arrow, source-guard test.
