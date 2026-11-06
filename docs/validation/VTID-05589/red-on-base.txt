@@ -1,0 +1,3 @@
+VTID-05589 (companion-test-card/v1-test-card-button) — red on base
+base: origin/main 4d9361db38a6084c942252aa52dc3cf2359329b4, the two test files added, no source change
+command: npx vitest run src/hooks/useCompanionTestCard.test.ts src/components/settings/VitanaMessagesSettings.test-card.test.tsx
