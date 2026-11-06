@@ -1,0 +1,500 @@
+# vitana-v1: the final scripts/ci/kiro-steering/guard.test.cjs against the guard and the steering file of origin/main 7e740112c19 (nothing else changed)
+# $ node --test scripts/ci/kiro-steering/guard.test.cjs
+TAP version 13
+# Subtest: a matching layout passes
+ok 1 - a matching layout passes
+  ---
+  duration_ms: 2.410692
+  type: 'test'
+  ...
+# Subtest: a rules file without a twin fails
+ok 2 - a rules file without a twin fails
+  ---
+  duration_ms: 0.542743
+  type: 'test'
+  ...
+# Subtest: globs that differ from paths fail
+ok 3 - globs that differ from paths fail
+  ---
+  duration_ms: 0.460908
+  type: 'test'
+  ...
+# Subtest: a link to a missing file fails
+ok 4 - a link to a missing file fails
+  ---
+  duration_ms: 0.600503
+  type: 'test'
+  ...
+# Subtest: no always file linking CLAUDE.md fails
+ok 5 - no always file linking CLAUDE.md fails
+  ---
+  duration_ms: 0.432891
+  type: 'test'
+  ...
+# Subtest: the twin must be fileMatch
+ok 6 - the twin must be fileMatch
+  ---
+  duration_ms: 1.303205
+  type: 'test'
+  ...
+# Subtest: this repository passes
+ok 7 - this repository passes
+  ---
+  duration_ms: 6.001278
+  type: 'test'
+  ...
+# Subtest: the Kiro notes say plan sparring is never skipped and how to load context
+ok 8 - the Kiro notes say plan sparring is never skipped and how to load context
+  ---
+  duration_ms: 0.177071
+  type: 'test'
+  ...
+# Subtest: steering: the session title is set once and never renamed (vitana-session-title.md)
+ok 9 - steering: the session title is set once and never renamed (vitana-session-title.md)
+  ---
+  duration_ms: 0.470973
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: the shipped rule file passes
+ok 10 - owner-autonomy: the shipped rule file passes
+  ---
+  duration_ms: 0.619852
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: a missing rule file fails
+ok 11 - owner-autonomy: a missing rule file fails
+  ---
+  duration_ms: 0.219012
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: one anchor per stop row (13), end point, stop message, no-trailing-question rule, eleven end-to-end anchors
+not ok 12 - owner-autonomy: one anchor per stop row (13), end point, stop message, no-trailing-question rule, eleven end-to-end anchors
+  ---
+  duration_ms: 0.760014
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:83:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    16 !== 27
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 27
+  actual: 16
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:84:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: the guard names the eleven end-to-end anchors and the shipped file carries each of them
+not ok 13 - owner-autonomy: the guard names the eleven end-to-end anchors and the shipped file carries each of them
+  ---
+  duration_ms: 0.158991
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:91:3'
+  failureType: 'testCodeFailure'
+  error: 'the guard does not name "Primary operating principle"'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:94:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Primary operating principle" fails
+not ok 14 - owner-autonomy: dropping the end-to-end section "Primary operating principle" fails
+  ---
+  duration_ms: 0.307907
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Default execution sequence" fails
+not ok 15 - owner-autonomy: dropping the end-to-end section "Default execution sequence" fails
+  ---
+  duration_ms: 0.300395
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "When Kiro may interrupt the owner" fails
+not ok 16 - owner-autonomy: dropping the end-to-end section "When Kiro may interrupt the owner" fails
+  ---
+  duration_ms: 0.216762
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Reviewer autonomy" fails
+not ok 17 - owner-autonomy: dropping the end-to-end section "Reviewer autonomy" fails
+  ---
+  duration_ms: 0.246242
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "CI autonomy" fails
+not ok 18 - owner-autonomy: dropping the end-to-end section "CI autonomy" fails
+  ---
+  duration_ms: 0.197428
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Staging autonomy" fails
+not ok 19 - owner-autonomy: dropping the end-to-end section "Staging autonomy" fails
+  ---
+  duration_ms: 0.19301
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Production boundary" fails
+not ok 20 - owner-autonomy: dropping the end-to-end section "Production boundary" fails
+  ---
+  duration_ms: 1.057866
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Fresh-session behavior" fails
+not ok 21 - owner-autonomy: dropping the end-to-end section "Fresh-session behavior" fails
+  ---
+  duration_ms: 0.303005
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Communication style" fails
+not ok 22 - owner-autonomy: dropping the end-to-end section "Communication style" fails
+  ---
+  duration_ms: 0.232556
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "Definition of done" fails
+not ok 23 - owner-autonomy: dropping the end-to-end section "Definition of done" fails
+  ---
+  duration_ms: 0.193413
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: dropping the end-to-end section "the stricter rule applies" fails
+not ok 24 - owner-autonomy: dropping the end-to-end section "the stricter rule applies" fails
+  ---
+  duration_ms: 0.187779
+  type: 'test'
+  location: '/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:99:5'
+  failureType: 'testCodeFailure'
+  error: ''
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/projects/sandbox/tools/ws-before/vitana-v1/scripts/ci/kiro-steering/guard.test.cjs:101:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: owner-autonomy: the end-to-end text adds no row to the stop table (still the thirteen stops)
+ok 25 - owner-autonomy: the end-to-end text adds no row to the stop table (still the thirteen stops)
+  ---
+  duration_ms: 0.117298
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: deleting the migration row fails even though §7d appears elsewhere
+ok 26 - owner-autonomy: deleting the migration row fails even though §7d appears elsewhere
+  ---
+  duration_ms: 0.39032
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "target database" fails
+ok 27 - owner-autonomy: dropping "target database" fails
+  ---
+  duration_ms: 0.226625
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "§7c" fails
+ok 28 - owner-autonomy: dropping "§7c" fails
+  ---
+  duration_ms: 0.148193
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "§3a" fails
+ok 29 - owner-autonomy: dropping "§3a" fails
+  ---
+  duration_ms: 0.150299
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "data-loss" fails
+ok 30 - owner-autonomy: dropping "data-loss" fails
+  ---
+  duration_ms: 0.146725
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "3 fix-forward attempts" fails
+ok 31 - owner-autonomy: dropping "3 fix-forward attempts" fails
+  ---
+  duration_ms: 0.170067
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "escalated sparring verdict" fails
+ok 32 - owner-autonomy: dropping "escalated sparring verdict" fails
+  ---
+  duration_ms: 0.139583
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "IF–THEN 31–32" fails
+ok 33 - owner-autonomy: dropping "IF–THEN 31–32" fails
+  ---
+  duration_ms: 0.229282
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "AGENTS.md" fails
+ok 34 - owner-autonomy: dropping "AGENTS.md" fails
+  ---
+  duration_ms: 0.205207
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "Commerce UX contract" fails
+ok 35 - owner-autonomy: dropping "Commerce UX contract" fails
+  ---
+  duration_ms: 0.217188
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "design.md" fails
+ok 36 - owner-autonomy: dropping "design.md" fails
+  ---
+  duration_ms: 0.191272
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "§4.1" fails
+ok 37 - owner-autonomy: dropping "§4.1" fails
+  ---
+  duration_ms: 0.171667
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "Gate 1" fails
+ok 38 - owner-autonomy: dropping "Gate 1" fails
+  ---
+  duration_ms: 0.158155
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "NEVER 34" fails
+ok 39 - owner-autonomy: dropping "NEVER 34" fails
+  ---
+  duration_ms: 0.157008
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "STAGING-VERIFY" fails
+ok 40 - owner-autonomy: dropping "STAGING-VERIFY" fails
+  ---
+  duration_ms: 0.152143
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "five-part" fails
+ok 41 - owner-autonomy: dropping "five-part" fails
+  ---
+  duration_ms: 0.174235
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: dropping "Never end a reply with an offer" fails
+ok 42 - owner-autonomy: dropping "Never end a reply with an offer" fails
+  ---
+  duration_ms: 0.165614
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: a rule file that is not always-included fails
+ok 43 - owner-autonomy: a rule file that is not always-included fails
+  ---
+  duration_ms: 0.233381
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: vitana-pipeline.md without the pointer fails
+ok 44 - owner-autonomy: vitana-pipeline.md without the pointer fails
+  ---
+  duration_ms: 0.190329
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: a repo without the pipeline steering is not checked (fixtures stay green)
+ok 45 - owner-autonomy: a repo without the pipeline steering is not checked (fixtures stay green)
+  ---
+  duration_ms: 0.101295
+  type: 'test'
+  ...
+# Subtest: owner-autonomy: check() runs it
+ok 46 - owner-autonomy: check() runs it
+  ---
+  duration_ms: 0.221781
+  type: 'test'
+  ...
+1..46
+# tests 46
+# suites 0
+# pass 33
+# fail 13
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 98.001547
