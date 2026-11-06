@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05329",
+  "service": "community-app",
+  "note": "Read-only, staging only. The change is a fail-soft ECR Public login step before the frontend image build. Proof on staging: the AWS-STAGE-DEPLOY-FRONTEND.yml run for the merge commit built and rolled the image (STAGING-VERIFY runs after it against that build), and its build log shows 'ecr-public-login: authenticated' or the ::warning fallback while the IAM change (vitana-platform VTID-05328) is not applied. Nothing targets production; the prod workflow is proven by the vitest guard and the next owner PUBLISH.",
+  "tests": [
+    { "kind": "http", "name": "app shell served by the image the new step built", "target": "frontend", "path": "/",
+      "expect_status": 200, "expect_content_type": "text/html", "expect_body_contains": ["<div id=\"root\"", "vitana-app-version"] },
+    { "kind": "existing", "ref": "npx vitest run src/lib/deploy-workflow.ecr-public-auth.test.ts",
+      "reason": "pins that both frontend deploy jobs building the public.ecr.aws root Dockerfile have the fail-soft ECR Public login after credentials and before the build, incl. the prod workflow that never runs on staging" }
+  ]
+}
