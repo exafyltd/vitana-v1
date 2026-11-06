@@ -1,7 +1,7 @@
 ---
 slug: messenger-polish-r2
 author: claude
-executor: kiro
+executor: claude
 next_actor: kiro
 state: approved
 vtids: [VTID-05584, VTID-05585, VTID-05586, VTID-05587]
@@ -16,3 +16,6 @@ bubble-colour (VTID-05586), attach-split (VTID-05587). Item 5 (batched push) is 
 ## Log
 ### 2026-11-06T14:30Z · claude-code · created → approved
 Plan sparred (3 rounds, CONVERGED) and approved by the owner. VTIDs allocated. Kiro implements the four lanes; Claude Code reviews and sends Gate 2.
+
+### 2026-11-06T15:20Z · claude-code · executor kiro → claude
+Lanes switched to executor claude by owner decision (Kiro too slow). Claude Code builds the four lanes; the reviewer agent accepts each.
