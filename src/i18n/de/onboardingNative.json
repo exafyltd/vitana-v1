@@ -1,0 +1,9 @@
+{
+  "onboardingNative": {
+    "avatarInitial": "V",
+    "errors": {
+      "handleTaken": "Dieser Benutzername ist bereits vergeben. Bitte wähle einen anderen.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
+  }
+}
