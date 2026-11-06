@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05461",
+  "service": "community-app",
+  "_note": "Native Wave 2 journey lane (native-wave2-journey-autopilot-r2/journey). The port is proven offline (jest-expo + RNTL, fake gateway + Supabase double, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web /autopilot) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md journey task 8). Staging flows sign in, navigate and read; a network guard aborts every non-GET except sign-in; never vitanaland.com. Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/journey", "cwd": "apps/mobile",
+      "reason": "My Journey unit tests (2 suites / 65 tests): Full-App dashboard loaded / empty / error (hero ring + goal pill, future self, today's goal from the onboarding recommendations, matches with the localized reason and the viewed stamp, events with attendee counts, Autopilot preview + chip count, Index card + trajectory); deep links by path; search → popup; Guided Mode resolution, the switch (POST /journey/mode + key-value cache), the next-session hero (session-listened POST, daily goal), the catalog (chapter filter, topic drawer, practice → mark done / open feature); the Autopilot popup (consent dialog → user_preferences, grouping, snooze {hours:24}, complete → client-dismissed set in the key-value store, Go → activate/notify/complete banner, drafted suggestions reviewed in the draft sheet); the goal dialog (new life_compass version) and the plan sheet (goal-plan generation carries ?locale=, clarifying answers, habit toggle); the pure helpers through @vitana/core; the /autopilot route and cold-start resolution; no unresolved key in 11 locales (Full + Guided); Arabic; RTL-safe styles; journeyAutopilotNative key parity" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the journey screen, its class-B data layer, the providers/hooks and the journey port type-check against the shell ports, @vitana/ui, @vitana/tokens and the new @vitana/core entries" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /autopilot route and the new core entries (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "AUTOPILOT.MY_JOURNEY is native with its route apps/mobile/app/(app)/autopilot/index.tsx present — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/journey/01-journey-full.yaml", "target": "/autopilot", "next_actor": "owner",
+      "reason": "sign in as a Full-App member, open /autopilot: header, utility bar, switch, hero, every Full-App tile (read only); screenshot parity vs the 390x844 read-only staging web /autopilot; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/journey/02-journey-guided.yaml", "target": "/autopilot", "next_actor": "owner",
+      "reason": "Guided Mode: next-session hero + stepper, how it works, the catalog; open and close a topic drawer without marking it done (read only); needs G1" },
+    { "flow": "apps/mobile/maestro/journey/03-journey-sheets.yaml", "target": "/autopilot", "next_actor": "owner",
+      "reason": "open and read the Autopilot popup and the plan sheet; no activate / complete / snooze / goal save / plan generation against staging (the guard aborts every non-GET); needs G1" }
+  ]
+}

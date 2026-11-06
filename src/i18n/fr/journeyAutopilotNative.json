@@ -1,0 +1,45 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "Information sur le partage de données avec l’IA",
+      "subtitle": "Avant d’utiliser les fonctions d’IA, découvre comment tes données sont utilisées.",
+      "whatIsSent": "Données pouvant être envoyées",
+      "voiceData": "Enregistrements vocaux et transcriptions",
+      "diaryData": "Textes saisis, messages de chat et entrées de journal",
+      "memoryData": "Entrées du Memory Garden et objectifs de bien-être",
+      "profileData": "Contexte du profil (nom, préférences)",
+      "socialData": "URL de profils de réseaux sociaux et textes de bio (lors des imports)",
+      "recipientLabel": "Destinataire :",
+      "recipient": "Google (modèles d’IA Gemini) via Lovable AI Gateway. Tes données sont transmises de façon sécurisée par des connexions chiffrées.",
+      "purposeLabel": "Finalité",
+      "purpose": "Générer des réponses d’IA personnalisées, la synthèse vocale, des salutations proactives, du coaching santé et des suggestions pour compléter ton profil.",
+      "notStored": "Le fournisseur d’IA ne conserve pas les données de façon permanente",
+      "revokeAnytime": "Tu peux retirer ton consentement à tout moment dans Réglages > Confidentialité",
+      "gdprCompliant": "Conforme au RGPD et aux règles de confidentialité",
+      "agreementFooter": "En touchant « J’accepte », tu autorises Exafy LTD à envoyer les données ci-dessus aux fournisseurs d’IA indiqués. Tu peux retirer cette autorisation à tout moment dans Réglages > Confidentialité.",
+      "notNow": "Pas maintenant",
+      "iAgree": "J’accepte"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA gagnés !",
+      "errorStatus": "Le serveur a répondu avec le statut {status}.",
+      "errorServer": "Le serveur n’a pas pu fournir tes recommandations pour le moment.",
+      "errorNetwork": "Pas de connexion. Vérifie ton internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Yoga au lever du soleil face à la mer",
+      "mindfulWalk": "Marche consciente et discussion"
+    },
+    "indexChip": {
+      "open": "Ouvrir le Vitana Index",
+      "openWithStreak": "Ouvrir le Vitana Index – série de {days} jours"
+    },
+    "calendar": {
+      "upcomingCount": "{count} événements à venir"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
+    }
+  }
+}
