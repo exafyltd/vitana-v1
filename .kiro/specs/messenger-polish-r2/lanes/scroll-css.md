@@ -4,7 +4,7 @@ state: executing
 next_actor: kiro
 depends_on: []
 vtid: VTID-05585
-executor: claude
+executor: kiro
 seat: exafyltd
 area: messenger
 reviewer_seat: claude

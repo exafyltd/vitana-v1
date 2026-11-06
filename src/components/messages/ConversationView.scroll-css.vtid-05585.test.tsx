@@ -16,7 +16,7 @@ describe('chat scroll container (VTID-05585)', () => {
   });
 
   it('does not set scroll-behavior on .chat-scroll', () => {
-    expect(block?.[1] ?? '').not.toMatch(/scroll-behavior/);
+    expect(block?.[1] ?? '').not.toMatch(/(?<![\w-])scroll-behavior/);
   });
 
   it('keeps overscroll containment', () => {
