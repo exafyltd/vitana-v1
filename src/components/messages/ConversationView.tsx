@@ -349,6 +349,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // VTID-05318: gateway rows → the shape the list renders.
   const isDirectThread = !!threadId && threads.find((th) => th.id === threadId)?.type !== 'group' && messageContext === 'global';
+  // Bubble avatars show only in group threads, in every context (global and tenant).
+  const isGroupThread = !!threadId && threads.find((th) => th.id === threadId)?.type === 'group';
   const toViewRow = useCallback((row: ChatMessage) => {
     const participant = (threads.find((th) => th.id === threadId)?.participants as Array<{ user_id: string; display_name?: string; avatar_url?: string }> | undefined)
       ?.find((p) => p.user_id === row.sender_id);
@@ -1410,7 +1412,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         parentMessage={resolvedParentMessage}
                         parentUnavailable={parentUnavailable}
                         groupPosition={groupPosition}
-                        showAvatar={!isDirectThread}
+                        showAvatar={isGroupThread}
                         onUpdateMessage={async (messageId: string, updates: any) => {
                           try {
                             // Route to correct table based on thread type

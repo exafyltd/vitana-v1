@@ -14,7 +14,7 @@ const bubble = read('./MessageBubble.tsx');
 
 describe('avatars beside messages (VTID-05584)', () => {
   it('ConversationView hides bubble avatars in direct threads', () => {
-    expect(conversation).toMatch(/showAvatar=\{!isDirectThread\}/);
+    expect(conversation).toMatch(/showAvatar=\{isGroupThread\}/);
   });
 
   it('MessageBubble never draws the sender avatar on own messages', () => {
