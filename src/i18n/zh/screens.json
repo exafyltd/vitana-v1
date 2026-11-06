@@ -7732,7 +7732,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "测试卡片（仅限管理员）",
+          "desc": "Vitana 现在会在你与 Vitana 的聊天中给你发送一条带有 Vitana Index 卡片的消息，和会员早上收到的一样。只有你会收到。",
+          "button": "发送测试卡片",
+          "sending": "正在发送 …",
+          "sent": "测试卡片已发送——打开你与 Vitana 的聊天。",
+          "open": "打开与 Vitana 的聊天",
+          "errorTitle": "测试卡片未发送",
+          "unavailable": "Vitana 的消息在这里目前已关闭，例如在 staging 上。",
+          "noIndex": "你还没有 Vitana Index，所以还没有 Index 卡片。",
+          "rateLimited": "请等一分钟再发送下一张测试卡片。",
+          "failed": "没有成功。请再试一次。"
+        }
       },
       "communityIntroTitle": "向社区介绍我",
       "communityIntroBody": "在你加入的第一周，其他成员会看到一张关于你的简短欢迎卡片，并可以向你打招呼。",
