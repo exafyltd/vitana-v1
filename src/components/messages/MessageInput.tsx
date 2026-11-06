@@ -98,6 +98,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   // VTID-03459: `isSending` (prop, backed by React state in the parent) is
@@ -742,6 +743,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           ) : (
             <AttachmentMenu
               onFileAttach={() => fileInputRef.current?.click()}
+              onPhotoAttach={() => photoInputRef.current?.click()}
               onSendMessage={async (content, messageType, contentData) => {
                 await onSendMessage(content, messageType, contentData);
               }}
@@ -754,12 +756,22 @@ const MessageInput: React.FC<MessageInputProps> = ({
             />
           )}
 
-          {/* Hidden file input */}
+          {/* Hidden file input: documents and other files */}
           <input
             ref={fileInputRef}
             type="file"
             multiple
-            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
+            accept="audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+
+          {/* Hidden photo/video input: multi-select from the photo library */}
+          <input
+            ref={photoInputRef}
+            type="file"
+            multiple
+            accept="image/*,video/*"
             onChange={handleFileSelect}
             className="hidden"
           />
