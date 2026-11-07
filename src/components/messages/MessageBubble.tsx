@@ -1399,7 +1399,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
         )}>
-          {showSenderHeader && (() => {
+          {showSenderHeader && !isOwnMessage && (() => {
             // VTID-04992: the sender's avatar opens their profile (the
             // Vitana assistant has none, so it stays a plain picture).
             const senderId = message.sender_id || (message.sender as any)?.user_id;

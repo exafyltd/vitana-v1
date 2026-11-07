@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05451",
+  "service": "community-app",
+  "_note": "Native Wave 2 public-legal lane (signed-out PublicAppShell branch: /privacy, /terms, /maxina_support, /i/:code, /apply, /_intro/:tenantSlug). The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). /apply's one public insert runs only against a fake client in the unit tests, never a live system. /download and /maxina/app stay web pages (ledger status exception, no native route). PUBLIC.LANDING (/) stays not_started: the PublicLandingScreen component is built and unit-tested but not mounted, because a cold / is N3's app/index.tsx (follow-up needs a plan amendment, see verification.md). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web screens) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md public-legal task 6). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/public", "cwd": "apps/mobile",
+      "reason": "public unit tests (5 suites / 100 tests): PublicLandingScreen component signed out (five portals and their targets, DEV hub toast / system browser), resolving loader, signed in -> /home; privacy / terms static render, ?lang= scoped copy, DE/EN toggle, back, links; maxina_support categories / FAQ accordion / contact / useful links; /i/:code resolves to invite via resolve-link, the delivered code (auth-port) is remembered, Join tab; apply validation order, payload, success, duplicate and generic errors against a fake client (no live submit); intro render and Login / Register hand-over; no unresolved key in 11 locales; Arabic; RTL-safe styles; route files; ledger rows — fixtures only, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screens, the public port and the six route files type-check against the shell ports, @vitana/ui and @vitana/tokens" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the six (public) routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "PUBLIC.PRIVACY, PUBLIC.TERMS, /maxina_support, /i/:code, /apply and /_intro/:tenantSlug are native with their routes under apps/mobile/app/; /download and /maxina/app stay exception; PUBLIC.LANDING stays not_started — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/public/01-public-landing.yaml", "target": "/", "next_actor": "owner",
+      "reason": "after the follow-up lane mounts PublicLandingScreen at cold / (app/index.tsx, plan amendment): signed out: VITANA wordmark and the five portal cards; tap Maxina -> /_intro/maxina; screenshot parity vs the 390x844 read-only staging web /; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/public/02-legal.yaml", "target": "/privacy, /terms, /maxina_support", "next_actor": "owner",
+      "reason": "scroll the privacy and terms articles, switch DE/EN, open one FAQ answer; screenshot parity vs the read-only staging web screens; needs G1" },
+    { "flow": "apps/mobile/maestro/public/03-invite-apply-intro.yaml", "target": "/i/:code, /apply, /_intro/maxina", "next_actor": "owner",
+      "reason": "open a maxina:// invite link -> Join tab; /apply render and a client-side validation error (no submit against a live system); intro render and Login hand-over; screenshot parity vs read-only staging /apply; needs G1" }
+  ]
+}
