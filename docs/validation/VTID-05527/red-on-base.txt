@@ -1,0 +1,91 @@
+# VTID-05527 red on base: origin/main aac65bfeb1ad057444955bc9084a2e32b39486c5 + only the new tests/staff/** files
+# cmd (apps/mobile): npm run gen:i18n && npx jest tests/staff
+FAIL tests/staff/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/staff/StaffGate' from 'tests/staff/helpers.tsx'
+
+    Require stack:
+      tests/staff/helpers.tsx
+      tests/staff/i18n-rtl.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetStaffGateForTests } from '../../src/screens/staff/StaffGate';
+         | ^
+      17 |
+      18 | // Every staff test imports this harness: give findBy*/waitFor 5 s instead of
+      19 | // RNTL's 1 s default so the suite holds under default-worker load.
+
+      at Resolver._throwModNotFoundError (../../../native-wave2-role-modes-r2-staff/apps/mobile/node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/staff/helpers.tsx:16:1)
+      at Object.require (tests/staff/i18n-rtl.test.tsx:15:1)
+
+FAIL tests/staff/routes.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/staff/StaffGate' from 'tests/staff/helpers.tsx'
+
+    Require stack:
+      tests/staff/helpers.tsx
+      tests/staff/routes.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetStaffGateForTests } from '../../src/screens/staff/StaffGate';
+         | ^
+      17 |
+      18 | // Every staff test imports this harness: give findBy*/waitFor 5 s instead of
+      19 | // RNTL's 1 s default so the suite holds under default-worker load.
+
+      at Resolver._throwModNotFoundError (../../../native-wave2-role-modes-r2-staff/apps/mobile/node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/staff/helpers.tsx:16:1)
+      at Object.require (tests/staff/routes.test.tsx:14:1)
+
+FAIL tests/staff/chrome.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/staff/StaffGate' from 'tests/staff/helpers.tsx'
+
+    Require stack:
+      tests/staff/helpers.tsx
+      tests/staff/chrome.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetStaffGateForTests } from '../../src/screens/staff/StaffGate';
+         | ^
+      17 |
+      18 | // Every staff test imports this harness: give findBy*/waitFor 5 s instead of
+      19 | // RNTL's 1 s default so the suite holds under default-worker load.
+
+      at Resolver._throwModNotFoundError (../../../native-wave2-role-modes-r2-staff/apps/mobile/node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/staff/helpers.tsx:16:1)
+      at Object.require (tests/staff/chrome.test.tsx:15:1)
+
+FAIL tests/staff/screens.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/staff/StaffGate' from 'tests/staff/helpers.tsx'
+
+    Require stack:
+      tests/staff/helpers.tsx
+      tests/staff/screens.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetStaffGateForTests } from '../../src/screens/staff/StaffGate';
+         | ^
+      17 |
+      18 | // Every staff test imports this harness: give findBy*/waitFor 5 s instead of
+      19 | // RNTL's 1 s default so the suite holds under default-worker load.
+
+      at Resolver._throwModNotFoundError (../../../native-wave2-role-modes-r2-staff/apps/mobile/node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/staff/helpers.tsx:16:1)
+      at Object.require (tests/staff/screens.test.tsx:15:1)
+
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        21.186 s
+Ran all test suites matching /tests\/staff/i.
