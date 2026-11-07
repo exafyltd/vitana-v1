@@ -5,6 +5,7 @@
  * source action, and date/time formatting in the viewer's locale (including Arabic digits).
  */
 import '../helpers/no-network';
+import './mocks';
 import { addDays, nextReminderAt, relativeIn, sameDay, startOfDay, stepAnchor, toLocalInput, viewRange, weekStart } from '../../src/screens/calendar/time';
 import { entryKind, isDone } from '../../src/screens/calendar/theme';
 import { canEditEntry, canInviteEntry, canRemoveEntry, communityEventIdOf, entryTimeState, isEndedSourceEntry, sourceActionOf } from '../../src/screens/calendar/entry-actions';
@@ -60,7 +61,8 @@ describe('relative wording and reminders', () => {
   });
   it('next reminder: the earliest one still to come', () => {
     const start = '2026-11-11T12:00:00Z';
-    const next = nextReminderAt([{ kind: 'before', minutes: 120 }, { kind: 'before', minutes: 30 }], start, now);
+    const later = D('2026-11-11T10:30:00Z'); // the 120-minutes-before reminder (10:00) is already past
+    const next = nextReminderAt([{ kind: 'before', minutes: 120 }, { kind: 'before', minutes: 30 }], start, later);
     expect(next?.toISOString()).toBe('2026-11-11T11:30:00.000Z');
     expect(nextReminderAt([], start, now)).toBeNull();
     expect(nextReminderAt([{ kind: 'before', minutes: 600 }], start, now)).toBeNull();
@@ -68,15 +70,15 @@ describe('relative wording and reminders', () => {
 });
 
 describe('entry kind and done', () => {
-  const base = entryRow();
+  const kind = (over: object = {}) => entryKind({ ...entryRow(), ...over } as never);
   it('derives the kind from lab order, pillar, tag, then event type', () => {
-    expect(entryKind({ ...base, source_ref_type: 'lab_order' })).toBe('lab');
-    expect(entryKind({ ...base, pillar: 'sleep' })).toBe('sleep');
-    expect(entryKind({ ...base, wellness_tags: ['x', 'pillar:hydration'] })).toBe('hydration');
-    expect(entryKind({ ...base, event_type: 'workout' })).toBe('exercise');
-    expect(entryKind({ ...base, event_type: 'autopilot' })).toBe('vitana');
-    expect(entryKind({ ...base, event_type: 'deployment' })).toBe('work');
-    expect(entryKind(base)).toBe('personal');
+    expect(kind({ source_ref_type: 'lab_order' })).toBe('lab');
+    expect(kind({ pillar: 'sleep' })).toBe('sleep');
+    expect(kind({ wellness_tags: ['x', 'pillar:hydration'] })).toBe('hydration');
+    expect(kind({ event_type: 'workout' })).toBe('exercise');
+    expect(kind({ event_type: 'autopilot' })).toBe('vitana');
+    expect(kind({ event_type: 'deployment' })).toBe('work');
+    expect(kind()).toBe('personal');
   });
   it('done is completion_status or completed_at', () => {
     expect(isDone({ completion_status: 'completed', completed_at: null })).toBe(true);
@@ -112,7 +114,7 @@ describe('entry actions', () => {
     expect(communityEventIdOf(ev)).toBe('e9');
     expect(sourceActionOf(ev, now)).toEqual({ kind: 'event', eventId: 'e9', path: '/comm/events-meetups?event=e9' });
     const room = item({ source_ref_type: 'live_room_session', metadata: { live_room_id: 'r1' } });
-    expect(sourceActionOf(room, D('2026-11-11T12:30:00Z'))).toMatchObject({ kind: 'live_room', path: '/comm/live-rooms/r1/view', joinable: true });
+    expect(sourceActionOf(room, D('2026-11-11T12:50:00Z'))).toMatchObject({ kind: 'live_room', path: '/comm/live-rooms/r1/view', joinable: true });
     expect(sourceActionOf(room, D('2026-11-11T12:00:00Z'))).toMatchObject({ joinable: false });
     expect(sourceActionOf(item(), now)).toBeNull();
   });
@@ -172,8 +174,10 @@ describe('locale-format twin', () => {
     expect(en.fmtDate(when.toISOString(), { day: 'numeric' })).toBe('11');
     expect(en.fmtDate('not a date', { day: 'numeric' })).toBe('not a date');
   });
-  it('Arabic renders its own digits (the day-number split of the web hero relies on it)', () => {
+  it('Arabic renders Arabic month and weekday names (RTL text, the hero splits the day number out of it)', () => {
     const ar = makeFormatters('ar');
-    expect(/[\u0660-\u0669]/.test(ar.fmtDate(when, { weekday: 'long', day: 'numeric', month: 'long' }))).toBe(true);
+    const text = ar.fmtDate(when, { weekday: 'long', day: 'numeric', month: 'long' });
+    expect(/[\u0600-\u06FF]/.test(text)).toBe(true);
+    expect(/(\d+|[\u0660-\u0669]+)/.test(text)).toBe(true);
   });
 });

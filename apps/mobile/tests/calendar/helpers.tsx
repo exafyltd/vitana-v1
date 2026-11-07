@@ -8,7 +8,7 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ReactNode } from 'react';
-import { configure } from '@testing-library/react-native';
+import { act, configure } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../../src/auth/AuthProvider';
 import { __setSupabaseForTests } from '../../src/auth/client';
@@ -81,14 +81,20 @@ export function fakeGateway(handler: (path: string, method: string, call: Gatewa
 }
 
 const qcs: QueryClient[] = [];
-afterEach(() => {
+// Let a query that settled right at the end of a test deliver its update inside act() before the tree unmounts.
+afterEach(async () => {
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  });
   while (qcs.length) qcs.pop()?.clear();
 });
 
 export function makeWrapper(opts: { client: unknown; gateway?: ReturnType<typeof fakeGateway>; language?: string }) {
   __setSupabaseForTests(opts.client as never);
   if (opts.gateway) __setGatewayForTests(opts.gateway.fetch as never);
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity }, mutations: { gcTime: Infinity } } });
+  const qc = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity, staleTime: Infinity }, mutations: { gcTime: Infinity } } });
+  // The language provider's preference read is not under test: seed it so it never settles mid-test.
+  qc.setQueryData(['user_preferences', 'u-self'], null);
   qcs.push(qc);
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
@@ -104,6 +110,28 @@ export function makeWrapper(opts: { client: unknown; gateway?: ReturnType<typeof
     );
   };
 }
+
+// ── clock ───────────────────────────────────────────────────────────────
+
+/**
+ * Freezes `new Date()` at a fixed mid-day moment (Wed 11 Nov 2026, 12:07 local) for every test of the
+ * calling file, leaving the timers real. The screens round "now" to the next quarter hour and the
+ * fixtures are built "today at hh:mm", so a run in the last hour of a day would otherwise wrap past midnight.
+ */
+export function freezeClock(): void {
+  beforeEach(() => {
+    jest.useFakeTimers({
+      now: new Date(2026, 10, 11, 12, 7, 0),
+      doNotFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'setImmediate', 'clearImmediate', 'nextTick', 'queueMicrotask', 'requestAnimationFrame', 'cancelAnimationFrame', 'performance'],
+    });
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+}
+
+/** A regular expression that matches `text` as a substring (RNTL's string matcher is an exact match). */
+export const has = (text: string): RegExp => new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 
 // ── fixtures ────────────────────────────────────────────────────────────
 

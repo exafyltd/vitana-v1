@@ -6,13 +6,13 @@
  */
 import '../helpers/no-network';
 import { router } from './mocks';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { translate } from '../../src/i18n';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { makeFormatters } from '../../src/screens/calendar/format';
 import { CalendarScreen } from '../../src/screens/calendar/CalendarScreen';
-import { createSupabaseDouble, fakeGateway, makeWrapper, todayAt, windowItem } from './helpers';
+import { createSupabaseDouble, fakeGateway, freezeClock, has, makeWrapper, todayAt, windowItem } from './helpers';
 
 afterAll(() => __setSupabaseForTests(null));
 afterEach(() => {
@@ -20,6 +20,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 jest.setTimeout(30000);
+freezeClock();
 
 const en = (key: string, params?: Record<string, string | number>) => translate('en', key, params);
 const fmt = makeFormatters('en');
@@ -166,7 +167,7 @@ describe('entry screen', () => {
     // 00:01–00:02 today: over for the whole day (the suite is not run in the first two minutes of a day).
     setup([windowItem({}, { id: 'old', title: 'Past meetup', source_type: 'live_room', source_ref_type: 'live_room_session', metadata: { live_room_id: 'r-1' }, start_time: todayAt(0, 1), end_time: todayAt(0, 2) })]);
     await open('old');
-    expect(screen.getByTestId('vcal-ended-notice')).toHaveTextContent(en('vcal.entry.endedNotice'));
+    expect(screen.getByTestId('vcal-ended-notice')).toHaveTextContent(has(en('vcal.entry.endedNotice')));
     fireEvent.press(screen.getByTestId('vcal-open-source'));
     await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toEqual(['vcal.entry.endedToast']));
     expect(router.navigate).not.toHaveBeenCalled();
@@ -211,7 +212,9 @@ describe('deep link /calendar/entry/:entryId', () => {
     const { client } = createSupabaseDouble({ tables: { calendar_events: [{ id: 'deep-2', start_time: start }] } });
     render(<CalendarScreen entryId="deep-2" />, { wrapper: makeWrapper({ client, gateway }) });
     const el = await screen.findByTestId('vcal-entry-screen');
-    el.props.onRequestClose?.();
+    act(() => {
+      el.props.onRequestClose?.();
+    });
     expect(router.replace).toHaveBeenCalledWith('/calendar');
   });
 
@@ -219,7 +222,7 @@ describe('deep link /calendar/entry/:entryId', () => {
     const gateway = fakeGateway((path) => (path === WINDOW ? { status: 200, body: { ok: true, data: [] } } : undefined));
     const { client } = createSupabaseDouble({ tables: { calendar_events: [] } });
     render(<CalendarScreen entryId="nope" />, { wrapper: makeWrapper({ client, gateway }) });
-    expect(await screen.findByTestId('vcal-entry-not-found')).toHaveTextContent(en('calendarNative.entry.notFound'));
+    expect(await screen.findByTestId('vcal-entry-not-found')).toHaveTextContent(has(en('calendarNative.entry.notFound')));
     expect(screen.queryByTestId('vcal-entry-screen')).toBeNull();
   });
 });

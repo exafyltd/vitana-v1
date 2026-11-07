@@ -1,0 +1,10 @@
+{
+  "calendarNative": {
+    "entry": {
+      "notFound": "No hemos encontrado esta entrada. Puede que se haya eliminado."
+    },
+    "reminders": {
+      "fireNotFound": "Este recordatorio ya no existe. Aquí tienes todos tus recordatorios."
+    }
+  }
+}

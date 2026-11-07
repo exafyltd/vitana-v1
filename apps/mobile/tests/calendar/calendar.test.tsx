@@ -6,15 +6,19 @@
  */
 import '../helpers/no-network';
 import './mocks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { translate } from '../../src/i18n';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { makeFormatters } from '../../src/screens/calendar/format';
 import { CalendarScreen } from '../../src/screens/calendar/CalendarScreen';
-import { createSupabaseDouble, fakeGateway, makeWrapper, todayAt, windowItem } from './helpers';
+import { createSupabaseDouble, fakeGateway, freezeClock, has, makeWrapper, todayAt, windowItem } from './helpers';
 
 afterAll(() => __setSupabaseForTests(null));
+// The last-used view is remembered per device: every test starts from a clean device.
+beforeEach(() => AsyncStorage.clear());
 jest.setTimeout(30000);
+freezeClock();
 
 const en = (key: string, params?: Record<string, string | number>) => translate('en', key, params);
 const fmt = makeFormatters('en');
@@ -46,8 +50,8 @@ describe('calendar: loaded, empty, error', () => {
     expect(screen.getByText('Lunch prep')).toBeTruthy();
     expect(screen.getAllByText(hhmm(todayAt(9, 30))).length).toBeGreaterThan(0);
     expect(screen.getAllByText(hhmm(todayAt(12, 15))).length).toBeGreaterThan(0);
-    expect(screen.getByTestId('vcal-summary')).toHaveTextContent(en('vcal.summary.entries', { count: 2 }));
-    expect(screen.getByText(en('vcal.views.day'))).toBeTruthy();
+    expect(screen.getByTestId('vcal-summary')).toHaveTextContent(has(en('vcal.summary.entries', { count: 2 })));
+    expect(screen.getAllByText(en('vcal.views.day')).length).toBeGreaterThan(0); // eyebrow and tab
   });
 
   it('titles the day with the locale-format date', async () => {
@@ -61,7 +65,7 @@ describe('calendar: loaded, empty, error', () => {
     setup([]);
     expect(await screen.findByTestId('vcal-empty')).toBeTruthy();
     expect(screen.getByText(en('vcal.empty.title'))).toBeTruthy();
-    expect(screen.getByTestId('vcal-summary')).toHaveTextContent(en('vcal.summary.nothing'));
+    expect(screen.getByTestId('vcal-summary')).toHaveTextContent(has(en('vcal.summary.nothing')));
   });
 
   it('shows the error state and retries into the list', async () => {
@@ -111,7 +115,7 @@ describe('calendar: day navigation', () => {
     setup(items);
     await screen.findByText('Item 0');
     expect(screen.queryByText('Item 6')).toBeNull();
-    expect(screen.getByTestId('vcal-more')).toHaveTextContent(en('vcal.more', { count: 2 }));
+    expect(screen.getByTestId('vcal-more')).toHaveTextContent(has(en('vcal.more', { count: 2 })));
     fireEvent.press(screen.getByTestId('vcal-more'));
     expect(await screen.findByText('Item 6')).toBeTruthy();
   });

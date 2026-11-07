@@ -1,0 +1,10 @@
+{
+  "calendarNative": {
+    "entry": {
+      "notFound": "我们找不到这条日程，它可能已被删除。"
+    },
+    "reminders": {
+      "fireNotFound": "这条提醒已不存在。这里是你的所有提醒。"
+    }
+  }
+}

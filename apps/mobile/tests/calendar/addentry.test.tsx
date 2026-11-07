@@ -5,17 +5,21 @@
  */
 import '../helpers/no-network';
 import './mocks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { translate } from '../../src/i18n';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { makeFormatters } from '../../src/screens/calendar/format';
 import { CalendarScreen } from '../../src/screens/calendar/CalendarScreen';
-import { createSupabaseDouble, fakeGateway, makeWrapper, todayAt } from './helpers';
+import { createSupabaseDouble, fakeGateway, freezeClock, has, makeWrapper, todayAt } from './helpers';
 
 afterAll(() => __setSupabaseForTests(null));
+// The last-used view is remembered per device: every test starts from a clean device.
+beforeEach(() => AsyncStorage.clear());
 afterEach(() => __clearToastsForTests());
 jest.setTimeout(30000);
+freezeClock();
 
 const en = (key: string, params?: Record<string, string | number>) => translate('en', key, params);
 const fmt = makeFormatters('en');
@@ -124,8 +128,8 @@ describe('find a time and overlap warning', () => {
     const call = gateway.called('GET', '/api/v1/calendar/events/gaps')[0];
     expect(call.query.get('duration')).toBe('60');
     expect(call.query.get('limit')).toBe('3');
-    expect(slot).toHaveTextContent(fmt.fmtDate(slotStart, { weekday: 'short', day: 'numeric', month: 'short' }));
-    expect(slot).toHaveTextContent(fmt.fmtTime(slotStart, { hour: '2-digit', minute: '2-digit' }));
+    expect(slot).toHaveTextContent(has(fmt.fmtDate(slotStart, { weekday: 'short', day: 'numeric', month: 'short' })));
+    expect(slot).toHaveTextContent(has(fmt.fmtTime(slotStart, { hour: '2-digit', minute: '2-digit' })));
     fireEvent.press(slot);
     fireEvent.changeText(screen.getByTestId('vcal-form-title'), 'Slotted');
     fireEvent.press(screen.getByTestId('vcal-form-create'));
@@ -159,8 +163,8 @@ describe('find a time and overlap warning', () => {
     await openSheet();
     const warning = await screen.findByTestId('vcal-overlap', {}, { timeout: 5000 });
     const range = `${fmt.fmtTime(todayAt(10), { hour: '2-digit', minute: '2-digit' })}–${fmt.fmtTime(todayAt(11), { hour: '2-digit', minute: '2-digit' })}`;
-    expect(warning).toHaveTextContent(en('vcal.overlap.title'));
-    expect(warning).toHaveTextContent(`Team call · ${range}`);
+    expect(warning).toHaveTextContent(has(en('vcal.overlap.title')));
+    expect(warning).toHaveTextContent(has(`Team call · ${range}`));
     expect(gateway.called('GET', '/api/v1/calendar/conflicts').length).toBeGreaterThan(0);
     // still creatable
     fireEvent.changeText(screen.getByTestId('vcal-form-title'), 'Overlapping anyway');

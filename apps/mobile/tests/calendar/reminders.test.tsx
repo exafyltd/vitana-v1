@@ -13,7 +13,7 @@ import { __setSupabaseForTests } from '../../src/auth/client';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { makeFormatters } from '../../src/screens/calendar/format';
 import { RemindersScreen } from '../../src/screens/calendar/RemindersScreen';
-import { createSupabaseDouble, fakeGateway, makeWrapper, reminderRow, todayAt } from './helpers';
+import { createSupabaseDouble, fakeGateway, freezeClock, has, makeWrapper, reminderRow, todayAt } from './helpers';
 
 afterAll(() => __setSupabaseForTests(null));
 afterEach(() => {
@@ -21,6 +21,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 jest.setTimeout(30000);
+freezeClock();
 
 const en = (key: string, params?: Record<string, string | number>) => translate('en', key, params);
 const fmt = makeFormatters('en');
@@ -59,7 +60,7 @@ describe('reminders list', () => {
     setup([reminderRow({ id: 'u1', action_text: 'Take magnesium', next_fire_at: todayAt(20, 5) })]);
     await screen.findByText('Take magnesium');
     const expected = fmt.fmtDateTime(new Date(todayAt(20, 5)), { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-    expect(screen.getByTestId('reminder-time-u1')).toHaveTextContent(expected);
+    expect(screen.getByTestId('reminder-time-u1')).toHaveTextContent(has(expected));
   });
 
   it('shows the Vitana badge on suggested reminders, notes, and the empty copy of each group', async () => {
@@ -148,7 +149,8 @@ describe('reminders actions', () => {
       (path, method) => (path === LIST && method === 'DELETE' ? { status: 200, body: { ok: true, deleted: 2 } } : undefined),
     );
     fireEvent.press(await screen.findByTestId('reminders-delete-all'));
-    expect(await screen.findByText(en('screens.reminders.deleteAllLengthReminders', { length: 2 }), { exact: false })).toBeTruthy();
+    const confirm = await screen.findByTestId('reminders-delete-all-confirm');
+    expect(within(confirm).getByText(en('screens.reminders.deleteAllLengthReminders', { length: 2 }))).toBeTruthy();
     fireEvent.press(screen.getByTestId('reminders-delete-all-yes'));
     await waitFor(() => expect(gateway.called('DELETE', LIST)).toHaveLength(1));
     expect(gateway.called('DELETE', LIST)[0].query.get('mode')).toBe('all');
@@ -163,13 +165,14 @@ describe('reminders actions', () => {
     await waitFor(() => expect(__toastsForTests().map((x) => x.titleKey)).toEqual(['toasts.reminders.pleaseEnterWhatRemindYouAbout']));
 
     fireEvent.changeText(screen.getByTestId('reminder-form-action'), '  Call Anna  ');
-    fireEvent.press(screen.getByTestId('reminder-form-when-next'));
+    fireEvent.press(screen.getByTestId('reminder-form-when-time-next'));
     fireEvent.changeText(screen.getByTestId('reminder-form-notes'), 'about the trip');
     fireEvent.press(screen.getByTestId('reminder-form-submit'));
     await waitFor(() => expect(gateway.called('POST', LIST)).toHaveLength(1));
     const body = gateway.called('POST', LIST)[0].body;
     expect(body.action_text).toBe('Call Anna');
-    expect(body.spoken_message).toBe('Time to call anna');
+    expect(body.spoken_message).toBe('Call Anna'); // no invented spoken sentence: the reminder text itself
+    expect(body.lang).toBe('en-US');
     expect(body.description).toBe('about the trip');
     expect(Number.isNaN(Date.parse(body.scheduled_for_iso))).toBe(false);
     expect(Date.parse(body.scheduled_for_iso)).toBeGreaterThan(Date.now());
@@ -241,7 +244,7 @@ describe('fire deep link /reminders/fire/:fireId', () => {
 
   it('a fire id that no longer exists shows the list with a not-found note, not a bare screen', async () => {
     setup([], { fireId: 'gone' }, (path, method) => (path === `${LIST}/gone` && method === 'GET' ? { status: 404, body: { ok: false } } : undefined));
-    expect(await screen.findByTestId('reminder-fire-missing')).toHaveTextContent(en('calendarNative.reminders.fireNotFound'));
+    expect(await screen.findByTestId('reminder-fire-missing')).toHaveTextContent(has(en('calendarNative.reminders.fireNotFound')));
     expect(screen.queryByTestId('reminder-fire-overlay')).toBeNull();
     expect(screen.getByTestId('reminders-screen')).toBeTruthy();
   });

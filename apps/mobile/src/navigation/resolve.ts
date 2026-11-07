@@ -53,6 +53,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/auth/confirmed',
   '/autopilot',
   '/autopilot/audiobook',
+  '/calendar',
   '/comm/find-partner',
   '/comm/groups',
   '/comm/live-rooms',
@@ -122,6 +123,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/professional/schedule',
   '/professional/tools',
   '/redeem',
+  '/reminders',
   '/reset-password',
   '/search',
   '/settings',
@@ -151,7 +153,7 @@ export const NATIVE_ROUTES: readonly string[] = [
  * the ORB and deep links treat them like the concrete routes above (the
  * catch-all would otherwise call them unported). VTID-05511: the provider profile.
  */
-export const NATIVE_PATTERNS: readonly string[] = ['/discover/provider/:id'];
+export const NATIVE_PATTERNS: readonly string[] = ['/discover/provider/:id', '/calendar/entry/:entryId', '/reminders/fire/:fireId'];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 
