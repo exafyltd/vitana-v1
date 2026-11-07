@@ -54,6 +54,20 @@
       ],
       "reason": "Pure Unified-Card-System catalog (pickHomeServerCards, isVitanaCardType, cardCategory, CARD_SCREENS, CARD_DEEP_LINKS); no imports."
     },
+    "src/lib/vitanaIndex.ts": {
+      "entry": "vitana-index.ts",
+      "lanes": [
+        "health"
+      ],
+      "reason": "VTID-05455 — the Vitana Index tier math (VITANA_INDEX_TIERS, getVitanaIndexTier, nextTier, pointsToNextTier, getVitanaIndexPercentage, formatVitanaIndexScore); imports nothing, pure. Used by the native health snapshot, chips and Index sheet, and by the biology / Index-detail lane."
+    },
+    "src/lib/vitana-projection.ts": {
+      "entry": "vitana-projection.ts",
+      "lanes": [
+        "health"
+      ],
+      "reason": "VTID-05455 — the Vitana Index slope projection (trend7d, projectDays, projectDay90, buildHorizonPoints) the Index sheet's 30-day horizon draws; imports nothing, pure."
+    },
     "src/integrations/supabase/types.ts": {
       "entry": "database.ts",
       "lanes": [
@@ -292,6 +306,13 @@
         "conversation-chat"
       ],
       "reason": "Vitana chat-reply Markdown parser (parseChatMarkdown, parseChatInline, MdBlock, MdInline). Imports nothing; pure. Used by the native message bubble for the Vitana bot's replies (VTID-05193)."
+    },
+    "src/mocks/ai.ts": {
+      "entry": "ai-mocks.ts",
+      "lanes": [
+        "ai"
+      ],
+      "reason": "VTID-05523 — the AI coach page data the web renders directly on /ai, /ai/insights, /ai/recommendations and /ai/companion (todayActions, memoryHighlights, inspiration, lifestylePatterns, indexMovement, socialEngagement, correlations, recommendations, chat); imports nothing, pure. The native AI coach twins read the same records, so the cards show the same content."
     }
   }
 }

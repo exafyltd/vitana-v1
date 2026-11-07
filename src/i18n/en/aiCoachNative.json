@@ -1,0 +1,67 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "AI sections",
+      "overview": "Overview",
+      "insights": "Insights",
+      "recommendations": "Recommendations",
+      "dailySummary": "Daily Summary",
+      "companion": "AI Companion"
+    },
+    "priority": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "suggestions": {
+      "title": "AI Insights & Suggestions"
+    },
+    "reward": {
+      "suggestions": "Act on AI suggestions for health rewards",
+      "index": "Improve your health score for more credits"
+    },
+    "index": {
+      "computing": "computing…"
+    },
+    "streak": {
+      "meditation": "Meditation"
+    },
+    "companion": {
+      "suggestionDescription": "AI-generated wellness suggestion",
+      "recall": "Recall",
+      "autopilotMeditation": "Schedule meditation break",
+      "autopilotHydration": "Hydration reminder in 15 min"
+    },
+    "motivation": {
+      "defaultQuote": "Every small step towards wellness is a victory worth celebrating.",
+      "defaultAuthor": "Today's Inspiration"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Wellness"
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Blood Markers"
+    },
+    "chat": {
+      "voice": "Start voice call",
+      "video": "Start video call",
+      "send": "Send message"
+    },
+    "autopilot": {
+      "settings": "Autopilot settings",
+      "toggle": "Turn Autopilot on or off"
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA earned!",
+      "task": "Task completed: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Index now {n}"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "vtid": "VTID-05455",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/health/**",
+    "apps/mobile/src/screens/health/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/maestro/health/**",
+    "apps/mobile/tests/health/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/healthNative.json",
+    "docs/validation/**",
+    "packages/core/extract.json"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/health/index.tsx",
+    "apps/mobile/src/screens/health/**",
+    "apps/mobile/src/ports/health.tsx",
+    "apps/mobile/src/ports/health-sync.ts",
+    "apps/mobile/src/ports/health-data.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/health/**",
+    "apps/mobile/maestro/health/README.md",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/vitana-index.ts",
+    "packages/core/src/vitana-projection.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/healthNative.json",
+    "docs/validation/VTID-05455/**"
+  ],
+  "core_change": "two class-A re-exports: packages/core/src/vitana-index.ts (src/lib/vitanaIndex.ts — tier math) and packages/core/src/vitana-projection.ts (src/lib/vitana-projection.ts — slope projection); both import nothing. Manifest lines added, closure.generated.json + mobile-ci-paths.generated.json regenerated with `npm run gen:core` (core-closure --write) in this PR; core-closure --check up to date. The health-data hooks (class B: they runtime-import the web Supabase client) are re-implemented natively, not moved to core. packages/core/extract.json is unchanged.",
+  "sparring_record": "docs/validation/VTID-05455/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

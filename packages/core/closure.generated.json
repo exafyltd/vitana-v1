@@ -18,6 +18,7 @@
     "src/lib/permissions.ts",
     "src/lib/vitana-projection.ts",
     "src/lib/vitanaIndex.ts",
+    "src/mocks/ai.ts",
     "src/navigation/orb-navigation.ts",
     "src/navigation/registry/index.ts",
     "src/navigation/registry/locales/ar.json",

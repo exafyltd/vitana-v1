@@ -1,0 +1,26 @@
+# VTID-05521 red on base — origin/main 6b9137ac575735edf1efbc16cddb9ad52d6b4b50 (no ai-assistants implementation)
+# The lane's tests (apps/mobile/tests/ai-assistants/**) copied onto a clean origin/main worktree, then (apps/mobile):
+#   npm run gen:i18n && npx jest tests/ai-assistants --ci
+
+FAIL tests/ai-assistants/assistant-screen.test.tsx
+    Cannot find module '../../src/screens/ai-assistants/AssistantScreen' from 'tests/ai-assistants/assistant-screen.test.tsx'
+FAIL tests/ai-assistants/i18n-rtl.test.tsx
+    Cannot find module '../../src/screens/ai-assistants/AssistantScreen' from 'tests/ai-assistants/i18n-rtl.test.tsx'
+FAIL tests/ai-assistants/ai-assistants-flow.test.tsx
+    Cannot find module '../../src/screens/ai-assistants/data/hooks' from 'tests/ai-assistants/ai-assistants-flow.test.tsx'
+FAIL tests/ai-assistants/panels.test.tsx
+    Cannot find module '../../src/screens/ai-assistants/AssistantScreen' from 'tests/ai-assistants/panels.test.tsx'
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+
+# Behaviour probe on the same base (not committed): the /assistant facts this lane changes
+#   npx jest tests/ai-assistants/route-probe.test.ts --ci
+  ✕ /assistant is a native route (3 ms)
+  ✕ the 6 ASSISTANT.* rows are native (2 ms)
+    Expected value: "/assistant"
+    Received array: ["/", "/alkalma", "/comm/find-partner", "/comm/groups", "/comm/members", "/comm/open-asks", "/connectors", "/delete-account", "/daily-diary", "/dev/orb-bench", …]
+    - Expected  - 6
+    + Received  + 6
+Tests:       2 failed, 2 total
+
+# Green on the branch: npx jest tests/ai-assistants --ci → Test Suites: 4 passed; Tests: 132 passed (commands.log)

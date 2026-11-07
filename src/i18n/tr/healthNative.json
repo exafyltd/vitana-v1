@@ -1,0 +1,151 @@
+{
+  "healthNative": {
+    "subtitle": "Sağlık yolculuğunu takip et ve yönet",
+    "upload": "Yükle",
+    "selectMode": "Bir bölüm seç",
+    "loading": "Yükleniyor…",
+    "indexAria": "Vitana Index {score} / 999",
+    "indexLoadingAria": "Vitana Index yükleniyor",
+    "chip": {
+      "openIndex": "Vitana Index'i aç"
+    },
+    "agents": {
+      "noOutputYet": "henüz çıktı yok"
+    },
+    "medical": {
+      "untitledReport": "Sağlık raporu",
+      "status": {
+        "uploaded": "Yüklendi",
+        "processing": "İşleniyor",
+        "processed": "İşlendi",
+        "error": "Hata"
+      }
+    },
+    "supplements": {
+      "edit": "Takviyeyi düzenle",
+      "delete": "Takviyeyi sil",
+      "filters": {
+        "all": "Tümü",
+        "vitamins": "Vitaminler",
+        "minerals": "Mineraller",
+        "aminoAcids": "Amino asitler",
+        "adaptogens": "Adaptojenler",
+        "probiotics": "Probiyotikler",
+        "antioxidants": "Antioksidanlar",
+        "other": "Diğer"
+      }
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "Laboratuvar sonuçlarını yükle",
+        "description": "En son test sonuçlarını ve biyobelirteçlerini ekle"
+      },
+      "orderBloodTest": {
+        "title": "Kan testi sipariş et",
+        "description": "Sertifikalı sağlayıcılardan laboratuvar testi planla"
+      },
+      "bookScreening": {
+        "title": "Sağlık taraması ayarla",
+        "description": "Yıllık sağlık kontrolünü planla"
+      },
+      "joinWellnessGroup": {
+        "title": "Sağlıklı yaşam grubuna katıl",
+        "description": "Sağlık odaklı bir toplulukla bağlantı kur"
+      },
+      "trackToday": {
+        "title": "Bugünkü sağlığını kaydet",
+        "description": "Günlük sağlıklı yaşam ölçümlerini kaydet"
+      },
+      "healthEducation": {
+        "title": "Sağlık eğitimi",
+        "description": "Beslenme ve sağlıklı yaşam hakkında bilgi edin"
+      }
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "Tam kan paneli",
+        "description": "Tam kan sayımı, metabolik panel, lipitler, vitamin ve mineraller"
+      },
+      "metabolicPanel": {
+        "name": "Metabolik sağlık paneli",
+        "description": "Glikoz, insülin, HbA1c, karaciğer ve böbrek fonksiyonu"
+      },
+      "hormonesPanel": {
+        "name": "Hormon paneli",
+        "description": "Testosteron, östrojen, kortizol, tiroid hormonları"
+      },
+      "allergyPanel": {
+        "name": "Alerji paneli",
+        "description": "IgE düzeyleri, gıda hassasiyetleri, çevresel alerjenler"
+      }
+    },
+    "reportCategories": {
+      "blood_panel": "Kan paneli",
+      "genomics": "Genomik",
+      "metabolomics": "Metabolomik",
+      "microbiome": "Mikrobiyom",
+      "allergy": "Alerji",
+      "cancer": "Kanser",
+      "hormones": "Hormonlar",
+      "imaging": "Görüntüleme",
+      "other": "Diğer"
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "Harika bir hafta — Index’in {delta} arttı. Devam et!",
+        "roll": "Çok iyi gidiyorsun — Index bu hafta {delta} arttı.",
+        "streakWeek": "{streak} günlük seri ve Index +{delta}. İvme gerçek.",
+        "streakDays": "Art arda {streak} gün, Index +{delta}. Harika — başarı biriktirmeye devam et.",
+        "up": "Bu hafta Index +{delta}. Her adım önemli — devam et!",
+        "habits": "{streak} günlük seri. Alışkanlıklar oluşuyor — devam et!",
+        "streak": "Art arda {streak} gün. Seri gerçek — devam et!"
+      },
+      "daily": {
+        "0": "Yeni gün, yeni fırsat — Index’ini birlikte yükseltelim.",
+        "1": "Buradasın, bu ilk adım. Bugün Index’ini biraz yükseltelim.",
+        "2": "Küçük bir adım ve Index’in yükselmeye başlar. Hadi başlayalım.",
+        "3": "Bugün gelişmek için harika bir gün. Arkandayım — hadi yükseltelim.",
+        "4": "Bugünü değerli kılalım. Bir şey seç ve Index’inin yükselişini izle."
+      },
+      "horizonAria": "30 günlük Vitana Index tahmini — beklenen {score}.",
+      "compassGoal": "Pusula: {goal} →",
+      "compassSet": "Yaşam pusulanı belirle →"
+    },
+    "sync": {
+      "notEnabledHint": "Sağlık senkronizasyonu henüz etkin değil."
+    },
+    "searchPlaceholder": "Rapor, takviye ara...",
+    "utility": {
+      "closeSearch": "Aramayı kapat",
+      "upcomingEvent": "{count} yaklaşan etkinlik",
+      "upcomingEvents": "{count} yaklaşan etkinlik"
+    },
+    "baselineSurvey": {
+      "next": "İleri",
+      "finish": "Bitir",
+      "rating": "Puan {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Nasıl besleniyorsun",
+          "prompt": "Bu aralar ne kadar iyi beslendiğini düşünüyorsun? (1 = kötü, 5 = besleyici ve dengeli)"
+        },
+        "hydration": {
+          "title": "Sıvı alımın",
+          "prompt": "Ne kadar su ve sıvı alıyorsun? (1 = çok az, 5 = gün boyu düzenli)"
+        },
+        "exercise": {
+          "title": "Hareketin",
+          "prompt": "Bu hafta vücudun ne kadar aktifti? (1 = hareketsiz, 5 = güçlü ve aktif)"
+        },
+        "sleep": {
+          "title": "Uykun",
+          "prompt": "Uyandığında ne kadar dinlenmiş hissediyorsun? (1 = bitkin, 5 = tamamen dinlenmiş)"
+        },
+        "mental": {
+          "title": "Şu anki zihnin",
+          "prompt": "Bugün zihnin ne kadar berrak ve sakin? (1 = çok stresli, 5 = berrak ve sakin)"
+        }
+      }
+    }
+  }
+}
