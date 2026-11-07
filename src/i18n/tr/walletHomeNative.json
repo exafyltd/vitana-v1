@@ -1,0 +1,23 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Cüzdan görünümünü seç",
+    "flow": {
+      "bankTransfer": "Banka havalesi",
+      "bankTransferTime": "1-3 iş günü",
+      "debitCard": "Banka kartı",
+      "debitCardTime": "Anında"
+    },
+    "balance": {
+      "tabsLabel": "Hesap bölümleri",
+      "statusActive": "Aktif",
+      "statusHealthy": "Sağlıklı",
+      "statusGrowing": "Büyüyor",
+      "tierPremium": "Premium",
+      "creditsDescription": "Kredileri sağlık hizmetleri, laboratuvar testleri ve premium özellikler için kullan",
+      "creditsStatusDescription": "Kredilerin aktif ve kullanıma hazır",
+      "tokensDescription": "Yönetişim ve ödüller için Vitana Network tokenları",
+      "usdDescription": "ABD doları bakiyesi ve fiat işlemleri",
+      "membershipDescription": "%75 kapsam + özel sağlık avantajları"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05534",
+  "kind": "fix",
+  "paths": [
+    "src/pages/messages/GroupChat.tsx",
+    "src/pages/messages/GroupChat.realtime-reconnect.test.tsx",
+    "docs/validation/VTID-05534/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05534/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

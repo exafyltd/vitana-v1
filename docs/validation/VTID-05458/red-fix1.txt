@@ -1,0 +1,25 @@
+# VTID-05458 fix 1 — red on the previous lane head (review 'changes' on b76f75e)
+# The fix-1 tests (composer, bubble-variants, screen-features, webrtc-engine, app-config-webrtc + the shared helpers/mocks) copied into a detached worktree at b76f75e, npm ci there (its own lockfile: no react-native-webrtc), then:
+# cmd (apps/mobile): npm run gen:i18n && npx jest tests/inbox-chat/conversation-chat/composer tests/inbox-chat/conversation-chat/bubble-variants tests/inbox-chat/conversation-chat/screen-features tests/inbox-chat/conversation-chat/webrtc-engine tests/inbox-chat/conversation-chat/app-config-webrtc
+head: b76f75e03fa2134cbf5e0824e4cf2a9fabd45f3c
+FAIL tests/inbox-chat/conversation-chat/composer.test.tsx
+    Cannot find module '../../../src/ports/orb-activate' from 'tests/inbox-chat/conversation-chat/mocks.ts'
+FAIL tests/inbox-chat/conversation-chat/screen-features.test.tsx
+    Cannot find module '../../../src/ports/orb-activate' from 'tests/inbox-chat/conversation-chat/mocks.ts'
+FAIL tests/inbox-chat/conversation-chat/bubble-variants.test.tsx
+    Cannot find module '../../../src/ports/orb-activate' from 'tests/inbox-chat/conversation-chat/mocks.ts'
+FAIL tests/inbox-chat/conversation-chat/webrtc-engine.test.ts (21.768 s)
+  ● reactNativeWebRTCEngine › maps the web hook's calls onto react-native-webrtc
+    TypeError: reactNativeWebRTCEngine is not a function
+  ● getWebRTCEngine › loads react-native-webrtc when no engine is registered
+    Received: null
+FAIL tests/inbox-chat/conversation-chat/app-config-webrtc.test.ts (21.778 s)
+  ● WebRTC engine config plugin (resolved config, APP_PROFILE=development) › registers @config-plugins/react-native-webrtc with the existing camera and microphone strings
+    Expected: ["@config-plugins/react-native-webrtc", {"cameraPermission": "Vitana needs your camera so you can take photos for your diary and for bug reports.", "microphonePermission": "Vitana needs your microphone so you can talk to her. It's only on while a conversation is open."}]
+    Received: undefined
+  ● WebRTC engine config plugin (resolved config, APP_PROFILE=development) › react-native-webrtc and its config plugin are pinned app dependencies
+  ● the iOS Info.plist and Android permissions every registered plugin writes › one camera and one microphone usage string, the catalog ones; camera + record-audio on Android
+    Expected: ArrayContaining ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"]
+    Received: ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS", "android.permission.BLUETOOTH_CONNECT"]
+Test Suites: 5 failed, 5 total
+Tests:       5 failed, 3 passed, 8 total

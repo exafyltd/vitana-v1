@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05247",
+  "service": "community-app",
+  "note": "Lane native-g1-wiring/build-profiles changes apps/mobile/eas.json and .github/workflows/NATIVE-CI.yml only. It ships nothing to a staging frontend, so there is no browser test against staging. The native app has no staging host in Wave 0/1 (G1 does not exist yet). Verification is the offline native bundles and the host comparison in NATIVE-CI.",
+  "tests": [
+    {
+      "kind": "existing",
+      "name": "development and test-g1 profiles bundle offline",
+      "ref": "APP_PROFILE=development EXPO_OFFLINE=1 npx expo export --platform ios --platform android --output-dir dist-dev && APP_PROFILE=test-g1 EXPO_OFFLINE=1 npx expo export --platform ios --platform android --output-dir dist-g1",
+      "cwd": "apps/mobile",
+      "reason": "Both profiles export with no network. Local run on origin/main plus this lane: both succeed after gen:i18n."
+    },
+    {
+      "kind": "existing",
+      "name": "test-g1 bundle carries its placeholder gateway and adds no production host literal versus development",
+      "ref": "node host-check (inline in NATIVE-CI step 'Offline per-profile bundles (development + test-g1) and host check')",
+      "cwd": "apps/mobile",
+      "reason": "A plain no-host grep fails by design because the blocked-host guard and app code contain production host literals. The comparison proves the profile adds none."
+    }
+  ]
+}
