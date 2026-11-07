@@ -64,13 +64,23 @@ const checks = {
     if (vtids.length === 0) done(true, '➖ **sparring record** — skipped: no VTID in the PR title');
     const { scopes } = loadScopes();
     const problems = [];
+    const simple = [];
     for (const v of vtids) {
+      // Owner rule 2026-11-07: a simple front-end change needs a VTID, not a sparring session.
+      // The diff must prove it (lib.frontendSimpleViolations); otherwise the sparring record is required.
+      if (scopes[v]?.change_class === L.FRONTEND_SIMPLE) {
+        const bad = L.frontendSimpleViolations(L.changedFiles(base, head), L.botOnlyFiles(base, head));
+        if (bad.length === 0) { simple.push(v); continue; }
+        problems.push(`${v}: declares \`${L.FRONTEND_SIMPLE}\` but the diff is not a simple front-end change — ${bad.join('; ')}. Sparring is required: write the plan, spar it, and record \`docs/validation/${v}/plan-sparring.md\`.`);
+        continue;
+      }
       const rec = scopes[v]?.sparring_record || `docs/validation/${v}/plan-sparring.md`;
       if (!existsSync(rec)) { problems.push(`${v}: no sparring record at \`${rec}\` (set "sparring_record" in scope.json when the plan's record lives under another VTID)`); continue; }
       const p = L.evaluateSparringRecord(readFileSync(rec, 'utf8'));
       if (p.length) problems.push(`${v}: \`${rec}\` — ${p.join(', ')}`);
     }
     if (problems.length) done(false, `❌ **sparring record**:\n${problems.map((p) => `- ${p}`).join('\n')}`);
+    if (simple.length) done(true, `➖ **sparring record** — not required: ${simple.join(', ')} is a simple front-end change (\`${L.FRONTEND_SIMPLE}\`, diff verified)`);
     done(true, `✅ **sparring record** — present and approved for ${vtids.join(', ')}`);
   },
 
