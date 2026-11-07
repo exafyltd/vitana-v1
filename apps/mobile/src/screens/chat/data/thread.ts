@@ -204,7 +204,8 @@ export function participantName(p: ThreadParticipant | null | undefined, unknown
   return (p.display_name || '').trim() || unknown;
 }
 
-const PLACEHOLDER_GROUP_NAME_MAX = 30;
+// The composer is one row: "Nachricht an " + name + "…" must fit on it, so the name is cut short.
+const PLACEHOLDER_GROUP_NAME_MAX = 14;
 
 /** conversationHelpers.ts:142-156 — "Message <first name>…" / "Message <group>…". */
 export function composerPlaceholder(thread: ConversationThread | null, userId: string | undefined, t: (k: string, p?: Record<string, string | number>) => string): string {

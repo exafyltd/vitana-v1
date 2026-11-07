@@ -19,13 +19,20 @@ export function ChatFrame({ onBack, children, testID }: { onBack: () => void; ch
   const { colors } = useUITheme();
   const { rtl } = useI18n();
   const insets = useSafeAreaInsets();
+  // On Android the Modal's window is laid out between the system bars already, so the
+  // window's safe-area insets would pad the frame a second time: a white band above the
+  // header and below the composer. Only iOS needs the padding here.
+  const isAndroid = Platform.OS === 'android';
   return (
     <Modal visible animationType="none" presentationStyle="fullScreen" onRequestClose={onBack} statusBarTranslucent>
       <GestureHandlerRootView style={styles.fill}>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.fill}>
           <View
             testID={testID}
-            style={[styles.fill, { backgroundColor: colors.background, paddingTop: insets.top, paddingBottom: insets.bottom, direction: rtl ? 'rtl' : 'ltr' }]}
+            style={[
+              styles.fill,
+              { backgroundColor: colors.background, paddingTop: isAndroid ? 0 : insets.top, paddingBottom: isAndroid ? 0 : insets.bottom, direction: rtl ? 'rtl' : 'ltr' },
+            ]}
           >
             {children}
           </View>
