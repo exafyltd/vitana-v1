@@ -4,7 +4,7 @@
       "notFound": "Não encontramos esta entrada. Talvez tenha sido removida."
     },
     "reminders": {
-      "fireNotFound": "Este lembrete já não existe. Aqui estão todos os teus lembretes."
+      "fireNotFound": "Este lembrete não existe mais. Aqui estão todos os seus lembretes."
     }
   }
 }

@@ -11,8 +11,8 @@
       "reason": "React 19 ReactElement typing; the screens type-check against the shell ports and @vitana/ui" },
     { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
       "reason": "Metro + Hermes bundle for iOS and Android includes the four new routes (run with APP_PROFILE=development)" },
-    { "kind": "existing", "ref": "npm run deps:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development", "EXPO_OFFLINE": "1" },
-      "reason": "no dependency added or changed" },
+    { "kind": "existing", "ref": "npm run deps:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "no dependency added or changed (run with EXPO_OFFLINE=1 in CI, the env allowlist of this file only takes APP_PROFILE)" },
     { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
       "reason": "CALENDAR.OVERVIEW, REMINDERS.OVERVIEW, /calendar/entry/:entryId and /reminders/fire/:fireId are native with their routes present under apps/mobile/app/" }
   ],

@@ -24,3 +24,7 @@ Session: kiro-exafyltd-202611072144-1c88
 - node scripts/native/parity-ledger.mjs --check: OK, 435 rows, 125 native route(s)
 - node scripts/native/core-closure.mjs --check: up to date (core unchanged)
 - npm test (apps/mobile, full suite, final tree) -> exit 0  Test Suites: 207 passed, 207 total  Tests: 5732 passed, 5732 total  Snapshots: 57 passed, 57 total
+
+== PR checks (first run on abff29756)
+- i18n / Formal-register guard: failed. pt calendarNative.reminders.fireNotFound used the European tu-form ("teus"); the guard wants Brazilian você-form. Fixed to "seus"; node scripts/i18n-register-check.mjs -> No formal-register violations.
+- change-suite: failed. staging-tests.json allows only APP_PROFILE in env; EXPO_OFFLINE removed from the deps:check entry (noted in its reason).
