@@ -5096,10 +5096,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/care-team",
@@ -5108,10 +5108,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/dashboard",
@@ -5120,10 +5120,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/goals",
@@ -5132,10 +5132,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/health",
@@ -5144,10 +5144,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/insurance",
@@ -5156,10 +5156,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/notifications",
@@ -5168,10 +5168,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/patient/results",
@@ -5180,10 +5180,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/billing",
