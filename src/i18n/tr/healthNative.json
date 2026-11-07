@@ -146,6 +146,194 @@
           "prompt": "Bugün zihnin ne kadar berrak ve sakin? (1 = çok stresli, 5 = berrak ve sakin)"
         }
       }
+    },
+    "conditions": {
+      "description": "Sağlık risklerini değerlendir ve en iyi sağlığını korumak için önleyici eylem planları oluştur."
+    },
+    "education": {
+      "description": "İlgi alanlarına ve demografik profiline göre seçilmiş sağlık eğitimi içeriklerine eriş.",
+      "episode": "Bölüm {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index derinlemesine",
+          "category": "Sağlık ölçümleri"
+        },
+        "v2": {
+          "title": "En iyi sağlık için yemek hazırlığı",
+          "category": "Beslenme"
+        },
+        "v3": {
+          "title": "Uykuyu iyileştirme teknikleri",
+          "category": "Uyku sağlığı"
+        },
+        "v4": {
+          "title": "HIIT antrenmanının bilimi",
+          "category": "Fitness"
+        },
+        "v5": {
+          "title": "Stres yönetimi stratejileri",
+          "category": "Ruh sağlığı"
+        },
+        "v6": {
+          "title": "Laboratuvar sonuçlarını yorumlama",
+          "category": "Tıbbi"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "Uzun ömrün bilimi",
+          "series": "Derinlemesine sağlık"
+        },
+        "p2": {
+          "title": "Beslenme mitleri çürütülüyor",
+          "series": "Gıda bilimi"
+        },
+        "p3": {
+          "title": "Uyku ve performans",
+          "series": "Zirve sağlık"
+        },
+        "p4": {
+          "title": "Egzersiz ve beyin sağlığı",
+          "series": "Zihin ve beden"
+        },
+        "p5": {
+          "title": "Zihinsel dayanıklılık eğitimi",
+          "series": "Bugünün psikolojisi"
+        },
+        "p6": {
+          "title": "Koruyucu tıpta trendler",
+          "series": "Geleceğin sağlığı"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Makalelere göz at",
+        "description": "Seçilmiş sağlık ve iyi yaşam makalelerini keşfet"
+      },
+      "watchVideos": {
+        "title": "Video izle",
+        "description": "Eğitici sağlık videoları ve belgeseller"
+      },
+      "listenPodcasts": {
+        "title": "Podcast dinle",
+        "description": "Sağlık ve iyi yaşam podcast bölümleri"
+      },
+      "searchContent": {
+        "title": "İçerik ara",
+        "description": "Belirli sağlık konularını ve bilgileri bul"
+      },
+      "myBookmarks": {
+        "title": "Yer imlerim",
+        "description": "Kaydettiğin makalelere ve kaynaklara eriş"
+      },
+      "downloadOffline": {
+        "title": "Çevrimdışı indir",
+        "description": "İçeriği daha sonra okumak veya izlemek için kaydet"
+      },
+      "healthCourses": {
+        "title": "Sağlık kursları",
+        "description": "Yapılandırılmış iyi yaşam eğitim programlarına katıl"
+      }
+    },
+    "services": {
+      "description": "İhtiyaçlarına göre randevu, tarama ve iyi yaşam programları ayarla.",
+      "impactPoints": "+{points} puan"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Check-up randevusu al",
+        "description": "Yıllık kapsamlı sağlık kontrolünü planla"
+      },
+      "orderLabTests": {
+        "title": "Laboratuvar testi iste",
+        "description": "Biyobelirteç analizi ve tanı testleri iste"
+      },
+      "myAppointments": {
+        "title": "Randevularım",
+        "description": "Yaklaşan doktor randevularını gör ve yönet"
+      },
+      "findSpecialists": {
+        "title": "Uzman bul",
+        "description": "Bölgendeki uzman hekimlerle bağlantı kur"
+      },
+      "wellnessPrograms": {
+        "title": "İyi yaşam programları",
+        "description": "Topluluk sağlık meydan okumalarına ve programlarına katıl"
+      },
+      "telemedicine": {
+        "title": "Teletıp",
+        "description": "Uzmanlarla çevrimiçi görüşme planla"
+      },
+      "healthRecords": {
+        "title": "Sağlık kayıtları",
+        "description": "Tüm tıbbi geçmişine ve belgelerine eriş"
+      },
+      "insuranceSupport": {
+        "title": "Sigorta desteği",
+        "description": "Talepler ve kapsam doğrulaması için yardım al"
+      }
+    },
+    "plans": {
+      "description": "Sağlık profiline ve hedeflerine göre yapay zekâ destekli planlar",
+      "planName": {
+        "nutrition": "Beslenme planı",
+        "exercise": "Egzersiz planı",
+        "hydration": "Hidrasyon planı",
+        "sleep": "Uyku planı",
+        "mental": "Zihinsel planı",
+        "supplement": "Takviye planı"
+      },
+      "pillarName": {
+        "nutrition": "Beslenme",
+        "exercise": "Egzersiz",
+        "hydration": "Hidrasyon",
+        "sleep": "Uyku",
+        "mental": "Zihinsel",
+        "supplement": "Takviye"
+      },
+      "refreshed": "{planName} yenilendi! 🔄",
+      "justNow": "Az önce",
+      "hoursAgo": "{hours} sa önce",
+      "daysAgo": "{days} gün önce",
+      "never": "Hiç",
+      "toasts": {
+        "recalibrateDescription": "Tüm planlar ve sütunlar arası etkileşimler analiz ediliyor. Bu birkaç dakika sürebilir...",
+        "viewProgress": "İlerlemeyi gör",
+        "reportDescription": "Ayrıntılı sağlık analizi raporun hazırlanıyor. Birkaç dakika sonra tekrar bak!",
+        "gotIt": "Anladım",
+        "optimizing": "✨ {pillar} optimize ediliyor",
+        "optimizeDescription": "Yapay zekâ Autopilot en zayıf sütununu analiz ediyor ve hedefli iyileştirmeler hazırlıyor.",
+        "viewPlan": "Planı gör"
+      },
+      "proteinShort": "{protein} P",
+      "nutritionDefaults": {
+        "goalFocus": "Dengeli beslenme",
+        "schedule": "3 öğün + 2 ara öğün",
+        "calTarget": "Hedef: {calories} kcal",
+        "daily": "Günlük",
+        "insight": "Beslenme planın mevcut aktivite düzeyine ve hedeflerine göre optimize edildi."
+      },
+      "aiSummary": {
+        "exercise": "Düzenin harika! Hidrasyon ve uyku puanların toparlanmanı güçlendiriyor.",
+        "hydration": "Hidrasyon düzenin bu hafta %12 arttı — harika ilerleme! Yapay zekâ, daha hızlı toparlanman için yoğun antrenmanlardan sonra elektrolit eklemeni öneriyor.",
+        "sleep": "Uyku düzenin bu hafta %10 arttı — harika bir toparlanma eğilimi. Yapay zekâ, en fazla derin uyku için ideal yatma aralığının 22:30-23:00 olduğunu tespit etti.",
+        "mental": "Sabah nefes egzersizlerine başladığından beri stres göstergelerin %12 iyileşti. Odağın daha istikrarlı — bu hafta harika bir ilerleme."
+      },
+      "ai": "YZ",
+      "hydrationStatus": {
+        "goalMet": "Hedefe ulaşıldı",
+        "catchUp": "Telafi gerekli",
+        "belowTarget": "Hedefin altında",
+        "onTrack": "Yolunda"
+      },
+      "sleepStatus": {
+        "excellent": "Uyku kalitesi mükemmel",
+        "good": "Uyku kalitesi iyi",
+        "improve": "Geliştirilebilir"
+      },
+      "litersOf": "{current} L / {target} L",
+      "liters": "{value} L"
     }
   }
 }

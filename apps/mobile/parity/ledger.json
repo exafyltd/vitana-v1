@@ -656,7 +656,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -668,7 +668,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -680,7 +680,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -692,7 +692,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -704,7 +704,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -716,7 +716,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -1220,10 +1220,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.EDUCATION",
@@ -1232,10 +1232,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.EDUCATION_PODCASTS",
@@ -1244,10 +1244,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.EDUCATION_VIDEOS",
@@ -1256,10 +1256,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.MEDICAL",
@@ -1304,10 +1304,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PLANS",
@@ -1316,10 +1316,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PLANS_EXERCISE",
@@ -1328,10 +1328,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PLANS_HYDRATION",
@@ -1340,10 +1340,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PLANS_MENTAL",
@@ -1352,10 +1352,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PLANS_NUTRITION",
@@ -1364,10 +1364,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PLANS_SLEEP",
@@ -1376,10 +1376,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.SERVICES_HUB",
@@ -1388,10 +1388,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.SERVICES_INSURANCE",
@@ -1400,10 +1400,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.SERVICES_MEDICAL",
@@ -1412,10 +1412,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.SERVICES_MINE",
@@ -1424,10 +1424,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.SERVICES_WELLNESS",
@@ -1436,10 +1436,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.SUPPLEMENTS",
@@ -5288,10 +5288,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/dashboard",
@@ -5300,10 +5300,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/queue",
@@ -5312,10 +5312,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/reports",
@@ -5324,10 +5324,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/schedule",
@@ -5336,10 +5336,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/tasks",
@@ -5348,10 +5348,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/time",
@@ -5360,10 +5360,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/tools",
@@ -5372,10 +5372,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     }
   ]
 }

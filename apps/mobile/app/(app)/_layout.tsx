@@ -8,14 +8,17 @@ import { Stack } from 'expo-router';
 import { AuthGate } from '../../src/shell/AuthGate';
 import { MobileAppShell } from '../../src/shell/components/MobileAppShell';
 import { PublicShell } from '../../src/shell/components/PublicShell';
+import { VitanaIndexHost } from '../../src/screens/health/VitanaIndexHost';
 
 export default function AppLayout() {
   return (
     <AuthGate
       member={
-        <MobileAppShell>
-          <Stack screenOptions={{ headerShown: false }} />
-        </MobileAppShell>
+        <VitanaIndexHost>
+          <MobileAppShell>
+            <Stack screenOptions={{ headerShown: false }} />
+          </MobileAppShell>
+        </VitanaIndexHost>
       }
       guest={
         <PublicShell>

@@ -124,6 +124,14 @@
         }
       ]
     },
+    "service-details": {
+      "sources": [
+        {
+          "file": "src/components/health/ServiceDetailDrawer.tsx",
+          "take": ["ServiceProvider", "ServiceDetail", "mockServiceDetails"]
+        }
+      ]
+    },
     "journey": {
       "sources": [
         { "file": "src/hooks/useMyJourney.ts", "take": ["MyJourneyGoal", "MyJourneyPhase", "MyJourneyJourney", "MyJourneyIndex", "MyJourneyResponse"] },

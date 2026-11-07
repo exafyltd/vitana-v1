@@ -1,0 +1,14 @@
+# VTID-05456 red on base: detached worktree at origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e + copied apps/mobile/tests/health/plans-services
+# (apps/mobile) npm run gen:i18n && npx jest tests/health/plans-services --ci
+
+FAIL tests/health/plans-services/pillars-conditions.test.tsx
+    Cannot find module '../../../src/screens/health/PillarsOfHealthScreen' from 'tests/health/plans-services/pillars-conditions.test.tsx'
+FAIL tests/health/plans-services/plans.test.tsx
+    Cannot find module '../../../src/screens/health/PlansScreen' from 'tests/health/plans-services/plans.test.tsx'
+FAIL tests/health/plans-services/routes-i18n.test.tsx
+    Cannot find module '../../../src/screens/health/PillarsOfHealthScreen' from 'tests/health/plans-services/routes-i18n.test.tsx'
+FAIL tests/health/plans-services/education-services.test.tsx
+    Cannot find module '../../../src/screens/health/EducationResourcesScreen' from 'tests/health/plans-services/education-services.test.tsx'
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+Time:        27.83 s
