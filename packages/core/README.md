@@ -63,24 +63,10 @@ the analysis' `implicit-storage` signal).
 
 | module | entry | consumer lanes | reason |
 |---|---|---|---|
-| `src/components/vitana/vitana-card-catalog.ts` | `@vitana/core/vitana-card-catalog` | home | Pure Unified-Card-System catalog (pickHomeServerCards, isVitanaCardType, cardCategory, CARD_SCREENS, CARD_DEEP_LINKS); no imports. |
 | `src/integrations/supabase/data-routing.ts` | `@vitana/core/data-routing` | N3 | createDataFetch: routes PostgREST to the data API when configured, the same as the web client; pure. |
 | `src/integrations/supabase/types.ts` | `@vitana/core/database` | N3 | The generated Database type for the injected Supabase client (type only, erased from the bundle). |
-| `src/lib/audiobook/queue.ts` | `@vitana/core/audiobook-queue` | journey, autopilot-audiobook | Audiobook season order and queue helpers (AUDIOBOOK_SEASONS, seasonNumber). Imports nothing; pure. The native guided-journey catalog orders and labels its chapters with it. |
-| `src/lib/chatMarkdown.ts` | `@vitana/core/chat-markdown` | conversation-chat | Vitana chat-reply Markdown parser (parseChatMarkdown, parseChatInline, MdBlock, MdInline). Imports nothing; pure. Used by the native message bubble for the Vitana bot's replies (VTID-05193). |
-| `src/lib/exchangeRates.ts` | `@vitana/core/exchangeRates` | wallet-home, marketplace-orders | Wallet exchange-rate helpers (getCurrentExchangeRates, getExchangeRate, calculateExchange, getCurrencySymbol, convertFromUsd, convertToUsd, EUR_PER_USD). Imports nothing; pure. Used by the native BookingPaymentFlow twin (marketplace-orders: getExchangeRate, formatCurrency) and the native wallet hub and balance screens. |
-| `src/lib/goalPhases.ts` | `@vitana/core/goal-phases` | journey | Goal-plan phase segments (buildPhases, RingPhase). Imports nothing; pure. The native hero ring and plan-sheet ring colour their phases with it. |
-| `src/lib/horizonBuckets.ts` | `@vitana/core/horizon-buckets` | journey | My Journey horizon bucketing (bucketFromWaveId, bucketActions, HORIZON_BUCKETS). Pure; its one import is the type-only @/types/autopilot. The native dashboard buckets the onboarding recommendations into "today" with it. |
-| `src/lib/mentions.ts` | `@vitana/core/mentions` | conversation-chat | @mention helpers (findActiveMentionToken, insertMention, addMention, pruneMentions, splitMentionSegments, filterLocalCandidates). Imports nothing; pure. Used by the native composer and message bubble. |
-| `src/lib/messaging/groupManagement.ts` | `@vitana/core/group-management` | conversation-chat | Group rename / participant deactivate over an injected client (renameGlobalGroup, deactivateParticipant). Imports nothing; pure. Used by the native members modal. |
-| `src/lib/messaging/groupSystemNotice.ts` | `@vitana/core/group-notice` | conversation-chat | Group system-notice text (describeGroupNotice, noticeName). Imports nothing; pure. Used by the native message bubble and members modal. |
-| `src/lib/messaging/grouping.ts` | `@vitana/core/messaging-grouping` | conversation-chat | Message grouping positions (groupPositions, isGroupStart, isGroupEnd). Imports nothing; pure. Used by the native conversation and group chat lists. |
-| `src/lib/news-images.ts` | `@vitana/core/news-images` | news, home | News cover-image selection and longevity-pillar mapping (getNewsImage, getArticlePillar, LONGEVITY_PILLARS). Imports nothing; pure. Used by the native NewsArticleCard twin and the news reader. |
 | `src/lib/orb-view-profile.ts` | `@vitana/core/orb-view-profile` | N6 | ORB view profile (orbViewProfile: surface + view role the ORB declares at session start). Imports nothing; pure. |
 | `src/lib/permissions.ts` | `@vitana/core/permissions` | N3 | Role/tenant switch permissions from the session; pure. |
-| `src/lib/vitana-projection.ts` | `@vitana/core/vitana-projection` | journey | Vitana Index slope helpers (trend7d, projectDays, projectDay90, buildHorizonPoints). Imports nothing; pure. The native "how you are doing" card reads the 7-day trend through it. |
-| `src/lib/vitanaIndex.ts` | `@vitana/core/vitana-index-tiers` | journey | The Vitana Index tier table (VITANA_INDEX_TIERS, getVitanaIndexTier). Imports nothing; pure. The native My Journey Index cards label the tier with it. |
-| `src/mocks/ai.ts` | `@vitana/core/ai-mocks` | ai | VTID-05523 — the AI coach page data the web renders directly on /ai, /ai/insights, /ai/recommendations and /ai/companion (todayActions, memoryHighlights, inspiration, lifestylePatterns, indexMovement, socialEngagement, correlations, recommendations, chat); imports nothing, pure. The native AI coach twins read the same records, so the cards show the same content. |
 | `src/navigation/orb-navigation.ts` | `@vitana/core/orb-navigation` | N6 | ORB navigation directives (planOrbNavigation, eventForMarker). Imports only the registry. |
 | `src/navigation/registry/index.ts` | `@vitana/core/registry` | N3, N4, N6 | The screen registry (titles, voice targets, locale titles): route titles, deep link → screen, ORB navigation. Imports only screens.json and locale files. |
 | `src/types/audience.ts` | `@vitana/core/types` | N2, N3, N4, N5, N6 | Shared domain types (type-only re-export, erased from the bundle). |
@@ -110,19 +96,13 @@ the analysis' `implicit-storage` signal).
 | `drawer-nav` | `src/config/drawer-nav.config.ts` | DrawerNavItem, DrawerIconTone, drawerNavIconTones, drawerNavItems |
 | `drawer-nav` | `src/components/mobile/SideDrawerNav.tsx` | CROSS_MODE_IDS, BUSINESS_DRAWER_KEYS |
 | `bottom-nav` | `src/components/mobile/MobileBottomNav.tsx` | navItems as communityBottomNav, BottomNavItem, ROLE_NAV_ITEMS, resolveRoleBottomNav, MobileBottomNav#hideNavRoutes, MobileBottomNav#roleSectionRoutes |
-| `tenants` | `src/lib/tenant-registry.ts` | TenantSlug, TenantBrand as TenantRegistryBrand, TenantLanding, TenantEntry, RegistrySource, TenantRegistry, SLUG_RE, COMPILED_MAXINA_FALLBACK, FALLBACK_REGISTRY, ResolvedTenant, safeHex, safeInternalPath, normalizeLanding (not exported), normalizeBrand (not exported), normalizeEntry, findBySlug, findById, resolvedTenantFromEntry, neutralTenant, resolveActiveTenant, isTenantPortalPath, communityLandingPath, portalLandingTarget |
+| `tenants` | `src/lib/tenant-registry.ts` | TenantSlug, TenantBrand as TenantRegistryBrand, TenantLanding, TenantEntry, RegistrySource, TenantRegistry, SLUG_RE, COMPILED_MAXINA_FALLBACK, FALLBACK_REGISTRY, ResolvedTenant, safeHex, safeInternalPath, normalizeLanding (not exported), normalizeBrand (not exported), normalizeEntry, findBySlug, findById, resolvedTenantFromEntry, neutralTenant, resolveActiveTenant |
 | `tenants` | `src/lib/retired-tenants.ts` | RETIRED_TENANT_SLUGS, canonicalTenantSlug |
 | `language` | `src/contexts/LanguageContext.tsx` | languageOptions |
 | `language` | `src/components/language/locale-presentation.ts` | LocalePresentation, LOCALE_PRESENTATION |
 | `language` | `src/components/RTLProvider.tsx` | RTL_BASE_LANGUAGES, isRtlLanguage |
-| `news-feed-ranker` | `src/lib/news-feed-ranker.ts` | FeedItemKind, PostMention, FeedItemBase (not exported), MatchFeedItem, PerformerFeedItem, PostFeedItem, ArticleFeedItem, FeatureAnnouncementFeedItem, NewMemberFeedItem, FeedItem, RankOptions, ts (not exported), downrankPenalty (not exported), rankFeed, POSITIVE_STEM_RE (not exported), NEGATION_RE (not exported), MOTIVATION_RULES (not exported), motivationKeyFor (stub: MatchReason, PostAttachedRef) |
-| `feed-compose` | `src/lib/feed-compose.ts` | FeedPlacement, ComposedEntry, RAIL_KINDS, placementOf, splitByPlacement, composeFeed, HOME_NEW_CARD_CAP, withHomeNewCards |
-| `journey` | `src/hooks/useMyJourney.ts` | MyJourneyGoal, MyJourneyPhase, MyJourneyJourney, MyJourneyIndex, MyJourneyResponse |
-| `journey` | `src/lib/journeyRing.ts` | RingCountdownSource, JourneyRingModel, buildJourneyRing |
-| `journey` | `src/hooks/useGoalPlan.ts` | GoalStepKind, GoalPlanStep, GoalPlanView, ClarificationAnswer |
-| `journey` | `src/lib/goalTrend.ts` | GoalTrend, computeGoalTrend |
 
-Runtime closure: **44** `src/` files and **11** assets (`closure.generated.json`).
+Runtime closure: **30** `src/` files and **11** assets (`closure.generated.json`).
 
 ### Program §3 candidates not in core
 
