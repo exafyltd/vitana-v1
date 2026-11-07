@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05532",
+  "service": "community-app",
+  "_note": "Native Wave 2 live-rooms lane. The port is proven offline (jest-expo + RNTL, fixture and fake-gateway tests, no network; the native app has no production profile and assertNotProduction() refuses prod and staging hosts). This lane makes no staging call and writes nothing to Supabase or the gateway from a test. Device-runtime parity (Maestro, simulator and emulator screenshots, parity against the 390x844 read-only staging web screen) and the Daily.co video join are deferred to G1 as next_actor: owner. They are recorded here, not run in CI, and are not merge blockers.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not" },
+    { "kind": "existing", "ref": "npx jest tests/liverooms", "cwd": "apps/mobile",
+      "reason": "live-rooms unit tests: list loaded / empty / error per tab, tab and search filters, notify me, drawer open and dismiss, interested-people count, viewer host detection, room-state mapping, enter (token fetch) error copy, video-engine gate, host presence and exit signals, pure rules and labels, route and catalog guards" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the list, drawer, viewer and video port type-check against the shell ports and @vitana/ui" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the two new routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the six COMM.LIVE_ROOMS* and COMM.LIVE_ROOM_VIEWER rows are native with their routes present under apps/mobile/app/" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/liverooms/*.yaml (not written in this lane)", "target": "/comm/live-rooms?tab=all|live|scheduled|past", "next_actor": "owner",
+      "reason": "tab switch, card to drawer, notify me, screenshot parity against the read-only staging /comm/live-rooms at 390x844; needs the isolated G1 environment" },
+    { "flow": "Daily.co video join on /comm/live-rooms/:roomId/view", "target": "/comm/live-rooms/:roomId/view", "next_actor": "owner",
+      "reason": "no video engine is registered in this build, so enter is never called here; the real join, publisher and subscriber flow, host presence and exit on a device need the G1 environment and a Daily React Native SDK decision" }
+  ]
+}

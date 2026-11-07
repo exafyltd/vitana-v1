@@ -138,6 +138,69 @@
         "openIndexStreak": "Ouvrir le Vitana Index — série de {days} jours",
         "upcomingEvents": "{count} événements à venir"
       }
+    },
+    "searchShort": "Rechercher…",
+    "indexPill": "Vitana Index {value} : ouvrir Santé",
+    "calendar": {
+      "upcomingCount": "{count} événements à venir"
+    },
+    "bookmark": {
+      "add": "Ajouter un favori",
+      "remove": "Retirer le favori"
+    },
+    "product": {
+      "outOfStock": "En rupture de stock"
+    },
+    "hidden": {
+      "product": "produit",
+      "products": "produits",
+      "allergies": "contiennent un allergène que tu as indiqué",
+      "contraindications": "sont contre-indiqués avec un problème de santé que tu as indiqué",
+      "medications": "peuvent interagir avec un médicament que tu prends",
+      "dietary": "ne correspondent pas à tes préférences alimentaires",
+      "budget": "dépassent ton budget par produit",
+      "sensitivities": "contiennent un ingrédient auquel tu es sensible",
+      "geo": "ne sont pas livrés dans ta région",
+      "excluded_region": "sont soumis à des restrictions régionales",
+      "past_purchases": "que tu as achetés récemment"
+    },
+    "quickShop": {
+      "viewCart": "Voir le panier",
+      "quickCheckout": "Paiement rapide",
+      "reorderPrevious": "Commander à nouveau",
+      "managePayment": "Gérer le paiement",
+      "trackOrders": "Suivre les commandes",
+      "setPriceAlert": "Créer une alerte prix",
+      "viewSavedItems": "Voir les favoris",
+      "applyCoupon": "Appliquer un coupon"
+    },
+    "quickBook": {
+      "bookAppointment": "Prendre rendez-vous",
+      "rebookPrevious": "Réserver à nouveau",
+      "findNearMe": "Trouver près de moi",
+      "messageProvider": "Écrire au prestataire",
+      "viewMyBookings": "Voir mes réservations",
+      "setReminders": "Créer des rappels",
+      "leaveReview": "Laisser un avis",
+      "paymentHistory": "Historique des paiements"
+    },
+    "supplementCategories": {
+      "all": "Tous",
+      "multivitamins": "Multivitamines",
+      "vitamins": "Vitamines",
+      "minerals": "Minéraux",
+      "omega3": "Oméga-3",
+      "adaptogens": "Adaptogènes",
+      "nootropics": "Nootropiques",
+      "longevity": "Longévité",
+      "immunity": "Immunité",
+      "antioxidants": "Antioxydants",
+      "sleep": "Sommeil",
+      "performance": "Performance",
+      "beauty": "Beauté",
+      "gutHealth": "Santé intestinale",
+      "herbs": "Plantes",
+      "heartHealth": "Santé cardiaque"
     }
   }
 }

@@ -1,0 +1,69 @@
+# VTID-05523 red on base: origin/main 6b9137ac575735edf1efbc16cddb9ad52d6b4b50, the lane's tests/ai-coach copied in, before any implementation
+$ npx jest tests/ai-coach --ci
+FAIL tests/ai-coach/companion.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/ai-coach/data/gateway' from 'tests/ai-coach/helpers.tsx'
+    Require stack:
+      tests/ai-coach/helpers.tsx
+      tests/ai-coach/companion.test.tsx
+      20 | import { ThemeProvider } from '../../src/theme/ThemeProvider';
+      21 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+    > 22 | import { __resetAutopilotRefsForTests, __resetCoachThreadForTests } from '../../src/screens/ai-coach/data/gateway';
+         | ^
+      23 |
+      24 | // Every AI coach test imports this harness: give findBy*/waitFor 5 s instead
+      25 | // of RNTL's 1 s default so the suite holds under default-worker load.
+FAIL tests/ai-coach/i18n-rtl.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/ai-coach/data/gateway' from 'tests/ai-coach/helpers.tsx'
+    Require stack:
+      tests/ai-coach/helpers.tsx
+      tests/ai-coach/i18n-rtl.test.tsx
+      20 | import { ThemeProvider } from '../../src/theme/ThemeProvider';
+      21 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+    > 22 | import { __resetAutopilotRefsForTests, __resetCoachThreadForTests } from '../../src/screens/ai-coach/data/gateway';
+         | ^
+      23 |
+      24 | // Every AI coach test imports this harness: give findBy*/waitFor 5 s instead
+      25 | // of RNTL's 1 s default so the suite holds under default-worker load.
+FAIL tests/ai-coach/overview-insights.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/ai-coach/data/gateway' from 'tests/ai-coach/helpers.tsx'
+    Require stack:
+      tests/ai-coach/helpers.tsx
+      tests/ai-coach/overview-insights.test.tsx
+      20 | import { ThemeProvider } from '../../src/theme/ThemeProvider';
+      21 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+    > 22 | import { __resetAutopilotRefsForTests, __resetCoachThreadForTests } from '../../src/screens/ai-coach/data/gateway';
+         | ^
+      23 |
+      24 | // Every AI coach test imports this harness: give findBy*/waitFor 5 s instead
+      25 | // of RNTL's 1 s default so the suite holds under default-worker load.
+FAIL tests/ai-coach/daily-summary.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/ai-coach/data/gateway' from 'tests/ai-coach/helpers.tsx'
+    Require stack:
+      tests/ai-coach/helpers.tsx
+      tests/ai-coach/daily-summary.test.tsx
+      20 | import { ThemeProvider } from '../../src/theme/ThemeProvider';
+      21 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+    > 22 | import { __resetAutopilotRefsForTests, __resetCoachThreadForTests } from '../../src/screens/ai-coach/data/gateway';
+         | ^
+      23 |
+      24 | // Every AI coach test imports this harness: give findBy*/waitFor 5 s instead
+      25 | // of RNTL's 1 s default so the suite holds under default-worker load.
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        23.342 s
+Ran all test suites matching /tests\/ai-coach/i.
+exit=1 (jest)
+
+# the 5 /ai routes resolve to the Unported catch-all on base:
+$ node -e "resolveWebPath(/ai*)" (via the base NATIVE_ROUTES list)
+NATIVE_ROUTES entries for /ai*: 0
+AI.COMPANION not_started
+AI.DAILY_SUMMARY not_started
+AI.INSIGHTS not_started
+AI.OVERVIEW not_started
+AI.RECOMMENDATIONS not_started

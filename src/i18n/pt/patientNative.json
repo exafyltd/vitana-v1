@@ -1,0 +1,13 @@
+{
+  "patientNative": {
+    "figure": {
+      "fraction": "{value}/{total}",
+      "bloodPressure": "{systolic}/{diastolic}"
+    },
+    "results": {
+      "valueWithUnit": "{value} {unit}",
+      "range": "{low}–{high}",
+      "noValue": "—"
+    }
+  }
+}

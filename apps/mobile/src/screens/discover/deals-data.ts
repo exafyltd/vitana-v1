@@ -1,0 +1,33 @@
+/**
+ * VTID-05510 — the static sample rows src/pages/discover/DealsOffers.tsx
+ * renders on its Trending, AI Picks and Saved tabs (`trendingServices`
+ * :157-249, `personalizedMatches` :251-312, `savedProducts` :314-436),
+ * copied verbatim. The web shows this hard-coded English sample data in every
+ * locale, so it is data here too (parity, not UI chrome).
+ */
+export const TRENDING_SERVICES = [
+  { id: 1, title: 'Personal Training Sessions', description: 'One-on-one fitness coaching', provider: 'Elite Fitness Center', price: 79, trend: '+45%', image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400', bookings: 234, rating: 4.9, reviews: 567, location: 'Downtown', availableSlots: ['2PM', '4PM', '6PM'] },
+  { id: 2, title: 'Massage Therapy', description: 'Relaxation and muscle recovery', provider: 'Healing Hands Spa', price: 120, trend: '+38%', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400', bookings: 189, rating: 4.8, reviews: 423, location: 'Midtown', availableSlots: ['10AM', '2PM', '5PM'] },
+  { id: 3, title: 'Acupuncture Treatment', description: 'Traditional healing therapy', provider: 'Wellness Acupuncture', price: 95, trend: '+52%', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=400', bookings: 312, rating: 4.9, reviews: 689, location: 'Eastside', availableSlots: ['11AM', '3PM', '7PM'] },
+  { id: 4, title: 'Nutritional Counseling', description: 'Personalized diet planning', provider: 'NutriBalance', price: 89, trend: '+41%', image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400', bookings: 198, rating: 4.7, reviews: 345, location: 'Westside', availableSlots: ['9AM', '1PM', '4PM'] },
+  { id: 5, title: 'Pilates Classes', description: 'Core strengthening sessions', provider: 'CoreFlow Studio', price: 65, trend: '+36%', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400', bookings: 276, rating: 4.8, reviews: 512, location: 'Uptown', availableSlots: ['8AM', '12PM', '6PM'] },
+  { id: 6, title: 'Meditation Workshops', description: 'Mindfulness and stress relief', provider: 'Inner Peace Center', price: 55, trend: '+48%', image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400', bookings: 401, rating: 5.0, reviews: 734, location: 'Suburbs', availableSlots: ['7AM', '5PM', '8PM'] },
+] as const;
+
+export const PERSONALIZED_MATCHES = [
+  { id: 1, title: 'Health Consultation', provider: 'Dr. Sarah Mitchell, MD', credentials: 'Board Certified Internal Medicine', price: 150, period: 'per session', match: 95, image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400', reason: 'Based on your health goals and preferences', availableTime: 'Next available: Tomorrow 2PM', duration: '60 min', format: 'Video or In-person', benefits: ['Personalized health plan', 'Follow-up support', 'Lab review included'] },
+  { id: 2, title: 'Customized Meal Plan', provider: 'NutriPro Dietitians', credentials: 'Registered Dietitian Nutritionist', price: 99, period: 'per month', match: 88, image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400', reason: 'Matches your dietary requirements and fitness goals', availableTime: 'Starts immediately', duration: '30-day plan', format: 'Digital delivery', benefits: ['Weekly meal prep guides', 'Shopping lists', 'Recipe database access'] },
+  { id: 3, title: 'Cognitive Behavioral Therapy', provider: 'Dr. James Chen, PhD', credentials: 'Licensed Clinical Psychologist', price: 180, period: 'per session', match: 92, image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400', reason: 'Specialized in stress management and anxiety, matching your needs', availableTime: 'Next available: Friday 4PM', duration: '50 min', format: 'Teletherapy', benefits: ['Evidence-based techniques', 'Homework assignments', 'Progress tracking'] },
+  { id: 4, title: 'Personal Fitness Assessment', provider: 'FitMetrics Lab', credentials: 'ACSM Certified Exercise Physiologist', price: 129, period: 'one-time', match: 90, image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400', reason: 'Comprehensive evaluation aligned with your fitness objectives', availableTime: 'Next available: This week', duration: '90 min', format: 'In-person required', benefits: ['Body composition analysis', 'Metabolic rate test', 'Custom workout plan'] },
+] as const;
+
+export const SAVED_PRODUCTS = [
+  { id: 1, title: 'Omega-3 Fish Oil', brand: 'Nordic Naturals', price: 29.99, originalPrice: 34.99, priceChange: -5.0, image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400', stock: 'In Stock', savedDate: '3 days ago', rating: 4.8, reviews: 2341 },
+  { id: 2, title: 'Yoga Mat Premium', brand: 'Manduka PRO', price: 49.99, originalPrice: 49.99, priceChange: 0, image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400', stock: 'Low Stock', savedDate: '1 week ago', rating: 4.9, reviews: 1823 },
+  { id: 3, title: 'Resistance Bands Set', brand: 'TheraBand', price: 24.99, originalPrice: 39.99, priceChange: -15.0, image: 'https://images.unsplash.com/photo-1598632640487-6ea4a4e8b963?w=400', stock: 'In Stock', savedDate: '2 days ago', rating: 4.7, reviews: 945 },
+  { id: 4, title: 'Protein Powder Chocolate', brand: 'Optimum Nutrition', price: 54.99, originalPrice: 54.99, priceChange: 0, image: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=400', stock: 'In Stock', savedDate: '5 days ago', rating: 4.6, reviews: 3421 },
+  { id: 5, title: 'Foam Roller', brand: 'TriggerPoint', price: 29.99, originalPrice: 44.99, priceChange: -15.0, image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=400', stock: 'In Stock', savedDate: '1 day ago', rating: 4.8, reviews: 1567 },
+  { id: 6, title: 'Multivitamin Complex', brand: 'Garden of Life', price: 39.99, originalPrice: 39.99, priceChange: 0, image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400', stock: 'In Stock', savedDate: '2 weeks ago', rating: 4.7, reviews: 2134 },
+  { id: 7, title: 'Water Bottle Insulated', brand: 'Hydro Flask', price: 34.99, originalPrice: 44.99, priceChange: -10.0, image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400', stock: 'In Stock', savedDate: '4 days ago', rating: 4.9, reviews: 4567 },
+  { id: 8, title: 'Fitness Tracker Watch', brand: 'Fitbit Charge', price: 129.99, originalPrice: 149.99, priceChange: -20.0, image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400', stock: 'Low Stock', savedDate: '1 week ago', rating: 4.5, reviews: 8234 },
+] as const;
