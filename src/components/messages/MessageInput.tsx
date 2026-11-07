@@ -143,8 +143,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
       // Calculate line height (approximately 24px for default text)
       const lineHeight = 24;
       const minHeight = lineHeight; // 1 row
-      const maxRows = conversationType === 'group' ? 1 : 6; // a group composer never grows past one row
-      const maxHeight = lineHeight * maxRows;
+      // A group composer never grows past one row. scrollHeight includes the textarea's py-2 padding (16px),
+      // so the one-row cap has to include it too, or the single line is clipped.
+      const maxHeight = conversationType === 'group' ? lineHeight + 16 : lineHeight * 6;
       
       // Set height based on content, clamped to min/max
       const newHeight = Math.max(minHeight, Math.min(textarea.scrollHeight, maxHeight));
