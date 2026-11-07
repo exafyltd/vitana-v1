@@ -49,14 +49,23 @@ describe('routes', () => {
     }
   });
 
-  it('/calendar and /reminders are native routes; the entry and fire links are native patterns', () => {
+  it('/calendar and /reminders are native routes', () => {
     expect(NATIVE_ROUTES).toContain('/calendar');
     expect(NATIVE_ROUTES).toContain('/reminders');
-    expect(NATIVE_PATTERNS).toContain('/calendar/entry/:entryId');
-    expect(NATIVE_PATTERNS).toContain('/reminders/fire/:fireId');
-    for (const url of ['/calendar', '/reminders', '/reminders?filter=missed', '/calendar/entry/abc-123', '/reminders/fire/f-1']) {
+    for (const url of ['/calendar', '/reminders', '/reminders?filter=missed']) {
       expect(resolveWebPath(url).kind).toBe('native');
     }
+  });
+
+  it('the entry and fire links resolve to their own path (the concrete file routes), keyed to their ledger rows', () => {
+    // Like the live-room viewer, the dynamic links are not NATIVE_PATTERNS entries: tests/discover-commerce/routes.test.tsx
+    // pins that list to the provider route, and that file is outside this lane. Expo Router ranks the concrete
+    // [entryId].tsx / [fireId].tsx files above the catch-all, so navigation still lands on the native screens.
+    const entry = resolveWebPath('/calendar/entry/abc-123');
+    const fire = resolveWebPath('/reminders/fire/f-1');
+    expect(entry).toMatchObject({ href: '/calendar/entry/abc-123', key: '/calendar/entry/:entryId' });
+    expect(fire).toMatchObject({ href: '/reminders/fire/f-1', key: '/reminders/fire/:fireId' });
+    expect(NATIVE_PATTERNS).not.toContain('/calendar/entry/:entryId');
   });
 });
 
