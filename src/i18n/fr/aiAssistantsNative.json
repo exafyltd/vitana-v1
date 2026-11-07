@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "Écouter la voix",
+      "playing": "Lecture…",
+      "previewPhrase": "Bonjour, voici un aperçu des réglages vocaux que tu as choisis.",
+      "previewUnavailable": "L'aperçu n'est pas disponible pour cette langue sur cet appareil.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value} %"
+    },
+    "proactive": {
+      "playSample": "Écouter un exemple d'accueil",
+      "speaking": "Parle…",
+      "notSet": "Non défini",
+      "none": "Aucun",
+      "quoted": "« {text} »",
+      "messageType": {
+        "time_greeting": "Salutations selon l'heure (Bonjour, etc.)",
+        "wellness_check": "Points bien-être",
+        "motivational": "Messages de motivation",
+        "reminder": "Rappels d'actions"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "Le pilote automatique peut interroger d'autres membres quand tu poses des questions.",
+      "giveDescription": "Le pilote automatique peut proposer ton catalogue à d'autres membres. Désactivé par défaut : active-le quand tu es prêt.",
+      "moneyDescription": "Fait passer les gains de « proposer et valider » à autonome. Active-le seulement si tu as confiance en ton catalogue et ta mention.",
+      "moneyDisabledHint": "Active d'abord « Donner des recommandations »."
+    },
+    "connect": {
+      "missingKey": "Colle ta clé d'API.",
+      "wrongPrefix": "La clé d'API doit commencer par « {prefix} ».",
+      "unauthorized": "Le fournisseur a refusé cette clé (non autorisée). Vérifie-la dans ton tableau de bord.",
+      "network": "Erreur réseau en contactant le fournisseur. Réessaie.",
+      "verifyFailed": "La vérification a échoué ({status}).",
+      "failed": "La connexion a échoué ({code}).",
+      "saving": "Enregistrement…",
+      "verifying": "Vérification…",
+      "connect": "Connecter"
+    }
+  }
+}

@@ -1,5 +1,152 @@
 {
   "healthNative": {
+    "subtitle": "Suis et gère ton parcours santé",
+    "upload": "Importer",
+    "selectMode": "Choisis une section",
+    "loading": "Chargement…",
+    "indexAria": "Vitana Index {score} sur 999",
+    "indexLoadingAria": "Chargement du Vitana Index",
+    "chip": {
+      "openIndex": "Ouvrir le Vitana Index"
+    },
+    "agents": {
+      "noOutputYet": "pas encore de résultat"
+    },
+    "medical": {
+      "untitledReport": "Rapport de santé",
+      "status": {
+        "uploaded": "Importé",
+        "processing": "En cours",
+        "processed": "Analysé",
+        "error": "Erreur"
+      }
+    },
+    "supplements": {
+      "edit": "Modifier le supplément",
+      "delete": "Supprimer le supplément",
+      "filters": {
+        "all": "Tous",
+        "vitamins": "Vitamines",
+        "minerals": "Minéraux",
+        "aminoAcids": "Acides aminés",
+        "adaptogens": "Adaptogènes",
+        "probiotics": "Probiotiques",
+        "antioxidants": "Antioxydants",
+        "other": "Autres"
+      }
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "Importer des résultats de labo",
+        "description": "Ajoute tes derniers résultats et biomarqueurs"
+      },
+      "orderBloodTest": {
+        "title": "Commander une prise de sang",
+        "description": "Planifie des analyses chez des prestataires certifiés"
+      },
+      "bookScreening": {
+        "title": "Réserver un bilan de santé",
+        "description": "Planifie ton bilan annuel"
+      },
+      "joinWellnessGroup": {
+        "title": "Rejoindre un groupe bien-être",
+        "description": "Connecte-toi à une communauté axée sur la santé"
+      },
+      "trackToday": {
+        "title": "Suivre ta santé d'aujourd'hui",
+        "description": "Note tes indicateurs bien-être du jour"
+      },
+      "healthEducation": {
+        "title": "Éducation santé",
+        "description": "Découvre la nutrition et le bien-être"
+      }
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "Bilan sanguin complet",
+        "description": "NFS, bilan métabolique, lipides, vitamines et minéraux"
+      },
+      "metabolicPanel": {
+        "name": "Bilan métabolique",
+        "description": "Glucose, insuline, HbA1c, fonctions hépatique et rénale"
+      },
+      "hormonesPanel": {
+        "name": "Bilan hormonal",
+        "description": "Testostérone, œstrogènes, cortisol, hormones thyroïdiennes"
+      },
+      "allergyPanel": {
+        "name": "Bilan allergique",
+        "description": "Taux d'IgE, sensibilités alimentaires, allergènes environnementaux"
+      }
+    },
+    "reportCategories": {
+      "blood_panel": "Bilan sanguin",
+      "genomics": "Génomique",
+      "metabolomics": "Métabolomique",
+      "microbiome": "Microbiome",
+      "allergy": "Allergie",
+      "cancer": "Cancer",
+      "hormones": "Hormones",
+      "imaging": "Imagerie",
+      "other": "Autre"
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "Énorme semaine : ton Index a grimpé de {delta}. Continue !",
+        "roll": "Tu es lancé : ton Index a gagné {delta} cette semaine.",
+        "streakWeek": "{streak} jours d’affilée et Index +{delta}. Ton élan est réel.",
+        "streakDays": "{streak} jours de suite, Index +{delta}. Bravo, continue d’enchaîner les réussites.",
+        "up": "Index +{delta} cette semaine. Chaque action compte, continue !",
+        "habits": "{streak} jours d’affilée. Tes habitudes se forment, continue !",
+        "streak": "{streak} jours de suite. Ta série est réelle, continue !"
+      },
+      "daily": {
+        "0": "Nouveau jour, nouvelle chance : faisons grimper ton Index ensemble.",
+        "1": "Tu es là, c’est le premier pas. Faisons monter un peu ton Index aujourd’hui.",
+        "2": "Une petite action et ton Index commence à grimper. C’est parti.",
+        "3": "Aujourd’hui est un bon jour pour progresser. Je suis là pour toi : faisons-le grandir.",
+        "4": "Faisons compter cette journée. Choisis une chose et regarde ton Index monter."
+      },
+      "horizonAria": "Projection du Vitana Index sur 30 jours : {score} prévu.",
+      "compassGoal": "Boussole : {goal} →",
+      "compassSet": "Définis ta boussole de vie →"
+    },
+    "sync": {
+      "notEnabledHint": "La synchronisation santé n’est pas encore activée."
+    },
+    "searchPlaceholder": "Rechercher des rapports, des compléments...",
+    "utility": {
+      "closeSearch": "Fermer la recherche",
+      "upcomingEvent": "{count} événement à venir",
+      "upcomingEvents": "{count} événements à venir"
+    },
+    "baselineSurvey": {
+      "next": "Suivant",
+      "finish": "Terminer",
+      "rating": "Note {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Ton alimentation",
+          "prompt": "Comment estimes-tu ton alimentation ces temps-ci ? (1 = mauvaise, 5 = nourrissante et équilibrée)"
+        },
+        "hydration": {
+          "title": "Ton hydratation",
+          "prompt": "Combien d'eau et de liquides bois-tu ? (1 = très peu, 5 = régulièrement toute la journée)"
+        },
+        "exercise": {
+          "title": "Ton activité",
+          "prompt": "À quel point ton corps a-t-il été actif cette semaine ? (1 = sédentaire, 5 = fort et actif)"
+        },
+        "sleep": {
+          "title": "Ton sommeil",
+          "prompt": "À quel point te sens-tu reposé au réveil ? (1 = épuisé, 5 = pleinement reposé)"
+        },
+        "mental": {
+          "title": "Ton esprit en ce moment",
+          "prompt": "À quel point ton esprit est-il clair et calme aujourd'hui ? (1 = très stressé, 5 = clair et calme)"
+        }
+      }
+    },
     "conditions": {
       "description": "Évalue tes risques de santé et crée des plans d’action préventifs pour garder un bien-être optimal."
     },

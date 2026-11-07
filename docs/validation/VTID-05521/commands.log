@@ -1,0 +1,102 @@
+# VTID-05521 (native-wave2-ai-pages-r2/ai-assistants) — local verification, 2026-11-03T13:02Z, Linux sandbox
+# base origin/main 6b9137ac575735edf1efbc16cddb9ad52d6b4b50; verified on the branch with the implementation, tests and ledger (code commits c64c55454..554b99454);
+# only docs/validation and maestro/ai-assistants docs were committed after (preflight ran on 83aab01aaa6fd552f334ae747855984a3b02f41e)
+# apps/mobile commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+
+## apps/mobile
+$ npm ci
+exit=0
+
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/ai-assistants --ci   # run 1, default workers
+Test Suites: 4 passed, 4 total
+Tests:       132 passed, 132 total
+exit=0
+
+$ npx jest tests/ai-assistants --ci   # run 2, default workers
+Test Suites: 4 passed, 4 total
+Tests:       132 passed, 132 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 97 passed, 97 total
+Tests:       2805 passed, 2805 total
+exit=0
+
+$ APP_PROFILE=development npm run bundle
+Exported: dist
+exit=0
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 42 native route(s)
+exit=0
+
+## repo root
+$ npm ci
+exit=0
+
+$ node scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0
+
+$ node scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 42 native route(s)
+exit=0
+
+$ node scripts/native/core-closure.mjs --check   # no core change
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ npx eslint apps/mobile packages
+exit=0 (no output)
+
+$ node scripts/i18n-audit.mjs
+exit=1 — pre-existing: identical on origin/main (50 listed + '...and 17143 more' on both); 0 lines mention aiAssistantsNative
+
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-parity-gate.mjs --all
+exit=1 — pre-existing: the same 10 failing checks (review-queue counts) on origin/main, diff of FAIL lines empty
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+exit=0 (0 keys whose EN source changed, every locale)
+
+$ npx vitest run
+ Test Files  487 passed (487)
+      Tests  3915 passed (3915)
+exit=0
+
+$ npm run build
+✓ built in 31.52s
+exit=0
+
+## red on base (origin/main 6b9137ac5) — see red-on-base.txt
+npx jest tests/ai-assistants --ci → 4 suites failed (modules missing); route probe 2/2 failed
+
+## preflight
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-ai-pages-r2/ai-assistants --title "VTID-05521 (native-wave2-ai-pages-r2/ai-assistants): native AI assistants pages port"
+FAIL  Collab handoff [report-only in CI (vitana-v1 Collab handoff step)]
+      - Collab-Lane native-wave2-ai-pages-r2/ai-assistants: .kiro/specs/native-wave2-ai-pages-r2/lanes/ai-assistants.md does not exist here or in vitana-platform
+FAIL  Lane scope [required]
+      - lane native-wave2-ai-pages-r2/ai-assistants: .kiro/specs/native-wave2-ai-pages-r2/lanes/ai-assistants.md not found in this repo, an open plan( PR or vitana-platform
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE sparring [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE weakening [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE red-green [report-only in CI (until config.enforce=true)]
+PASS  Kiro steering [report-only in CI (until config.enforce=true)]
+SKIP  Not run by preflight [report-only in CI]
+preflight: 2 check(s) failed: Collab handoff, Lane scope — fix every error above, then push
+# Both FAILs are the known 'lane file not found': the spec is on the plan branch (vitana-platform PR #4634), not yet on main.

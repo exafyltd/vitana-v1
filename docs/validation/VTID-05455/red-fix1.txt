@@ -1,0 +1,62 @@
+# VTID-05455 fix 1 red: tests/health/utility-bar.test.tsx on the previous head 3afeca545f975d7ca8787e2cb34dc4b660fd458a (+ the new test file only)
+# cmd: cd apps/mobile && npx jest tests/health/utility-bar.test.tsx --ci
+FAIL tests/health/utility-bar.test.tsx (30.342 s)
+    ✕ renders Search, mode pill, Calendar, Upload, Life Compass, Gift Voucher, Index chip, Autopilot chip in the web order (377 ms)
+    ✕ Search expands to the input with the health placeholder, stays inert, and ✕ collapses it (91 ms)
+    ✕ Calendar opens /calendar (the resolver route) and shows the upcoming-events badge from the member’s own events (1044 ms)
+    ✕ Calendar: no upcoming events → no badge; a conflict → the conflict dot (1048 ms)
+    ✕ Life Compass emits vitana:open-life-compass on the overlay bus (83 ms)
+    ✕ Gift Voucher emits gift-voucher:open; it is hidden when IAP-restricted (iOS), like isIAPRestricted() (83 ms)
+    ✕ auto-opens when the status says the survey is not completed; five steps with Back / Next; Finish stays disabled (reads only) (1048 ms)
+    ✕ does not open on completed (1049 ms)
+    ✕ does not open on ok: false (1056 ms)
+    ✕ does not open on a failed status call (1045 ms)
+    ✕ does not open on no status route (1046 ms)
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › Search expands to the input with the health placeholder, stays inert, and ✕ collapses it
+
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › renders Search, mode pill, Calendar, Upload, Life Compass, Gift Voucher, Index chip, Autopilot chip in the web order
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 4
+--
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › Search expands to the input with the health placeholder, stays inert, and ✕ collapses it
+    Unable to find an element with testID: health-search-button
+    [36m<View>[39m
+--
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › Calendar opens /calendar (the resolver route) and shows the upcoming-events badge from the member’s own events
+    Unable to find an element with testID: health-calendar-badge
+    [36m<View>[39m
+--
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › Calendar: no upcoming events → no badge; a conflict → the conflict dot
+    Unable to find an element with testID: health-calendar-conflict
+    [36m<View>[39m
+--
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › Life Compass emits vitana:open-life-compass on the overlay bus
+    Unable to find an element with testID: health-life-compass-button
+    [36m<View>[39m
+--
+  ● utility bar (Health.tsx:303-333, utility-action-button.tsx:99-125) › Gift Voucher emits gift-voucher:open; it is hidden when IAP-restricted (iOS), like isIAPRestricted()
+    Unable to find an element with testID: health-gift-voucher-button
+    [36m<View>[39m
+--
+  ● VitanaBaselineSurveyModal (Health.tsx:288) › auto-opens when the status says the survey is not completed; five steps with Back / Next; Finish stays disabled (reads only)
+    Unable to find an element with testID: baseline-survey-content
+    [36m<View>[39m
+--
+  ● VitanaBaselineSurveyModal (Health.tsx:288) › does not open on completed
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+--
+  ● VitanaBaselineSurveyModal (Health.tsx:288) › does not open on ok: false
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+--
+  ● VitanaBaselineSurveyModal (Health.tsx:288) › does not open on a failed status call
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+--
+  ● VitanaBaselineSurveyModal (Health.tsx:288) › does not open on no status route
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+
+Test Suites: 1 failed, 1 total
+Tests:       11 failed, 11 total

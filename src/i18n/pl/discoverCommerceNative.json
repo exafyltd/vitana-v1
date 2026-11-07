@@ -138,6 +138,69 @@
         "openIndexStreak": "Otwórz Vitana Index – seria {days} dni",
         "upcomingEvents": "Nadchodzące wydarzenia: {count}"
       }
+    },
+    "searchShort": "Szukaj…",
+    "indexPill": "Vitana Index {value} – otwórz Zdrowie",
+    "calendar": {
+      "upcomingCount": "Nadchodzące wydarzenia: {count}"
+    },
+    "bookmark": {
+      "add": "Dodaj zakładkę",
+      "remove": "Usuń zakładkę"
+    },
+    "product": {
+      "outOfStock": "Brak w magazynie"
+    },
+    "hidden": {
+      "product": "produkt",
+      "products": "produkty",
+      "allergies": "zawierają podany przez ciebie alergen",
+      "contraindications": "są przeciwwskazane przy podanej przez ciebie chorobie",
+      "medications": "mogą wchodzić w interakcje z twoim lekiem",
+      "dietary": "nie pasują do twoich preferencji żywieniowych",
+      "budget": "przekraczają twój budżet na produkt",
+      "sensitivities": "zawierają składnik, na który jesteś wrażliwy",
+      "geo": "nie są wysyłane do twojego regionu",
+      "excluded_region": "mają ograniczenia regionalne",
+      "past_purchases": "kupione niedawno przez ciebie"
+    },
+    "quickShop": {
+      "viewCart": "Zobacz koszyk",
+      "quickCheckout": "Szybka płatność",
+      "reorderPrevious": "Zamów ponownie",
+      "managePayment": "Zarządzaj płatnością",
+      "trackOrders": "Śledź zamówienia",
+      "setPriceAlert": "Ustaw alert cenowy",
+      "viewSavedItems": "Zapisane produkty",
+      "applyCoupon": "Użyj kuponu"
+    },
+    "quickBook": {
+      "bookAppointment": "Umów wizytę",
+      "rebookPrevious": "Zarezerwuj ponownie",
+      "findNearMe": "Znajdź w pobliżu",
+      "messageProvider": "Napisz do usługodawcy",
+      "viewMyBookings": "Moje rezerwacje",
+      "setReminders": "Ustaw przypomnienia",
+      "leaveReview": "Wystaw opinię",
+      "paymentHistory": "Historia płatności"
+    },
+    "supplementCategories": {
+      "all": "Wszystkie",
+      "multivitamins": "Multiwitaminy",
+      "vitamins": "Witaminy",
+      "minerals": "Minerały",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptogeny",
+      "nootropics": "Nootropiki",
+      "longevity": "Długowieczność",
+      "immunity": "Odporność",
+      "antioxidants": "Przeciwutleniacze",
+      "sleep": "Sen",
+      "performance": "Wydajność",
+      "beauty": "Uroda",
+      "gutHealth": "Zdrowie jelit",
+      "herbs": "Zioła",
+      "heartHealth": "Zdrowie serca"
     }
   }
 }
