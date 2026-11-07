@@ -1,0 +1,42 @@
+{
+  "vtid": "VTID-05461",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/autopilot/index.tsx",
+    "apps/mobile/src/screens/journey/**",
+    "apps/mobile/maestro/journey/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/journey/**",
+    "src/i18n/*/journeyAutopilotNative.json",
+    "docs/validation/**",
+    "packages/core/extract.json"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/autopilot/index.tsx",
+    "apps/mobile/src/screens/journey/**",
+    "apps/mobile/src/ports/journey.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/maestro/journey/README.md",
+    "apps/mobile/tests/journey/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/manifest.json",
+    "packages/core/extract.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/{horizon-buckets,vitana-projection,goal-phases,vitana-index-tiers,audiobook-queue,journey}.ts",
+    "packages/core/src/extracted/journey.generated.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/journeyAutopilotNative.json",
+    "docs/validation/VTID-05461/**"
+  ],
+  "outside_lane_paths": {},
+  "core_change": "re-exports of the class-A modules src/lib/horizonBuckets.ts and src/lib/vitana-projection.ts (plan decision 2), plus the other pure modules the ported dashboard needs (R1.4 'reused from @vitana/core, never re-implemented'): src/lib/goalPhases.ts, src/lib/vitanaIndex.ts, src/lib/audiobook/queue.ts (manifest lines + export *), and an extract.json entry 'journey' copying buildJourneyRing / computeGoalTrend and the MyJourney / GoalPlan types verbatim (their sources type-import class-B hooks). No hook or provider is extracted. core-closure --write run; closure.generated.json and mobile-ci-paths.generated.json committed; --check up to date; gen-core-extract --check up to date.",
+  "sparring_record": "docs/validation/VTID-05461/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

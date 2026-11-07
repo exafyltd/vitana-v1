@@ -14,6 +14,7 @@ import {
   DollarSign, 
   Calendar, 
   FileText,
+  Image as ImageIcon,
   Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,6 +22,8 @@ import { t } from '@/lib/i18n-toast';
 
 interface AttachmentMenuProps {
   onFileAttach: () => void;
+  /** Opens the photo/video picker (multi-select). Optional: when absent, no photo entry is shown. */
+  onPhotoAttach?: () => void;
   onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
   onCalendarInvite: (title: string, date: string, time?: string, endTime?: string, location?: string, description?: string) => void;
   recipient?: {
@@ -129,6 +132,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
 
 export function AttachmentMenu({
   onFileAttach,
+  onPhotoAttach,
   onSendMessage,
   onCalendarInvite,
   recipient,
@@ -229,6 +233,20 @@ export function AttachmentMenu({
           </Button>
           
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
+
+          {onPhotoAttach && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start h-10 px-3"
+              onClick={() => {
+                setPopoverOpen(false);
+                onPhotoAttach();
+              }}
+            >
+              <ImageIcon className="w-5 h-5 me-3 text-category-1" />
+              <span className="text-sm">{t('screens.messages.attachPhotos')}</span>
+            </Button>
+          )}
           
           <Button
             variant="ghost"

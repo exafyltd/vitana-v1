@@ -296,10 +296,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "AUTH.MAXINA_PORTAL",
@@ -308,10 +308,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "AUTOPILOT.MY_JOURNEY",
@@ -320,10 +320,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "journey-autopilot",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "BUSINESS.ANALYTICS",
@@ -824,10 +824,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "ai",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "CONNECTORS.AGENT",
@@ -1016,10 +1016,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MARKETPLACE",
@@ -1028,10 +1028,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MARKETPLACE_MINE",
@@ -1040,10 +1040,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MARKETPLACE_OPEN",
@@ -1052,10 +1052,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.MY_TICKETS",
@@ -1064,10 +1064,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.ORDERS",
@@ -1076,10 +1076,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.ORDERS_ACTIVE",
@@ -1088,10 +1088,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.ORDERS_HISTORY",
@@ -1100,10 +1100,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.OVERVIEW",
@@ -1136,10 +1136,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.SHARE_EARN",
@@ -1520,10 +1520,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "INBOX.CONVERSATION",
@@ -1532,7 +1532,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -1544,7 +1544,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -1556,10 +1556,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "INBOX.OVERVIEW",
@@ -1568,10 +1568,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "INTENTS.BOARD",
@@ -1784,10 +1784,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PROFILE.ME",
@@ -1796,10 +1796,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PROFILE.PRIVACY",
@@ -1808,10 +1808,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "profile-settings-support",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PROFILE.PUBLIC",
@@ -1856,10 +1856,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "PUBLIC.TERMS",
@@ -1868,10 +1868,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "REMINDERS.OVERVIEW",
@@ -2240,10 +2240,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.ACTIVITY",
@@ -2252,10 +2252,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE",
@@ -2264,10 +2264,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE_MEMBERSHIP",
@@ -2276,10 +2276,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE_OPTIMIZATION",
@@ -2288,10 +2288,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.BALANCE_TOKENS",
@@ -2300,10 +2300,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.OVERVIEW",
@@ -2312,10 +2312,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "WALLET.REWARDS",
@@ -2324,7 +2324,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2336,7 +2336,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2348,7 +2348,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2360,7 +2360,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2372,10 +2372,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/_intro/:tenantSlug",
@@ -2384,10 +2384,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/alkalma/confirmed",
@@ -2396,10 +2396,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/apply",
@@ -2408,10 +2408,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/auth/confirmed",
@@ -2420,10 +2420,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/autopilot/audiobook",
@@ -2432,10 +2432,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "journey-autopilot",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "/calendar/entry/:entryId",
@@ -2624,10 +2624,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/inbox/g/:groupId/msg/:messageId",
@@ -2636,7 +2636,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2648,7 +2648,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2660,7 +2660,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2672,7 +2672,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "inbox-chat-calls",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2684,10 +2684,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/maxina/app",
@@ -2708,10 +2708,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/maxina_support",
@@ -2720,10 +2720,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/oauth/complete",
@@ -2732,10 +2732,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/oauth/consent",
@@ -2744,10 +2744,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/onboarding/welcome",
@@ -2804,7 +2804,7 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -2840,9 +2840,9 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "wallet",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
+      "owner": "kiro",
       "last_parity_check": null
     },
     {
@@ -2864,10 +2864,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "public-auth",
-      "status": "in_progress",
+      "status": "native",
       "exception": null,
-      "owner": "N3 VTID-05186",
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-01"
     },
     {
       "key": "/tickets/demo",

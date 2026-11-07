@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05585",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/messages/ConversationView.scroll-css.vtid-05585.test.tsx", "cwd": ".",
+      "reason": "the chat container has no CSS smooth scrolling, so opening a conversation does not glide to the newest message; overscroll containment is kept" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the change is served" }
+  ]
+}

@@ -42,7 +42,7 @@ jobs:
       ALLOWLIST: >-
         ai-chat search-memories reinforce-memory generate-memory-embedding
         extract-diary-insights refresh-memory-metadata extract-user-interests
-        analyze-visual-context
+        analyze-visual-context linkedin-import
     steps:
       - uses: actions/checkout@v4
 

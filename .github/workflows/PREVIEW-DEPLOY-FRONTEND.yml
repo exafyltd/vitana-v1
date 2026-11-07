@@ -40,6 +40,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  id-token: write # eng-platform-p01: OIDC for the staging AWS role
 
 concurrency:
   group: preview-deploy-pr-${{ github.event.pull_request.number }}
@@ -67,7 +68,7 @@ jobs:
           missing=""
           [ -n "${{ secrets.PREVIEW_CF_DISTRIBUTION_ID }}" ] || missing="$missing PREVIEW_CF_DISTRIBUTION_ID"
           [ -n "${{ secrets.PREVIEW_CF_DOMAIN }}" ] || missing="$missing PREVIEW_CF_DOMAIN"
-          [ -n "${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}" ] || missing="$missing AWS_STAGING_ACCESS_KEY_ID"
+          [ -n "${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}" ] || [ -n "${{ vars.AWS_PREVIEW_ROLE_ARN }}" ] || missing="$missing AWS_STAGING_ACCESS_KEY_ID or AWS_PREVIEW_ROLE_ARN"
           if [ -n "$missing" ]; then
             echo "::error::Missing secret(s):$missing — run scripts/aws/setup-pr-previews.sh and set them. Previews are unavailable until then."
             exit 1
@@ -108,8 +109,10 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_STAGING_SECRET_ACCESS_KEY }}
+          # eng-platform-p01: OIDC when vars.AWS_PREVIEW_ROLE_ARN is set; the static keys only while it is unset.
+          role-to-assume: ${{ vars.AWS_PREVIEW_ROLE_ARN }}
+          aws-access-key-id: ${{ !vars.AWS_PREVIEW_ROLE_ARN && secrets.AWS_STAGING_ACCESS_KEY_ID || '' }}
+          aws-secret-access-key: ${{ !vars.AWS_PREVIEW_ROLE_ARN && secrets.AWS_STAGING_SECRET_ACCESS_KEY || '' }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Sync to S3

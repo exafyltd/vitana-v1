@@ -1,0 +1,10 @@
+       × uses the role variable with the key guard in every credential step 10ms
+       × grants id-token: write at the top level 2ms
+       × uses the role variable with the key guard in every credential step 3ms
+       × grants id-token: write at the top level 1ms
+       × uses the role variable with the key guard in every credential step 2ms
+       × grants id-token: write at the top level 1ms
+     × the preview deploy accepts the role variable in place of the keys 40ms
+     × the preview teardown treats the role variable as configured AWS 9ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  8 failed | 2 passed (10)

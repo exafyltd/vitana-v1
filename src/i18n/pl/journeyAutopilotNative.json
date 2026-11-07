@@ -1,0 +1,45 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "Informacja o udostępnianiu danych AI",
+      "subtitle": "Zanim skorzystasz z funkcji AI, sprawdź, jak wykorzystywane są Twoje dane.",
+      "whatIsSent": "Jakie dane mogą zostać wysłane",
+      "voiceData": "Nagrania głosowe i transkrypcje",
+      "diaryData": "Wpisany tekst, wiadomości czatu i wpisy w dzienniku",
+      "memoryData": "Wpisy w Memory Garden i cele zdrowotne",
+      "profileData": "Kontekst profilu (imię, preferencje)",
+      "socialData": "Adresy URL profili w mediach społecznościowych i opisy bio (przy funkcjach importu)",
+      "recipientLabel": "Odbiorca:",
+      "recipient": "Google (modele AI Gemini) przez Lovable AI Gateway. Twoje dane są przesyłane bezpiecznie przez szyfrowane połączenia.",
+      "purposeLabel": "Cel",
+      "purpose": "Tworzenie spersonalizowanych odpowiedzi AI, syntezy mowy, proaktywnych powitań, coachingu zdrowotnego i propozycji uzupełnienia profilu.",
+      "notStored": "Dostawca AI nie przechowuje danych na stałe",
+      "revokeAnytime": "Zgodę możesz w każdej chwili wycofać w Ustawienia > Prywatność",
+      "gdprCompliant": "Zgodne z RODO i przepisami o ochronie prywatności",
+      "agreementFooter": "Dotykając „Zgadzam się”, pozwalasz Exafy LTD wysyłać powyższe dane do wymienionych dostawców AI. Zgodę możesz w każdej chwili wycofać w Ustawienia > Prywatność.",
+      "notNow": "Nie teraz",
+      "iAgree": "Zgadzam się"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA zdobyte!",
+      "errorStatus": "Serwer odpowiedział statusem {status}.",
+      "errorServer": "Serwer nie mógł teraz dostarczyć twoich rekomendacji.",
+      "errorNetwork": "Brak połączenia. Sprawdź internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Joga o wschodzie słońca nad morzem",
+      "mindfulWalk": "Uważny spacer i rozmowa"
+    },
+    "indexChip": {
+      "open": "Otwórz Vitana Index",
+      "openWithStreak": "Otwórz Vitana Index – seria {days} dni"
+    },
+    "calendar": {
+      "upcomingCount": "Nadchodzące wydarzenia: {count}"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
+    }
+  }
+}
