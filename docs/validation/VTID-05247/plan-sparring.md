@@ -12,6 +12,7 @@
 - **Plan hash:** `85aeb40ea3a28cf4833b20ff5f6d726371cf9f970f2994dd76ae735545514f64` (final plan hash, sha256
   of the text between the plan markers, as recorded in that verdict).
 - **Change class:** standard.
+- **Owner approval:** not given separately. The owner decision of 2026-10-14 makes policy `converged-auto-v1` the approval for CI-sparred plans that converge, which is the approval recorded above.
 
 ## Scope of this lane within the sparred plan
 
