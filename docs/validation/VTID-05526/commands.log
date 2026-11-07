@@ -1,0 +1,73 @@
+# VTID-05526 (native-wave2-role-modes-r2/professional) — local verification, 2026-11-03T14:09Z, Linux sandbox
+# verified on the branch with the implementation, tests and ledger (code commits bedbb5d60..e75c5a04d, base origin/main 6b9137ac5); only docs/validation was committed after
+# apps/mobile commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+
+## red on base (origin/main + only the new tests/professional/** files) — docs/validation/VTID-05526/red-on-base.txt
+$ npm run gen:i18n && npx jest tests/professional
+Test Suites: 4 failed, 4 total   (Cannot find module '../../src/screens/professional/ProfessionalGate'; route files missing, rows not_started)
+
+## apps/mobile
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/professional --ci          # run 1, default workers
+Test Suites: 4 passed, 4 total
+Tests:       184 passed, 184 total
+exit=0
+
+$ npx jest tests/professional --ci          # run 2, default workers
+Test Suites: 4 passed, 4 total
+Tests:       184 passed, 184 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 97 passed, 97 total
+Tests:       2857 passed, 2857 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ APP_PROFILE=development npm run bundle
+Exported: dist
+exit=0
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependencies are up to date
+exit=0
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+$ node scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 49 native route(s)
+exit=0
+
+$ node scripts/native/core-closure.mjs --check
+core-closure: 22 roots, 32 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ npx eslint apps/mobile packages
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.   (0 errors mention professionalNative; the rest are pre-existing _pending_review keys)
+exit=0
+
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+0 key(s) whose EN source changed since translation in every locale
+exit=0
+
+$ node scripts/i18n-parity-gate.mjs --all
+[gate] 10 failing check(s).   (pre-existing review-queue counts per locale; 0 lines mention professional)
+
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-role-modes-r2/professional --title "VTID-05526 (native-wave2-role-modes-r2/professional): native professional mode port"
+FAIL  Collab handoff — lanes/professional.md does not exist here or in vitana-platform (spec still on the plan branch: plan PR #4635 open)
+FAIL  Lane scope    — lanes/professional.md not found (same cause, the known non-blocker)
+PASS  gh for plan( PR / vitana-platform lane files; PR-GATE scope / sparring / weakening / red-green; Kiro steering

@@ -5192,10 +5192,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/dashboard",
@@ -5204,10 +5204,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/education",
@@ -5216,10 +5216,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/patients",
@@ -5228,10 +5228,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/profile",
@@ -5240,10 +5240,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/referrals",
@@ -5252,10 +5252,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/schedule",
@@ -5264,10 +5264,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/professional/tools",
@@ -5276,10 +5276,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/staff/communications",
