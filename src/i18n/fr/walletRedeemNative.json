@@ -1,0 +1,28 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "bien-être",
+    "claimFailed": "Impossible d’utiliser le bon. Il a peut-être déjà été utilisé.",
+    "tiers": {
+      "test": {
+        "name": "Bon de test",
+        "benefit1": "Test de paiement uniquement",
+        "benefit2": "Pas un vrai bon"
+      },
+      "experience": {
+        "name": "Bon Expérience",
+        "benefit1": "Accès à 1 événement premium de la communauté",
+        "benefit2": "Conseil bien-être personnalisé",
+        "benefit3": "Essai Vitana+ de 30 jours inclus",
+        "benefit4": "Bon électronique au design soigné"
+      },
+      "exclusive": {
+        "name": "Bon Exclusif",
+        "benefit1": "3 événements premium de la communauté",
+        "benefit2": "Séance de coaching individuel avec un expert",
+        "benefit3": "Abonnement Vitana+ de 90 jours",
+        "benefit4": "Réservation prioritaire + avantages VIP"
+      }
+    }
+  }
+}

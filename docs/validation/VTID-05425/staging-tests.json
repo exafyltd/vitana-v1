@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05425",
+  "service": "community-app",
+  "_note": "Native Wave 2 wallet-subscriptions lane (native-wave2-wallet-r2/wallet-subscriptions). The port is proven offline (jest-expo + RNTL, fake Supabase double + fake billing gateway, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). The billing writes (choose plan, credit pack, billing portal, redeem) make the web's gateway requests and open the hosted URL, as on mobile web; the tests assert those requests against the fake gateway only, and no test or verification run calls a live endpoint. The iOS IAP behaviour equals today's (ungated surfaces, no gate added; the drawer Wallet-row gate unchanged). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R6.3, tasks wallet-subscriptions 6). It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/wallet-subscriptions", "cwd": "apps/mobile",
+      "reason": "subscriptions overview loaded / empty / error, the storefront in the web storefront order, /profile/subscriptions renders the storefront (not the desktop redirect), plan grids, redeem card, banners, the app default BillingActions building the web checkout / portal / redeem requests (fake gateway); the return leg after a hosted page (browser close, AppState active, ?checkout=success|cancelled → billing/me refetched, new plan rendered); iOS tree equals Android tree with no gate added, the drawer gate unchanged; 11 locales + RTL — fixtures and a fake gateway, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the two screens, the data layer and the billing port type-check against @vitana/core, @vitana/tokens and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /wallet/subscriptions and /profile/subscriptions routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "WALLET.SUBSCRIPTIONS and /profile/subscriptions are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/wallet-subscriptions/01-wallet-subscriptions.yaml", "target": "/wallet/subscriptions", "next_actor": "owner",
+      "reason": "Android: sub-nav, promises, plan state, plan grids, usage, credit packs, FAQ; screenshot parity vs 390x844 read-only staging; no purchase attempted; needs the isolated G1 environment (Android emulator)" },
+    { "flow": "apps/mobile/maestro/wallet-subscriptions/02-profile-subscriptions.yaml", "target": "/profile/subscriptions", "next_actor": "owner",
+      "reason": "Android: the MobileSubscriptions storefront renders (no redirect) in the storefront order; screenshot parity; no purchase attempted; needs G1" },
+    { "flow": "apps/mobile/maestro/wallet-subscriptions/03-subscriptions-ios.yaml", "target": "/wallet/subscriptions | /profile/subscriptions (iOS)", "next_actor": "owner",
+      "reason": "iOS simulator: same sections and CTAs as Android (ungated today, no gate added), drawer has no Wallet row — read only, never a purchase; needs G1 + macOS minutes / G3" }
+  ]
+}

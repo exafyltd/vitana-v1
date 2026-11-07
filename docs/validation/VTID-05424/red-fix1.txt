@@ -1,0 +1,76 @@
+# VTID-05424 fix round 1 — red on the previous head 98877f0168e057ebef75c9837ca1f33cd50bd77c (+ merge of origin/main ec8682fec), new tests only, implementation unchanged
+# cmd (apps/mobile): npx jest tests/wallet-rewards -t "redeem request"
+# result: 3 failed, 53 skipped, 56 total
+# why: the default RewardShopActions made no call (finish-on-web toast), and the reads used '/api/v1/...' paths on a client that already prefixes /api/v1 (doubled prefix)
+
+FAIL tests/wallet-rewards/rewards.test.tsx (17.925 s)
+  ● redeem request (default actions = the web redeemRewardItem, against a fake fetch) › builds the web request: POST /api/v1/rewards/shop/redeem, JSON body, bearer token; success → redeemed toast + ["wallet"] refetch + sheet closes
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected value: "https://gateway.test/api/v1/rewards/shop"
+    Received array: ["https://gateway.test/api/v1/api/v1/rewards/shop", "https://gateway.test/api/v1/api/v1/rewards/orders"]
+
+      411 |     renderWithProviders(<RewardsScreen />, { gateway });
+      412 |     // The reads go through the same client: one /api/v1 prefix, never doubled.
+    > 413 |     await waitFor(() => expect(sent.map((s) => s.url)).toContain(`${ORIGIN}/api/v1/rewards/shop`));
+          |                  ^
+      414 |     fireEvent.press(await screen.findByTestId('reward-shop-open-mug'));
+      415 |     await screen.findByTestId('reward-shop-dialog');
+      416 |     for (const [f, v] of [['name', 'Ana'], ['line1', 'Weg 1'], ['postal_code', '10115'], ['city', 'Berlin']]) {
+
+      at Object.<anonymous> (tests/wallet-rewards/rewards.test.tsx:413:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● redeem request (default actions = the web redeemRewardItem, against a fake fetch) › a refused redeem maps the gateway error code to the web toast; a non-JSON failure → generic
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "wallet.rewardShop.errors.OUT_OF_STOCK",
+    +   "walletRewardsNative.shop.finishOnWeb",
+      ]
+
+      440 |   it('a refused redeem maps the gateway error code to the web toast; a non-JSON failure → generic', async () => {
+      441 |     await confirmMug(fakeFetchGateway({ status: 409, body: { ok: false, error: 'OUT_OF_STOCK' } }).gateway);
+    > 442 |     expect(toastKeys()).toEqual(['wallet.rewardShop.errors.OUT_OF_STOCK']);
+          |                         ^
+      443 |     expect(screen.getByTestId('reward-shop-dialog')).toBeTruthy();
+      444 |     screen.unmount();
+      445 |     __clearToastsForTests();
+
+      at Object.toEqual (tests/wallet-rewards/rewards.test.tsx:442:25)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● redeem request (default actions = the web redeemRewardItem, against a fake fetch) › a shipped item with a checkout URL opens it in the system browser (web window.location.assign)
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "https://checkout.stripe.test/cs_1"
+
+    Number of calls: 0
+
+      453 |       fakeFetchGateway({ status: 200, body: { ok: true, order_id: 'o-9', status: 'awaiting_shipping_payment', vtna_amount: 100, checkout_url: 'https://checkout.stripe.test/cs_1' } }).gateway,
+      454 |     );
+    > 455 |     expect(open).toHaveBeenCalledWith('https://checkout.stripe.test/cs_1');
+          |                  ^
+      456 |     expect(toastKeys()).toEqual([]);
+      457 |   });
+      458 | });
+
+      at Object.toHaveBeenCalledWith (tests/wallet-rewards/rewards.test.tsx:455:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 skipped, 1 of 2 total
+Tests:       3 failed, 53 skipped, 56 total
+Snapshots:   0 total
+Time:        18.482 s
+Ran all test suites matching /tests\/wallet-rewards/i with tests matching "redeem request".

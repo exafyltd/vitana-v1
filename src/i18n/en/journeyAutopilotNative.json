@@ -1,0 +1,45 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "AI Data Sharing Disclosure",
+      "subtitle": "Before using AI features, please review how your data is used.",
+      "whatIsSent": "What data may be sent",
+      "voiceData": "Voice recordings and transcripts",
+      "diaryData": "Typed prompts, chat messages, and diary entries",
+      "memoryData": "Memory Garden entries and wellness goals",
+      "profileData": "Profile context (name, preferences)",
+      "socialData": "Social media profile URLs and bio text (when using import features)",
+      "recipientLabel": "Recipient:",
+      "recipient": "Google (Gemini AI models) via the Lovable AI Gateway. Your data is transmitted securely via encrypted connections.",
+      "purposeLabel": "Purpose",
+      "purpose": "To generate personalized AI responses, voice synthesis, proactive greetings, health coaching, and profile enrichment suggestions.",
+      "notStored": "Data is not permanently stored by the AI provider",
+      "revokeAnytime": "You can revoke consent anytime in Settings > Privacy",
+      "gdprCompliant": "Compliant with GDPR and privacy regulations",
+      "agreementFooter": "By tapping 'I Agree', you give Exafy LTD permission to send the data listed above to the named AI service providers. You can withdraw this permission at any time in Settings > Privacy.",
+      "notNow": "Not Now",
+      "iAgree": "I Agree"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA earned!",
+      "errorStatus": "The server answered with status {status}.",
+      "errorServer": "The server could not deliver your recommendations right now.",
+      "errorNetwork": "No connection. Check your internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Sunrise Yoga by the Sea",
+      "mindfulWalk": "Mindful Walk & Talk"
+    },
+    "indexChip": {
+      "open": "Open Vitana Index",
+      "openWithStreak": "Open Vitana Index — {days}-day streak"
+    },
+    "calendar": {
+      "upcomingCount": "{count} upcoming events"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
+    }
+  }
+}

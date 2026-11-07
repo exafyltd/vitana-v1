@@ -1,0 +1,143 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "تعذّر التحميل.",
+        "mineEmptyBody": "انشر طلب شراء أو بيع، وسيعرض لك نظام المطابقة المشترين والبائعين.",
+        "newListing": "إعلان جديد"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "أشتري",
+          "commercial_sell": "أبيع",
+          "activity_seek": "شريك نشاط",
+          "partner_seek": "شريك حياة",
+          "social_seek": "اجتماعي / إرشاد",
+          "mutual_aid": "مساعدة متبادلة",
+          "learning_seek": "أرغب في التعلّم",
+          "mentor_seek": "أعرض التعليم"
+        },
+        "age": "العمر {min}–{max}",
+        "within": "ضمن {km} كم"
+      },
+      "share": {
+        "tooManyTitle": "عدد المستلمين كبير جدًا ({count})",
+        "tooManyBody": "الخطة المجانية تسمح بحد أقصى {max}. رقِّ إلى Pro للحصول على 50.",
+        "errorBatch": "عدد المستلمين كبير جدًا",
+        "errorQuota": "تم بلوغ حد المشاركة",
+        "errorPrivate": "لا يمكن مشاركة هذا المنشور",
+        "errorFailed": "فشلت المشاركة",
+        "errorBody": "{message}",
+        "tryAgain": "حاول مرة أخرى.",
+        "alreadyShared": "تمت المشاركة مع الجميع بالفعل",
+        "sharedOne": "تمت المشاركة مع {count} صديق",
+        "sharedMany": "تمت المشاركة مع {count} من الأصدقاء",
+        "skipped": "{skipped} لديهم هذا المنشور في صندوق الوارد بالفعل.",
+        "theyWillSee": "سيرون منشورك في محادثتهم.",
+        "defaultTitle": "منشور على Vitana",
+        "defaultText": "اطّلع على هذا في Vitana",
+        "fromVitana": "من Vitana"
+      },
+      "orders": {
+        "eventTicket": "تذكرة فعالية",
+        "locationTbd": "المكان يُحدَّد لاحقًا",
+        "cjProduct": "منتج CJ",
+        "general": "عام",
+        "voucherProvider": "قسيمة هدية Maxina",
+        "voucherTier": {
+          "test": "قسيمة تجريبية",
+          "experience": "قسيمة تجربة",
+          "exclusive": "قسيمة حصرية",
+          "gift": "قسيمة هدية"
+        },
+        "mock": {
+          "vipAccess": "دخول VIP",
+          "generalAdmission": "دخول عام",
+          "earlyBird": "حجز مبكر",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "يوغا الصباح",
+          "retreatTitle": "خلوة تأمل رأس السنة"
+        },
+        "status": {
+          "upcoming": "قادم",
+          "attended": "تم الحضور",
+          "expired": "منتهي",
+          "completed": "مكتمل",
+          "delivered": "تم التسليم",
+          "cancelled": "ملغى",
+          "refunded": "تم الاسترداد",
+          "shipped": "قيد الشحن",
+          "confirmed": "مؤكَّد",
+          "pending": "قيد الانتظار",
+          "processing": "قيد المعالجة",
+          "paid": "نشط",
+          "active": "نشط"
+        },
+        "type": {
+          "ticket": "تذكرة",
+          "voucher": "قسيمة",
+          "product": "منتج",
+          "service": "خدمة"
+        }
+      },
+      "tickets": {
+        "event": "فعالية",
+        "dateTba": "التاريخ يُعلَن لاحقًا",
+        "general": "عام"
+      },
+      "ticket": {
+        "tba": "يُعلَن لاحقًا"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 سأحضر {title}!",
+        "email": "البريد",
+        "emailSubject": "تذكرتي لـ {title}",
+        "sms": "رسالة نصية",
+        "copyLink": "نسخ الرابط",
+        "copied": "تم النسخ!",
+        "openingWhatsapp": "جارٍ فتح واتساب…",
+        "openingViber": "جارٍ فتح فايبر…",
+        "openingEmail": "جارٍ فتح البريد…",
+        "openingMessages": "جارٍ فتح الرسائل…"
+      },
+      "booking": {
+        "sessionTitle": "جلسة {title}",
+        "sessionDescription": "احجز جلسة مع {name}",
+        "pickDate": "اختر تاريخًا",
+        "previousMonth": "الشهر السابق",
+        "nextMonth": "الشهر التالي"
+      },
+      "subnav": {
+        "overview": "نظرة عامة",
+        "supplements": "المكملات",
+        "wellness-services": "خدمات العافية",
+        "doctors-coaches": "الأطباء/المدربون",
+        "deals-offers": "الصفقات والعروض",
+        "orders": "الطلبات"
+      },
+      "bookmark": {
+        "add": "إضافة إشارة مرجعية",
+        "remove": "إزالة الإشارة المرجعية"
+      },
+      "bookActions": {
+        "bookAppointment": "حجز موعد",
+        "rebookPrevious": "إعادة الحجز",
+        "findNearMe": "الأقرب إليّ",
+        "messageProvider": "راسل مقدّم الخدمة",
+        "viewMyBookings": "حجوزاتي",
+        "setReminders": "ضبط التذكيرات",
+        "leaveReview": "اكتب مراجعة",
+        "paymentHistory": "سجل المدفوعات"
+      },
+      "visit": {
+        "hideNotes": "إخفاء الملاحظات",
+        "viewNotes": "عرض الملاحظات"
+      },
+      "utility": {
+        "openIndex": "افتح مؤشر Vitana",
+        "openIndexStreak": "افتح مؤشر Vitana — سلسلة {days} أيام",
+        "upcomingEvents": "{count} أحداث قادمة"
+      }
+    }
+  }
+}

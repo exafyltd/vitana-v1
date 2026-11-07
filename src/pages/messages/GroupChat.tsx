@@ -66,6 +66,20 @@ import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/me
 // "messages take half a minute to appear" complaint.
 const POLL_INTERVAL_MS = 8000;
 
+// Latency logging for diagnosing slow group delivery. Off unless the device
+// sets localStorage["vitana:chat-latency"] = "1" (no rebuild needed). Logs the
+// time from the row's created_at to the realtime event, and how long each
+// message reload takes. created_at comes from the server clock, so a device
+// with a skewed clock shifts the first number.
+const CHAT_LATENCY_FLAG = "vitana:chat-latency";
+function chatLatencyLogging(): boolean {
+  try {
+    return typeof localStorage !== "undefined" && localStorage.getItem(CHAT_LATENCY_FLAG) === "1";
+  } catch {
+    return false;
+  }
+}
+
 interface GroupWithMembers extends ChatGroup {
   members: ChatGroupMember[];
   member_count: number;
@@ -213,11 +227,15 @@ export default function GroupChat() {
 
   const loadMessages = useCallback(async () => {
     if (!groupId) return;
+    const startedAt = performance.now();
     try {
       const msgs = await fetchGroupMessages(groupId, 100);
       setMessages(prev => mergeGroupRows(prev, msgs.slice().reverse()));
       setMessagesLoaded(true);
       setLoadError(null);
+      if (chatLatencyLogging()) {
+        console.info(`[chat-latency] group reload ${Math.round(performance.now() - startedAt)} ms`);
+      }
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : "Failed to load group");
     }
@@ -264,13 +282,33 @@ export default function GroupChat() {
   // (migration 20260618110546).
   useEffect(() => {
     if (!groupId) return;
+    // A dropped subscription can lose events, so the first SUBSCRIBED after a
+    // drop reloads the thread once. Same approach as useGlobalMessages.ts.
+    let needsBackfill = false;
     const channel = realtimeChannel(`group_chat_${groupId}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=eq.${groupId}` },
-        () => { loadMessages(); },
+        (payload) => {
+          if (chatLatencyLogging()) {
+            const createdAt = Date.parse((payload.new as { created_at?: string }).created_at ?? "");
+            if (!Number.isNaN(createdAt)) {
+              console.info(`[chat-latency] realtime event ${Math.round(Date.now() - createdAt)} ms after created_at`);
+            }
+          }
+          loadMessages();
+        },
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          if (needsBackfill) {
+            needsBackfill = false;
+            loadMessages();
+          }
+        } else if (status === "CHANNEL_ERROR" || status === "CLOSED" || status === "TIMED_OUT") {
+          needsBackfill = true;
+        }
+      });
     return () => { removeRealtimeChannel(channel); };
   }, [groupId, loadMessages]);
 

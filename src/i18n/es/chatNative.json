@@ -1,0 +1,69 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} está escribiendo…",
+      "two": "{first} y {second} están escribiendo…",
+      "many": "Varias personas están escribiendo…"
+    },
+    "conversation": {
+      "fallbackTitle": "Conversación"
+    },
+    "reply": {
+      "yourself": "ti",
+      "contentUnavailable": "Contenido del mensaje no disponible"
+    },
+    "reactions": {
+      "reactWith": "Reaccionar con {emoji}",
+      "count": "{count} reacciones {emoji}"
+    },
+    "bubble": {
+      "longPressHint": "Mantén pulsado para reacciones y acciones"
+    },
+    "emoji": {
+      "open": "Elige un emoji",
+      "recent": "Recientes",
+      "smileys": "Caritas",
+      "people": "Personas",
+      "nature": "Naturaleza",
+      "food": "Comida",
+      "activity": "Actividad",
+      "travel": "Viajes",
+      "objects": "Objetos"
+    },
+    "voice": {
+      "discard": "Borrar grabación",
+      "play": "Reproducir",
+      "pause": "Pausar",
+      "stop": "Detener grabación"
+    },
+    "composer": {
+      "removeFile": "Quitar {name}",
+      "pickerDone": "Listo"
+    },
+    "payment": {
+      "status": {
+        "pending": "Pendiente",
+        "completed": "Completado",
+        "declined": "Rechazado"
+      },
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "pay": "Pagar ahora",
+      "refreshBalance": "Actualizar saldo"
+    },
+    "invite": {
+      "untitled": "Invitación"
+    },
+    "booking": {
+      "untitled": "Solicitud de servicio"
+    },
+    "companion": {
+      "indexScore": "Tu índice: {score}"
+    },
+    "attach": {
+      "library": "Fototeca",
+      "camera": "Cámara",
+      "files": "Archivos"
+    }
+  }
+}
