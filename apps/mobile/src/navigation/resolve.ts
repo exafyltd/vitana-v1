@@ -51,6 +51,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/groups',
   '/comm/members',
   '/comm/open-asks',
+  '/comm/talk-to-vitana',
   '/connectors',
   '/delete-account',
   '/daily-diary',
