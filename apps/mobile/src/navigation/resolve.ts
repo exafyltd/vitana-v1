@@ -54,6 +54,13 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/autopilot',
   '/autopilot/audiobook',
   '/comm/find-partner',
+  // VTID-05524 (role-modes business lane) — the commerce / business-mode screens.
+  // The public /commerce-login, /commerce/join, /commerce/connect(/privacy) route files land in native-shell-fixes.
+  '/commerce',
+  '/commerce/connect/authorize',
+  '/commerce/health-orders',
+  '/commerce/health-orders/inbox',
+  '/commerce/team',
   '/comm/groups',
   '/comm/live-rooms',
   '/comm/members',
