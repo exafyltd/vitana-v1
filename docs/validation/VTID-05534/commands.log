@@ -1,0 +1,17 @@
+VTID-05534 — commands run by the kiro session kiro-exafyltd-202611030923-a395
+
+1. npx vitest run src/pages/messages/GroupChat.realtime-reconnect.test.tsx  (on origin/main 7829ef2f2, branch base)
+   Result: 3 failed | 2 passed (5). The three drop cases fail with "expected 1 to be 2": no reload on the first SUBSCRIBED after CHANNEL_ERROR, CLOSED or TIMED_OUT.
+   Full output: docs/validation/VTID-05534/red-on-base.txt
+
+2. npx vitest run src/pages/messages/  (on the lane head, after the cherry-pick of 90142e0c5)
+   Result: 8 files passed, 35 tests passed (30 existing + 5 new).
+
+3. npx tsc --noEmit -p tsconfig.app.json
+   Result: 176 errors, the same count as the base; 0 errors mention GroupChat.
+
+4. npx eslint src/pages/messages/GroupChat.tsx src/pages/messages/GroupChat.realtime-reconnect.test.tsx
+   Result: 0 errors, 1 warning on mergeGroupRows (line 134, not changed by this lane, present on origin/main).
+
+5. Read-only check of tests/e2e/staging/vtid-04921-group-chat-latest.staging.spec.ts
+   It imports ./staging-guard, which aborts every non-GET request except sign-in, and lists its expected aborted writes.

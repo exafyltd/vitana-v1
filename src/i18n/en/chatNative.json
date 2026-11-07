@@ -1,0 +1,69 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} is typing…",
+      "two": "{first} and {second} are typing…",
+      "many": "Several people are typing…"
+    },
+    "conversation": {
+      "fallbackTitle": "Conversation"
+    },
+    "reply": {
+      "yourself": "yourself",
+      "contentUnavailable": "Message content not available"
+    },
+    "reactions": {
+      "reactWith": "React with {emoji}",
+      "count": "{count} {emoji} reactions"
+    },
+    "bubble": {
+      "longPressHint": "Long-press for reactions and actions"
+    },
+    "emoji": {
+      "open": "Choose an emoji",
+      "recent": "Recent",
+      "smileys": "Smileys",
+      "people": "People",
+      "nature": "Nature",
+      "food": "Food",
+      "activity": "Activity",
+      "travel": "Travel",
+      "objects": "Objects"
+    },
+    "voice": {
+      "discard": "Delete recording",
+      "play": "Play",
+      "pause": "Pause",
+      "stop": "Stop recording"
+    },
+    "composer": {
+      "removeFile": "Remove {name}",
+      "pickerDone": "Done"
+    },
+    "payment": {
+      "status": {
+        "pending": "Pending",
+        "completed": "Completed",
+        "declined": "Declined"
+      },
+      "accept": "Accept",
+      "decline": "Decline",
+      "pay": "Pay now",
+      "refreshBalance": "Refresh balance"
+    },
+    "invite": {
+      "untitled": "Event invitation"
+    },
+    "booking": {
+      "untitled": "Service request"
+    },
+    "companion": {
+      "indexScore": "Your Index: {score}"
+    },
+    "attach": {
+      "library": "Photo library",
+      "camera": "Camera",
+      "files": "Files"
+    }
+  }
+}

@@ -6070,6 +6070,7 @@
       "sendFunds": "Wyślij środki",
       "requestPayment": "Poproś o płatność",
       "attachFile": "Załącz plik",
+      "attachPhotos": "Zdjęcia i wideo",
       "attach": "Załącz",
       "loadingMessages": "Ładowanie wiadomości…",
       "loadingOlderMessages": "Ładowanie starszych wiadomości…",
@@ -7732,7 +7733,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "Karta testowa (tylko dla administratorów)",
+          "desc": "Vitana wyśle ci teraz wiadomość z kartą Vitana Index na twój czat z Vitaną – tak, jak członkowie dostają ją rano. Dostajesz ją tylko ty.",
+          "button": "Wyślij kartę testową",
+          "sending": "Wysyłanie …",
+          "sent": "Karta testowa wysłana – otwórz swój czat z Vitaną.",
+          "open": "Otwórz czat z Vitaną",
+          "errorTitle": "Karta testowa nie została wysłana",
+          "unavailable": "Wiadomości od Vitany są tu teraz wyłączone, na przykład na stagingu.",
+          "noIndex": "Nie masz jeszcze Vitana Index, więc nie ma jeszcze karty Index.",
+          "rateLimited": "Poczekaj minutę przed następną kartą testową.",
+          "failed": "Nie udało się. Spróbuj ponownie."
+        }
       },
       "communityIntroTitle": "Przedstaw mnie społeczności",
       "communityIntroBody": "W pierwszym tygodniu inni członkowie widzą krótką kartę powitalną o Tobie i mogą się przywitać.",

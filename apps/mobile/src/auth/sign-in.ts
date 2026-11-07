@@ -23,6 +23,12 @@ import { getSupabase } from './client';
 
 export type PortalTenant = 'maxina' | 'alkalma';
 
+/**
+ * A portal's tenant: one of the two compiled portals or any registry slug
+ * (VTID-05449 — the generic `/:tenantSlug` portal, web TenantPortal.tsx).
+ */
+export type TenantSlug = PortalTenant | (string & {});
+
 /** MaxinaPortal.tsx / AlkalmaPortal.tsx deadline (VTID-03652). */
 export const SIGN_IN_DEADLINE_MS = 15_000;
 
@@ -77,8 +83,10 @@ function linkBase(): string {
   return requireUrl(config, 'authRedirectUrl').replace(/\/+$/, '');
 }
 
-export function emailRedirectFor(tenant: PortalTenant): string {
-  return `${linkBase()}${CONFIRMATION_PATHS[tenant]}`;
+/** The confirmation link: the two compiled portals' paths, else `/<slug>?confirmed=true` (TenantAuthCard.tsx). */
+export function emailRedirectFor(tenant: TenantSlug): string {
+  const path = (CONFIRMATION_PATHS as Record<string, string>)[tenant] ?? `/${tenant}?confirmed=true`;
+  return `${linkBase()}${path}`;
 }
 
 export function resetRedirect(): string {
@@ -95,7 +103,7 @@ export async function signInWithPassword(email: string, password: string, supaba
 }
 
 export async function signUpWithPassword(
-  input: { email: string; password: string; fullName: string; tenant: PortalTenant; preferredRole?: string },
+  input: { email: string; password: string; fullName: string; tenant: TenantSlug; preferredRole?: string },
   supabase: SupabaseClient = getSupabase(),
 ): Promise<SignInResult> {
   const emailRedirectTo = emailRedirectFor(input.tenant);
@@ -121,6 +129,24 @@ export async function sendPasswordReset(email: string, supabase: SupabaseClient 
   try {
     const { error } = await withDeadline(supabase.auth.resetPasswordForEmail(email, { redirectTo }));
     return error ? { ok: false, message: error.message } : { ok: true };
+  } catch (err) {
+    return failure(err);
+  }
+}
+
+/**
+ * VTID-05449 — "Didn't receive the email? Resend" (ResendConfirmationButton.tsx):
+ * `auth.resend({ type: 'signup' })` with the portal's confirmation link. A rate
+ * limit maps to the web's toast key; the caller starts the 60 s / 120 s cooldown.
+ */
+export async function resendConfirmation(email: string, tenant: TenantSlug, supabase: SupabaseClient = getSupabase()): Promise<SignInResult & { rateLimited?: boolean }> {
+  const emailRedirectTo = emailRedirectFor(tenant);
+  try {
+    const { error } = await withDeadline(supabase.auth.resend({ type: 'signup', email, options: { emailRedirectTo } }));
+    if (!error) return { ok: true };
+    const msg = error.message ?? '';
+    if (msg.includes('rate limit') || msg.includes('too many')) return { ok: false, rateLimited: true, errorKey: 'toasts.auth.tooManyAttemptsPleaseWaitFew' };
+    return { ok: false, message: msg };
   } catch (err) {
     return failure(err);
   }
@@ -178,7 +204,7 @@ export function codeFromReturnUrl(url: string): string | null {
 }
 
 /** Android has no Apple SDK: browser PKCE round trip to `/oauth/complete` (web F22). */
-export async function signInWithAppleAndroid(tenant: PortalTenant, supabase: SupabaseClient = getSupabase()): Promise<SignInResult> {
+export async function signInWithAppleAndroid(tenant: TenantSlug, supabase: SupabaseClient = getSupabase()): Promise<SignInResult> {
   try {
     const redirectTo = appLink('/oauth/complete');
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -206,6 +232,6 @@ export async function exchangeCode(code: string, supabase: SupabaseClient = getS
   }
 }
 
-export function signInWithApple(tenant: PortalTenant, supabase?: SupabaseClient): Promise<SignInResult> {
+export function signInWithApple(tenant: TenantSlug, supabase?: SupabaseClient): Promise<SignInResult> {
   return Platform.OS === 'ios' ? signInWithAppleIOS(supabase) : signInWithAppleAndroid(tenant, supabase);
 }

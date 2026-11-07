@@ -39,6 +39,14 @@
       ],
       "reason": "News cover-image selection and longevity-pillar mapping (getNewsImage, getArticlePillar, LONGEVITY_PILLARS). Imports nothing; pure. Used by the native NewsArticleCard twin and the news reader."
     },
+    "src/lib/exchangeRates.ts": {
+      "entry": "exchangeRates.ts",
+      "lanes": [
+        "wallet-home",
+        "marketplace-orders"
+      ],
+      "reason": "Wallet exchange-rate helpers (getCurrentExchangeRates, getExchangeRate, calculateExchange, getCurrencySymbol, convertFromUsd, convertToUsd, EUR_PER_USD). Imports nothing; pure. Used by the native BookingPaymentFlow twin (marketplace-orders: getExchangeRate, formatCurrency) and the native wallet hub and balance screens."
+    },
     "src/components/vitana/vitana-card-catalog.ts": {
       "entry": "vitana-card-catalog.ts",
       "lanes": [
@@ -213,6 +221,77 @@
         "N6"
       ],
       "reason": "Shared domain types (type-only re-export, erased from the bundle)."
+    },
+    "src/lib/horizonBuckets.ts": {
+      "entry": "horizon-buckets.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "My Journey horizon bucketing (bucketFromWaveId, bucketActions, HORIZON_BUCKETS). Pure; its one import is the type-only @/types/autopilot. The native dashboard buckets the onboarding recommendations into \"today\" with it."
+    },
+    "src/lib/vitana-projection.ts": {
+      "entry": "vitana-projection.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "Vitana Index slope helpers (trend7d, projectDays, projectDay90, buildHorizonPoints). Imports nothing; pure. The native \"how you are doing\" card reads the 7-day trend through it."
+    },
+    "src/lib/goalPhases.ts": {
+      "entry": "goal-phases.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "Goal-plan phase segments (buildPhases, RingPhase). Imports nothing; pure. The native hero ring and plan-sheet ring colour their phases with it."
+    },
+    "src/lib/vitanaIndex.ts": {
+      "entry": "vitana-index-tiers.ts",
+      "lanes": [
+        "journey"
+      ],
+      "reason": "The Vitana Index tier table (VITANA_INDEX_TIERS, getVitanaIndexTier). Imports nothing; pure. The native My Journey Index cards label the tier with it."
+    },
+    "src/lib/audiobook/queue.ts": {
+      "entry": "audiobook-queue.ts",
+      "lanes": [
+        "journey",
+        "autopilot-audiobook"
+      ],
+      "reason": "Audiobook season order and queue helpers (AUDIOBOOK_SEASONS, seasonNumber). Imports nothing; pure. The native guided-journey catalog orders and labels its chapters with it."
+    },
+    "src/lib/messaging/grouping.ts": {
+      "entry": "messaging-grouping.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Message grouping positions (groupPositions, isGroupStart, isGroupEnd). Imports nothing; pure. Used by the native conversation and group chat lists."
+    },
+    "src/lib/mentions.ts": {
+      "entry": "mentions.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "@mention helpers (findActiveMentionToken, insertMention, addMention, pruneMentions, splitMentionSegments, filterLocalCandidates). Imports nothing; pure. Used by the native composer and message bubble."
+    },
+    "src/lib/messaging/groupSystemNotice.ts": {
+      "entry": "group-notice.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Group system-notice text (describeGroupNotice, noticeName). Imports nothing; pure. Used by the native message bubble and members modal."
+    },
+    "src/lib/messaging/groupManagement.ts": {
+      "entry": "group-management.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Group rename / participant deactivate over an injected client (renameGlobalGroup, deactivateParticipant). Imports nothing; pure. Used by the native members modal."
+    },
+    "src/lib/chatMarkdown.ts": {
+      "entry": "chat-markdown.ts",
+      "lanes": [
+        "conversation-chat"
+      ],
+      "reason": "Vitana chat-reply Markdown parser (parseChatMarkdown, parseChatInline, MdBlock, MdInline). Imports nothing; pure. Used by the native message bubble for the Vitana bot's replies (VTID-05193)."
     },
     "src/mocks/ai.ts": {
       "entry": "ai-mocks.ts",

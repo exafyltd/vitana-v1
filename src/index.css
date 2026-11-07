@@ -1359,9 +1359,11 @@ body.maxina-intro-page [class^="vtorb-fab"] {
     border: 0;
   }
 
-  /* Better scroll behavior for chat */
+  /* Chat scroll: no CSS smooth scrolling. A smooth rule animates every
+     programmatic scrollTop write (opening a chat, history restore, follow-
+     newest). Smooth scrolling stays explicit (scrollTo behavior 'smooth' for
+     the send action). VTID-05585. */
   .chat-scroll {
-    scroll-behavior: smooth;
     overscroll-behavior: contain;
   }
 

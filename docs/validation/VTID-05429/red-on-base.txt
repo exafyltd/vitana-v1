@@ -1,0 +1,63 @@
+# VTID-05429 red on base — new tests run on origin/main a41e89a0dbc724ce7406248213dd2e64ee123fce
+# cmd: cd apps/mobile && APP_PROFILE=development npm run gen:i18n && APP_PROFILE=development npx jest tests/profile   (stack frames stripped)
+FAIL tests/profile/data.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/profile/data/profile' from 'tests/profile/data.test.ts'
+
+       8 | import { readFileSync } from 'fs';
+       9 | import { join } from 'path';
+    > 10 | import {
+         | ^
+      11 |   DEFAULT_ACCOUNT_VISIBILITY,
+      12 |   NEXT_TIER,
+      13 |   buildAboutUpdate,
+
+
+FAIL tests/profile/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/profile/MyProfileScreen' from 'tests/profile/i18n-rtl.test.tsx'
+
+      14 | import { __setSupabaseForTests } from '../../src/auth/client';
+      15 | import { LOCALES, translate } from '../../src/i18n';
+    > 16 | import { MyProfileScreen } from '../../src/screens/profile/MyProfileScreen';
+         | ^
+      17 | import { PrivacyScreen } from '../../src/screens/profile/PrivacyScreen';
+      18 | import { createProfileDouble, profileRow, renderProfile } from './helpers';
+      19 |
+
+
+FAIL tests/profile/my-profile.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/profile/MyProfileScreen' from 'tests/profile/my-profile.test.tsx'
+
+      11 | import { __setSupabaseForTests } from '../../src/auth/client';
+      12 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 13 | import { MyProfileScreen } from '../../src/screens/profile/MyProfileScreen';
+         | ^
+      14 | import { createProfileDouble, profileRow, renderProfile } from './helpers';
+      15 |
+      16 | const hidden = { includeHiddenElements: true } as const;
+
+
+FAIL tests/profile/privacy.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/profile/PrivacyScreen' from 'tests/profile/privacy.test.tsx'
+
+      11 | import { __setSupabaseForTests } from '../../src/auth/client';
+      12 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 13 | import { PrivacyScreen, PRIVACY_SECTIONS } from '../../src/screens/profile/PrivacyScreen';
+         | ^
+      14 | import { DEFAULT_ACCOUNT_VISIBILITY } from '../../src/screens/profile/data/profile';
+      15 | import { createProfileDouble, profileRow, renderProfile } from './helpers';
+      16 |
+
+
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        21.088 s
+Ran all test suites matching /tests\/profile/i.
