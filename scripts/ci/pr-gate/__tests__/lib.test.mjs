@@ -77,6 +77,32 @@ test('sparring record needs verdict, owner approval and plan hash', () => {
   assert.equal(L.evaluateSparringRecord('CONVERGED').length, 2);
 });
 
+test('sparring record: CONVERGED + policy approval + plan hash passes', () => {
+  assert.deepEqual(L.evaluateSparringRecord('Verdict: CONVERGED and approved by policy `converged-auto-v1`\nPlan hash: abc'), []);
+});
+
+test('sparring record: policy approval on an ESCALATED-only verdict is no approval', () => {
+  const p = L.evaluateSparringRecord('Verdict: ESCALATED, approved by policy `converged-auto-v1`\nPlan hash: abc');
+  assert.ok(p.some((x) => /^no approval/.test(x)), JSON.stringify(p));
+});
+
+test('sparring record: an unknown policy name is no approval', () => {
+  const p = L.evaluateSparringRecord('Verdict: CONVERGED and approved by policy `other-policy-v9`\nPlan hash: abc');
+  assert.ok(p.some((x) => /^no approval/.test(x)), JSON.stringify(p));
+});
+
+test('sparring record: CONVERGED + policy approval without plan hash gives exactly no plan hash', () => {
+  assert.deepEqual(L.evaluateSparringRecord('Verdict: CONVERGED and approved by policy `converged-auto-v1`'), ['no plan hash']);
+});
+
+test('sparring record: neither approval form names both forms in the problem', () => {
+  const p = L.evaluateSparringRecord('Verdict: CONVERGED\nPlan hash: abc');
+  assert.equal(p.length, 1);
+  assert.match(p[0], /owner-approval line/);
+  assert.match(p[0], /approved by policy `converged-auto-v1`/);
+  assert.match(p[0], /CONVERGED/);
+});
+
 test('migration lint: wrapper, idempotency, non-transactional declaration', () => {
   const good = 'BEGIN;\nCREATE TABLE IF NOT EXISTS t (id int);\nCREATE OR REPLACE FUNCTION f() RETURNS int AS $$ BEGIN CREATE TABLE inner_t(x int); RETURN 1; END $$ LANGUAGE plpgsql;\nALTER TABLE t ADD COLUMN IF NOT EXISTS c int;\nCOMMIT;';
   assert.deepEqual(L.lintMigration(good), []);
