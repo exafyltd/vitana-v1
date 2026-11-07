@@ -60,6 +60,13 @@
       ],
       "reason": "VTID-05455 — the Vitana Index slope projection (trend7d, projectDays, projectDay90, buildHorizonPoints) the Index sheet's 30-day horizon draws; imports nothing, pure."
     },
+    "src/components/supplements/supplementCategories.ts": {
+      "entry": "supplement-categories.ts",
+      "lanes": [
+        "health"
+      ],
+      "reason": "VTID-05457 — the supplement category catalogue (SUPPLEMENT_CATEGORIES, getAllCategories, getCategoryGroups) the native /health/my-biology filter and add-supplement dialog list; imports nothing, pure."
+    },
     "src/integrations/supabase/types.ts": {
       "entry": "database.ts",
       "lanes": [

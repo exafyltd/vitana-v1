@@ -334,6 +334,63 @@
       },
       "litersOf": "{current} l / {target} l",
       "liters": "{value} l"
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Enregistrer",
+        "example": "ex. {value}",
+        "units": {
+          "count": "nombre",
+          "hours": "heures",
+          "min": "min"
+        },
+        "features": {
+          "biomarker_glucose": "Glycémie à jeun",
+          "meal_log": "Repas enregistrés",
+          "macro_balance": "Score d'équilibre des macros",
+          "water_intake": "Apport en eau",
+          "hydration_log": "Points d'hydratation",
+          "wearable_steps": "Pas",
+          "wearable_heart_rate": "Fréquence cardiaque moyenne",
+          "wearable_workout": "Minutes d'entraînement",
+          "vo2_max": "Estimation de la VO₂ max",
+          "wearable_sleep_duration": "Durée du sommeil",
+          "wearable_sleep_efficiency": "Efficacité du sommeil",
+          "wearable_hrv": "VFC (moyenne nocturne)",
+          "meditation_minutes": "Minutes de méditation",
+          "mood_entry": "Score d'humeur",
+          "wearable_stress": "Stress (objet connecté)",
+          "journal_entry": "Entrées de journal aujourd'hui"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Acides gras",
+      "noSupplementsYet": "Aucun complément ajouté pour l'instant. Touche « Ajouter un complément » pour commencer.",
+      "noSupplementsInCategory": "Aucun complément dans la catégorie {category}.",
+      "dialog": {
+        "addTitle": "Ajouter un complément",
+        "editTitle": "Modifier le complément",
+        "addDescription": "Ajoute un nouveau complément à ta routine",
+        "editDescription": "Mets à jour les informations du complément",
+        "addSubmit": "Ajouter le complément",
+        "updateSubmit": "Mettre à jour le complément",
+        "datePlaceholder": "AAAA-MM-JJ"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Commander un nouveau test de laboratoire",
+          "description": "Planifie un bilan de santé complet"
+        },
+        "downloadResults": {
+          "title": "Télécharger tous les résultats",
+          "description": "Exporte tout ton historique de laboratoire"
+        },
+        "trackTrends": {
+          "title": "Suivre les tendances",
+          "description": "Consulte l'évolution de tes biomarqueurs"
+        }
+      }
     }
   }
 }

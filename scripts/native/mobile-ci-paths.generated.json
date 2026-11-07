@@ -20,6 +20,7 @@
     "src/components/language/locale-presentation.ts",
     "src/components/mobile/MobileBottomNav.tsx",
     "src/components/mobile/SideDrawerNav.tsx",
+    "src/components/supplements/supplementCategories.ts",
     "src/components/vitana/vitana-card-catalog.ts",
     "src/config/drawer-nav.config.ts",
     "src/config/role-navigation.ts",

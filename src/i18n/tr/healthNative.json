@@ -334,6 +334,63 @@
       },
       "litersOf": "{current} L / {target} L",
       "liters": "{value} L"
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Veri kaydet",
+        "example": "örn. {value}",
+        "units": {
+          "count": "adet",
+          "hours": "saat",
+          "min": "dk"
+        },
+        "features": {
+          "biomarker_glucose": "Açlık kan şekeri",
+          "meal_log": "Kaydedilen öğünler",
+          "macro_balance": "Makro denge puanı",
+          "water_intake": "Su tüketimi",
+          "hydration_log": "Hidrasyon kayıtları",
+          "wearable_steps": "Adım",
+          "wearable_heart_rate": "Ortalama nabız",
+          "wearable_workout": "Antrenman dakikası",
+          "vo2_max": "Tahmini VO₂ maks",
+          "wearable_sleep_duration": "Uyku süresi",
+          "wearable_sleep_efficiency": "Uyku verimliliği",
+          "wearable_hrv": "HRV (gece ortalaması)",
+          "meditation_minutes": "Meditasyon dakikası",
+          "mood_entry": "Ruh hâli puanı",
+          "wearable_stress": "Stres (giyilebilir)",
+          "journal_entry": "Bugünkü günlük kayıtları"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Yağ asitleri",
+      "noSupplementsYet": "Henüz takviye eklemedin. Başlamak için “Takviye ekle” seçeneğine dokun.",
+      "noSupplementsInCategory": "{category} kategorisinde takviye yok.",
+      "dialog": {
+        "addTitle": "Takviye ekle",
+        "editTitle": "Takviyeyi düzenle",
+        "addDescription": "Rutinine yeni bir takviye ekle",
+        "editDescription": "Takviye bilgilerini güncelle",
+        "addSubmit": "Takviye ekle",
+        "updateSubmit": "Takviyeyi güncelle",
+        "datePlaceholder": "YYYY-AA-GG"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Yeni laboratuvar testi sipariş et",
+          "description": "Kapsamlı bir sağlık taraması planla"
+        },
+        "downloadResults": {
+          "title": "Tüm sonuçları indir",
+          "description": "Tüm laboratuvar geçmişini dışa aktar"
+        },
+        "trackTrends": {
+          "title": "Trendleri takip et",
+          "description": "Biyobelirteçlerinin zaman içindeki değişimini gör"
+        }
+      }
     }
   }
 }

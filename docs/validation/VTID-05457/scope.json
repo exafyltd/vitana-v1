@@ -1,0 +1,42 @@
+{
+  "vtid": "VTID-05457",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/health/**",
+    "apps/mobile/src/screens/health/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/maestro/health/**",
+    "apps/mobile/tests/health/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/healthNative.json",
+    "docs/validation/**",
+    "packages/core/extract.json"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(app)/health/vitana-index.tsx",
+    "apps/mobile/app/(app)/health/my-biology.tsx",
+    "apps/mobile/src/screens/health/VitanaIndexDetailScreen.tsx",
+    "apps/mobile/src/screens/health/MyBiologyScreen.tsx",
+    "apps/mobile/src/screens/health/index-biology/**",
+    "apps/mobile/src/ports/health-biology.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/health/vitana-index-biology/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/supplement-categories.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/healthNative.json",
+    "docs/validation/VTID-05457/**"
+  ],
+  "stacked_on": "exafyltd/vitana-v1#1562 (VTID-05455, native-wave2-health-biology-r3/health-hub); this branch is based on origin/kiro/native-wave2-health-biology-r3/health-hub @ cda3e39f0 and lands after it. No health-hub file is edited (HealthUtilityBar, ports/health-sync.ts, ports/health-data.ts, VitanaIndexSheet, the data module and sheets are imported and reused).",
+  "core_change": "one class-A re-export: packages/core/src/supplement-categories.ts (src/components/supplements/supplementCategories.ts — SUPPLEMENT_CATEGORIES, getAllCategories, getCategoryGroups; imports nothing). Manifest line added; closure.generated.json + mobile-ci-paths.generated.json regenerated with `npm run gen:core` (core-closure --write) in this PR; core-closure --check and gen-core-extract --check up to date. src/lib/vitana-index-next-steps.ts is NOT extracted: it runtime-imports weakestPillar from src/hooks/useVitanaIndex.ts (class B, web Supabase client), so it is re-implemented natively (index-biology/next-steps.ts). packages/core/extract.json is unchanged.",
+  "sparring_record": "docs/validation/VTID-05457/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
