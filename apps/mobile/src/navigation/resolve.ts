@@ -72,6 +72,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/discover/supplements',
   '/discover/wellness-services',
   '/dev/orb-bench',
+  '/health',
   '/home',
   '/home/comments',
   '/home/compose',

@@ -1268,10 +1268,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.MY_BIOLOGY",
@@ -1292,10 +1292,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.PILLARS",
@@ -1448,10 +1448,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.VITANA_INDEX",
@@ -1772,10 +1772,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "health",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "OVERLAY.WALLET_POPUP",
