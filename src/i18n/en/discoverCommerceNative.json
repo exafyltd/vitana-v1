@@ -138,6 +138,69 @@
         "openIndexStreak": "Open Vitana Index — {days}-day streak",
         "upcomingEvents": "{count} upcoming events"
       }
+    },
+    "searchShort": "Search...",
+    "indexPill": "Vitana Index {value} — open Health",
+    "calendar": {
+      "upcomingCount": "{count} upcoming events"
+    },
+    "bookmark": {
+      "add": "Add bookmark",
+      "remove": "Remove bookmark"
+    },
+    "product": {
+      "outOfStock": "Out of Stock"
+    },
+    "hidden": {
+      "product": "product",
+      "products": "products",
+      "allergies": "contain an allergen you listed",
+      "contraindications": "contraindicated with a health condition you listed",
+      "medications": "may interact with a medication you take",
+      "dietary": "don't match your dietary preferences",
+      "budget": "are above your per-product budget ceiling",
+      "sensitivities": "contain an ingredient you're sensitive to",
+      "geo": "don't ship to your region",
+      "excluded_region": "are regionally restricted",
+      "past_purchases": "you recently purchased"
+    },
+    "quickShop": {
+      "viewCart": "View Cart",
+      "quickCheckout": "Quick Checkout",
+      "reorderPrevious": "Reorder Previous",
+      "managePayment": "Manage Payment",
+      "trackOrders": "Track Orders",
+      "setPriceAlert": "Set Price Alert",
+      "viewSavedItems": "View Saved Items",
+      "applyCoupon": "Apply Coupon"
+    },
+    "quickBook": {
+      "bookAppointment": "Book Appointment",
+      "rebookPrevious": "Rebook Previous",
+      "findNearMe": "Find Near Me",
+      "messageProvider": "Message Provider",
+      "viewMyBookings": "View My Bookings",
+      "setReminders": "Set Reminders",
+      "leaveReview": "Leave Review",
+      "paymentHistory": "Payment History"
+    },
+    "supplementCategories": {
+      "all": "All",
+      "multivitamins": "Multivitamins",
+      "vitamins": "Vitamins",
+      "minerals": "Minerals",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptogens",
+      "nootropics": "Nootropics",
+      "longevity": "Longevity",
+      "immunity": "Immunity",
+      "antioxidants": "Antioxidants",
+      "sleep": "Sleep",
+      "performance": "Performance",
+      "beauty": "Beauty",
+      "gutHealth": "Gut Health",
+      "herbs": "Herbs",
+      "heartHealth": "Heart Health"
     }
   }
 }

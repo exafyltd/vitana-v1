@@ -932,10 +932,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.CART",
@@ -956,10 +956,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.DEALS",
@@ -968,10 +968,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.DEALS_AI",
@@ -980,10 +980,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.DEALS_SAVED",
@@ -992,10 +992,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.DEALS_TRENDING",
@@ -1004,10 +1004,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.DOCTORS_COACHES",
@@ -1112,10 +1112,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.PRODUCT_DETAIL",
@@ -1148,10 +1148,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.SHOP",
@@ -1160,10 +1160,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.SUPPLEMENTS",
@@ -1172,10 +1172,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "DISCOVER.WELLNESS_SERVICES",
@@ -1184,10 +1184,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "HEALTH.BIOLOGY_OMICS",
@@ -2528,10 +2528,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "discover-commerce",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-02"
     },
     {
       "key": "/download",

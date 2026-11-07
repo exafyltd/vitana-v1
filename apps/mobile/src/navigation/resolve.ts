@@ -61,9 +61,16 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/connectors',
   '/delete-account',
   '/daily-diary',
+  // VTID-05510: `/discover` also serves `/discover/ai-picks` (sparring R1-F1) —
+  // the registry alias DISCOVER.AI_PICKS route → mobileRoute `/discover?tab=suggested`
+  // (screens.json) now resolves `native` instead of the Unported fallback.
+  '/discover',
+  '/discover/deals-offers',
   '/discover/doctors-coaches',
   '/discover/marketplace',
   '/discover/orders',
+  '/discover/supplements',
+  '/discover/wellness-services',
   '/dev/orb-bench',
   '/home',
   '/home/comments',
@@ -107,6 +114,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/settings/limitations',
   '/settings/preferences',
   '/settings/tenant-role',
+  '/shop',
   '/support',
   '/terms',
   '/wallet',

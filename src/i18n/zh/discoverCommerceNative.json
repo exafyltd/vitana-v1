@@ -138,6 +138,69 @@
         "openIndexStreak": "打开 Vitana 指数——连续 {days} 天",
         "upcomingEvents": "{count} 个即将到来的日程"
       }
+    },
+    "searchShort": "搜索…",
+    "indexPill": "Vitana 指数 {value}：打开健康",
+    "calendar": {
+      "upcomingCount": "{count} 个即将到来的活动"
+    },
+    "bookmark": {
+      "add": "添加书签",
+      "remove": "移除书签"
+    },
+    "product": {
+      "outOfStock": "缺货"
+    },
+    "hidden": {
+      "product": "件产品",
+      "products": "件产品",
+      "allergies": "含有你填写的过敏原",
+      "contraindications": "与你填写的健康状况相禁忌",
+      "medications": "可能与你服用的药物相互作用",
+      "dietary": "不符合你的饮食偏好",
+      "budget": "超出你的单品预算",
+      "sensitivities": "含有你敏感的成分",
+      "geo": "无法配送到你所在的地区",
+      "excluded_region": "受地区限制",
+      "past_purchases": "你最近已购买"
+    },
+    "quickShop": {
+      "viewCart": "查看购物车",
+      "quickCheckout": "快速结账",
+      "reorderPrevious": "再次购买",
+      "managePayment": "管理支付",
+      "trackOrders": "跟踪订单",
+      "setPriceAlert": "设置降价提醒",
+      "viewSavedItems": "查看收藏",
+      "applyCoupon": "使用优惠券"
+    },
+    "quickBook": {
+      "bookAppointment": "预约",
+      "rebookPrevious": "再次预约",
+      "findNearMe": "查找附近",
+      "messageProvider": "联系服务方",
+      "viewMyBookings": "我的预约",
+      "setReminders": "设置提醒",
+      "leaveReview": "写评价",
+      "paymentHistory": "付款记录"
+    },
+    "supplementCategories": {
+      "all": "全部",
+      "multivitamins": "复合维生素",
+      "vitamins": "维生素",
+      "minerals": "矿物质",
+      "omega3": "Omega-3",
+      "adaptogens": "适应原",
+      "nootropics": "益智补充剂",
+      "longevity": "长寿",
+      "immunity": "免疫",
+      "antioxidants": "抗氧化剂",
+      "sleep": "睡眠",
+      "performance": "表现",
+      "beauty": "美容",
+      "gutHealth": "肠道健康",
+      "herbs": "草本",
+      "heartHealth": "心脏健康"
     }
   }
 }
