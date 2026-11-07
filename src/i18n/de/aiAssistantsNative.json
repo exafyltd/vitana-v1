@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "Stimme anhören",
+      "playing": "Wird abgespielt …",
+      "previewPhrase": "Hallo, das ist eine Vorschau deiner gewählten Spracheinstellungen.",
+      "previewUnavailable": "Für diese Sprache ist auf diesem Gerät keine Vorschau verfügbar.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value} %"
+    },
+    "proactive": {
+      "playSample": "Beispielbegrüßung abspielen",
+      "speaking": "Spricht …",
+      "notSet": "Nicht festgelegt",
+      "none": "Keine",
+      "quoted": "„{text}“",
+      "messageType": {
+        "time_greeting": "Zeitbasierte Begrüßungen (Guten Morgen usw.)",
+        "wellness_check": "Wellness-Check-ins",
+        "motivational": "Motivierende Nachrichten",
+        "reminder": "Erinnerungen an Aktionen"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "Der Autopilot kann andere Mitglieder fragen, wenn du Fragen stellst.",
+      "giveDescription": "Der Autopilot darf deinen Katalog anderen Mitgliedern anbieten. Standardmäßig aus – schalte es ein, wenn du bereit bist.",
+      "moneyDescription": "Stuft das Verdienen von „Vorschlagen und freigeben“ auf autonom hoch. Schalte das nur ein, wenn du deinem Katalog und deinem Hinweistext vertraust.",
+      "moneyDisabledHint": "Schalte zuerst „Empfehlungen geben“ ein."
+    },
+    "connect": {
+      "missingKey": "Bitte füge deinen API-Schlüssel ein.",
+      "wrongPrefix": "Der API-Schlüssel muss mit „{prefix}“ beginnen.",
+      "unauthorized": "Der Anbieter hat diesen Schlüssel abgelehnt (nicht autorisiert). Prüfe ihn in deinem Dashboard.",
+      "network": "Netzwerkfehler beim Erreichen des Anbieters. Bitte versuche es noch einmal.",
+      "verifyFailed": "Verifizierung fehlgeschlagen ({status}).",
+      "failed": "Verbindung fehlgeschlagen ({code}).",
+      "saving": "Wird gespeichert …",
+      "verifying": "Wird verifiziert …",
+      "connect": "Verbinden"
+    }
+  }
+}
