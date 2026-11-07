@@ -1,0 +1,67 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "Yapay zekâ bölümleri",
+      "overview": "Genel bakış",
+      "insights": "İçgörüler",
+      "recommendations": "Öneriler",
+      "dailySummary": "Günlük özet",
+      "companion": "Yapay zekâ arkadaşı"
+    },
+    "priority": {
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    },
+    "suggestions": {
+      "title": "Yapay zekâ içgörüleri ve önerileri"
+    },
+    "reward": {
+      "suggestions": "Yapay zekâ önerilerini uygula, sağlık ödülleri kazan",
+      "index": "Daha fazla kredi için sağlık puanını yükselt"
+    },
+    "index": {
+      "computing": "hesaplanıyor…"
+    },
+    "streak": {
+      "meditation": "Meditasyon"
+    },
+    "companion": {
+      "suggestionDescription": "Yapay zekânın ürettiği sağlıklı yaşam önerisi",
+      "recall": "Hatırla",
+      "autopilotMeditation": "Meditasyon molası planla",
+      "autopilotHydration": "15 dk içinde su hatırlatması"
+    },
+    "motivation": {
+      "defaultQuote": "Sağlıklı yaşama doğru atılan her küçük adım kutlanmaya değer bir zaferdir.",
+      "defaultAuthor": "Günün ilhamı"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Sağlıklı yaşam"
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Kan belirteçleri"
+    },
+    "chat": {
+      "voice": "Sesli arama başlat",
+      "video": "Görüntülü arama başlat",
+      "send": "Mesaj gönder"
+    },
+    "autopilot": {
+      "settings": "Otopilot ayarları",
+      "toggle": "Otopilotu aç veya kapat"
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA kazandın!",
+      "task": "Görev tamamlandı: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Endeks şimdi {n}"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+FAIL tests/liverooms/rules.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/liverooms/data/rules' from 'tests/liverooms/rules.test.ts'
+
+      4 | import { configure } from '@testing-library/react-native';
+      5 | import { translate } from '../../src/i18n';
+    > 6 | import {
+        | ^
+      7 |   MAX_LIVE_STREAM_DURATION_MS,
+      8 |   allRoomsInTimeOrder,
+      9 |   filterRooms,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/liverooms/rules.test.ts:6:1)
+
+FAIL tests/liverooms/lane-guards.test.ts (15.472 s)
+  ● live-rooms routes › the list and the viewer route files exist
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      38 | describe('live-rooms routes', () => {
+      39 |   it('the list and the viewer route files exist', () => {
+    > 40 |     expect(existsSync(join(APP, 'app/(app)/comm/live-rooms/index.tsx'))).toBe(true);
+         |                                                                          ^
+      41 |     expect(existsSync(join(APP, 'app/(app)/comm/live-rooms/[roomId]/view.tsx'))).toBe(true);
+      42 |   });
+      43 |
+
+      at Object.toBe (tests/liverooms/lane-guards.test.ts:40:74)
+
+  ● live-rooms routes › the static list route is native and every tab variant resolves to it
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected value: "/comm/live-rooms"
+    Received array: ["/", "/alkalma", "/alkalma/confirmed", "/apply", "/auth/confirmed", "/autopilot", "/comm/find-partner", "/comm/groups", "/comm/members", "/comm/open-asks", …]
+
+      43 |
+      44 |   it('the static list route is native and every tab variant resolves to it', () => {
+    > 45 |     expect(NATIVE_ROUTES).toContain('/comm/live-rooms');
+         |                           ^
+      46 |     for (const url of ['/comm/live-rooms', '/comm/live-rooms?tab=all', '/comm/live-rooms?tab=live', '/comm/live-rooms?tab=past', '/comm/live-rooms?tab=scheduled']) {
+      47 |       expect(resolveWebPath(url).kind).toBe('native');
+      48 |     }
+
+      at Object.toContain (tests/liverooms/lane-guards.test.ts:45:27)
+
+  ● lane code rules › the lane has files to check
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 5
+    Received:   0
+
+      52 | describe('lane code rules', () => {
+      53 |   it('the lane has files to check', () => {
+    > 54 |     expect(laneFiles().length).toBeGreaterThan(5);
+         |                                ^
+      55 |   });
+      56 |
+      57 |   it('no physical left/right styling (start/end only)', () => {
+
+      at Object.toBeGreaterThan (tests/liverooms/lane-guards.test.ts:54:32)
+
+  ● catalog keys the lane renders › every t() key used by the lane exists in all 11 locales
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 20
+    Received:   0
+
+      79 |       for (const m of read(f).matchAll(/\bt\(\s*['"]([A-Za-z][A-Za-z0-9_.]*)['"]/g)) keys.add(m[1]);
+      80 |     }
+    > 81 |     expect(keys.size).toBeGreaterThan(20);
+         |                       ^
+      82 |     const flatten = (node: unknown, prefix: string, out: Set<string>) => {
+      83 |       if (node && typeof node === 'object' && !Array.isArray(node)) {
+      84 |         for (const [k, v] of Object.entries(node)) flatten(v, prefix ? `${prefix}.${k}` : k, out);
+
+      at Object.toBeGreaterThan (tests/liverooms/lane-guards.test.ts:81:23)
+
+FAIL tests/liverooms/viewer.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/ports/live-room-video' from 'tests/liverooms/viewer.test.tsx'
+
+      13 | import { __setSupabaseForTests } from '../../src/auth/client';
+      14 | import { __setGatewayForTests } from '../../src/auth/gateway';
+    > 15 | import { registerLiveRoomVideoEngine, type LiveRoomVideoProps } from '../../src/ports/live-room-video';
+         | ^
+      16 | import { createLiveRoomsSupabaseDouble, fakeGateway, makeLiveRoomsWrapper } from './helpers';
+      17 | import { LiveRoomViewerScreen } from '../../src/screens/liverooms/LiveRoomViewerScreen';
+      18 |
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/liverooms/viewer.test.tsx:15:1)
+
+FAIL tests/liverooms/rooms-list.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/liverooms/LiveRoomsScreen' from 'tests/liverooms/rooms-list.test.tsx'
+
+      10 | import { __setSupabaseForTests } from '../../src/auth/client';
+      11 | import { createLiveRoomsSupabaseDouble, inMinutes, makeLiveRoomsWrapper, streamRow } from './helpers';
+    > 12 | import { LiveRoomsScreen } from '../../src/screens/liverooms/LiveRoomsScreen';
+         | ^
+      13 |
+      14 | afterAll(() => __setSupabaseForTests(null));
+      15 | jest.setTimeout(30000);
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/liverooms/rooms-list.test.tsx:12:1)
+
+Test Suites: 4 failed, 4 total
+Tests:       4 failed, 3 passed, 7 total
+Snapshots:   0 total
+Time:        16.598 s
+Ran all test suites matching /tests\/liverooms/i.

@@ -1,0 +1,64 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Cela sekcija",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Plesne preferencije",
+          "description": "Stilovi, nivo, uloga i šta tražiš."
+        },
+        "partnerPreferences": {
+          "label": "Preferencije partnera",
+          "description": "Koga tražiš. Podrazumevano privatno. Podpolja ostaju privatna i kada otvoriš sekciju."
+        },
+        "serviceOfferings": {
+          "label": "Ponuda usluga",
+          "description": "Šta nudiš. Podrazumevano javno — skrivanje nema smisla."
+        },
+        "myPosts": {
+          "label": "Moje objave",
+          "description": "Otvorene namere koje si izdiktirao. Objave za traženje partnera se NIKAD ne pojavljuju ovde, bez obzira na podešavanje."
+        },
+        "derivedAgeBand": {
+          "label": "Starosna grupa",
+          "description": "Prikaži samo svoju starosnu grupu (npr. 30-e) umesto tačnih godina. Podrazumevano: samo kontakti."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Moji stilovi",
+        "danceLevel": "Moj nivo",
+        "danceLookingFor": "Šta tražim",
+        "partnerGender": "Željeni pol",
+        "partnerAgeRange": "Raspon godina",
+        "partnerRelationshipIntent": "Namera veze",
+        "partnerLocationRadius": "Lokacija i radijus",
+        "servicePriceRange": "Raspon cena",
+        "postsCommercial": "Objave na marketplace-u",
+        "postsPartnerSeek": "Objave za traženje partnera"
+      },
+      "partnerSeekNote": "Uvek privatno. Protokol uzajamnog otkrivanja štiti ove objave, bez obzira na podešavanje."
+    },
+    "media": {
+      "photosDenied": "Dozvoli pristup fotografijama u Podešavanjima da izabereš sliku.",
+      "unsupportedFormat": "Nepodržan format slike (.{ext}). Koristi JPG, PNG, GIF ili WebP."
+    },
+    "gallery": {
+      "photos": "Fotografije",
+      "selectMultiple": "Izaberi više fotografija",
+      "tapToAddMore": "Dodirni da dodaš još",
+      "uploadingProgress": "Otpremanje {current} od {total}...",
+      "deleteTitle": "Da li si siguran?",
+      "deleteDescription": "Ova fotografija će biti trajno obrisana. Ova radnja se ne može poništiti."
+    }
+  }
+}

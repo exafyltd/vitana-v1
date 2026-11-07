@@ -1,0 +1,67 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "Seções de IA",
+      "overview": "Visão geral",
+      "insights": "Insights",
+      "recommendations": "Recomendações",
+      "dailySummary": "Resumo diário",
+      "companion": "Companheiro de IA"
+    },
+    "priority": {
+      "high": "Alta",
+      "medium": "Média",
+      "low": "Baixa"
+    },
+    "suggestions": {
+      "title": "Insights e sugestões de IA"
+    },
+    "reward": {
+      "suggestions": "Siga as sugestões da IA e ganhe recompensas de saúde",
+      "index": "Melhore sua pontuação de saúde para ganhar mais créditos"
+    },
+    "index": {
+      "computing": "calculando…"
+    },
+    "streak": {
+      "meditation": "Meditação"
+    },
+    "companion": {
+      "suggestionDescription": "Sugestão de bem-estar gerada por IA",
+      "recall": "Relembrar",
+      "autopilotMeditation": "Agendar uma pausa para meditar",
+      "autopilotHydration": "Lembrete de hidratação em 15 min"
+    },
+    "motivation": {
+      "defaultQuote": "Cada pequeno passo rumo ao bem-estar é uma vitória que merece ser celebrada.",
+      "defaultAuthor": "Inspiração do dia"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Bem-estar"
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Marcadores sanguíneos"
+    },
+    "chat": {
+      "voice": "Iniciar chamada de voz",
+      "video": "Iniciar chamada de vídeo",
+      "send": "Enviar mensagem"
+    },
+    "autopilot": {
+      "settings": "Configurações do Autopiloto",
+      "toggle": "Ativar ou desativar o Autopiloto"
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA ganhos!",
+      "task": "Tarefa concluída: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Índice agora {n}"
+    }
+  }
+}

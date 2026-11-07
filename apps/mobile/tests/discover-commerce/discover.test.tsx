@@ -7,7 +7,7 @@
  * collection requests. Fake gateway + Supabase double, no network.
  */
 import '../helpers/no-network';
-import { router, searchParams } from './mocks';
+import { router, searchParams } from './discover-mocks';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Platform } from 'react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
@@ -15,7 +15,7 @@ import { __setGatewayForTests } from '../../src/auth/gateway';
 import { overlayBus } from '../../src/navigation/overlay-bus';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { DiscoverScreen, resolveDiscoverTab, signInRoute, MATCH_GIVE_UP_MS } from '../../src/screens/discover/DiscoverScreen';
-import { budget, discoverWrapper, emptyCart, feedResult, product, searchResult } from './helpers';
+import { budget, discoverWrapper, emptyCart, feedResult, product, searchResult } from './discover-helpers';
 
 const setOS = (os: 'ios' | 'android') => Object.defineProperty(Platform, 'OS', { configurable: true, get: () => os });
 

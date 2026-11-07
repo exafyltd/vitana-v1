@@ -1,0 +1,60 @@
+{
+  "vtid": "VTID-05523",
+  "service": "community-app",
+  "_note": "Native Wave 2 ai-coach lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every write (the coach turn, the AI-consent user_preferences update / default-row insert, the autopilot completion POST) is asserted as the BUILT request against a mocked gateway / Supabase double and fires nothing. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screens) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 7).",
+  "tests": [
+    {
+      "kind": "existing",
+      "ref": "npm run gen:i18n",
+      "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not"
+    },
+    {
+      "kind": "existing",
+      "ref": "npx jest tests/ai-coach",
+      "cwd": "apps/mobile",
+      "reason": "the five /ai screens: card stacks loaded/empty in the web order, daily learnings loaded/empty/error from a fake GET /memory/daily-learning, the coach chat over a fake POST /conversation/turn (thread, built body, send error toast), the AI-consent sheet + user_preferences write asserted as a built request, the onboarding autopilot completion requests, 11 locales without a raw key, Arabic RTL, no physical left/right — fake gateway / Supabase double, no network"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run typecheck",
+      "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screens, data hooks and the ai-coach port type-check against @vitana/core (ai-mocks), @vitana/tokens and the shell ports"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run bundle",
+      "cwd": "apps/mobile",
+      "env": {
+        "APP_PROFILE": "development"
+      },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the five /ai routes (run with APP_PROFILE=development)"
+    },
+    {
+      "kind": "existing",
+      "ref": "npm run parity:check",
+      "cwd": "apps/mobile",
+      "reason": "the 5 AI.* rows are native with their routes under apps/mobile/app/(app)/ai/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`"
+    }
+  ],
+  "deferred_g1": [
+    {
+      "flow": "apps/mobile/maestro/ai-coach/01-ai-overview.yaml",
+      "target": "/ai, /ai/insights, /ai/recommendations",
+      "next_actor": "owner",
+      "reason": "open each page through the AI sub-navigation and read the card stack; screenshot parity vs the 390x844 read-only staging /ai*; needs the isolated G1 environment (iOS simulator + Android emulator)"
+    },
+    {
+      "flow": "apps/mobile/maestro/ai-coach/02-daily-summary.yaml",
+      "target": "/ai/daily-summary",
+      "next_actor": "owner",
+      "reason": "the daily learnings and the Index card render; screenshot parity; needs G1"
+    },
+    {
+      "flow": "apps/mobile/maestro/ai-coach/03-companion.yaml",
+      "target": "/ai/companion",
+      "next_actor": "owner",
+      "reason": "the coach chat, sidebar widgets and card stack render; read only — no message is sent and consent is not granted on G1 (the send path writes); screenshot parity; needs G1"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Whole section",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Dance preferences",
+          "description": "Styles, level, role, what you're looking for."
+        },
+        "partnerPreferences": {
+          "label": "Partner preferences",
+          "description": "Who you're looking for. Private by default. Sub-fields stay private even if the section opens."
+        },
+        "serviceOfferings": {
+          "label": "Service offerings",
+          "description": "What you offer. Public by default — hiding defeats the purpose."
+        },
+        "myPosts": {
+          "label": "My posts",
+          "description": "Open intents you've dictated. Partner-search posts NEVER appear here regardless of toggle."
+        },
+        "derivedAgeBand": {
+          "label": "Age band",
+          "description": "Show only your age band (e.g. 30s) instead of exact age. Default: connections only."
+        }
+      },
+      "fields": {
+        "danceVarieties": "My styles",
+        "danceLevel": "My level",
+        "danceLookingFor": "What I'm looking for",
+        "partnerGender": "Gender preference",
+        "partnerAgeRange": "Age range",
+        "partnerRelationshipIntent": "Relationship intent",
+        "partnerLocationRadius": "Location & radius",
+        "servicePriceRange": "Price range",
+        "postsCommercial": "Marketplace posts",
+        "postsPartnerSeek": "Partner-search posts"
+      },
+      "partnerSeekNote": "Always private. Mutual-reveal protocol gates these regardless of toggle."
+    },
+    "media": {
+      "photosDenied": "Allow access to your photos in Settings to choose an image.",
+      "unsupportedFormat": "Unsupported image format (.{ext}). Please use JPG, PNG, GIF, or WebP."
+    },
+    "gallery": {
+      "photos": "Photos",
+      "selectMultiple": "Select multiple photos",
+      "tapToAddMore": "Tap to add more",
+      "uploadingProgress": "Uploading {current} of {total}...",
+      "deleteTitle": "Are you sure?",
+      "deleteDescription": "This photo will be permanently deleted. This action cannot be undone."
+    }
+  }
+}

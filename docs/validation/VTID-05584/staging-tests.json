@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05584",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/messages/ConversationView.header-avatars.vtid-05584.test.tsx", "cwd": ".",
+      "reason": "direct threads show no bubble avatars, own messages never get one in groups, the compact header keeps its actions and RTL back arrow" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the change is served" }
+  ]
+}

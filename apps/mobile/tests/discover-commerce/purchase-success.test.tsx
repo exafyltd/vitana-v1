@@ -12,7 +12,7 @@
  * Gateway and Supabase are fakes; nothing is paid or written anywhere.
  */
 import '../helpers/no-network';
-import { router, searchParams } from './mocks';
+import { router, searchParams } from './discover-mocks';
 import './timing';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
@@ -23,7 +23,7 @@ import { TicketPurchaseSuccessScreen } from '../../src/screens/commerce/TicketPu
 import { PackagePurchaseSuccessScreen, packagePrice } from '../../src/screens/commerce/PackagePurchaseSuccessScreen';
 import { DEPOSIT_POLL_MS } from '../../src/screens/commerce/data/wallet';
 import { TICKET_VERIFY_DELAY_MS } from '../../src/screens/commerce/data/purchases';
-import { budget, discoverWrapper, emptyCart, TOKEN } from './helpers';
+import { budget, discoverWrapper, emptyCart, TOKEN } from './discover-helpers';
 
 jest.setTimeout(30000);
 

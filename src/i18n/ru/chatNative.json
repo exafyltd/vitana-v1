@@ -1,0 +1,69 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} печатает…",
+      "two": "{first} и {second} печатают…",
+      "many": "Несколько человек печатают…"
+    },
+    "conversation": {
+      "fallbackTitle": "Беседа"
+    },
+    "reply": {
+      "yourself": "себе",
+      "contentUnavailable": "Содержимое сообщения недоступно"
+    },
+    "reactions": {
+      "reactWith": "Реакция {emoji}",
+      "count": "Реакции {emoji}: {count}"
+    },
+    "bubble": {
+      "longPressHint": "Нажми и удерживай для реакций и действий"
+    },
+    "emoji": {
+      "open": "Выбери эмодзи",
+      "recent": "Недавние",
+      "smileys": "Смайлы",
+      "people": "Люди",
+      "nature": "Природа",
+      "food": "Еда",
+      "activity": "Активность",
+      "travel": "Путешествия",
+      "objects": "Предметы"
+    },
+    "voice": {
+      "discard": "Удалить запись",
+      "play": "Воспроизвести",
+      "pause": "Пауза",
+      "stop": "Остановить запись"
+    },
+    "composer": {
+      "removeFile": "Убрать {name}",
+      "pickerDone": "Готово"
+    },
+    "payment": {
+      "status": {
+        "pending": "Ожидает",
+        "completed": "Выполнено",
+        "declined": "Отклонено"
+      },
+      "accept": "Принять",
+      "decline": "Отклонить",
+      "pay": "Оплатить",
+      "refreshBalance": "Обновить баланс"
+    },
+    "invite": {
+      "untitled": "Приглашение"
+    },
+    "booking": {
+      "untitled": "Запрос услуги"
+    },
+    "companion": {
+      "indexScore": "Твой индекс: {score}"
+    },
+    "attach": {
+      "library": "Медиатека",
+      "camera": "Камера",
+      "files": "Файлы"
+    }
+  }
+}

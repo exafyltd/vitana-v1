@@ -9,7 +9,7 @@
  * terminal status, then the web's toast and state show. Fake gateway only.
  */
 import '../helpers/no-network';
-import { openBrowser } from './mocks';
+import { openBrowser } from './discover-mocks';
 import './timing';
 import { AppState, type AppStateStatus } from 'react-native';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
@@ -25,7 +25,7 @@ import {
   markDepositPending,
 } from '../../src/screens/commerce/data/depositReturn';
 import { DEPOSIT_POLL_MS } from '../../src/screens/commerce/data/wallet';
-import { budget, discoverWrapper, product, UUID, type Req } from './helpers';
+import { budget, discoverWrapper, product, UUID, type Req } from './discover-helpers';
 
 jest.setTimeout(30000);
 

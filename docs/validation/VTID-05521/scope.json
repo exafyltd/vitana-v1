@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05521",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/assistant/index.tsx",
+    "apps/mobile/src/screens/ai-assistants/**",
+    "apps/mobile/src/ports/assistant.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/ai-assistants/**",
+    "apps/mobile/maestro/ai-assistants/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/aiAssistantsNative.json",
+    "docs/validation/VTID-05521/**"
+  ],
+  "_note": "Every path is inside the lane's paths (lanes/ai-assistants.md). No @vitana/core change (all data paths are class B and re-implemented natively), so packages/core/** and scripts/native/mobile-ci-paths.generated.json are untouched. No shared shell test needed a change: no existing test asserted that /assistant is unported.",
+  "sparring_record": "docs/validation/VTID-05521/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

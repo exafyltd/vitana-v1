@@ -6,13 +6,13 @@
  * the batched impression telemetry, and the pure mappers.
  */
 import '../helpers/no-network';
-import { players, router } from './mocks';
+import { players, router } from './discover-mocks';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { ShopFeedScreen, priceLabel, toMarketplaceProduct } from '../../src/screens/discover/ShopFeedScreen';
-import { budget, discoverWrapper, emptyCart, status, UUID } from './helpers';
+import { budget, discoverWrapper, emptyCart, status, UUID } from './discover-helpers';
 
 afterEach(() => {
   jest.clearAllMocks();

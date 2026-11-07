@@ -1,0 +1,149 @@
+# VTID-05461 (native-wave2-journey-autopilot-r2/journey) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-journey-autopilot-r2-journey; base origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched (fake gateway + Supabase double in tests).
+
+## Setup
+$ (apps/mobile) npm ci  -> ok
+$ (repo root) npm ci  -> ok (typescript for the native scripts, web build / vitest)
+
+## Red on base (detached worktree at origin/main + copied tests/journey) — see red-on-base.txt
+$ (apps/mobile) npm ci && npm run gen:i18n && npx jest tests/journey --ci
+Test Suites: 2 failed, 2 total (Cannot find module ../../src/screens/journey/JourneyScreen; could not locate @vitana/core/horizon-buckets)
+
+## Core (repo root)
+$ node scripts/native/gen-core-extract.mjs   -> wrote packages/core/src/extracted/journey.generated.ts (no other extract changed)
+$ node scripts/native/core-closure.mjs --write -> core-closure: 27 roots, 37 src files, 11 assets — ok
+$ node scripts/native/core-closure.mjs --check -> up to date, exit=0
+$ node scripts/native/gen-core-extract.mjs --check -> 12 files from 19 sources — up to date, exit=0
+
+## apps/mobile (code = 55621bce3)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/journey --ci
+Test Suites: 2 passed, 2 total
+Tests:       65 passed, 65 total
+exit=0
+(first runs: fixes in the tests — testID prefix collisions (journey-hero → journey-hero-full), en catalog
+ texts read via translate(), the RNTL async timeout raised to 8 s for the dashboard's dozen queries; one
+ product fix: the hero counts "member still resolving" as loading, see verification.md)
+
+$ npm test -- --ci   (run 1)
+Test Suites: 1 failed, 85 passed, 86 total
+Tests:       4 failed, 2343 passed, 2347 total
+(the 4 failures: tests/memory/gateway-i18n.test.tsx "the four screens render no unresolved key" de/es/pl/pt —
+ its default 1 s waitFor on the memory skeleton timed out under full-suite load; the file is untouched by this
+ lane and passes alone: npx jest tests/memory/gateway-i18n --ci -> 42 passed)
+
+$ npm test -- --ci   (run 2, same code)
+Test Suites: 86 passed, 86 total
+Tests:       2347 passed, 2347 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-3471a1d8822d3d4416afb5080d6e85ce.hbc (17MB)
+_expo/static/js/android/entry-9405a17c7b7f7fd982450fd7fd836e32.hbc (18MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's home is read-only for ~/.expo; dist/ and .expohome removed afterwards)
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ node ../../scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change to the hand-flipped AUTOPILOT.MY_JOURNEY row)
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 33 native route(s)
+exit=0
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 27 roots, 37 src files, 11 assets — up to date
+exit=0
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all          -> [register] No formal-register violations. exit=0
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found. exit=0
+$ node scripts/check-i18n-subscriptions.mjs           -> OK — 776 components … exit=0
+$ node scripts/check-locale-registry.mjs              -> OK — picker and supported_locales agree. exit=0
+$ node scripts/i18n-stamp-source.mjs --check-all      -> 0 key(s) whose EN source changed … exit=0
+$ node scripts/i18n-audit.mjs --report-only           -> exit=0; errors mentioning journeyAutopilotNative: 0 (all reported errors are pre-existing)
+$ (key scan) every t('…') key in apps/mobile/src/screens/journey resolves in all 11 locales (238 static keys + dynamic goalLabels / crossover / tiers / chapter keys)
+
+## repo root — web build, locale chunking, vitest, eslint
+$ npm run build                                       -> ✓ built in 53.05s, exit=0
+$ node scripts/check-locale-chunking.mjs              -> [locale-chunks] OK — one chunk per lazy locale, de eager.
+$ npx vitest run src/i18n scripts/native              -> Test Files 3 passed (3), Tests 25 passed (25)
+$ npx eslint apps/mobile/src/screens/journey apps/mobile/src/ports/journey.tsx "apps/mobile/app/(app)/autopilot" apps/mobile/tests/journey packages/core/src/{horizon-buckets,vitana-projection,goal-phases,vitana-index-tiers,audiobook-queue,journey}.ts -> exit=0
+
+## preflight (head bf18868cd)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-journey-autopilot-r2/journey --title "VTID-05461 (native-wave2-journey-autopilot-r2/journey): native My Journey port"
+PASS gh for plan( PR / vitana-platform lane files; PASS PR-GATE scope / sparring / weakening / red-green; PASS Kiro steering
+FAIL Collab handoff + FAIL Lane scope — the same single cause: .kiro/specs/native-wave2-journey-autopilot-r2/lanes/journey.md
+     is not on vitana-platform main yet (the spec lives on the plan branch kiro/native-wave2-journey-autopilot-r2/plan);
+     the brief's known "lane file not found" allowance. No other preflight error.
+(first run also failed PR-GATE sparring: plan-sparring.md lacked the owner-approval line — added, now PASS)
+
+## Fix round 1 (review journey-7c8eacd.md, verdict changes) — code head 352aed614
+$ git fetch origin && git merge --ff-only origin/kiro/native-wave2-journey-autopilot-r2/journey -> Already up to date
+$ git merge origin/main -> Already up to date (branch already contains origin/main e530abd0d)
+$ (apps/mobile) npm ci -> ok
+
+### red on the previous head 7c8eacd (red-fix1.txt)
+$ (apps/mobile) npx jest tests/journey/fix1.test.tsx --ci
+Tests: 21 failed, 2 passed, 23 total (the 2 passing tests are absence guards)
+
+### green
+$ (apps/mobile) npm run typecheck -> tsc --noEmit, exit=0 (gen:i18n: 11 locales, 1452 shards)
+$ (apps/mobile) npx jest tests/journey --ci
+Test Suites: 3 passed, 3 total
+Tests:       94 passed, 94 total
+(first green runs fixed only test queries: kit dialog testIDs carry the -content suffix, aria-hidden
+ badges need includeHiddenElements, the reduced-motion tests render inside the shell's UIProvider,
+ the gateway double lower-cases header names. journey.test.tsx: the no-events case now expects the
+ demo events — the web's EventsPreview.tsx:44-52 fallback — instead of the empty line.)
+$ (apps/mobile) npm test -- --ci
+Test Suites: 87 passed, 87 total
+Tests:       2382 passed, 2382 total
+Snapshots:   57 passed, 57 total
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle -> ios entry-6081c714….hbc (17MB), android entry-5c6bc0f1….hbc (18MB), Exported: dist, exit=0 (dist and .expohome removed)
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check -> Dependencies are up to date
+$ (apps/mobile) npm run parity:check -> parity-ledger --check: OK — 435 rows, 33 native route(s)
+$ node scripts/native/core-closure.mjs --check -> 27 roots, 37 src files, 11 assets — up to date
+$ node scripts/native/gen-core-extract.mjs --check -> 12 files from 19 sources — up to date
+$ npx eslint apps/mobile/src/screens/journey apps/mobile/src/ports/journey.tsx "apps/mobile/app/(app)/autopilot" apps/mobile/tests/journey -> exit=0
+$ node scripts/i18n-register-check.mjs --all -> No formal-register violations.
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found.
+$ node scripts/check-locale-registry.mjs -> OK
+$ node scripts/i18n-stamp-source.mjs --check-all -> 0 changed-source keys
+$ node scripts/check-i18n-subscriptions.mjs -> OK — 776 components
+$ node scripts/i18n-audit.mjs --report-only -> no error mentions journeyAutopilotNative
+$ npx vitest run src/i18n scripts/native -> Test Files 3 passed (3), Tests 25 passed (25)
+
+### preflight (head 352aed614)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-journey-autopilot-r2/journey --title "VTID-05461 (native-wave2-journey-autopilot-r2/journey): native My Journey port"
+PASS gh for plan( PR / vitana-platform lane files; PASS PR-GATE scope / sparring / weakening / red-green; PASS Kiro steering
+FAIL Collab handoff + FAIL Lane scope — unchanged single cause: lanes/journey.md is on the plan branch, not on vitana-platform main (the brief's "lane file not found" allowance)
+
+### ORB hook point (driver decision: orb/** stays out; follow-up in verification.md)
+$ (apps/mobile) npx tsc --noEmit -> exit=0
+$ (apps/mobile) npx jest tests/journey --ci -> 3 suites, 96 passed (+2: ORB hook point)
+$ (apps/mobile) npm test -- --ci -> Test Suites 87 passed; Tests 2384 passed
+$ npx eslint apps/mobile/src/screens/journey apps/mobile/tests/journey -> exit=0
+
+## gift voucher after checkout (review discover-c68982e, same modal) — branch ff to origin, origin/main merged (011c8349f)
+$ (apps/mobile) npx jest tests/journey/voucher.test.tsx   — on 011c8349f product code (red)
+FAIL — 9 failed, 2 passed, 11 total (red-on-base.txt)
+$ (apps/mobile) npm run typecheck   — after the origin/main merge and the fix
+PASS — 0 errors
+$ (apps/mobile) npx eslint <changed files>
+PASS — 0 problems
+$ (apps/mobile) npx jest tests/journey   — default workers, run 1
+PASS — 4/4 suites, 107/107 tests
+$ (apps/mobile) npx jest tests/journey   — default workers, run 2
+PASS — 4/4 suites, 107/107 tests

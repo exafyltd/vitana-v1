@@ -1,5 +1,144 @@
 {
   "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "Não foi possível carregar.",
+        "mineEmptyBody": "Publique um pedido de compra ou venda — o matchmaker mostra compradores e vendedores para você.",
+        "newListing": "Novo anúncio"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "Estou comprando",
+          "commercial_sell": "Estou vendendo",
+          "activity_seek": "Parceiro de atividade",
+          "partner_seek": "Parceiro de vida",
+          "social_seek": "Social / mentoria",
+          "mutual_aid": "Ajuda mútua",
+          "learning_seek": "Quero aprender",
+          "mentor_seek": "Ofereço aulas"
+        },
+        "age": "idade {min}–{max}",
+        "within": "num raio de {km} km"
+      },
+      "share": {
+        "tooManyTitle": "Destinatários demais ({count})",
+        "tooManyBody": "O plano gratuito permite até {max}. Mude para o Pro para 50.",
+        "errorBatch": "Destinatários demais",
+        "errorQuota": "Limite de compartilhamento atingido",
+        "errorPrivate": "Não é possível compartilhar esta publicação",
+        "errorFailed": "Falha ao compartilhar",
+        "errorBody": "{message}",
+        "tryAgain": "Tente de novo.",
+        "alreadyShared": "Já compartilhado com todos",
+        "sharedOne": "Compartilhado com {count} amigo",
+        "sharedMany": "Compartilhado com {count} amigos",
+        "skipped": "{skipped} já tinham esta publicação na caixa de entrada.",
+        "theyWillSee": "Eles vão ver sua publicação no chat.",
+        "defaultTitle": "Uma publicação da Vitana",
+        "defaultText": "Veja isto na Vitana",
+        "fromVitana": "Da Vitana"
+      },
+      "orders": {
+        "eventTicket": "Ingresso do evento",
+        "locationTbd": "Local a definir",
+        "cjProduct": "Produto CJ",
+        "general": "Geral",
+        "voucherProvider": "Vale-presente Maxina",
+        "voucherTier": {
+          "test": "Vale de teste",
+          "experience": "Vale experiência",
+          "exclusive": "Vale exclusivo",
+          "gift": "Vale-presente"
+        },
+        "mock": {
+          "vipAccess": "Acesso VIP",
+          "generalAdmission": "Entrada geral",
+          "earlyBird": "Lote antecipado",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Yoga matinal",
+          "retreatTitle": "Retiro de meditação de Ano-Novo"
+        },
+        "status": {
+          "upcoming": "Próximo",
+          "attended": "Participou",
+          "expired": "Expirado",
+          "completed": "Concluído",
+          "delivered": "Entregue",
+          "cancelled": "Cancelado",
+          "refunded": "Reembolsado",
+          "shipped": "Em trânsito",
+          "confirmed": "Confirmado",
+          "pending": "Pendente",
+          "processing": "Em processamento",
+          "paid": "Ativo",
+          "active": "Ativo"
+        },
+        "type": {
+          "ticket": "Ingresso",
+          "voucher": "Vale",
+          "product": "Produto",
+          "service": "Serviço"
+        }
+      },
+      "tickets": {
+        "event": "Evento",
+        "dateTba": "Data a anunciar",
+        "general": "Geral"
+      },
+      "ticket": {
+        "tba": "A anunciar"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Eu vou para {title}!",
+        "email": "E-mail",
+        "emailSubject": "Meu ingresso para {title}",
+        "sms": "SMS",
+        "copyLink": "Copiar link",
+        "copied": "Copiado!",
+        "openingWhatsapp": "Abrindo o WhatsApp…",
+        "openingViber": "Abrindo o Viber…",
+        "openingEmail": "Abrindo o e-mail…",
+        "openingMessages": "Abrindo as mensagens…"
+      },
+      "booking": {
+        "sessionTitle": "Sessão: {title}",
+        "sessionDescription": "Agende uma sessão com {name}",
+        "pickDate": "Escolha uma data",
+        "previousMonth": "Mês anterior",
+        "nextMonth": "Próximo mês"
+      },
+      "subnav": {
+        "overview": "Visão geral",
+        "supplements": "Suplementos",
+        "wellness-services": "Serviços de bem-estar",
+        "doctors-coaches": "Médicos/Coaches",
+        "deals-offers": "Ofertas e promoções",
+        "orders": "Pedidos"
+      },
+      "bookmark": {
+        "add": "Adicionar aos favoritos",
+        "remove": "Remover dos favoritos"
+      },
+      "bookActions": {
+        "bookAppointment": "Agendar consulta",
+        "rebookPrevious": "Agendar de novo",
+        "findNearMe": "Perto de mim",
+        "messageProvider": "Falar com o profissional",
+        "viewMyBookings": "Minhas reservas",
+        "setReminders": "Definir lembretes",
+        "leaveReview": "Deixar avaliação",
+        "paymentHistory": "Histórico de pagamentos"
+      },
+      "visit": {
+        "hideNotes": "Ocultar notas",
+        "viewNotes": "Ver notas"
+      },
+      "utility": {
+        "openIndex": "Abrir o Vitana Index",
+        "openIndexStreak": "Abrir o Vitana Index — sequência de {days} dias",
+        "upcomingEvents": "{count} eventos próximos"
+      }
+    },
     "searchShort": "Pesquisar…",
     "indexPill": "Vitana Index {value}: abrir Saúde",
     "calendar": {

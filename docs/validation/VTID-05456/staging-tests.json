@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05456",
+  "service": "community-app",
+  "_note": "Native Wave 2 health-plans-services lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). The two health reads (user_health_plans, vitana_index_scores) are asserted as built requests against a Supabase double; nothing writes. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (tasks.md health-plans-services task 8). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/health/plans-services", "cwd": "apps/mobile",
+      "reason": "health plans/services unit tests (4 suites / 91 tests): pillars cards + Vitana Index tile (built vitana_index_scores reads, latest-ever fallback, no compute RPC), conditions cards, education articles / videos / podcasts tabs + ?tab= + Education Actions destinations, plans built user_health_plans read, sample vs member plan cards, reads-only guard (Generate disabled, no insert / update / rpc / edge function on render or interaction), five pillar panes + ?tab=, Autopilot toasts, services sections + ?tab=, detail sheet with Book Now disabled, Service Actions destinations, 16 parity rows native, no unresolved key in 11 locales, healthNative shard parity, RTL-safe styles — Supabase double / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the five screens, the plans-services parts and the health-plans port type-check against @vitana/core/health-plans, @vitana/core/types, @vitana/ui and @vitana/tokens" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the five /health routes and the health-plans core re-export (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 16 HEALTH.PILLARS / CONDITIONS / EDUCATION* / PLANS* / SERVICES* rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/health/plans-services-01-pillars-conditions.yaml", "target": "/health/pillars", "next_actor": "owner",
+      "reason": "sign in, open /health/pillars: five pillar cards and the member's Vitana Index tile; tile opens /health; open /health/conditions; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment" },
+    { "flow": "apps/mobile/maestro/health/plans-services-02-education.yaml", "target": "/health/education", "next_actor": "owner",
+      "reason": "articles / videos / podcasts tabs and ?tab= deep links; Education Actions popup; screenshot parity; needs G1" },
+    { "flow": "apps/mobile/maestro/health/plans-services-03-plans.yaml", "target": "/health/plans", "next_actor": "owner",
+      "reason": "all plans + the five pillar tabs read the member's user_health_plans (read only; Generate stays disabled, no write); screenshot parity; needs G1" },
+    { "flow": "apps/mobile/maestro/health/plans-services-04-services-hub.yaml", "target": "/health/services-hub", "next_actor": "owner",
+      "reason": "five sections and ?tab= deep links; service detail sheet (Book Now disabled, no booking / payment); Service Actions popup; screenshot parity; needs G1" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "callsNative": {
+    "incomingAudio": "Incoming audio call…",
+    "incomingVideo": "Incoming video call…",
+    "accept": "Accept call",
+    "reject": "Decline call",
+    "endCall": "End call",
+    "calling": "Calling",
+    "videoCalling": "Video calling",
+    "initializing": "Initializing…",
+    "connecting": "Connecting…",
+    "connectionFailed": "Connection failed",
+    "mute": "Mute microphone",
+    "unmute": "Unmute microphone",
+    "cameraOff": "Turn camera off",
+    "cameraOn": "Turn camera on",
+    "unknownUser": "Unknown User"
+  }
+}
