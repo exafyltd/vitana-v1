@@ -1,0 +1,45 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "Yapay Zekâ ile Veri Paylaşımı Bilgilendirmesi",
+      "subtitle": "Yapay zekâ özelliklerini kullanmadan önce verilerinin nasıl kullanıldığına göz at.",
+      "whatIsSent": "Hangi veriler gönderilebilir",
+      "voiceData": "Ses kayıtları ve dökümleri",
+      "diaryData": "Yazılan istemler, sohbet mesajları ve günlük girişleri",
+      "memoryData": "Memory Garden girişleri ve sağlık hedefleri",
+      "profileData": "Profil bağlamı (ad, tercihler)",
+      "socialData": "Sosyal medya profil URL'leri ve biyografi metinleri (içe aktarma özelliklerinde)",
+      "recipientLabel": "Alıcı:",
+      "recipient": "Lovable AI Gateway üzerinden Google (Gemini yapay zekâ modelleri). Verilerin şifreli bağlantılarla güvenle aktarılır.",
+      "purposeLabel": "Amaç",
+      "purpose": "Kişiselleştirilmiş yapay zekâ yanıtları, ses sentezi, proaktif selamlamalar, sağlık koçluğu ve profil tamamlama önerileri.",
+      "notStored": "Yapay zekâ sağlayıcısı verileri kalıcı olarak saklamaz",
+      "revokeAnytime": "Onayını istediğin zaman Ayarlar > Gizlilik bölümünden geri alabilirsin",
+      "gdprCompliant": "GDPR ve gizlilik düzenlemeleriyle uyumlu",
+      "agreementFooter": "'Kabul ediyorum'a dokunarak Exafy LTD'ye yukarıdaki verileri belirtilen yapay zekâ sağlayıcılarına gönderme izni verirsin. Bu izni istediğin zaman Ayarlar > Gizlilik bölümünden geri alabilirsin.",
+      "notNow": "Şimdi değil",
+      "iAgree": "Kabul ediyorum"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA kazandın!",
+      "errorStatus": "Sunucu {status} durumuyla yanıt verdi.",
+      "errorServer": "Sunucu önerilerini şu anda getiremedi.",
+      "errorNetwork": "Bağlantı yok. İnternetini kontrol et."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Deniz kenarında gün doğumu yogası",
+      "mindfulWalk": "Farkındalıklı yürüyüş ve sohbet"
+    },
+    "indexChip": {
+      "open": "Vitana Index'i aç",
+      "openWithStreak": "Vitana Index'i aç – {days} günlük seri"
+    },
+    "calendar": {
+      "upcomingCount": "{count} yaklaşan etkinlik"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
+    }
+  }
+}

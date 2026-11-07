@@ -3,14 +3,30 @@
   "entries": {
     "roles": {
       "sources": [
-        { "file": "src/hooks/useRole.tsx", "take": ["UserRole"] },
+        {
+          "file": "src/hooks/useRole.tsx",
+          "take": [
+            "UserRole"
+          ]
+        },
         {
           "file": "src/hooks/useRoleSwitch.ts",
-          "take": ["ROLE_LADDER", "ALL_ROLES_SUPER_ADMIN", "MOBILE_EXCLUDED_ROLES", "isUserRole", "computeAvailableRoles", "BusinessSwitchEntry", "computeBusinessEntries"]
+          "take": [
+            "ROLE_LADDER",
+            "ALL_ROLES_SUPER_ADMIN",
+            "MOBILE_EXCLUDED_ROLES",
+            "isUserRole",
+            "computeAvailableRoles",
+            "BusinessSwitchEntry",
+            "computeBusinessEntries"
+          ]
         },
         {
           "file": "src/lib/role-switch-destination.ts",
-          "take": ["getRoleSwitchDestination", "isExternalRoleSwitchDestination"],
+          "take": [
+            "getRoleSwitchDestination",
+            "isExternalRoleSwitchDestination"
+          ],
           "stubs": {
             "getCommandHubUrl": {
               "expression": "() => null",
@@ -21,41 +37,92 @@
       ]
     },
     "role-navigation": {
-      "iconFields": ["icon"],
+      "iconFields": [
+        "icon"
+      ],
       "sources": [
-        { "file": "src/config/role-navigation.ts", "take": ["NavigationItem", "patientNavigation", "professionalNavigation", "staffNavigation"] }
+        {
+          "file": "src/config/role-navigation.ts",
+          "take": [
+            "NavigationItem",
+            "patientNavigation",
+            "professionalNavigation",
+            "staffNavigation"
+          ]
+        }
       ]
     },
     "business-mode": {
-      "iconFields": ["icon"],
+      "iconFields": [
+        "icon"
+      ],
       "sources": [
         {
           "file": "src/lib/business-mode.ts",
           "take": [
-            "BusinessRole", "BusinessOrgLike", "BusinessNavItem", "BUSINESS_ROUTES", "NON_MODE_COMMERCE_PREFIXES",
-            "isBusinessRoute", "isBusinessRole", "businessHomeFor", "businessRoleLabelKey",
-            "OVERVIEW", "TEAM", "ORDERS", "RESULTS_INBOX", "MESSAGES", "SETTINGS",
-            "resolveBusinessBottomNav", "businessDrawerItems", "ACTIVE_ORG_STORAGE_KEY", "pickActiveOrg"
+            "BusinessRole",
+            "BusinessOrgLike",
+            "BusinessNavItem",
+            "BUSINESS_ROUTES",
+            "NON_MODE_COMMERCE_PREFIXES",
+            "isBusinessRoute",
+            "isBusinessRole",
+            "businessHomeFor",
+            "businessRoleLabelKey",
+            "OVERVIEW",
+            "TEAM",
+            "ORDERS",
+            "RESULTS_INBOX",
+            "MESSAGES",
+            "SETTINGS",
+            "resolveBusinessBottomNav",
+            "businessDrawerItems",
+            "ACTIVE_ORG_STORAGE_KEY",
+            "pickActiveOrg"
           ]
         }
       ]
     },
     "drawer-nav": {
-      "iconFields": ["icon"],
+      "iconFields": [
+        "icon"
+      ],
       "sources": [
-        { "file": "src/config/drawer-nav.config.ts", "take": ["DrawerNavItem", "DrawerIconTone", "drawerNavIconTones", "drawerNavItems"] },
-        { "file": "src/components/mobile/SideDrawerNav.tsx", "take": ["CROSS_MODE_IDS", "BUSINESS_DRAWER_KEYS"] }
+        {
+          "file": "src/config/drawer-nav.config.ts",
+          "take": [
+            "DrawerNavItem",
+            "DrawerIconTone",
+            "drawerNavIconTones",
+            "drawerNavItems"
+          ]
+        },
+        {
+          "file": "src/components/mobile/SideDrawerNav.tsx",
+          "take": [
+            "CROSS_MODE_IDS",
+            "BUSINESS_DRAWER_KEYS"
+          ]
+        }
       ]
     },
     "bottom-nav": {
-      "iconFields": ["icon"],
+      "iconFields": [
+        "icon"
+      ],
       "sources": [
         {
           "file": "src/components/mobile/MobileBottomNav.tsx",
           "take": [
-            { "name": "navItems", "as": "communityBottomNav" },
-            "BottomNavItem", "ROLE_NAV_ITEMS", "resolveRoleBottomNav",
-            "MobileBottomNav#hideNavRoutes", "MobileBottomNav#roleSectionRoutes"
+            {
+              "name": "navItems",
+              "as": "communityBottomNav"
+            },
+            "BottomNavItem",
+            "ROLE_NAV_ITEMS",
+            "resolveRoleBottomNav",
+            "MobileBottomNav#hideNavRoutes",
+            "MobileBottomNav#roleSectionRoutes"
           ]
         }
       ]
@@ -65,21 +132,71 @@
         {
           "file": "src/lib/tenant-registry.ts",
           "take": [
-            "TenantSlug", { "name": "TenantBrand", "as": "TenantRegistryBrand" }, "TenantLanding", "TenantEntry", "RegistrySource", "TenantRegistry",
-            "SLUG_RE", "COMPILED_MAXINA_FALLBACK", "FALLBACK_REGISTRY", "ResolvedTenant",
-            "safeHex", "safeInternalPath",
-            { "name": "normalizeLanding", "export": false }, { "name": "normalizeBrand", "export": false }, "normalizeEntry",
-            "findBySlug", "findById", "resolvedTenantFromEntry", "neutralTenant", "resolveActiveTenant"
+            "TenantSlug",
+            {
+              "name": "TenantBrand",
+              "as": "TenantRegistryBrand"
+            },
+            "TenantLanding",
+            "TenantEntry",
+            "RegistrySource",
+            "TenantRegistry",
+            "SLUG_RE",
+            "COMPILED_MAXINA_FALLBACK",
+            "FALLBACK_REGISTRY",
+            "ResolvedTenant",
+            "safeHex",
+            "safeInternalPath",
+            {
+              "name": "normalizeLanding",
+              "export": false
+            },
+            {
+              "name": "normalizeBrand",
+              "export": false
+            },
+            "normalizeEntry",
+            "findBySlug",
+            "findById",
+            "resolvedTenantFromEntry",
+            "neutralTenant",
+            "resolveActiveTenant",
+            "isTenantPortalPath",
+            "communityLandingPath",
+            "portalLandingTarget"
           ]
         },
-        { "file": "src/lib/retired-tenants.ts", "take": ["RETIRED_TENANT_SLUGS", "canonicalTenantSlug"] }
+        {
+          "file": "src/lib/retired-tenants.ts",
+          "take": [
+            "RETIRED_TENANT_SLUGS",
+            "canonicalTenantSlug"
+          ]
+        }
       ]
     },
     "language": {
       "sources": [
-        { "file": "src/contexts/LanguageContext.tsx", "take": ["languageOptions"] },
-        { "file": "src/components/language/locale-presentation.ts", "take": ["LocalePresentation", "LOCALE_PRESENTATION"] },
-        { "file": "src/components/RTLProvider.tsx", "take": ["RTL_BASE_LANGUAGES", "isRtlLanguage"] }
+        {
+          "file": "src/contexts/LanguageContext.tsx",
+          "take": [
+            "languageOptions"
+          ]
+        },
+        {
+          "file": "src/components/language/locale-presentation.ts",
+          "take": [
+            "LocalePresentation",
+            "LOCALE_PRESENTATION"
+          ]
+        },
+        {
+          "file": "src/components/RTLProvider.tsx",
+          "take": [
+            "RTL_BASE_LANGUAGES",
+            "isRtlLanguage"
+          ]
+        }
       ]
     },
     "news-feed-ranker": {
@@ -87,16 +204,41 @@
         {
           "file": "src/lib/news-feed-ranker.ts",
           "take": [
-            "FeedItemKind", "PostMention",
-            { "name": "FeedItemBase", "export": false },
-            "MatchFeedItem", "PerformerFeedItem", "PostFeedItem", "ArticleFeedItem",
-            "FeatureAnnouncementFeedItem", "NewMemberFeedItem", "FeedItem", "RankOptions",
-            { "name": "ts", "export": false },
-            { "name": "downrankPenalty", "export": false },
+            "FeedItemKind",
+            "PostMention",
+            {
+              "name": "FeedItemBase",
+              "export": false
+            },
+            "MatchFeedItem",
+            "PerformerFeedItem",
+            "PostFeedItem",
+            "ArticleFeedItem",
+            "FeatureAnnouncementFeedItem",
+            "NewMemberFeedItem",
+            "FeedItem",
+            "RankOptions",
+            {
+              "name": "ts",
+              "export": false
+            },
+            {
+              "name": "downrankPenalty",
+              "export": false
+            },
             "rankFeed",
-            { "name": "POSITIVE_STEM_RE", "export": false },
-            { "name": "NEGATION_RE", "export": false },
-            { "name": "MOTIVATION_RULES", "export": false },
+            {
+              "name": "POSITIVE_STEM_RE",
+              "export": false
+            },
+            {
+              "name": "NEGATION_RE",
+              "export": false
+            },
+            {
+              "name": "MOTIVATION_RULES",
+              "export": false
+            },
             "motivationKeyFor"
           ],
           "stubs": {
@@ -117,8 +259,14 @@
         {
           "file": "src/lib/feed-compose.ts",
           "take": [
-            "FeedPlacement", "ComposedEntry", "RAIL_KINDS", "placementOf", "splitByPlacement",
-            "composeFeed", "HOME_NEW_CARD_CAP", "withHomeNewCards"
+            "FeedPlacement",
+            "ComposedEntry",
+            "RAIL_KINDS",
+            "placementOf",
+            "splitByPlacement",
+            "composeFeed",
+            "HOME_NEW_CARD_CAP",
+            "withHomeNewCards"
           ]
         }
       ]
@@ -519,6 +667,161 @@
               "name": "SUBMIT_RESULT_COPY",
               "as": "SETUP_SUBMIT_RESULT_COPY"
             }
+          ]
+        }
+      ]
+    },
+    "service-details": {
+      "sources": [
+        {
+          "file": "src/components/health/ServiceDetailDrawer.tsx",
+          "take": [
+            "ServiceProvider",
+            "ServiceDetail",
+            "mockServiceDetails"
+          ]
+        }
+      ]
+    },
+    "journey": {
+      "sources": [
+        {
+          "file": "src/hooks/useMyJourney.ts",
+          "take": [
+            "MyJourneyGoal",
+            "MyJourneyPhase",
+            "MyJourneyJourney",
+            "MyJourneyIndex",
+            "MyJourneyResponse"
+          ]
+        },
+        {
+          "file": "src/lib/journeyRing.ts",
+          "take": [
+            "RingCountdownSource",
+            "JourneyRingModel",
+            "buildJourneyRing"
+          ]
+        },
+        {
+          "file": "src/hooks/useGoalPlan.ts",
+          "take": [
+            "GoalStepKind",
+            "GoalPlanStep",
+            "GoalPlanView",
+            "ClarificationAnswer"
+          ]
+        },
+        {
+          "file": "src/lib/goalTrend.ts",
+          "take": [
+            "GoalTrend",
+            "computeGoalTrend"
+          ]
+        }
+      ]
+    },
+    "discover": {
+      "iconFields": [
+        "icon"
+      ],
+      "sources": [
+        {
+          "file": "src/lib/discover-reason.ts",
+          "take": [
+            "SUBCATEGORY_I18N_KEY",
+            "ReasonSource",
+            "hasPersonalizationSignal"
+          ],
+          "stubs": {
+            "MarketplaceProduct": {
+              "expression": "{ match_reasons?: Array<{ kind: string; text: string }>; rank_reasons?: string[]; subcategory: string | null }",
+              "reason": "VTID-05510: MarketplaceProduct is `import type`-only from the class-B src/hooks/useMarketplace.ts (runtime supabase + import.meta.env). ReasonSource only Picks match_reasons / rank_reasons / subcategory, so exactly those three fields are reproduced verbatim here; the web file stays out of the native strict TS program. getPersonalizedReason itself calls the web `t()` (class B) and is re-implemented natively over SUBCATEGORY_I18N_KEY."
+            }
+          }
+        },
+        {
+          "file": "src/lib/currency-convert.ts",
+          "take": [
+            {
+              "name": "RATE_PER_EUR",
+              "export": false
+            },
+            "toEurCents"
+          ]
+        },
+        {
+          "file": "src/hooks/useMarketplace.ts",
+          "take": [
+            "formatPrice"
+          ]
+        },
+        {
+          "file": "src/components/discover/CategoryShopSections.tsx",
+          "take": [
+            {
+              "name": "SectionMeta",
+              "as": "ShopSectionMeta"
+            },
+            "SECTION_CONFIGS",
+            "ITEMS_PER_SECTION",
+            "FETCH_LIMIT"
+          ]
+        },
+        {
+          "file": "src/components/discover/MobileDiscoverView.tsx",
+          "take": [
+            {
+              "name": "categoryConfig",
+              "as": "MOBILE_DISCOVER_CATEGORIES"
+            }
+          ]
+        },
+        {
+          "file": "src/components/cart/AddToCartButton.tsx",
+          "take": [
+            {
+              "name": "UUID_RE",
+              "as": "CART_PRODUCT_UUID_RE"
+            }
+          ]
+        },
+        {
+          "file": "src/pages/ShopFeed.tsx",
+          "take": [
+            "HOLD_THRESHOLD_MS"
+          ]
+        },
+        {
+          "file": "src/hooks/useShopFeed.ts",
+          "take": [
+            "shopFeedQueryKeys",
+            "BATCHED_TYPES",
+            "FLUSH_INTERVAL_MS",
+            "MAX_BATCH"
+          ],
+          "stubs": {
+            "ShopEventType": {
+              "expression": "\"impression\" | \"hold_2s\" | \"anchor_tap\" | \"drawer_open\" | \"drawer_expand\" | \"pdp_view\" | \"variant_change\" | \"add_to_cart\" | \"buy_now\" | \"checkout_start\" | \"purchase\" | \"save\" | \"unsave\" | \"share\" | \"drawer_close\"",
+              "reason": "VTID-05510: ShopEventType is a type-only import from the class-B src/lib/shop-feed-client.ts (runtime community-gateway import). Its union is reproduced verbatim (shop-feed-client.ts ShopEventType) so BATCHED_TYPES keeps its exact type without the web class-B file entering the native strict TS program."
+            }
+          }
+        }
+      ]
+    },
+    "discover-category": {
+      "iconFields": [
+        "icon"
+      ],
+      "sources": [
+        {
+          "file": "src/pages/discover/CategoryProducts.tsx",
+          "take": [
+            {
+              "name": "SectionMeta",
+              "as": "CategorySectionMeta"
+            },
+            "SECTION_META"
           ]
         }
       ]

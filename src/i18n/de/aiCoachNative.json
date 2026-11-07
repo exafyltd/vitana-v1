@@ -1,0 +1,67 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "KI-Bereiche",
+      "overview": "Übersicht",
+      "insights": "Einblicke",
+      "recommendations": "Empfehlungen",
+      "dailySummary": "Tägliche Zusammenfassung",
+      "companion": "KI-Begleiter"
+    },
+    "priority": {
+      "high": "Hoch",
+      "medium": "Mittel",
+      "low": "Niedrig"
+    },
+    "suggestions": {
+      "title": "KI-Einblicke & Vorschläge"
+    },
+    "reward": {
+      "suggestions": "Setze KI-Vorschläge um und erhalte Belohnungen für deine Gesundheit",
+      "index": "Verbessere deinen Gesundheitswert für mehr Credits"
+    },
+    "index": {
+      "computing": "wird berechnet …"
+    },
+    "streak": {
+      "meditation": "Meditation"
+    },
+    "companion": {
+      "suggestionDescription": "KI-generierter Wellness-Vorschlag",
+      "recall": "Abrufen",
+      "autopilotMeditation": "Meditationspause einplanen",
+      "autopilotHydration": "Trink-Erinnerung in 15 Min."
+    },
+    "motivation": {
+      "defaultQuote": "Jeder kleine Schritt in Richtung Wohlbefinden ist ein Erfolg, den es zu feiern gilt.",
+      "defaultAuthor": "Inspiration des Tages"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Wellness"
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Blutwerte"
+    },
+    "chat": {
+      "voice": "Sprachanruf starten",
+      "video": "Videoanruf starten",
+      "send": "Nachricht senden"
+    },
+    "autopilot": {
+      "settings": "Autopilot-Einstellungen",
+      "toggle": "Autopilot ein- oder ausschalten"
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA verdient!",
+      "task": "Aufgabe erledigt: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Index jetzt {n}"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05532",
+  "lane": "native-wave2-events-calendar-r3/live-rooms",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/comm/live-rooms/**",
+    "apps/mobile/src/screens/liverooms/**",
+    "apps/mobile/src/ports/live-room-video.ts",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/liverooms/**",
+    "apps/mobile/parity/ledger.json",
+    "docs/validation/VTID-05532/**"
+  ],
+  "not_touched": [
+    "packages/core/** (no class-A helper; see verification.md)",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/package.json and package-lock.json (no Daily.co SDK in this build)",
+    "src/i18n/** (every string reuses an existing catalog key)",
+    "apps/mobile/maestro/liverooms/** (device journeys are G1)",
+    "apps/mobile/jest.config.js and apps/mobile/jest.setup.ts"
+  ],
+  "sparring_record": "docs/validation/VTID-05532/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

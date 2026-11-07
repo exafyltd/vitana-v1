@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "معاينة الصوت",
+      "playing": "جارٍ التشغيل…",
+      "previewPhrase": "مرحبًا، هذه معاينة لإعدادات الصوت التي اخترتها.",
+      "previewUnavailable": "المعاينة غير متاحة لهذه اللغة على هذا الجهاز.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value}٪"
+    },
+    "proactive": {
+      "playSample": "تشغيل تحية تجريبية",
+      "speaking": "يتحدث…",
+      "notSet": "غير محدد",
+      "none": "لا شيء",
+      "quoted": "«{text}»",
+      "messageType": {
+        "time_greeting": "تحيات حسب الوقت (صباح الخير وغيرها)",
+        "wellness_check": "متابعات العافية",
+        "motivational": "رسائل تحفيزية",
+        "reminder": "تذكيرات بالإجراءات"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "يمكن للطيار الآلي سؤال الأعضاء الآخرين عندما تطرح أسئلة.",
+      "giveDescription": "يمكن للطيار الآلي عرض كتالوجك على أعضاء آخرين. متوقف افتراضيًا، فعّله عندما تكون مستعدًا.",
+      "moneyDescription": "ينقل الكسب من «اقترح ووافق» إلى الوضع الذاتي. فعّل هذا فقط عندما تثق بكتالوجك وبنص الإفصاح.",
+      "moneyDisabledHint": "فعّل «تقديم التوصيات» أولًا."
+    },
+    "connect": {
+      "missingKey": "الصق مفتاح API الخاص بك.",
+      "wrongPrefix": "يجب أن يبدأ مفتاح API بـ «{prefix}».",
+      "unauthorized": "رفض المزوّد هذا المفتاح (غير مصرّح). تحقّق منه في لوحة التحكم.",
+      "network": "خطأ في الشبكة أثناء الوصول إلى المزوّد. حاول مرة أخرى.",
+      "verifyFailed": "فشل التحقق ({status}).",
+      "failed": "فشل الاتصال ({code}).",
+      "saving": "جارٍ الحفظ…",
+      "verifying": "جارٍ التحقق…",
+      "connect": "اتصال"
+    }
+  }
+}

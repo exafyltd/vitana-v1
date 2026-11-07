@@ -1,0 +1,17 @@
+# VTID-05458 red on base: tests/inbox-chat/conversation-chat/** run against origin/main (no chat screens yet)
+# cmd (apps/mobile, detached worktree at origin/main + copied tests/inbox-chat/conversation-chat, node_modules linked): node ../../scripts/native/gen-i18n-map.mjs && npx jest tests/inbox-chat/conversation-chat
+base: origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e
+FAIL tests/inbox-chat/conversation-chat/conversation.test.tsx
+    Cannot find module '../../../src/screens/chat/ConversationScreen' from 'tests/inbox-chat/conversation-chat/conversation.test.tsx'
+FAIL tests/inbox-chat/conversation-chat/group.test.tsx
+    Cannot find module '../../../src/screens/chat/GroupChatScreen' from 'tests/inbox-chat/conversation-chat/group.test.tsx'
+FAIL tests/inbox-chat/conversation-chat/members.test.tsx
+    Cannot find module '../../../src/screens/chat/data/members' from 'tests/inbox-chat/conversation-chat/members.test.tsx'
+FAIL tests/inbox-chat/conversation-chat/bubble.test.tsx
+    Cannot find module '../../../src/screens/chat/MessageBubble' from 'tests/inbox-chat/conversation-chat/bubble.test.tsx'
+FAIL tests/inbox-chat/conversation-chat/i18n-rtl.test.tsx
+    Cannot find module '../../../src/screens/chat/ConversationScreen' from 'tests/inbox-chat/conversation-chat/i18n-rtl.test.tsx'
+FAIL tests/inbox-chat/conversation-chat/calls.test.tsx
+    Cannot find module '../../../src/ports/webrtc' from 'tests/inbox-chat/conversation-chat/calls.test.tsx'
+Test Suites: 6 failed, 6 total
+Tests:       0 total

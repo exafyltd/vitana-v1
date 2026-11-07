@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "Preview Voice",
+      "playing": "Playing…",
+      "previewPhrase": "Hello, this is a preview of your selected voice settings.",
+      "previewUnavailable": "A preview is not available for this language on this device.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value}%"
+    },
+    "proactive": {
+      "playSample": "Play Sample Greeting",
+      "speaking": "Speaking…",
+      "notSet": "Not set",
+      "none": "None",
+      "quoted": "\"{text}\"",
+      "messageType": {
+        "time_greeting": "Time-based greetings (Good morning, etc.)",
+        "wellness_check": "Wellness check-ins",
+        "motivational": "Motivational messages",
+        "reminder": "Action reminders"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "Autopilot can query peers when you ask questions.",
+      "giveDescription": "Autopilot may offer your catalog to other members. Off by default — opt in when you're ready.",
+      "moneyDescription": "Promotes earn from propose-and-approve to autonomous. Only flip this when you trust your catalog and disclosure.",
+      "moneyDisabledHint": "Turn on 'Give recommendations' first."
+    },
+    "connect": {
+      "missingKey": "Please paste your API key.",
+      "wrongPrefix": "API key must start with \"{prefix}\".",
+      "unauthorized": "The provider rejected this key (unauthorized). Double-check it in your dashboard.",
+      "network": "Network error reaching the provider. Please try again.",
+      "verifyFailed": "Verification failed ({status}).",
+      "failed": "Connection failed ({code}).",
+      "saving": "Saving…",
+      "verifying": "Verifying…",
+      "connect": "Connect"
+    }
+  }
+}

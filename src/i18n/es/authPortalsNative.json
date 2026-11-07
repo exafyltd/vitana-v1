@@ -1,0 +1,28 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "La confirmación del correo se canceló o el enlace ha caducado.",
+        "linkExpired": "El enlace de confirmación ha caducado. Solicita uno nuevo.",
+        "generic": "Se produjo un error al confirmar el correo electrónico.",
+        "signInToContinue": "Inicia sesión para continuar."
+      }
+    },
+    "alkalmaConfirmed": {
+      "title": "¡Bienvenido a AlKalma!",
+      "body": "Tu correo electrónico se ha confirmado correctamente",
+      "journey": "Tu camino de salud en árabe empieza ahora",
+      "redirecting": "Te redirigiremos a tu panel en unos segundos...",
+      "continue": "Continuar al panel",
+      "footer": "Una plataforma de salud completa en árabe"
+    },
+    "reset": {
+      "updatePassword": "Actualizar contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña"
+    },
+    "resend": {
+      "prompt": "¿No recibiste el correo? Reenviar"
+    }
+  }
+}

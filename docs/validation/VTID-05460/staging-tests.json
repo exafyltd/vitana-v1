@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05460",
+  "service": "community-app",
+  "_note": "Native Wave 2 autopilot-audiobook lane (native-wave2-journey-autopilot-r2/autopilot-audiobook). The port is proven offline (jest-expo + RNTL, fake gateway + fake expo-audio player, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web, and audio playback on a device/simulator with an audio route) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md autopilot-audiobook task 7). Staging flows sign in, navigate and read; a network guard aborts every non-GET except sign-in; never vitanaland.com. Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/audiobook", "cwd": "apps/mobile",
+      "reason": "Audiobook unit tests (3 suites / 57 tests): episodes loaded (curriculum + journey state, the stream URL with Bearer + X-Vitana-Active-Role, first unheard episode, member language, lock screen, resume, prefetch, bus events) / empty / error (curriculum failure + Retry, stream 422 → unavailable + Ask Vitana, 500 → network + Retry); play / pause / previous (seek to 0) / next, speed (stored), sleep timer; end of topic and episode (session-listened POSTs, end-of-episode card, Try it now → route), finished; sign-out; the /autopilot/audiobook deep link (renders My Journey, Guided switch POST /journey/mode, player start, redirect to /autopilot) and ?audiobook=play; the reminder slot in the Guided view; the hero plays the episode; the reminder control (current time, save {time,tz}, off, error toast, signed out); route + cold-start resolution, root mount, parity row; the core queue rules; no unresolved key in 11 locales; German number format; Arabic mirroring; RTL-safe styles and no hardcoded text" },
+    { "kind": "existing", "ref": "npx jest tests/journey/core-i18n-route", "cwd": "apps/mobile",
+      "reason": "the journey lane's route test now expects /autopilot/audiobook to resolve native (this lane's route file)" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the player provider, mini player, reminder control, deep link and the two ports type-check against expo-audio, the shell ports, @vitana/ui, @vitana/tokens and @vitana/core/audiobook-queue" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /autopilot/audiobook route and the app-wide player (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "/autopilot/audiobook is native with its route apps/mobile/app/(app)/autopilot/audiobook.tsx present — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/audiobook/01-audiobook-deeplink.yaml", "target": "/autopilot/audiobook", "next_actor": "owner",
+      "reason": "cold + warm open of the push deep link: My Journey, settles on /autopilot in Guided mode, mini player above the bottom bar, audible first unheard topic; screenshot parity vs the 390x844 read-only staging web; needs G1 and a device/simulator with an audio route" },
+    { "flow": "apps/mobile/maestro/audiobook/02-audiobook-controls.yaml", "target": "/autopilot", "next_actor": "owner",
+      "reason": "play/pause, previous, next, speed, sleep timer, Ask Vitana, close, lock-screen metadata; needs G1 and an audio route (iOS needs macOS minutes / G3 on a device)" },
+    { "flow": "apps/mobile/maestro/audiobook/03-audiobook-reminder.yaml", "target": "/autopilot", "next_actor": "owner",
+      "reason": "read the daily-reminder row and its list in the Guided view; no save against staging (the guard aborts every non-GET); needs G1" }
+  ]
+}

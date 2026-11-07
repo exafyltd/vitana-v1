@@ -1,0 +1,206 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "Učitavanje nije uspelo.",
+        "mineEmptyBody": "Objavi zahtev za kupovinu ili prodaju – matchmaker će ti pokazati kupce i prodavce.",
+        "newListing": "Novi oglas"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "Kupujem",
+          "commercial_sell": "Prodajem",
+          "activity_seek": "Partner za aktivnost",
+          "partner_seek": "Životni partner",
+          "social_seek": "Druženje / mentorstvo",
+          "mutual_aid": "Uzajamna pomoć",
+          "learning_seek": "Želim da učim",
+          "mentor_seek": "Nudim podučavanje"
+        },
+        "age": "uzrast {min}–{max}",
+        "within": "u krugu od {km} km"
+      },
+      "share": {
+        "tooManyTitle": "Previše primalaca ({count})",
+        "tooManyBody": "Besplatni paket dozvoljava do {max}. Pređi na Pro za 50.",
+        "errorBatch": "Previše primalaca",
+        "errorQuota": "Dostignuto ograničenje deljenja",
+        "errorPrivate": "Ova objava ne može da se deli",
+        "errorFailed": "Deljenje nije uspelo",
+        "errorBody": "{message}",
+        "tryAgain": "Pokušaj ponovo.",
+        "alreadyShared": "Već podeljeno sa svima",
+        "sharedOne": "Podeljeno sa {count} prijateljem",
+        "sharedMany": "Podeljeno sa {count} prijatelja",
+        "skipped": "{skipped} je već imalo ovu objavu u prijemnom sandučetu.",
+        "theyWillSee": "Videće tvoju objavu u svom četu.",
+        "defaultTitle": "Vitana objava",
+        "defaultText": "Pogledaj ovo na Vitani",
+        "fromVitana": "Sa Vitane"
+      },
+      "orders": {
+        "eventTicket": "Ulaznica za događaj",
+        "locationTbd": "Mesto će biti naknadno određeno",
+        "cjProduct": "CJ proizvod",
+        "general": "Opšta",
+        "voucherProvider": "Maxina poklon vaučer",
+        "voucherTier": {
+          "test": "Probni vaučer",
+          "experience": "Vaučer za doživljaj",
+          "exclusive": "Ekskluzivni vaučer",
+          "gift": "Poklon vaučer"
+        },
+        "mock": {
+          "vipAccess": "VIP pristup",
+          "generalAdmission": "Opšti ulaz",
+          "earlyBird": "Rana prijava",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Jutarnja joga",
+          "retreatTitle": "Novogodišnji meditativni retreat"
+        },
+        "status": {
+          "upcoming": "Predstojeće",
+          "attended": "Prisustvovano",
+          "expired": "Isteklo",
+          "completed": "Završeno",
+          "delivered": "Isporučeno",
+          "cancelled": "Otkazano",
+          "refunded": "Refundirano",
+          "shipped": "Na putu",
+          "confirmed": "Potvrđeno",
+          "pending": "Na čekanju",
+          "processing": "U obradi",
+          "paid": "Aktivno",
+          "active": "Aktivno"
+        },
+        "type": {
+          "ticket": "Ulaznica",
+          "voucher": "Vaučer",
+          "product": "Proizvod",
+          "service": "Usluga"
+        }
+      },
+      "tickets": {
+        "event": "Događaj",
+        "dateTba": "Datum će biti objavljen",
+        "general": "Opšta"
+      },
+      "ticket": {
+        "tba": "Naknadno"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Idem na {title}!",
+        "email": "Imejl",
+        "emailSubject": "Moja ulaznica za {title}",
+        "sms": "SMS",
+        "copyLink": "Kopiraj link",
+        "copied": "Kopirano!",
+        "openingWhatsapp": "Otvaram WhatsApp…",
+        "openingViber": "Otvaram Viber…",
+        "openingEmail": "Otvaram imejl…",
+        "openingMessages": "Otvaram poruke…"
+      },
+      "booking": {
+        "sessionTitle": "Sesija: {title}",
+        "sessionDescription": "Zakaži sesiju kod {name}",
+        "pickDate": "Izaberi datum",
+        "previousMonth": "Prethodni mesec",
+        "nextMonth": "Sledeći mesec"
+      },
+      "subnav": {
+        "overview": "Pregled",
+        "supplements": "Suplementi",
+        "wellness-services": "Velnes usluge",
+        "doctors-coaches": "Lekari/Koučevi",
+        "deals-offers": "Popusti i ponude",
+        "orders": "Porudžbine"
+      },
+      "bookmark": {
+        "add": "Dodaj obeleživač",
+        "remove": "Ukloni obeleživač"
+      },
+      "bookActions": {
+        "bookAppointment": "Zakaži termin",
+        "rebookPrevious": "Ponovo zakaži",
+        "findNearMe": "U blizini",
+        "messageProvider": "Piši pružaocu",
+        "viewMyBookings": "Moje rezervacije",
+        "setReminders": "Podesi podsetnike",
+        "leaveReview": "Ostavi recenziju",
+        "paymentHistory": "Istorija plaćanja"
+      },
+      "visit": {
+        "hideNotes": "Sakrij beleške",
+        "viewNotes": "Prikaži beleške"
+      },
+      "utility": {
+        "openIndex": "Otvori Vitana Index",
+        "openIndexStreak": "Otvori Vitana Index – niz od {days} dana",
+        "upcomingEvents": "Predstojećih događaja: {count}"
+      }
+    },
+    "searchShort": "Pretraži…",
+    "indexPill": "Vitana Index {value} – otvori Zdravlje",
+    "calendar": {
+      "upcomingCount": "Predstojeći događaji: {count}"
+    },
+    "bookmark": {
+      "add": "Dodaj obeleživač",
+      "remove": "Ukloni obeleživač"
+    },
+    "product": {
+      "outOfStock": "Nema na stanju"
+    },
+    "hidden": {
+      "product": "proizvod",
+      "products": "proizvodi",
+      "allergies": "sadrže alergen koji si naveo",
+      "contraindications": "su kontraindikovani uz zdravstveno stanje koje si naveo",
+      "medications": "mogu da reaguju sa lekom koji uzimaš",
+      "dietary": "ne odgovaraju tvojim prehrambenim željama",
+      "budget": "su iznad tvog budžeta po proizvodu",
+      "sensitivities": "sadrže sastojak na koji si osetljiv",
+      "geo": "se ne isporučuju u tvoj region",
+      "excluded_region": "su regionalno ograničeni",
+      "past_purchases": "si nedavno kupio"
+    },
+    "quickShop": {
+      "viewCart": "Pogledaj korpu",
+      "quickCheckout": "Brzo plaćanje",
+      "reorderPrevious": "Poruči ponovo",
+      "managePayment": "Upravljaj plaćanjem",
+      "trackOrders": "Prati porudžbine",
+      "setPriceAlert": "Podesi obaveštenje o ceni",
+      "viewSavedItems": "Sačuvani artikli",
+      "applyCoupon": "Primeni kupon"
+    },
+    "quickBook": {
+      "bookAppointment": "Zakaži termin",
+      "rebookPrevious": "Zakaži ponovo",
+      "findNearMe": "Pronađi u blizini",
+      "messageProvider": "Piši pružaocu",
+      "viewMyBookings": "Moje rezervacije",
+      "setReminders": "Podesi podsetnike",
+      "leaveReview": "Ostavi recenziju",
+      "paymentHistory": "Istorija plaćanja"
+    },
+    "supplementCategories": {
+      "all": "Sve",
+      "multivitamins": "Multivitamini",
+      "vitamins": "Vitamini",
+      "minerals": "Minerali",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptogeni",
+      "nootropics": "Nootropici",
+      "longevity": "Dugovečnost",
+      "immunity": "Imunitet",
+      "antioxidants": "Antioksidansi",
+      "sleep": "San",
+      "performance": "Performanse",
+      "beauty": "Lepota",
+      "gutHealth": "Zdravlje creva",
+      "herbs": "Bilje",
+      "heartHealth": "Zdravlje srca"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05510",
+  "service": "community-app",
+  "_note": "Native Wave 2 discover lane (native-wave2-discover-commerce-r2/discover). The port is proven offline (jest-expo + RNTL with a fake gateway and a Supabase double, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Every command runs with APP_PROFILE=development (the only non-test profile the native app allows). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screens) is DEFERRED to G1 as next_actor: owner (tasks.md discover task 8). It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "regenerate the static i18n catalog map so the new discoverCommerceNative shards are bundled (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npx jest tests/discover-commerce", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "discover lane unit tests: /discover loaded / empty / error, mode-pill tabs + ?tab= deep links, guest card, utility rail (search, calendar badge, Life Compass popup, gift voucher hidden on iOS, Index, Autopilot), ?m= toast, page-view log; AddToCartButton gate states (signed out, role-blocked, product-only UUID, built POST); /shop states, autoplay/pause, anchor → peek → PDP, video-shop attribution, batched telemetry; supplements / wellness / deals / category screens with their built searches; /discover/ai-picks cold start; 11-locale key parity + Arabic RTL — fake gateway, no network (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "React 19 ReactElement typing; the discover screens, data layer, ports and @vitana/core extracts type-check against the shell (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the six new routes and expo-video (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "the 12 discover rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check` (run with APP_PROFILE=development)" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/discover-commerce/discover-01-overview.yaml", "target": "/discover | /discover?tab=suggested|categories|share | /discover/ai-picks", "next_actor": "owner",
+      "reason": "signed out (guest card) and signed in: Vitana Picks / Categories / Share & Earn, utility rail; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/discover-commerce/discover-02-shop.yaml", "target": "/shop", "next_actor": "owner",
+      "reason": "autoplay muted, snap scroll, anchor → peek drawer (paused) → full product drawer; read-only (no add-to-cart on staging); needs G1 (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/discover-commerce/discover-03-sub-catalogues.yaml", "target": "/discover/supplements | /discover/wellness-services | /discover/deals-offers?tab=trending|ai|saved | /discover/category/:subcategory", "next_actor": "owner",
+      "reason": "filters, tabs, category sheet, collection list; screenshot parity vs 390x844 read-only staging; needs G1 (iOS simulator + Android emulator)" }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "vtid": "VTID-05510",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/discover/index.tsx",
+    "apps/mobile/app/(app)/discover/supplements.tsx",
+    "apps/mobile/app/(app)/discover/wellness-services.tsx",
+    "apps/mobile/app/(app)/discover/deals-offers.tsx",
+    "apps/mobile/app/(app)/discover/category/**",
+    "apps/mobile/app/(app)/shop.tsx",
+    "apps/mobile/src/screens/discover/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/maestro/discover-commerce/**",
+    "apps/mobile/tests/discover-commerce/**",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/package.json",
+    "apps/mobile/package-lock.json",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/extract.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/*/discoverCommerceNative.json",
+    "docs/validation/VTID-05510/**"
+  ],
+  "_note": "apps/mobile/package.json + package-lock.json (expo-video 57.0.5, the SDK 57 bundled version) are outside the lane's paths: design.md §2 maps <video> to expo-video for /shop and the app had no video player. packages/core/manifest.json and closure.generated.json are listed by the lane but unchanged (the extracts are copies, not re-exports of new web roots).",
+  "sparring_record": "docs/validation/VTID-05510/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

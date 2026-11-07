@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05455",
+  "service": "community-app",
+  "_note": "Native Wave 2 health-hub lane (/health + ?mode=medical / ?mode=supplements + the Vitana Index overlay). The port is proven offline (jest-expo + RNTL, recording Supabase double + fake gateway, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Health-data reads only, RLS-scoped user_id = auth.uid(); nothing is written. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 READ-ONLY staging web /health) is DEFERRED to G1 as next_actor: owner (plan decision 5, tasks.md health-hub task 9). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/health", "cwd": "apps/mobile",
+      "reason": "health-hub unit tests (5 suites / 105 tests): dashboard loaded / empty / error, ?mode= tabs + normalizeHealthMode aliases + mode pill writes ?mode= back, snapshot / priority / guidance / pillar-agent widgets, chips, Health Actions popup, lab-order + upload sheets (upload write not wired), medical and supplements modes; Vitana Index overlay open (snapshot, chip, vitana:open-index bus event) / dismiss / data render; consent/no-write — every Supabase request is a select scoped to user_id = auth.uid(), the only health RPC is get_profile_health_summary as a GET, no storage call, every gateway call a GET with Bearer; Health Sync pinned-interface contract test in stub-only mode + the affordance delegates to connect() and never requests an OS permission; no unresolved key in 11 locales, RTL-safe styles, route + ledger rows — fixtures / fake gateway, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screens, the class-B data module and the three ports type-check against the shell ports, @vitana/ui, @vitana/tokens and the two new @vitana/core re-exports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /health route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "HEALTH.OVERVIEW, HEALTH.MEDICAL, HEALTH.SUPPLEMENTS and OVERLAY.VITANA_INDEX are native with their route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/health/01-health-overview.yaml", "target": "/health", "next_actor": "owner",
+      "reason": "sign in, open /health: header, mode pill, Upload, Index + Autopilot chips, snapshot, pillar agents, priority focus, guidance; screenshot parity vs the read-only 390x844 staging web /health (never vitanaland.com); network guard aborts every non-GET except sign-in; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/health/02-health-medical.yaml", "target": "/health?mode=medical", "next_actor": "owner",
+      "reason": "the member's reports or the empty state; the upload sheet opens, submit stays disabled; read only; needs G1" },
+    { "flow": "apps/mobile/maestro/health/03-health-supplements.yaml", "target": "/health?mode=supplements", "next_actor": "owner",
+      "reason": "filter pills + supplement cards (delete disabled); read only; needs G1" },
+    { "flow": "apps/mobile/maestro/health/04-vitana-index-overlay.yaml", "target": "/health", "next_actor": "owner",
+      "reason": "tap the snapshot / chip: the Index sheet (Today, Next few days, 30-day horizon, Life Compass row) and dismiss; read only; needs G1" }
+  ]
+}
