@@ -1,0 +1,26 @@
+# VTID-05425 fix 2 — red on the previous head 849523c98705a1edd81765dda506ae94c55c66aa
+# lane src unchanged (Linking.openURL, no return leg); only the new test file + test-only fixture/mock changes applied
+# cmd (apps/mobile): npx jest tests/wallet-subscriptions/return-leg.test.tsx
+
+    ✕ plan checkout → AppState active → billing/me refetched → the new plan card (5367 ms)
+    ✕ webhook lag: polls billing/me until the plan changes (5192 ms)
+    ✕ credit pack: the in-app browser closes (iOS) → billing/me refetched → the new credits (5170 ms)
+    ✕ ?checkout=cancelled → billing/me refetched once, the old plan stays, no toast, the flow is closed (5513 ms)
+    ✕ ?checkout=success on a cold open → billing/me refetched → the new plan card (8198 ms)
+    ✓ no external flow pending: AppState active does not read billing/me again (114 ms)
+  ● return leg after a hosted billing page › plan checkout → AppState active → billing/me refetched → the new plan card
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+    Expected: "https://checkout.example.invalid/sub"
+    > 52 |     await waitFor(() => expect(browser).toHaveBeenCalledWith('https://checkout.example.invalid/sub'));
+  ● return leg after a hosted billing page › webhook lag: polls billing/me until the plan changes
+    Expected: 2
+    Received: 1
+  ● return leg after a hosted billing page › credit pack: the in-app browser closes (iOS) → billing/me refetched → the new credits
+    Expected: > 1
+    Received:   1
+  ● return leg after a hosted billing page › ?checkout=cancelled → billing/me refetched once, the old plan stays, no toast, the flow is closed
+    Expected: 2
+    Received: 1
+  ● return leg after a hosted billing page › ?checkout=success on a cold open → billing/me refetched → the new plan card
+    Unable to find an element with testID: subs-state-active
+Tests:       5 failed, 1 passed, 6 total

@@ -1,0 +1,64 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Весь раздел",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Танцевальные предпочтения",
+          "description": "Стили, уровень, роль и что ты ищешь."
+        },
+        "partnerPreferences": {
+          "label": "Предпочтения в партнёре",
+          "description": "Кого ты ищешь. По умолчанию скрыто. Подполя остаются скрытыми, даже если ты откроешь раздел."
+        },
+        "serviceOfferings": {
+          "label": "Предлагаемые услуги",
+          "description": "Что ты предлагаешь. По умолчанию открыто — скрывать нет смысла."
+        },
+        "myPosts": {
+          "label": "Мои публикации",
+          "description": "Открытые запросы, которые ты надиктовал. Публикации о поиске партнёра НИКОГДА не появляются здесь, независимо от настройки."
+        },
+        "derivedAgeBand": {
+          "label": "Возрастная группа",
+          "description": "Показывай только свою возрастную группу (например, 30+) вместо точного возраста. По умолчанию: только контакты."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Мои стили",
+        "danceLevel": "Мой уровень",
+        "danceLookingFor": "Что я ищу",
+        "partnerGender": "Предпочтение по полу",
+        "partnerAgeRange": "Возрастной диапазон",
+        "partnerRelationshipIntent": "Цель отношений",
+        "partnerLocationRadius": "Место и радиус",
+        "servicePriceRange": "Ценовой диапазон",
+        "postsCommercial": "Публикации маркетплейса",
+        "postsPartnerSeek": "Публикации о поиске партнёра"
+      },
+      "partnerSeekNote": "Всегда скрыто. Протокол взаимного раскрытия защищает эти публикации независимо от настройки."
+    },
+    "media": {
+      "photosDenied": "Разреши доступ к фото в Настройках, чтобы выбрать изображение.",
+      "unsupportedFormat": "Неподдерживаемый формат изображения (.{ext}). Используй JPG, PNG, GIF или WebP."
+    },
+    "gallery": {
+      "photos": "Фото",
+      "selectMultiple": "Выбери несколько фото",
+      "tapToAddMore": "Нажми, чтобы добавить ещё",
+      "uploadingProgress": "Загрузка {current} из {total}...",
+      "deleteTitle": "Ты уверен?",
+      "deleteDescription": "Это фото будет удалено навсегда. Это действие нельзя отменить."
+    }
+  }
+}

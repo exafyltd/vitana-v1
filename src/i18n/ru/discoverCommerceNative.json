@@ -1,0 +1,143 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "Не удалось загрузить.",
+        "mineEmptyBody": "Опубликуй запрос на покупку или продажу — матчмейкер покажет тебе покупателей и продавцов.",
+        "newListing": "Новое объявление"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "Покупаю",
+          "commercial_sell": "Продаю",
+          "activity_seek": "Партнёр по занятиям",
+          "partner_seek": "Спутник жизни",
+          "social_seek": "Общение / наставничество",
+          "mutual_aid": "Взаимопомощь",
+          "learning_seek": "Хочу научиться",
+          "mentor_seek": "Готов учить"
+        },
+        "age": "возраст {min}–{max}",
+        "within": "в радиусе {km} км"
+      },
+      "share": {
+        "tooManyTitle": "Слишком много получателей ({count})",
+        "tooManyBody": "Бесплатный тариф позволяет до {max}. Перейди на Pro, чтобы было 50.",
+        "errorBatch": "Слишком много получателей",
+        "errorQuota": "Достигнут лимит отправок",
+        "errorPrivate": "Эту публикацию нельзя отправить",
+        "errorFailed": "Не удалось отправить",
+        "errorBody": "{message}",
+        "tryAgain": "Попробуй ещё раз.",
+        "alreadyShared": "Уже отправлено всем",
+        "sharedOne": "Отправлено {count} другу",
+        "sharedMany": "Отправлено друзьям: {count}",
+        "skipped": "У {skipped} эта публикация уже была во входящих.",
+        "theyWillSee": "Они увидят твою публикацию в своём чате.",
+        "defaultTitle": "Публикация в Vitana",
+        "defaultText": "Посмотри это в Vitana",
+        "fromVitana": "Из Vitana"
+      },
+      "orders": {
+        "eventTicket": "Билет на событие",
+        "locationTbd": "Место уточняется",
+        "cjProduct": "Товар CJ",
+        "general": "Общий",
+        "voucherProvider": "Подарочный сертификат Maxina",
+        "voucherTier": {
+          "test": "Тестовый сертификат",
+          "experience": "Сертификат-впечатление",
+          "exclusive": "Эксклюзивный сертификат",
+          "gift": "Подарочный сертификат"
+        },
+        "mock": {
+          "vipAccess": "VIP-доступ",
+          "generalAdmission": "Общий вход",
+          "earlyBird": "Ранняя продажа",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Утренняя йога",
+          "retreatTitle": "Новогодний медитационный ретрит"
+        },
+        "status": {
+          "upcoming": "Скоро",
+          "attended": "Посещено",
+          "expired": "Истёк",
+          "completed": "Завершён",
+          "delivered": "Доставлен",
+          "cancelled": "Отменён",
+          "refunded": "Возвращён",
+          "shipped": "В пути",
+          "confirmed": "Подтверждён",
+          "pending": "Ожидает",
+          "processing": "Обрабатывается",
+          "paid": "Активен",
+          "active": "Активен"
+        },
+        "type": {
+          "ticket": "Билет",
+          "voucher": "Сертификат",
+          "product": "Товар",
+          "service": "Услуга"
+        }
+      },
+      "tickets": {
+        "event": "Событие",
+        "dateTba": "Дата уточняется",
+        "general": "Общий"
+      },
+      "ticket": {
+        "tba": "Уточняется"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Я иду на {title}!",
+        "email": "Почта",
+        "emailSubject": "Мой билет на {title}",
+        "sms": "SMS",
+        "copyLink": "Копировать ссылку",
+        "copied": "Скопировано!",
+        "openingWhatsapp": "Открываем WhatsApp…",
+        "openingViber": "Открываем Viber…",
+        "openingEmail": "Открываем почту…",
+        "openingMessages": "Открываем сообщения…"
+      },
+      "booking": {
+        "sessionTitle": "Сессия: {title}",
+        "sessionDescription": "Запишись на сессию к {name}",
+        "pickDate": "Выбери дату",
+        "previousMonth": "Предыдущий месяц",
+        "nextMonth": "Следующий месяц"
+      },
+      "subnav": {
+        "overview": "Обзор",
+        "supplements": "Добавки",
+        "wellness-services": "Велнес-услуги",
+        "doctors-coaches": "Врачи/Коучи",
+        "deals-offers": "Скидки и предложения",
+        "orders": "Заказы"
+      },
+      "bookmark": {
+        "add": "Добавить в закладки",
+        "remove": "Убрать из закладок"
+      },
+      "bookActions": {
+        "bookAppointment": "Записаться",
+        "rebookPrevious": "Записаться снова",
+        "findNearMe": "Рядом со мной",
+        "messageProvider": "Написать специалисту",
+        "viewMyBookings": "Мои записи",
+        "setReminders": "Настроить напоминания",
+        "leaveReview": "Оставить отзыв",
+        "paymentHistory": "История платежей"
+      },
+      "visit": {
+        "hideNotes": "Скрыть заметки",
+        "viewNotes": "Показать заметки"
+      },
+      "utility": {
+        "openIndex": "Открыть Vitana Index",
+        "openIndexStreak": "Открыть Vitana Index — серия {days} дн.",
+        "upcomingEvents": "Предстоящих событий: {count}"
+      }
+    }
+  }
+}

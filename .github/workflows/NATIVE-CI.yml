@@ -139,6 +139,44 @@ jobs:
         run: npm test -- --ci
       - name: Bundle JS for iOS and Android (Metro + Hermes, no native build)
         run: npm run bundle
+      # VTID-05247 (native-g1-wiring build-profiles, B2): offline, secret-free. Bundles the development and test-g1
+      # profiles and checks that test-g1 carries its placeholder gateway and adds no production host literal
+      # versus development. The guard list itself and app code contain production host strings, so a plain
+      # "no host" grep would fail on code that is meant to be there.
+      - name: Offline per-profile bundles (development + test-g1) and host check
+        env:
+          EXPO_OFFLINE: '1'
+        run: |
+          set -eu
+          APP_PROFILE=development npx expo export --platform ios --platform android --output-dir dist-dev
+          APP_PROFILE=test-g1 npx expo export --platform ios --platform android --output-dir dist-g1
+          node <<'HOSTCHECK'
+          const fs = require('fs');
+          const path = require('path');
+          const PROD = /(vitanaland\.com|inmkhvwdcuyhnxkgfvsb|preview-aws[a-z0-9-]*\.vitanaland\.com)/g;
+          const PLACEHOLDER = 'gateway.g1.invalid';
+          function scan(dir) {
+            const hits = new Map();
+            let placeholder = false;
+            (function walk(d) {
+              for (const f of fs.readdirSync(d)) {
+                const p = path.join(d, f);
+                if (fs.statSync(p).isDirectory()) { walk(p); continue; }
+                const text = fs.readFileSync(p, 'latin1');
+                for (const m of text.matchAll(PROD)) hits.set(m[0], (hits.get(m[0]) || 0) + 1);
+                if (text.includes(PLACEHOLDER)) placeholder = true;
+              }
+            })(dir);
+            return { hits, placeholder };
+          }
+          const dev = scan('dist-dev');
+          const g1 = scan('dist-g1');
+          if (!g1.placeholder) { console.error('host-check: dist-g1 lacks the test-g1 placeholder; profile not applied'); process.exit(1); }
+          const devKeys = JSON.stringify([...dev.hits].sort());
+          const g1Keys = JSON.stringify([...g1.hits].sort());
+          if (devKeys !== g1Keys) { console.error('host-check: test-g1 adds or drops production host literals\n dev: ' + devKeys + '\n g1 : ' + g1Keys); process.exit(1); }
+          console.log('host-check: ok, test-g1 adds no production host literal');
+          HOSTCHECK
       - name: Bundle sizes
         run: |
           {

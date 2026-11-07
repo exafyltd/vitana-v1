@@ -1,0 +1,29 @@
+{
+  "vtid": "VTID-05449",
+  "service": "community-app",
+  "_note": "Native Wave 2 auth-portals lane. The port is proven offline (jest-expo + RNTL, fake Supabase double / fake AS fetch, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Sign-in is the one auth write and runs only against the double. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web screens) and the REAL OAuth browser round-trip are DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md auth-portals task 7). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/auth", "cwd": "apps/mobile",
+      "reason": "auth-portals unit tests: Maxina portal chrome (backdrop, card, footer links, ?confirmed toast, ?diag badge, Orb hint), tab switch and field validation, password sign-in against the double -> postSignInTarget /onboarding/welcome, the generic /:tenantSlug + /alkalma portal (resolve_tenant, unknown / error + retry / retired / static-route slugs, sign-up confirmation link + resend cooldown, invite-only, member switch, join), confirm screens loaded / expired / signed-out + Maxina discount + Alkalma Arabic copy, resolve-link tags /auth/confirmed + /reset-password -> auth and /oauth/complete -> oauth_return, link-bridge confirm targets, OAuth return states + 10 s deadline, /oauth/consent scopes / decision / ConfigMissing / production AS refused, reset request + new-password rules, logout; 11-locale keys, du-form, RTL start/end — fake gateway / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the auth screens, the native data paths and the auth port type-check against the shell ports, @vitana/ui and @vitana/tokens" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the ten auth routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 10 auth-portals rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/auth/01-maxina-portal.yaml", "target": "/maxina", "next_actor": "owner",
+      "reason": "portal chrome (backdrop, card, footer, Orb hint), tab switch, password sign-in -> /onboarding/welcome on the G1 project; screenshot parity vs the 390x844 read-only staging /maxina; needs G1 (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/auth/02-tenant-portal.yaml", "target": "/alkalma", "next_actor": "owner",
+      "reason": "/alkalma and a registry /:tenantSlug: hero, tabs, invite-only / open sign-up; a static one-segment path still opens its own screen; needs G1" },
+    { "flow": "apps/mobile/maestro/auth/03-oauth-roundtrip.yaml", "target": "/oauth/complete", "next_actor": "owner",
+      "reason": "the REAL OAuth browser round-trip: Apple on Android (WebBrowser.openAuthSessionAsync -> /oauth/complete PKCE), Apple / Google native SDK consent on iOS — providers exist only on the G1 test project, never production auth" },
+    { "flow": "apps/mobile/maestro/auth/04-reset-confirm.yaml", "target": "/reset-password", "next_actor": "owner",
+      "reason": "reset request; recovery link -> new-password form; /auth/confirmed link -> confirmed card, expired link -> error card; needs G1 links and mail" },
+    { "flow": "apps/mobile/maestro/auth/05-logout.yaml", "target": "/logout", "next_actor": "owner",
+      "reason": "/logout -> /maxina; needs G1" }
+  ]
+}
