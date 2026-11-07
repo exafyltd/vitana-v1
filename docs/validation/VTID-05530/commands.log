@@ -1,0 +1,26 @@
+VTID-05530 native-wave2-events-calendar-r3/calendar-reminders: commands run and results
+Worktree: /projects/sandbox/wt/v1-calendar-reminders (branch kiro/native-wave2-events-calendar-r3/calendar-reminders, base origin/main f837a9927)
+Session: kiro-exafyltd-202611072144-1c88
+
+== Setup
+- npm ci --no-audit --no-fund (apps/mobile): exit 0
+- ln -sfn /projects/sandbox/.agents/tsdeps/node_modules node_modules (repo root, typescript 5.8.3 for the closure tool; not staged)
+
+== Red on base (tests written before any implementation; the worktree held origin/main only)
+- npx jest tests/calendar -> exit 1
+  Test Suites: 6 failed, 6 total   Tests: 5 failed, 6 passed, 11 total
+  "Cannot find module" for the not-yet-written format / time / screens, plus the lane guard assertions. Saved: docs/validation/VTID-05530/red-on-base.txt
+
+== Green (after implementation)
+- npm run typecheck (apps/mobile): exit 0
+- npx jest tests/calendar -> exit 0  Test Suites: 6 passed, 6 total  Tests: 90 passed, 90 total  act() warnings: 0
+- npm test (apps/mobile, full suite): first run exit 1: Test Suites 1 failed, 206 passed; Tests 1 failed, 5730 passed.
+  The one failure was tests/discover-commerce/routes.test.tsx "the dynamic native patterns are this lane's provider route only":
+  it pins NATIVE_PATTERNS to ['/discover/provider/:id'] and my first commit had added the entry and fire patterns. Fixed in the lane
+  (patterns removed, see verification.md decision 6); no existing test changed.
+- npx jest tests/calendar tests/discover-commerce/routes.test.tsx tests/navigation.test.tsx -> exit 0  Tests: 492 passed
+- APP_PROFILE=development npm run bundle (EXPO_NO_TELEMETRY=1): exit 0 (iOS + Android JS exported to dist/, gitignored)
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: exit 0 ("Dependencies are up to date")
+- node scripts/native/parity-ledger.mjs --check: OK, 435 rows, 125 native route(s)
+- node scripts/native/core-closure.mjs --check: up to date (core unchanged)
+- npm test (apps/mobile, full suite, final tree) -> exit 0  Test Suites: 207 passed, 207 total  Tests: 5732 passed, 5732 total  Snapshots: 57 passed, 57 total
