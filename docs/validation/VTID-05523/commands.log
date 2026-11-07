@@ -1,0 +1,158 @@
+# VTID-05523 (native-wave2-ai-pages-r2/ai-coach) — local verification, 2026-11-03T13:00Z, Linux sandbox
+# verified on the branch with the implementation, tests, i18n and ledger (code commits 62d2ee46d..ee5a06e26);
+# only docs/validation, the G1 maestro README and one comment line were committed after
+# apps/mobile commands ran with HOME=<writable dir> (expo needs ~/.expo); bundle/deps with APP_PROFILE=development
+
+## apps/mobile
+$ npm run typecheck
+exit=0
+
+$ npx jest tests/ai-coach --ci          (run 1, default workers)
+Test Suites: 4 passed, 4 total
+Tests:       89 passed, 89 total
+exit=0
+
+$ npx jest tests/ai-coach --ci          (run 2, default workers)
+Test Suites: 4 passed, 4 total
+Tests:       89 passed, 89 total
+exit=0
+
+$ npm test -- --ci
+Test Suites: 97 passed, 97 total
+Tests:       2770 passed, 2770 total
+exit=0
+
+$ APP_PROFILE=development npm run bundle
+Exported: dist
+exit=0
+
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 46 native route(s)
+exit=0
+
+## repo root
+$ node scripts/native/core-closure.mjs --write     (after the ai-mocks manifest line)
+core-closure: 23 roots, 33 src files, 11 assets — ok
+
+$ node scripts/native/core-closure.mjs --check
+core-closure: 23 roots, 33 src files, 11 assets — up to date
+exit=0
+
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets — up to date
+exit=0
+
+$ node scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+
+$ npx eslint apps/mobile packages
+exit=0 (0 problems)
+
+$ node --test scripts/native/__tests__/*.test.mjs
+# pass 68
+# fail 0
+exit=0
+
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.   (no finding names aiCoachNative; the errors are pre-existing)
+exit=0
+
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+
+$ node scripts/i18n-stamp-source.mjs --check-all
+[stamp] … 0 key(s) whose EN source changed since translation (0.0%) for every locale
+exit=0
+
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+first run: 1 long word (Gesundheitsbelohnungen → aiCoachNative.reward.suggestions); fixed in ee5a06e26
+No long words found.
+exit=0
+
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+
+$ node scripts/i18n-parity-gate.mjs --all
+[gate] 10 failing check(s).   (identical on origin/main 6b9137ac5: review-queue counts, SUPABASE_SERVICE_ROLE not set — pre-existing, not this lane)
+exit=1
+
+$ npm run build   (vite, web; the new src/i18n/*/aiCoachNative.json shards are bundled)
+✓ built in 33.61s
+exit=0
+
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] OK — one chunk per lazy locale, de eager.
+exit=0
+
+$ npm test   (root: vitest run)
+ Test Files  487 passed (487)
+      Tests  3915 passed (3915)
+exit=0
+
+## red on base (origin/main 6b9137ac5) — see red-on-base.txt
+$ npx jest tests/ai-coach --ci   (the lane's tests copied onto origin/main)
+Test Suites: 4 failed, 4 total (Cannot find module ../../src/screens/ai-coach/…); the 5 AI.* ledger rows not_started, no /ai route
+exit=1
+
+## preflight (vitana-platform scripts/collab/preflight.mjs, head 9b7803e0c)
+FAIL  Collab handoff [report-only in CI] — lanes/ai-coach.md does not exist here or in vitana-platform (spec only on the plan branch: plan PR #4634 open)
+FAIL  Lane scope [required]             — lanes/ai-coach.md not found (same cause: the brief's known "lane file not found when the spec is not on main")
+PASS  gh for plan( PR / vitana-platform lane files
+PASS  PR-GATE scope / sparring / weakening / red-green
+PASS  Kiro steering
+SKIP  Not run by preflight
+
+## fix round 1 (review ai-coach-0a726a3: big-lift confetti + success toast), code head 666bf14d2
+$ git fetch origin && git merge origin/main   (origin/main 6b9137ac5)
+Already up to date.
+exit=0
+
+## red on 0a726a3 — see red-fix1.txt
+$ npx jest tests/ai-coach/companion.test.tsx -t 'big-lift'   (new tests, app code as on 0a726a3)
+Tests: 2 failed, 9 skipped, 2 passed (magnitude 12 + throttle fail: no toasts.common.success, no confetti; the two absence checks pass on base by design)
+exit=1
+
+$ cd apps/mobile && npm run typecheck
+exit=0
+
+$ npx eslint src/screens/ai-coach tests/ai-coach
+exit=0
+
+$ npx jest tests/ai-coach --ci   (run 1, default workers)
+Test Suites: 4 passed, 4 total; Tests: 93 passed, 93 total; Time: 37.954 s (wall 39 s)
+exit=0
+
+$ npx jest tests/ai-coach --ci   (run 2, default workers)
+Test Suites: 4 passed, 4 total; Tests: 93 passed, 93 total; Time: 19.064 s (wall 20 s)
+exit=0
+
+## per-test durations (npx jest tests/ai-coach --ci --verbose, default workers; 93/93 passed, 62.3 s)
+93 tests timed: median 260 ms, max 2953 ms — every test far inside the 30 s jest.setTimeout and the 5 s asyncUtilTimeout.
+Over 1 s:
+  2953 ms  companion: without AI consent the sheet opens; "I agree" saves consent and the next send goes out
+  1976 ms  companion: a second big lift inside 5 minutes is throttled (stored timestamp)
+  1956 ms  companion: renders a fake chat thread and sends the web request body
+  1639 ms  companion: renders the sidebar and the card stack (loaded)
+  1616 ms  overview-insights: renders the seven web cards in order with the mock data (loaded)
+  1518 ms  companion: magnitude 12: the lift toast, then the confetti overlay and the extra success toast
+  1515 ms  companion: completes the open onboarding_maxina recommendation once and toasts the reward
+  1134 ms  i18n-rtl: /ai overview has no raw key
+  1086 ms  companion: the Autopilot widget is paused with the enable hint when autopilot is off (empty)
+  1040 ms  i18n-rtl: /ai companion has no raw key
+(an earlier run 1 failed 1/93 on the lane's own no-physical-left/right check for Confetti.tsx `left:`; fixed to `start:` before the two runs above)
+
+## preflight (head 666bf14d2)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-ai-pages-r2/ai-coach --title "VTID-05523 (native-wave2-ai-pages-r2/ai-coach): native AI coach port"
+PASS Collab handoff, Lane scope, gh for plan, PR-GATE scope / sparring / weakening / red-green, Kiro steering; SKIP Not run by preflight
+preflight: every check passed
+exit=0

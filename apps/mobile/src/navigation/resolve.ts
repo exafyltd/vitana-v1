@@ -41,6 +41,11 @@ type Row = { key: string; web_path: string; scope: string; source: string };
  */
 export const NATIVE_ROUTES: readonly string[] = [
   '/',
+  '/ai',
+  '/ai/companion',
+  '/ai/daily-summary',
+  '/ai/insights',
+  '/ai/recommendations',
   '/alkalma',
   '/alkalma/confirmed',
   '/apply',
