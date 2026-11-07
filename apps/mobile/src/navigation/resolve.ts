@@ -55,6 +55,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/autopilot/audiobook',
   '/comm/find-partner',
   '/comm/groups',
+  '/comm/live-rooms',
   '/comm/members',
   '/comm/open-asks',
   '/comm/talk-to-vitana',

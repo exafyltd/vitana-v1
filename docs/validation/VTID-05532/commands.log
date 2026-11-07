@@ -1,0 +1,65 @@
+VTID-05532 native-wave2-events-calendar-r3/live-rooms: commands run and results
+Worktree: /projects/sandbox/wt-vtid-05532-live-rooms-lane (branch kiro/vtid-05532-live-rooms-lane, base origin/main 488dd8db6)
+Environment note: the sandbox gives the root home a read-only filesystem, so `npm run bundle` needed EXPO_NO_TELEMETRY=1
+(Expo writes its anonymous id under /root/.expo). The first bundle attempt without it exited 7 with ENOENT on /root/.expo.
+
+== Setup
+- git fetch origin main; git fetch origin (vitana-platform: kiro/native-wave2-events-calendar-r3/plan present)
+- git -C vitana-v1 worktree add ../wt-vtid-05532-live-rooms-lane -b kiro/vtid-05532-live-rooms-lane origin/main
+- npm ci --no-audit --no-fund (apps/mobile): exit 0
+- npm ci --ignore-scripts --no-audit --no-fund (repo root, for the closure tool's typescript): exit 0
+
+== Red on base (tests written before any implementation; the worktree held origin/main only)
+- npx jest tests/liverooms --ci  -> exit 1
+  Test Suites: 4 failed, 4 total   Tests: 4 failed, 3 passed, 7 total
+  Failures are "Cannot find module" for the not-yet-written screens, data and port modules, plus the lane-file existence checks.
+  Saved: docs/validation/VTID-05532/red-on-base.txt
+
+== Green (after implementation)
+- npm run gen:i18n: exit 0 (11 locales, 1595 shards, map unchanged)
+- npx jest tests/liverooms (run 1, default workers) -> exit 0  Test Suites: 4 passed, 4 total  Tests: 39 passed, 39 total  act() warnings: 0
+- npx jest tests/liverooms (run 2, default workers) -> exit 0  Test Suites: 4 passed, 4 total  Tests: 39 passed, 39 total  act() warnings: 0
+  (before the list tests waited for profile and count queries, run 1 printed 4 act() warnings from LiveRoomsScreen; after, 0)
+- npm run typecheck (apps/mobile): exit 0 (run twice, before and after the final test edits)
+- npm test (apps/mobile, full suite, final tree) -> exit 0  Test Suites: 149 passed, 149 total  Tests: 4039 passed, 4039 total  Snapshots: 57 passed
+  Earlier full run on the same code but before the list-test waits: exit 1, one failure outside this lane:
+  tests/inbox-chat/inbox-list/archived-inspiration.test.tsx "Template Actions opens the five-action sheet; an action closes it"
+  (a waitFor on a sheet unmount timed out under full-suite load). The same file alone: exit 0, 6 passed. The rerun above passed.
+  This lane does not touch that file.
+- APP_PROFILE=development npm run bundle (with EXPO_NO_TELEMETRY=1): exit 0. iOS hbc bundle exported to dist/ (gitignored).
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: exit 0 (offline mode warning only; "Dependencies are up to date")
+- npm run parity:check (apps/mobile): exit 0  "parity-ledger --check: OK — 435 rows, 72 native route(s)" (was 70 on base; +2 new route files)
+- node scripts/native/core-closure.mjs --check (repo root): exit 0  "core-closure: 33 roots, 43 src files, 11 assets — up to date" (core unchanged)
+- npx eslint on apps/mobile/src/screens/liverooms, src/ports/live-room-video.ts, app/(app)/comm/live-rooms, tests/liverooms: exit 0, no findings
+
+== Closure classification (why no core change)
+- scripts/native/extraction-deps.mjs analyze(): src/components/liverooms/liveRoomFormat.ts and src/components/ui/vcard/adapters/liveRoom.ts
+  are own-class A but class C: "blocked transitively via src/lib/i18n-toast.ts". i18n-toast imports sonner (web-only package) and
+  import.meta.env. src/lib/locale-format.ts is blocked the same way. Both helpers are re-implemented natively (data/rules.ts, format.ts).
+
+== Preflight (collab)
+- node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD
+  --branch kiro/vtid-05532-live-rooms-lane --title "VTID-05532 (native-wave2-events-calendar-r3/live-rooms): native live rooms port"
+  First run on the feat + validation commits: exit 1. Failures:
+  - Lane scope [required] and Collab handoff: lanes/live-rooms.md not found here or in vitana-platform (the lane spec lives on the
+    plan branch until the plan merges). Expected, named in the PR body.
+  - PR-GATE sparring: no owner-approval line in plan-sparring.md. Fixed by adding the Approval section (the next commit).
+  - Warning, not an error: branch name not in the <kiro|claude>/<slug>/<lane-id> form. The branch name follows the prompt
+    (kiro/vtid-05532-live-rooms-lane); the lane is matched by its Collab-Lane trailers.
+  All other checks passed: queue validate, gh for plan lane files, PR-GATE scope, PR-GATE weakening, PR-GATE red-green, Kiro steering.
+
+== PR #1607 checks on head 6c3c4126d (REST check-runs; gh pr checks needs GraphQL, which the gateway rejects)
+- 13 success (apps/mobile typecheck/test/bundle, pr-gate, change-suite, ESLint native override, Parity ledger generators, Vitest jsdom,
+  Edge data client, Realtime helper, preview-e2e, ORB parity, vitana-voice Android, Which native jobs run)
+- 1 skipped (Extraction dependency analysis (artefact))
+- 1 failure: Lane scope (lane file not found: lanes/live-rooms.md is on the plan branch, not main). Expected, named in the PR body.
+
+== After the guard fix (lane-guards.test.ts now calls configure({ asyncUtilTimeout: 5000 }) like the other lane tests)
+- npx jest tests/liverooms, run 1 -> exit 0, 4 suites / 39 tests passed, act() warnings 0
+- npx jest tests/liverooms, run 2 -> exit 0, 4 suites / 39 tests passed, act() warnings 0
+- npm run typecheck -> exit 0
+- npx eslint apps/mobile/tests/liverooms -> exit 0
+
+== Not run (G1 or owner work)
+- Maestro device journeys, simulator and emulator screenshots, the Daily.co video join: deferred to G1 (staging-tests.json deferred_g1).
+- No live call, no Supabase or gateway write from any test or script in this lane.
