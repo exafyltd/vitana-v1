@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05512",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/discover/product/**",
+    "apps/mobile/app/(app)/universal-cart.tsx",
+    "apps/mobile/app/(app)/checkout/**",
+    "apps/mobile/app/(app)/tickets/success.tsx",
+    "apps/mobile/app/(app)/packages/success.tsx",
+    "apps/mobile/src/screens/commerce/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/maestro/discover-commerce/**",
+    "apps/mobile/tests/discover-commerce/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/*/discoverCommerceNative.json",
+    "docs/validation/VTID-05512/**"
+  ],
+  "_note": "Stacked on PR #1573 (native-wave2-discover-commerce-r2/discover, VTID-05510): the branch is based on origin/kiro/native-wave2-discover-commerce-r2/discover and lands after it, so until #1573 merges the diff against main also shows the discover lane's files. This lane's own changes are exactly the paths above. No discover-lane file is edited (the AddToCartButton, the cart hook and the Discover controls are read through src/ports/add-to-cart.ts and src/ports/commerce.tsx). packages/core/extract.json is listed by the lane but unchanged here.",
+  "sparring_record": "docs/validation/VTID-05512/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

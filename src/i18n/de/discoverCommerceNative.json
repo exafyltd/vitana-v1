@@ -201,6 +201,30 @@
       "gutHealth": "Darmgesundheit",
       "herbs": "Kräuter",
       "heartHealth": "Herzgesundheit"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "Folgt",
+        "eventFallback": "Event",
+        "generalAdmission": "Allgemeiner Eintritt",
+        "loadError": "Dein Ticket konnte nicht geladen werden. Bitte prüfe deine E-Mails auf die Bestätigung."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Ich bin bei {title} dabei!",
+        "email": "E-Mail",
+        "emailSubject": "Mein Ticket für {title}",
+        "sms": "SMS",
+        "copyLink": "Link kopieren",
+        "copied": "Kopiert!",
+        "openingWhatsapp": "WhatsApp wird geöffnet …",
+        "openingViber": "Viber wird geöffnet …",
+        "openingEmail": "E-Mail wird geöffnet …",
+        "openingMessages": "Nachrichten werden geöffnet …"
+      },
+      "package": {
+        "failedToVerify": "Die Zahlung konnte nicht verifiziert werden.",
+        "unableToVerify": "Dein Kauf konnte nicht verifiziert werden. Bitte kontaktiere den Support."
+      }
     }
   }
 }

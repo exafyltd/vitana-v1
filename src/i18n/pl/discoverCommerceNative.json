@@ -201,6 +201,30 @@
       "gutHealth": "Zdrowie jelit",
       "herbs": "Zioła",
       "heartHealth": "Zdrowie serca"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "Wkrótce",
+        "eventFallback": "Wydarzenie",
+        "generalAdmission": "Wstęp ogólny",
+        "loadError": "Nie udało się wczytać twojego biletu. Sprawdź e-mail z potwierdzeniem."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Idę na {title}!",
+        "email": "E-mail",
+        "emailSubject": "Mój bilet na {title}",
+        "sms": "SMS",
+        "copyLink": "Kopiuj link",
+        "copied": "Skopiowano!",
+        "openingWhatsapp": "Otwieranie WhatsApp…",
+        "openingViber": "Otwieranie Vibera…",
+        "openingEmail": "Otwieranie poczty…",
+        "openingMessages": "Otwieranie wiadomości…"
+      },
+      "package": {
+        "failedToVerify": "Nie udało się zweryfikować płatności",
+        "unableToVerify": "Nie udało się zweryfikować twojego zakupu. Skontaktuj się z pomocą."
+      }
     }
   }
 }

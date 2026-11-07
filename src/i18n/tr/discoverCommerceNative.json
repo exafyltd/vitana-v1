@@ -201,6 +201,30 @@
       "gutHealth": "Bağırsak sağlığı",
       "herbs": "Bitkiler",
       "heartHealth": "Kalp sağlığı"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "Açıklanacak",
+        "eventFallback": "Etkinlik",
+        "generalAdmission": "Genel giriş",
+        "loadError": "Biletin yüklenemedi. Onay için lütfen e-postanı kontrol et."
+      },
+      "ticketShare": {
+        "goingTo": "🎟 {title} etkinliğine gidiyorum!",
+        "email": "E-posta",
+        "emailSubject": "{title} biletim",
+        "sms": "SMS",
+        "copyLink": "Bağlantıyı kopyala",
+        "copied": "Kopyalandı!",
+        "openingWhatsapp": "WhatsApp açılıyor…",
+        "openingViber": "Viber açılıyor…",
+        "openingEmail": "E-posta açılıyor…",
+        "openingMessages": "Mesajlar açılıyor…"
+      },
+      "package": {
+        "failedToVerify": "Ödeme doğrulanamadı",
+        "unableToVerify": "Satın alman doğrulanamadı. Lütfen destekle iletişime geç."
+      }
     }
   }
 }
