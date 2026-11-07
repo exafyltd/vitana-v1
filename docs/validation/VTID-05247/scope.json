@@ -10,5 +10,10 @@
   ],
   "sparring_record": "docs/validation/VTID-05247/plan-sparring.md",
   "weakens_tests": [],
-  "red_green_exempt": ["CI bundle step: offline bundling and a host comparison, no unit test to turn red"]
+  "red_green_exempt": [
+    {
+      "file": ".github/workflows/NATIVE-CI.yml",
+      "reason": "CI bundle step: offline bundling and a host comparison; no unit test to turn red"
+    }
+  ]
 }
