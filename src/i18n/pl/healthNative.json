@@ -146,6 +146,194 @@
           "prompt": "Jak jasny i spokojny jest dziś Twój umysł? (1 = bardzo zestresowany, 5 = jasny i spokojny)"
         }
       }
+    },
+    "conditions": {
+      "description": "Oceń swoje ryzyko zdrowotne i twórz plany profilaktyczne, aby utrzymać dobre samopoczucie."
+    },
+    "education": {
+      "description": "Korzystaj z wybranych materiałów edukacyjnych o zdrowiu, dopasowanych do twoich zainteresowań i profilu.",
+      "episode": "Odc. {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index od podszewki",
+          "category": "Wskaźniki zdrowia"
+        },
+        "v2": {
+          "title": "Przygotowanie posiłków dla zdrowia",
+          "category": "Odżywianie"
+        },
+        "v3": {
+          "title": "Techniki poprawy snu",
+          "category": "Zdrowy sen"
+        },
+        "v4": {
+          "title": "Nauka o treningu HIIT",
+          "category": "Fitness"
+        },
+        "v5": {
+          "title": "Strategie radzenia sobie ze stresem",
+          "category": "Zdrowie psychiczne"
+        },
+        "v6": {
+          "title": "Jak czytać wyniki badań",
+          "category": "Medycyna"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "Nauka o długowieczności",
+          "series": "Zdrowie od podszewki"
+        },
+        "p2": {
+          "title": "Obalamy mity żywieniowe",
+          "series": "Nauka o żywności"
+        },
+        "p3": {
+          "title": "Sen i wydajność",
+          "series": "Szczyt formy"
+        },
+        "p4": {
+          "title": "Ruch a zdrowie mózgu",
+          "series": "Ciało i umysł"
+        },
+        "p5": {
+          "title": "Trening odporności psychicznej",
+          "series": "Psychologia dziś"
+        },
+        "p6": {
+          "title": "Trendy w medycynie prewencyjnej",
+          "series": "Zdrowie przyszłości"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Przeglądaj artykuły",
+        "description": "Odkrywaj wybrane artykuły o zdrowiu i dobrym samopoczuciu"
+      },
+      "watchVideos": {
+        "title": "Oglądaj filmy",
+        "description": "Edukacyjne filmy i dokumenty o zdrowiu"
+      },
+      "listenPodcasts": {
+        "title": "Słuchaj podcastów",
+        "description": "Odcinki podcastów o zdrowiu i dobrym samopoczuciu"
+      },
+      "searchContent": {
+        "title": "Szukaj treści",
+        "description": "Znajdź konkretne tematy i informacje o zdrowiu"
+      },
+      "myBookmarks": {
+        "title": "Moje zakładki",
+        "description": "Otwórz zapisane artykuły i materiały"
+      },
+      "downloadOffline": {
+        "title": "Pobierz offline",
+        "description": "Zapisz treści, by przeczytać lub obejrzeć je później"
+      },
+      "healthCourses": {
+        "title": "Kursy zdrowotne",
+        "description": "Zapisz się na uporządkowane programy edukacji o zdrowiu"
+      }
+    },
+    "services": {
+      "description": "Rezerwuj wizyty, badania przesiewowe i programy wellness dopasowane do twoich potrzeb.",
+      "impactPoints": "+{points} pkt"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Umów badanie",
+        "description": "Zaplanuj coroczne kompleksowe badanie zdrowia"
+      },
+      "orderLabTests": {
+        "title": "Zamów badania",
+        "description": "Zamów analizę biomarkerów i testy diagnostyczne"
+      },
+      "myAppointments": {
+        "title": "Moje wizyty",
+        "description": "Przeglądaj nadchodzące wizyty lekarskie i zarządzaj nimi"
+      },
+      "findSpecialists": {
+        "title": "Znajdź specjalistów",
+        "description": "Połącz się ze specjalistami w twojej okolicy"
+      },
+      "wellnessPrograms": {
+        "title": "Programy wellness",
+        "description": "Dołącz do wyzwań i programów zdrowotnych społeczności"
+      },
+      "telemedicine": {
+        "title": "Telemedycyna",
+        "description": "Umawiaj wirtualne konsultacje ze specjalistami"
+      },
+      "healthRecords": {
+        "title": "Dokumentacja medyczna",
+        "description": "Uzyskaj dostęp do pełnej historii leczenia i dokumentów"
+      },
+      "insuranceSupport": {
+        "title": "Pomoc ubezpieczeniowa",
+        "description": "Uzyskaj pomoc w roszczeniach i weryfikacji ubezpieczenia"
+      }
+    },
+    "plans": {
+      "description": "Plany oparte na AI, dopasowane do twojego profilu zdrowia i celów",
+      "planName": {
+        "nutrition": "Plan: Odżywianie",
+        "exercise": "Plan: Ruch",
+        "hydration": "Plan: Nawodnienie",
+        "sleep": "Plan: Sen",
+        "mental": "Plan: Psychika",
+        "supplement": "Plan: Suplementy"
+      },
+      "pillarName": {
+        "nutrition": "Odżywianie",
+        "exercise": "Ruch",
+        "hydration": "Nawodnienie",
+        "sleep": "Sen",
+        "mental": "Psychika",
+        "supplement": "Suplementy"
+      },
+      "refreshed": "{planName} odświeżony! 🔄",
+      "justNow": "Przed chwilą",
+      "hoursAgo": "{hours} godz. temu",
+      "daysAgo": "{days} dni temu",
+      "never": "Nigdy",
+      "toasts": {
+        "recalibrateDescription": "Analizujemy wszystkie plany i synergie między filarami. To może chwilę potrwać...",
+        "viewProgress": "Zobacz postęp",
+        "reportDescription": "Przygotowujemy twój szczegółowy raport zdrowia. Zajrzyj za kilka minut!",
+        "gotIt": "Rozumiem",
+        "optimizing": "✨ Optymalizacja: {pillar}",
+        "optimizeDescription": "AI Autopilot analizuje twój najsłabszy filar i przygotowuje konkretne usprawnienia.",
+        "viewPlan": "Zobacz plan"
+      },
+      "proteinShort": "{protein} B",
+      "nutritionDefaults": {
+        "goalFocus": "Zbilansowane odżywianie",
+        "schedule": "3 posiłki + 2 przekąski",
+        "calTarget": "Cel: {calories} kcal",
+        "daily": "Codziennie",
+        "insight": "Twój plan żywieniowy jest dopasowany do obecnej aktywności i twoich celów."
+      },
+      "aiSummary": {
+        "exercise": "Świetna regularność! Nawodnienie i sen poprawiają twoją regenerację.",
+        "hydration": "Twoje nawodnienie poprawiło się w tym tygodniu o 12% — świetny postęp! AI zaleca elektrolity po intensywnym treningu, by szybciej się regenerować.",
+        "sleep": "Regularność snu poprawiła się w tym tygodniu o 10% — świetna regeneracja. AI wykryło, że najlepsza pora snu dla głębokiego snu to 22:30-23:00.",
+        "mental": "Wskaźniki stresu poprawiły się o 12% od wprowadzenia porannych ćwiczeń oddechowych. Twoja koncentracja jest stabilniejsza — świetny postęp w tym tygodniu."
+      },
+      "ai": "AI",
+      "hydrationStatus": {
+        "goalMet": "Cel osiągnięty",
+        "catchUp": "Trzeba nadrobić",
+        "belowTarget": "Poniżej celu",
+        "onTrack": "Zgodnie z planem"
+      },
+      "sleepStatus": {
+        "excellent": "Jakość snu doskonała",
+        "good": "Jakość snu dobra",
+        "improve": "Jest co poprawić"
+      },
+      "litersOf": "{current} l / {target} l",
+      "liters": "{value} l"
     }
   }
 }

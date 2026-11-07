@@ -146,6 +146,194 @@
           "prompt": "How clear and calm is your mind today? (1 = very stressed, 5 = clear and calm)"
         }
       }
+    },
+    "conditions": {
+      "description": "Assess your health risks and create preventive action plans to maintain optimal wellness."
+    },
+    "education": {
+      "description": "Access curated health education materials linked to your interests and demographic profile.",
+      "episode": "Ep. {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index Deep Dive",
+          "category": "Health Metrics"
+        },
+        "v2": {
+          "title": "Meal Prep for Optimal Health",
+          "category": "Nutrition"
+        },
+        "v3": {
+          "title": "Sleep Optimization Techniques",
+          "category": "Sleep Health"
+        },
+        "v4": {
+          "title": "HIIT Workout Science",
+          "category": "Fitness"
+        },
+        "v5": {
+          "title": "Stress Management Strategies",
+          "category": "Mental Health"
+        },
+        "v6": {
+          "title": "Lab Results Interpretation",
+          "category": "Medical"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "The Science of Longevity",
+          "series": "Health Deep Dive"
+        },
+        "p2": {
+          "title": "Nutrition Myths Debunked",
+          "series": "Food Science"
+        },
+        "p3": {
+          "title": "Sleep & Performance",
+          "series": "Peak Health"
+        },
+        "p4": {
+          "title": "Exercise & Brain Health",
+          "series": "Mind & Body"
+        },
+        "p5": {
+          "title": "Mental Resilience Training",
+          "series": "Psychology Today"
+        },
+        "p6": {
+          "title": "Preventive Medicine Trends",
+          "series": "Future Health"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Browse Articles",
+        "description": "Explore curated health and wellness articles"
+      },
+      "watchVideos": {
+        "title": "Watch Videos",
+        "description": "Educational health videos and documentaries"
+      },
+      "listenPodcasts": {
+        "title": "Listen to Podcasts",
+        "description": "Health and wellness podcast episodes"
+      },
+      "searchContent": {
+        "title": "Search Content",
+        "description": "Find specific health topics and information"
+      },
+      "myBookmarks": {
+        "title": "My Bookmarks",
+        "description": "Access your saved articles and resources"
+      },
+      "downloadOffline": {
+        "title": "Download for Offline",
+        "description": "Save content to read or watch later"
+      },
+      "healthCourses": {
+        "title": "Health Courses",
+        "description": "Enroll in structured wellness education programs"
+      }
+    },
+    "services": {
+      "description": "Book appointments, screenings, and wellness programs tailored to your needs.",
+      "impactPoints": "+{points} points"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Book Physical Exam",
+        "description": "Schedule your annual comprehensive health checkup"
+      },
+      "orderLabTests": {
+        "title": "Order Lab Tests",
+        "description": "Request biomarker analysis and diagnostic tests"
+      },
+      "myAppointments": {
+        "title": "My Appointments",
+        "description": "View and manage upcoming medical appointments"
+      },
+      "findSpecialists": {
+        "title": "Find Specialists",
+        "description": "Connect with medical specialists in your area"
+      },
+      "wellnessPrograms": {
+        "title": "Wellness Programs",
+        "description": "Join community health challenges and programs"
+      },
+      "telemedicine": {
+        "title": "Telemedicine",
+        "description": "Schedule virtual consultations with providers"
+      },
+      "healthRecords": {
+        "title": "Health Records",
+        "description": "Access your complete medical history and documents"
+      },
+      "insuranceSupport": {
+        "title": "Insurance Support",
+        "description": "Get help with claims and coverage verification"
+      }
+    },
+    "plans": {
+      "description": "AI-powered plans tailored to your unique health profile and goals",
+      "planName": {
+        "nutrition": "Nutrition Plan",
+        "exercise": "Exercise Plan",
+        "hydration": "Hydration Plan",
+        "sleep": "Sleep Plan",
+        "mental": "Mental Plan",
+        "supplement": "Supplement Plan"
+      },
+      "pillarName": {
+        "nutrition": "Nutrition",
+        "exercise": "Exercise",
+        "hydration": "Hydration",
+        "sleep": "Sleep",
+        "mental": "Mental",
+        "supplement": "Supplement"
+      },
+      "refreshed": "{planName} refreshed! 🔄",
+      "justNow": "Just now",
+      "hoursAgo": "{hours}h ago",
+      "daysAgo": "{days}d ago",
+      "never": "Never",
+      "toasts": {
+        "recalibrateDescription": "Analyzing all plans and cross-pillar synergies. This may take a few moments...",
+        "viewProgress": "View Progress",
+        "reportDescription": "Your detailed health analytics report is being prepared. Check back in a few minutes!",
+        "gotIt": "Got it",
+        "optimizing": "✨ Optimizing {pillar}",
+        "optimizeDescription": "AI Autopilot is analyzing your weakest pillar and generating targeted improvements.",
+        "viewPlan": "View Plan"
+      },
+      "proteinShort": "{protein}P",
+      "nutritionDefaults": {
+        "goalFocus": "Balanced Nutrition",
+        "schedule": "3 meals + 2 snacks",
+        "calTarget": "{calories} cal target",
+        "daily": "Daily",
+        "insight": "Your nutrition plan is optimized for your current activity level and goals."
+      },
+      "aiSummary": {
+        "exercise": "Consistency is excellent! Hydration and sleep scores are enhancing your recovery.",
+        "hydration": "Your hydration consistency improved +12% this week — great progress! AI recommends adding electrolytes after intense workouts for faster recovery.",
+        "sleep": "Sleep consistency improved +10% this week — great recovery trend. AI detected your optimal bedtime window is 22:30-23:00 for maximum deep sleep.",
+        "mental": "Stress indicators improved by +12% since introducing morning breathwork. Your focus variability decreased — excellent progress this week."
+      },
+      "ai": "AI",
+      "hydrationStatus": {
+        "goalMet": "Goal Met",
+        "catchUp": "Catch-up needed",
+        "belowTarget": "Below target",
+        "onTrack": "On track"
+      },
+      "sleepStatus": {
+        "excellent": "Sleep quality excellent",
+        "good": "Sleep quality good",
+        "improve": "Room for improvement"
+      },
+      "litersOf": "{current}L / {target}L",
+      "liters": "{value}L"
     }
   }
 }

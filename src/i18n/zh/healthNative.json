@@ -146,6 +146,194 @@
           "prompt": "今天你的头脑有多清晰平静？（1 = 压力很大，5 = 清晰平静）"
         }
       }
+    },
+    "conditions": {
+      "description": "评估你的健康风险，制定预防行动计划，保持最佳健康状态。"
+    },
+    "education": {
+      "description": "获取与你的兴趣和人口特征相关的精选健康教育资料。",
+      "episode": "第 {episode} 集",
+      "videos": {
+        "v1": {
+          "title": "深入了解 Vitana 指数",
+          "category": "健康指标"
+        },
+        "v2": {
+          "title": "健康备餐指南",
+          "category": "营养"
+        },
+        "v3": {
+          "title": "睡眠优化技巧",
+          "category": "睡眠健康"
+        },
+        "v4": {
+          "title": "HIIT 训练的科学",
+          "category": "健身"
+        },
+        "v5": {
+          "title": "压力管理策略",
+          "category": "心理健康"
+        },
+        "v6": {
+          "title": "解读化验结果",
+          "category": "医疗"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "长寿的科学",
+          "series": "健康深度谈"
+        },
+        "p2": {
+          "title": "营养误区大揭秘",
+          "series": "食品科学"
+        },
+        "p3": {
+          "title": "睡眠与表现",
+          "series": "巅峰健康"
+        },
+        "p4": {
+          "title": "运动与大脑健康",
+          "series": "身心"
+        },
+        "p5": {
+          "title": "心理韧性训练",
+          "series": "今日心理学"
+        },
+        "p6": {
+          "title": "预防医学趋势",
+          "series": "未来健康"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "浏览文章",
+        "description": "探索精选的健康与养生文章"
+      },
+      "watchVideos": {
+        "title": "观看视频",
+        "description": "健康教育视频与纪录片"
+      },
+      "listenPodcasts": {
+        "title": "收听播客",
+        "description": "健康与养生播客节目"
+      },
+      "searchContent": {
+        "title": "搜索内容",
+        "description": "查找特定的健康主题和信息"
+      },
+      "myBookmarks": {
+        "title": "我的书签",
+        "description": "查看你收藏的文章和资料"
+      },
+      "downloadOffline": {
+        "title": "离线下载",
+        "description": "保存内容，稍后阅读或观看"
+      },
+      "healthCourses": {
+        "title": "健康课程",
+        "description": "报名参加系统的健康教育课程"
+      }
+    },
+    "services": {
+      "description": "预约适合你的门诊、筛查和健康计划。",
+      "impactPoints": "+{points} 分"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "预约体检",
+        "description": "安排你的年度全面健康检查"
+      },
+      "orderLabTests": {
+        "title": "预约化验",
+        "description": "申请生物标志物分析和诊断检测"
+      },
+      "myAppointments": {
+        "title": "我的预约",
+        "description": "查看并管理即将到来的就诊预约"
+      },
+      "findSpecialists": {
+        "title": "寻找专科医生",
+        "description": "联系你所在地区的专科医生"
+      },
+      "wellnessPrograms": {
+        "title": "健康计划",
+        "description": "参加社区健康挑战和计划"
+      },
+      "telemedicine": {
+        "title": "远程医疗",
+        "description": "与医疗服务方预约线上问诊"
+      },
+      "healthRecords": {
+        "title": "健康档案",
+        "description": "查看你的完整病史和文件"
+      },
+      "insuranceSupport": {
+        "title": "保险支持",
+        "description": "获取理赔和保障核实方面的帮助"
+      }
+    },
+    "plans": {
+      "description": "由 AI 驱动、根据你的健康档案和目标量身定制的计划",
+      "planName": {
+        "nutrition": "营养计划",
+        "exercise": "运动计划",
+        "hydration": "补水计划",
+        "sleep": "睡眠计划",
+        "mental": "心理计划",
+        "supplement": "补充剂计划"
+      },
+      "pillarName": {
+        "nutrition": "营养",
+        "exercise": "运动",
+        "hydration": "补水",
+        "sleep": "睡眠",
+        "mental": "心理",
+        "supplement": "补充剂"
+      },
+      "refreshed": "{planName}已刷新！🔄",
+      "justNow": "刚刚",
+      "hoursAgo": "{hours} 小时前",
+      "daysAgo": "{days} 天前",
+      "never": "从未",
+      "toasts": {
+        "recalibrateDescription": "正在分析所有计划和支柱间的协同作用，可能需要一点时间……",
+        "viewProgress": "查看进度",
+        "reportDescription": "正在生成你的详细健康分析报告，请几分钟后回来查看！",
+        "gotIt": "知道了",
+        "optimizing": "✨ 正在优化：{pillar}",
+        "optimizeDescription": "AI 自动驾驶正在分析你最薄弱的支柱，并生成有针对性的改进。",
+        "viewPlan": "查看计划"
+      },
+      "proteinShort": "蛋白质 {protein}",
+      "nutritionDefaults": {
+        "goalFocus": "均衡营养",
+        "schedule": "3 餐 + 2 次加餐",
+        "calTarget": "目标 {calories} 千卡",
+        "daily": "每日",
+        "insight": "你的营养计划已根据当前的活动水平和目标进行了优化。"
+      },
+      "aiSummary": {
+        "exercise": "坚持得非常好！补水和睡眠正在帮助你更好地恢复。",
+        "hydration": "本周你的补水规律性提升了 12%，进步很大！AI 建议在高强度训练后补充电解质，以加快恢复。",
+        "sleep": "本周你的睡眠规律性提升了 10%，恢复趋势良好。AI 发现你获得最多深度睡眠的最佳入睡时间是 22:30-23:00。",
+        "mental": "自从开始晨间呼吸练习，你的压力指标改善了 12%。你的专注力波动减小了，本周进步显著。"
+      },
+      "ai": "AI",
+      "hydrationStatus": {
+        "goalMet": "已达标",
+        "catchUp": "需要补上",
+        "belowTarget": "低于目标",
+        "onTrack": "进展顺利"
+      },
+      "sleepStatus": {
+        "excellent": "睡眠质量极佳",
+        "good": "睡眠质量良好",
+        "improve": "仍有提升空间"
+      },
+      "litersOf": "{current} 升 / {target} 升",
+      "liters": "{value} 升"
     }
   }
 }
