@@ -33,6 +33,12 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
+
+// Documents and other non-photo files. The direct-chat paperclip opens the
+// photo/video picker through the menu; group chats have no menu, so their
+// paperclip uses the file input with photos and videos added back.
+const DOCUMENT_ACCEPT = 'audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif';
+const GROUP_FILE_ACCEPT = `image/*,video/*,${DOCUMENT_ACCEPT}`;
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ReplyPreview } from '@/components/messages/ReplyPreview';
 import { notifyError, t } from '@/lib/i18n-toast';
@@ -98,6 +104,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   // VTID-03459: `isSending` (prop, backed by React state in the parent) is
@@ -325,10 +332,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await uploadFiles(Array.from(e.target.files || []));
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    // Clear whichever input fired, so picking the same file again fires a change.
+    const input = e.target;
+    await uploadFiles(Array.from(input.files || []));
+    input.value = '';
   };
 
   /**
@@ -742,6 +749,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           ) : (
             <AttachmentMenu
               onFileAttach={() => fileInputRef.current?.click()}
+              onPhotoAttach={() => photoInputRef.current?.click()}
               onSendMessage={async (content, messageType, contentData) => {
                 await onSendMessage(content, messageType, contentData);
               }}
@@ -754,12 +762,22 @@ const MessageInput: React.FC<MessageInputProps> = ({
             />
           )}
 
-          {/* Hidden file input */}
+          {/* Hidden file input: documents and other files */}
           <input
             ref={fileInputRef}
             type="file"
             multiple
-            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
+            accept={conversationType === 'group' ? GROUP_FILE_ACCEPT : DOCUMENT_ACCEPT}
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+
+          {/* Hidden photo/video input: multi-select from the photo library */}
+          <input
+            ref={photoInputRef}
+            type="file"
+            multiple
+            accept="image/*,video/*"
             onChange={handleFileSelect}
             className="hidden"
           />

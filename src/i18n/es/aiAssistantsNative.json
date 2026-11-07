@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "Escuchar voz",
+      "playing": "Reproduciendo…",
+      "previewPhrase": "Hola, esta es una vista previa de la configuración de voz que has elegido.",
+      "previewUnavailable": "La vista previa no está disponible para este idioma en este dispositivo.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value} %"
+    },
+    "proactive": {
+      "playSample": "Reproducir saludo de ejemplo",
+      "speaking": "Hablando…",
+      "notSet": "Sin definir",
+      "none": "Ninguno",
+      "quoted": "«{text}»",
+      "messageType": {
+        "time_greeting": "Saludos según la hora (Buenos días, etc.)",
+        "wellness_check": "Chequeos de bienestar",
+        "motivational": "Mensajes motivadores",
+        "reminder": "Recordatorios de acciones"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "El piloto automático puede consultar a otros miembros cuando haces preguntas.",
+      "giveDescription": "El piloto automático puede ofrecer tu catálogo a otros miembros. Desactivado por defecto: actívalo cuando estés listo.",
+      "moneyDescription": "Pasa las ganancias de «proponer y aprobar» a autónomo. Actívalo solo cuando confíes en tu catálogo y tu aviso.",
+      "moneyDisabledHint": "Activa primero «Dar recomendaciones»."
+    },
+    "connect": {
+      "missingKey": "Pega tu clave de API.",
+      "wrongPrefix": "La clave de API debe empezar por «{prefix}».",
+      "unauthorized": "El proveedor rechazó esta clave (no autorizada). Revísala en tu panel.",
+      "network": "Error de red al conectar con el proveedor. Inténtalo de nuevo.",
+      "verifyFailed": "La verificación ha fallado ({status}).",
+      "failed": "La conexión ha fallado ({code}).",
+      "saving": "Guardando…",
+      "verifying": "Verificando…",
+      "connect": "Conectar"
+    }
+  }
+}

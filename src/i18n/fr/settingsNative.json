@@ -1,0 +1,101 @@
+{
+  "settingsNative": {
+    "notifications": {
+      "chat": "Chat",
+      "calendar": "Calendrier",
+      "community": "Communauté",
+      "updateFailed": "Impossible de mettre à jour la préférence"
+    },
+    "consent": {
+      "title": "Information sur le partage de données avec l’IA",
+      "subtitle": "Avant d’utiliser les fonctions d’IA, regarde comment tes données sont utilisées.",
+      "whatIsSent": "Données susceptibles d’être envoyées",
+      "voiceData": "Enregistrements vocaux et transcriptions",
+      "diaryData": "Prompts saisis, messages de chat et entrées de journal",
+      "memoryData": "Entrées du Memory Garden et objectifs de bien-être",
+      "profileData": "Contexte du profil (nom, préférences)",
+      "socialData": "URL de profils de réseaux sociaux et textes de bio (lors de l’utilisation des fonctions d’import)",
+      "recipientLabel": "Destinataire :",
+      "recipient": "Google (modèles d’IA Gemini) via Lovable AI Gateway. Tes données sont transmises de façon sécurisée par des connexions chiffrées.",
+      "purposeLabel": "Finalité",
+      "purpose": "Générer des réponses d’IA personnalisées, la synthèse vocale, des salutations proactives, du coaching santé et des suggestions pour enrichir ton profil.",
+      "notStored": "Le fournisseur d’IA ne conserve pas les données de façon permanente",
+      "revokeAnytime": "Tu peux retirer ton consentement à tout moment dans Paramètres > Confidentialité",
+      "gdprCompliant": "Conforme au RGPD et aux règles de confidentialité",
+      "agreementFooter": "En appuyant sur « J’accepte », tu autorises Exafy LTD à envoyer les données listées ci-dessus aux fournisseurs d’IA cités. Tu peux retirer cette autorisation à tout moment dans Paramètres > Confidentialité.",
+      "notNow": "Pas maintenant",
+      "iAgree": "J’accepte"
+    },
+    "security": {
+      "sessionPhone": "iPhone 15 Pro",
+      "sessionLaptop": "MacBook Pro",
+      "sessionLocation": "San Francisco, CA"
+    },
+    "creator": {
+      "creatorShare": "90 %",
+      "platformShare": "10 %",
+      "redirecting": "Redirection…",
+      "completeSetup": "Terminer la configuration",
+      "enablePayments": "Activer les paiements",
+      "opening": "Ouverture…",
+      "viewDashboard": "Voir le tableau de bord"
+    },
+    "limitations": {
+      "description": "Ce sont les règles non négociables que nous appliquons à chaque recommandation de produit. Les allergies, les contre-indications médicales et les interactions médicamenteuses ne peuvent jamais être ignorées.",
+      "removeTag": "Retirer {v}",
+      "tag": "{v} ×",
+      "never": "jamais",
+      "allergens": "Allergènes",
+      "medicationsLabel": "Médicaments (nom générique ou classe, p. ex. ISRS, anticoagulant)",
+      "accessibilityLabel": "Besoins d’accessibilité",
+      "ofActiveProducts": "sur {count} produits actifs",
+      "maxPlaceholder": "p. ex. 40",
+      "capPlaceholder": "p. ex. 150",
+      "dietary": {
+        "vegan": "végan",
+        "vegetarian": "végétarien",
+        "halal": "halal",
+        "kosher": "casher",
+        "glutenFree": "sans gluten",
+        "dairyFree": "sans lactose",
+        "nutFree": "sans fruits à coque",
+        "soyFree": "sans soja",
+        "sugarFree": "sans sucre",
+        "organic": "bio"
+      }
+    },
+    "tenantRole": {
+      "description": "Gère ton contexte et tes autorisations",
+      "noRoleSelected": "Aucun rôle sélectionné",
+      "noOrganization": "Aucune organisation",
+      "current": "Actuel",
+      "available": "Disponible",
+      "switching": "Changement…",
+      "switchOrganization": "Changer d’organisation",
+      "roles": {
+        "community": "Membre de la communauté",
+        "patient": "Patient",
+        "professional": "Professionnel",
+        "staff": "Équipe",
+        "backoffice": "Back-office",
+        "admin": "Administrateur"
+      },
+      "roleDescriptions": {
+        "community": "Accès aux fonctions de la communauté et aux liens sociaux",
+        "patient": "Suivi complet de la santé et fonctions médicales",
+        "professional": "Outils professionnels pour médecins et coachs",
+        "staff": "Gestion de l’équipe et fonctions opérationnelles",
+        "backoffice": "Outils de back-office ERP/CRM et validations",
+        "admin": "Accès et gestion administratifs complets",
+        "default": "Accès aux fonctions propres au rôle"
+      },
+      "permissions": {
+        "community": "Accès à la communauté",
+        "health": "Accès aux données de santé",
+        "professional": "Outils professionnels",
+        "staff": "Fonctions de l’équipe",
+        "admin": "Fonctions d’administration"
+      }
+    }
+  }
+}

@@ -1,0 +1,189 @@
+# Verification — VTID-05461 (native-wave2-journey-autopilot-r2 / journey)
+
+Native Wave 2 journey lane: the `/autopilot` port (`AUTOPILOT.MY_JOURNEY`, the My Journey
+dashboard with guided mode, the guided-journey catalog, the Autopilot popup and the goal
+sheets). All commands run offline (the native app has no production profile;
+`assertNotProduction()` refuses prod/staging hosts). Linux, worktree
+`/projects/sandbox/vitana-v1/.worktrees/native-wave2-journey-autopilot-r2-journey`, base
+`origin/main` e530abd0d. Every command and its counts: `commands.log`. Red on base:
+`red-on-base.txt`. Not verified on staging: device runtime is deferred to G1.
+
+## What was built
+
+- **Core (tasks.md task 1, plan decision 2).** `packages/core/src/horizon-buckets.ts` and
+  `vitana-projection.ts` re-export the two class-A helpers named by the plan. R1.4 also says
+  pure helpers are "reused from `@vitana/core`, never re-implemented", and the dashboard uses
+  four more pure modules, so they go through core too: `goal-phases.ts` (`buildPhases`),
+  `vitana-index-tiers.ts` (`getVitanaIndexTier`), `audiobook-queue.ts` (`AUDIOBOOK_SEASONS`,
+  `seasonNumber`) and the extract entry `journey` (`buildJourneyRing`, `computeGoalTrend` and
+  the `MyJourney*` / `GoalPlan*` types copied verbatim; `journeyRing.ts` / `goalTrend.ts`
+  type-import class-B hooks, so the brief's extract path is used instead of `export *`). No hook
+  or provider is extracted. `core-closure --write` run; both generated files committed.
+- **Data, class-B re-implemented natively** (`apps/mobile/src/screens/journey/data/`):
+  `client.ts` (`communityFetch` twin: Bearer + `X-Vitana-Active-Role: community` + JSON content
+  type; `autopilotFetch`: the `getAuthHeaders` set incl. `X-User-ID`), `journey.ts`
+  (`/my-journey`, the onboarding recommendations, goal plan read / generate / step complete,
+  the curriculum, practice-complete, session-listened, `practiceTargetAction`), `supabase.ts`
+  (`daily_matches` + profile RPC + `generate-daily-matches` + the viewed stamp,
+  `global_community_events` + attendee counts, `life_compass` read / new version,
+  `vitana_index_scores` + the self-heal compute RPC, `user_preferences`).
+- **Providers / hooks (task 2)**: `providers/GuidedModeProvider.tsx` (mode cache in AsyncStorage,
+  `GET /journey/state` resolution, the one-time default persist and `setMode` →
+  `POST /journey/mode`), `hooks/useAutopilot.ts` (every Autopilot call, the client-dismissed set
+  in the key-value store), `hooks/useGuidedJourneyProgress.ts` (journey state + listened /
+  daily records in the key-value store), `hooks/useAIConsent.ts`.
+- **Screen (tasks 3–4)**: `JourneyScreen.tsx` renders the mobile-web branch
+  (AutopilotDashboard.tsx:539-556) section by section: header, utility bar (search + Autopilot
+  chip; fix round 1 adds calendar, Life Compass, gift voucher, Index chip), `GuidedModeSwitch`,
+  `DreamNorthStar` (the Spotlight hero), the card strip; Guided: `JourneyHowItWorks` + the
+  AudiobookReminderControl slot + `GuidedJourneyCatalog` (topic drawer, practice); Full App:
+  `FutureSelfTiles`, `TodaysGoalCard`, `MatchesPreview`, `EventsPreview`, `AutopilotCard`,
+  "how you're doing" (`IndexNowCard` + `VitanaIndexTrajectoryCard`), "keep checking in";
+  `AutopilotPopup` (+ consent dialog + draft sheet), `GoalSetupDialog`, `GoalPlanSheet`.
+- **AI-content locale (R2.5)**: goal-plan generation sends `?locale=<member language>`
+  (asserted: `de-DE`); the curriculum is requested in the UI locale. No prompt text is added.
+- **i18n (task 5)**: every string from the web catalogs; the new strings are the AI-data
+  consent dialog's (the web passes English fallbacks for keys that do not exist) and, in fix
+  round 1, the web's English literals (VTNA toast, demo event titles, Index-chip and calendar
+  badge labels) plus the popup error detail: 27 keys in `src/i18n/*/journeyAutopilotNative.json`,
+  German first (du-form), 11 locales.
+- **Route + ledger (task 7)**: `apps/mobile/app/(app)/autopilot/index.tsx`, `/autopilot` in
+  `NATIVE_ROUTES`; no `app/` file shadows it (`app/index.tsx` redirects `/`;
+  `app/(app)/[...path].tsx` ranks below a concrete file; the test asserts `/autopilot` resolves
+  `native`). `AUTOPILOT.MY_JOURNEY` → `native` (owner kiro, 2026-11-02); `--sync` changed
+  nothing else. `/autopilot/audiobook` stays `not_started` (sibling lane).
+
+## Fix round 1 (review `journey-7c8eacd.md`, verdict `changes`)
+
+R1.1 asks for 1:1 parity with the mobile web. Each item of the first head's "Not drawn" table,
+now ported (tests: `apps/mobile/tests/journey/fix1.test.tsx`, red on 7c8eacd in `red-fix1.txt`):
+
+| Web | Native now |
+|---|---|
+| Utility bar, AutopilotDashboard.tsx:452-475 + utility-action-button.tsx:97-123 | `UtilityBar.tsx`, one scrolling rail in the web order: Search pill (label `actionBar.search`) · `UniversalCalendarButton` (`calendar_events` for the member, upcoming badge first 10 with the 99+ rule, pulsing conflict dot, → /calendar) · Life Compass (`vitana:open-life-compass`) · Gift Voucher (hidden on iOS, the shell's `iapRestricted` rule, unchanged) · `VitanaIndexChip` (🧬 + Index value, 🔥N streak from 3 days from the device streak store `vitana:streak:active-days`, → `vitana:open-index`) · `AutopilotChip` (pulsing badge) |
+| Gift voucher dialog, MaxinaVoucherModal.tsx:141-490 | `VoucherModal.tsx`: tier selection (catalog names + benefit arrays, €0.49 / €99 / €199), "Buy voucher · €N", loading, `stripe-create-voucher-checkout {tier, returnTo: '/autopilot'}` → Stripe in expo-web-browser; failure → `voucher.toast.checkoutFailed`; after checkout the success / PDF preview / e-mail states (see "Gift voucher after checkout") |
+| `AudiobookReminderControl` in the Guided view, AutopilotDashboard.tsx:435 | Typed mount slot `JourneySlotsContext.AudiobookReminderControl` (seams.ts), rendered between how-it-works and the catalog. The native control is assigned to the `autopilot-audiobook` lane by the approved plan: tasks.md (plan branch `kiro/native-wave2-journey-autopilot-r2/plan` @ 8a86b1507) line 86 names `apps/mobile/src/screens/audiobook/AudiobookReminderControl.tsx` under that lane's task 2 (lines 82-87), and line 72 sets that lane `depends_on: journey`. A plan-approved lane split, not a descope |
+| Card strip static feature cards, EnrichmentCardStrip.tsx:70-100 | `EnrichmentStrip.tsx` + `FeatureCards.tsx`: server cards first, then F1 / F2 / F3 / F9 not hidden on this device (`vitana.card.<type>.dismissed_at`, 7 days, session fallback), `maxCards` 3 |
+| EventsPreview demo fallback, EventsPreview.tsx:44-52 | The first two `useDemoMatches` events (demo-group-1 / -2, useDemoMatches.ts:613-638), titles from `journeyAutopilotNative.demoEvents.*` (11 locales) |
+| Daily-goal milestone modal + confetti, TodaysGoalCard.tsx:34-36, celebrate.ts:408-432, MilestoneCelebration.tsx:88-125 | `celebrate.ts` + `MilestoneCelebration.tsx`: once per local day (`vitana:celebrate:daily_goal:day`), dialog 🎉 / `toasts.dailyGoal.*` / Continue, confetti unless reduced motion (5-min throttle), `POST /api/v1/analytics/celebrate {kind, source, throttled}` |
+| "+N VTNA earned!" toast, AutopilotPopup.tsx:340-343 | `journeyAutopilotNative.autopilot.vtnaEarned` with `{reward}` |
+| Caption clipboard copy, AutopilotPopup.tsx:263-265 | React Native `Clipboard.setString` (core module, no new dependency) |
+| Raw error text, AutopilotPopup.tsx:520 | The detail line names HTTP status / server / connection from the catalog; the raw message is never shown |
+| Ring / glow motion, DreamNorthStar.tsx:516-527, :592-603; GoalProgressRing.tsx:140-151 | `motion.tsx` (react-native `Animated`): the rings ease in (1.4 s / 1.1 s), the guided start glow pulses (2.2 s), `animate-pulse` on the Autopilot badge, the conflict dot and the loading bar; reduced motion draws the end state |
+
+Kept out, with proof that the mobile web does not show it:
+
+- The celebration sound: celebrate.ts:427 calls `playSound("/audio/lift.mp3")`, but the repo has no
+  `public/audio/` directory (only `public/sounds/`), so the mobile web plays nothing.
+- ~~The gift voucher's success / e-mail / PDF states~~ — superseded: ported natively, see
+  "Gift voucher after checkout" below (review finding discover-c68982e).
+- The streak hook's milestone / at-risk celebrations (useVitanaStreaks.ts:127-160) fire only after
+  a `vitana:index-lifted` credit, which comes from the web lift watcher (celebrate.ts:301, :457);
+  no native module emits it (the native hook listens for it on the overlay bus).
+- The web calendar button's own `calendar:open` listener: the native shell already handles it
+  (MobileAppShell.tsx:50); a second listener would navigate twice.
+
+### Follow-up (needs plan amendment, ORB lane)
+
+Driver decision (fix round 1): `apps/mobile/src/orb/**` is the ORB core, guarded by the
+ORB-parity and duplex-gate checks; a screen lane does not change it. Not ported here:
+
+- **Web source:** the teaching-end listener `vitana:guided-topic-teaching-complete`
+  (GuidedJourneyCatalog.tsx:200-237) and `activateOrb(topicId)` → `VitanaOrb.focusGuidedTopic`
+  (orbActivate.ts:74-83; fallback open :85-100).
+- **Native files and lines the ORB lane has to change:**
+  - `apps/mobile/src/orb/protocol.ts:239`: `buildStartPayload` leaves the guided-topic one-shot
+    field to N6e (no `guided_topic_id` in the start payload).
+  - `apps/mobile/src/orb/session.ts:355-358`: `end_guided_topic_teaching` ends the session as a
+    plain `end_directive`; no topic id reaches subscribers.
+  - `apps/mobile/src/orb/ui/orb-controller.ts:72`: `open()` takes no arguments, so a session
+    cannot be started on a topic.
+- **What a member sees without it:** tapping a topic or the hero's next session opens Vitana as
+  a normal conversation, not one that teaches that topic. When a lesson ends, the topic is not
+  marked done on its own, there is no "done" toast, and the Well-done drawer does not reopen; the
+  member marks it done in the drawer (Mark done / open the feature), which works as on the web.
+- **Screen-side hook point, in place and tested:** `JourneyOrbBridgeContext` (seams.ts) with
+  `focusGuidedTopic(topicId)` and `onGuidedTopicTeachingComplete(cb) → unsubscribe`. The default
+  bridge is a no-op subscriber with no focus, so the web's fallback runs (plain ORB open). The
+  catalog already subscribes: on a signal it posts `/journey/practice-complete`, refreshes the
+  journey state, toasts `screens.guidedCatalog.doneToast` and opens the topic's congratulation
+  view (practice off), as GuidedJourneyCatalog.tsx:204-236. Tests: fix1.test.tsx "ORB hook point"
+  (default bridge → generic open; wired fake bridge → focus, signal → request + toast + drawer,
+  unsubscribe on unmount). The ORB lane only has to provide the bridge.
+
+Not in the reviewer's list and unchanged: the Autopilot badge's last-seen pulse
+(use-autopilot.ts:182-232) feeds other surfaces' chips; PillarDeltaBadges' English pillar names
+use the catalog `vitanaIndex.<pillar>`; the goal deadline is an ISO text field (the kit has no
+date picker); the hero also waits while the member is resolving (the web route sits behind
+AuthGuard). Observation outside this lane: the shell's read-only `src/identity/GuidedModeProvider.tsx`
+calls `gatewayGet('/api/v1/journey/state')`, and `createGatewayFetch` already prefixes `/api/v1`;
+this lane does not touch it (its own provider calls `/journey/state`).
+
+## Gift voucher after checkout (review finding discover-c68982e on the discover lane, same modal copy here) — fixed natively, no backend change
+
+**Problem.** The dialog only called `stripe-create-voucher-checkout` and opened the browser. The web shows the
+post-purchase states on the Stripe return URL (`src/components/voucher/MaxinaVoucherModal.tsx:112-132`), but the
+function builds `success_url` from the request Origin (`supabase/functions/stripe-create-voucher-checkout/index.ts:147`,
+`:161`, fallback `https://vitana.app`), so a native member landed signed-out on the web origin and could not reach
+`voucher-download-pdf` (it needs the Authorization header, `supabase/functions/voucher-download-pdf/index.ts:250-274`).
+
+**Approach (read on vitana-v1 origin/main; no edge-function, schema or deploy change):**
+1. Keep the order id. The function already returns `{ url, session_id, order_id }`
+   (`stripe-create-voucher-checkout/index.ts:179-184`); `createVoucherCheckout` now types and returns it
+   (`apps/mobile/src/screens/journey/data/supabase.ts` `createVoucherCheckout`).
+2. Open checkout with expo-web-browser `openBrowserAsync` (already on main, `apps/mobile/package.json`
+   `expo-web-browser 57.0.3`; no new package). iOS resolves when the member closes the browser; Android resolves
+   at once with `opened` (`node_modules/expo-web-browser/build/WebBrowser.js:112`).
+3. Return leg (brief "External checkout / portal return leg"): while a checkout is pending the dialog re-reads the
+   order when the browser closes (iOS), on AppState `active` (Android, and any resume) and on screen focus
+   (`apps/mobile/src/screens/journey/VoucherModal.tsx` `checkPending`, the AppState listener and `useFocusEffect`). The read is the web's own
+   `voucher_orders` read (`src/hooks/useVouchers.ts:76-80`: own rows by `buyer_user_id`, newest first) narrowed to
+   the order id (`apps/mobile/src/screens/journey/data/supabase.ts` `fetchVoucherOrder`), polled 4 × 1 s for webhook lag (`waitForPaidVoucherOrder`; the
+   webhook sets `paid`, `stripe-webhook/index.ts:309-315`).
+4. `paid` → the web's success state (title, "Your {tier} voucher is ready", download, send by e-mail, view in
+   orders, done). Not paid → back to the selection, which is what the web shows on a cancel return
+   (`voucher_cancelled` has no handler on the web). A checkout error keeps `voucher.toast.checkoutFailed`.
+5. Download → `voucher-download-pdf` `{ orderId }` with the member's session (supabase `functions.invoke`, same as
+   `useDownloadVoucherPdf`, `src/hooks/useVouchers.ts:37-48`), then the web's mobile PDF preview (voucher card,
+   Save / Share, Download PDF, share hint; `MaxinaVoucherModal.tsx:642-760`, share-API branch). Download PDF opens
+   the signed URL in the in-app browser (system PDF viewer with save/share); Save / Share uses React Native
+   `Share.share` (the web's `navigator.share`).
+6. E-mail form → `voucher-send-email` `{ orderId, recipientEmail, recipientName, message }`
+   (`src/hooks/useVouchers.ts:50-66`), `voucher.toast.voucherSent` with `{email}`, then the dialog closes.
+7. Toasts are the web's `voucher.toast.*` keys from the existing catalog (`src/i18n/<locale>/voucher.json`,
+   all 11 locales); no new strings, no catalog change.
+8. The web's return params are handled too if such a link reaches the app: `voucher_success=true&order_id&tier`
+   opens the success state and clears the params; `voucher_cancelled` is cleared (`apps/mobile/src/screens/journey/VoucherModal.tsx` return-param effect).
+
+**Remaining deviations.**
+- Error toasts: the web toasts the raw server message on a download / e-mail failure
+  (`MaxinaVoucherModal.tsx:303-308`, `:341-346`); natively `voucher.toast.downloadFailed` (catalog key, no
+  untranslated server text on screen).
+- Copy link / Open in browser (the web's no-share-API branch) are not shown: the native share sheet is always
+  available, so the web's share-API branch is the one ported. No clipboard package is on main.
+- A webhook that trails the 4 s poll leaves the selection showing; the next app resume or screen focus re-reads
+  while the dialog is open, and the order stays in Orders → vouchers, whose download self-heals the status via
+  Stripe (`voucher-download-pdf/index.ts:161-226`).
+- Device runtime (real browser, real Stripe return) is deferred to G1; tests use fakes only.
+
+**Tests** (`apps/mobile/tests/journey/voucher.test.tsx`, red on the base head → green, `red-on-base.txt`): request builders (checkout keeps
+`order_id`; own-row `voucher_orders` read by id / newest / signed out; the paid poll; download and e-mail
+bodies) and the dialog: paid → success → PDF preview → download + share; e-mail form → send → toast → close;
+failed PDF read; not paid → selection; checkout failure; Android open → AppState active → refetch → success;
+the web's return params.
+
+## Checks (counts in commands.log)
+
+Fix round 1 (head after the fix commits): `npm run typecheck` 0 errors; `npx jest tests/journey`
+3 suites / 96 tests; full `npm test` 87 suites / 2384 tests; the rest as below, all rerun green.
+First head: `npx jest tests/journey` 2 suites / 65 tests; full `npm test` 86
+suites / 2347 tests (one earlier full run had a load timeout in the untouched
+`tests/memory/gateway-i18n.test.tsx`; it passes alone and in the rerun); `APP_PROFILE=development
+npm run bundle` iOS + Android; `deps:check` up to date; `parity:check` OK (33 native routes);
+`core-closure --check` and `gen-core-extract --check` up to date; root i18n checks, eslint on the
+lane files, `npm run build`, locale chunking and `vitest src/i18n scripts/native` green.
+
+## Deferred to G1 (`next_actor: owner`)
+
+Maestro `apps/mobile/maestro/journey/*` (README), iOS simulator / Android emulator screenshots,
+screenshot parity vs the 390×844 read-only staging web `/autopilot` — `staging-tests.json`.

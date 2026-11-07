@@ -1,0 +1,23 @@
+{
+  "walletHomeNative": {
+    "selectMode": "اختر عرض المحفظة",
+    "flow": {
+      "bankTransfer": "تحويل بنكي",
+      "bankTransferTime": "1-3 أيام عمل",
+      "debitCard": "بطاقة خصم",
+      "debitCardTime": "فوري"
+    },
+    "balance": {
+      "tabsLabel": "أقسام الحساب",
+      "statusActive": "نشط",
+      "statusHealthy": "جيد",
+      "statusGrowing": "في نمو",
+      "tierPremium": "بريميوم",
+      "creditsDescription": "استخدم الأرصدة لخدمات الصحة والتحاليل المخبرية والميزات المميزة",
+      "creditsStatusDescription": "أرصدتك نشطة وجاهزة للاستخدام",
+      "tokensDescription": "رموز Vitana Network للحوكمة والمكافآت",
+      "usdDescription": "رصيد بالدولار الأمريكي وعمليات العملات الورقية",
+      "membershipDescription": "تغطية 75% + مزايا صحية حصرية"
+    }
+  }
+}

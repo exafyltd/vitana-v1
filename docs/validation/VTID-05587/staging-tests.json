@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05587",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/messages/attach-split.vtid-05587.test.tsx", "cwd": ".",
+      "reason": "photos and videos have their own multi-select picker, the file picker no longer takes images or videos, and every shipped locale has the new label" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the change is served" }
+  ]
+}

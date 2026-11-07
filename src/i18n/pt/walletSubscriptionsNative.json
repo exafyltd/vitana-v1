@@ -1,0 +1,16 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Período de cobrança",
+    "subnavAria": "Seções da carteira",
+    "loading": "Carregando assinaturas…",
+    "subnav": {
+      "overview": "Visão geral",
+      "balance": "Saldo e benefícios",
+      "subscriptions": "Assinaturas",
+      "rewards": "Recompensas e comissões"
+    },
+    "plans": {
+      "freeLiveRooms": "40 min/mês · 1 sessão"
+    }
+  }
+}

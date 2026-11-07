@@ -147,6 +147,194 @@
         }
       }
     },
+    "conditions": {
+      "description": "Schätze deine Gesundheitsrisiken ein und erstelle vorbeugende Aktionspläne, um dein Wohlbefinden zu erhalten."
+    },
+    "education": {
+      "description": "Greife auf ausgewählte Gesundheitsinhalte zu, passend zu deinen Interessen und deinem Profil.",
+      "episode": "Folge {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index im Detail",
+          "category": "Gesundheitswerte"
+        },
+        "v2": {
+          "title": "Meal Prep für optimale Gesundheit",
+          "category": "Ernährung"
+        },
+        "v3": {
+          "title": "Techniken für besseren Schlaf",
+          "category": "Schlafgesundheit"
+        },
+        "v4": {
+          "title": "Die Wissenschaft hinter HIIT",
+          "category": "Fitness"
+        },
+        "v5": {
+          "title": "Strategien gegen Stress",
+          "category": "Mentale Gesundheit"
+        },
+        "v6": {
+          "title": "Laborwerte verstehen",
+          "category": "Medizin"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "Die Wissenschaft der Langlebigkeit",
+          "series": "Gesundheit im Detail"
+        },
+        "p2": {
+          "title": "Ernährungsmythen entlarvt",
+          "series": "Wissenschaft der Ernährung"
+        },
+        "p3": {
+          "title": "Schlaf & Leistung",
+          "series": "Top-Gesundheit"
+        },
+        "p4": {
+          "title": "Bewegung & Gehirngesundheit",
+          "series": "Körper & Geist"
+        },
+        "p5": {
+          "title": "Mentale Stärke trainieren",
+          "series": "Psychologie heute"
+        },
+        "p6": {
+          "title": "Trends der Präventivmedizin",
+          "series": "Gesundheit von morgen"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Artikel durchstöbern",
+        "description": "Entdecke ausgewählte Artikel zu Gesundheit und Wohlbefinden"
+      },
+      "watchVideos": {
+        "title": "Videos ansehen",
+        "description": "Gesundheitsvideos und Dokumentationen"
+      },
+      "listenPodcasts": {
+        "title": "Podcasts hören",
+        "description": "Podcast-Folgen zu Gesundheit und Wohlbefinden"
+      },
+      "searchContent": {
+        "title": "Inhalte suchen",
+        "description": "Finde bestimmte Gesundheitsthemen und Informationen"
+      },
+      "myBookmarks": {
+        "title": "Meine Lesezeichen",
+        "description": "Öffne deine gespeicherten Artikel und Inhalte"
+      },
+      "downloadOffline": {
+        "title": "Offline speichern",
+        "description": "Speichere Inhalte zum späteren Lesen oder Ansehen"
+      },
+      "healthCourses": {
+        "title": "Gesundheitskurse",
+        "description": "Melde dich für strukturierte Wellness-Kurse an"
+      }
+    },
+    "services": {
+      "description": "Buche Termine, Vorsorge-Checks und Wellness-Programme, die zu dir passen.",
+      "impactPoints": "+{points} Punkte"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Check-up buchen",
+        "description": "Plane deinen jährlichen, umfassenden Gesundheits-Check"
+      },
+      "orderLabTests": {
+        "title": "Labortests bestellen",
+        "description": "Fordere Biomarker-Analysen und Diagnosetests an"
+      },
+      "myAppointments": {
+        "title": "Meine Termine",
+        "description": "Sieh und verwalte deine anstehenden Arzttermine"
+      },
+      "findSpecialists": {
+        "title": "Fachärzte finden",
+        "description": "Finde Fachärzte in deiner Nähe"
+      },
+      "wellnessPrograms": {
+        "title": "Wellness-Programme",
+        "description": "Mach bei Gesundheits-Challenges und Programmen der Community mit"
+      },
+      "telemedicine": {
+        "title": "Telemedizin",
+        "description": "Vereinbare Online-Sprechstunden mit Fachleuten"
+      },
+      "healthRecords": {
+        "title": "Gesundheitsakte",
+        "description": "Greife auf deine komplette Krankengeschichte und Dokumente zu"
+      },
+      "insuranceSupport": {
+        "title": "Versicherungshilfe",
+        "description": "Hol dir Hilfe bei Erstattungen und Leistungsprüfung"
+      }
+    },
+    "plans": {
+      "description": "KI-gestützte Pläne, abgestimmt auf dein Gesundheitsprofil und deine Ziele",
+      "planName": {
+        "nutrition": "Ernährungsplan",
+        "exercise": "Bewegungsplan",
+        "hydration": "Hydrationsplan",
+        "sleep": "Schlafplan",
+        "mental": "Mentalplan",
+        "supplement": "Supplementplan"
+      },
+      "pillarName": {
+        "nutrition": "Ernährung",
+        "exercise": "Bewegung",
+        "hydration": "Hydration",
+        "sleep": "Schlaf",
+        "mental": "Mental",
+        "supplement": "Supplemente"
+      },
+      "refreshed": "{planName} aktualisiert! 🔄",
+      "justNow": "Gerade eben",
+      "hoursAgo": "vor {hours} Std.",
+      "daysAgo": "vor {days} T.",
+      "never": "Nie",
+      "toasts": {
+        "recalibrateDescription": "Alle Pläne und Synergien zwischen den Säulen werden analysiert. Das kann einen Moment dauern …",
+        "viewProgress": "Fortschritt ansehen",
+        "reportDescription": "Dein ausführlicher Gesundheitsbericht wird erstellt. Schau in ein paar Minuten wieder rein!",
+        "gotIt": "Alles klar",
+        "optimizing": "✨ {pillar} wird optimiert",
+        "optimizeDescription": "Der KI-Autopilot analysiert deine schwächste Säule und erstellt gezielte Verbesserungen.",
+        "viewPlan": "Plan ansehen"
+      },
+      "proteinShort": "{protein} g E",
+      "nutritionDefaults": {
+        "goalFocus": "Ausgewogene Ernährung",
+        "schedule": "3 Mahlzeiten + 2 Snacks",
+        "calTarget": "Ziel: {calories} kcal",
+        "daily": "Täglich",
+        "insight": "Dein Ernährungsplan ist auf dein aktuelles Aktivitätsniveau und deine Ziele abgestimmt."
+      },
+      "aiSummary": {
+        "exercise": "Deine Regelmäßigkeit ist hervorragend! Hydration und Schlaf verbessern deine Erholung.",
+        "hydration": "Deine Trinkroutine hat sich diese Woche um 12 % verbessert – toller Fortschritt! Die KI empfiehlt Elektrolyte nach intensiven Workouts für schnellere Erholung.",
+        "sleep": "Deine Schlafregelmäßigkeit hat sich diese Woche um 10 % verbessert – starker Erholungstrend. Die KI hat erkannt, dass 22:30–23:00 Uhr dein optimales Zeitfenster für Tiefschlaf ist.",
+        "mental": "Deine Stresswerte haben sich um 12 % verbessert, seit du morgens Atemübungen machst. Deine Konzentration schwankt weniger – super Fortschritt diese Woche."
+      },
+      "ai": "KI",
+      "hydrationStatus": {
+        "goalMet": "Ziel erreicht",
+        "catchUp": "Aufholen nötig",
+        "belowTarget": "Unter dem Ziel",
+        "onTrack": "Auf Kurs"
+      },
+      "sleepStatus": {
+        "excellent": "Schlafqualität ausgezeichnet",
+        "good": "Schlafqualität gut",
+        "improve": "Da ist noch Luft nach oben"
+      },
+      "litersOf": "{current} l / {target} l",
+      "liters": "{value} l"
+    },
     "indexDetail": {
       "logData": {
         "submit": "Daten erfassen",

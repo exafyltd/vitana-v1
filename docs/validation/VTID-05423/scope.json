@@ -1,0 +1,36 @@
+{
+  "vtid": "VTID-05423",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(public)/redeem.tsx",
+    "apps/mobile/src/screens/wallet-redeem/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/wallet-redeem/**",
+    "apps/mobile/maestro/wallet-redeem/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/walletRedeemNative.json",
+    "docs/validation/**"
+  ],
+  "files_touched": [
+    "apps/mobile/app/(public)/redeem.tsx",
+    "apps/mobile/src/screens/wallet-redeem/**",
+    "apps/mobile/src/ports/wallet-redeem.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/wallet-redeem/**",
+    "apps/mobile/maestro/wallet-redeem/README.md",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/{ar,de,en,es,fr,pl,pt,ru,sr,tr,zh}/walletRedeemNative.json",
+    "docs/validation/VTID-05423/**"
+  ],
+  "outside_lane_paths": {},
+  "core_change": "none — useRedeemVoucher.ts imports the Supabase client and RedeemVoucher.tsx / RedemptionLanding.tsx / RedemptionConfirm.tsx are DOM screen components (class-B, requirements R4.1/R4.2); they are re-implemented natively; no packages/core manifest / closure / mobile-ci-paths change (core-closure --check: up to date)",
+  "iap_gating": "unchanged — /redeem carries no isIAPRestricted gate on web and none natively (requirements R3.2: a code claim, not a purchase); the drawer's iapRestricted wallet gate (src/shell/logic/drawer.ts, SideDrawer Platform.OS === 'ios') is untouched and tested both ways",
+  "sparring_record": "docs/validation/VTID-05423/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

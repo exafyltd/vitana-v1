@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "Sesi dinle",
+      "playing": "Oynatılıyor…",
+      "previewPhrase": "Merhaba, bu seçtiğin ses ayarlarının bir önizlemesi.",
+      "previewUnavailable": "Bu dil için bu cihazda önizleme kullanılamıyor.",
+      "speedValue": "{value}x",
+      "volumeValue": "%{value}"
+    },
+    "proactive": {
+      "playSample": "Örnek karşılamayı oynat",
+      "speaking": "Konuşuyor…",
+      "notSet": "Ayarlanmadı",
+      "none": "Yok",
+      "quoted": "\"{text}\"",
+      "messageType": {
+        "time_greeting": "Saate göre selamlar (Günaydın vb.)",
+        "wellness_check": "Sağlık kontrolleri",
+        "motivational": "Motive edici mesajlar",
+        "reminder": "Eylem hatırlatıcıları"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "Soru sorduğunda otopilot diğer üyelere danışabilir.",
+      "giveDescription": "Otopilot kataloğunu diğer üyelere sunabilir. Varsayılan olarak kapalı; hazır olduğunda aç.",
+      "moneyDescription": "Kazancı \"öner ve onayla\" modundan otonoma yükseltir. Bunu yalnızca kataloğuna ve açıklamana güvendiğinde aç.",
+      "moneyDisabledHint": "Önce \"Öneri ver\" seçeneğini aç."
+    },
+    "connect": {
+      "missingKey": "Lütfen API anahtarını yapıştır.",
+      "wrongPrefix": "API anahtarı \"{prefix}\" ile başlamalı.",
+      "unauthorized": "Sağlayıcı bu anahtarı reddetti (yetkisiz). Panelinde kontrol et.",
+      "network": "Sağlayıcıya ulaşırken ağ hatası. Lütfen tekrar dene.",
+      "verifyFailed": "Doğrulama başarısız ({status}).",
+      "failed": "Bağlantı başarısız ({code}).",
+      "saving": "Kaydediliyor…",
+      "verifying": "Doğrulanıyor…",
+      "connect": "Bağlan"
+    }
+  }
+}

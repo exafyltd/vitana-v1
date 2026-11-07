@@ -1,0 +1,206 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "No se pudo cargar.",
+        "mineEmptyBody": "Publica una solicitud de compra o venta: el matchmaker te mostrará compradores y vendedores.",
+        "newListing": "Nuevo anuncio"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "Compro",
+          "commercial_sell": "Vendo",
+          "activity_seek": "Compañero de actividad",
+          "partner_seek": "Pareja de vida",
+          "social_seek": "Social / mentoría",
+          "mutual_aid": "Ayuda mutua",
+          "learning_seek": "Quiero aprender",
+          "mentor_seek": "Ofrezco enseñar"
+        },
+        "age": "edad {min}–{max}",
+        "within": "a menos de {km} km"
+      },
+      "share": {
+        "tooManyTitle": "Demasiados destinatarios ({count})",
+        "tooManyBody": "El plan gratuito permite hasta {max}. Pásate a Pro para 50.",
+        "errorBatch": "Demasiados destinatarios",
+        "errorQuota": "Límite de compartir alcanzado",
+        "errorPrivate": "No se puede compartir esta publicación",
+        "errorFailed": "Error al compartir",
+        "errorBody": "{message}",
+        "tryAgain": "Inténtalo de nuevo.",
+        "alreadyShared": "Ya compartido con todos",
+        "sharedOne": "Compartido con {count} amigo",
+        "sharedMany": "Compartido con {count} amigos",
+        "skipped": "{skipped} ya tenían esta publicación en su bandeja.",
+        "theyWillSee": "Verán tu publicación en su chat.",
+        "defaultTitle": "Una publicación de Vitana",
+        "defaultText": "Mira esto en Vitana",
+        "fromVitana": "Desde Vitana"
+      },
+      "orders": {
+        "eventTicket": "Entrada al evento",
+        "locationTbd": "Lugar por confirmar",
+        "cjProduct": "Producto CJ",
+        "general": "General",
+        "voucherProvider": "Vale regalo Maxina",
+        "voucherTier": {
+          "test": "Vale de prueba",
+          "experience": "Vale de experiencia",
+          "exclusive": "Vale exclusivo",
+          "gift": "Vale regalo"
+        },
+        "mock": {
+          "vipAccess": "Acceso VIP",
+          "generalAdmission": "Entrada general",
+          "earlyBird": "Preventa",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Yoga matutino",
+          "retreatTitle": "Retiro de meditación de Año Nuevo"
+        },
+        "status": {
+          "upcoming": "Próximo",
+          "attended": "Asistido",
+          "expired": "Caducado",
+          "completed": "Completado",
+          "delivered": "Entregado",
+          "cancelled": "Cancelado",
+          "refunded": "Reembolsado",
+          "shipped": "En camino",
+          "confirmed": "Confirmado",
+          "pending": "Pendiente",
+          "processing": "En proceso",
+          "paid": "Activo",
+          "active": "Activo"
+        },
+        "type": {
+          "ticket": "Entrada",
+          "voucher": "Vale",
+          "product": "Producto",
+          "service": "Servicio"
+        }
+      },
+      "tickets": {
+        "event": "Evento",
+        "dateTba": "Fecha por anunciar",
+        "general": "General"
+      },
+      "ticket": {
+        "tba": "Por anunciar"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 ¡Voy a {title}!",
+        "email": "Correo",
+        "emailSubject": "Mi entrada para {title}",
+        "sms": "SMS",
+        "copyLink": "Copiar enlace",
+        "copied": "¡Copiado!",
+        "openingWhatsapp": "Abriendo WhatsApp…",
+        "openingViber": "Abriendo Viber…",
+        "openingEmail": "Abriendo el correo…",
+        "openingMessages": "Abriendo mensajes…"
+      },
+      "booking": {
+        "sessionTitle": "Sesión: {title}",
+        "sessionDescription": "Reserva una sesión con {name}",
+        "pickDate": "Elige una fecha",
+        "previousMonth": "Mes anterior",
+        "nextMonth": "Mes siguiente"
+      },
+      "subnav": {
+        "overview": "Resumen",
+        "supplements": "Suplementos",
+        "wellness-services": "Servicios de bienestar",
+        "doctors-coaches": "Médicos/Coaches",
+        "deals-offers": "Ofertas y promociones",
+        "orders": "Pedidos"
+      },
+      "bookmark": {
+        "add": "Añadir a guardados",
+        "remove": "Quitar de guardados"
+      },
+      "bookActions": {
+        "bookAppointment": "Reservar cita",
+        "rebookPrevious": "Repetir reserva",
+        "findNearMe": "Cerca de mí",
+        "messageProvider": "Escribir al proveedor",
+        "viewMyBookings": "Mis reservas",
+        "setReminders": "Crear recordatorios",
+        "leaveReview": "Dejar reseña",
+        "paymentHistory": "Historial de pagos"
+      },
+      "visit": {
+        "hideNotes": "Ocultar notas",
+        "viewNotes": "Ver notas"
+      },
+      "utility": {
+        "openIndex": "Abrir Vitana Index",
+        "openIndexStreak": "Abrir Vitana Index: racha de {days} días",
+        "upcomingEvents": "{count} eventos próximos"
+      }
+    },
+    "searchShort": "Buscar…",
+    "indexPill": "Vitana Index {value}: abrir Salud",
+    "calendar": {
+      "upcomingCount": "{count} próximos eventos"
+    },
+    "bookmark": {
+      "add": "Añadir marcador",
+      "remove": "Quitar marcador"
+    },
+    "product": {
+      "outOfStock": "Agotado"
+    },
+    "hidden": {
+      "product": "producto",
+      "products": "productos",
+      "allergies": "contienen un alérgeno que indicaste",
+      "contraindications": "están contraindicados con una condición de salud que indicaste",
+      "medications": "pueden interactuar con un medicamento que tomas",
+      "dietary": "no coinciden con tus preferencias alimentarias",
+      "budget": "superan tu presupuesto por producto",
+      "sensitivities": "contienen un ingrediente al que eres sensible",
+      "geo": "no se envían a tu región",
+      "excluded_region": "tienen restricciones regionales",
+      "past_purchases": "compraste recientemente"
+    },
+    "quickShop": {
+      "viewCart": "Ver carrito",
+      "quickCheckout": "Pago rápido",
+      "reorderPrevious": "Volver a pedir",
+      "managePayment": "Gestionar pago",
+      "trackOrders": "Seguir pedidos",
+      "setPriceAlert": "Crear alerta de precio",
+      "viewSavedItems": "Ver guardados",
+      "applyCoupon": "Aplicar cupón"
+    },
+    "quickBook": {
+      "bookAppointment": "Reservar cita",
+      "rebookPrevious": "Volver a reservar",
+      "findNearMe": "Buscar cerca de mí",
+      "messageProvider": "Escribir al proveedor",
+      "viewMyBookings": "Ver mis reservas",
+      "setReminders": "Crear recordatorios",
+      "leaveReview": "Dejar reseña",
+      "paymentHistory": "Historial de pagos"
+    },
+    "supplementCategories": {
+      "all": "Todos",
+      "multivitamins": "Multivitamínicos",
+      "vitamins": "Vitaminas",
+      "minerals": "Minerales",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptógenos",
+      "nootropics": "Nootrópicos",
+      "longevity": "Longevidad",
+      "immunity": "Inmunidad",
+      "antioxidants": "Antioxidantes",
+      "sleep": "Sueño",
+      "performance": "Rendimiento",
+      "beauty": "Belleza",
+      "gutHealth": "Salud intestinal",
+      "herbs": "Hierbas",
+      "heartHealth": "Salud cardíaca"
+    }
+  }
+}

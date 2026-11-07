@@ -143,6 +143,14 @@ describe('auth plugins', () => {
       // VTID-05426 (diary lane): the Daily Diary's photo / voice capture (tests/diary/app-config-plugins.test.ts).
       'expo-image-picker',
       'expo-audio',
+      // VTID-05458 (conversation-chat lane): the 1:1 call's WebRTC engine (tests/inbox-chat/conversation-chat/app-config-webrtc.test.ts).
+      '@config-plugins/react-native-webrtc',
+      // VTID-05458 fix 1: the chat's video viewer and date fields (tests/inbox-chat/conversation-chat/app-config-webrtc.test.ts).
+      'expo-video',
+      '@react-native-community/datetimepicker',
+      // VTID-05459 (inbox-list lane): Find Friends contacts import (tests/inbox-chat/inbox-list/app-config-contacts.test.ts).
+      'expo-contacts',
+      'expo-document-picker',
     ]);
     expect(cfg.ios?.usesAppleSignIn).toBe(true);
     expect(cfg.ios?.bundleIdentifier).toBe(IDENTIFIERS.ios);

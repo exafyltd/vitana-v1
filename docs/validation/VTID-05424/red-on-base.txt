@@ -1,0 +1,10 @@
+# VTID-05424 red on base: tests only, on origin/main a41e89a0d, before any implementation
+$ cd apps/mobile && npx jest tests/wallet-rewards --ci
+FAIL tests/wallet-rewards/iap-gate.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/wallet-rewards/iap' from 'tests/wallet-rewards/iap-gate.test.tsx'
+FAIL tests/wallet-rewards/rewards.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/wallet-rewards/RewardsScreen' from 'tests/wallet-rewards/rewards.test.tsx'
+Test Suites: 2 failed, 2 total
+Tests:       0 total
