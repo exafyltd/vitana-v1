@@ -1,0 +1,49 @@
+# VTID-05522 (native-wave2-ai-pages-r2/ai-chat) — local verification
+# Session kiro-exafyltd-202611011658-9f52 · Linux · base origin/main 6b9137ac575735edf1efbc16cddb9ad52d6b4b50
+# Code head 4b182ff6a (route + ledger); docs-only commits after it. No network in any test.
+
+## Setup
+$ cd apps/mobile && npm ci
+  PASS
+$ npm ci --ignore-scripts        (repo root; parity-ledger.mjs needs root `typescript`)
+  PASS  added 872 packages
+
+## Red on base (origin/main 6b9137ac5, lane tests copied in) — apps/mobile
+$ npm run gen:i18n && npx jest tests/ai-chat --ci
+  FAIL  Test Suites: 4 failed, 4 total; routes.test.ts 4 failed / 4 (row not_started, path 'unported',
+        route file missing); talk-to-vitana / card-strip / i18n suites: src/screens/ai-chat/** not on main
+        → red-on-base.txt
+
+## Lane head — apps/mobile
+$ npx jest tests/ai-chat --ci            (run 1, default workers)
+  PASS  Test Suites: 4 passed, 4 total · Tests: 66 passed, 66 total
+$ npx jest tests/ai-chat --ci            (run 2, default workers)
+  PASS  Test Suites: 4 passed, 4 total · Tests: 66 passed, 66 total
+$ npm test -- --ci                        (full suite)
+  PASS  Test Suites: 97 passed, 97 total · Tests: 2738 passed, 2738 total
+$ npm run typecheck                       (gen:i18n 11 locales, 1474 shards; tsc --noEmit)
+  PASS  0 errors
+$ APP_PROFILE=development npm run bundle  (Expo home pointed at a writable dir: the sandbox has no /root/.expo)
+  PASS  ios entry-*.hbc 17MB, android entry-*.hbc 18MB, "Exported: dist"
+$ APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+  PASS  "Dependencies are up to date" (no dependency added)
+$ npm run parity:check
+  PASS  "parity-ledger --check: OK — 435 rows, 42 native route(s)"
+
+## Lane head — repo root
+$ node scripts/native/parity-ledger.mjs --sync
+  PASS  435 rows (added 0, updated 0, removed 0, stale kept 0) — no diff
+$ node scripts/native/core-closure.mjs --check     (core not changed)
+  PASS  "22 roots, 32 src files, 11 assets — up to date" (closure + mobile-ci-paths current)
+$ node scripts/native/check-shell-pins.mjs
+  PASS  every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ npx eslint apps/mobile/src/screens/ai-chat apps/mobile/src/ports/ai-chat.tsx "apps/mobile/app/(app)/comm/talk-to-vitana.tsx" apps/mobile/tests/ai-chat apps/mobile/src/navigation/resolve.ts
+  PASS  0 problems
+$ node scripts/i18n-register-check.mjs --all
+  PASS  "No formal-register violations." (the lane adds no i18n key: existing catalog keys only)
+
+## Governance
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-ai-pages-r2/ai-chat --title "VTID-05522 (native-wave2-ai-pages-r2/ai-chat): native AI chat port"
+  head da21ea2dc: PASS gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering.
+  FAIL Collab handoff + Lane scope, both only "lanes/ai-chat.md not found": the spec is on the open plan PR
+  vitana-platform #4634 (not merged); known non-blocker per the lane brief, clears when #4634 merges.

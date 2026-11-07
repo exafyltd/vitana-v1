@@ -1,0 +1,28 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "wellness",
+    "claimFailed": "Failed to claim voucher. It may have already been redeemed.",
+    "tiers": {
+      "test": {
+        "name": "Test Voucher",
+        "benefit1": "Payment flow test only",
+        "benefit2": "Not a real voucher"
+      },
+      "experience": {
+        "name": "Experience Voucher",
+        "benefit1": "1 premium community event access",
+        "benefit2": "Personalized wellness consultation",
+        "benefit3": "30-day Vitana+ trial included",
+        "benefit4": "Beautifully designed e-voucher"
+      },
+      "exclusive": {
+        "name": "Exclusive Voucher",
+        "benefit1": "3 premium community events",
+        "benefit2": "1-on-1 expert coaching session",
+        "benefit3": "90-day Vitana+ subscription",
+        "benefit4": "Priority booking + VIP perks"
+      }
+    }
+  }
+}

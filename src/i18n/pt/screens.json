@@ -6011,6 +6011,7 @@
       "sendFunds": "Enviar Fundos",
       "requestPayment": "Solicitar Pagamento",
       "attachFile": "Anexar Ficheiro",
+      "attachPhotos": "Fotos e vídeos",
       "attach": "Anexar",
       "loadingMessages": "Carregando mensagens…",
       "loadingOlderMessages": "Carregando mensagens antigas…",
@@ -7624,7 +7625,20 @@
         "communityDesc": "Pessoas, grupos e eventos que combinam com você.",
         "business": "Negócios e renda",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "Cartão de teste (somente administradores)",
+          "desc": "A Vitana envia agora para você uma mensagem com o cartão do Vitana Index no seu chat com a Vitana, do jeito que os membros recebem de manhã. Só você recebe.",
+          "button": "Enviar cartão de teste",
+          "sending": "Enviando …",
+          "sent": "Cartão de teste enviado – abra seu chat com a Vitana.",
+          "open": "Abrir o chat com a Vitana",
+          "errorTitle": "Cartão de teste não enviado",
+          "unavailable": "As mensagens da Vitana estão desligadas aqui no momento, por exemplo no staging.",
+          "noIndex": "Você ainda não tem um Vitana Index, por isso ainda não há cartão do Index.",
+          "rateLimited": "Espere um minuto antes do próximo cartão de teste.",
+          "failed": "Não funcionou. Tente novamente."
+        }
       },
       "communityIntroTitle": "Me apresentar à comunidade",
       "communityIntroBody": "Durante sua primeira semana, outros membros veem um breve cartão de boas-vindas sobre você e podem dizer olá.",

@@ -6,12 +6,18 @@
  * on the gateway). Self-contained so both Settings › Notifications (desktop)
  * and the mobile Settings notifications section only drop it in.
  */
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { useCompanionPreferences, type CompanionPreferences } from '@/hooks/useCompanionPreferences';
+import { useCompanionTestCard, testCardErrorKey } from '@/hooks/useCompanionTestCard';
+import { useTenantSafe } from '@/hooks/useTenant';
+import { VITANA_BOT_USER_ID } from '@/lib/vitanaBotIdentity';
 
 type PrefKey = keyof CompanionPreferences;
 
@@ -24,6 +30,7 @@ const TOPICS: { key: Exclude<PrefKey, 'enabled'>; label: string; desc: string }[
 export function VitanaMessagesSettings({ className }: { className?: string }) {
   const { preferences, isLoading, isError, isSaving, update } = useCompanionPreferences();
   const ready = !!preferences && !isError;
+  const isExafyAdmin = useTenantSafe()?.isExafyAdmin === true;
 
   const handleToggle = async (key: PrefKey, value: boolean) => {
     try {
@@ -84,8 +91,63 @@ export function VitanaMessagesSettings({ className }: { className?: string }) {
             </div>
           ))}
         </div>
+
+        {isExafyAdmin && <AdminTestCardRow />}
       </CardContent>
     </Card>
+  );
+}
+
+/**
+ * VTID-05589 — exafy admins only: Vitana sends the admin one companion card
+ * (the Vitana Index card) to their own chat with Vitana, to see it as a member
+ * does. The gateway fixes the recipient to the caller (VTID-05588).
+ */
+function AdminTestCardRow() {
+  const { send, isSending } = useCompanionTestCard();
+  const [sent, setSent] = useState(false);
+
+  const handleSend = async () => {
+    if (isSending) return;
+    setSent(false);
+    const result = await send();
+    if (result.ok) {
+      setSent(true);
+      notify('screens.settings.vitanaMessages.testCard.sent');
+    } else {
+      notifyError('screens.settings.vitanaMessages.testCard.errorTitle', testCardErrorKey(result));
+    }
+  };
+
+  return (
+    <div className="space-y-3 border-t pt-4">
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <h4 className="font-medium">{t('screens.settings.vitanaMessages.testCard.title')}</h4>
+          <p className="text-sm text-muted-foreground">{t('screens.settings.vitanaMessages.testCard.desc')}</p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleSend}
+          disabled={isSending}
+          data-testid="vitana-messages-test-card"
+        >
+          {isSending
+            ? t('screens.settings.vitanaMessages.testCard.sending')
+            : t('screens.settings.vitanaMessages.testCard.button')}
+        </Button>
+      </div>
+      {sent && (
+        <Link
+          to={`/inbox/u/${VITANA_BOT_USER_ID}`}
+          className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+          data-testid="vitana-messages-test-card-open"
+        >
+          {t('screens.settings.vitanaMessages.testCard.open')}
+        </Link>
+      )}
+    </div>
   );
 }
 

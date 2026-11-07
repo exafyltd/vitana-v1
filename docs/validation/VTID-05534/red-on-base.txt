@@ -1,0 +1,46 @@
+5:14:27 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 /projects/sandbox/vitana-v1
+
+stderr | src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > a realtime INSERT reloads the thread
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > a realtime INSERT reloads the thread 46ms
+ ✓ src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > the first SUBSCRIBED does not reload the thread 11ms
+ × src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > after a CHANNEL_ERROR drop, the next SUBSCRIBED reloads the thread once 10ms
+   → expected 1 to be 2 // Object.is equality
+ × src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > after a CLOSED drop, the next SUBSCRIBED reloads the thread once 6ms
+   → expected 1 to be 2 // Object.is equality
+ × src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > after a TIMED_OUT drop, the next SUBSCRIBED reloads the thread once 6ms
+   → expected 1 to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > after a CHANNEL_ERROR drop, the next SUBSCRIBED reloads the thread once
+ FAIL  src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > after a CLOSED drop, the next SUBSCRIBED reloads the thread once
+ FAIL  src/pages/messages/GroupChat.realtime-reconnect.test.tsx > GroupChat realtime reconnect (VTID-05534) > after a TIMED_OUT drop, the next SUBSCRIBED reloads the thread once
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/pages/messages/GroupChat.realtime-reconnect.test.tsx:148:52
+    146|         realtime.statusHandler?.("SUBSCRIBED");
+    147|       });
+    148|       expect(fetchGroupMessages.mock.calls.length).toBe(before + 1);
+       |                                                    ^
+    149|
+    150|       // A further SUBSCRIBED with no drop in between does not reload …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  17:14:28
+   Duration  5.17s (transform 1.85s, setup 413ms, import 3.07s, tests 82ms, environment 1.45s)
+
