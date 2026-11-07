@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05247",
+  "kind": "ci",
+  "lane": "native-g1-wiring/build-profiles",
+  "summary": "Adds apps/mobile/eas.json with exactly two build profiles, development and test-g1, each setting only APP_PROFILE (no production profile, no credential field), and one offline, secret-free NATIVE-CI step that bundles both profiles and fails if test-g1 lacks its placeholder gateway or adds a production host literal versus development. No store, Expo token, Firebase or signing config; no EAS cloud build.",
+  "paths": [
+    "apps/mobile/eas.json",
+    ".github/workflows/NATIVE-CI.yml",
+    "docs/validation/VTID-05247/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05247/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": ["CI bundle step: offline bundling and a host comparison, no unit test to turn red"]
+}
