@@ -10,7 +10,7 @@
  * Every request goes to a fake gateway; no order or payment is ever placed.
  */
 import '../helpers/no-network';
-import { openBrowser, router } from './mocks';
+import { openBrowser, router } from './discover-mocks';
 import './timing';
 import { Linking } from 'react-native';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
@@ -20,7 +20,7 @@ import { __setGatewayForTests } from '../../src/auth/gateway';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 import { UniversalCartScreen } from '../../src/screens/commerce/UniversalCartScreen';
 import { checkoutErrorKey, CHECKOUT_ERROR_KEYS, mintCheckoutKey } from '../../src/screens/commerce/data/cart';
-import { budget, discoverWrapper, emptyCart, FAIL, product, status, TOKEN, UUID, type Req } from './helpers';
+import { budget, discoverWrapper, emptyCart, FAIL, product, status, TOKEN, UUID, type Req } from './discover-helpers';
 
 jest.setTimeout(30000);
 

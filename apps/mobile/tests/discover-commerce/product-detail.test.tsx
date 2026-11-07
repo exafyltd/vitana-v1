@@ -7,7 +7,7 @@
  * `?rec=`), and Back / Discover more. Fake gateway only.
  */
 import '../helpers/no-network';
-import { router, searchParams } from './mocks';
+import { router, searchParams } from './discover-mocks';
 import './timing';
 import { Linking } from 'react-native';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
@@ -19,7 +19,7 @@ import * as cartPort from '../../src/ports/add-to-cart';
 import { ProductDetailScreen } from '../../src/screens/commerce/ProductDetailScreen';
 import { __clearRecommendationIdsForTests } from '../../src/screens/commerce/data/product';
 import { gatewayOrigin } from '../../src/screens/discover/data/client';
-import { budget, discoverWrapper, emptyCart, FAIL, product, status, UUID } from './helpers';
+import { budget, discoverWrapper, emptyCart, FAIL, product, status, UUID } from './discover-helpers';
 
 jest.setTimeout(30000);
 

@@ -8,7 +8,7 @@
  * user-visible literal in JSX, and the lane's files use start/end only.
  */
 import '../helpers/no-network';
-import { searchParams } from './mocks';
+import { searchParams } from './discover-mocks';
 import './timing';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
@@ -24,7 +24,7 @@ import { UniversalCartScreen } from '../../src/screens/commerce/UniversalCartScr
 import { CheckoutSuccessScreen } from '../../src/screens/commerce/CheckoutSuccessScreen';
 import { TicketPurchaseSuccessScreen } from '../../src/screens/commerce/TicketPurchaseSuccessScreen';
 import { PackagePurchaseSuccessScreen } from '../../src/screens/commerce/PackagePurchaseSuccessScreen';
-import { discoverWrapper, flush, product, UUID } from './helpers';
+import { discoverWrapper, flush, product, UUID } from './discover-helpers';
 
 jest.setTimeout(30000);
 
