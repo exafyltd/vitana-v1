@@ -45,7 +45,7 @@ import { MobileHealthMedicalTab } from './MobileHealthMedicalTab';
 import { MobileHealthSupplementsTab } from './MobileHealthSupplementsTab';
 import { AutopilotChip, VitanaIndexChip } from './MobileActionChips';
 import { HealthMasterActionPopup, HealthReportUploadSheet, QuickLabOrderSheet } from './sheets';
-import { VitanaIndexSheet } from './VitanaIndexSheet';
+import { VitanaIndexSheetUnlessHosted } from './VitanaIndexHost';
 import { HealthUtilityBar } from './HealthUtilityBar';
 import { VitanaBaselineSurveyModal } from './VitanaBaselineSurveyModal';
 import { openAutopilot, openVitanaIndex } from './events';
@@ -181,7 +181,7 @@ export function HealthScreen(): ReactElement {
       <HealthMasterActionPopup open={actionsOpen} onOpenChange={setActionsOpen} onUploadOpen={() => setUploadOpen(true)} onOrderOpen={() => setOrderOpen(true)} />
       <HealthReportUploadSheet open={uploadOpen} onOpenChange={setUploadOpen} />
       <QuickLabOrderSheet open={orderOpen} onOpenChange={setOrderOpen} />
-      <VitanaIndexSheet />
+      <VitanaIndexSheetUnlessHosted />
     </View>
   );
 }
