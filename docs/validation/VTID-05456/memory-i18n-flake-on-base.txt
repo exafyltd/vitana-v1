@@ -1,0 +1,23 @@
+# Pre-existing flake, not this lane: tests/memory/gateway-i18n.test.tsx on origin/main e530abd0d (detached worktree, no lane change), same node_modules.
+# The per-locale case waits 1 s (waitFor default) for the memory skeletons to clear; on this loaded sandbox random locales time out.
+# (apps/mobile) npm run gen:i18n && npx jest tests/memory/gateway-i18n.test.tsx --ci   (run twice)
+    ✕ de: the four screens render no unresolved key (2578 ms)
+    ✕ en: the four screens render no unresolved key (2885 ms)
+    ✕ es: the four screens render no unresolved key (2782 ms)
+    ✕ sr: the four screens render no unresolved key (2652 ms)
+    ✕ fr: the four screens render no unresolved key (3234 ms)
+    ✕ pl: the four screens render no unresolved key (2547 ms)
+    ✕ pt: the four screens render no unresolved key (2653 ms)
+    ✕ ru: the four screens render no unresolved key (2527 ms)
+    ✕ tr: the four screens render no unresolved key (2174 ms)
+    ✕ zh: the four screens render no unresolved key (2400 ms)
+    ✕ ar: the four screens render no unresolved key (2101 ms)
+Tests:       11 failed, 31 passed, 42 total
+    ✕ sr: the four screens render no unresolved key (6925 ms)
+    ✕ pl: the four screens render no unresolved key (8899 ms)
+    ✕ pt: the four screens render no unresolved key (2656 ms)
+    ✕ ru: the four screens render no unresolved key (2350 ms)
+    ✕ tr: the four screens render no unresolved key (2559 ms)
+    ✕ zh: the four screens render no unresolved key (4089 ms)
+    ✕ ar: the four screens render no unresolved key (4197 ms)
+Tests:       7 failed, 35 passed, 42 total

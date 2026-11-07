@@ -1,0 +1,51 @@
+{
+  "inboxNative": {
+    "selectContext": "Choose inbox",
+    "searchClose": "Close search",
+    "unreadCount": "{count} unread",
+    "unknown": "Unknown",
+    "conversation": "Conversation",
+    "vitanaWelcome": "Hi! I'm Vitana. Send me a message to get started.",
+    "removeRecipient": "Remove {name}",
+    "moreOptions": "More options",
+    "archivedDescription": "View archived conversations and messages",
+    "inspirationDescription": "Pre-written messages and templates to inspire your wellness community",
+    "subnav": {
+      "overview": "Overview",
+      "inspiration": "Inspiration",
+      "archived": "Archived"
+    },
+    "archiveCategory": {
+      "all": "All",
+      "healthcare": "Healthcare",
+      "fitness": "Fitness",
+      "nutrition": "Nutrition",
+      "activities": "Activities"
+    },
+    "archiveType": {
+      "group": "Group",
+      "direct": "Direct"
+    },
+    "archiveSample": {
+      "johnsonName": "Dr. Johnson",
+      "johnsonMessage": "Thanks for the consultation!",
+      "yogaName": "Yoga Beginners",
+      "yogaMessage": "Great session everyone!",
+      "martinezName": "Sarah Martinez",
+      "martinezMessage": "Recipe was amazing!",
+      "warriorsName": "Weekend Warriors",
+      "warriorsMessage": "Next hike scheduled for...",
+      "kimName": "Dr. Kim",
+      "kimMessage": "Follow up in 2 weeks"
+    },
+    "presence": {
+      "online": "Active",
+      "away": "Away",
+      "offline": "Offline"
+    },
+    "datePlaceholder": "YYYY-MM-DD",
+    "permissions": {
+      "contactsUsage": "Vitana reads your contacts only when you tap “Import contacts from my phone”, so you can see which of your friends are already on Vitanaland."
+    }
+  }
+}

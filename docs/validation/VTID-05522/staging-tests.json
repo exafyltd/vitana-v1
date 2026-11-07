@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05522",
+  "service": "community-app",
+  "_note": "Native Wave 2 ai-chat lane (native-wave2-ai-pages-r2/ai-chat): /comm/talk-to-vitana. The port is proven offline (jest-expo + RNTL, mocked gateway and Supabase double, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). The ticket submit, confirm / reopen and the enrichment-card dismiss are writes: each is asserted as a built request against the mocked gateway and none is fired. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 6). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/ai-chat", "cwd": "apps/mobile",
+      "reason": "Talk-to-Vitana unit tests: the row native and resolving (with ?ticket=); layout (title, Community sections, form, AI note); empty text blocked; submit builds POST /feedback/tickets and shows the ticket notice + ?ticket= link; failed submit toast; ticket list loaded / empty / error / retry / confirm; ?ticket= deep link by id and FB-number beyond the first page; card strip server cards + F1/F2/F3, 7-day local hide, server dismiss; 11 locales with no raw key; RTL; no physical left/right — no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screen, data layer and the ai-chat port type-check against the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /comm/talk-to-vitana route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "COMM.TALK_TO_VITANA is native with its route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/ai-chat/01-talk-to-vitana.yaml", "target": "/comm/talk-to-vitana (+ ?ticket=<id>)", "next_actor": "owner",
+      "reason": "screen renders (title, Community sections, form, card strip, Your reports); the topic list opens; ?ticket= highlights and scrolls to the ticket; screenshot parity vs 390x844 read-only staging; never presses Send; needs the isolated G1 environment (iOS simulator + Android emulator)" }
+  ]
+}

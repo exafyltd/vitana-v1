@@ -1,0 +1,22 @@
+{
+  "vtid": "VTID-05523",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/ai/**",
+    "apps/mobile/src/screens/ai-coach/**",
+    "apps/mobile/src/ports/ai-coach.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/ai-coach/**",
+    "apps/mobile/maestro/ai-coach/**",
+    "apps/mobile/parity/ledger.json",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/ai-mocks.ts",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "src/i18n/*/aiCoachNative.json",
+    "docs/validation/VTID-05523/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05523/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

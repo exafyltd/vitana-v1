@@ -1,0 +1,67 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "Sekcje AI",
+      "overview": "Przegląd",
+      "insights": "Wnioski",
+      "recommendations": "Rekomendacje",
+      "dailySummary": "Podsumowanie dnia",
+      "companion": "Towarzysz AI"
+    },
+    "priority": {
+      "high": "Wysoki",
+      "medium": "Średni",
+      "low": "Niski"
+    },
+    "suggestions": {
+      "title": "Wnioski i sugestie AI"
+    },
+    "reward": {
+      "suggestions": "Działaj według sugestii AI i zdobywaj nagrody zdrowotne",
+      "index": "Popraw swój wynik zdrowia, aby zdobyć więcej kredytów"
+    },
+    "index": {
+      "computing": "obliczanie…"
+    },
+    "streak": {
+      "meditation": "Medytacja"
+    },
+    "companion": {
+      "suggestionDescription": "Sugestia wellness wygenerowana przez AI",
+      "recall": "Przypomnij",
+      "autopilotMeditation": "Zaplanuj przerwę na medytację",
+      "autopilotHydration": "Przypomnienie o piciu za 15 min"
+    },
+    "motivation": {
+      "defaultQuote": "Każdy mały krok w stronę dobrego samopoczucia to zwycięstwo warte świętowania.",
+      "defaultAuthor": "Inspiracja dnia"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Wellness"
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Markery krwi"
+    },
+    "chat": {
+      "voice": "Rozpocznij połączenie głosowe",
+      "video": "Rozpocznij połączenie wideo",
+      "send": "Wyślij wiadomość"
+    },
+    "autopilot": {
+      "settings": "Ustawienia Autopilota",
+      "toggle": "Włącz lub wyłącz Autopilota"
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA zdobyte!",
+      "task": "Zadanie wykonane: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Indeks teraz {n}"
+    }
+  }
+}

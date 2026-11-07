@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "Ouvir voz",
+      "playing": "Reproduzindo…",
+      "previewPhrase": "Olá, esta é uma prévia das configurações de voz que você escolheu.",
+      "previewUnavailable": "A prévia não está disponível para este idioma neste dispositivo.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value}%"
+    },
+    "proactive": {
+      "playSample": "Tocar saudação de exemplo",
+      "speaking": "Falando…",
+      "notSet": "Não definido",
+      "none": "Nenhum",
+      "quoted": "\"{text}\"",
+      "messageType": {
+        "time_greeting": "Saudações por horário (Bom dia etc.)",
+        "wellness_check": "Check-ins de bem-estar",
+        "motivational": "Mensagens motivacionais",
+        "reminder": "Lembretes de ações"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "O piloto automático pode consultar outros membros quando você faz perguntas.",
+      "giveDescription": "O piloto automático pode oferecer o seu catálogo a outros membros. Desativado por padrão: ative quando você estiver pronto.",
+      "moneyDescription": "Passa os ganhos de \"propor e aprovar\" para autônomo. Ative só quando você confiar no seu catálogo e no seu aviso.",
+      "moneyDisabledHint": "Ative primeiro \"Dar recomendações\"."
+    },
+    "connect": {
+      "missingKey": "Cole a sua chave de API.",
+      "wrongPrefix": "A chave de API precisa começar com \"{prefix}\".",
+      "unauthorized": "O provedor recusou esta chave (não autorizada). Confira no seu painel.",
+      "network": "Erro de rede ao acessar o provedor. Tente de novo.",
+      "verifyFailed": "A verificação falhou ({status}).",
+      "failed": "A conexão falhou ({code}).",
+      "saving": "Salvando…",
+      "verifying": "Verificando…",
+      "connect": "Conectar"
+    }
+  }
+}

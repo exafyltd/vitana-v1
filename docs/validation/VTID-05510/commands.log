@@ -1,0 +1,123 @@
+# VTID-05510 (native-wave2-discover-commerce-r2/discover) — local verification
+# Worktree: /projects/sandbox/vitana-v1/.worktrees/native-wave2-discover-commerce-r2-discover
+# Base: origin/main e1ab28b1f (no newer main at the last fetch). Linux, node v22.23.4. No network in tests.
+# Setup: apps/mobile `npm ci`; repo root `npm ci --ignore-scripts` (typescript for the native generators).
+
+## red on base (new tests, no implementation) — see red-on-base.txt
+$ (apps/mobile, detached origin/main worktree, tests/discover-commerce copied in, expo-video --no-save) npx jest tests/discover-commerce --ci
+FAIL — 7/7 suites failed to run (Cannot find module src/screens/discover/* / src/ports/discover / src/ports/add-to-cart), 0 tests ran
+
+## green (apps/mobile)
+$ npx jest tests/discover-commerce --ci
+PASS — 7 suites, 122/122 tests
+$ npm run typecheck            (pretypecheck: gen:i18n, 11 locales, 1452 shards)
+PASS — tsc --noEmit, 0 errors
+$ npm test -- --ci
+PASS — 93/93 suites, 2464/2464 tests
+  (an earlier full run, before the commit "share links on the profile's webBaseUrl", failed tests/env.test.ts — a production host literal in
+   src/screens/discover — fixed in that commit; and once timed out in
+   tests/memory/gateway-i18n.test.tsx under load, which passed on its own and in the final full run)
+$ HOME=<writable tmp> APP_PROFILE=development npm run bundle
+PASS — Metro + Hermes, ios entry-*.hbc (17MB) + android entry-*.hbc (18MB), "Exported: dist"   (HOME override: the sandbox HOME is read-only for ~/.expo)
+$ HOME=<writable tmp> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+PASS — "Dependencies are up to date" (expo-video 57.0.5 = the SDK 57 bundled version)
+$ npm run parity:check
+PASS — parity-ledger --check: OK — 435 rows, 40 native route(s)
+
+## repo root
+$ node scripts/native/parity-ledger.mjs --sync
+PASS — 435 rows (added 0, updated 0, removed 0); ledger unchanged
+$ node scripts/native/gen-core-extract.mjs --check
+PASS — 13 files from 24 sources, 48 icons, 11 assets — up to date
+$ node scripts/native/core-closure.mjs --check
+PASS — 22 roots, 32 src files, 11 assets — up to date
+$ node scripts/native/gen-tokens.mjs --check
+PASS — up to date
+$ node scripts/native/check-shell-pins.mjs
+PASS — every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ node --test scripts/native/__tests__/*.test.mjs
+PASS — 68/68
+$ npx eslint apps/mobile packages
+PASS — 0 problems
+$ npm run i18n:register
+PASS — "No formal-register violations." (de du / pt você / fr tu / ru ты / pl / tr / zh checked; ar skipped by design)
+$ npm run i18n:audit
+FAIL (pre-existing) — 17193 errors on this branch and 17193 on origin/main (same count); 0 findings in discoverCommerceNative
+
+## preflight (head f484b6e6d)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-discover-commerce-r2/discover --title "VTID-05510 (native-wave2-discover-commerce-r2/discover): native discover port"
+PASS — gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering; "Not run by preflight" SKIP (covered by the npm test / eslint / bundle runs above)
+FAIL (not this lane) — Collab handoff + Lane scope: ".kiro/specs/native-wave2-discover-commerce-r2/lanes/discover.md not found" — the spec is on the plan branch (vitana-platform plan PR #4604, not merged yet)
+  (first run also failed PR-GATE sparring: no owner-approval line in plan-sparring.md — added, then PASS)
+
+## merge origin/main 955a503a1 (PR was conflicting)
+$ git merge origin/main   — conflict in apps/mobile/src/navigation/resolve.ts (NATIVE_ROUTES: kept '/settings/connected-apps', '/shop', '/support');
+  apps/mobile/src/ports/ui.tsx auto-merged with duplicate ICONS keys (Apple, Brain, Moon, Sparkles now aliased on main) — typecheck caught TS1117; this lane's duplicate entries removed
+$ (apps/mobile) npm ci; npm run typecheck
+PASS — 0 errors
+$ (apps/mobile) npm test -- --ci
+PASS — 97/97 suites, 2635/2635 tests
+$ parity-ledger --sync / --check
+PASS — 0 changes; OK — 435 rows, 43 native route(s)
+$ core-closure --check / gen-core-extract --check
+PASS — up to date
+$ npx eslint apps/mobile packages
+PASS — 0 problems
+
+## test timing (reviewer blocker, see marketplace-orders review 67ba80c) — base head 8e3a45ef9
+tests/discover-commerce/timing.ts: configure({ asyncUtilTimeout: 8000 }) (identical file in the marketplace-orders lane), imported by helpers.tsx and ai-picks-cold-start.test.tsx
+jest.setTimeout(30000): i18n-rtl.test.tsx (11-locale loop), sub-catalogues.test.tsx (4 screens), ai-picks-cold-start.test.tsx (router render)
+removed per-call { timeout: 5000 } in shop.test.tsx (covered by the 8000 ms config); no assertion changed, nothing skipped
+core.test.ts: pure functions, no render or async util, so no timing import
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 7/7 suites, 122/122 tests (57.6 s)
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 7/7 suites, 122/122 tests (16.8 s)
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 3
+PASS — 7/7 suites, 122/122 tests (18.2 s)
+$ (apps/mobile) npx jest
+PASS — 97/97 suites, 2635/2635 tests (90.2 s)
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-discover-commerce-r2/discover --title "VTID-05510 (native-wave2-discover-commerce-r2/discover): native discover port"
+PASS — gh lane files, PR-GATE scope / sparring / weakening / red-green, Kiro steering
+FAIL (not this lane) — Collab handoff + Lane scope: ".kiro/specs/native-wave2-discover-commerce-r2/lanes/discover.md not found" (spec on the plan branch, not merged)
+
+## gift voucher after checkout (review discover-c68982e) — base head c68982ec1 (origin branch ff, origin/main already merged)
+$ (apps/mobile) npx jest tests/discover-commerce/voucher.test.tsx   — on c68982ec1 product code (red)
+FAIL — 10 failed, 2 passed, 12 total (red-on-base.txt)
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors
+$ (apps/mobile) npx eslint <changed files>
+PASS — 0 problems
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 8/8 suites, 134/134 tests
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 8/8 suites, 134/134 tests
+$ (apps/mobile) npx jest   — full, default workers
+8 suites red on load timeouts (shell 135 s, discover i18n-rtl 324 s, memory gateway-i18n 273 s …); none touch the voucher files
+$ (apps/mobile) npx jest tests/ui/catalogue.test.tsx tests/shell.test.tsx tests/memory/timeline.test.tsx tests/community/intents.test.tsx tests/i18n-rtl.test.tsx tests/memory/recall-permissions.test.tsx
+PASS — 6/6 suites, 293/293 tests (the same suites alone)
+
+## merge origin/main (fcc1e451, VTID-05511 marketplace-orders) into the discover branch — merge commit
+$ git merge --no-ff --no-commit origin/main — 16 add/add files and 3 content conflicts (resolve.ts, extract.json, mobile-ci-paths.generated.json); timing.ts identical on both sides
+$ (apps/mobile) npm ci — installs the merged lockfile; npm ls --depth=0: no problems
+$ (apps/mobile) npm run typecheck
+PASS — 0 errors
+$ (apps/mobile) npx jest tests/discover-commerce — default workers
+PASS — 14/14 suites, 263/263 tests: discover 8 suites / 134 tests; marketplace-orders 6 suites / 129 tests (main's record counts 118 in 5 suites; voucher.test.tsx adds 11)
+$ (apps/mobile) npx jest — full, default workers, run 1
+FAIL — 4 suites, 7 tests, 4380/4387 passed: gateway-i18n, billing-requests, archived-inspiration, settings i18n-rtl (load timeouts); each of the four PASS when run alone
+$ (apps/mobile) npx jest — full, default workers, run 2
+PASS — 162/162 suites, 4387/4387 tests
+$ (apps/mobile) npm run parity:check
+PASS — 435 rows, 82 native routes
+$ node scripts/native/core-closure.mjs --check
+PASS — up to date (33 roots, 43 src files, 11 assets)
+$ node scripts/native/gen-core-extract.mjs --check
+PASS — up to date (14 files, 28 sources, 48 icons)
+$ (root) npm run i18n:stale; npm run i18n:register
+PASS — exit 0
+$ (root) npm run i18n:audit
+FAIL, not from this merge — 17193 errors; the same total on an origin/main snapshot (git archive). The first 50 printed errors are all admin.rewardsShop keys.
+$ git diff --cached origin/main — the 6 non-i18n shared files are identical to main; the 11 i18n shards add 63 lines each and remove none
