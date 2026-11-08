@@ -39,7 +39,11 @@
     },
     "audiobook": {
       "rateValue": "{rate}×",
-      "sleepShort": "{min}′"
+      "sleepShort": "{min}′",
+      "_pending_review": {
+        "rateValue": true,
+        "sleepShort": true
+      }
     }
   }
 }

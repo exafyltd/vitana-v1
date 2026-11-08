@@ -9,7 +9,11 @@
     "landing": {
       "brand": "VITANA",
       "vitanaIndex": "VITANA {score}",
-      "openSocial": "Otwórz {network}"
+      "openSocial": "Otwórz {network}",
+      "_pending_review": {
+        "brand": true,
+        "vitanaIndex": true
+      }
     },
     "member": {
       "noBio": "Brak bio",

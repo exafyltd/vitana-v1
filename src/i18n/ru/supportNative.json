@@ -7,7 +7,10 @@
         "ai": "ИИ",
         "productivity": "Почта и календарь",
         "media": "Музыка и видео",
-        "agent": "Autopilot"
+        "agent": "Autopilot",
+        "_pending_review": {
+          "agent": true
+        }
       },
       "sections": {
         "shopping": "Покупки и награды",

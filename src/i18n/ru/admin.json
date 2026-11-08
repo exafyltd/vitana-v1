@@ -38,26 +38,16 @@
       "refresh": "Обновить",
       "forbiddenTitle": "Только для администраторов Exafy",
       "forbiddenBody": "Управлять магазином наград могут только администраторы Exafy. У твоей учётной записи нет такого права.",
-      "sectionLabel": "Раздел",
+      "sectionLabel": "Секция",
       "sections": {
         "items": "Товары",
         "fees": "Стоимость доставки",
-        "orders": "Заказы",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "orders": "Заказы"
       },
       "fulfilment": {
         "ship": "Доставка",
         "event": "Билет на мероприятие",
-        "digital": "Цифровой",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "digital": "Цифровой"
       },
       "items": {
         "count": "Товаров: {count}",
@@ -331,8 +321,7 @@
         "retry": true,
         "refresh": true,
         "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
+        "forbiddenBody": true
       }
     }
   }

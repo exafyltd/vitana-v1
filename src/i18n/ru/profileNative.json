@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Весь раздел",
@@ -46,7 +54,10 @@
         "postsCommercial": "Публикации маркетплейса",
         "postsPartnerSeek": "Публикации о поиске партнёра"
       },
-      "partnerSeekNote": "Всегда скрыто. Протокол взаимного раскрытия защищает эти публикации независимо от настройки."
+      "partnerSeekNote": "Всегда скрыто. Протокол взаимного раскрытия защищает эти публикации независимо от настройки.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Разреши доступ к фото в Настройках, чтобы выбрать изображение.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "Загрузка {current} из {total}...",
       "deleteTitle": "Ты уверен?",
       "deleteDescription": "Это фото будет удалено навсегда. Это действие нельзя отменить."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

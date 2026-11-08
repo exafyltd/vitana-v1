@@ -98,19 +98,13 @@
         "activeLabel": "Actif (visible aux membres)",
         "activeHint": "Les nouveaux articles sont inactifs au départ. Active-les quand tout est correct.",
         "save": "Enregistrer",
-        "saving": "Enregistrement …",
+        "saving": "Enregistrement en cours…",
         "cancel": "Annuler",
-        "saved": "Article enregistré",
-        "_pending_review": {
-          "save": true,
-          "saving": true,
-          "cancel": true,
-          "saved": true
-        }
+        "saved": "Élément enregistré"
       },
       "validation": {
-        "titleDe": "Saisis un titre en allemand.",
-        "slug": "L'identifiant doit comporter de 2 à 80 caractères : minuscules, chiffres et tirets.",
+        "titleDe": "Saisis un titre allemand.",
+        "slug": "L'identifiant doit contenir 2 à 80 caractères : des lettres minuscules, des chiffres et des tirets.",
         "price": "Le prix doit être un nombre entier supérieur à 0.",
         "minAge": "L'âge minimum doit être compris entre 1 et 99.",
         "countries": "Les articles livrés ont besoin d'au moins un pays de livraison.",
@@ -119,9 +113,6 @@
         "sortOrder": "L'ordre doit être un nombre entier.",
         "fee": "Saisis un montant supérieur ou égal à 0, avec deux décimales au maximum.",
         "_pending_review": {
-          "titleDe": true,
-          "slug": true,
-          "price": true,
           "minAge": true,
           "countries": true,
           "country": true,

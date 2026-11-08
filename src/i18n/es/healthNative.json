@@ -18,7 +18,10 @@
         "uploaded": "Subido",
         "processing": "Procesando",
         "processed": "Procesado",
-        "error": "Error"
+        "error": "Error",
+        "_pending_review": {
+          "error": true
+        }
       }
     },
     "supplements": {
@@ -168,7 +171,10 @@
         },
         "v4": {
           "title": "La ciencia del HIIT",
-          "category": "Fitness"
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v5": {
           "title": "Estrategias para manejar el estrés",
@@ -204,6 +210,9 @@
           "title": "Tendencias en medicina preventiva",
           "series": "Salud del futuro"
         }
+      },
+      "_pending_review": {
+        "episode": true
       }
     },
     "educationActions": {
@@ -290,7 +299,10 @@
         "hydration": "Hidratación",
         "sleep": "Sueño",
         "mental": "Mental",
-        "supplement": "Suplementos"
+        "supplement": "Suplementos",
+        "_pending_review": {
+          "mental": true
+        }
       },
       "refreshed": "¡{planName} actualizado! 🔄",
       "justNow": "Justo ahora",

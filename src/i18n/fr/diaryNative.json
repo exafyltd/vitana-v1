@@ -47,7 +47,11 @@
       "profile": "Profil",
       "liveRooms": "Salons en direct",
       "notifications": "Notifications",
-      "other": "Autre"
+      "other": "Autre",
+      "_pending_review": {
+        "businessHub": true,
+        "notifications": true
+      }
     }
   }
 }

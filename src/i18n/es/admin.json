@@ -30,84 +30,58 @@
       }
     },
     "rewardsShop": {
-      "title": "Gestionar la tienda de recompensas",
-      "description": "Artículos, gastos de envío y pedidos de la tienda de recompensas.",
+      "title": "Gestionar tienda de recompensas",
+      "description": "Artículos, tarifas de envío y pedidos de la tienda de recompensas.",
       "openLink": "Tienda de recompensas",
-      "loading": "Cargando …",
-      "retry": "Reintentar",
+      "loading": "Cargando…",
+      "retry": "Inténtalo de nuevo",
       "refresh": "Actualizar",
-      "forbiddenTitle": "Solo para administradores de Exafy",
+      "forbiddenTitle": "Solo administradores de Exafy",
       "forbiddenBody": "Solo los administradores de Exafy pueden gestionar la tienda de recompensas. Tu cuenta no tiene este permiso.",
       "sectionLabel": "Sección",
       "sections": {
         "items": "Artículos",
-        "fees": "Gastos de envío",
-        "orders": "Pedidos",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "fees": "Tarifas de envío",
+        "orders": "Pedidos"
       },
       "fulfilment": {
         "ship": "Envío",
         "event": "Entrada para evento",
-        "digital": "Digital",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "digital": "Digital"
       },
       "items": {
         "count": "{count} artículos",
         "newItem": "Nuevo artículo",
-        "empty": "Aún no hay artículos. Crea el primero.",
+        "empty": "Aún no hay artículos. Añade el primero.",
         "edit": "Editar",
         "active": "Activo",
         "inactive": "Inactivo",
         "activeToggle": "Activar {title}",
-        "toggleFailed": "No se pudo cambiar: {reason}",
+        "toggleFailed": "No se pudo activar: {reason}",
         "price": "{amount} VTNA",
         "approx": "≈ {money}",
-        "stock": "Existencias: {count}",
-        "stockUnlimited": "Existencias: ilimitadas",
+        "stock": "Stock: {count}",
+        "stockUnlimited": "Stock: ilimitado",
         "reserved": "Reservado: {count}",
-        "noPhoto": "Sin foto",
-        "_pending_review": {
-          "count": true,
-          "newItem": true,
-          "empty": true,
-          "edit": true,
-          "active": true,
-          "inactive": true,
-          "activeToggle": true,
-          "toggleFailed": true,
-          "price": true,
-          "approx": true,
-          "stock": true,
-          "stockUnlimited": true,
-          "reserved": true,
-          "noPhoto": true
-        }
+        "noPhoto": "Sin foto"
       },
       "form": {
         "createTitle": "Nuevo artículo",
-        "editTitle": "Editar artículo",
+        "editTitle": "Editar elemento",
         "titleDe": "Título (alemán)",
         "titleEn": "Título (inglés, opcional)",
         "descriptionDe": "Descripción (alemán, opcional)",
         "descriptionEn": "Descripción (inglés, opcional)",
         "slug": "Identificador (slug)",
-        "slugHint": "Se genera a partir del título en alemán. No se puede cambiar después de guardarlo por primera vez.",
-        "slugLocked": "El identificador es fijo porque el artículo ya se ha guardado.",
+        "slugHint": "Generado a partir del título alemán. No se puede cambiar después del primer guardado.",
+        "slugLocked": "El identificador está fijo porque el elemento ya ha sido guardado.",
         "photo": "Foto",
         "photoAdd": "Elegir foto",
         "photoReplace": "Reemplazar foto",
-        "photoRemove": "Quitar foto",
-        "photoUploading": "Subiendo foto …",
-        "photoHint": "JPEG, PNG o WebP. La foto se reduce antes de subirla.",
-        "photoAlt": "Vista previa de la foto del artículo",
+        "photoRemove": "Eliminar foto",
+        "photoUploading": "Subiendo foto…",
+        "photoHint": "JPEG, PNG o WebP. La foto se reduce de tamaño antes de subirla.",
+        "photoAlt": "Vista previa de la foto del elemento",
         "extraImages": "{count} fotos más se mantienen sin cambios.",
         "price": "Precio en VTNA",
         "priceApprox": "≈ {money}",
@@ -124,26 +98,10 @@
         "activeLabel": "Activo (visible para los miembros)",
         "activeHint": "Los artículos nuevos empiezan inactivos. Actívalos cuando todo esté bien.",
         "save": "Guardar",
-        "saving": "Guardando …",
+        "saving": "Guardando…",
         "cancel": "Cancelar",
         "saved": "Artículo guardado",
         "_pending_review": {
-          "createTitle": true,
-          "editTitle": true,
-          "titleDe": true,
-          "titleEn": true,
-          "descriptionDe": true,
-          "descriptionEn": true,
-          "slug": true,
-          "slugHint": true,
-          "slugLocked": true,
-          "photo": true,
-          "photoAdd": true,
-          "photoReplace": true,
-          "photoRemove": true,
-          "photoUploading": true,
-          "photoHint": true,
-          "photoAlt": true,
           "extraImages": true,
           "price": true,
           "priceApprox": true,
@@ -158,37 +116,22 @@
           "stockUnlimited": true,
           "sortOrder": true,
           "activeLabel": true,
-          "activeHint": true,
-          "save": true,
-          "saving": true,
-          "cancel": true,
-          "saved": true
+          "activeHint": true
         }
       },
       "validation": {
-        "titleDe": "Escribe un título en alemán.",
-        "slug": "El identificador necesita de 2 a 80 caracteres: minúsculas, dígitos y guiones.",
+        "titleDe": "Por favor, introduce un título en alemán.",
+        "slug": "El identificador necesita 2–80 caracteres: letras minúsculas, dígitos y guiones.",
         "price": "El precio debe ser un número entero mayor que 0.",
-        "minAge": "La edad mínima debe estar entre 1 y 99.",
-        "countries": "Los artículos con envío necesitan al menos un país de envío.",
-        "country": "Escribe un código de país válido de dos letras.",
-        "stock": "Las existencias deben ser un número entero igual o mayor que 0.",
-        "sortOrder": "El orden debe ser un número entero.",
-        "fee": "Escribe un importe igual o mayor que 0, con dos decimales como máximo.",
-        "_pending_review": {
-          "titleDe": true,
-          "slug": true,
-          "price": true,
-          "minAge": true,
-          "countries": true,
-          "country": true,
-          "stock": true,
-          "sortOrder": true,
-          "fee": true
-        }
+        "minAge": "La edad mínima debe ser entre 1 y 99.",
+        "countries": "Los artículos enviados necesitan al menos un país de envío.",
+        "country": "Por favor, introduce un código de país de dos letras válido.",
+        "stock": "El stock debe ser un número entero de 0 o más.",
+        "sortOrder": "El orden de clasificación debe ser un número entero.",
+        "fee": "Por favor, introduce una cantidad de 0 o más, con un máximo de dos decimales."
       },
       "errors": {
-        "INVALID_ITEM": "El servidor rechazó los datos. Revisa el identificador, el título, el precio y el tipo.",
+        "INVALID_ITEM": "El servidor rechazó los detalles. Comprueba el identificador, el título, el precio y el tipo.",
         "ITEM_REJECTED": "El artículo no se guardó.",
         "IMAGE_TOO_LARGE": "La foto es demasiado grande (máximo 1,4 MB).",
         "IMAGE_TYPE_NOT_ALLOWED": "Solo se permiten JPEG, PNG o WebP.",
@@ -202,8 +145,6 @@
         "generic": "No ha funcionado. Inténtalo de nuevo.",
         "serverMessage": "Servidor: {message}",
         "_pending_review": {
-          "INVALID_ITEM": true,
-          "ITEM_REJECTED": true,
           "IMAGE_TOO_LARGE": true,
           "IMAGE_TYPE_NOT_ALLOWED": true,
           "IMAGE_UPLOAD_FAILED": true,
@@ -322,17 +263,6 @@
           "readOnly": true,
           "statusUpdated": true
         }
-      },
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
       }
     }
   }

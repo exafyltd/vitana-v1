@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Tüm bölüm",
@@ -46,7 +54,10 @@
         "postsCommercial": "Pazar yeri gönderileri",
         "postsPartnerSeek": "Partner arama gönderileri"
       },
-      "partnerSeekNote": "Her zaman gizli. Karşılıklı açıklama protokolü, ayar ne olursa olsun bu gönderileri korur."
+      "partnerSeekNote": "Her zaman gizli. Karşılıklı açıklama protokolü, ayar ne olursa olsun bu gönderileri korur.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Bir görsel seçmek için Ayarlar'da fotoğraflarına erişime izin ver.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "{total} fotoğraftan {current}. yükleniyor...",
       "deleteTitle": "Emin misin?",
       "deleteDescription": "Bu fotoğraf kalıcı olarak silinecek. Bu işlem geri alınamaz."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

@@ -14,6 +14,8 @@
     "unmute": "Включить микрофон",
     "cameraOff": "Выключить камеру",
     "cameraOn": "Включить камеру",
-    "unknownUser": "Неизвестный участник"
-  }
+    "unknownUser": "Неизвестный участник",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

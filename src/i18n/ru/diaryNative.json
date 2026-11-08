@@ -47,7 +47,10 @@
       "profile": "Профиль",
       "liveRooms": "Прямые эфиры",
       "notifications": "Уведомления",
-      "other": "Другое"
+      "other": "Другое",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }

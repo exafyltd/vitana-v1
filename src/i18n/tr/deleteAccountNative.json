@@ -1,5 +1,7 @@
 {
   "deleteAccountNative": {
-    "errorFallback": "Bir şeyler ters gitti. Lütfen tekrar dene."
-  }
+    "errorFallback": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

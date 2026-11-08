@@ -7,10 +7,14 @@
       "overview": "Visão geral",
       "balance": "Saldo e benefícios",
       "subscriptions": "Assinaturas",
-      "rewards": "Recompensas e comissões"
+      "rewards": "Recompensas e comissões",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "40 min/mês · 1 sessão"
-    }
-  }
+      "freeLiveRooms": "40 min/mês · 1 sessão",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
