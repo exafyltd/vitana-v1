@@ -31,7 +31,7 @@ const calls: { url: string; init: RequestInit }[] = [];
 let respond: () => { ok: boolean };
 let appStateHandler: ((s: string) => void) | null = null;
 
-const bodyOf = (i: number) => JSON.parse(String(calls[i].init.body)) as { events: Record<string, any>[] };
+const bodyOf = (i: number) => JSON.parse(String(calls[i].init.body)) as { events: Record<string, unknown>[] };
 const settle = () => jest.advanceTimersByTimeAsync(0);
 
 beforeEach(async () => {
@@ -83,7 +83,7 @@ describe('event shape', () => {
     expect(typeof ev.event_id).toBe('string');
     expect(typeof ev.session_id).toBe('string');
     expect(typeof ev.journey_id).toBe('string');
-    expect(new Date(ev.occurred_at).toISOString()).toBe(ev.occurred_at);
+    expect(new Date(String(ev.occurred_at)).toISOString()).toBe(ev.occurred_at);
     expect(['mobile', 'tablet', 'desktop', 'unknown']).toContain(ev.device_type);
     expect(bodyOf(0).events.every((e) => e.session_id === ev.session_id && e.journey_id === ev.journey_id)).toBe(true);
   });

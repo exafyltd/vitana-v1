@@ -12,3 +12,4 @@ uncommitted tests, src/analytics and the ShellRoot mount; they were reviewed (cl
 - npm test --maxWorkers=2 (full, after merge) -> exit 0, Test Suites: 203 passed, Tests: 5635 passed, Snapshots: 57 passed
 - APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle -> exit 0
 - APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check -> exit 0 (up to date)
+- CI ESLint flagged no-explicit-any at tests/analytics/client.test.ts:34; fixed with unknown (tsc + tests re-run green, 17 passed)
