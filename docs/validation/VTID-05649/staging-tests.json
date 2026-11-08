@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05649",
+  "service": "community-app",
+  "_note": "Native ORB guided-topic hooks. Proven offline (jest-expo, fake transport and fake timers, no network). The native app has no staging deploy; live ORB sessions wait for G1 (next_actor: owner). No staging call, no live write.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates the catalog map the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/orb", "cwd": "apps/mobile", "reason": "guided_topic_id payload, focusGuidedTopic, directive/idle/ceiling/close teaching-end triggers once per topic, bus event; existing ORB tests unchanged" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "protocol, session and controller types" }
+  ]
+}

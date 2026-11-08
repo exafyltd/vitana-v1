@@ -1,6 +1,12 @@
 # Red on base: new tests run against origin/main src (apps/mobile/src stashed)
 # cmd: cd apps/mobile && npx jest tests/orb/guided-topic --maxWorkers=2
 
+Result on base: Test Suites: 2 failed, 2 total; Tests: 15 failed, 2 passed, 17 total
+Red: payload.test.ts (guided_topic_id); teaching-end.test.ts: focusGuidedTopic start / one-shot / replace running
+session, directive fires once, end_conversation + end_teaching_session emit nothing, 45 s idle, activity resets idle,
+5 min ceiling, no idle fire before audio, close after audio, close before audio, second trigger ignored, re-focus fires
+again, OrbProvider bus event.
+
 -- first run excerpt --
 FAIL tests/orb/guided-topic/payload.test.ts (40.198 s)
   ● buildStartPayload guided topic › adds guided_topic_id when a topic is given
