@@ -3,9 +3,9 @@
 // except navigation to the first group the test account is in.
 //
 // Method: a requestAnimationFrame probe installed before the app loads records,
-// for every frame in which the group list is visible, how far its scroll position
-// is from the bottom. A visible frame more than 80 px from the bottom is a visible
-// scroll (the regression). The test fails when there is no group to open.
+// for every frame in which the group list is visible, whether the newest message is
+// cut by the composer and whether it moved after the list was first shown.
+// The test fails when there is no group to open.
 import type { APIRequestContext, Page } from '@playwright/test';
 import { test, expect } from './staging-guard';
 
@@ -44,21 +44,32 @@ async function signIn(page: Page, request: APIRequestContext) {
   }, session);
 }
 
-// Installed before any app script runs: samples every animation frame.
+// Installed before any app script runs. For every animation frame in which the
+// conversation list is visible it records (a) whether the newest message's bottom
+// edge is hidden behind the composer ("cut"), and (b) how far that edge moved
+// since the first visible frame ("movedPx"). Both must stay at zero for the
+// opening: a cut or a movement is what a member sees as a scroll.
 const PROBE = () => {
-  const w = window as unknown as { __groupOpen: { visibleFrames: number; farFrames: number; worst: number } };
-  w.__groupOpen = { visibleFrames: 0, farFrames: 0, worst: 0 };
+  type Probe = { visibleFrames: number; cutFrames: number; worstCutPx: number; firstBottom: number | null; movedPx: number; lastBottom: number | null };
+  const w = window as unknown as { __open: Probe };
+  w.__open = { visibleFrames: 0, cutFrames: 0, worstCutPx: 0, firstBottom: null, movedPx: 0, lastBottom: null };
   const tick = () => {
     const main = document.querySelector<HTMLElement>('main[tabindex="-1"]');
-    if (main && /\/inbox\/g\//.test(location.pathname)) {
-      if (main.style.visibility !== 'hidden' && main.textContent && main.textContent.trim().length > 0) {
-        const el = main.scrollHeight > main.clientHeight + 1 ? main : (document.scrollingElement as HTMLElement);
-        const top = el === main ? main.scrollTop : window.scrollY;
-        const far = el.scrollHeight - top - (el === main ? main.clientHeight : window.innerHeight);
-        w.__groupOpen.visibleFrames += 1;
-        if (far > 80) {
-          w.__groupOpen.farFrames += 1;
-          w.__groupOpen.worst = Math.max(w.__groupOpen.worst, Math.round(far));
+    if (main && /\/inbox\/g\//.test(location.pathname) && main.style.visibility !== 'hidden' && main.textContent && main.textContent.trim().length > 0) {
+      const msgs = document.querySelectorAll<HTMLElement>('[id^="msg-"]');
+      const last = msgs.length ? msgs[msgs.length - 1] : null;
+      const footer = document.querySelector<HTMLElement>('footer');
+      if (last && footer) {
+        const bottom = last.getBoundingClientRect().bottom;
+        const limit = footer.getBoundingClientRect().top;
+        const cut = Math.round(bottom - limit);
+        w.__open.visibleFrames += 1;
+        if (w.__open.firstBottom === null) w.__open.firstBottom = bottom;
+        w.__open.movedPx = Math.max(w.__open.movedPx, Math.round(Math.abs(bottom - (w.__open.firstBottom as number))));
+        w.__open.lastBottom = bottom;
+        if (cut > 2) {
+          w.__open.cutFrames += 1;
+          w.__open.worstCutPx = Math.max(w.__open.worstCutPx, cut);
         }
       }
     }
@@ -77,7 +88,8 @@ test('a group chat is first shown at its newest message, never scrolled into vie
   await page.waitForURL(/\/inbox\/g\//, { timeout: 30_000 });
   await page.waitForLoadState('networkidle', { timeout: 20_000 }).catch(() => undefined);
   await page.waitForTimeout(1500);
-  const probe = await page.evaluate(() => (window as unknown as { __groupOpen: { visibleFrames: number; farFrames: number; worst: number } }).__groupOpen);
+  const probe = await page.evaluate(() => (window as unknown as { __open: { visibleFrames: number; cutFrames: number; worstCutPx: number; movedPx: number } }).__open);
   expect(probe.visibleFrames, 'the group list was never shown').toBeGreaterThan(0);
-  expect(probe.farFrames, `the list was visible away from its newest message in ${probe.farFrames} frame(s), worst ${probe.worst}px`).toBe(0);
+  expect(probe.cutFrames, `the newest message was hidden behind the composer in ${probe.cutFrames} frame(s), worst ${probe.worstCutPx}px`).toBe(0);
+  expect(probe.movedPx, `the newest message moved ${probe.movedPx}px after the list was first shown`).toBeLessThanOrEqual(4);
 });
