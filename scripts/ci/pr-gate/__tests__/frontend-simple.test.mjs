@@ -33,3 +33,14 @@ test('scope.json accepts change_class frontend-simple and nothing else', () => {
   assert.deepEqual(L.validateScope({ ...base, change_class: 'frontend-simple' }, 'VTID-1'), []);
   assert.equal(L.validateScope({ ...base, change_class: 'backend' }, 'VTID-1').length, 1);
 });
+
+// VTID-05623 — read-only staging specs are part of a simple front-end change.
+test('a staging spec next to the change qualifies (VTID-05623)', () => {
+  assert.deepEqual(L.frontendSimpleViolations(['src/pages/messages/GroupChat.tsx', 'tests/e2e/staging/vtid-05622-group-chat.staging.spec.ts']), []);
+});
+
+test('other tests/ paths and staging fixtures do not qualify (VTID-05623)', () => {
+  assert.ok(L.frontendSimpleViolations(['tests/unit/x.test.ts']).length > 0);
+  assert.ok(L.frontendSimpleViolations(['tests/e2e/staging/fixtures/draft.json']).length > 0);
+  assert.ok(L.frontendSimpleViolations(['tests/e2e/staging/sub/x.staging.spec.ts']).length > 0);
+});

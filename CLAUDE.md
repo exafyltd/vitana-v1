@@ -196,7 +196,7 @@ procedure: skill `plan-sparring` (`.claude/skills/plan-sparring/`). Two tracks, 
 from the `vtid_ledger`; only back-end and complex changes get a sparring first.**
 
 1. **Every change gets a VTID.** Bug, feature, doc, UI tweak: all of them. The VTID is allocated from the ledger.
-2. **Simple front-end change → no sparring.** Class `frontend-simple`: the diff is inside `src/**` or `public/**`,
+2. **Simple front-end change → no sparring.** Class `frontend-simple`: the diff is inside `src/**`, `public/**` or `tests/e2e/staging/*.staging.spec.ts` (read-only staging specs, VTID-05623),
    touches none of the deny-listed files (`src/App.tsx`, `src/navigation/**`, `src/design/**`, `src/integrations/**`,
    `src/routes/guards/**`, auth contexts, `src/generated/**`), and changes at most 15 files. Declare it in
    `docs/validation/<VTID>/scope.json` with `"change_class": "frontend-simple"`. The PR gate verifies the diff
