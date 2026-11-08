@@ -1,0 +1,17 @@
+VTID-05646 native-wave2-sharing-business-r3/sharing: commands run and results
+Worktree: /projects/sandbox/wt/b-sharing (branch kiro/native-wave2-sharing-business-r3/sharing)
+
+== Red on base
+- npx jest tests/sharing (tests only on origin/main) -> exit 1, 14 failed / 5 passed (docs/validation/VTID-05646/red-on-base.txt)
+
+== Green (final head)
+- npm run gen:i18n (apps/mobile): exit 0
+- npm run typecheck (apps/mobile): exit 0
+- npx jest tests/sharing --maxWorkers=2: Test Suites 4 passed; Tests 72 passed
+- npm test --maxWorkers=2 (apps/mobile, full): Test Suites 205 passed; Tests 5720 passed
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: exit 0
+- APP_PROFILE=development EXPO_NO_TELEMETRY=1 EXPO_OFFLINE=1 npm run bundle: exit 0 (iOS + Android)
+- npx eslint apps/mobile/app apps/mobile/src apps/mobile/tests/sharing (repo root): exit 0, no problems
+- node scripts/native/parity-ledger.mjs --check: OK, 435 rows, 129 native routes
+- node scripts/native/core-closure.mjs --check: up to date
+- node scripts/native/gen-core-extract.mjs --check: up to date
