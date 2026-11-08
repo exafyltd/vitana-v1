@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05617",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/capture/UnifiedCaptureCard.test.tsx", "cwd": ".",
+      "reason": "the diary mic falls back to backend transcription on any Web Speech failure before a result, and catches synchronous start() throws" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the diary dictation fix is served" }
+  ]
+}
