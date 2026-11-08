@@ -1,6 +1,6 @@
 /**
  * VTID-05646 (native-wave2-sharing-business-r3/sharing) — the one door to the share-card image
- * capture. The web Instagram share modal draws its card to a canvas with `html2canvas`
+ * capture. The web Instagram share modal draws its card to a canvas with a DOM canvas library
  * (`src/components/sharing/InstagramShareModal.tsx`). Native renders the card as a view and
  * captures that view with `react-native-view-shot`'s `captureRef` (design R1-C), then hands the
  * image file to the system share sheet.

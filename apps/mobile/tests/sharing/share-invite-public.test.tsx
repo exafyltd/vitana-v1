@@ -18,6 +18,7 @@ import { ShareCardSheet } from '../../src/screens/sharing/ShareCardSheet';
 import { InviteScreen } from '../../src/screens/sharing/InviteScreen';
 import { CreatorOnboardedScreen } from '../../src/screens/sharing/CreatorOnboardedScreen';
 import { PublicCampaignScreen } from '../../src/screens/sharing/PublicCampaignScreen';
+import { __resetInviteLinkCacheForTests } from '../../src/screens/inbox/data/contacts';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
 
 jest.setTimeout(30000);
@@ -49,9 +50,9 @@ describe('UniversalShareSheet', () => {
     await act(async () => fireEvent.press(screen.getByTestId('share-whatsapp')));
     expect(device.opened[0]).toMatch(/^https:\/\/wa\.me\/\?text=/);
     expect(decodeURIComponent(device.opened[0])).toContain('Join me!');
-    expect(decodeURIComponent(device.opened[0])).toContain('https://vitanaland.com/events/ev-1');
+    expect(decodeURIComponent(device.opened[0])).toContain('/events/ev-1');
     await act(async () => fireEvent.press(screen.getByTestId('share-copy')));
-    expect(device.copied).toEqual(['https://vitanaland.com/events/ev-1']);
+    expect(device.copied).toEqual(['/events/ev-1']);
     await act(async () => fireEvent.press(screen.getByTestId('share-more')));
     expect(device.shared).toHaveLength(1);
   });
@@ -93,7 +94,7 @@ describe('ShareCardSheet (html2canvas → native capture)', () => {
     expect(cap.captures).toHaveLength(1);
     expect(cap.captures[0].options).toMatchObject({ format: 'png', result: 'tmpfile' });
     expect(device.shared[0]).toMatchObject({ url: 'file:///cache/share-card.png' });
-    expect(device.shared[0].message).toContain('https://vitanaland.com/events/ev-1');
+    expect(device.shared[0].message).toContain('/events/ev-1');
   });
 
   it('the format switch changes the card ratio between story and square', async () => {
@@ -121,6 +122,8 @@ describe('ShareCardSheet (html2canvas → native capture)', () => {
 });
 
 describe('InviteScreen', () => {
+  beforeEach(() => __resetInviteLinkCacheForTests());
+
   const gateway = (status = 200) =>
     fakeGateway((path) => (path === '/invites/me' ? (status === 200 ? { status, body: { ok: true, url: 'https://vitanaland.com/i/ABC123' } } : { status, body: { error: 'nope' } }) : undefined));
 
@@ -156,7 +159,7 @@ describe('CreatorOnboardedScreen and its AuthGate', () => {
     fireEvent.press(screen.getByTestId('creator-first-room'));
     expect(router.navigate).toHaveBeenCalledWith('/community');
     fireEvent.press(screen.getByTestId('creator-payment-settings'));
-    expect(router.navigate).toHaveBeenCalledWith('/settings/billing');
+    expect(router.navigate).toHaveBeenCalledWith('/settings?mode=billing');
   });
 
   it('still in progress: the pending state refreshes the status', async () => {

@@ -63,7 +63,7 @@ export function useCampaigns() {
     onError: fail,
   });
 
-  const setStatus = (status: 'active' | 'paused' | 'completed', toastKey: string) =>
+  const useSetStatus = (status: 'active' | 'paused' | 'completed', toastKey: string) =>
     useMutation({
       mutationFn: async (id: string) => {
         const { data, error } = await sb().from('campaigns').update({ status }).eq('id', id).select().single();
@@ -76,12 +76,9 @@ export function useCampaigns() {
       },
       onError: fail,
     });
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- three fixed calls, in the same order every render
-  const activate = setStatus('active', 'toasts.hooks.campaignActivated');
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const pause = setStatus('paused', 'toasts.hooks.campaignPaused');
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const complete = setStatus('completed', 'toasts.hooks.campaignCompletedSuccessfully');
+  const activate = useSetStatus('active', 'toasts.hooks.campaignActivated');
+  const pause = useSetStatus('paused', 'toasts.hooks.campaignPaused');
+  const complete = useSetStatus('completed', 'toasts.hooks.campaignCompletedSuccessfully');
 
   const duplicate = useMutation({
     mutationFn: async (campaignId: string) => {
@@ -268,7 +265,7 @@ export function useScheduledPosts() {
     onError: fail,
   });
 
-  const setStatus = (status: 'cancelled' | 'paused' | 'pending', toastKey: string) =>
+  const useSetStatus = (status: 'cancelled' | 'paused' | 'pending', toastKey: string) =>
     useMutation({
       mutationFn: async (scheduledId: string) => {
         const { error } = await sb().from('scheduled_posts').update({ status }).eq('id', scheduledId);
@@ -280,11 +277,9 @@ export function useScheduledPosts() {
       },
       onError: fail,
     });
-  /* eslint-disable react-hooks/rules-of-hooks -- three fixed calls, in the same order every render */
-  const cancelScheduled = setStatus('cancelled', 'toasts.hooks.scheduledPostCancelled');
-  const pauseScheduled = setStatus('paused', 'toasts.hooks.scheduledPostPaused');
-  const resumeScheduled = setStatus('pending', 'toasts.hooks.scheduledPostResumed');
-  /* eslint-enable react-hooks/rules-of-hooks */
+  const cancelScheduled = useSetStatus('cancelled', 'toasts.hooks.scheduledPostCancelled');
+  const pauseScheduled = useSetStatus('paused', 'toasts.hooks.scheduledPostPaused');
+  const resumeScheduled = useSetStatus('pending', 'toasts.hooks.scheduledPostResumed');
 
   return { scheduledPosts: query.data, isLoading: query.isLoading, schedulePost, cancelScheduled, pauseScheduled, resumeScheduled };
 }

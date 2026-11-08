@@ -16,6 +16,7 @@ import { navigateToWebPath } from '../../navigation/navigate';
 import { Chip, ChipRow, Field, SheetActions, SheetScroll } from './components';
 import { currentUserId, useChannels } from './data/hooks';
 import { getShareUrl, isChannelConnected, personalShareUrl, shareTextOf, SOCIAL_CHANNELS, type CampaignRow, type PersonalChannel, type ShareableContent } from './rules';
+import { shareOrigin } from './origin';
 
 /** The personal share buttons: each opens the member's own app with the text and the link filled in. */
 export function PersonalShareButtons({ shareUrl, shareText, title, onShared }: { shareUrl: string; shareText: string; title: string; onShared?: () => void }): ReactElement {
@@ -72,7 +73,7 @@ export function UniversalShareSheet({ open, onClose, content }: { open: boolean;
   const [busy, setBusy] = useState(false);
   if (!open) return null;
 
-  const shareUrl = content.url || getShareUrl(content.type, content.id, { utm_source: 'share', utm_medium: 'personal', slug: content.slug });
+  const shareUrl = content.url || getShareUrl(content.type, content.id, { utm_source: 'share', utm_medium: 'personal', slug: content.slug, origin: shareOrigin() });
   const shareText = shareTextOf(content);
 
   const toggle = (key: string) => {
@@ -167,7 +168,7 @@ export function UniversalShareSheet({ open, onClose, content }: { open: boolean;
 export function ShareCampaignSheet({ open, onClose, campaign }: { open: boolean; onClose: () => void; campaign: Pick<CampaignRow, 'id' | 'name' | 'description'> }): ReactElement | null {
   const { t } = useI18n();
   if (!open) return null;
-  const url = getShareUrl('campaign', campaign.id);
+  const url = getShareUrl('campaign', campaign.id, { origin: shareOrigin() });
   const description = campaign.description ?? '';
   const text = t('sharingNative.share.campaignText', { name: campaign.name }) + (description ? `\n${description.slice(0, 150)}${description.length > 150 ? '…' : ''}` : '');
   return (

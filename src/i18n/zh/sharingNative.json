@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "保存为模板",
+      "createRule": "创建规则"
+    },
+    "campaign": {
+      "stepBasics": "基本信息",
+      "stepChannels": "渠道",
+      "stepTemplate": "模板",
+      "stepSchedule": "日程",
+      "editTitle": "编辑活动",
+      "createTitle": "创建活动",
+      "stepOf": "第 {current} 步，共 {total} 步",
+      "saveDraft": "保存为草稿",
+      "saveActivate": "保存并启用",
+      "update": "更新活动"
+    },
+    "package": {
+      "bundleLabel": "组合套餐",
+      "bundleDescription": "将多个项目合并为一个套餐出售。",
+      "itemService": "服务",
+      "itemEvent": "活动",
+      "hintBasics": "为你的套餐命名并添加描述。",
+      "hintItems": "添加套餐包含的服务或活动。",
+      "hintPricing": "设置价格并检查。"
+    },
+    "consent": {
+      "description": "选择 Vitanaland 可以使用你的哪些数据来个性化分享。"
+    },
+    "distribution": {
+      "description": "在各个渠道规划、安排并跟踪你的帖子。"
+    },
+    "queue": {
+      "untitled": "无标题帖子",
+      "noDescription": "无描述"
+    },
+    "analytics": {
+      "sent": "已发送",
+      "clicked": "已点击",
+      "responded": "已回复"
+    },
+    "kpi": {
+      "revenue": "收入"
+    },
+    "public": {
+      "notFoundBody": "此活动不存在或已不可用。",
+      "explore": "探索 Vitanaland",
+      "joinCommunity": "加入社区"
+    },
+    "card": {
+      "shareText": "和我一起参加 {title}"
+    },
+    "overview": {
+      "description": "分享内容、开展活动并管理你的渠道。"
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "电子邮件",
+      "sms": "短信",
+      "copy": "复制链接",
+      "more": "更多",
+      "campaignText": "来看看活动 {name}"
+    },
+    "activate": {
+      "description": "你的帖子将在已连接的渠道上发布。",
+      "descriptionNoPosts": "此活动还没有帖子。启用前请先添加帖子。",
+      "instantHint": "启用后将立即发送帖子。",
+      "instantHintNoPosts": "添加帖子之前不会发送任何内容。",
+      "willActivate": "将于 {when} 启用"
+    },
+    "delete": {
+      "title": "删除活动？",
+      "body": "“{name}”及其帖子将被永久删除。"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 /**
  * VTID-05646 (native-wave2-sharing-business-r3/sharing) — the Instagram share card, native twin of
- * the web `InstagramShareModal`. The web draws the card to a canvas with `html2canvas`; native
+ * the web `InstagramShareModal`. The web draws the card to a canvas with a DOM canvas library; native
  * renders the card as a view and captures it with `captureRef` (the share-capture port, design
  * R1-C), then gives the image file to the system share sheet — where Instagram, Messages and
  * "Save image" all live, so the web's separate download button is not needed. With no capture

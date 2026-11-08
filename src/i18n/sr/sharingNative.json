@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "Sačuvaj kao šablon",
+      "createRule": "Napravi pravilo"
+    },
+    "campaign": {
+      "stepBasics": "Osnove",
+      "stepChannels": "Kanali",
+      "stepTemplate": "Šablon",
+      "stepSchedule": "Raspored",
+      "editTitle": "Izmeni kampanju",
+      "createTitle": "Napravi kampanju",
+      "stepOf": "Korak {current} od {total}",
+      "saveDraft": "Sačuvaj kao nacrt",
+      "saveActivate": "Sačuvaj i aktiviraj",
+      "update": "Ažuriraj kampanju"
+    },
+    "package": {
+      "bundleLabel": "Paket ponuda",
+      "bundleDescription": "Prodaj više stavki zajedno kao jedan paket.",
+      "itemService": "Usluga",
+      "itemEvent": "Događaj",
+      "hintBasics": "Daj paketu naziv i opiši ga.",
+      "hintItems": "Dodaj usluge ili događaje koje obuhvata.",
+      "hintPricing": "Odredi cenu i proveri."
+    },
+    "consent": {
+      "description": "Izaberi koje tvoje podatke Vitanaland sme da koristi za personalizaciju deljenja."
+    },
+    "distribution": {
+      "description": "Planiraj, zakaži i prati svoje objave preko svih kanala."
+    },
+    "queue": {
+      "untitled": "Objava bez naslova",
+      "noDescription": "Bez opisa"
+    },
+    "analytics": {
+      "sent": "Poslato",
+      "clicked": "Kliknuto",
+      "responded": "Odgovoreno"
+    },
+    "kpi": {
+      "revenue": "Prihod"
+    },
+    "public": {
+      "notFoundBody": "Ova kampanja ne postoji ili više nije dostupna.",
+      "explore": "Istraži Vitanaland",
+      "joinCommunity": "Pridruži se zajednici"
+    },
+    "card": {
+      "shareText": "Pridruži mi se na: {title}"
+    },
+    "overview": {
+      "description": "Deli sadržaj, pokreći kampanje i upravljaj svojim kanalima."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "E-pošta",
+      "sms": "SMS",
+      "copy": "Kopiraj link",
+      "more": "Više",
+      "campaignText": "Pogledaj kampanju {name}"
+    },
+    "activate": {
+      "description": "Tvoje objave idu uživo na povezanim kanalima.",
+      "descriptionNoPosts": "Ova kampanja još nema objava. Dodaj objave pre aktiviranja.",
+      "instantHint": "Objave se šalju čim aktiviraš.",
+      "instantHintNoPosts": "Ništa neće biti poslato dok ne dodaš objave.",
+      "willActivate": "Biće aktivirano: {when}"
+    },
+    "delete": {
+      "title": "Obrisati kampanju?",
+      "body": "„{name}“ i njene objave biće trajno obrisane."
+    }
+  }
+}

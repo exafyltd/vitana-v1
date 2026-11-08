@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "Guardar como plantilla",
+      "createRule": "Crear regla"
+    },
+    "campaign": {
+      "stepBasics": "Datos básicos",
+      "stepChannels": "Canales",
+      "stepTemplate": "Plantilla",
+      "stepSchedule": "Programación",
+      "editTitle": "Editar campaña",
+      "createTitle": "Crear campaña",
+      "stepOf": "Paso {current} de {total}",
+      "saveDraft": "Guardar como borrador",
+      "saveActivate": "Guardar y activar",
+      "update": "Actualizar campaña"
+    },
+    "package": {
+      "bundleLabel": "Paquete combinado",
+      "bundleDescription": "Vende varios elementos juntos como un solo paquete.",
+      "itemService": "Servicio",
+      "itemEvent": "Evento",
+      "hintBasics": "Ponle nombre a tu paquete y descríbelo.",
+      "hintItems": "Añade los servicios o eventos que incluye.",
+      "hintPricing": "Fija el precio y revisa."
+    },
+    "consent": {
+      "description": "Elige qué datos tuyos puede usar Vitanaland para personalizar el uso compartido."
+    },
+    "distribution": {
+      "description": "Planifica, programa y sigue tus publicaciones en todos los canales."
+    },
+    "queue": {
+      "untitled": "Publicación sin título",
+      "noDescription": "Sin descripción"
+    },
+    "analytics": {
+      "sent": "Enviados",
+      "clicked": "Clics",
+      "responded": "Respondieron"
+    },
+    "kpi": {
+      "revenue": "Ingresos"
+    },
+    "public": {
+      "notFoundBody": "Esta campaña no existe o ya no está disponible.",
+      "explore": "Explorar Vitanaland",
+      "joinCommunity": "Únete a la comunidad"
+    },
+    "card": {
+      "shareText": "Ven conmigo a {title}"
+    },
+    "overview": {
+      "description": "Comparte contenido, lanza campañas y gestiona tus canales."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "Correo electrónico",
+      "sms": "SMS",
+      "copy": "Copiar enlace",
+      "more": "Más",
+      "campaignText": "Mira la campaña {name}"
+    },
+    "activate": {
+      "description": "Tus publicaciones se publican en los canales conectados.",
+      "descriptionNoPosts": "Esta campaña aún no tiene publicaciones. Añade publicaciones antes de activarla.",
+      "instantHint": "Las publicaciones se envían en cuanto activas.",
+      "instantHintNoPosts": "No se enviará nada hasta que añadas publicaciones.",
+      "willActivate": "Se activará el {when}"
+    },
+    "delete": {
+      "title": "¿Eliminar la campaña?",
+      "body": "«{name}» y sus publicaciones se eliminarán de forma permanente."
+    }
+  }
+}

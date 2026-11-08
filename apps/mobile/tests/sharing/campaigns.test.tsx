@@ -65,7 +65,7 @@ describe('CampaignsScreen', () => {
     await waitFor(() => expect(d.log.some((l) => l.table === 'campaigns' && l.op === 'insert')).toBe(true));
     const inserted = d.log.find((l) => l.table === 'campaigns' && l.op === 'insert')!.values!;
     expect(inserted).toMatchObject({ name: 'Winter Immunity', description: 'Defence tips', status: 'draft', user_id: 'u-self', target_channels: { email: true } });
-    expect((inserted.distribution_config as any).template_id).toBe('launch');
+    expect((inserted.distribution_config as { template_id?: string }).template_id).toBe('launch');
   });
 
   it('create: the name is required before the sheet moves on', async () => {

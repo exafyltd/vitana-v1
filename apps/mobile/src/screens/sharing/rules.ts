@@ -183,9 +183,6 @@ export const percent = (part: number, whole: number): string => (whole > 0 ? ((p
 
 // ── share URLs (src/lib/shareUrl.ts) ──────────────────────────────────────
 
-/** The public web origin a campaign link points at (the web uses `window.location.origin`, the apex host). */
-export const PUBLIC_ORIGIN = 'https://vitanaland.com';
-
 export type ShareContentType = 'group' | 'event' | 'meetup' | 'live_room' | 'profile' | 'post' | 'service' | 'music' | 'product' | 'campaign';
 
 export interface ShareableContent {
@@ -199,8 +196,10 @@ export interface ShareableContent {
 }
 
 /** `getShareUrl`: events and meetups and profiles on the canonical host, the rest on the public origin. */
-export function getShareUrl(type: ShareContentType, id: string, options: { utm_source?: string; utm_medium?: string; utm_campaign?: string; slug?: string } = {}): string {
+export function getShareUrl(type: ShareContentType, id: string, options: { utm_source?: string; utm_medium?: string; utm_campaign?: string; slug?: string; origin?: string } = {}): string {
   const enc = encodeURIComponent;
+  // The web uses `window.location.origin`; natively the caller passes the build's web origin (see `origin.ts`).
+  const PUBLIC_ORIGIN = (options.origin ?? '').replace(/\/+$/, '');
   if (type === 'product') return `${PUBLIC_ORIGIN}/products/${enc(id)}`;
   if (type === 'event' || type === 'meetup') return `${PUBLIC_ORIGIN}/events/${enc(options.slug || id)}`;
   if (type === 'profile') return `${PUBLIC_ORIGIN}/profiles/${enc(id)}`;
