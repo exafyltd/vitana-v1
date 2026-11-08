@@ -1,0 +1,356 @@
+# Red on base: new tests run against origin/main src (apps/mobile/src stashed)
+# cmd: cd apps/mobile && npx jest tests/orb/guided-topic --maxWorkers=2
+
+-- first run excerpt --
+FAIL tests/orb/guided-topic/payload.test.ts (40.198 s)
+  ● buildStartPayload guided topic › adds guided_topic_id when a topic is given
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  -  1
+    + Received  + 10
+
+      Object {
+    -   "guided_topic_id": "t1",
+    +   "client_timezone": "Europe/Berlin",
+    +   "current_route": "/home",
+    +   "is_mobile": true,
+    +   "lang": "de-DE",
+    +   "response_modalities": Array [
+    +     "audio",
+    +     "text",
+    +   ],
+    +   "vad_silence_ms": 600,
+    +   "voice_style": "friendly, calm, empathetic",
+      }
+
+       6 | describe('buildStartPayload guided topic', () => {
+       7 |   it('adds guided_topic_id when a topic is given', () => {
+    >  8 |     expect(buildStartPayload({ ...base, guidedTopicId: 't1' })).toMatchObject({ guided_topic_id: 't1' });
+         |                                                                 ^
+       9 |   });
+      10 |
+      11 |   it('without a topic the payload equals today’s payload (no key at all)', () => {
+
+      at Object.toMatchObject (tests/orb/guided-topic/payload.test.ts:8:65)
+
+FAIL tests/orb/guided-topic/teaching-end.test.ts (49.663 s)
+  ● focusGuidedTopic › starts a session whose start message carries guided_topic_id
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:77:2)
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:93:11)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● focusGuidedTopic › ends a running session first and starts a new one with the topic; no teaching-end for the old session
+
+    TypeError: c.focusGuidedTopic is not a function
+
+      101 |     await settle();
+      102 |     expect('guided_topic_id' in starts()[0]).toBe(false);
+    > 103 |     await c.focusGuidedTopic('t2');
+          |             ^
+      104 |     await settle();
+      105 |     expect(starts()).toHaveLength(2);
+      106 |     expect(starts()[1]).toMatchObject({ guided_topic_id: 't2' });
+
+      at Object.focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:103:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● focusGuidedTopic › a plain open() after a topic session carries no topic (one-shot)
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:111:25)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › the end_guided_topic_teaching directive fires { topicId, reason } once
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:121:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › only end_guided_topic_teaching reaches the teaching-end dep; end_conversation and end_teaching_session emit nothing
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 1
+    Received number of calls: 0
+
+      153 |       FakeSocket.last().serverSend({ type: 'orb_directive', directive, topic_id: 't1', reason: 'r' });
+      154 |       await jest.advanceTimersByTimeAsync(10_000);
+    > 155 |       expect(spy).toHaveBeenCalledTimes(expected);
+          |                   ^
+      156 |       if (expected) expect(spy).toHaveBeenCalledWith('t1', 'r');
+      157 |       expect(session.getSnapshot()).toMatchObject({ status: 'idle', endReason: 'end_directive' });
+      158 |     }
+
+      at Object.toHaveBeenCalledTimes (tests/orb/guided-topic/teaching-end.test.ts:155:19)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● triggers › 45 s idle after audio → idle_after_lesson, once
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:162:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › activity resets the idle clock
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:173:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › 5 min ceiling → backstop_timeout, even though audio never arrived
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:182:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › no idle fire before any audio has been delivered
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:190:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › close after audio → overlay_closed_after_delivery
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:196:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › close before audio → no fire, and no later timer fires either
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:204:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › a second trigger after the first is ignored (directive, then close, then timers)
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:211:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● triggers › a new focus for the same topic can fire again (once per topic focus)
+
+    TypeError: m.c.focusGuidedTopic is not a function
+
+      72 | async function topicOpen() {
+      73 |   const m = make();
+    > 74 |   await m.c.focusGuidedTopic('t1');
+         |             ^
+      75 |   await settle();
+      76 |   return m;
+      77 | }
+
+      at focusGuidedTopic (tests/orb/guided-topic/teaching-end.test.ts:74:13)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (tests/orb/guided-topic/teaching-end.test.ts:72:25)
+      at Object.topicOpen (tests/orb/guided-topic/teaching-end.test.ts:221:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● OrbProvider bus bridge › createAppOrbController emits vitana:guided-topic-teaching-complete { topicId, reason } on the overlay bus
+
+    TypeError: guidedTopicTeachingComplete is not a function
+
+      250 |     const seen: unknown[] = [];
+      251 |     const off = overlayBus.on('vitana:guided-topic-teaching-complete', (d) => seen.push(d));
+    > 252 |     guidedTopicTeachingComplete('t9', 'idle_after_lesson');
+          |     ^
+      253 |     off();
+      254 |     expect(GUIDED_TOPIC_TEACHING_COMPLETE).toBe('vitana:guided-topic-teaching-complete');
+      255 |     expect(seen).toEqual([{ topicId: 't9', reason: 'idle_after_lesson' }]);
+
+      at Object.guidedTopicTeachingComplete (tests/orb/guided-topic/teaching-end.test.ts:252:5)
+
+Test Suites: 2 failed, 2 total
+Tests:       15 failed, 2 passed, 17 total
+Snapshots:   0 total
+Time:        51.765 s
+Ran all test suites matching /tests\/orb\/guided-topic/i.
