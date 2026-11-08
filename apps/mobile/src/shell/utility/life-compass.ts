@@ -1,5 +1,5 @@
 /**
- * VTID-05510 — native twin of the part of src/hooks/useLifeCompass.ts the
+ * VTID-05510 (moved to the shared shell by VTID-05653) — native twin of the part of src/hooks/useLifeCompass.ts the
  * Life Compass popup uses (class B: the web Supabase client). Same rows:
  *
  *   life_compass  select * where user_id = me and is_active order by created_at desc limit 1 (["life-compass"])
@@ -10,9 +10,9 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getSupabase } from '../../../auth/client';
-import { useAuth } from '../../../auth/AuthProvider';
-import { notify, notifyError } from '../../../ports/discover';
+import { getSupabase } from '../../auth/client';
+import { useAuth } from '../../auth/AuthProvider';
+import { notify, notifyError } from '../../ports/utility';
 
 export interface LifeCompass {
   id: string;

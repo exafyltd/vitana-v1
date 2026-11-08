@@ -34,6 +34,12 @@ afterAll(() => {
   __setGatewayForTests(null);
 });
 
+/** The auth provider resolves the stored session asynchronously: let it settle before the events. */
+const settle = () => act(async () => new Promise<void>((r) => setTimeout(r, 20)));
+const mount = async (wrapper: ReturnType<typeof discoverWrapper>['wrapper']) => {
+  render(<OverlayHost />, { wrapper });
+  await settle();
+};
 const emit = (event: string, detail?: unknown) => act(() => overlayBus.emit(event, detail));
 
 async function checkoutReturnTo(db: ReturnType<typeof discoverWrapper>['db']): Promise<unknown> {
@@ -47,50 +53,51 @@ async function checkoutReturnTo(db: ReturnType<typeof discoverWrapper>['db']): P
 describe('OverlayHost — Life Compass and Gift Voucher hosts', () => {
   it('opens the Life Compass popup once for vitana:open-life-compass', async () => {
     const { wrapper } = discoverWrapper({});
-    render(<OverlayHost />, { wrapper });
-    expect(screen.queryByTestId('life-compass-popup')).toBeNull();
+    await mount(wrapper);
+    expect(screen.queryByTestId('life-compass-popup-modal')).toBeNull();
     await emit(LIFE_COMPASS_OPEN);
-    expect(await screen.findAllByTestId('life-compass-popup')).toHaveLength(1);
+    expect(await screen.findAllByTestId('life-compass-popup-modal')).toHaveLength(1);
     await emit(LIFE_COMPASS_OPEN);
-    expect(screen.getAllByTestId('life-compass-popup')).toHaveLength(1);
+    expect(screen.getAllByTestId('life-compass-popup-modal')).toHaveLength(1);
   });
 
   it('opens the voucher modal with the detail returnTo', async () => {
     const { wrapper, db } = discoverWrapper({});
-    render(<OverlayHost />, { wrapper });
+    await mount(wrapper);
     await emit(GIFT_VOUCHER_OPEN, { returnTo: '/discover/marketplace' });
+    expect(await screen.findByTestId('voucher-modal-modal')).toBeTruthy();
     expect(await checkoutReturnTo(db)).toBe('/discover/marketplace');
   });
 
   it.each([[undefined], [{}], [{ returnTo: 'https://evil.example.org' }], [{ returnTo: 7 }]])('uses the current path when the detail is %p', async (detail) => {
     const { wrapper, db } = discoverWrapper({});
-    render(<OverlayHost />, { wrapper });
+    await mount(wrapper);
     await emit(GIFT_VOUCHER_OPEN, detail);
     expect(await checkoutReturnTo(db)).toBe('/discover');
   });
 
   it('ignores both events signed out', async () => {
     const { wrapper } = discoverWrapper({}, { signedIn: false });
-    render(<OverlayHost />, { wrapper });
+    await mount(wrapper);
     await emit(LIFE_COMPASS_OPEN);
     await emit(GIFT_VOUCHER_OPEN, { returnTo: '/home' });
-    expect(screen.queryByTestId('life-compass-popup')).toBeNull();
-    expect(screen.queryByTestId('voucher-modal')).toBeNull();
+    expect(screen.queryByTestId('life-compass-popup-modal')).toBeNull();
+    expect(screen.queryByTestId('voucher-modal-modal')).toBeNull();
   });
 
   it('opens no voucher modal on iOS (IAP restricted), the popup still opens', async () => {
     setOS('ios');
     const { wrapper } = discoverWrapper({});
-    render(<OverlayHost />, { wrapper });
+    await mount(wrapper);
     await emit(GIFT_VOUCHER_OPEN, { returnTo: '/home' });
-    expect(screen.queryByTestId('voucher-modal')).toBeNull();
+    expect(screen.queryByTestId('voucher-modal-modal')).toBeNull();
     await emit(LIFE_COMPASS_OPEN);
-    expect(await screen.findByTestId('life-compass-popup')).toBeTruthy();
+    expect(await screen.findByTestId('life-compass-popup-modal')).toBeTruthy();
   });
 
-  it('registers both listeners (the ORB open-overlay directive checks listenerCount)', () => {
+  it('registers both listeners (the ORB open-overlay directive checks listenerCount)', async () => {
     const { wrapper } = discoverWrapper({});
-    render(<OverlayHost />, { wrapper });
+    await mount(wrapper);
     expect(overlayBus.listenerCount(LIFE_COMPASS_OPEN)).toBe(1);
     expect(overlayBus.listenerCount(GIFT_VOUCHER_OPEN)).toBe(1);
   });

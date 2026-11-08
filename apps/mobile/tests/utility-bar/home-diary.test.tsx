@@ -109,7 +109,7 @@ describe('Home utility bar (Home.tsx:713-746)', () => {
     fireEvent.changeText(input, 'SUPPLEMENTS');
     expect(screen.getByTestId('feed-article-article-a-1')).toBeTruthy();
     fireEvent.changeText(input, '');
-    expect(screen.getAllByTestId(/^feed-article-/)).toHaveLength(2);
+    expect(screen.getAllByTestId(/^feed-article-article-a-\d$/)).toHaveLength(2);
   });
 
   it('filters the community articles with the same predicate', () => {

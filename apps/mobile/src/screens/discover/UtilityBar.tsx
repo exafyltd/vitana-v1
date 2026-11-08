@@ -14,13 +14,14 @@
  *    upcoming-count badge (first 10, NotificationBadge's 99+ rule) and the
  *    pulsing conflict dot. Its `calendar:open` listener is the shell's
  *    (MobileAppShell.tsx), so it is not registered twice here;
- *  - Life Compass (:102-112): the global Life Compass popup. When a global
- *    host listens for `vitana:open-life-compass` (LifeCompassPopupContext.tsx:14)
- *    the pill emits it; with none registered (today's shell) the rail opens
- *    its own LifeCompassPopup twin;
- *  - Gift Voucher (:115-117) + `MaxinaVoucherModal` (VoucherModal.tsx), hidden
- *    where IAP is restricted (`isIAPRestricted()`, :43). Natively that is the
- *    shell's `iapRestricted` rule, unchanged: `Platform.OS === 'ios'`
+ *  - Life Compass (:102-112): the global Life Compass popup. The pill emits
+ *    `vitana:open-life-compass` for the host in `shell/OverlayHost.tsx`
+ *    (VTID-05653; LifeCompassPopupContext.tsx:14); with no host registered
+ *    (a screen rendered on its own) the rail opens the shared popup itself;
+ *  - Gift Voucher (:115-117): emits `gift-voucher:open` `{ returnTo }` for the
+ *    same host, else opens the shared `VoucherModal` itself. Hidden where IAP
+ *    is restricted (`isIAPRestricted()`, :43). Natively that is the shell's
+ *    `iapRestricted` rule, unchanged: `Platform.OS === 'ios'`
  *    (src/shell/logic/drawer.ts:37-38);
  *  - `IndexPill` (Discover.tsx:357-367): 🧬 + today's Vitana Index ("…" while
  *    loading, VitanaIndexValue) → `/health`;
@@ -40,11 +41,11 @@ import { navigateToWebPath } from '../../navigation/navigate';
 import { overlayBus } from '../../navigation/overlay-bus';
 import { useI18n } from '../../i18n/I18nProvider';
 import { useCalendarEvents, useVitanaIndex } from './data/utility';
-import { LifeCompassPopup } from './LifeCompassPopup';
-import { VoucherModal } from './VoucherModal';
+import { LifeCompassPopup } from '../../shell/utility/LifeCompassPopup';
+import { VoucherModal } from '../../shell/utility/VoucherModal';
+import { AUTOPILOT_OPEN, GIFT_VOUCHER_OPEN, LIFE_COMPASS_OPEN } from '../../shell/utility/events';
 
-export const LIFE_COMPASS_OPEN = 'vitana:open-life-compass';
-export const AUTOPILOT_OPEN = 'autopilot:open';
+export { AUTOPILOT_OPEN, LIFE_COMPASS_OPEN };
 const CALENDAR_ROUTE = '/calendar';
 
 /** `isIAPRestricted()` — the shell's rule (drawer.ts:37-38), unchanged. */
@@ -234,6 +235,10 @@ export function UtilityBar({
     if (overlayBus.listenerCount(LIFE_COMPASS_OPEN) > 0) overlayBus.emit(LIFE_COMPASS_OPEN);
     else setCompassOpen(true);
   };
+  const openVoucher = () => {
+    if (overlayBus.listenerCount(GIFT_VOUCHER_OPEN) > 0) overlayBus.emit(GIFT_VOUCHER_OPEN, { returnTo });
+    else setVoucherOpen(true);
+  };
   return (
     <View testID="discover-utility-bar" style={compact ? styles.wrapCompact : styles.wrap}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.rail} testID="discover-utility-rail">
@@ -243,7 +248,7 @@ export function UtilityBar({
           <Text size="sm">{t('lifeCompass.title')}</Text>
         </RailPill>
         {!hideVoucher ? (
-          <RailPill testID="discover-gift-voucher" label={t('actionBar.giftVoucher')} onPress={() => setVoucherOpen(true)}>
+          <RailPill testID="discover-gift-voucher" label={t('actionBar.giftVoucher')} onPress={openVoucher}>
             <DiscoverIcon name="Gift" size={16} color={colors.mutedForeground} />
             <Text size="sm">{t('actionBar.giftVoucher')}</Text>
           </RailPill>

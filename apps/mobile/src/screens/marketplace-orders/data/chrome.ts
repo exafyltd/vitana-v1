@@ -14,7 +14,7 @@
  *    (the phone role, useAutopilotRole.ts:31), minus the ids the member
  *    dismissed (`vitana.autopilot.dismissed_ids:<user>`), `activated` ones
  *    excluded (they map to `executing`, not `pending`);
- *  - `useCreateVoucherCheckout` (src/hooks/useVouchers.ts:12-23).
+ *  - (the gift-voucher checkout moved to shell/utility/data.ts, VTID-05653).
  */
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -150,51 +150,4 @@ export function useAutopilotPendingCount(): number {
   const { user } = useAuth();
   const q = useQuery({ queryKey: ['autopilot-pending', user?.id], enabled: !!user, queryFn: () => fetchAutopilotPending(user?.id as string) });
   return q.data ?? 0;
-}
-
-// ── gift voucher checkout ───────────────────────────────────────────────
-export type VoucherTier = 'test' | 'experience' | 'exclusive';
-
-/** The function's response: `{ url, session_id, order_id }` (stripe-create-voucher-checkout/index.ts:179-184). */
-export interface VoucherCheckout {
-  url?: string;
-  session_id?: string;
-  order_id?: string;
-}
-
-export async function createVoucherCheckout(tier: VoucherTier, returnTo: string): Promise<VoucherCheckout> {
-  const { data, error } = await db().functions.invoke('stripe-create-voucher-checkout', { body: { tier, returnTo } });
-  if (error) throw error;
-  return (data ?? {}) as VoucherCheckout;
-}
-
-/**
- * The member's voucher order, read the way the web's `useMyVouchers` reads
- * `voucher_orders` (`src/hooks/useVouchers.ts:76-80`: own rows by
- * `buyer_user_id`, newest first) narrowed to the checkout's order id; without
- * an id, the member's latest order. `status` is `pending` until the Stripe
- * webhook marks it `paid` (stripe-webhook/index.ts:309-315).
- */
-export async function fetchVoucherOrder(orderId: string | undefined): Promise<{ id: string; status: string } | null> {
-  const { data: auth } = await db().auth.getSession();
-  const userId = auth?.session?.user?.id;
-  if (!userId) return null;
-  let q = db().from('voucher_orders').select('*').eq('buyer_user_id', userId);
-  if (orderId) q = q.eq('id', orderId);
-  const { data, error } = await q.order('created_at', { ascending: false }).limit(1).maybeSingle();
-  if (error) throw new Error(error.message);
-  return (data ?? null) as { id: string; status: string } | null;
-}
-
-export const VOUCHER_STATUS_ATTEMPTS = 4;
-export const VOUCHER_STATUS_DELAY_MS = 1000;
-
-/** Re-reads the order until it is `paid` (the webhook can trail the browser closing); null when it never is. */
-export async function waitForPaidVoucherOrder(orderId: string | undefined, attempts = VOUCHER_STATUS_ATTEMPTS, delayMs = VOUCHER_STATUS_DELAY_MS): Promise<{ id: string; status: string } | null> {
-  for (let i = 0; i < attempts; i++) {
-    if (i > 0) await new Promise((r) => setTimeout(r, delayMs));
-    const order = await fetchVoucherOrder(orderId);
-    if (order?.status === 'paid') return order;
-  }
-  return null;
 }

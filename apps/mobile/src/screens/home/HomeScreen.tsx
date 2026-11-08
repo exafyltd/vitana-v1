@@ -13,23 +13,26 @@
  * scroll off the community tab). The All / Community switch is the shell's
  * `MobileModePill`, writing the param back via `router.setParams`.
  *
- * In scope for FEAT-002 (documented deferrals, picked up by later home FEATs):
- *  - The web header chips (VitanaIndexChip / AutopilotChip) are bound to web
- *    hooks (`useVitanaStreaks`, `useAutopilot`) and surfaces that belong to
- *    other lanes; the shell exposes no native chip twin, so they are omitted
- *    here. The All / Community mode control is the MobileModePill the FEAT
- *    names.
- *  - Create-post, comments and notif overlays (the `/home/compose`,
- *    `/home/comments`, `/home/notif` routes) are their own FEAT; this screen
- *    is the feed.
+ * The utility bar (VTID-05653, web `Home.tsx:713-746`) is the shared shell bar
+ * (`shell/utility/UtilityBar.tsx`): Search (filters the article cards by
+ * title, summary, source name and tags, `Home.tsx:260-266`), the mode pill,
+ * Invite (the system share sheet with the flyer URL and the language,
+ * `useInviteFriendShare.ts`), Calendar, Create post (`/home/compose`), then
+ * Life Compass, Gift Voucher and the Vitana Index / Autopilot chips.
+ *
+ * Documented deferral: the comments and notif overlays (the `/home/comments`,
+ * `/home/notif` routes) are their own FEAT; this screen is the feed.
  * React 19: typed with `ReactElement`.
  */
 import { useEffect, useMemo, useState, type ReactElement } from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { FlatList, Pressable, RefreshControl, Share, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button, DelayedLoader, Text, useUITheme } from '../../ports/ui';
 import { radius } from '../../ports/tokens';
 import { MobileModePill, type ModeOption } from '../../shell/components/MobileModePill';
+import { AutopilotChip, CalendarButton, SearchButton, VitanaIndexChip } from '../../shell/utility/buttons';
+import { UtilityBar } from '../../shell/utility/UtilityBar';
+import { UtilityIcon } from '../../ports/utility';
 import { navigateToWebPath } from '../../navigation/navigate';
 import { useI18n } from '../../i18n/I18nProvider';
 import {
@@ -100,9 +103,20 @@ function articleToFeedItem(article: NewsArticle): ArticleFeedItem {
   };
 }
 
+/** The hosted download flyer (`src/lib/store-links.ts:23`); the sender's language rides along (`useInviteFriendShare.ts`). */
+export const DOWNLOAD_FLYER_URL = 'https://vitanaland.com/download';
+
+/** The web article predicate (`Home.tsx:260-266`): title, summary, source name or a tag contains the query. */
+export function articleMatchesQuery(a: { title: string; summary?: string | null; source_name: string; tags: string[] }, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  return a.title.toLowerCase().includes(q) || (!!a.summary && a.summary.toLowerCase().includes(q)) || a.source_name.toLowerCase().includes(q) || a.tags.some((tag) => tag.toLowerCase().includes(q));
+}
+
 export function HomeScreen({ openComposeOnMount, openCommentsOnMount, suppressFrontDoor: _suppressFrontDoor }: HomeScreenProps = {}): ReactElement {
   const { colors } = useUITheme();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const [searchQuery, setSearchQuery] = useState('');
   const params = useLocalSearchParams<{ tab?: string; compose?: string }>();
   const activeTab: HomeTab = params.tab === 'community' ? 'community' : 'all';
 
@@ -140,20 +154,21 @@ export function HomeScreen({ openComposeOnMount, openCommentsOnMount, suppressFr
   const allRows = useMemo<FeedRow[]>(() => {
     const newCards = pickHomeServerCards(enrichmentCards);
     const vitanaCards = withHomeNewCards(newCards, []);
-    const composed: ComposedEntry<EnrichmentCardData>[] = composeFeed(allFeed.items, vitanaCards);
+    const items = searchQuery.trim() ? allFeed.items.filter((item) => item.kind !== 'article' || articleMatchesQuery(item as ArticleFeedItem, searchQuery)) : allFeed.items;
+    const composed: ComposedEntry<EnrichmentCardData>[] = composeFeed(items, vitanaCards);
     return composed.map((entry): FeedRow =>
       entry.type === 'vitana'
         ? { key: `card-${entry.card.card_type}`, type: 'card', card: entry.card }
         : { key: entry.item.id, type: 'item', item: entry.item },
     );
-  }, [allFeed.items, enrichmentCards]);
+  }, [allFeed.items, enrichmentCards, searchQuery]);
 
   // Community tab: the chronological community articles (web `visibleArticles`
   // on the community tab) — new-member rows render the new-member card, the
   // rest the article card.
   const communityRows = useMemo<FeedRow[]>(
     () =>
-      (community.data ?? []).map((article): FeedRow =>
+      (community.data ?? []).filter((article) => articleMatchesQuery(article, searchQuery)).map((article): FeedRow =>
         article.member_user_id
           ? {
               key: article.id,
@@ -170,7 +185,7 @@ export function HomeScreen({ openComposeOnMount, openCommentsOnMount, suppressFr
             }
           : { key: article.id, type: 'article', article },
       ),
-    [community.data],
+    [community.data, searchQuery],
   );
 
   const rows = activeTab === 'all' ? allRows : communityRows;
@@ -268,12 +283,51 @@ export function HomeScreen({ openComposeOnMount, openCommentsOnMount, suppressFr
     }
   }
 
+  const shareInvite = () => {
+    const lang = locale.split('-')[0] || 'de';
+    void Share.share({ title: t('screens.downloadFlyer.inviteShareTitle'), url: `${DOWNLOAD_FLYER_URL}?lang=${lang}` }).catch(() => undefined);
+  };
+
   const header = (
     <View style={styles.header}>
       <Text variant="title" accessibilityRole="header">
         {t('homeNative.title')}
       </Text>
-      <MobileModePill modes={modes} activeMode={activeTab} onModeChange={onModeChange} title={t('homeNative.selectFeed')} />
+      <UtilityBar
+        afterGiftVoucher={
+          <>
+            <VitanaIndexChip />
+            <AutopilotChip />
+          </>
+        }
+      >
+        <SearchButton placeholder={t('screens.home.searchShort')} onSearch={setSearchQuery} />
+        <MobileModePill modes={modes} activeMode={activeTab} onModeChange={onModeChange} title={t('homeNative.selectFeed')} />
+        <Pressable
+          testID="utility-invite"
+          accessibilityRole="button"
+          accessibilityLabel={t('screens.downloadFlyer.inviteCardCta')}
+          hitSlop={4}
+          onPress={shareInvite}
+          style={[styles.invite, { backgroundColor: colors.muted }]}
+        >
+          <UtilityIcon name="UserPlus" size={16} color={colors.foreground} />
+        </Pressable>
+        <CalendarButton />
+        <Pressable
+          testID="utility-create-post"
+          accessibilityRole="button"
+          accessibilityLabel={t('screens.home.createPost')}
+          hitSlop={4}
+          onPress={() => router.push('/home/compose')}
+          style={[styles.createPost, { backgroundColor: colors.primary }]}
+        >
+          <UtilityIcon name="Plus" size={16} color={colors.primaryForeground} />
+          <Text size="sm" color={colors.primaryForeground}>
+            {t('screens.home.createPost')}
+          </Text>
+        </Pressable>
+      </UtilityBar>
     </View>
   );
 
@@ -340,7 +394,9 @@ function Separator(): ReactElement {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  header: { padding: 16, gap: 12 },
+  header: { padding: 16, gap: 4 },
+  invite: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  createPost: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 36, paddingHorizontal: 12, borderRadius: 999 },
   listContent: { paddingHorizontal: 16, paddingBottom: 32 },
   separator: { height: 12 },
   center: { alignItems: 'center', justifyContent: 'center', paddingVertical: 48, gap: 12 },

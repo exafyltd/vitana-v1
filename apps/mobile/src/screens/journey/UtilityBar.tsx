@@ -17,7 +17,8 @@
  *    links); natively the shell already does (MobileAppShell.tsx:50), so a
  *    second listener here would navigate twice;
  *  - Life Compass: `vitana:open-life-compass` (useLifeCompassPopup);
- *  - gift voucher: the MaxinaVoucherModal twin (VoucherModal.tsx); the iOS
+ *  - gift voucher: emits `gift-voucher:open` for the shared MaxinaVoucherModal
+ *    twin (shell/utility/VoucherModal.tsx, VTID-05653); the iOS
  *    gate is the shell's `iapRestricted` rule (shell/logic/drawer.ts:37-38,
  *    `Platform.OS === 'ios'`), unchanged;
  *  - VitanaIndexChip (MobileActionChips.tsx:18-48): 🧬 + the Index value
@@ -35,11 +36,14 @@ import { useI18n } from '../../i18n/I18nProvider';
 import { useCalendarEvents, useVitanaIndex } from './data/supabase';
 import { useVitanaStreaks } from './hooks/useVitanaStreaks';
 import { Pulse } from './motion';
-import { VoucherModal } from './VoucherModal';
+import { VoucherModal } from '../../shell/utility/VoucherModal';
+import { GIFT_VOUCHER_OPEN } from '../../shell/utility/events';
 
 export const LIFE_COMPASS_OPEN = 'vitana:open-life-compass';
 export const INDEX_OPEN = 'vitana:open-index';
 const CALENDAR_ROUTE = '/calendar';
+/** The voucher checkout returns here (the web journey copy hard-coded `/autopilot`). */
+const JOURNEY_ROUTE = '/autopilot';
 
 export interface SearchItem {
   id: string;
@@ -169,6 +173,12 @@ export function UtilityBar({
   const [expanded, setExpanded] = useState(false);
   const [voucherOpen, setVoucherOpen] = useState(false);
   const iapRestricted = Platform.OS === 'ios';
+  // VTID-05653: the host in shell/OverlayHost.tsx opens the one voucher modal; with no host
+  // registered (a screen rendered on its own) the rail opens the shared modal itself.
+  const openVoucher = () => {
+    if (overlayBus.listenerCount(GIFT_VOUCHER_OPEN) > 0) overlayBus.emit(GIFT_VOUCHER_OPEN, { returnTo: JOURNEY_ROUTE });
+    else setVoucherOpen(true);
+  };
   const showDropdown = expanded && query.trim().length > 0 && results.length > 0;
   return (
     <View testID="journey-utility-bar" style={styles.wrap}>
@@ -201,7 +211,7 @@ export function UtilityBar({
           <Text size="sm">{t('lifeCompass.title')}</Text>
         </Pill>
         {!iapRestricted ? (
-          <Pill testID="journey-gift-voucher-button" label={t('actionBar.giftVoucher')} onPress={() => setVoucherOpen(true)}>
+          <Pill testID="journey-gift-voucher-button" label={t('actionBar.giftVoucher')} onPress={openVoucher}>
             <JourneyIcon name="Gift" size={16} color={colors.mutedForeground} />
             <Text size="sm">{t('actionBar.giftVoucher')}</Text>
           </Pill>
@@ -232,7 +242,7 @@ export function UtilityBar({
           ))}
         </View>
       ) : null}
-      {!iapRestricted ? <VoucherModal open={voucherOpen} onOpenChange={setVoucherOpen} /> : null}
+      {!iapRestricted ? <VoucherModal open={voucherOpen} onOpenChange={setVoucherOpen} returnTo={JOURNEY_ROUTE} /> : null}
     </View>
   );
 }
