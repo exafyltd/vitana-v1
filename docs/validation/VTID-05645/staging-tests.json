@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05645",
+  "service": "community-app",
+  "_note": "Native Wave 2 business-hub lane. Proven offline (jest-expo + RNTL, fixture and fake-gateway tests, no network; the native app has no production profile and assertNotProduction() refuses prod and staging hosts). This lane makes no staging call and writes nothing to Supabase or the gateway from a test. Device-runtime parity (Maestro, simulator and emulator screenshots, parity against the 390x844 read-only staging web screens) is deferred to G1 as next_actor: owner; it is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates the i18n catalog map the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/business", "cwd": "apps/mobile", "reason": "business hub: every tab and ?tab= variant from fixtures, opportunities and listings load/empty/error, earnings aggregation, route/catalog/ledger guards" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "React 19 ReactElement typing" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" }, "reason": "Metro + Hermes bundle includes the seven business routes" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile", "reason": "the 13 BUSINESS.* rows are native with their routes present" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/business/*.yaml (not written in this lane)", "target": "/business, /business/services|clients|sell-earn|analytics, /business/opportunities, /business/listings", "next_actor": "owner", "reason": "tab switch, ?tab= variants, screenshot parity against the read-only staging business screens at 390x844; needs the isolated G1 environment" }
+  ]
+}
