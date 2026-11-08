@@ -1,0 +1,12 @@
+VTID-05653 native-wave2-fix-forward-r2/utility-bar: commands run and results
+Worktree: /projects/sandbox/wt/b-utility-bar (branch kiro/native-wave2-fix-forward-r2/utility-bar, base origin/main 559ea49b1)
+
+== Setup
+- npm ci --no-audit --no-fund (apps/mobile): exit 0
+- npm run gen:i18n (apps/mobile): exit 0 (11 locales, 1672 shards)
+
+== Red on base (tests written before any implementation; the worktree held origin/main only)
+- npx jest tests/utility-bar --ci -> exit 1
+  Test Suites: 3 failed, 3 total   Tests: 9 failed, 9 total
+  bar.test.tsx and hosts.test.tsx: "Cannot find module" src/shell/utility/*; home-diary.test.tsx: the bar is absent from Home and Diary.
+  Saved: docs/validation/VTID-05653/red-on-base.txt

@@ -1,0 +1,32 @@
+{
+  "vtid": "VTID-05653",
+  "lane": "native-wave2-fix-forward-r2/utility-bar",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/shell/utility/**",
+    "apps/mobile/src/shell/OverlayHost.tsx",
+    "apps/mobile/src/ports/utility.tsx",
+    "apps/mobile/src/screens/home/HomeScreen.tsx",
+    "apps/mobile/src/screens/diary/DailyDiaryScreen.tsx",
+    "apps/mobile/src/screens/discover/UtilityBar.tsx",
+    "apps/mobile/src/screens/discover/VoucherModal.tsx",
+    "apps/mobile/src/screens/discover/LifeCompassPopup.tsx",
+    "apps/mobile/src/screens/discover/data/utility.ts",
+    "apps/mobile/src/screens/discover/data/life-compass.ts",
+    "apps/mobile/src/screens/marketplace-orders/UtilityBar.tsx",
+    "apps/mobile/src/screens/marketplace-orders/VoucherModal.tsx",
+    "apps/mobile/src/screens/marketplace-orders/data/chrome.ts",
+    "apps/mobile/src/screens/journey/UtilityBar.tsx",
+    "apps/mobile/src/screens/journey/VoucherModal.tsx",
+    "apps/mobile/src/screens/journey/data/supabase.ts",
+    "apps/mobile/tests/utility-bar/**",
+    "apps/mobile/tests/home/**",
+    "apps/mobile/tests/diary/diary.test.tsx",
+    "apps/mobile/tests/discover-commerce/voucher.test.tsx",
+    "apps/mobile/tests/journey/voucher.test.tsx",
+    "docs/validation/VTID-05653/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05653/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
