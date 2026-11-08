@@ -164,7 +164,7 @@ export function DeleteCampaignSheet({ open, name, onClose, onConfirm, isLoading 
 }
 
 // ── create post ──────────────────────────────────────────────────────────
-const ENTITY_TYPES = [
+export const ENTITY_TYPES = [
   ['event', 'screens.sharing.event'],
   ['meetup', 'screens.sharing.meetup'],
   ['group', 'screens.sharing.group'],
