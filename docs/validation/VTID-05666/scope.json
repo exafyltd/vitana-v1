@@ -1,7 +1,7 @@
 {
   "vtid": "VTID-05666",
   "lane": "native-eas-builds-r2/eas-profile-guard",
-  "kind": "tooling",
+  "kind": "infra",
   "paths": [
     "scripts/native/eas-profile-guard.mjs",
     "scripts/native/__tests__/eas-profile-guard.test.mjs",
