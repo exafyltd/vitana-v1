@@ -43,7 +43,7 @@
     "limitations": {
       "description": "These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable.",
       "removeTag": "Remove {v}",
-      "tag": "{v} ×",
+      "tag": "{v} ×",
       "never": "never",
       "allergens": "Allergens",
       "medicationsLabel": "Medications (generic or class, e.g. SSRI, blood-thinner)",
