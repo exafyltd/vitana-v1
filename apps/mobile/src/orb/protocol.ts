@@ -114,6 +114,8 @@ export interface StartPayload {
   is_mobile: true;
   recent_routes?: string[];
   app_version?: string;
+  /** One-shot: the "My Journey" topic Vitana teaches in this session (orb-widget.js:2594). */
+  guided_topic_id?: string;
 }
 
 export interface ContextUpdate {
@@ -207,6 +209,8 @@ export interface OrbDirectiveMessage {
   after_speech?: boolean;
   after_turn?: boolean;
   keep_orb_open?: boolean;
+  /** `end_guided_topic_teaching` only (orb-widget.js:3908-3921). */
+  topic_id?: string | null;
 }
 
 export interface ServerMessage {
@@ -224,6 +228,8 @@ export interface StartContext {
   viewRole?: string;
   recentRoutes?: string[];
   appVersion?: string;
+  /** The guided topic of this session, if any. */
+  guidedTopicId?: string;
   /** Overridable for tests; defaults to the device time zone. */
   timeZone?: string;
 }
@@ -236,7 +242,7 @@ function deviceTimeZone(): string | undefined {
   }
 }
 
-/** Builds the F6 start payload. One-shot fields (journey focus, support report, guided topic, reconnect) are N6e. */
+/** Builds the F6 start payload. One-shot fields (journey focus, support report, reconnect) are N6e; the guided topic is native. */
 export function buildStartPayload(ctx: StartContext): StartPayload {
   const payload: StartPayload = {
     lang: ctx.lang,
@@ -252,6 +258,7 @@ export function buildStartPayload(ctx: StartContext): StartPayload {
   if (ctx.viewRole) payload.view_role = ctx.viewRole;
   if (ctx.recentRoutes && ctx.recentRoutes.length) payload.recent_routes = ctx.recentRoutes.slice(0, ORB_AUDIO.RECENT_ROUTES_MAX);
   if (ctx.appVersion) payload.app_version = ctx.appVersion;
+  if (ctx.guidedTopicId) payload.guided_topic_id = ctx.guidedTopicId;
   return payload;
 }
 

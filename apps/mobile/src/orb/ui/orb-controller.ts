@@ -49,6 +49,31 @@ export interface OrbControllerDeps {
   openUrl(url: string): void;
   /** `Linking.openSettings()`. */
   openSettings(): void;
+  /**
+   * A guided topic's lesson has ended: called once per focused topic, by the directive, the idle / ceiling backstop or
+   * a close after audio (web: window event `vitana:guided-topic-teaching-complete`).
+   */
+  onGuidedTopicTeachingEnd?(topicId: string | null, reason: string | null): void;
+  /** Overridable for tests; defaults to `Date.now`. */
+  now?: () => number;
+}
+
+/** Idle for this long after the lesson's audio started counts as the lesson being over (orb-widget.js:5432). */
+export const GUIDED_TOPIC_IDLE_MS = 45_000;
+/** Absolute ceiling from the tap (orb-widget.js:5407). */
+export const GUIDED_TOPIC_BACKSTOP_MS = 5 * 60_000;
+/** How often the two backstops are checked (orb-widget.js:5408). */
+export const GUIDED_TOPIC_CHECK_MS = 5_000;
+
+/** The one guided topic in flight: its clocks and the once-per-topic guard. */
+interface GuidedTopicRecord {
+  topicId: string;
+  /** The topic has gone out in a start message. */
+  sent: boolean;
+  startedAt: number;
+  audioDelivered: boolean;
+  lastActivityAt: number;
+  fired: boolean;
 }
 
 export interface OrbUiState {
@@ -80,6 +105,11 @@ export interface OrbController {
   openSettings(): void;
   /** Route / role changes (Change 18). */
   setContext(ctx: OrbContext): void;
+  /**
+   * Ends any running session and starts one that teaches `topicId` (start payload `guided_topic_id`). The teaching end
+   * is reported once through `onGuidedTopicTeachingEnd`.
+   */
+  focusGuidedTopic(topicId: string): Promise<void>;
   dispose(): void;
 }
 
@@ -120,6 +150,40 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
   /** Bumped by close(): a permission answer that arrives after it is ignored. */
   let flow = 0;
   let disposed = false;
+  const clock = deps.now ?? (() => Date.now());
+  let guided: GuidedTopicRecord | null = null;
+  let guidedTimer: ReturnType<typeof setInterval> | null = null;
+
+  function clearGuided(): void {
+    if (guidedTimer) clearInterval(guidedTimer);
+    guidedTimer = null;
+    guided = null;
+  }
+
+  /** The single emitter for all three triggers; the once-per-topic guard lives here. */
+  function reportTeachingEnd(reason: string | null): void {
+    const g = guided;
+    if (!g || !g.sent || g.fired) return;
+    g.fired = true;
+    if (guidedTimer) clearInterval(guidedTimer);
+    guidedTimer = null;
+    try {
+      deps.onGuidedTopicTeachingEnd?.(g.topicId, reason);
+    } catch {
+      /* a listener never breaks the controller */
+    }
+  }
+
+  function checkGuidedBackstops(): void {
+    const g = guided;
+    if (!g || g.fired) return;
+    const t = clock();
+    const idle = g.audioDelivered ? t - g.lastActivityAt : 0;
+    const reason = idle >= GUIDED_TOPIC_IDLE_MS ? 'idle_after_lesson' : t - g.startedAt >= GUIDED_TOPIC_BACKSTOP_MS ? 'backstop_timeout' : null;
+    if (!reason) return;
+    reportTeachingEnd(reason);
+    controller.close();
+  }
 
   function set(patch: Partial<OrbUiState>): void {
     state = { ...state, ...patch };
@@ -136,6 +200,18 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
   }
 
   function onSnapshot(s: OrbSnapshot): void {
+    if (guided && guided.sent) {
+      if (s.status === 'idle') {
+        // The session is over. A closing end after audio was delivered counts as the lesson being over; any other end
+        // just drops the topic. `fired` already blocks a second report.
+        if (s.endReason && CLOSING_END_REASONS.includes(s.endReason) && guided.audioDelivered) reportTeachingEnd('overlay_closed_after_delivery');
+        if (s.endReason) clearGuided();
+      } else if (s.status !== 'ending') {
+        // Any live-session state change is life (model audio, a completed turn, the user speaking).
+        guided.lastActivityAt = clock();
+        if (s.status === 'greeting' || s.status === 'speaking') guided.audioDelivered = true;
+      }
+    }
     if (s.status === 'idle' && s.endReason && CLOSING_END_REASONS.includes(s.endReason)) {
       set({ open: false, phase: null, muted: false, snapshot: s });
       muteable?.setMuted(false);
@@ -157,6 +233,7 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
       lang: deps.lang,
       appVersion: deps.appVersion,
       transportOverride: deps.transportOverride,
+      onGuidedTopicTeachingEnd: (_topicId, reason) => reportTeachingEnd(reason),
     });
     unsubscribe = session.subscribe((e) => {
       if (e.kind === 'state') onSnapshot(e.snapshot);
@@ -171,7 +248,22 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
     set({ muted: false, phase: 'connecting', liveText: null });
     const p = profile();
     profileKey = `${p.surface}|${p.view_role}`;
-    return s.start({ current_route: context.route, recent_routes: recent, is_mobile: true, surface: p.surface, view_role: p.view_role });
+    const topic = guided && !guided.sent ? guided : null;
+    if (topic) {
+      // One-shot: the topic goes out in this start message only.
+      topic.sent = true;
+      topic.startedAt = topic.lastActivityAt = clock();
+      if (guidedTimer) clearInterval(guidedTimer);
+      guidedTimer = setInterval(checkGuidedBackstops, GUIDED_TOPIC_CHECK_MS);
+    }
+    return s.start({
+      current_route: context.route,
+      recent_routes: recent,
+      is_mobile: true,
+      surface: p.surface,
+      view_role: p.view_role,
+      ...(topic ? { guided_topic_id: topic.topicId } : {}),
+    });
   }
 
   async function begin(): Promise<void> {
@@ -191,7 +283,7 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
     set({ phase: permission.status === 'denied' && !permission.canAskAgain ? 'denied' : 'rationale' });
   }
 
-  return {
+  const controller: OrbController = {
     getState: () => state,
 
     subscribe(fn) {
@@ -208,7 +300,9 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
 
     close() {
       flow++;
+      if (guided?.audioDelivered) reportTeachingEnd('overlay_closed_after_delivery');
       if (session && session.getSnapshot().status !== 'idle') session.stop('user');
+      clearGuided();
       muteable?.setMuted(false);
       set({ open: false, phase: null, muted: false, liveText: null });
     },
@@ -260,12 +354,25 @@ export function createOrbController(deps: OrbControllerDeps): OrbController {
       if (routeChanged) session.updateContext({ current_route: ctx.route, recent_routes: recent, is_mobile: true });
     },
 
+    async focusGuidedTopic(topicId) {
+      if (disposed || !topicId) return;
+      // A fresh slate (widget VTID-03296): the old session ends without a teaching-end, then this one starts.
+      clearGuided();
+      if (session && session.getSnapshot().status !== 'idle') session.stop('guided_topic');
+      guided = { topicId, sent: false, startedAt: 0, audioDelivered: false, lastActivityAt: 0, fired: false };
+      muteable?.setMuted(false);
+      set({ open: true, phase: null, muted: false, liveText: null });
+      await begin();
+    },
+
     dispose() {
       disposed = true;
       flow++;
+      clearGuided();
       if (session && session.getSnapshot().status !== 'idle') session.stop('user');
       unsubscribe?.();
       listeners.clear();
     },
   };
+  return controller;
 }

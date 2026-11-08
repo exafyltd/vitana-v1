@@ -38,6 +38,14 @@ function appProfile(): string | undefined {
   return (Constants.expoConfig?.extra as { profile?: string } | undefined)?.profile;
 }
 
+/** The web's window event for a finished guided-topic lesson (`src/hooks/useOrbVoiceWidget.ts:292-294`). */
+export const GUIDED_TOPIC_TEACHING_COMPLETE = 'vitana:guided-topic-teaching-complete';
+
+/** Puts a teaching end on the overlay bus with the web event's name and detail. */
+export function guidedTopicTeachingComplete(topicId: string | null, reason: string | null): void {
+  overlayBus.emit(GUIDED_TOPIC_TEACHING_COMPLETE, { topicId, reason });
+}
+
 /** The app's controller: real module, real session, router + overlay bus for directives. */
 export function createAppOrbController(lang: () => string): OrbController {
   return createOrbController({
@@ -61,6 +69,7 @@ export function createAppOrbController(lang: () => string): OrbController {
     openSettings: () => {
       void Linking.openSettings().catch(() => undefined);
     },
+    onGuidedTopicTeachingEnd: guidedTopicTeachingComplete,
   });
 }
 

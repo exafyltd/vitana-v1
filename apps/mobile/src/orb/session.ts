@@ -99,6 +99,8 @@ export type OrbEvent =
   | { kind: 'route_change'; output: string; reason: string };
 
 export interface OrbStartContext extends ContextUpdate {
+  /** One-shot guided topic for this session's start message. */
+  guided_topic_id?: string;
   surface?: string;
   view_role?: string;
 }
@@ -118,6 +120,11 @@ export interface OrbSessionDeps {
   xhrFactory?: XhrFactory;
   transportOverride?: TransportKind;
   startTimeoutMs?: number;
+  /**
+   * Called for the `end_guided_topic_teaching` directive only, before the session drains and ends (other end
+   * directives never call it). `reason` is the directive's own reason, or null.
+   */
+  onGuidedTopicTeachingEnd?: (topicId: string | null, reason: string | null) => void;
 }
 
 export interface OrbSession {
@@ -353,6 +360,16 @@ export function createOrbSession(deps: OrbSessionDeps): OrbSession {
       return;
     }
     if ((SESSION_END_DIRECTIVES as readonly string[]).includes(d)) {
+      if (d === 'end_guided_topic_teaching') {
+        try {
+          deps.onGuidedTopicTeachingEnd?.(
+            typeof msg.topic_id === 'string' && msg.topic_id ? msg.topic_id : null,
+            typeof msg.reason === 'string' && msg.reason ? msg.reason : null,
+          );
+        } catch {
+          /* a listener never breaks the session */
+        }
+      }
       const gen = generation;
       waitForDrain(gen, navCancel, () => end('end_directive'));
       return;
@@ -450,6 +467,7 @@ export function createOrbSession(deps: OrbSessionDeps): OrbSession {
       viewRole: startViewRole,
       recentRoutes: context.recent_routes,
       appVersion: deps.appVersion,
+      guidedTopicId: startGuidedTopicId,
     });
     if (kind === 'ws') {
       const t = createWsTransport({ base, token, events, WebSocketImpl: deps.WebSocketImpl, startTimeoutMs: deps.startTimeoutMs });
@@ -469,6 +487,7 @@ export function createOrbSession(deps: OrbSessionDeps): OrbSession {
 
   let startSurface: string | undefined;
   let startViewRole: string | undefined;
+  let startGuidedTopicId: string | undefined;
 
   return {
     async start(ctx: OrbStartContext = {}): Promise<void> {
@@ -478,7 +497,8 @@ export function createOrbSession(deps: OrbSessionDeps): OrbSession {
       duplexReported = false;
       lastContextKey = null;
       pendingNav = null;
-      const { surface, view_role, ...rest } = ctx;
+      const { surface, view_role, guided_topic_id, ...rest } = ctx;
+      startGuidedTopicId = guided_topic_id;
       startSurface = surface;
       startViewRole = view_role;
       context = { ...context, ...rest };
