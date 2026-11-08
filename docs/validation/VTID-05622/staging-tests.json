@@ -1,6 +1,12 @@
 {
   "vtid": "VTID-05622",
-  "suite": "tests/e2e/staging/vtid-05622-group-chat-opens-at-newest.staging.spec.ts",
-  "asserts": "A group chat is first shown at its newest message: no frame in which the list is visible more than 80 px from the bottom.",
-  "read_only": true
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "a group chat is first shown at its newest message, never scrolled into view",
+      "spec": "tests/e2e/staging/vtid-05622-group-chat-opens-at-newest.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
 }
