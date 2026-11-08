@@ -28,7 +28,7 @@ import { useAutopilotPendingCount, useCalendarEvents, useVitanaIndex } from './d
 import { AUTOPILOT_OPEN, INDEX_OPEN } from './events';
 
 const CALENDAR_ROUTE = '/calendar';
-const HIT_SLOP = { top: 4, bottom: 4, left: 4, right: 4 } as const;
+const HIT_SLOP = { top: 4, bottom: 4 } as const;
 
 /** NotificationBadge's count text (notification-badge.tsx:20-26). */
 export function formatNotificationCount(count: number): string {

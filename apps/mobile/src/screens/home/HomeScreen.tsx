@@ -35,6 +35,7 @@ import { UtilityBar } from '../../shell/utility/UtilityBar';
 import { UtilityIcon } from '../../ports/utility';
 import { navigateToWebPath } from '../../navigation/navigate';
 import { useI18n } from '../../i18n/I18nProvider';
+import { DEFAULT_LINK_HOSTS } from '../../linking/resolve-link';
 import {
   composeFeed,
   withHomeNewCards,
@@ -104,7 +105,7 @@ function articleToFeedItem(article: NewsArticle): ArticleFeedItem {
 }
 
 /** The hosted download flyer (`src/lib/store-links.ts:23`); the sender's language rides along (`useInviteFriendShare.ts`). */
-export const DOWNLOAD_FLYER_URL = 'https://vitanaland.com/download';
+export const DOWNLOAD_FLYER_URL = `https://${DEFAULT_LINK_HOSTS[0]}/download`;
 
 /** The web article predicate (`Home.tsx:260-266`): title, summary, source name or a tag contains the query. */
 export function articleMatchesQuery(a: { title: string; summary?: string | null; source_name: string; tags: string[] }, query: string): boolean {
