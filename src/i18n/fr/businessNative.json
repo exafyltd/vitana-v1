@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Choisir une section",
+    "tabs": {
+      "myServices": "Mes services",
+      "myEvents": "Mes événements",
+      "packages": "Forfaits",
+      "inventory": "Inventaire",
+      "promotions": "Promotions",
+      "referrals": "Recommandations",
+      "clients": "Clients",
+      "performance": "Performance",
+      "earnings": "Revenus",
+      "growth": "Croissance"
+    },
+    "events": {
+      "online": "En ligne",
+      "sold": "{count} vendus",
+      "checkedIn": "{count} enregistrés",
+      "buyers": "{count} acheteurs",
+      "viewSales": "Voir les ventes",
+      "loadError": "Impossible de charger les événements."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Lot",
+        "subscription": "Abonnement",
+        "program": "Programme"
+      },
+      "status": {
+        "draft": "Brouillon",
+        "published": "En ligne",
+        "archived": "Archivé"
+      },
+      "items": "{count} éléments",
+      "save": "Vous économisez {percent} %"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Brouillon",
+        "scheduled": "Planifiée",
+        "active": "Active",
+        "completed": "Terminée"
+      },
+      "noDate": "Aucune date définie",
+      "starts": "Commence le {date}",
+      "promoting": "Promeut : {title}",
+      "view": "Voir la campagne",
+      "edit": "Modifier la campagne"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Tous",
+        "highEarnings": "Gains élevés",
+        "endingSoon": "Bientôt terminé",
+        "popular": "Populaire"
+      },
+      "inPerson": "Sur place",
+      "commission": "{type} · {rate} % de commission",
+      "earnPerTicket": "Gagnez {amount} / billet",
+      "noMatch": "Aucun élément ne correspond à ce filtre."
+    },
+    "ledger": {
+      "resellerCommission": "Commission de revendeur",
+      "ticketSale": "Vente de billets",
+      "sourceSellEarn": "Vendre et gagner",
+      "sourceMyEvent": "Mon événement",
+      "viewInWallet": "Voir dans le portefeuille"
+    },
+    "opportunities": {
+      "expressInterest": "Manifester son intérêt",
+      "decline": "Refuser",
+      "matchState": "Statut : {state}",
+      "matchScore": "{score} % de correspondance"
+    }
+  }
+}
