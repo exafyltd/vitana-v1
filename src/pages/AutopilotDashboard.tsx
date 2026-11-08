@@ -187,6 +187,25 @@ export default function AutopilotDashboard() {
     nextParams.delete('audiobook');
     setSearchParams(nextParams, { replace: true });
   }, [audiobookParam, audiobookPath, audiobook, user, mode, setMode, searchParams, setSearchParams, navigate]);
+
+  // The journey card links to one episode: /autopilot#guided-session-N. Scroll to that row once the
+  // guided catalog has rendered (it loads after the page), for up to about five seconds.
+  useEffect(() => {
+    const match = location.hash.match(/^#guided-session-(\d+)$/);
+    if (!match || !isGuided) return;
+    let frames = 0;
+    let frame = 0;
+    const seek = () => {
+      const row = document.getElementById(`guided-session-${match[1]}`);
+      if (row) {
+        row.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      if (++frames < 300) frame = requestAnimationFrame(seek);
+    };
+    frame = requestAnimationFrame(seek);
+    return () => cancelAnimationFrame(frame);
+  }, [location.hash, isGuided]);
   const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
