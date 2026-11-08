@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05666",
+  "lane": "native-eas-builds-r2/eas-profile-guard",
+  "kind": "tooling",
+  "paths": [
+    "scripts/native/eas-profile-guard.mjs",
+    "scripts/native/__tests__/eas-profile-guard.test.mjs",
+    "docs/validation/VTID-05666/**"
+  ],
+  "not_touched": [
+    "apps/mobile/eas.json (read only; the guard never changes it)",
+    ".github/workflows/** (NATIVE-CI already runs scripts/native/__tests__/*.test.mjs)",
+    "apps/mobile/src/**, apps/mobile/parity/ledger.json, packages/core/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05666/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

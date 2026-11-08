@@ -1,0 +1,33 @@
+VTID-05666 native-eas-builds-r2/eas-profile-guard: commands run and results
+Worktree: /projects/sandbox/wt/b-eas-profile-guard (branch kiro/native-eas-builds-r2/eas-profile-guard, base origin/main)
+
+== Red on base (test written before the guard existed)
+- node --test scripts/native/__tests__/eas-profile-guard.test.mjs -> exit 1 (ERR_MODULE_NOT_FOUND scripts/native/eas-profile-guard.mjs). Saved: red-on-base.txt
+- plan task G1 asks for a copy of eas.json with a production profile: after the guard exists, the same test covers it (see mutation run).
+
+== Green
+- node --test scripts/native/__tests__/eas-profile-guard.test.mjs -> exit 0
+- node --test scripts/native/__tests__/*.test.mjs (the NATIVE-CI step):
+  # tests 48
+  # pass 41
+  # fail 7
+== Mutation run (CLI on scratch copies in a temp dir; repo eas.json untouched)
+- npm ci --ignore-scripts (repo root, for the other script tests' typescript/postcss): exit 0
+- node --test scripts/native/__tests__/*.test.mjs (the NATIVE-CI step): tests 100, pass 100, fail 0 (48 before root npm ci, 7 suites failed only on missing typescript/postcss, none in this lane)
+
+== Mutation run (node scripts/native/eas-profile-guard.mjs <scratch copy in a temp dir>; repo eas.json untouched)
+baseline (repo file) -> exit 0
+mutation: production build profile -> exit 1 eas-profile-guard: [production-key] build.production: "production" is not allowed: no production profile (plan Decision 
+mutation: unknown profile name -> exit 1 eas-profile-guard: [profile-set] build: build profiles must be exactly development and test-g1, found [development, stag
+mutation: APP_PROFILE outside the two -> exit 1 eas-profile-guard: [app-profile] build.test-g1.env.APP_PROFILE: APP_PROFILE must be one of development, test-g1, found "
+mutation: submit.production block -> exit 1 eas-profile-guard: [production-key] submit.production: "production" is not allowed: no production profile (plan Decision
+mutation: submit for development -> exit 1 eas-profile-guard: [submit-profile] submit.development: submit is only allowed for test-g1, found "development"
+mutation: submit track production -> exit 1 eas-profile-guard: [submit-track] submit.test-g1.android.track: track must be "internal", found "production"
+mutation: EXPO_TOKEN in env -> exit 1 eas-profile-guard: [secret-key] build.development.env.EXPO_TOKEN: secret-like key "EXPO_TOKEN" is not allowed in eas.jso
+mutation: serviceAccountKeyPath -> exit 1 eas-profile-guard: [secret-key] submit.test-g1.android.serviceAccountKeyPath: secret-like key "serviceAccountKeyPath" is
+mutation: keystorePath -> exit 1 eas-profile-guard: [secret-key] build.test-g1.keystorePath: secret-like key "keystorePath" is not allowed in eas.json (c
+mutation: password key -> exit 1 eas-profile-guard: [secret-key] build.test-g1.password: secret-like key "password" is not allowed in eas.json (credentia
+mutation: p8 key -> exit 1 eas-profile-guard: [secret-key] build.test-g1.p8: secret-like key "p8" is not allowed in eas.json (credentials live in E
+mutation: *Secret key -> exit 1 eas-profile-guard: [secret-key] build.test-g1.appSecret: secret-like key "appSecret" is not allowed in eas.json (credent
+mutation: *Token key -> exit 1 eas-profile-guard: [secret-key] build.test-g1.authToken: secret-like key "authToken" is not allowed in eas.json (credent
+mutation: allowed (must be exit 0): ascAppId + internal track -> exit 0 
