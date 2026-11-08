@@ -222,7 +222,9 @@ export function evaluateSparringRecord(text) {
 // FRONTEND_SIMPLE_DENY, and the change stays small. Anything else → sparring.
 export const FRONTEND_SIMPLE = 'frontend-simple';
 export const FRONTEND_SIMPLE_MAX_FILES = 15;
-export const FRONTEND_SIMPLE_ALLOW = ['src/**', 'public/**'];
+// VTID-05623: read-only staging specs ship with a simple change ("no suite, no merge").
+// Top-level *.staging.spec.ts only: fixtures and other tests/ paths stay outside the class.
+export const FRONTEND_SIMPLE_ALLOW = ['src/**', 'public/**', 'tests/e2e/staging/*.staging.spec.ts'];
 export const FRONTEND_SIMPLE_DENY = [
   'src/App.tsx',                 // new routes / screens are features, not simple changes
   'src/navigation/**',           // screen registry (voice navigation)
