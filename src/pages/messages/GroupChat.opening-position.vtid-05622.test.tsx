@@ -24,7 +24,16 @@ describe("GroupChat opening position (VTID-05622)", () => {
   });
 
   it("hides both list containers until positioned", () => {
-    const hidden = /style=\{positioned \? undefined : \{ visibility: "hidden" \}\}/g;
+    const hidden = /positioned \? \{\} : \{ visibility: "hidden" as const \}/g;
     expect((src.match(hidden) ?? []).length).toBe(2);
+  });
+
+  // VTID-05670: the sticky composer covers the bottom of the list; both lists
+  // get the measured composer height as bottom padding.
+  it("reserves the composer height at the bottom of both lists (VTID-05670)", () => {
+    expect(src).toMatch(/const \[footerH, setFooterH\] = useState\(0\)/);
+    expect((src.match(/paddingBottom: footerH \+ 16/g) ?? []).length).toBe(2);
+    expect((src.match(/ref=\{footerRef\}/g) ?? []).length).toBe(2);
+    expect(src).toMatch(/className="sticky bottom-0 border-t bg-card px-2 pt-2"/);
   });
 });
