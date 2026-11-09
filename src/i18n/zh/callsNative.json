@@ -14,6 +14,8 @@
     "unmute": "取消静音",
     "cameraOff": "关闭摄像头",
     "cameraOn": "打开摄像头",
-    "unknownUser": "未知成员"
-  }
+    "unknownUser": "未知成员",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -5568,6 +5568,7 @@
       "liveNow": "LIVE NOW",
       "endRoom": "End Room",
       "joinRoom": "Join Room",
+      "joinWaitingRoom": "Join waiting room",
       "goLiveNow": "Go Live Now",
       "googleCalendar": "Google Calendar",
       "outlook": "Outlook",
@@ -7570,9 +7571,6 @@
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded.",
-        "_pending_review": {
-          "community": true
-        },
         "testCard": {
           "title": "Test card (admins only)",
           "desc": "Vitana sends you a message with the Vitana Index card in your chat with Vitana now, the way members get it in the morning. Only you receive it.",
@@ -8587,10 +8585,7 @@
       "profileSetup": "Profile",
       "socialConnect": "Connect",
       "importContacts": "Contacts",
-      "completeProfile": "Complete profile",
-      "_pending_review": {
-        "autopilot": true
-      }
+      "completeProfile": "Complete profile"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -12256,10 +12251,7 @@
         "eyebrow": "Matches",
         "title": "People who match you",
         "description": "Discover today’s matches.",
-        "action": "See matches",
-        "_pending_review": {
-          "eyebrow": true
-        }
+        "action": "See matches"
       },
       "F6": {
         "eyebrow": "Autopilot",
@@ -12287,9 +12279,6 @@
         "title": "Discover something new",
         "description": "Products, services and offers for your well-being.",
         "action": "Browse"
-      },
-      "_pending_review": {
-        "eyebrowCommunity": true
       },
       "G1": {
         "eyebrow": "Your profile",

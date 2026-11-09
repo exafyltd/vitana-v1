@@ -7,7 +7,12 @@
     "results": {
       "valueWithUnit": "{value} {unit}",
       "range": "{low}–{high}",
-      "noValue": "—"
+      "noValue": "—",
+      "_pending_review": {
+        "valueWithUnit": true,
+        "range": true,
+        "noValue": true
+      }
     }
   }
 }

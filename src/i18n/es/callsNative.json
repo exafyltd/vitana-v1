@@ -14,6 +14,8 @@
     "unmute": "Activar micrófono",
     "cameraOff": "Apagar cámara",
     "cameraOn": "Encender cámara",
-    "unknownUser": "Miembro desconocido"
-  }
+    "unknownUser": "Miembro desconocido",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

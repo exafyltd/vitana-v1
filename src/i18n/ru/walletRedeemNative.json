@@ -23,6 +23,9 @@
         "benefit3": "90-дневная подписка Vitana+",
         "benefit4": "Приоритетное бронирование + VIP-привилегии"
       }
+    },
+    "_pending_review": {
+      "brand": true
     }
   }
 }

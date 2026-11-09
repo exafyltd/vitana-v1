@@ -3,21 +3,26 @@
     "typing": {
       "one": "{name} печатает…",
       "two": "{first} и {second} печатают…",
-      "many": "Несколько человек печатают…"
+      "many": "Несколько человек печатают…",
+      "_pending_review": {}
     },
     "conversation": {
-      "fallbackTitle": "Беседа"
+      "fallbackTitle": "Беседа",
+      "_pending_review": {}
     },
     "reply": {
       "yourself": "себе",
-      "contentUnavailable": "Содержимое сообщения недоступно"
+      "contentUnavailable": "Содержимое сообщения недоступно",
+      "_pending_review": {}
     },
     "reactions": {
       "reactWith": "Реакция {emoji}",
-      "count": "Реакции {emoji}: {count}"
+      "count": "Реакции {emoji}: {count}",
+      "_pending_review": {}
     },
     "bubble": {
-      "longPressHint": "Нажми и удерживай для реакций и действий"
+      "longPressHint": "Нажми и удерживай для реакций и действий",
+      "_pending_review": {}
     },
     "emoji": {
       "open": "Выбери эмодзи",
@@ -28,42 +33,53 @@
       "food": "Еда",
       "activity": "Активность",
       "travel": "Путешествия",
-      "objects": "Предметы"
+      "objects": "Предметы",
+      "_pending_review": {}
     },
     "voice": {
       "discard": "Удалить запись",
       "play": "Воспроизвести",
       "pause": "Пауза",
-      "stop": "Остановить запись"
+      "stop": "Остановить запись",
+      "_pending_review": {}
     },
     "composer": {
       "removeFile": "Убрать {name}",
-      "pickerDone": "Готово"
+      "pickerDone": "Готово",
+      "_pending_review": {}
     },
     "payment": {
       "status": {
         "pending": "Ожидает",
         "completed": "Выполнено",
-        "declined": "Отклонено"
+        "declined": "Отклонено",
+        "_pending_review": {}
       },
       "accept": "Принять",
       "decline": "Отклонить",
       "pay": "Оплатить",
-      "refreshBalance": "Обновить баланс"
+      "refreshBalance": "Обновить баланс",
+      "_pending_review": {}
     },
     "invite": {
-      "untitled": "Приглашение"
+      "untitled": "Приглашение",
+      "_pending_review": {}
     },
     "booking": {
-      "untitled": "Запрос услуги"
+      "untitled": "Запрос услуги",
+      "_pending_review": {}
     },
     "companion": {
-      "indexScore": "Твой индекс: {score}"
+      "indexScore": "Твой индекс: {score}",
+      "_pending_review": {}
     },
     "attach": {
       "library": "Медиатека",
       "camera": "Камера",
-      "files": "Файлы"
-    }
-  }
+      "files": "Файлы",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
