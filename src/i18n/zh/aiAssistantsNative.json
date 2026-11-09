@@ -1,7 +1,10 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}"
+      "errorDetail": "{message}",
+      "_pending_review": {
+        "errorDetail": true
+      }
     },
     "voice": {
       "preview": "试听语音",
@@ -9,7 +12,11 @@
       "previewPhrase": "你好，这是你所选语音设置的预览。",
       "previewUnavailable": "此设备上该语言暂不支持预览。",
       "speedValue": "{value}x",
-      "volumeValue": "{value}%"
+      "volumeValue": "{value}%",
+      "_pending_review": {
+        "speedValue": true,
+        "volumeValue": true
+      }
     },
     "proactive": {
       "playSample": "播放示例问候",

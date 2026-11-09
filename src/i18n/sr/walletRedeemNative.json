@@ -23,6 +23,10 @@
         "benefit3": "90-dnevna pretplata na Vitana+",
         "benefit4": "Prioritetna rezervacija + VIP pogodnosti"
       }
+    },
+    "_pending_review": {
+      "brand": true,
+      "wellnessFallback": true
     }
   }
 }

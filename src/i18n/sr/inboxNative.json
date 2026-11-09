@@ -36,7 +36,10 @@
       "warriorsName": "Vikend ratnici",
       "warriorsMessage": "Sledeće planinarenje je zakazano za...",
       "kimName": "Dr Kim",
-      "kimMessage": "Kontrola za 2 nedelje"
+      "kimMessage": "Kontrola za 2 nedelje",
+      "_pending_review": {
+        "martinezName": true
+      }
     },
     "presence": {
       "online": "Aktivan",

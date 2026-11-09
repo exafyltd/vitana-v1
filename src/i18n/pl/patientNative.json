@@ -2,12 +2,21 @@
   "patientNative": {
     "figure": {
       "fraction": "{value}/{total}",
-      "bloodPressure": "{systolic}/{diastolic}"
+      "bloodPressure": "{systolic}/{diastolic}",
+      "_pending_review": {
+        "fraction": true,
+        "bloodPressure": true
+      }
     },
     "results": {
       "valueWithUnit": "{value} {unit}",
       "range": "{low}–{high}",
-      "noValue": "—"
+      "noValue": "—",
+      "_pending_review": {
+        "valueWithUnit": true,
+        "range": true,
+        "noValue": true
+      }
     }
   }
 }

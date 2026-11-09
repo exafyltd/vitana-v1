@@ -1,7 +1,10 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}"
+      "errorDetail": "{message}",
+      "_pending_review": {
+        "errorDetail": true
+      }
     },
     "voice": {
       "preview": "Escuchar voz",
@@ -9,7 +12,10 @@
       "previewPhrase": "Hola, esta es una vista previa de la configuración de voz que has elegido.",
       "previewUnavailable": "La vista previa no está disponible para este idioma en este dispositivo.",
       "speedValue": "{value}x",
-      "volumeValue": "{value} %"
+      "volumeValue": "{value} %",
+      "_pending_review": {
+        "speedValue": true
+      }
     },
     "proactive": {
       "playSample": "Reproducir saludo de ejemplo",

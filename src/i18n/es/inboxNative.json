@@ -20,7 +20,10 @@
       "healthcare": "Salud",
       "fitness": "Fitness",
       "nutrition": "Nutrición",
-      "activities": "Actividades"
+      "activities": "Actividades",
+      "_pending_review": {
+        "fitness": true
+      }
     },
     "archiveType": {
       "group": "Grupo",
@@ -36,7 +39,12 @@
       "warriorsName": "Guerreros de fin de semana",
       "warriorsMessage": "La próxima caminata está prevista para...",
       "kimName": "Dr. Kim",
-      "kimMessage": "Revisión en 2 semanas"
+      "kimMessage": "Revisión en 2 semanas",
+      "_pending_review": {
+        "johnsonName": true,
+        "martinezName": true,
+        "kimName": true
+      }
     },
     "presence": {
       "online": "Activo",

@@ -47,7 +47,10 @@
       "profile": "Profil",
       "liveRooms": "Pokoje na żywo",
       "notifications": "Powiadomienia",
-      "other": "Inne"
+      "other": "Inne",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }

@@ -5,8 +5,10 @@
         "cancelledOrExpired": "تم إلغاء تأكيد البريد الإلكتروني أو انتهت صلاحية الرابط.",
         "linkExpired": "انتهت صلاحية رابط التأكيد. يرجى طلب رابط جديد.",
         "generic": "حدث خطأ أثناء تأكيد البريد الإلكتروني.",
-        "signInToContinue": "يرجى تسجيل الدخول للمتابعة."
-      }
+        "signInToContinue": "يرجى تسجيل الدخول للمتابعة.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalmaConfirmed": {
       "title": "أهلاً بك في الكلمة!",
@@ -14,15 +16,20 @@
       "journey": "رحلتك الصحية باللغة العربية تبدأ الآن",
       "redirecting": "سيتم توجيهك إلى لوحة التحكم خلال ثوانٍ قليلة...",
       "continue": "متابعة إلى لوحة التحكم",
-      "footer": "منصة صحية شاملة باللغة العربية"
+      "footer": "منصة صحية شاملة باللغة العربية",
+      "_pending_review": {}
     },
     "reset": {
       "updatePassword": "تحديث كلمة المرور",
       "showPassword": "إظهار كلمة المرور",
-      "hidePassword": "إخفاء كلمة المرور"
+      "hidePassword": "إخفاء كلمة المرور",
+      "_pending_review": {}
     },
     "resend": {
-      "prompt": "لم تصلك الرسالة؟ أعد الإرسال"
-    }
-  }
+      "prompt": "لم تصلك الرسالة؟ أعد الإرسال",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

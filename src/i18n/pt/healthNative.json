@@ -168,7 +168,10 @@
         },
         "v4": {
           "title": "A ciência do treino HIIT",
-          "category": "Fitness"
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v5": {
           "title": "Estratégias para lidar com o estresse",
@@ -204,6 +207,9 @@
           "title": "Tendências da medicina preventiva",
           "series": "Saúde do futuro"
         }
+      },
+      "_pending_review": {
+        "episode": true
       }
     },
     "educationActions": {
@@ -290,7 +296,10 @@
         "hydration": "Hidratação",
         "sleep": "Sono",
         "mental": "Mental",
-        "supplement": "Suplementos"
+        "supplement": "Suplementos",
+        "_pending_review": {
+          "mental": true
+        }
       },
       "refreshed": "{planName} atualizado! 🔄",
       "justNow": "Agora mesmo",

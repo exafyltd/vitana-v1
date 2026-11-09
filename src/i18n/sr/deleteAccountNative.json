@@ -1,5 +1,7 @@
 {
   "deleteAccountNative": {
-    "errorFallback": "Nešto je pošlo po zlu. Pokušaj ponovo."
-  }
+    "errorFallback": "Nešto je pošlo po zlu. Pokušaj ponovo.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

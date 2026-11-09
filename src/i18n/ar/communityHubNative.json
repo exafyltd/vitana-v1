@@ -37,7 +37,10 @@
       "leave": "مغادرة المجموعة",
       "notFoundTitle": "المجموعة غير موجودة",
       "notFoundDesc": "ربما تمت إزالة هذه المجموعة أو أنها غير موجودة.",
-      "browse": "تصفّح المجموعات"
+      "browse": "تصفّح المجموعات",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "أعضاء المجتمع",
@@ -65,7 +68,10 @@
       "fallbackName": "عضو",
       "empty": "لا يوجد أعضاء بعد.",
       "emptyDance": "لم يحدد أحد هذا الرقص كتفضيل بعد — كن أول من يفعل!",
-      "viewProfile": "عرض الملف الشخصي"
+      "viewProfile": "عرض الملف الشخصي",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "الطلبات المفتوحة",
@@ -97,7 +103,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "لا توجد طلبات مفتوحة في هذا العرض.",
-      "emptyDance": "لا توجد طلبات رقص مفتوحة بعد — انشر طلبك وكن الأول!"
+      "emptyDance": "لا توجد طلبات رقص مفتوحة بعد — انشر طلبك وكن الأول!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "البحث عن شريك",

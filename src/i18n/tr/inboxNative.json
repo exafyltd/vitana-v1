@@ -20,7 +20,10 @@
       "healthcare": "Sağlık",
       "fitness": "Fitness",
       "nutrition": "Beslenme",
-      "activities": "Etkinlikler"
+      "activities": "Etkinlikler",
+      "_pending_review": {
+        "fitness": true
+      }
     },
     "archiveType": {
       "group": "Grup",
@@ -36,7 +39,12 @@
       "warriorsName": "Hafta sonu savaşçıları",
       "warriorsMessage": "Bir sonraki yürüyüş şu tarihe planlandı...",
       "kimName": "Dr. Kim",
-      "kimMessage": "2 hafta sonra kontrol"
+      "kimMessage": "2 hafta sonra kontrol",
+      "_pending_review": {
+        "johnsonName": true,
+        "martinezName": true,
+        "kimName": true
+      }
     },
     "presence": {
       "online": "Aktif",
