@@ -47,7 +47,7 @@ export async function runHorizontalCardsRTLTests(): Promise<boolean> {
         document.documentElement.dir = 'rtl';
         
         const cards = document.querySelectorAll('[role="article"]');
-        let passed = cards.length > 0;
+        const passed = cards.length > 0;
         
         // In RTL, icons should be on the right side
         // This is a basic check - visual inspection is still needed

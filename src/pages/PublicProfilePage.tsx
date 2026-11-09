@@ -140,7 +140,7 @@ export default function PublicProfilePage() {
       // bottom-nav tab switch) leaves the await pending forever, so
       // `finally` never runs and `loading` never clears: an infinite
       // "Profil wird geladen…" spinner instead of a retry/error state.
-      let { data, error: dbError } = await supabase
+      const { data, error: dbError } = await supabase
         .rpc('get_user_profile_by_identifier', { identifier: cleanId })
         .abortSignal(AbortSignal.timeout(10000));
 

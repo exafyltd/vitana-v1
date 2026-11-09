@@ -1831,7 +1831,7 @@ function CommunityLegacy() {
                     </Button>
                   </div>
                   {(() => {
-                    let spotlightRowIndex = 0;
+                    const spotlightRowIndex = 0;
                     const result = renderEventGrid(
                       aiSpotlightItems, 
                       "AI Spotlight", 
@@ -1848,7 +1848,7 @@ function CommunityLegacy() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.featuredContent')}</h3>
                 {(() => {
-                  let spotlightRowIndex = recommendations.length > 0 ? 3 : 0;
+                  const spotlightRowIndex = recommendations.length > 0 ? 3 : 0;
                   const result = renderEventGrid(
                     spotlightFeatures, 
                     "Spotlight", 
