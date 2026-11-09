@@ -531,7 +531,6 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}
-         {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
        </div>
        
         {/* Mobile Bottom Navigation with integrated Orb */}
