@@ -334,6 +334,63 @@
       },
       "litersOf": "{current} ل / {target} ل",
       "liters": "{value} ل"
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "تسجيل البيانات",
+        "example": "مثال: {value}",
+        "units": {
+          "count": "العدد",
+          "hours": "ساعات",
+          "min": "دقيقة"
+        },
+        "features": {
+          "biomarker_glucose": "سكر الدم الصائم",
+          "meal_log": "الوجبات المسجلة",
+          "macro_balance": "درجة توازن المغذيات الكبرى",
+          "water_intake": "كمية الماء",
+          "hydration_log": "تسجيلات الترطيب",
+          "wearable_steps": "الخطوات",
+          "wearable_heart_rate": "متوسط معدل ضربات القلب",
+          "wearable_workout": "دقائق التمرين",
+          "vo2_max": "تقدير الحد الأقصى لـ VO₂",
+          "wearable_sleep_duration": "مدة النوم",
+          "wearable_sleep_efficiency": "كفاءة النوم",
+          "wearable_hrv": "تقلب نبضات القلب (متوسط الليل)",
+          "meditation_minutes": "دقائق التأمل",
+          "mood_entry": "درجة المزاج",
+          "wearable_stress": "التوتر (جهاز قابل للارتداء)",
+          "journal_entry": "إدخالات اليوميات اليوم"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "الأحماض الدهنية",
+      "noSupplementsYet": "لم تُضف أي مكملات بعد. اضغط على «إضافة مكمل» للبدء.",
+      "noSupplementsInCategory": "لا توجد مكملات في فئة {category}.",
+      "dialog": {
+        "addTitle": "إضافة مكمل",
+        "editTitle": "تعديل المكمل",
+        "addDescription": "أضف مكملاً جديداً إلى روتينك",
+        "editDescription": "حدّث معلومات المكمل",
+        "addSubmit": "إضافة المكمل",
+        "updateSubmit": "تحديث المكمل",
+        "datePlaceholder": "سنة-شهر-يوم"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "طلب فحص مخبري جديد",
+          "description": "حدد موعداً لفحص صحي شامل"
+        },
+        "downloadResults": {
+          "title": "تنزيل كل النتائج",
+          "description": "صدّر سجل فحوصاتك الكامل"
+        },
+        "trackTrends": {
+          "title": "تتبع الاتجاهات",
+          "description": "اطّلع على تطور مؤشراتك الحيوية بمرور الوقت"
+        }
+      }
     }
   }
 }
