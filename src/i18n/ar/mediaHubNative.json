@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "اختر قسم الوسائط",
+    "communityMember": "عضو في المجتمع",
+    "by": "بواسطة {name}",
+    "share": {
+      "shortText": "شاهد \"{title}\" من {creator} على Vitana",
+      "trackText": "استمع إلى \"{title}\" من {artist} على Vitana"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 دقائق من تمارين التمدد الصباحية",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "فطور صحي وسريع",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "تمرين التنفس",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "لياقة",
+      "tagYoga": "يوغا",
+      "tagNutrition": "التغذية",
+      "tagRecipes": "وصفات",
+      "tagMindfulness": "اليقظة الذهنية",
+      "tagWellness": "العافية"
+    },
+    "video": {
+      "failed": "فشل التحميل — اضغط لإعادة المحاولة",
+      "buffering": "جارٍ التخزين المؤقت — اضغط لإعادة المحاولة"
+    },
+    "a11y": {
+      "calendar": "فتح التقويم",
+      "closeFeed": "إغلاق الفيديوهات القصيرة",
+      "comments": "فتح التعليقات",
+      "moreActions": "المزيد من الإجراءات",
+      "shortCard": "فيديو قصير {index} من {total}: {title}",
+      "like": "إعجاب",
+      "unlike": "إزالة الإعجاب",
+      "mute": "كتم الصوت",
+      "unmute": "تشغيل الصوت",
+      "pause": "إيقاف مؤقت",
+      "playTrack": "تشغيل \"{title}\"",
+      "playEpisode": "تشغيل الحلقة \"{title}\"",
+      "addBookmark": "حفظ \"{title}\"",
+      "removeBookmark": "إزالة \"{title}\" من المحفوظات",
+      "shareTrack": "مشاركة \"{title}\""
+    },
+    "edit": {
+      "add": "إضافة",
+      "addTag": "إضافة وسم",
+      "removeTag": "إزالة الوسم \"{tag}\""
+    },
+    "toast": {
+      "permissionDenied": "الوصول غير مسموح",
+      "permissionDeniedDesc": "اسمح بالوصول إلى صورك من الإعدادات لاختيار ملف.",
+      "saveFailed": "تعذر الحفظ"
+    },
+    "upload": {
+      "chooseVideo": "اختر فيديو",
+      "chooseAudio": "اختر ملفًا صوتيًا",
+      "uploading": "جارٍ الرفع…",
+      "hint": {
+        "music": "MP3 وWAV وFLAC (الحد الأقصى 50 ميغابايت)",
+        "podcast": "MP3 وWAV (الحد الأقصى 100 ميغابايت)",
+        "video": "MP4 وWebM وOGG (الحد الأقصى 500 ميغابايت، 5 دقائق)"
+      },
+      "invalid": {
+        "type": "يتم دعم فيديوهات MP4 وWebM وOGG فقط",
+        "size": "الملف كبير جدًا",
+        "duration": "يجب ألا يزيد الفيديو عن 5 دقائق"
+      }
+    }
+  }
+}

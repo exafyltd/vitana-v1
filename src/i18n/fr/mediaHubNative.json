@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "Choisis la section des médias",
+    "communityMember": "Membre de la communauté",
+    "by": "par {name}",
+    "share": {
+      "shortText": "Regarde « {title} » de {creator} sur Vitana",
+      "trackText": "Écoute « {title} » de {artist} sur Vitana"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 min d'étirements du matin",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "Petit-déjeuner sain et rapide",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "Exercice de respiration",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "Fitness",
+      "tagYoga": "Yoga",
+      "tagNutrition": "Nutrition",
+      "tagRecipes": "Recettes",
+      "tagMindfulness": "Pleine conscience",
+      "tagWellness": "Bien-être"
+    },
+    "video": {
+      "failed": "Échec du chargement — touche pour réessayer",
+      "buffering": "Mise en mémoire tampon — touche pour réessayer"
+    },
+    "a11y": {
+      "calendar": "Ouvrir le calendrier",
+      "closeFeed": "Fermer les shorts",
+      "comments": "Ouvrir les commentaires",
+      "moreActions": "Plus d'actions",
+      "shortCard": "Short {index} sur {total} : {title}",
+      "like": "J'aime",
+      "unlike": "Retirer le j'aime",
+      "mute": "Couper le son",
+      "unmute": "Activer le son",
+      "pause": "Mettre en pause",
+      "playTrack": "Lire « {title} »",
+      "playEpisode": "Lire l'épisode « {title} »",
+      "addBookmark": "Enregistrer « {title} »",
+      "removeBookmark": "Retirer « {title} » des favoris",
+      "shareTrack": "Partager « {title} »"
+    },
+    "edit": {
+      "add": "Ajouter",
+      "addTag": "Ajouter un tag",
+      "removeTag": "Retirer le tag « {tag} »"
+    },
+    "toast": {
+      "permissionDenied": "Accès non autorisé",
+      "permissionDeniedDesc": "Autorise l'accès à tes photos dans les Réglages pour choisir un fichier.",
+      "saveFailed": "Échec de l'enregistrement"
+    },
+    "upload": {
+      "chooseVideo": "Choisir une vidéo",
+      "chooseAudio": "Choisir un fichier audio",
+      "uploading": "Téléversement…",
+      "hint": {
+        "music": "MP3, WAV, FLAC (50 Mo max.)",
+        "podcast": "MP3, WAV (100 Mo max.)",
+        "video": "MP4, WebM, OGG (500 Mo max., 5 min)"
+      },
+      "invalid": {
+        "type": "Seules les vidéos MP4, WebM et OGG sont prises en charge",
+        "size": "Le fichier est trop volumineux",
+        "duration": "La vidéo doit durer 5 minutes maximum"
+      }
+    }
+  }
+}
