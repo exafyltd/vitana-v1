@@ -356,6 +356,7 @@ export function InboxScreen(): ReactElement {
         }}
         context={context}
         initialRecipientId={contactRecipientId}
+        startAsGroup={filter === 'groups' && context === 'global'}
         onGroupCreated={refetch}
       />
     </View>
