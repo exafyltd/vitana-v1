@@ -1,6 +1,6 @@
 {
   "vtid": "VTID-05681",
-  "kind": "test",
+  "kind": "docs",
   "paths": [
     "apps/mobile/tests/wave1-readiness/auth/**",
     "docs/validation/VTID-05681/**"
