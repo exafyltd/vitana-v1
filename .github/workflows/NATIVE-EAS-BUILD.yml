@@ -1,0 +1,98 @@
+# NATIVE-EAS-BUILD — start an EAS cloud build of the native app (apps/mobile) by hand (VTID-05665,
+# plan native-eas-builds-r2, Decisions 1, 2, 4 and 8).
+#
+# Manual only: workflow_dispatch. No push, pull_request or schedule trigger. Nothing builds on merge.
+# Two profiles exist and only those can be chosen: `development` and `test-g1`. There is no `production`
+# profile (apps/mobile/eas.json, NATIVE-APP-PLAN.md §6); `scripts/native/eas-profile-guard.mjs` fails the run
+# if eas.json ever gains one. This workflow never runs `eas submit` and uploads nothing to any store.
+# The build runs on EAS workers (macOS for iOS), so this job uses ubuntu-latest and no macOS minutes.
+# The only secret is EXPO_TOKEN (O1), passed through `env`; it is never written to a file or the log.
+# iOS device builds wait for the Apple inputs (O2); Android `test-g1` is the first expected run.
+# Not a required check.
+
+name: NATIVE-EAS-BUILD
+
+run-name: 'NATIVE-EAS-BUILD (${{ inputs.profile }} / ${{ inputs.platform }})'
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'EAS build profile (apps/mobile/eas.json)'
+        type: choice
+        required: true
+        default: test-g1
+        options:
+          - development
+          - test-g1
+      platform:
+        description: 'Target platform (iOS needs the Apple inputs, O2)'
+        type: choice
+        required: true
+        default: android
+        options:
+          - android
+          - ios
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-eas-build-${{ inputs.profile }}-${{ inputs.platform }}
+  cancel-in-progress: false
+
+jobs:
+  eas-build:
+    name: EAS build (${{ inputs.profile }}, ${{ inputs.platform }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Fails when eas.json has a production profile, a secret-like key, or a profile other than the two allowed.
+      # (scripts/native/eas-profile-guard.mjs arrives with eas-profile-guard, vitana-v1 PR #1631.)
+      - name: Guard eas.json profiles
+        working-directory: .
+        run: node scripts/native/eas-profile-guard.mjs
+
+      - name: Check inputs and token presence
+        env:
+          PROFILE: ${{ inputs.profile }}
+          PLATFORM: ${{ inputs.platform }}
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          set -eu
+          case "$PROFILE" in development|test-g1) ;; *) echo "profile not allowed: $PROFILE"; exit 1 ;; esac
+          case "$PLATFORM" in ios|android) ;; *) echo "platform not allowed: $PLATFORM"; exit 1 ;; esac
+          if [ -z "${EXPO_TOKEN:-}" ]; then
+            echo "::error::EXPO_TOKEN secret is not set (owner input O1). Nothing was built."
+            exit 1
+          fi
+
+      - name: Start the EAS cloud build
+        env:
+          PROFILE: ${{ inputs.profile }}
+          PLATFORM: ${{ inputs.platform }}
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_NO_TELEMETRY: '1'
+          CI: '1'
+        run: |
+          set -eu
+          echo "Commit: ${GITHUB_SHA}"
+          npx --yes eas-cli build --profile "$PROFILE" --platform "$PLATFORM" --non-interactive --json | tee "$RUNNER_TEMP/eas-build.json"
+          URL=$(node -e 'const j=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));const b=Array.isArray(j)?j[0]:j;process.stdout.write((b&&(b.buildDetailsPageUrl||b.url))||"")' "$RUNNER_TEMP/eas-build.json" || true)
+          {
+            echo "### EAS build"
+            echo "- Profile: \`$PROFILE\`, platform: \`$PLATFORM\`"
+            echo "- Commit: \`${GITHUB_SHA}\`"
+            echo "- Build URL: ${URL:-see the log}"
+            echo "- Nothing was submitted to a store."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Build URL: ${URL:-see the log}"
