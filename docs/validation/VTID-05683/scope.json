@@ -1,7 +1,8 @@
 {
   "vtid": "VTID-05683",
   "lane": "native-wave1-readiness-tests/push",
-  "kind": "tests",
+  "sparring_record": "docs/validation/VTID-05683/plan-sparring.md",
+  "kind": "infra",
   "paths": [
     "apps/mobile/tests/wave1-readiness/push/**",
     "docs/validation/VTID-05683/**"
