@@ -4,7 +4,11 @@
       "chat": "Chat",
       "calendar": "Calendar",
       "community": "Community",
-      "updateFailed": "Failed to update preference"
+      "updateFailed": "Failed to update preference",
+      "_pending_review": {
+        "chat": true,
+        "community": true
+      }
     },
     "consent": {
       "title": "AI Data Sharing Disclosure",
@@ -29,7 +33,12 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA"
+      "sessionLocation": "San Francisco, CA",
+      "_pending_review": {
+        "sessionPhone": true,
+        "sessionLaptop": true,
+        "sessionLocation": true
+      }
     },
     "creator": {
       "creatorShare": "90%",
@@ -43,7 +52,7 @@
     "limitations": {
       "description": "These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable.",
       "removeTag": "Remove {v}",
-      "tag": "{v} ×",
+      "tag": "{v} ×",
       "never": "never",
       "allergens": "Allergens",
       "medicationsLabel": "Medications (generic or class, e.g. SSRI, blood-thinner)",

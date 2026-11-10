@@ -5,8 +5,10 @@
         "cancelledOrExpired": "Potvrda e-pošte je otkazana ili je link istekao.",
         "linkExpired": "Link za potvrdu je istekao. Zatraži novi.",
         "generic": "Došlo je do greške prilikom potvrde e-pošte.",
-        "signInToContinue": "Prijavi se da nastaviš."
-      }
+        "signInToContinue": "Prijavi se da nastaviš.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalmaConfirmed": {
       "title": "Dobro došao u AlKalma!",
@@ -14,15 +16,20 @@
       "journey": "Tvoje zdravstveno putovanje na arapskom počinje sada",
       "redirecting": "Za nekoliko sekundi bićeš preusmeren na svoju kontrolnu tablu...",
       "continue": "Nastavi na kontrolnu tablu",
-      "footer": "Sveobuhvatna zdravstvena platforma na arapskom"
+      "footer": "Sveobuhvatna zdravstvena platforma na arapskom",
+      "_pending_review": {}
     },
     "reset": {
       "updatePassword": "Ažuriraj lozinku",
       "showPassword": "Prikaži lozinku",
-      "hidePassword": "Sakrij lozinku"
+      "hidePassword": "Sakrij lozinku",
+      "_pending_review": {}
     },
     "resend": {
-      "prompt": "Nisi dobio e-poruku? Pošalji ponovo"
-    }
-  }
+      "prompt": "Nisi dobio e-poruku? Pošalji ponovo",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

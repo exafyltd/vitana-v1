@@ -6,7 +6,10 @@
       "many": "Plusieurs personnes écrivent…"
     },
     "conversation": {
-      "fallbackTitle": "Conversation"
+      "fallbackTitle": "Conversation",
+      "_pending_review": {
+        "fallbackTitle": true
+      }
     },
     "reply": {
       "yourself": "toi-même",
@@ -28,13 +31,20 @@
       "food": "Nourriture",
       "activity": "Activités",
       "travel": "Voyages",
-      "objects": "Objets"
+      "objects": "Objets",
+      "_pending_review": {
+        "smileys": true,
+        "nature": true
+      }
     },
     "voice": {
       "discard": "Supprimer l'enregistrement",
       "play": "Lire",
       "pause": "Pause",
-      "stop": "Arrêter l'enregistrement"
+      "stop": "Arrêter l'enregistrement",
+      "_pending_review": {
+        "pause": true
+      }
     },
     "composer": {
       "removeFile": "Retirer {name}",

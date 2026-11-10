@@ -2,7 +2,10 @@
   "staffNative": {
     "comingSoon": {
       "title": "Em breve",
-      "body": "Ainda estamos construindo esta tela. Volte em breve."
-    }
-  }
+      "body": "Ainda estamos construindo esta tela. Volte em breve.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

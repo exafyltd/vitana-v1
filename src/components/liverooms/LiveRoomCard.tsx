@@ -16,6 +16,8 @@ import { formatDuration } from '@/components/liverooms/liveRoomFormat';
 import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 export interface LiveRoom {
   id: string;
+  /** Host toggle (scheduled rooms): viewers may enter the waiting room from the scheduled time. */
+  allowEntryBeforeHost?: boolean;
   title: string;
   description?: string;
   host: {

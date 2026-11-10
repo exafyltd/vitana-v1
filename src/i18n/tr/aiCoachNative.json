@@ -38,11 +38,17 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "Sağlıklı yaşam"
+      "categoryWellness": "Sağlıklı yaşam",
+      "_pending_review": {
+        "provider": true
+      }
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "Kan belirteçleri"
+      "categoryBloodMarkers": "Kan belirteçleri",
+      "_pending_review": {
+        "provider": true
+      }
     },
     "chat": {
       "voice": "Sesli arama başlat",
@@ -61,7 +67,11 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · +{n} VTNA",
-      "total": ". Endeks şimdi {n}"
+      "total": ". Endeks şimdi {n}",
+      "_pending_review": {
+        "title": true,
+        "detail": true
+      }
     }
   }
 }

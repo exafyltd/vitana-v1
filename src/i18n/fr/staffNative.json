@@ -2,7 +2,10 @@
   "staffNative": {
     "comingSoon": {
       "title": "Bientôt disponible",
-      "body": "Nous construisons encore cet écran. Repasse bientôt."
-    }
-  }
+      "body": "Nous construisons encore cet écran. Repasse bientôt.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

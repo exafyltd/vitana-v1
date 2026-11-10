@@ -17,7 +17,10 @@
       "creditsStatusDescription": "Tvoji krediti su aktivni i spremni za upotrebu",
       "tokensDescription": "Vitana Network tokeni za odlučivanje i nagrade",
       "usdDescription": "Sredstva u američkim dolarima i fiat operacije",
-      "membershipDescription": "75% pokrića + ekskluzivne zdravstvene pogodnosti"
+      "membershipDescription": "75% pokrića + ekskluzivne zdravstvene pogodnosti",
+      "_pending_review": {
+        "tierPremium": true
+      }
     }
   }
 }

@@ -193,22 +193,13 @@
         "readOnly": "Le statut de cette commande ne peut pas être modifié ici.",
         "statusUpdated": "Statut modifié",
         "status": {
-          "awaiting_shipping_payment": "En attente du paiement de la livraison",
-          "paid": "Payée",
+          "awaiting_shipping_payment": "Paiement de l'expédition en attente",
+          "paid": "Payé",
           "fulfilling": "En préparation",
-          "shipped": "Expédiée",
-          "delivered": "Livrée",
-          "cancelled": "Annulée",
-          "refunded": "Remboursée",
-          "_pending_review": {
-            "awaiting_shipping_payment": true,
-            "paid": true,
-            "fulfilling": true,
-            "shipped": true,
-            "delivered": true,
-            "cancelled": true,
-            "refunded": true
-          }
+          "shipped": "Expédié",
+          "delivered": "Livré",
+          "cancelled": "Annulé",
+          "refunded": "Remboursé"
         },
         "_pending_review": {
           "newStatus": true,

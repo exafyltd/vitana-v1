@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "القسم بالكامل",
@@ -46,7 +54,10 @@
         "postsCommercial": "منشورات السوق",
         "postsPartnerSeek": "منشورات البحث عن شريك"
       },
-      "partnerSeekNote": "خاص دائمًا. بروتوكول الكشف المتبادل يحمي هذه المنشورات مهما كان الإعداد."
+      "partnerSeekNote": "خاص دائمًا. بروتوكول الكشف المتبادل يحمي هذه المنشورات مهما كان الإعداد.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "اسمح بالوصول إلى صورك من الإعدادات لاختيار صورة.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "جارٍ تحميل {current} من {total}...",
       "deleteTitle": "هل أنت متأكد؟",
       "deleteDescription": "سيتم حذف هذه الصورة نهائيًا. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

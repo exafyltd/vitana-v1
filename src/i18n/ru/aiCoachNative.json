@@ -38,11 +38,17 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "Велнес"
+      "categoryWellness": "Велнес",
+      "_pending_review": {
+        "provider": true
+      }
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "Показатели крови"
+      "categoryBloodMarkers": "Показатели крови",
+      "_pending_review": {
+        "provider": true
+      }
     },
     "chat": {
       "voice": "Начать голосовой звонок",
@@ -61,7 +67,11 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · +{n} VTNA",
-      "total": ". Индекс теперь {n}"
+      "total": ". Индекс теперь {n}",
+      "_pending_review": {
+        "title": true,
+        "detail": true
+      }
     }
   }
 }
