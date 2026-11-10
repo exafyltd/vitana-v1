@@ -333,6 +333,22 @@ export default function GroupChat() {
   // avatars, signed URLs grow the list after the first paint) until the member
   // touches or wheels the screen; then they scroll freely.
   const pinnedRef = useRef(true);
+  // VTID-05622: the list stays invisible until it is pinned to its opening position,
+  // so the member never sees it painted at the top and then scrolled down.
+  const [positioned, setPositioned] = useState(false);
+  // VTID-05670: the sticky composer covers the bottom of the list. Its measured
+  // height is added as bottom padding, so the newest message sits above it.
+  const footerRef = useRef<HTMLElement>(null);
+  const [footerH, setFooterH] = useState(0);
+  useLayoutEffect(() => {
+    const el = footerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const measure = () => setFooterH(el.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  });
   const pinTargetRef = useRef<string | null>(null);
   const highlightedRef = useRef(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -376,6 +392,7 @@ export default function GroupChat() {
   // Every new group or new target starts pinned again.
   useLayoutEffect(() => {
     pinnedRef.current = true;
+    setPositioned(false);
     pinTargetRef.current = initialScrollMessageId ?? null;
     highlightedRef.current = false;
     prevMessageCountRef.current = 0;
@@ -386,6 +403,7 @@ export default function GroupChat() {
   useLayoutEffect(() => {
     if (!ready) return;
     applyPin();
+    setPositioned(true);
     const raf = requestAnimationFrame(applyPin);
     const content = contentRef.current;
     const observer = typeof ResizeObserver !== "undefined" && content
@@ -765,7 +783,7 @@ export default function GroupChat() {
               <SpotlightRowsSkeleton count={6} />
             ) : (
               <section className="flex flex-col rounded-vcard border bg-card shadow-vcard">
-                <main ref={mainRef} tabIndex={-1} className="px-4 py-4 focus:outline-none">
+                <main ref={mainRef} tabIndex={-1} className="px-4 py-4 focus:outline-none" style={{ paddingBottom: footerH + 16, ...(positioned ? {} : { visibility: "hidden" as const }) }}>
                   <div ref={contentRef}>
                     {messages.length === 0 ? (
                       <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
@@ -812,7 +830,7 @@ export default function GroupChat() {
                     <div ref={streamEndRef} />
                   </div>
                 </main>
-                <footer className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
+                <footer ref={footerRef} className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
                   <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} focusAfterJump={() => mainRef.current} style={{ bottom: "calc(100% + 8px)" }} />
                   <MessageInput
                     threadId={group.id}
@@ -900,7 +918,7 @@ export default function GroupChat() {
       </header>
       {searchPanel}
 
-      <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none">
+      <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none" style={{ paddingBottom: footerH + 16, ...(positioned ? {} : { visibility: "hidden" as const }) }}>
         <div ref={contentRef}>
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-muted-foreground">
@@ -958,6 +976,7 @@ export default function GroupChat() {
       </main>
 
       <footer
+        ref={footerRef}
         className="sticky bottom-0 border-t bg-card px-2 pt-2"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.5rem)" }}
       >

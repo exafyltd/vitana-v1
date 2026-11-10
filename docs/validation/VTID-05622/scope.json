@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05622",
+  "kind": "fix",
+  "change_class": "frontend-simple",
+  "paths": [
+    "src/pages/messages/GroupChat.tsx",
+    "src/pages/messages/GroupChat.opening-position.vtid-05622.test.tsx",
+    "tests/e2e/staging/vtid-05622-group-chat-opens-at-newest.staging.spec.ts",
+    "docs/validation/VTID-05622/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

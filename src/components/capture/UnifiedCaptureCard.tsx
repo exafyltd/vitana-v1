@@ -16,7 +16,6 @@ import { ClientSTT } from "@/utils/clientSTT";
 import {
   DiaryAudioRecorder,
   markWebSpeechUnavailable,
-  shouldFallbackToBackendSTT,
   shouldUseBackendSTT,
   transcribeAudioBlob,
 } from "@/utils/diaryAudioRecorder";
@@ -315,7 +314,10 @@ export function UnifiedCaptureCard({
         if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
           return;
         }
-        if (shouldFallbackToBackendSTT(error, gotResultRef.current)) {
+        // Any Web Speech failure before a result means this runtime cannot
+        // recognise speech here (Android/Samsung WebView, Appilix, etc.). Fall
+        // back to MediaRecorder + backend transcription instead of stopping.
+        if (!gotResultRef.current && DiaryAudioRecorder.isSupported()) {
           switchToBackendSTT();
           return;
         }
@@ -347,7 +349,26 @@ export function UnifiedCaptureCard({
 
     gotResultRef.current = false;
     sttRef.current.setLanguage(sttLanguage);
-    sttRef.current.start();
+    try {
+      sttRef.current.start();
+    } catch (error) {
+      // start() can throw synchronously on some WebViews. Fall back instead of
+      // leaving the button dead.
+      console.error('[UnifiedCapture] Web Speech start() threw:', error);
+      sttRef.current = null;
+      if (DiaryAudioRecorder.isSupported()) {
+        markWebSpeechUnavailable();
+        setUseBackendSTT(true);
+        void startBackendRecording();
+      } else {
+        toast({
+          title: translate('capture.recognitionError'),
+          description: translate('capture.recognitionErrorDesc'),
+          variant: "destructive",
+        });
+      }
+      return;
+    }
     setIsRecording(true);
     isRecordingRef.current = true;
     setRecordingDuration(0);
