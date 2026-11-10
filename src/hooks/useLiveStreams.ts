@@ -18,6 +18,8 @@ export interface LiveStream {
   enable_recording: boolean;
   recording_status?: string;
   duration_minutes: number | null;
+  /** Host toggle: viewers may wait in the room from the scheduled time; the room auto-starts then. */
+  allow_entry_before_host?: boolean | null;
   created_by: string;
   created_at: string;
   updated_at: string;

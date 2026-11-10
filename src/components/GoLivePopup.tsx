@@ -63,6 +63,9 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [durationMinutes, setDurationMinutes] = useState<number>(60);
   const [enableChat, setEnableChat] = useState(true);
+  // Scheduled rooms only: viewers may enter a waiting room from the scheduled time,
+  // and the room goes live automatically at that time. Default off.
+  const [allowEntryBeforeHost, setAllowEntryBeforeHost] = useState(false);
   const [enablePolls, setEnablePolls] = useState(false);
   const [enableRecording, setEnableRecording] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -266,6 +269,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           stream_type: streamType,
           cover_image_url: uploadedImageUrl || undefined,
           enable_chat: enableChat,
+          // Only meaningful for a scheduled room (see the Schedule block).
+          allow_entry_before_host: !!scheduledIso && allowEntryBeforeHost,
           enable_polls: enablePolls,
           enable_recording: enableRecording,
           // Planned length → deterministic finish (start + duration). The
@@ -710,6 +715,20 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                           ))}
                         </SelectContent>
                       </Select>
+
+                      <div className="flex items-start justify-between gap-3 rounded-md border border-primary/40 bg-primary/5 p-3">
+                        <div>
+                          <p className="text-sm font-medium">{t('allowEntryBeforeHostTitle', 'Allow entry before I start')}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {t('allowEntryBeforeHostDesc', 'Viewers can wait in the room from the scheduled time. The room starts automatically at that time.')}
+                          </p>
+                        </div>
+                        <Switch
+                          checked={allowEntryBeforeHost}
+                          onCheckedChange={setAllowEntryBeforeHost}
+                          aria-label={t('allowEntryBeforeHostTitle', 'Allow entry before I start')}
+                        />
+                      </div>
 
                       <Button
                         variant="outline"
