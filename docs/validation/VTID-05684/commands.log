@@ -1,0 +1,20 @@
+# VTID-05684 commands.log — native-wave1-readiness-tests/roles
+# Checked SHA: vitana-v1 origin/main e31bf4627ff3c705c20f8e6b718ce4dd03353b7f (HEAD of branch at start; equal)
+
+## Task 0 — premises re-checked against origin/main (all hold; no premise stale)
+apps/mobile/jest.config.js: roots ['<rootDir>/tests'], testMatch ['**/*.test.ts','**/*.test.tsx'], preset jest-expo  -> OK
+apps/mobile/package.json: "test": "jest", "typecheck": "tsc --noEmit", pretest/pretypecheck run gen:i18n  -> OK
+src/shell/logic/role-labels.ts:7 ROLE_LABEL_KEY, :18 roleLabel  -> exist; git grep in apps/mobile/tests: 0 hits (gap confirmed)
+src/identity/useRoleSwitch.ts:26 isWebConsoleDestination  -> exists; git grep in tests: 0 hits
+src/identity/useRole.ts:29 NO_ACTIVE_TENANT, :43 community default, :39-40 success path -> exist; git grep NO_ACTIVE_TENANT in tests: 0 hits
+src/shell/logic/route-guard.ts:17 routeGuard, :10 COMMUNITY_PREFIXES (11), :31 backoffice -> /home -> OK
+tests/shell-logic.test.ts:182-198 table (12 rows) -> OK; tests/patient/gate-tabs-routes.test.tsx:99-102 also asserts 3 routeGuard pairs (excluded from R2)
+tests/helpers: providers.tsx fakeGateway(:24) makeWrapper(:34); supabase-double.ts fakeSession(:16) createSupabaseDouble(:25); mocks.ts, no-network.ts (export {}) -> OK
+src/i18n/index.ts: LOCALES (:16), isRTL (:40), translate, catalogs -> OK
+packages/core ROLE_LADDER (8 roles), getRoleSwitchDestination, isExternalRoleSwitchDestination, computeAvailableRoles -> OK (re-exported by src/ports/core.ts)
+
+## Red on base
+$ cd apps/mobile && npm ci   -> added 950 packages
+$ npm run gen:i18n           -> 11 locales, 1672 shards
+$ npx jest tests/wave1-readiness/roles --maxWorkers=2   (on origin/main: folder absent)
+  Pattern: tests/wave1-readiness/roles - 0 matches   (no tests found, as planned)
