@@ -20,3 +20,11 @@ $ npx jest tests/wave1-readiness/deeplinks-i18n --maxWorkers=2
 Test Suites: 5 passed, 5 total / Tests: 3 skipped, 129 passed, 132 total
 $ npx tsc --noEmit            -> exit 0
 $ npx jest --maxWorkers=2     -> Test Suites: 206 passed, 206 total / Tests: 3 skipped, 5750 passed, 5753 total
+
+## Preflight (local, head before this entry)
+$ node vitana-platform/scripts/collab/preflight.mjs --repo <wt> --base origin/main --head HEAD --branch kiro/native-wave1-readiness-tests/deeplinks-i18n --title "VTID-05682 (...)"
+PASS PR-GATE scope / sparring / weakening / red-green
+FAIL Lane scope [required] and Collab handoff [report-only]: lane file .kiro/specs/native-wave1-readiness-tests/lanes/deeplinks-i18n.md exists only on the open plan PR #4938 (expected until it merges)
+FAIL Kiro steering [report-only]: ".claude/rules/execution-continuity.md has no .kiro/steering twin" — a file already on origin/main, not touched by this lane
+
+$ git diff --stat origin/main   -> 10 files, only apps/mobile/tests/wave1-readiness/deeplinks-i18n/** and docs/validation/VTID-05682/**
