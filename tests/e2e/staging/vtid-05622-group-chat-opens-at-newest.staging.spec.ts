@@ -1,20 +1,25 @@
-// VTID-05622 — the group chat opens at its newest message and is never painted
-// at the top. Read-only: './staging-guard' aborts every write, nothing is clicked
-// except navigation to the first group the test account is in.
+// VTID-05622 / VTID-05670 — a group chat opens with its newest message fully
+// above the composer, and does not move afterwards. Read-only: './staging-guard'
+// aborts every write (sign-in is the only write allowed).
 //
-// Method: a requestAnimationFrame probe installed before the app loads records,
-// for every frame in which the group list is visible, whether the newest message is
-// cut by the composer and whether it moved after the list was first shown.
-// The test fails when there is no group to open.
+// The group is picked read-only from the app's own group list ("Alle Beisammen"
+// if the test user is in it, else any group they are already in) — the same pick
+// as the VTID-04921 spec. The app's own read-receipt and viewing calls on open
+// are aborted by the guard and declared below, so nothing is sent.
+//
+// Probe: for every animation frame in which the list is visible, record whether the
+// newest message's bottom edge is hidden behind the composer ("cut") and how far that
+// edge moved since the first visible frame ("movedPx").
 import type { APIRequestContext, Page } from '@playwright/test';
 import { test, expect } from './staging-guard';
 
 test.use({
   allowAbortedWrites:
-    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|orb\/)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/rpc\/[a-z_]+)/,
+    / https:\/\/(preview-aws-gateway\.vitanaland\.com\/api\/v1\/(rum\/beacon|diag\/notif-tap|analytics\/events\/batch|orb\/|chat\/read|chat\/viewing|chat\/groups\/[0-9a-f-]+\/read)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/rest\/v1\/(thread_presence|user_activity_log)|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/storage\/v1\/object\/sign\/chat-attachments\/|inmkhvwdcuyhnxkgfvsb\.supabase\.co\/(rest\/v1\/rpc\/[a-z_]+|functions\/v1\/list_my_memberships))/,
 });
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
+const GATEWAY = 'https://preview-aws-gateway.vitanaland.com';
 
 async function signIn(page: Page, request: APIRequestContext) {
   const email = process.env.TEST_USER_EMAIL ?? '';
@@ -42,20 +47,17 @@ async function signIn(page: Page, request: APIRequestContext) {
     localStorage.setItem('vitana.authToken', s.access_token);
     localStorage.setItem('vitana.viewRole', 'community');
   }, session);
+  return session as { access_token: string };
 }
 
-// Installed before any app script runs. For every animation frame in which the
-// conversation list is visible it records (a) whether the newest message's bottom
-// edge is hidden behind the composer ("cut"), and (b) how far that edge moved
-// since the first visible frame ("movedPx"). Both must stay at zero for the
-// opening: a cut or a movement is what a member sees as a scroll.
+// Installed before any app script runs; samples every animation frame.
 const PROBE = () => {
-  type Probe = { visibleFrames: number; cutFrames: number; worstCutPx: number; firstBottom: number | null; movedPx: number; lastBottom: number | null };
+  type Probe = { visibleFrames: number; cutFrames: number; worstCutPx: number; firstBottom: number | null; movedPx: number };
   const w = window as unknown as { __open: Probe };
-  w.__open = { visibleFrames: 0, cutFrames: 0, worstCutPx: 0, firstBottom: null, movedPx: 0, lastBottom: null };
+  w.__open = { visibleFrames: 0, cutFrames: 0, worstCutPx: 0, firstBottom: null, movedPx: 0 };
   const tick = () => {
     const main = document.querySelector<HTMLElement>('main[tabindex="-1"]');
-    if (main && /\/inbox\/g\//.test(location.pathname) && main.style.visibility !== 'hidden' && main.textContent && main.textContent.trim().length > 0) {
+    if (main && /\/inbox\/g\//.test(location.pathname) && main.style.visibility !== 'hidden' && (main.textContent ?? '').trim().length > 0) {
       const msgs = document.querySelectorAll<HTMLElement>('[id^="msg-"]');
       const last = msgs.length ? msgs[msgs.length - 1] : null;
       const footer = document.querySelector<HTMLElement>('footer');
@@ -65,8 +67,7 @@ const PROBE = () => {
         const cut = Math.round(bottom - limit);
         w.__open.visibleFrames += 1;
         if (w.__open.firstBottom === null) w.__open.firstBottom = bottom;
-        w.__open.movedPx = Math.max(w.__open.movedPx, Math.round(Math.abs(bottom - (w.__open.firstBottom as number))));
-        w.__open.lastBottom = bottom;
+        w.__open.movedPx = Math.max(w.__open.movedPx, Math.round(Math.abs(bottom - w.__open.firstBottom)));
         if (cut > 2) {
           w.__open.cutFrames += 1;
           w.__open.worstCutPx = Math.max(w.__open.worstCutPx, cut);
@@ -78,16 +79,22 @@ const PROBE = () => {
   requestAnimationFrame(tick);
 };
 
-test('a group chat is first shown at its newest message, never scrolled into view', async ({ page, request }) => {
+test('a group chat is first shown with its newest message fully above the composer, and does not move', async ({ page, request }) => {
   await page.addInitScript(PROBE);
-  await signIn(page, request);
-  await page.goto('/inbox', { waitUntil: 'domcontentloaded' });
-  const link = page.locator('a[href^="/inbox/g/"]').first();
-  await expect(link, 'the test account is in no group, so the opening check cannot run').toBeVisible({ timeout: 30_000 });
-  await link.click();
-  await page.waitForURL(/\/inbox\/g\//, { timeout: 30_000 });
+  const session = await signIn(page, request);
+
+  const groups = await request.get(`${GATEWAY}/api/v1/chat/groups/`, { headers: { Authorization: `Bearer ${session.access_token}` } });
+  expect(groups.status()).toBe(200);
+  const list = ((await groups.json()).data ?? []) as Array<{ id: string; name: string }>;
+  const group = list.find((g) => g.name.startsWith('Alle Beisammen')) ?? list[0];
+  expect(group, 'the test user is in no group, so the opening check cannot run').toBeTruthy();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`/inbox/g/${group!.id}`, { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('[id^="msg-"]').first()).toBeVisible({ timeout: 20_000 });
   await page.waitForLoadState('networkidle', { timeout: 20_000 }).catch(() => undefined);
   await page.waitForTimeout(1500);
+
   const probe = await page.evaluate(() => (window as unknown as { __open: { visibleFrames: number; cutFrames: number; worstCutPx: number; movedPx: number } }).__open);
   expect(probe.visibleFrames, 'the group list was never shown').toBeGreaterThan(0);
   expect(probe.cutFrames, `the newest message was hidden behind the composer in ${probe.cutFrames} frame(s), worst ${probe.worstCutPx}px`).toBe(0);
