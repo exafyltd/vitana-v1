@@ -18,3 +18,24 @@ $ cd apps/mobile && npm ci   -> added 950 packages
 $ npm run gen:i18n           -> 11 locales, 1672 shards
 $ npx jest tests/wave1-readiness/roles --maxWorkers=2   (on origin/main: folder absent)
   Pattern: tests/wave1-readiness/roles - 0 matches   (no tests found, as planned)
+
+## Green run (branch kiro/native-wave1-readiness-tests/roles)
+$ cd apps/mobile && npx jest tests/wave1-readiness/roles --maxWorkers=2
+  Test Suites: 1 skipped, 4 passed, 4 of 5 total
+  Tests:       3 skipped, 440 passed, 443 total
+$ npm run typecheck   -> tsc --noEmit, exit 0
+$ npx jest --maxWorkers=2   (whole apps/mobile suite)
+  Test Suites: 1 skipped, 205 passed, 205 of 206 total
+  Tests:       3 skipped, 6061 passed, 6064 total
+  Snapshots:   57 passed, 57 total
+
+$ git diff --stat origin/main   (only declared paths; docs at commit time of this log)
+   .../tests/wave1-readiness/roles/g1-skipped.test.ts |  21 +
+   .../wave1-readiness/roles/role-labels.test.ts      |  73 ++++
+   .../roles/route-guard-matrix.test.ts               | 424 +++++++++++++++++++++
+   .../tests/wave1-readiness/roles/use-role.test.tsx  | 112 ++++++
+   .../roles/web-console-destination.test.ts          |  64 ++++
+   docs/validation/VTID-05684/commands.log            |  32 ++
+   docs/validation/VTID-05684/plan-sparring.md        |   7 +
+   docs/validation/VTID-05684/scope.json              |  11 +
+   8 files changed, 744 insertions(+)
