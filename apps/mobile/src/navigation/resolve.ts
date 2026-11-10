@@ -58,6 +58,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/live-rooms',
   '/comm/members',
   '/comm/open-asks',
+  // VTID-05512: the post-checkout / wallet top-up return (exclusion row).
+  '/checkout/success',
   '/comm/talk-to-vitana',
   '/connectors',
   '/delete-account',
@@ -101,6 +103,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/my-tickets',
   '/native-ui-catalogue',
   '/oauth/complete',
+  // VTID-05512: the Stripe package / ticket returns (exclusion rows).
+  '/packages/success',
   '/oauth/consent',
   '/patient/appointments',
   '/patient/care-team',
@@ -139,12 +143,24 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/staff/time',
   '/staff/tools',
   '/support',
+  '/tickets/success',
+  // VTID-05512: DISCOVER.CART (the legacy `/cart` redirects here, REDIRECTS below).
+  '/universal-cart',
   '/terms',
   '/wallet',
   '/wallet/balance',
   '/wallet/rewards',
   '/wallet/subscriptions',
 ];
+
+/**
+ * Web `<Navigate replace>` routes (src/App.tsx) a deep link may still carry.
+ * VTID-05512: `/cart` → `/universal-cart` (App.tsx:1087, Phase 0: the
+ * Universal Cart is the one cart), query kept.
+ */
+export const REDIRECTS: Readonly<Record<string, string>> = {
+  '/cart': '/universal-cart',
+};
 
 /**
  * Dynamic native route files (`app/**\/[param].tsx`) a lane resolves as native, so
@@ -198,6 +214,9 @@ export function resolveWebPath(url: string, depth = 0): Resolution {
 
   if (NATIVE_ROUTES.includes(path)) return { kind: 'native', href: href(path, query), path, query };
   if (NATIVE_PATTERNS.some((p) => matchPattern(p, path))) return { kind: 'native', href: href(path, query), path, query };
+
+  const redirect = REDIRECTS[path];
+  if (redirect && depth < 3) return resolveWebPath(href(redirect, query), depth + 1);
 
   // A web route the phone shows elsewhere: follow the alias (most specific query first).
   const alias = ALIASES.filter((a) => matchPattern(a.route, path) && queryMatches(split(a.route).query, query)).sort(

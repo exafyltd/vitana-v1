@@ -1,0 +1,16 @@
+# VTID-05512 red on base — the lane's 5 new test files, run on the lane base (origin/kiro/native-wave2-discover-commerce-r2/discover @ c68982ec1a05c445e8609dd2d2688a38a2dd0e41, PR #1573) before the implementation
+# $ (apps/mobile) npm run gen:i18n && npx jest tests/discover-commerce/{product-detail,universal-cart,purchase-success,commerce-routes,commerce-i18n-rtl}.test.tsx
+# exit 1: 5 of 5 suites fail (the lane's modules do not exist), 0 tests run
+
+FAIL tests/discover-commerce/commerce-routes.test.tsx
+    Cannot find module '../../src/screens/commerce/ProductDetailScreen' from 'tests/discover-commerce/commerce-routes.test.tsx'
+FAIL tests/discover-commerce/commerce-i18n-rtl.test.tsx
+    Cannot find module '../../src/screens/commerce/ProductDetailScreen' from 'tests/discover-commerce/commerce-i18n-rtl.test.tsx'
+FAIL tests/discover-commerce/universal-cart.test.tsx
+    Cannot find module '../../src/screens/commerce/UniversalCartScreen' from 'tests/discover-commerce/universal-cart.test.tsx'
+FAIL tests/discover-commerce/purchase-success.test.tsx
+    Cannot find module '../../src/screens/commerce/CheckoutSuccessScreen' from 'tests/discover-commerce/purchase-success.test.tsx'
+FAIL tests/discover-commerce/product-detail.test.tsx
+    Cannot find module '../../src/ports/commerce' from 'tests/discover-commerce/product-detail.test.tsx'
+Test Suites: 5 failed, 5 total
+Tests:       0 total

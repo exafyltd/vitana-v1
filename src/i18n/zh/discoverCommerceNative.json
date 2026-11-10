@@ -201,6 +201,30 @@
       "gutHealth": "肠道健康",
       "herbs": "草本",
       "heartHealth": "心脏健康"
+    },
+    "commerce": {
+      "ticket": {
+        "tba": "待定",
+        "eventFallback": "活动",
+        "generalAdmission": "普通入场",
+        "loadError": "无法加载你的门票。请查看邮件中的确认信息。"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 我要去 {title}！",
+        "email": "邮件",
+        "emailSubject": "我的 {title} 门票",
+        "sms": "短信",
+        "copyLink": "复制链接",
+        "copied": "已复制！",
+        "openingWhatsapp": "正在打开 WhatsApp…",
+        "openingViber": "正在打开 Viber…",
+        "openingEmail": "正在打开邮件…",
+        "openingMessages": "正在打开短信…"
+      },
+      "package": {
+        "failedToVerify": "无法验证付款",
+        "unableToVerify": "无法验证你的购买。请联系支持团队。"
+      }
     }
   }
 }

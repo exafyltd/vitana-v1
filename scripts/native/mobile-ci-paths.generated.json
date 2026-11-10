@@ -41,6 +41,7 @@
     "src/lib/audiobook/queue.ts",
     "src/lib/business-mode.ts",
     "src/lib/chatMarkdown.ts",
+    "src/lib/checkout-idempotency.ts",
     "src/lib/currency-convert.ts",
     "src/lib/discover-reason.ts",
     "src/lib/exchangeRates.ts",
