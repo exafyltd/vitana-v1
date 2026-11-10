@@ -35,7 +35,7 @@ describe('runNativeNavigation (pure mapping)', () => {
     expect(pushed).toEqual(['/maxina']);
   });
 
-  it('a route that has no native screen yet ⇒ not_found native_screen_not_ported, nothing pushed', () => {
+  it('a registry screen that is not ported yet ⇒ not_found native_screen_not_ported, nothing pushed', () => {
     const { deps, pushed } = navDeps();
     // /admin/activity: a web console route the browser opens (ledger out:system-browser), so it never has a native screen.
     // (MEMORY.DIARY → /daily-diary?tab=health was the example until the diary lane ported it, VTID-05426.)
