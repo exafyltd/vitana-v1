@@ -1,0 +1,8 @@
+{
+  "vtid": "VTID-05617",
+  "change_class": "frontend-simple",
+  "paths": [
+    "src/components/capture/UnifiedCaptureCard.tsx",
+    "src/components/capture/UnifiedCaptureCard.test.tsx"
+  ]
+}

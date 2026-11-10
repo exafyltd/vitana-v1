@@ -313,7 +313,9 @@ export function VitanaIndexSheet() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent side="right" className="overflow-y-auto">
+      {/* z-[60]: the chat layer is z-[55]. Opened from inside the chat, the default z-50 put the sheet
+          under that full-screen layer, so the screen looked frozen with the sheet hidden. */}
+      <SheetContent side="right" className="overflow-y-auto z-[60]">
         <SheetHeader>
           <SheetTitle className="text-xl font-semibold">{t('screens.health.yourIndex')}</SheetTitle>
           {tierLabel && (

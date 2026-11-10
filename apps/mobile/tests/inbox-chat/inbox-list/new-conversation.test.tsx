@@ -166,3 +166,37 @@ describe('new-conversation sheet', () => {
     expect(screen.queryByTestId('inbox-new-group-name')).toBeNull();
   });
 });
+
+// VTID-05674 — "+ Neu" on the Gruppen tab opens group creation directly; on the
+// other tabs it stays the one-to-one sheet.
+describe('group creation from the Gruppen tab (VTID-05674)', () => {
+  async function openOnTab(tab: 'groups' | 'direct') {
+    const h = inboxWrapper(loadedRoutes, { tables: loadedTables, rpc });
+    render(<InboxScreen />, { wrapper: h.wrapper });
+    await waitFor(() => expect(screen.getByTestId('inbox-card-u-anna')).toBeTruthy());
+    fireEvent.press(screen.getByTestId(`inbox-filter-${tab}`));
+    fireEvent.press(screen.getByTestId('inbox-new'));
+    return h;
+  }
+
+  it('on the Gruppen tab, + Neu opens in group mode with an empty name field', async () => {
+    await openOnTab('groups');
+    expect(screen.getByTestId('inbox-new-group-name').props.value).toBe('');
+  });
+
+  it('on the Direct tab, + Neu stays the one-to-one sheet', async () => {
+    await openOnTab('direct');
+    expect(screen.queryByTestId('inbox-new-group-name')).toBeNull();
+  });
+
+  it('group creation needs a name and at least one member before it can start', async () => {
+    await openOnTab('groups');
+    expect(screen.getByTestId('inbox-new-start').props.accessibilityState).toMatchObject({ disabled: true });
+    fireEvent.changeText(screen.getByTestId('inbox-new-group-name'), 'Testgruppe');
+    expect(screen.getByTestId('inbox-new-start').props.accessibilityState).toMatchObject({ disabled: true });
+    await search('Cleo');
+    await waitFor(() => expect(screen.getByTestId('inbox-new-add-u-cleo')).toBeTruthy());
+    fireEvent.press(screen.getByTestId('inbox-new-add-u-cleo'));
+    expect(screen.getByTestId('inbox-new-start').props.accessibilityState).toMatchObject({ disabled: false });
+  });
+});
