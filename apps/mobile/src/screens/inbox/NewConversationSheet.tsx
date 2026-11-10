@@ -49,12 +49,15 @@ export function NewConversationSheet({
   context,
   onGroupCreated,
   initialRecipientId,
+  startAsGroup = false,
 }: {
   open: boolean;
   onClose: () => void;
   context: 'global' | 'tenant';
   onGroupCreated?: () => void;
   initialRecipientId?: string | null;
+  /** VTID-05674: opened from the Gruppen tab — start in group mode (name + members). */
+  startAsGroup?: boolean;
 }): ReactElement {
   const { colors } = useUITheme();
   const { t, fallbacks } = useInboxText();
@@ -86,8 +89,18 @@ export function NewConversationSheet({
     };
   }, [open, initialRecipientId]);
 
-  // More than one member → group mode with a prefilled name; back to one → direct.
+  // VTID-05674: every open starts in the mode it was opened with, so state from a
+  // previous open (or a tab switch) never carries over.
   useEffect(() => {
+    if (!open) return;
+    setGroupMode(startAsGroup);
+    setGroupName('');
+  }, [open, startAsGroup]);
+
+  // More than one member → group mode with a prefilled name; back to one → direct.
+  // In group mode from the Gruppen tab, the mode is fixed: the name is typed, not prefilled.
+  useEffect(() => {
+    if (startAsGroup) return;
     if (selected.length > 1 && !groupMode) {
       setGroupMode(true);
       if (!groupName) setGroupName(defaultGroupName(selected));
@@ -95,7 +108,7 @@ export function NewConversationSheet({
       setGroupMode(false);
       setGroupName('');
     }
-  }, [selected, groupMode, groupName]);
+  }, [selected, groupMode, groupName, startAsGroup]);
 
   useEffect(() => {
     if (!groupMode) return undefined;
@@ -134,7 +147,7 @@ export function NewConversationSheet({
     setQuery('');
     setResults([]);
     setSelected([]);
-    setGroupMode(false);
+    setGroupMode(startAsGroup);
     setGroupName('');
   };
 
