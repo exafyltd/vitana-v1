@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05650",
+  "service": "community-app",
+  "_note": "Native Wave 2 fix-forward lane public-entry. The change is in apps/mobile (the native app), which has no staging deployment and no production profile; it is proven offline with jest-expo and RNTL (fake link router deps, fake auth, no network). This lane deploys nothing, makes no staging call and writes nothing to Supabase or the gateway. Device runtime (cold-start invite on a phone, storefront screenshot parity at 390x844 against the read-only staging web `/`) is deferred to G1 as next_actor: owner and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/public-entry tests/index.test.tsx tests/resolve-link.test.ts tests/public/i18n-routes.test.tsx tests/g1-smoke/deep-link.test.ts", "cwd": "apps/mobile",
+      "reason": "invite cold start and warm (heldPublic, no sign-in hold), non-invite links still wait for sign-in, `/` signed out renders the storefront, signed in goes to /home, loading shows the loader, ledger PUBLIC.LANDING is native" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "link router and app/index.tsx type-check" },
+    { "kind": "existing", "ref": "npm test -- --maxWorkers=2", "cwd": "apps/mobile", "reason": "full native suite" },
+    { "kind": "existing", "ref": "npm run deps:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development", "EXPO_OFFLINE": "1" }, "reason": "no new dependency" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" }, "reason": "Metro + Hermes bundle for iOS and Android" }
+  ],
+  "deferred_g1": [
+    { "flow": "cold-start invite link on a device", "target": "/i/<code>", "next_actor": "owner", "reason": "needs the isolated G1 environment" },
+    { "flow": "storefront at / on a device", "target": "/", "next_actor": "owner", "reason": "screenshot parity against the read-only staging web needs the G1 environment" }
+  ]
+}
