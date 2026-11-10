@@ -141,6 +141,7 @@ export function liveRoomEventToRoom(e: CommunityEvent): LiveRoom {
     description: s.description || undefined,
     host: { id: s.created_by, name: e.creator_display_name || '', avatar: e.creator_avatar_url },
     isLive: meta.is_live,
+    allowEntryBeforeHost: !!s.allow_entry_before_host,
     scheduledTime: s.scheduled_for || undefined,
     startingSoon: meta.is_due,
     startedAt: s.started_at || undefined,

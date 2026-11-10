@@ -604,6 +604,12 @@ export function LiveRoomDrawer({
             </div>
           ) : (
             <div className="space-y-2">
+              {/* Waiting room: due + host enabled entry-before-host → viewers join and wait (plan v3). */}
+              {room.allowEntryBeforeHost && room.scheduledTime && new Date(room.scheduledTime).getTime() <= Date.now() && (
+                <Button size="lg" className="w-full" onClick={handleJoin}>
+                  {t('screens.liverooms.joinRoom')}
+                </Button>
+              )}
               <div className="flex items-center gap-2">
                 <Button size="lg" variant="outline" className="flex-1 min-w-0" onClick={handleNotifyMe}>
                   <Bell className={cn("w-4 h-4 me-2 shrink-0", isNotifying && "fill-current")} />
