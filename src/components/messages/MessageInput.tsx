@@ -133,17 +133,19 @@ const MessageInput: React.FC<MessageInputProps> = ({
     disabled: mentionCandidates === undefined,
   });
 
-  // Auto-resize textarea with proper row limits (1-6 rows) and update CSS var
+  // Auto-resize textarea with proper row limits (1-6 rows; group composers stay on one row) and update CSS var
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
       // Reset height to calculate scrollHeight properly
       textarea.style.height = 'auto';
-      
+
       // Calculate line height (approximately 24px for default text)
       const lineHeight = 24;
       const minHeight = lineHeight; // 1 row
-      const maxHeight = lineHeight * 6; // 6 rows max
+      // A group composer never grows past one row. scrollHeight includes the textarea's py-2 padding (16px),
+      // so the one-row cap has to include it too, or the single line is clipped.
+      const maxHeight = conversationType === 'group' ? lineHeight + 16 : lineHeight * 6;
       
       // Set height based on content, clamped to min/max
       const newHeight = Math.max(minHeight, Math.min(textarea.scrollHeight, maxHeight));
@@ -156,7 +158,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       const totalComposerHeight = newHeight + 32; // padding and borders
       document.documentElement.style.setProperty('--composer-h', `${Math.max(56, totalComposerHeight)}px`);
     }
-  }, [message]);
+  }, [message, conversationType]);
 
   // WhatsApp-style typing indicator logic
   const handleTypingStart = () => {

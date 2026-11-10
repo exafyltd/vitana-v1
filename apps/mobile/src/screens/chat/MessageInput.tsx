@@ -325,7 +325,7 @@ export function MessageInput({
                   rows={1}
                   accessibilityLabel={t('screens.messages.messageComposer')}
                   testID="message-input-field"
-                  style={[styles.field, { backgroundColor: colors.muted }]}
+                  style={[styles.field, { backgroundColor: colors.muted }, conversationType === 'group' ? styles.fieldOneRow : null]}
                 />
               </View>
             </View>
@@ -375,6 +375,8 @@ const styles = StyleSheet.create({
   icon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   fieldBox: { flex: 1, minWidth: 0 },
   field: { minHeight: 40, maxHeight: 120, borderWidth: 0, fontSize: 16 },
+  // Group composer: never more than one row, whatever the group name makes the placeholder do.
+  fieldOneRow: { minHeight: 40, maxHeight: 40 },
   send: { width: 36, height: 36, borderRadius: 18 },
   strip: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingHorizontal: 8, paddingBottom: 8 },
   chip: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6, maxWidth: 260 },

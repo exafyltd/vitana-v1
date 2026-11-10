@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05613",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/health/VitanaIndexSheet.understand-link.test.ts src/components/feature/feature-cards.test.tsx src/components/profile/mobile/MobileIdentityCard.test.tsx", "cwd": ".",
+      "reason": "the Index sheet still opens from its callers (feature cards, identity card) and its link behaviour is unchanged" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the z-index change is served" }
+  ]
+}

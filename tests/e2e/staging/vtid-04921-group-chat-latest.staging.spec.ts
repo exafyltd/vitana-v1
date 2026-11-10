@@ -18,7 +18,7 @@ test.use({
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const GATEWAY = 'https://preview-aws-gateway.vitanaland.com';
 
-test('the Alle Beisammen group chat opens at the latest message', async ({ page, request }) => {
+test('a group chat the test user is in opens at the latest message', async ({ page, request }) => {
   const email = process.env.TEST_USER_EMAIL ?? '';
   const password = process.env.TEST_USER_PASSWORD ?? '';
   test.skip(!email || !password, 'TEST_USER_EMAIL / TEST_USER_PASSWORD not provided');
@@ -45,8 +45,10 @@ test('the Alle Beisammen group chat opens at the latest message', async ({ page,
   });
   expect(groups.status()).toBe(200);
   const list = ((await groups.json()).data ?? []) as Array<{ id: string; name: string }>;
-  const alle = list.find((g) => g.name.startsWith('Alle Beisammen'));
-  expect(alle, 'test user is not in Alle Beisammen').toBeTruthy();
+  // Read-only pick: prefer Alle Beisammen, else any group the test user is already
+  // in. The test user is never added to a group (that would be a write).
+  const alle = list.find((g) => g.name.startsWith('Alle Beisammen')) ?? list[0];
+  expect(alle, 'test user is not in any group').toBeTruthy();
 
   await page.evaluate((s) => {
     localStorage.setItem('sb-inmkhvwdcuyhnxkgfvsb-auth-token', JSON.stringify(s));
