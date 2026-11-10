@@ -1,0 +1,76 @@
+FAIL tests/media/data.test.ts
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/media/data/storage' from 'tests/media/data.test.ts'
+      20 |
+      21 | jest.mock('../../src/screens/media/data/storage', () => ({
+    > 22 |   ...jest.requireActual('../../src/screens/media/data/storage'),
+         |                         ^
+      23 |   readFileBytes: jest.fn(async (uri: string) => new TextEncoder().encode(uri).buffer),
+      24 | }));
+      25 |
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.<anonymous> (tests/media/data.test.ts:22:25)
+FAIL tests/media/lane-guards.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../app/(app)/community/media-hub' from 'tests/media/lane-guards.test.tsx'
+      14 | import { catalogs, LOCALES } from '../../src/i18n';
+      15 | import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
+    > 16 | import CommunityRedirect from '../../app/(app)/community/media-hub';
+         | ^
+      17 | import { redirects, searchParams } from './mocks';
+      18 |
+      19 | const APP = resolve(__dirname, '../..');
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/media/lane-guards.test.tsx:16:1)
+PASS tests/media/app-config-media.test.ts
+FAIL tests/media/assets.test.ts
+  ● demo short thumbnails › shorts-morning-stretch.jpg equals the web file
+    ENOENT: no such file or directory, open '/projects/sandbox/wt/redbase-media/apps/mobile/src/screens/media/assets/shorts-morning-stretch.jpg'
+      10 |
+      11 | const APP = join(__dirname, '../..');
+    > 12 | const sha = (file: string) => createHash('sha256').update(readFileSync(file)).digest('hex');
+         |                                                                       ^
+      13 |
+      14 | describe('demo short thumbnails', () => {
+      15 |   it.each(['shorts-morning-stretch.jpg', 'shorts-healthy-breakfast.jpg', 'shorts-breathing-exercise.jpg'])('%s equals the web file', (name) => {
+      at sha (tests/media/assets.test.ts:12:71)
+      at sha (tests/media/assets.test.ts:16:12)
+  ● demo short thumbnails › shorts-healthy-breakfast.jpg equals the web file
+    ENOENT: no such file or directory, open '/projects/sandbox/wt/redbase-media/apps/mobile/src/screens/media/assets/shorts-healthy-breakfast.jpg'
+      10 |
+      11 | const APP = join(__dirname, '../..');
+    > 12 | const sha = (file: string) => createHash('sha256').update(readFileSync(file)).digest('hex');
+         |                                                                       ^
+      13 |
+      14 | describe('demo short thumbnails', () => {
+      15 |   it.each(['shorts-morning-stretch.jpg', 'shorts-healthy-breakfast.jpg', 'shorts-breathing-exercise.jpg'])('%s equals the web file', (name) => {
+      at sha (tests/media/assets.test.ts:12:71)
+      at sha (tests/media/assets.test.ts:16:12)
+  ● demo short thumbnails › shorts-breathing-exercise.jpg equals the web file
+    ENOENT: no such file or directory, open '/projects/sandbox/wt/redbase-media/apps/mobile/src/screens/media/assets/shorts-breathing-exercise.jpg'
+      10 |
+      11 | const APP = join(__dirname, '../..');
+    > 12 | const sha = (file: string) => createHash('sha256').update(readFileSync(file)).digest('hex');
+         |                                                                       ^
+      13 |
+      14 | describe('demo short thumbnails', () => {
+      15 |   it.each(['shorts-morning-stretch.jpg', 'shorts-healthy-breakfast.jpg', 'shorts-breathing-exercise.jpg'])('%s equals the web file', (name) => {
+      at sha (tests/media/assets.test.ts:12:71)
+      at sha (tests/media/assets.test.ts:16:12)
+FAIL tests/media/media-hub.test.tsx
+  ● Test suite failed to run
+    Cannot find module '../../src/screens/media/MediaHubScreen' from 'tests/media/media-hub.test.tsx'
+      12 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+      13 | import { overlayBus } from '../../src/navigation/overlay-bus';
+    > 14 | import { MediaHubScreen } from '../../src/screens/media/MediaHubScreen';
+         | ^
+      15 | import { __resetMutedPreferenceForTests } from '../../src/screens/media/ShortSlide';
+      16 | import { COMMENTS, SHORTS, makeFake, mediaWrapper, short, TRACKS, USER } from './helpers';
+      17 |
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/media/media-hub.test.tsx:14:1)
+Test Suites: 4 failed, 1 passed, 5 total
+Tests:       3 failed, 5 passed, 8 total
+Snapshots:   0 total
+Time:        16.119 s
+Ran all test suites matching /tests\/media/i.
