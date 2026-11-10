@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05680",
+  "lane": "native-iap-interface/iap-interface",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/iap/**",
+    "apps/mobile/tests/iap/**",
+    "docs/validation/VTID-05680/**"
+  ],
+  "not_touched": [
+    "apps/mobile/src/config/remote-config.ts (flag lives in src/iap/flag.ts)",
+    "apps/mobile/package.json and package-lock.json (no dependency)",
+    "apps/mobile/app.config.ts, screens, drawer, isIAPRestricted()",
+    "every existing test"
+  ],
+  "sparring_record": "docs/validation/VTID-05680/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

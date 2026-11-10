@@ -1,0 +1,14 @@
+VTID-05680 native-iap-interface/iap-interface: commands run and results
+Worktree: /projects/sandbox/wt/b-iap-interface (branch kiro/native-iap-interface/iap-interface, base origin/main e31bf4627)
+
+== Setup
+- npm ci (apps/mobile): exit 0
+
+== Red on base (tests written first; src/iap did not exist)
+- npx jest tests/iap --ci --maxWorkers=2 -> exit 1  Test Suites: 2 failed, 2 total  (Cannot find module '../../src/iap'; isolation "src/iap exists" fails)
+  Saved: docs/validation/VTID-05680/red-on-base.txt  (commit 0eeb38da0)
+
+== Green
+- npx jest tests/iap --ci --maxWorkers=2 -> exit 0  Test Suites: 2 passed  Tests: 12 passed
+- npm run typecheck (apps/mobile) -> exit 0
+- npm test -- --ci --maxWorkers=2 (apps/mobile) -> exit 0  Test Suites: 203 passed  Tests: 5633 passed
