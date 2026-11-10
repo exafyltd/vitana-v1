@@ -2,7 +2,10 @@
   "walletRewardsNative": {
     "tabsLabel": "Ödül bölümleri",
     "shop": {
-      "birthDatePlaceholder": "YYYY-AA-GG"
-    }
-  }
+      "birthDatePlaceholder": "YYYY-AA-GG",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

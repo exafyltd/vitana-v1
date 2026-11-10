@@ -7,10 +7,14 @@
       "overview": "نظرة عامة",
       "balance": "الرصيد والمزايا",
       "subscriptions": "الاشتراكات",
-      "rewards": "المكافآت والعمولات"
+      "rewards": "المكافآت والعمولات",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "40 دقيقة/شهر · جلسة واحدة"
-    }
-  }
+      "freeLiveRooms": "40 دقيقة/شهر · جلسة واحدة",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

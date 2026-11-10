@@ -23,57 +23,41 @@
     },
     "notifications": {
       "tabs": {
-        "_pending_review": {
-          "notifications": true,
-          "categories": true,
-          "activity": true,
-          "compose": true
-        },
-        "notifications": "Notifications",
-        "categories": "Categories",
-        "activity": "Activity",
-        "compose": "Send"
+        "notifications": "Powiadomienia",
+        "categories": "Kategorie",
+        "activity": "Aktywność",
+        "compose": "Wyślij"
       }
     },
     "rewardsShop": {
       "title": "Zarządzaj sklepem z nagrodami",
-      "description": "Produkty, koszty wysyłki i zamówienia sklepu z nagrodami.",
+      "description": "Przedmioty, opłaty za wysyłkę i zamówienia ze sklepu z nagrodami.",
       "openLink": "Sklep z nagrodami",
-      "loading": "Ładowanie …",
+      "loading": "Ładowanie…",
       "retry": "Spróbuj ponownie",
       "refresh": "Odśwież",
-      "forbiddenTitle": "Tylko dla administratorów Exafy",
-      "forbiddenBody": "Sklepem z nagrodami mogą zarządzać tylko administratorzy Exafy. Twoje konto nie ma tego uprawnienia.",
+      "forbiddenTitle": "Tylko administratorzy Exafy",
+      "forbiddenBody": "Tylko administratorzy Exafy mogą zarządzać sklepem z nagrodami. Twoje konto nie ma tego uprawnienia.",
       "sectionLabel": "Sekcja",
       "sections": {
-        "items": "Produkty",
-        "fees": "Koszty wysyłki",
-        "orders": "Zamówienia",
-        "_pending_review": {
-          "items": true,
-          "fees": true,
-          "orders": true
-        }
+        "items": "Przedmioty",
+        "fees": "Opłaty za wysyłkę",
+        "orders": "Zamówienia"
       },
       "fulfilment": {
         "ship": "Wysyłka",
         "event": "Bilet na wydarzenie",
-        "digital": "Cyfrowy",
-        "_pending_review": {
-          "ship": true,
-          "event": true,
-          "digital": true
-        }
+        "digital": "Cyfrowe"
       },
       "items": {
-        "count": "Produkty: {count}",
-        "newItem": "Nowy produkt",
-        "empty": "Brak produktów. Dodaj pierwszy.",
+        "count": "{count} przedmiotów",
+        "newItem": "Nowy przedmiot",
+        "empty": "Brak przedmiotów. Dodaj pierwszy.",
         "edit": "Edytuj",
-        "active": "Aktywny",
-        "inactive": "Nieaktywny",
+        "active": "Aktywne",
+        "inactive": "Nieaktywne",
         "activeToggle": "Włącz {title}",
-        "toggleFailed": "Nie udało się przełączyć: {reason}",
+        "toggleFailed": "Nie udało się włączyć: {reason}",
         "price": "{amount} VTNA",
         "approx": "≈ {money}",
         "stock": "Stan: {count}",
@@ -81,17 +65,6 @@
         "reserved": "Zarezerwowane: {count}",
         "noPhoto": "Brak zdjęcia",
         "_pending_review": {
-          "count": true,
-          "newItem": true,
-          "empty": true,
-          "edit": true,
-          "active": true,
-          "inactive": true,
-          "activeToggle": true,
-          "toggleFailed": true,
-          "price": true,
-          "approx": true,
-          "stock": true,
           "stockUnlimited": true,
           "reserved": true,
           "noPhoto": true
@@ -328,17 +301,6 @@
           "readOnly": true,
           "statusUpdated": true
         }
-      },
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
-        "sectionLabel": true
       }
     }
   }

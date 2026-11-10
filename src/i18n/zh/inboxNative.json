@@ -36,7 +36,10 @@
       "warriorsName": "周末勇士",
       "warriorsMessage": "下一次徒步安排在……",
       "kimName": "金医生",
-      "kimMessage": "2 周后复诊"
+      "kimMessage": "2 周后复诊",
+      "_pending_review": {
+        "martinezName": true
+      }
     },
     "presence": {
       "online": "在线",
@@ -46,6 +49,9 @@
     "datePlaceholder": "YYYY-MM-DD",
     "permissions": {
       "contactsUsage": "只有当你点按“从手机导入联系人”时，Vitana 才会读取你的联系人，以便你查看哪些朋友已经在 Vitanaland 上。"
+    },
+    "_pending_review": {
+      "datePlaceholder": true
     }
   }
 }

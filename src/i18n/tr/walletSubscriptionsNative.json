@@ -7,10 +7,14 @@
       "overview": "Genel bakış",
       "balance": "Bakiye ve avantajlar",
       "subscriptions": "Abonelikler",
-      "rewards": "Ödüller ve komisyonlar"
+      "rewards": "Ödüller ve komisyonlar",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "40 dk/ay · 1 oturum"
-    }
-  }
+      "freeLiveRooms": "40 dk/ay · 1 oturum",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

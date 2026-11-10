@@ -17,7 +17,10 @@
       "creditsStatusDescription": "Tes crédits sont actifs et prêts à l’emploi",
       "tokensDescription": "Jetons Vitana Network pour la gouvernance et les récompenses",
       "usdDescription": "Avoirs en dollars US et opérations en monnaie fiduciaire",
-      "membershipDescription": "75 % de couverture + avantages santé exclusifs"
+      "membershipDescription": "75 % de couverture + avantages santé exclusifs",
+      "_pending_review": {
+        "tierPremium": true
+      }
     }
   }
 }

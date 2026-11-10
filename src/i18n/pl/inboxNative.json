@@ -20,7 +20,10 @@
       "healthcare": "Zdrowie",
       "fitness": "Fitness",
       "nutrition": "Odżywianie",
-      "activities": "Aktywności"
+      "activities": "Aktywności",
+      "_pending_review": {
+        "fitness": true
+      }
     },
     "archiveType": {
       "group": "Grupa",
@@ -36,12 +39,18 @@
       "warriorsName": "Weekendowi wojownicy",
       "warriorsMessage": "Następna wędrówka zaplanowana na...",
       "kimName": "dr Kim",
-      "kimMessage": "Kontrola za 2 tygodnie"
+      "kimMessage": "Kontrola za 2 tygodnie",
+      "_pending_review": {
+        "martinezName": true
+      }
     },
     "presence": {
       "online": "Aktywny",
       "away": "Zaraz wracam",
-      "offline": "Offline"
+      "offline": "Offline",
+      "_pending_review": {
+        "offline": true
+      }
     },
     "datePlaceholder": "RRRR-MM-DD",
     "permissions": {

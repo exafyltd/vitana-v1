@@ -23,6 +23,10 @@
         "benefit3": "90-dniowa subskrypcja Vitana+",
         "benefit4": "Priorytetowa rezerwacja + korzyści VIP"
       }
+    },
+    "_pending_review": {
+      "brand": true,
+      "wellnessFallback": true
     }
   }
 }

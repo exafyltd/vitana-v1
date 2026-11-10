@@ -36,7 +36,10 @@
         "theyWillSee": "Ils verront ta publication dans leur chat.",
         "defaultTitle": "Une publication Vitana",
         "defaultText": "Regarde ça sur Vitana",
-        "fromVitana": "De Vitana"
+        "fromVitana": "De Vitana",
+        "_pending_review": {
+          "errorBody": true
+        }
       },
       "orders": {
         "eventTicket": "Billet d'événement",
@@ -56,7 +59,10 @@
           "earlyBird": "Prévente",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "Yoga du matin",
-          "retreatTitle": "Retraite de méditation du Nouvel An"
+          "retreatTitle": "Retraite de méditation du Nouvel An",
+          "_pending_review": {
+            "summitTitle": true
+          }
         },
         "status": {
           "upcoming": "À venir",
@@ -77,7 +83,10 @@
           "ticket": "Billet",
           "voucher": "Bon",
           "product": "Produit",
-          "service": "Service"
+          "service": "Service",
+          "_pending_review": {
+            "service": true
+          }
         }
       },
       "tickets": {
@@ -98,7 +107,10 @@
         "openingWhatsapp": "Ouverture de WhatsApp…",
         "openingViber": "Ouverture de Viber…",
         "openingEmail": "Ouverture de l’e-mail…",
-        "openingMessages": "Ouverture des messages…"
+        "openingMessages": "Ouverture des messages…",
+        "_pending_review": {
+          "sms": true
+        }
       },
       "booking": {
         "sessionTitle": "Séance : {title}",
@@ -200,7 +212,10 @@
       "beauty": "Beauté",
       "gutHealth": "Santé intestinale",
       "herbs": "Plantes",
-      "heartHealth": "Santé cardiaque"
+      "heartHealth": "Santé cardiaque",
+      "_pending_review": {
+        "performance": true
+      }
     }
   }
 }

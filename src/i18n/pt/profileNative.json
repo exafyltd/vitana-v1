@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Seção inteira",
@@ -46,7 +54,10 @@
         "postsCommercial": "Publicações do marketplace",
         "postsPartnerSeek": "Publicações de busca de parceiro"
       },
-      "partnerSeekNote": "Sempre privado. O protocolo de revelação mútua protege essas publicações, independentemente da opção."
+      "partnerSeekNote": "Sempre privado. O protocolo de revelação mútua protege essas publicações, independentemente da opção.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Permita o acesso às suas fotos nos Ajustes para escolher uma imagem.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "Carregando {current} de {total}...",
       "deleteTitle": "Você tem certeza?",
       "deleteDescription": "Esta foto será excluída permanentemente. Esta ação não pode ser desfeita."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

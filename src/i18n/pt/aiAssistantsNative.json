@@ -1,7 +1,10 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}"
+      "errorDetail": "{message}",
+      "_pending_review": {
+        "errorDetail": true
+      }
     },
     "voice": {
       "preview": "Ouvir voz",
@@ -9,7 +12,11 @@
       "previewPhrase": "Olá, esta é uma prévia das configurações de voz que você escolheu.",
       "previewUnavailable": "A prévia não está disponível para este idioma neste dispositivo.",
       "speedValue": "{value}x",
-      "volumeValue": "{value}%"
+      "volumeValue": "{value}%",
+      "_pending_review": {
+        "speedValue": true,
+        "volumeValue": true
+      }
     },
     "proactive": {
       "playSample": "Tocar saudação de exemplo",
@@ -22,6 +29,9 @@
         "wellness_check": "Check-ins de bem-estar",
         "motivational": "Mensagens motivacionais",
         "reminder": "Lembretes de ações"
+      },
+      "_pending_review": {
+        "quoted": true
       }
     },
     "referrals": {

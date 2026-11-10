@@ -7,10 +7,14 @@
       "overview": "概览",
       "balance": "余额与权益",
       "subscriptions": "订阅",
-      "rewards": "奖励与佣金"
+      "rewards": "奖励与佣金",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "每月 40 分钟 · 1 场"
-    }
-  }
+      "freeLiveRooms": "每月 40 分钟 · 1 场",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
