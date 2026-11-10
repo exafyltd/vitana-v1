@@ -1,7 +1,7 @@
 {
   "vtid": "VTID-05647",
   "lane": "native-shell-fixes-r2/shell-fixes",
-  "kind": "fix",
+  "kind": "feature",
   "paths": [
     "apps/mobile/src/identity/GuidedModeProvider.tsx",
     "apps/mobile/src/shell/AuthGate.tsx",
