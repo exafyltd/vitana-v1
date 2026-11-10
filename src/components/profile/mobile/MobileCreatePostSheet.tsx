@@ -12,7 +12,7 @@ import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
 import { getPostBackground } from '@/lib/post-backgrounds';
 import type { PostMention } from '@/lib/news-feed-ranker';
 import { pruneMentions } from '@/lib/mentions';
-import { isHeicFile, convertHeicToJpeg } from '@/lib/heic-convert';
+import { isHeicFile } from '@/lib/heic-convert';
 import { EnrichmentCardStrip } from '@/components/vitana/EnrichmentCardStrip';
 import { CreatePostLauncherProvider, type CreatePostMode } from '@/components/vitana/create-post-launcher';
 
@@ -87,10 +87,13 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
     // Reset input so the same file can be re-selected
     e.target.value = '';
 
-    // HEIC/HEIF photos are converted to JPEG below: browsers cannot preview
-    // them and the media bucket rejects their MIME type.
-    const isHeic = isHeicFile(file);
-    const isImage = isHeic || file.type.startsWith('image/');
+    // HEIC/HEIF photos cannot be previewed by browsers and the media bucket
+    // rejects their MIME type, so refuse them up front with a clear message.
+    if (isHeicFile(file)) {
+      notifyError('toasts.profile.heicheifFormatNotSupportedByBrowsers');
+      return;
+    }
+    const isImage = file.type.startsWith('image/');
     const isVideo = file.type.startsWith('video/');
     if (!isImage && !isVideo) {
       notifyError('toasts.profile.onlyImagesOrVideosAllowed');
@@ -109,9 +112,8 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
 
     // Materialize into memory immediately to prevent Android file descriptor issues
     try {
-      const source = isHeic ? await convertHeicToJpeg(file) : file;
-      const buffer = await source.arrayBuffer();
-      const materializedFile = new File([buffer], source.name, { type: source.type, lastModified: source.lastModified });
+      const buffer = await file.arrayBuffer();
+      const materializedFile = new File([buffer], file.name, { type: file.type, lastModified: file.lastModified });
       console.log('[PostUpload] File materialized:', materializedFile.size, materializedFile.type);
       // Revoke any previous preview before replacing it
       if (mediaPreview) URL.revokeObjectURL(mediaPreview);
