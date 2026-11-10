@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05647",
+  "lane": "native-shell-fixes-r2/shell-fixes",
+  "kind": "fix",
+  "paths": [
+    "apps/mobile/src/identity/GuidedModeProvider.tsx",
+    "apps/mobile/src/shell/AuthGate.tsx",
+    "apps/mobile/tests/shell-fixes/**",
+    "docs/validation/VTID-05647/**"
+  ],
+  "not_touched": [
+    "apps/mobile/src/identity/useMyPartnerOrgs.ts (blocked: fixing it turns tests/shell.test.tsx:49 red; that file is outside the lane paths)",
+    "apps/mobile/app/(public)/commerce* (blocked on vitana-v1 #1587: the screens do not exist on main)",
+    "apps/mobile/src/navigation/resolve.ts and apps/mobile/parity/ledger.json (no route files, so no entries or rows)",
+    "apps/mobile/tests/identity.test.tsx and every other existing test (owner rule: no edits to existing tests)",
+    "packages/core/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05647/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
