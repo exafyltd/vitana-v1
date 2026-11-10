@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05670",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "a group chat is first shown with its newest message fully above the composer, and does not move",
+      "spec": "tests/e2e/staging/vtid-05622-group-chat-opens-at-newest.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}
