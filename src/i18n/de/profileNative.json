@@ -1,0 +1,64 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    },
+    "privacy": {
+      "wholeSection": "Ganzer Bereich",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Tanzvorlieben",
+          "description": "Stile, Level, Rolle und wonach du suchst."
+        },
+        "partnerPreferences": {
+          "label": "Partnerpräferenzen",
+          "description": "Wen du suchst. Standardmäßig privat. Unterfelder bleiben privat, auch wenn du den Bereich öffnest."
+        },
+        "serviceOfferings": {
+          "label": "Leistungsangebote",
+          "description": "Was du anbietest. Standardmäßig öffentlich – sie zu verbergen verfehlt den Zweck."
+        },
+        "myPosts": {
+          "label": "Meine Beiträge",
+          "description": "Offene Anliegen, die du diktiert hast. Partnersuche-Beiträge erscheinen hier nie, egal wie du schaltest."
+        },
+        "derivedAgeBand": {
+          "label": "Altersgruppe",
+          "description": "Zeig nur deine Altersgruppe (z. B. 30er) statt deines genauen Alters. Standard: nur Kontakte."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Meine Stile",
+        "danceLevel": "Mein Level",
+        "danceLookingFor": "Wonach ich suche",
+        "partnerGender": "Geschlechtspräferenz",
+        "partnerAgeRange": "Altersspanne",
+        "partnerRelationshipIntent": "Beziehungsabsicht",
+        "partnerLocationRadius": "Ort & Umkreis",
+        "servicePriceRange": "Preisspanne",
+        "postsCommercial": "Marktplatz-Beiträge",
+        "postsPartnerSeek": "Partnersuche-Beiträge"
+      },
+      "partnerSeekNote": "Immer privat. Das gegenseitige Freigabeprotokoll schützt diese Beiträge, egal wie du schaltest."
+    },
+    "media": {
+      "photosDenied": "Erlaube den Zugriff auf deine Fotos in den Einstellungen, um ein Bild auszuwählen.",
+      "unsupportedFormat": "Nicht unterstütztes Bildformat (.{ext}). Bitte verwende JPG, PNG, GIF oder WebP."
+    },
+    "gallery": {
+      "photos": "Fotos",
+      "selectMultiple": "Mehrere Fotos auswählen",
+      "tapToAddMore": "Tippe, um weitere hinzuzufügen",
+      "uploadingProgress": "Lade {current} von {total} hoch …",
+      "deleteTitle": "Bist du sicher?",
+      "deleteDescription": "Dieses Foto wird dauerhaft gelöscht. Das kann nicht rückgängig gemacht werden."
+    }
+  }
+}

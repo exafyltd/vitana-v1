@@ -173,6 +173,38 @@ export function findById(reg: TenantRegistry, tenantId: string | null | undefine
   return reg.tenants.find((t) => t.tenant_id && t.tenant_id === tenantId);
 }
 
+/** True for a tenant portal path: `/<registry slug>` or below it, or a retired tenant's path. */
+export function isTenantPortalPath(pathname: string, reg: TenantRegistry): boolean {
+  const seg = pathname.split('?')[0].replace(/^\/+/, '').split('/')[0].toLowerCase();
+  if (!seg) return false;
+  return seg in RETIRED_TENANT_SLUGS || !!findBySlug(reg, seg);
+}
+
+/**
+ * Where a signed-in community member of `slug` lands. Unknown tenant → /home
+ * (it used to be /maxina). A target that is a tenant portal is replaced by
+ * /home, so landing can never loop back into a portal.
+ */
+export function communityLandingPath(slug: string | null | undefined, reg: TenantRegistry): string {
+  const entry = findBySlug(reg, slug);
+  if (!entry) return '/home';
+  const target = safeInternalPath(entry.landing.post_login_path ?? '/onboarding/welcome');
+  return isTenantPortalPath(target, reg) ? '/home' : target;
+}
+
+/**
+ * Where a member goes from a tenant portal (VTID-05151, TenantPortal): the
+ * tenant's post_login_path, unless that is a portal itself (its own `/<slug>`
+ * or any tenant portal path) — then /home, so the portal can never loop.
+ */
+export function portalLandingTarget(entry: TenantEntry, reg: TenantRegistry): string {
+  const target = safeInternalPath(entry.landing.post_login_path ?? '/onboarding/welcome');
+  const path = target.split(/[?#]/)[0];
+  const own = `/${entry.slug}`;
+  if (path === own || path.startsWith(`${own}/`) || isTenantPortalPath(path, reg)) return '/home';
+  return target;
+}
+
 // ── the active tenant (useTenant) ───────────────────────────────────────
 
 /** Registry entry → the shape consumers read. */

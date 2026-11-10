@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05525",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/patient/**",
+    "apps/mobile/src/screens/patient/**",
+    "apps/mobile/src/ports/patient-ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/patient/**",
+    "apps/mobile/maestro/patient/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/patientNative.json",
+    "docs/validation/VTID-05525/**"
+  ],
+  "_note": "Every path is inside the lane's paths (vitana-platform .kiro/specs/native-wave2-role-modes-r2/lanes/patient.md). No @vitana/core change, so packages/core/** and scripts/native/mobile-ci-paths.generated.json are untouched (core-closure --check up to date). No shared shell test was changed.",
+  "sparring_record": "docs/validation/VTID-05525/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

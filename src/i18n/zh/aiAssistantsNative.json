@@ -1,0 +1,45 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}"
+    },
+    "voice": {
+      "preview": "试听语音",
+      "playing": "正在播放…",
+      "previewPhrase": "你好，这是你所选语音设置的预览。",
+      "previewUnavailable": "此设备上该语言暂不支持预览。",
+      "speedValue": "{value}x",
+      "volumeValue": "{value}%"
+    },
+    "proactive": {
+      "playSample": "播放示例问候",
+      "speaking": "正在说话…",
+      "notSet": "未设置",
+      "none": "无",
+      "quoted": "“{text}”",
+      "messageType": {
+        "time_greeting": "按时间的问候（早上好等）",
+        "wellness_check": "健康检查",
+        "motivational": "激励消息",
+        "reminder": "行动提醒"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "当你提问时，自动驾驶可以询问其他成员。",
+      "giveDescription": "自动驾驶可以向其他成员推荐你的目录。默认关闭，准备好后再开启。",
+      "moneyDescription": "将收益从“提议并批准”提升为自主模式。只有在你信任自己的目录和披露说明时才开启。",
+      "moneyDisabledHint": "请先开启“提供推荐”。"
+    },
+    "connect": {
+      "missingKey": "请粘贴你的 API 密钥。",
+      "wrongPrefix": "API 密钥必须以“{prefix}”开头。",
+      "unauthorized": "提供方拒绝了此密钥（未授权）。请在你的控制台中检查。",
+      "network": "连接提供方时出现网络错误。请重试。",
+      "verifyFailed": "验证失败（{status}）。",
+      "failed": "连接失败（{code}）。",
+      "saving": "正在保存…",
+      "verifying": "正在验证…",
+      "connect": "连接"
+    }
+  }
+}

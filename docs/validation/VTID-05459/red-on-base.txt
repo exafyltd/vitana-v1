@@ -1,0 +1,15 @@
+# VTID-05459 red on base — detached worktree at origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e, the lane's tests copied in, no implementation
+# $ (apps/mobile) npm ci && npm run gen:i18n && npx jest tests/inbox-chat --ci
+
+FAIL tests/inbox-chat/inbox-list/archived-inspiration.test.tsx
+    Cannot find module '../../../src/screens/inbox/ArchivedScreen' from 'tests/inbox-chat/inbox-list/archived-inspiration.test.tsx'
+FAIL tests/inbox-chat/inbox-list/routes-i18n.test.tsx
+    Cannot find module '../../../src/screens/inbox/InboxScreen' from 'tests/inbox-chat/inbox-list/routes-i18n.test.tsx'
+FAIL tests/inbox-chat/inbox-list/new-conversation.test.tsx
+    Cannot find module '../../../src/screens/inbox/InboxScreen' from 'tests/inbox-chat/inbox-list/new-conversation.test.tsx'
+FAIL tests/inbox-chat/inbox-list/inbox.test.tsx
+    Cannot find module '../../../src/screens/inbox/InboxScreen' from 'tests/inbox-chat/inbox-list/inbox.test.tsx'
+      20 | import { ANNA, BEN, FAIL, ME, TENANT, TOKEN, groups, inboxWrapper, loadedRoutes, loadedTables, profiles } from './helpers';
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+exit=1

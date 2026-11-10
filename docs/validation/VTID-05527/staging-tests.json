@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05527",
+  "service": "community-app",
+  "_note": "Native Wave 2 role-modes staff lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). The eight screens read only the role preference (get_role_preference RPC, answered by the in-memory Supabase double) and write nothing; the dashboard and queue content is the web's fixed catalog copy (no backing table, src/pages/staff/Queue.tsx:11-16). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging web screen) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks 6); read-only by construction: sign in as a staff-mode test member, navigate, read; the network guard aborts every non-GET except sign-in; never vitanaland.com.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/staff", "cwd": "apps/mobile",
+      "reason": "the 8 /staff/* screens: dashboard and queue loaded (every section, row, badge, tone), the 6 coming-soon (empty) screens, ProtectedRoute loader / role-RPC error / Access Denied for community+patient+professional / backoffice+admin+Exafy-admin access, NO bottom tab bar on all 8 routes (top app bar present, drawer lists the staff rows and opens the native route), route files + ledger rows native, 11 locales without a raw key, staffNative catalog + register, Arabic RTL, no physical left/right — fake Supabase double, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the staff screens and the staff-ui port type-check against @vitana/core, @vitana/tokens and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the eight /staff/* routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 8 staff rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/staff/01-dashboard.yaml", "target": "/staff/dashboard", "next_actor": "owner",
+      "reason": "sign in as a staff-mode test member, open the dashboard and read; no bottom tab bar; screenshot parity vs 390x844 read-only staging /staff/dashboard; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/staff/02-queue.yaml", "target": "/staff/queue", "next_actor": "owner",
+      "reason": "open the queue through the drawer and read (nothing pressed); screenshot parity vs staging; needs G1" },
+    { "flow": "apps/mobile/maestro/staff/03-coming-soon.yaml", "target": "/staff/{tasks,schedule,reports,communications,tools,time}", "next_actor": "owner",
+      "reason": "open each placeholder screen through the drawer and read; screenshot parity vs staging; needs G1" },
+    { "flow": "apps/mobile/maestro/staff/04-access-denied.yaml", "target": "/staff/dashboard as a professional-mode member", "next_actor": "owner",
+      "reason": "Access Denied renders, nothing pressed; screenshot parity vs staging; needs G1" }
+  ]
+}

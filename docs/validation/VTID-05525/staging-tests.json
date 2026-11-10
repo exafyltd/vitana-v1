@@ -1,0 +1,27 @@
+{
+  "vtid": "VTID-05525",
+  "service": "community-app",
+  "_note": "Native Wave 2 role-modes patient lane. The port is proven offline (jest-expo + RNTL, no network; the native app has no production profile and assertNotProduction() refuses prod/staging hosts). Patient health data exists only as fixtures in the tests; the two writes (partner link-request confirm / decline) are asserted as the BUILT request against a fake gateway and fire nothing. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots + parity vs the 390x844 read-only staging patient screens) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md lane patient task 6); at G1 it opens and reads only, never presses Confirm / Not me.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not" },
+    { "kind": "existing", "ref": "npx jest tests/patient", "cwd": "apps/mobile",
+      "reason": "the 8 patient screens loaded / empty / error from fixtures, the Results detail dialog, link-request confirm / decline as built requests with toasts and refetch, the ProtectedRoute role gate from fixtures (patient, professional, community, Exafy admin, loading), /patient/results AuthGuard-only, the patient bottom tabs in the shell, the 8 route files native, 11 locales without a raw key, Arabic RTL, no physical left/right, no hardcoded text — fake gateway, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the patient screens, data hooks and the patient-ui port type-check against @vitana/core, @vitana/tokens and the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the 8 /patient/* routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the 8 /patient/* rows are native with their routes present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/patient/01-patient-tabs.yaml", "target": "/patient/dashboard, /patient/results, /patient/health, /patient/appointments", "next_actor": "owner",
+      "reason": "seeded test patient in patient mode; the patient bottom bar and each tab; screenshot parity vs 390x844 read-only staging; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/patient/02-results.yaml", "target": "/patient/results", "next_actor": "owner",
+      "reason": "results list and one detail dialog, read only (no Confirm / Not me); needs G1" },
+    { "flow": "apps/mobile/maestro/patient/03-coming-soon.yaml", "target": "/patient/care-team, /patient/goals, /patient/insurance, /patient/notifications", "next_actor": "owner",
+      "reason": "the coming-soon state on each; screenshot parity; needs G1" },
+    { "flow": "apps/mobile/maestro/patient/04-access.yaml", "target": "/patient/results, /patient/goals as a community member", "next_actor": "owner",
+      "reason": "results opens, goals bounces to /home (route guard) as on the web; needs G1" }
+  ]
+}

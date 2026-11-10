@@ -1,0 +1,31 @@
+# Visual check for the three chat/index fixes (PR #1617). G1 only, never production.
+# Read-only: opens screens and takes screenshots; sends no message.
+# Needs G1_EMAIL, G1_PASSWORD and G1_GROUP_ID (a group the synthetic member belongs to).
+# Run on an Android emulator with the development build (APP_PROFILE=test-g1):
+#   maestro test --env G1_EMAIL=... --env G1_PASSWORD=... --env G1_GROUP_ID=... apps/mobile/maestro/inbox-chat/20-chat-layout-index-card.yaml
+appId: com.exafy.maxina.dev
+---
+- launchApp: { clearState: true }
+- assertVisible: { id: portal-maxina }
+- tapOn: { id: portal-email }
+- inputText: ${G1_EMAIL}
+- tapOn: { id: portal-password }
+- inputText: ${G1_PASSWORD}
+- tapOn: { id: portal-submit }
+- extendedWaitUntil: { visible: { id: top-app-bar }, timeout: 20000 }
+
+# 1. Vitana Index card button opens the Index sheet from Talk to Vitana.
+- openLink: "maxina://comm/talk-to-vitana"
+- extendedWaitUntil: { visible: { id: vitana-card-F2 }, timeout: 15000 }
+- takeScreenshot: 01-talk-to-vitana-index-card
+- tapOn: { id: vitana-card-action-F2 }
+- extendedWaitUntil: { visible: { id: vitana-index-sheet-content }, timeout: 10000 }
+- takeScreenshot: 02-index-sheet-opened-from-chat-card
+- back
+
+# 2. Group chat: header, status-bar gap, composer single row, bottom gap.
+- openLink: "maxina://inbox/g/${G1_GROUP_ID}"
+- extendedWaitUntil: { visible: { id: group-chat-back }, timeout: 15000 }
+- takeScreenshot: 03-group-chat-top-and-composer
+- assertVisible: { id: message-input-field }
+- takeScreenshot: 04-group-composer-one-row
