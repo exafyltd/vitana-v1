@@ -219,7 +219,8 @@ PUBLISH. **No per-PR owner approvals**: no question about git, push, PR, merge, 
   unavailable, every job that goes to Claude today goes to the **exceptions seat `exafyltd`**: end-of-rotation
   reassigns, parks, stale claims, `executor: claude` items, re-plan of parked plans, STAGING-VERIFY fix-forward (max
   3, then park). Only protected gate files (§3a) still wait for owner/Claude review.
-- Every existing rule is unchanged: sparring before a VTID, the `vtid_ledger` gate, never test against production,
+- Every existing rule is unchanged: sparring before a VTID for back-end and complex work (a simple front-end change
+  needs a VTID but no sparring, CLAUDE.md rule 51a), the `vtid_ledger` gate, never test against production,
   staging tests read-only, production only by PUBLISH.
 
 ## 7a. What the executor and the reviewer never do

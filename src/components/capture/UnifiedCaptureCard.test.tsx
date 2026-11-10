@@ -250,7 +250,7 @@ describe('UnifiedCaptureCard — Web Speech fails before any result (VTID-05097)
     delete (window as FakeWindow).webkitSpeechRecognition;
   });
 
-  it.each(['not-allowed', 'service-not-allowed', 'network'])(
+  it.each(['not-allowed', 'service-not-allowed', 'network', 'language-not-supported', 'bad-grammar'])(
     'switches to backend recording on %s without an error toast',
     async (error) => {
       FailingRecognition.error = error;
@@ -263,6 +263,22 @@ describe('UnifiedCaptureCard — Web Speech fails before any result (VTID-05097)
       expect(toastMock).not.toHaveBeenCalledWith(expect.objectContaining({ variant: 'destructive' }));
     },
   );
+
+  it('falls back to backend recording when Web Speech start() throws synchronously', async () => {
+    class ThrowingOnStart extends FailingRecognition {
+      start() {
+        throw new Error('InvalidStateError');
+      }
+    }
+    (window as FakeWindow).webkitSpeechRecognition = ThrowingOnStart;
+
+    render(<UnifiedCaptureCard mode="health" />);
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }));
+
+    await waitFor(() => expect(recorderStartMock).toHaveBeenCalledTimes(1));
+    expect(markWebSpeechUnavailableMock).toHaveBeenCalledTimes(1);
+    expect(toastMock).not.toHaveBeenCalledWith(expect.objectContaining({ variant: 'destructive' }));
+  });
 
   it('transcribes the fallback recording, and the next tap goes straight to the backend path', async () => {
     render(<UnifiedCaptureCard mode="health" />);
