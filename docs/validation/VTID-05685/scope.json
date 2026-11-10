@@ -1,7 +1,7 @@
 {
   "vtid": "VTID-05685",
   "lane": "native-parity-test-gaps/route-tests",
-  "kind": "test",
+  "kind": "docs",
   "paths": [
     "apps/mobile/tests/parity-gaps/**",
     "docs/validation/**"
@@ -15,5 +15,14 @@
   ],
   "sparring_record": "docs/validation/VTID-05685/plan-sparring.md",
   "weakens_tests": [],
-  "red_green_exempt": ["tests-only lane: the behaviour already exists; red is shown by mutation in a throwaway worktree, see commands.log"]
+  "red_green_exempt": [
+    {
+      "file": "apps/mobile/tests/parity-gaps/intents-mine-route.test.tsx",
+      "reason": "tests-only lane: the behaviour already exists, so the tests pass on base by design; red is shown by mutation in a throwaway worktree (commands.log)"
+    },
+    {
+      "file": "apps/mobile/tests/parity-gaps/my-groups-route.test.tsx",
+      "reason": "tests-only lane: the behaviour already exists, so the tests pass on base by design; red is shown by mutation in a throwaway worktree (commands.log)"
+    }
+  ]
 }
