@@ -1,0 +1,26 @@
+VTID-05683 native-wave1-readiness-tests/push: commands run and results
+Worktree: /projects/sandbox/wt/b-push (branch kiro/native-wave1-readiness-tests/push, base origin/main e31bf4627ff3c705c20f8e6b718ce4dd03353b7f)
+Spec: vitana-platform origin/kiro/native-wave1-readiness-tests/plan (plan PR #4938 still open; lane file only on the plan branch)
+
+== Task 0: premises re-checked against origin/main e31bf4627 (vitana-v1, apps/mobile)
+- jest.config.js: roots ['<rootDir>/tests'], testMatch **/*.test.ts, **/*.test.tsx, preset jest-expo: OK
+- package.json: "test": jest (pretest regenerates the i18n map), "typecheck": tsc --noEmit: OK
+- src/push/registration.ts: PUSH_TIMEOUT_MS = 10000 (:30), usePushLifecycle (:205), posts { fcm_token, device_type, app_version } (:108): OK
+- src/push/g1-test-provider.ts: createG1TestPushProvider (:75), fetchImpl defaults to global fetch, posts { token, device_type } (:105): OK
+- src/linking/link-router.ts: configuredLinkHosts (:89), useLinkRouting (:113): OK
+- src/linking/resolve-link.ts resolvePushLink (:182), auth-port.ts setSession/resetAuthPort/subscribeSession: OK
+- tests/helpers/no-network.ts exists (side-effect import); providers.tsx/supabase-double.ts not needed by this lane
+- git grep over tests/: usePushLifecycle, PUSH_TIMEOUT_MS, onTokenRefresh, useLinkRouting, createG1TestPushProvider with injected fetchImpl: no existing test reference (tests/wave1-readiness did not exist)
+- Result: no premise stale; no case dropped.
+
+== Setup
+- cd apps/mobile && npm ci --no-audit --no-fund: exit 0 (950 packages)
+
+== Red on base (new folder absent, i.e. origin/main content)
+- npx jest tests/wave1-readiness/push --ci --maxWorkers=2 -> exit 1  "No tests found, exiting with code 1"  (Pattern: tests/wave1-readiness/push - 0 matches)
+
+== Green
+- npx jest tests/wave1-readiness/push --maxWorkers=2 -> exit 0  Test Suites: 4 passed, 4 total  Tests: 4 skipped, 39 passed, 43 total (0 console warnings)
+- npm run typecheck (apps/mobile) -> exit 0
+- npm test -- --maxWorkers=2 (apps/mobile, full suite) -> exit 0  Test Suites: 205 passed, 205 total  Tests: 4 skipped, 5660 passed, 5664 total  Snapshots: 57 passed
+  (a "worker process has failed to exit gracefully" notice came from another suite; the push folder alone exits cleanly)
