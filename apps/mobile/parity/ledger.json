@@ -2912,8 +2912,8 @@
       "source": "role-route",
       "scope": "out:system-browser",
       "lane": null,
-      "status": "not_started",
-      "exception": null,
+      "status": "exception",
+      "exception": "The installed native app does not port the admin activity console; it stays a web page the system browser opens, so it never has a native screen (owner decision 2026-11-08, Decision 2: the ORB unported-screen test example moves to this route).",
       "owner": null,
       "last_parity_check": null
     },
