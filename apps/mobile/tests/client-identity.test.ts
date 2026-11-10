@@ -2,6 +2,7 @@
  * VTID-05656 — the native app sends `X-Vitana-Client: native/<platform>/<version>`
  * on every gateway call (and never on a third-party call).
  */
+import { execSync } from 'child_process';
 import { Platform } from 'react-native';
 
 const mockConfig: { value: unknown } = { value: null };
@@ -100,7 +101,6 @@ describe('third-party calls', () => {
     await thirdParty('https://example.com/file.png');
     expect(calls[0]?.headers).toBeUndefined();
     // The helper is the only importer of the header builder in src.
-    const { execSync } = require('child_process') as typeof import('child_process');
     const out = execSync("grep -rlE \"client-identity\" src || true", { cwd: __dirname + '/..' }).toString().trim().split('\n').sort();
     expect(out).toEqual(['src/config/client-identity.ts', 'src/config/http.ts']);
   });
