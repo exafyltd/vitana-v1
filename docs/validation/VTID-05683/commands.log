@@ -24,3 +24,12 @@ Spec: vitana-platform origin/kiro/native-wave1-readiness-tests/plan (plan PR #49
 - npm run typecheck (apps/mobile) -> exit 0
 - npm test -- --maxWorkers=2 (apps/mobile, full suite) -> exit 0  Test Suites: 205 passed, 205 total  Tests: 4 skipped, 5660 passed, 5664 total  Snapshots: 57 passed
   (a "worker process has failed to exit gracefully" notice came from another suite; the push folder alone exits cleanly)
+ .../wave1-readiness/push/g1-test-provider.test.ts  |  96 ++++++++++
+ .../wave1-readiness/push/push-lifecycle.test.tsx   | 127 +++++++++++++
+ .../push/push-open-routing.test.tsx                | 199 +++++++++++++++++++++
+ .../wave1-readiness/push/push-timeout.test.ts      |  80 +++++++++
+ docs/validation/VTID-05683/acceptance.md           |  34 ++++
+ docs/validation/VTID-05683/commands.log            |  26 +++
+ docs/validation/VTID-05683/scope.json              |  17 ++
+ docs/validation/VTID-05683/staging-tests.json      |  14 ++
+ 8 files changed, 593 insertions(+)
