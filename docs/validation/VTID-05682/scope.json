@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05682",
+  "kind": "tests",
+  "paths": [
+    "apps/mobile/tests/wave1-readiness/deeplinks-i18n/**",
+    "docs/validation/VTID-05682/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
