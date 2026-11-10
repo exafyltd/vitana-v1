@@ -59,3 +59,13 @@ Review findings a to d (fix pass, from head ed809943; fast-forward push)
 - APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle: exit 0 (iOS and Android exported to dist/). Output: docs/validation/VTID-05531/review-fixes-bundle.txt.
 - preflight (vitana-platform/scripts/collab/preflight.mjs, --base origin/main, --branch kiro/native-wave2-events-calendar-r3/events-meetups): exit 1. Lane scope and PR-GATE scope both name only apps/mobile/tests/orb/nav-directive.test.ts, the approved Option C file, which sits outside the lane paths. The earlier "lane file not found" error is gone because the spec is on vitana-platform main. Output: docs/validation/VTID-05531/review-fixes-preflight.txt.
 - Not rerun in this pass: deps:check and the i18n checks (no i18n files changed), Maestro and device runs (deferred to G1).
+
+## Owner decision 2 (2026-11-08), session kiro-exafyltd-202611072144-1c88
+- Decision (final): "You may change only the /admin/activity expectation in apps/mobile/tests/orb/nav-directive.test.ts. Record that route as a parity exception in the ledger. Make no other test edits in this lane."
+- Test file reduced to the /admin/activity example route and its directly dependent expectation values (route, screen_id null); the it() title is back to origin/main's. Ledger row `/admin/activity`: status not_started -> exception, with a reason (same fields as the 2 existing exception rows).
+- git merge origin/main (no rebase): clean, merge commit f4ddb13bd.
+- node scripts/native/parity-ledger.mjs --check: OK, 435 rows, 126 native routes.
+- cd apps/mobile && npx jest tests/orb/nav-directive.test.ts: 1 suite, 14/14 tests passed.
+- cd apps/mobile && npm run typecheck: exit 0.
+- cd apps/mobile && npm test -- --maxWorkers=2: 206/206 suites, 5688/5688 tests, 57 snapshots, exit 0, 339 s.
+- preflight: Lane scope [required] fails ONLY on apps/mobile/tests/orb/nav-directive.test.ts being outside the lane paths; the fix is the lane-admin plan plan(native-lane-paths-owner-20261108) in vitana-platform.
