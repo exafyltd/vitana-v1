@@ -3,12 +3,16 @@
     "article": {
       "unavailableTitle": "文章无法打开",
       "unavailableBody": "无法在此处打开这篇文章。返回信息流以重新打开。",
-      "backToFeed": "返回信息流"
+      "backToFeed": "返回信息流",
+      "_pending_review": {}
     },
     "post": {
       "video": "视频",
       "likes": "{count} 个赞",
-      "comments": "{count} 条评论"
-    }
-  }
+      "comments": "{count} 条评论",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

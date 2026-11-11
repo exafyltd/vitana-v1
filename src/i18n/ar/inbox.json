@@ -184,7 +184,8 @@
         "video": "الفيديوهات",
         "file": "الملفات",
         "voice": "الرسائل الصوتية",
-        "link": "الروابط"
+        "link": "الروابط",
+        "_pending_review": {}
       },
       "searching": "جارٍ البحث…",
       "error": "فشل البحث. حاول مرة أخرى.",
@@ -192,7 +193,8 @@
       "results": "نتائج البحث",
       "conversation": "المحادثة",
       "more": "عرض المزيد",
-      "filters": "عوامل التصفية"
+      "filters": "عوامل التصفية",
+      "_pending_review": {}
     },
     "shared": {
       "sendInMessage": "إرسال في رسالة",
@@ -204,7 +206,8 @@
         "post": "منشور",
         "event": "فعالية",
         "product": "منتج",
-        "profile": "ملف شخصي"
+        "profile": "ملف شخصي",
+        "_pending_review": {}
       },
       "loading": "جارٍ تحميل المعاينة…",
       "loadFailed": "تعذر تحميل المعاينة",
@@ -213,13 +216,17 @@
       "unavailable": {
         "deleted": {
           "title": "{kind} لم يعد متاحًا",
-          "body": "تمت إزالته."
+          "body": "تمت إزالته.",
+          "_pending_review": {}
         },
         "restricted": {
           "title": "{kind} غير مرئي لك",
-          "body": "إعدادات الخصوصية لا تسمح لك برؤيته."
-        }
-      }
+          "body": "إعدادات الخصوصية لا تسمح لك برؤيته.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}
