@@ -21,8 +21,7 @@
       "building": "Building up",
       "strong": "Strong",
       "reallyGood": "Really good",
-      "elite": "Elite",
-      "_pending_review": {}
+      "elite": "Elite"
     },
     "framings": {
       "starting": "Just starting",
@@ -30,10 +29,10 @@
       "building": "Habits forming",
       "strong": "90-day milestone",
       "reallyGood": "Thriving",
-      "elite": "Elite",
-      "_pending_review": {}
+      "elite": "Elite"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mental": true
+    }
+  }
 }

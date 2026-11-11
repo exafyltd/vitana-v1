@@ -168,7 +168,10 @@
         },
         "v4": {
           "title": "HIIT Workout Science",
-          "category": "Fitness"
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v5": {
           "title": "Stress Management Strategies",
@@ -290,7 +293,10 @@
         "hydration": "Hydration",
         "sleep": "Sleep",
         "mental": "Mental Health",
-        "supplement": "Supplement"
+        "supplement": "Supplement",
+        "_pending_review": {
+          "hydration": true
+        }
       },
       "refreshed": "{planName} refreshed! 🔄",
       "justNow": "Just now",

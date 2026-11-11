@@ -47,7 +47,13 @@
       "profile": "Profile",
       "liveRooms": "Live Rooms",
       "notifications": "Notifications",
-      "other": "Other"
+      "other": "Other",
+      "_pending_review": {
+        "community": true,
+        "communityEvents": true,
+        "businessHub": true,
+        "wallet": true
+      }
     }
   }
 }

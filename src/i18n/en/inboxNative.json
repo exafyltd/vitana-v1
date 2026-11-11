@@ -13,14 +13,20 @@
     "subnav": {
       "overview": "Overview",
       "inspiration": "Inspiration",
-      "archived": "Archived"
+      "archived": "Archived",
+      "_pending_review": {
+        "inspiration": true
+      }
     },
     "archiveCategory": {
       "all": "All",
       "healthcare": "Healthcare",
       "fitness": "Fitness",
       "nutrition": "Nutrition",
-      "activities": "Activities"
+      "activities": "Activities",
+      "_pending_review": {
+        "fitness": true
+      }
     },
     "archiveType": {
       "group": "Group",
@@ -36,12 +42,20 @@
       "warriorsName": "Weekend Warriors",
       "warriorsMessage": "Next hike scheduled for...",
       "kimName": "Dr. Kim",
-      "kimMessage": "Follow up in 2 weeks"
+      "kimMessage": "Follow up in 2 weeks",
+      "_pending_review": {
+        "johnsonName": true,
+        "martinezName": true,
+        "kimName": true
+      }
     },
     "presence": {
       "online": "Active",
       "away": "Away",
-      "offline": "Offline"
+      "offline": "Offline",
+      "_pending_review": {
+        "offline": true
+      }
     },
     "datePlaceholder": "YYYY-MM-DD",
     "permissions": {

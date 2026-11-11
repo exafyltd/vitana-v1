@@ -109,7 +109,13 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Ballroom",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true
+        }
       },
       "handle": "@{handle}",
       "fallbackName": "Member",
@@ -137,7 +143,10 @@
         "social_seek": "Social",
         "mutual_aid": "Mutual aid",
         "learning_seek": "Learning",
-        "mentor_seek": "Mentoring"
+        "mentor_seek": "Mentoring",
+        "_pending_review": {
+          "mentor_seek": true
+        }
       },
       "time": {
         "justNow": "Just now",
@@ -147,7 +156,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "No open asks in this view.",
-      "emptyDance": "No open dance asks yet — post yours and be the first!"
+      "emptyDance": "No open dance asks yet — post yours and be the first!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Find a partner",
@@ -157,7 +169,10 @@
         "matches": "Matches",
         "board": "Board",
         "posts": "My posts",
-        "members": "Members"
+        "members": "Members",
+        "_pending_review": {
+          "matches": true
+        }
       },
       "scorePercent": "{score}%",
       "matchFallback": "Match",
@@ -172,7 +187,12 @@
       "filterTitle": "Filter matches",
       "filterMinScore": "Minimum score",
       "filterClear": "Reset",
-      "filterShowResults": "Show {count} matches"
+      "filterShowResults": "Show {count} matches",
+      "_pending_review": {
+        "matchFallback": true,
+        "filter": true,
+        "filterActive": true
+      }
     },
     "matches": {
       "title": "People who match you",
@@ -198,7 +218,10 @@
         "social_seek": "Social",
         "mutual_aid": "Mutual aid",
         "learning_seek": "Learning",
-        "mentor_seek": "Mentoring"
+        "mentor_seek": "Mentoring",
+        "_pending_review": {
+          "mentor_seek": true
+        }
       },
       "post": "Post",
       "styleLabel": "Style",
@@ -210,7 +233,14 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Ballroom",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true
+        }
       },
       "viewMine": "View my intents",
       "emptyBoard": "No open intents in this view. Be the first.",
@@ -222,7 +252,10 @@
       "backMine": "Back to my intents",
       "notFound": "Intent not found.",
       "matchesCount": "Matches ({count})",
-      "noMatches": "No matches yet — we'll keep looking for you."
+      "noMatches": "No matches yet — we'll keep looking for you.",
+      "_pending_review": {
+        "matchesCount": true
+      }
     },
     "search": {
       "title": "Search",
