@@ -1,7 +1,7 @@
 {
   "vtid": "VTID-05761",
   "lane": "native-catalog-de-keys/de-keys",
-  "kind": "catalog",
+  "kind": "fix",
   "plan": "exafyltd/vitana-platform#4994 (plan(native-catalog-de-keys)), converged round 2",
   "paths": [
     "src/i18n/*/settingsNative.json",
