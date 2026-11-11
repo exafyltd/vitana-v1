@@ -1394,7 +1394,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         "flex gap-1.5 w-full relative",
         isOwnMessage ? "justify-end" : "justify-start"
       )}>
-        {/* Avatar column - fixed width to maintain alignment */}
+        {/* Avatar column - only where avatars are shown (group threads, VTID-05584).
+            Direct threads reserve no column, so bubbles sit flush to their edge. */}
+        {showAvatar && (
         <div className={cn(
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
@@ -1417,7 +1419,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             );
           })()}
         </div>
-        
+        )}
+
         {/* Message content column */}
         <div className={cn(
           "flex-1 flex flex-col min-w-0 overflow-hidden",
