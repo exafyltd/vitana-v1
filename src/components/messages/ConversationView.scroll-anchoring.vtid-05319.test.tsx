@@ -152,15 +152,15 @@ describe('ConversationView opening position (VTID-05319, R8)', () => {
     expect(scrollToSpy).not.toHaveBeenCalled();
   });
 
-  it('opens at the unread divider when the peer sent messages I have not read', () => {
+  it('opens at the newest message when the peer sent messages I have not read (VTID-05670)', () => {
     threads = thread();
     messages = [msg('m1', 'alice', 10), msg('m2', 'me', 9), msg('u1', 'alice', 5, null), msg('u2', 'alice', 4, null)];
     render(<ConversationView threadId="alice" context="global" />);
     const divider = screen.getByTestId('unread-divider');
     expect(divider.id).toBe('unread-divider-u1');
     expect(divider.textContent).toContain('inbox.newMessages.unread');
-    // The divider (not the bottom) is where the conversation opens.
-    expect(scroller().scrollTop).not.toBe(SCROLL_H - CLIENT_H);
+    // VTID-05670: the conversation opens at its newest message; the divider is a marker only.
+    expect(scroller().scrollTop).toBe(SCROLL_H - CLIENT_H);
   });
 
   it('a deep-linked message wins over the bottom and the divider', () => {
@@ -219,7 +219,7 @@ describe('ConversationView switching conversations (VTID-05319 review fixes)', (
   const bobMsg = (id: string, minAgo: number, read_at: string | null = iso(0)) =>
     ({ ...msg(id, 'bob', minAgo, read_at), thread_id: 'bob' });
 
-  it('A → B → A: coming back with new unread messages opens at the divider again', () => {
+  it('A → B → A: coming back with new unread messages opens at the newest message (VTID-05670)', () => {
     threads = [...thread(), bob()];
     messages = [msg('m1', 'alice', 10), msg('u1', 'alice', 5, null)];
     const view = render(<ConversationView threadId="alice" context="global" />);
@@ -232,7 +232,8 @@ describe('ConversationView switching conversations (VTID-05319 review fixes)', (
     messages = [msg('m1', 'alice', 10), msg('u1', 'alice', 5), msg('u2', 'alice', 1, null)];
     view.rerender(<ConversationView threadId="alice" context="global" />);
     expect(screen.getByTestId('unread-divider').id).toBe('unread-divider-u2');
-    expect(scroller().scrollTop).not.toBe(SCROLL_H - CLIENT_H);
+    // VTID-05670: opens at the newest message; the divider does not move the view.
+    expect(scroller().scrollTop).toBe(SCROLL_H - CLIENT_H);
   });
 
   it("the previous DM's rows (query placeholder) never decide the new DM's position or divider", () => {

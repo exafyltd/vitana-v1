@@ -1,0 +1,69 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} yazıyor…",
+      "two": "{first} ve {second} yazıyor…",
+      "many": "Birkaç kişi yazıyor…"
+    },
+    "conversation": {
+      "fallbackTitle": "Sohbet"
+    },
+    "reply": {
+      "yourself": "kendin",
+      "contentUnavailable": "Mesaj içeriği kullanılamıyor"
+    },
+    "reactions": {
+      "reactWith": "{emoji} ile tepki ver",
+      "count": "{count} {emoji} tepkisi"
+    },
+    "bubble": {
+      "longPressHint": "Tepkiler ve işlemler için basılı tut"
+    },
+    "emoji": {
+      "open": "Bir emoji seç",
+      "recent": "Son kullanılanlar",
+      "smileys": "Yüzler",
+      "people": "İnsanlar",
+      "nature": "Doğa",
+      "food": "Yiyecek",
+      "activity": "Etkinlik",
+      "travel": "Seyahat",
+      "objects": "Nesneler"
+    },
+    "voice": {
+      "discard": "Kaydı sil",
+      "play": "Oynat",
+      "pause": "Duraklat",
+      "stop": "Kaydı durdur"
+    },
+    "composer": {
+      "removeFile": "{name} kaldır",
+      "pickerDone": "Bitti"
+    },
+    "payment": {
+      "status": {
+        "pending": "Beklemede",
+        "completed": "Tamamlandı",
+        "declined": "Reddedildi"
+      },
+      "accept": "Kabul et",
+      "decline": "Reddet",
+      "pay": "Şimdi öde",
+      "refreshBalance": "Bakiyeyi yenile"
+    },
+    "invite": {
+      "untitled": "Davet"
+    },
+    "booking": {
+      "untitled": "Hizmet talebi"
+    },
+    "companion": {
+      "indexScore": "Endeksin: {score}"
+    },
+    "attach": {
+      "library": "Fotoğraf arşivi",
+      "camera": "Kamera",
+      "files": "Dosyalar"
+    }
+  }
+}

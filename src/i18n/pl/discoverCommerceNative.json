@@ -1,0 +1,206 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "Nie udało się wczytać.",
+        "mineEmptyBody": "Dodaj prośbę o kupno lub sprzedaż – matchmaker pokaże ci kupujących i sprzedających.",
+        "newListing": "Nowe ogłoszenie"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "Kupuję",
+          "commercial_sell": "Sprzedaję",
+          "activity_seek": "Partner do aktywności",
+          "partner_seek": "Partner życiowy",
+          "social_seek": "Towarzysko / mentoring",
+          "mutual_aid": "Wzajemna pomoc",
+          "learning_seek": "Chcę się nauczyć",
+          "mentor_seek": "Oferuję naukę"
+        },
+        "age": "wiek {min}–{max}",
+        "within": "w promieniu {km} km"
+      },
+      "share": {
+        "tooManyTitle": "Za dużo odbiorców ({count})",
+        "tooManyBody": "Darmowy plan pozwala na maks. {max}. Przejdź na Pro, by mieć 50.",
+        "errorBatch": "Za dużo odbiorców",
+        "errorQuota": "Osiągnięto limit udostępnień",
+        "errorPrivate": "Nie można udostępnić tego wpisu",
+        "errorFailed": "Udostępnianie nie powiodło się",
+        "errorBody": "{message}",
+        "tryAgain": "Spróbuj ponownie.",
+        "alreadyShared": "Już udostępniono wszystkim",
+        "sharedOne": "Udostępniono {count} znajomemu",
+        "sharedMany": "Udostępniono {count} znajomym",
+        "skipped": "{skipped} miało już ten wpis w skrzynce.",
+        "theyWillSee": "Zobaczą twój wpis na swoim czacie.",
+        "defaultTitle": "Wpis z Vitany",
+        "defaultText": "Zobacz to na Vitanie",
+        "fromVitana": "Z Vitany"
+      },
+      "orders": {
+        "eventTicket": "Bilet na wydarzenie",
+        "locationTbd": "Miejsce do ustalenia",
+        "cjProduct": "Produkt CJ",
+        "general": "Ogólny",
+        "voucherProvider": "Bon podarunkowy Maxina",
+        "voucherTier": {
+          "test": "Bon testowy",
+          "experience": "Bon na przeżycie",
+          "exclusive": "Bon ekskluzywny",
+          "gift": "Bon podarunkowy"
+        },
+        "mock": {
+          "vipAccess": "Wejście VIP",
+          "generalAdmission": "Wstęp ogólny",
+          "earlyBird": "Wczesny bilet",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Poranny flow jogi",
+          "retreatTitle": "Noworoczne odosobnienie medytacyjne"
+        },
+        "status": {
+          "upcoming": "Nadchodzące",
+          "attended": "Uczestniczono",
+          "expired": "Wygasło",
+          "completed": "Zakończone",
+          "delivered": "Dostarczone",
+          "cancelled": "Anulowane",
+          "refunded": "Zwrócone",
+          "shipped": "W drodze",
+          "confirmed": "Potwierdzone",
+          "pending": "Oczekujące",
+          "processing": "W realizacji",
+          "paid": "Aktywne",
+          "active": "Aktywne"
+        },
+        "type": {
+          "ticket": "Bilet",
+          "voucher": "Bon",
+          "product": "Produkt",
+          "service": "Usługa"
+        }
+      },
+      "tickets": {
+        "event": "Wydarzenie",
+        "dateTba": "Data wkrótce",
+        "general": "Ogólny"
+      },
+      "ticket": {
+        "tba": "Wkrótce"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Idę na {title}!",
+        "email": "E-mail",
+        "emailSubject": "Mój bilet na {title}",
+        "sms": "SMS",
+        "copyLink": "Kopiuj link",
+        "copied": "Skopiowano!",
+        "openingWhatsapp": "Otwieranie WhatsApp…",
+        "openingViber": "Otwieranie Vibera…",
+        "openingEmail": "Otwieranie poczty…",
+        "openingMessages": "Otwieranie wiadomości…"
+      },
+      "booking": {
+        "sessionTitle": "Sesja: {title}",
+        "sessionDescription": "Zarezerwuj sesję u {name}",
+        "pickDate": "Wybierz datę",
+        "previousMonth": "Poprzedni miesiąc",
+        "nextMonth": "Następny miesiąc"
+      },
+      "subnav": {
+        "overview": "Przegląd",
+        "supplements": "Suplementy",
+        "wellness-services": "Usługi wellness",
+        "doctors-coaches": "Lekarze/Coachowie",
+        "deals-offers": "Okazje i oferty",
+        "orders": "Zamówienia"
+      },
+      "bookmark": {
+        "add": "Dodaj zakładkę",
+        "remove": "Usuń zakładkę"
+      },
+      "bookActions": {
+        "bookAppointment": "Umów wizytę",
+        "rebookPrevious": "Zarezerwuj ponownie",
+        "findNearMe": "W pobliżu",
+        "messageProvider": "Napisz do usługodawcy",
+        "viewMyBookings": "Moje rezerwacje",
+        "setReminders": "Ustaw przypomnienia",
+        "leaveReview": "Wystaw opinię",
+        "paymentHistory": "Historia płatności"
+      },
+      "visit": {
+        "hideNotes": "Ukryj notatki",
+        "viewNotes": "Pokaż notatki"
+      },
+      "utility": {
+        "openIndex": "Otwórz Vitana Index",
+        "openIndexStreak": "Otwórz Vitana Index – seria {days} dni",
+        "upcomingEvents": "Nadchodzące wydarzenia: {count}"
+      }
+    },
+    "searchShort": "Szukaj…",
+    "indexPill": "Vitana Index {value} – otwórz Zdrowie",
+    "calendar": {
+      "upcomingCount": "Nadchodzące wydarzenia: {count}"
+    },
+    "bookmark": {
+      "add": "Dodaj zakładkę",
+      "remove": "Usuń zakładkę"
+    },
+    "product": {
+      "outOfStock": "Brak w magazynie"
+    },
+    "hidden": {
+      "product": "produkt",
+      "products": "produkty",
+      "allergies": "zawierają podany przez ciebie alergen",
+      "contraindications": "są przeciwwskazane przy podanej przez ciebie chorobie",
+      "medications": "mogą wchodzić w interakcje z twoim lekiem",
+      "dietary": "nie pasują do twoich preferencji żywieniowych",
+      "budget": "przekraczają twój budżet na produkt",
+      "sensitivities": "zawierają składnik, na który jesteś wrażliwy",
+      "geo": "nie są wysyłane do twojego regionu",
+      "excluded_region": "mają ograniczenia regionalne",
+      "past_purchases": "kupione niedawno przez ciebie"
+    },
+    "quickShop": {
+      "viewCart": "Zobacz koszyk",
+      "quickCheckout": "Szybka płatność",
+      "reorderPrevious": "Zamów ponownie",
+      "managePayment": "Zarządzaj płatnością",
+      "trackOrders": "Śledź zamówienia",
+      "setPriceAlert": "Ustaw alert cenowy",
+      "viewSavedItems": "Zapisane produkty",
+      "applyCoupon": "Użyj kuponu"
+    },
+    "quickBook": {
+      "bookAppointment": "Umów wizytę",
+      "rebookPrevious": "Zarezerwuj ponownie",
+      "findNearMe": "Znajdź w pobliżu",
+      "messageProvider": "Napisz do usługodawcy",
+      "viewMyBookings": "Moje rezerwacje",
+      "setReminders": "Ustaw przypomnienia",
+      "leaveReview": "Wystaw opinię",
+      "paymentHistory": "Historia płatności"
+    },
+    "supplementCategories": {
+      "all": "Wszystkie",
+      "multivitamins": "Multiwitaminy",
+      "vitamins": "Witaminy",
+      "minerals": "Minerały",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptogeny",
+      "nootropics": "Nootropiki",
+      "longevity": "Długowieczność",
+      "immunity": "Odporność",
+      "antioxidants": "Przeciwutleniacze",
+      "sleep": "Sen",
+      "performance": "Wydajność",
+      "beauty": "Uroda",
+      "gutHealth": "Zdrowie jelit",
+      "herbs": "Zioła",
+      "heartHealth": "Zdrowie serca"
+    }
+  }
+}

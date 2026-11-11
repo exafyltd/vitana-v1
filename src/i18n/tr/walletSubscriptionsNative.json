@@ -1,0 +1,16 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Faturalama dönemi",
+    "subnavAria": "Cüzdan bölümleri",
+    "loading": "Abonelikler yükleniyor…",
+    "subnav": {
+      "overview": "Genel bakış",
+      "balance": "Bakiye ve avantajlar",
+      "subscriptions": "Abonelikler",
+      "rewards": "Ödüller ve komisyonlar"
+    },
+    "plans": {
+      "freeLiveRooms": "40 dk/ay · 1 oturum"
+    }
+  }
+}

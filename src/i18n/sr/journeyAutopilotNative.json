@@ -1,0 +1,45 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "Obaveštenje o deljenju podataka sa AI",
+      "subtitle": "Pre nego što koristiš AI funkcije, pogledaj kako se tvoji podaci koriste.",
+      "whatIsSent": "Koji podaci mogu biti poslati",
+      "voiceData": "Glasovni snimci i transkripti",
+      "diaryData": "Uneti tekst, poruke u četu i unosi u dnevnik",
+      "memoryData": "Unosi u Memory Garden i ciljevi zdravlja",
+      "profileData": "Kontekst profila (ime, podešavanja)",
+      "socialData": "URL-ovi profila na društvenim mrežama i biografije (pri uvozu)",
+      "recipientLabel": "Primalac:",
+      "recipient": "Google (Gemini AI modeli) preko Lovable AI Gateway. Tvoji podaci se bezbedno prenose šifrovanim vezama.",
+      "purposeLabel": "Svrha",
+      "purpose": "Personalizovani AI odgovori, sinteza govora, proaktivni pozdravi, zdravstveni kouching i predlozi za dopunu profila.",
+      "notStored": "AI dobavljač ne čuva podatke trajno",
+      "revokeAnytime": "Saglasnost možeš opozvati bilo kada u Podešavanja > Privatnost",
+      "gdprCompliant": "U skladu sa GDPR-om i propisima o privatnosti",
+      "agreementFooter": "Dodirom na „Slažem se“ dozvoljavaš Exafy LTD da gore navedene podatke pošalje navedenim AI dobavljačima. Ovu dozvolu možeš opozvati bilo kada u Podešavanja > Privatnost.",
+      "notNow": "Ne sada",
+      "iAgree": "Slažem se"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA zarađeno!",
+      "errorStatus": "Server je odgovorio statusom {status}.",
+      "errorServer": "Server trenutno nije mogao da isporuči tvoje preporuke.",
+      "errorNetwork": "Nema veze. Proveri internet."
+    },
+    "demoEvents": {
+      "sunriseYoga": "Joga u svitanje kraj mora",
+      "mindfulWalk": "Svesna šetnja i razgovor"
+    },
+    "indexChip": {
+      "open": "Otvori Vitana Index",
+      "openWithStreak": "Otvori Vitana Index – niz od {days} dana"
+    },
+    "calendar": {
+      "upcomingCount": "Predstojećih događaja: {count}"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′"
+    }
+  }
+}

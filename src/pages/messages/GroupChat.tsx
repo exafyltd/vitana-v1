@@ -66,6 +66,20 @@ import { SpotlightEmpty, SpotlightRowsSkeleton } from "@/components/spotlight/me
 // "messages take half a minute to appear" complaint.
 const POLL_INTERVAL_MS = 8000;
 
+// Latency logging for diagnosing slow group delivery. Off unless the device
+// sets localStorage["vitana:chat-latency"] = "1" (no rebuild needed). Logs the
+// time from the row's created_at to the realtime event, and how long each
+// message reload takes. created_at comes from the server clock, so a device
+// with a skewed clock shifts the first number.
+const CHAT_LATENCY_FLAG = "vitana:chat-latency";
+function chatLatencyLogging(): boolean {
+  try {
+    return typeof localStorage !== "undefined" && localStorage.getItem(CHAT_LATENCY_FLAG) === "1";
+  } catch {
+    return false;
+  }
+}
+
 interface GroupWithMembers extends ChatGroup {
   members: ChatGroupMember[];
   member_count: number;
@@ -213,11 +227,15 @@ export default function GroupChat() {
 
   const loadMessages = useCallback(async () => {
     if (!groupId) return;
+    const startedAt = performance.now();
     try {
       const msgs = await fetchGroupMessages(groupId, 100);
       setMessages(prev => mergeGroupRows(prev, msgs.slice().reverse()));
       setMessagesLoaded(true);
       setLoadError(null);
+      if (chatLatencyLogging()) {
+        console.info(`[chat-latency] group reload ${Math.round(performance.now() - startedAt)} ms`);
+      }
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : "Failed to load group");
     }
@@ -264,13 +282,33 @@ export default function GroupChat() {
   // (migration 20260618110546).
   useEffect(() => {
     if (!groupId) return;
+    // A dropped subscription can lose events, so the first SUBSCRIBED after a
+    // drop reloads the thread once. Same approach as useGlobalMessages.ts.
+    let needsBackfill = false;
     const channel = realtimeChannel(`group_chat_${groupId}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=eq.${groupId}` },
-        () => { loadMessages(); },
+        (payload) => {
+          if (chatLatencyLogging()) {
+            const createdAt = Date.parse((payload.new as { created_at?: string }).created_at ?? "");
+            if (!Number.isNaN(createdAt)) {
+              console.info(`[chat-latency] realtime event ${Math.round(Date.now() - createdAt)} ms after created_at`);
+            }
+          }
+          loadMessages();
+        },
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          if (needsBackfill) {
+            needsBackfill = false;
+            loadMessages();
+          }
+        } else if (status === "CHANNEL_ERROR" || status === "CLOSED" || status === "TIMED_OUT") {
+          needsBackfill = true;
+        }
+      });
     return () => { removeRealtimeChannel(channel); };
   }, [groupId, loadMessages]);
 
@@ -295,6 +333,22 @@ export default function GroupChat() {
   // avatars, signed URLs grow the list after the first paint) until the member
   // touches or wheels the screen; then they scroll freely.
   const pinnedRef = useRef(true);
+  // VTID-05622: the list stays invisible until it is pinned to its opening position,
+  // so the member never sees it painted at the top and then scrolled down.
+  const [positioned, setPositioned] = useState(false);
+  // VTID-05670: the sticky composer covers the bottom of the list. Its measured
+  // height is added as bottom padding, so the newest message sits above it.
+  const footerRef = useRef<HTMLElement>(null);
+  const [footerH, setFooterH] = useState(0);
+  useLayoutEffect(() => {
+    const el = footerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const measure = () => setFooterH(el.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  });
   const pinTargetRef = useRef<string | null>(null);
   const highlightedRef = useRef(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -338,6 +392,7 @@ export default function GroupChat() {
   // Every new group or new target starts pinned again.
   useLayoutEffect(() => {
     pinnedRef.current = true;
+    setPositioned(false);
     pinTargetRef.current = initialScrollMessageId ?? null;
     highlightedRef.current = false;
     prevMessageCountRef.current = 0;
@@ -348,6 +403,7 @@ export default function GroupChat() {
   useLayoutEffect(() => {
     if (!ready) return;
     applyPin();
+    setPositioned(true);
     const raf = requestAnimationFrame(applyPin);
     const content = contentRef.current;
     const observer = typeof ResizeObserver !== "undefined" && content
@@ -727,7 +783,7 @@ export default function GroupChat() {
               <SpotlightRowsSkeleton count={6} />
             ) : (
               <section className="flex flex-col rounded-vcard border bg-card shadow-vcard">
-                <main ref={mainRef} tabIndex={-1} className="px-4 py-4 focus:outline-none">
+                <main ref={mainRef} tabIndex={-1} className="px-4 py-4 focus:outline-none" style={{ paddingBottom: footerH + 16, ...(positioned ? {} : { visibility: "hidden" as const }) }}>
                   <div ref={contentRef}>
                     {messages.length === 0 ? (
                       <div className="mt-10 text-center text-sm text-muted-foreground">{translate("inbox.group.empty")}</div>
@@ -774,7 +830,7 @@ export default function GroupChat() {
                     <div ref={streamEndRef} />
                   </div>
                 </main>
-                <footer className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
+                <footer ref={footerRef} className="sticky bottom-0 rounded-b-vcard border-t bg-card px-2 pb-2 pt-2">
                   <NewMessagesPill count={scrollAnchor.newCount} onClick={scrollAnchor.jumpToLatest} focusAfterJump={() => mainRef.current} style={{ bottom: "calc(100% + 8px)" }} />
                   <MessageInput
                     threadId={group.id}
@@ -862,7 +918,7 @@ export default function GroupChat() {
       </header>
       {searchPanel}
 
-      <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none">
+      <main ref={mainRef} tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 py-4 focus:outline-none" style={{ paddingBottom: footerH + 16, ...(positioned ? {} : { visibility: "hidden" as const }) }}>
         <div ref={contentRef}>
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-muted-foreground">
@@ -920,6 +976,7 @@ export default function GroupChat() {
       </main>
 
       <footer
+        ref={footerRef}
         className="sticky bottom-0 border-t bg-card px-2 pt-2"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.5rem)" }}
       >

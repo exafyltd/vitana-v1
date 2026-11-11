@@ -1,0 +1,47 @@
+# VTID-05592 commands (pr-gate-policy-sparring-record/policy-approval-record-v1)
+
+## RED on unchanged base lib.mjs (new tests present; 5 new cases fail)
+$ node --test scripts/ci/pr-gate/__tests__/lib.test.mjs
+not ok 11 - sparring record: CONVERGED + policy approval + plan hash passes
+not ok 12 - sparring record: policy approval on an ESCALATED-only verdict is no approval
+not ok 13 - sparring record: an unknown policy name is no approval
+not ok 14 - sparring record: CONVERGED + policy approval without plan hash gives exactly no plan hash
+not ok 15 - sparring record: neither approval form names both forms in the problem
+# tests 20
+# pass 15
+# fail 5
+
+## GREEN after the change
+$ node --test scripts/ci/pr-gate/__tests__/*.test.mjs
+ok 1 - countDesign counts only design/* errors, per file
+ok 2 - a PR that raises a count fails even when it also raises its own baseline file
+ok 3 - a new file with any design violation fails (its baseline is 0)
+ok 4 - lowering counts passes and is reported as improved
+ok 5 - only a PR that changes eslint-rules/design/** is measured against its own head baseline
+ok 6 - missing or unreadable baselines read as empty
+ok 7 - a rule-change PR must commit a baseline equal to the current counts (no inflated slack)
+ok 8 - vtidsFromTitle finds every VTID once
+ok 9 - globToRegExp: ** spans dirs, * stays in a segment
+ok 10 - scope: outside file fails, bot-only and always-allowed files pass, no VTID skips
+ok 11 - validateScope rejects bad shapes
+ok 12 - ratchet: worse fails, new erroring file fails, improvements pass
+ok 13 - countTsc parses compiler output per file
+ok 14 - countEslint strips the root and keeps only files with errors
+ok 15 - weakening: deletion, skip, fewer cases, fewer assertions; declared ones do not block
+ok 16 - testStats does not count method calls like foo.it( or .test( on regexes
+ok 17 - sparring record needs verdict, owner approval and plan hash
+ok 18 - sparring record: CONVERGED + policy approval + plan hash passes
+ok 19 - sparring record: policy approval on an ESCALATED-only verdict is no approval
+ok 20 - sparring record: an unknown policy name is no approval
+ok 21 - sparring record: CONVERGED + policy approval without plan hash gives exactly no plan hash
+ok 22 - sparring record: neither approval form names both forms in the problem
+ok 23 - migration lint: wrapper, idempotency, non-transactional declaration
+ok 24 - regex edge cases: extra whitespace cannot sneak past the idempotency check
+ok 25 - a skipped test counts once as a skip, not also as a dropped case
+ok 26 - dry run: own BEGIN/COMMIT replaced by an always-rollback wrapper
+ok 27 - dry run classification: missing objects are unverifiable, real errors fail
+# tests 27
+# pass 27
+# fail 0
+
+git grep 'owner-approval line' (non-docs): only lib.mjs and its test.

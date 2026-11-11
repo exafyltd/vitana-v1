@@ -5959,6 +5959,7 @@
       "sendFunds": "Send Funds",
       "requestPayment": "Request Payment",
       "attachFile": "Attach File",
+      "attachPhotos": "Photos & videos",
       "attach": "Attach",
       "loadingMessages": "Loading messages…",
       "loadingOlderMessages": "Loading older messages…",
@@ -7568,7 +7569,23 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "_pending_review": {
+          "community": true
+        },
+        "testCard": {
+          "title": "Test card (admins only)",
+          "desc": "Vitana sends you a message with the Vitana Index card in your chat with Vitana now, the way members get it in the morning. Only you receive it.",
+          "button": "Send test card",
+          "sending": "Sending …",
+          "sent": "Test card sent – open your chat with Vitana.",
+          "open": "Open chat with Vitana",
+          "errorTitle": "Test card not sent",
+          "unavailable": "Vitana's messages are switched off here right now, for example on staging.",
+          "noIndex": "You don't have a Vitana Index yet, so there is no Index card yet.",
+          "rateLimited": "Please wait a minute before the next test card.",
+          "failed": "That didn't work. Please try again."
+        }
       },
       "communityIntroTitle": "Introduce me to the community",
       "communityIntroBody": "During your first week, other members see a short welcome card about you and can say hello.",

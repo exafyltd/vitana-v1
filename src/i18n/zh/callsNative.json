@@ -1,0 +1,19 @@
+{
+  "callsNative": {
+    "incomingAudio": "语音来电…",
+    "incomingVideo": "视频来电…",
+    "accept": "接听",
+    "reject": "拒绝",
+    "endCall": "挂断",
+    "calling": "正在呼叫",
+    "videoCalling": "正在视频呼叫",
+    "initializing": "正在准备…",
+    "connecting": "正在连接…",
+    "connectionFailed": "连接失败",
+    "mute": "静音麦克风",
+    "unmute": "取消静音",
+    "cameraOff": "关闭摄像头",
+    "cameraOn": "打开摄像头",
+    "unknownUser": "未知成员"
+  }
+}

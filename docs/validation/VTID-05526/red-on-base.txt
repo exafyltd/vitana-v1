@@ -1,0 +1,79 @@
+# VTID-05526 red on base: origin/main 6b9137ac575735edf1efbc16cddb9ad52d6b4b50 + only the new tests/professional/** files
+# cmd (apps/mobile): npm run gen:i18n && npx jest tests/professional
+FAIL tests/professional/bottom-tabs.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/professional/ProfessionalGate' from 'tests/professional/helpers.tsx'
+
+    Require stack:
+      tests/professional/helpers.tsx
+      tests/professional/bottom-tabs.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetProfessionalGateForTests } from '../../src/screens/professional/ProfessionalGate';
+         | ^
+      17 |
+      18 | // Every professional test imports this harness: give findBy*/waitFor 5 s
+      19 | // instead of RNTL's 1 s default so the suite holds under default-worker load.
+
+
+FAIL tests/professional/screens.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/professional/ProfessionalGate' from 'tests/professional/helpers.tsx'
+
+    Require stack:
+      tests/professional/helpers.tsx
+      tests/professional/screens.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetProfessionalGateForTests } from '../../src/screens/professional/ProfessionalGate';
+         | ^
+      17 |
+      18 | // Every professional test imports this harness: give findBy*/waitFor 5 s
+      19 | // instead of RNTL's 1 s default so the suite holds under default-worker load.
+
+
+FAIL tests/professional/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/professional/ProfessionalGate' from 'tests/professional/helpers.tsx'
+
+    Require stack:
+      tests/professional/helpers.tsx
+      tests/professional/i18n-rtl.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetProfessionalGateForTests } from '../../src/screens/professional/ProfessionalGate';
+         | ^
+      17 |
+      18 | // Every professional test imports this harness: give findBy*/waitFor 5 s
+      19 | // instead of RNTL's 1 s default so the suite holds under default-worker load.
+
+
+FAIL tests/professional/routes.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/professional/ProfessionalGate' from 'tests/professional/helpers.tsx'
+
+    Require stack:
+      tests/professional/helpers.tsx
+      tests/professional/routes.test.tsx
+
+      14 | import { makeWrapper } from '../helpers/providers';
+      15 | import { UIProvider } from '../../src/ports/ui';
+    > 16 | import { __resetProfessionalGateForTests } from '../../src/screens/professional/ProfessionalGate';
+         | ^
+      17 |
+      18 | // Every professional test imports this harness: give findBy*/waitFor 5 s
+      19 | // instead of RNTL's 1 s default so the suite holds under default-worker load.
+
+
+Test Suites: 4 failed, 4 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        32.143 s
+Ran all test suites matching /tests\/professional/i.

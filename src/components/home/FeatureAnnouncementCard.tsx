@@ -20,6 +20,7 @@ import { ArrowRight, Lightbulb, Sparkles } from 'lucide-react';
 import { VitanaCardActionButton } from '@/components/vitana/VitanaCardActionButton';
 import { ACCENT_CLASSES, type CardAccent } from '@/components/vitana/vitana-card-catalog';
 import { useNavigate } from 'react-router-dom';
+import { activateOrb } from '@/lib/orbActivate';
 import { t } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
 import { VitanaRecommendationHeader } from '@/components/vitana/VitanaRecommendationHeader';
@@ -96,6 +97,9 @@ export function FeatureAnnouncementCard({
 
   const open = () => {
     onOpen?.();
+    // The "Talk to Vitana" tip means the voice assistant: open the ORB instead of the
+    // /assistant page, which fails for members. Falls back to the route if the ORB is not there.
+    if (isTip && deepLink === '/assistant' && activateOrb()) return;
     navigate(deepLink);
   };
 
