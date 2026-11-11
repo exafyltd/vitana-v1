@@ -3,7 +3,7 @@
   "service": "community-app",
   "_note": "Not verified on staging: the web build has no read-only Turkish spec for these two labels. Covered by the new vitest test and the two unchanged terms tests.",
   "tests": [
-    { "kind": "new", "ref": "npx vitest run src/i18n/tr-screens-no-empty-values.test.ts", "reason": "no empty string in tr screens.json; the two keys are non-empty and exist in de and en" },
+    { "kind": "existing", "ref": "npx vitest run src/i18n/tr-screens-no-empty-values.test.ts", "reason": "no empty string in tr screens.json; the two keys are non-empty and exist in de and en" },
     { "kind": "existing", "ref": "npx vitest run src/i18n src/lib/commerce-terms.vtid-04895.test.ts src/components/commerce/PartnerTermsSheet.vtid-04909.test.tsx", "reason": "i18n suite and the two unchanged German terms tests stay green" }
   ]
 }
