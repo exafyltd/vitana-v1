@@ -42,6 +42,22 @@
       "sayHello": "Hallo sagen",
       "viewProfile": "Profil ansehen",
       "eyebrow": "Neu in der Community"
+    },
+    "greeting": {
+      "fieldLabel": "Deine Begrüßung",
+      "placeholder": "Schreib eine kurze, freundliche Begrüßung …",
+      "inLanguage": "auf {language}",
+      "send": "Senden",
+      "sending": "Wird gesendet …",
+      "tryAnother": "Andere vorschlagen",
+      "cancel": "Abbrechen",
+      "loadingSuggestion": "Vorschlag wird geladen …",
+      "sentToast": "Begrüßung gesendet",
+      "sentToastDesc": "Deine Begrüßung ist auf dem Weg.",
+      "suggestionFailed": "Vorschlag konnte nicht geladen werden. Versuch es gleich noch einmal.",
+      "sendFailed": "Begrüßung konnte nicht gesendet werden. Versuch es gleich noch einmal.",
+      "notAllowed": "Diese Begrüßung kann gerade nicht gesendet werden.",
+      "emptyGreeting": "Schreib zuerst eine kurze Begrüßung."
     }
   }
 }
