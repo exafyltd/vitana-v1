@@ -184,7 +184,8 @@
         "video": "视频",
         "file": "文件",
         "voice": "语音消息",
-        "link": "链接"
+        "link": "链接",
+        "_pending_review": {}
       },
       "searching": "正在搜索…",
       "error": "搜索失败，请重试。",
@@ -192,7 +193,8 @@
       "results": "搜索结果",
       "conversation": "对话",
       "more": "显示更多",
-      "filters": "筛选"
+      "filters": "筛选",
+      "_pending_review": {}
     },
     "shared": {
       "sendInMessage": "通过消息发送",
@@ -204,7 +206,8 @@
         "post": "帖子",
         "event": "活动",
         "product": "商品",
-        "profile": "个人资料"
+        "profile": "个人资料",
+        "_pending_review": {}
       },
       "loading": "正在加载预览…",
       "loadFailed": "无法加载预览",
@@ -213,13 +216,17 @@
       "unavailable": {
         "deleted": {
           "title": "{kind}已不可用",
-          "body": "它已被删除。"
+          "body": "它已被删除。",
+          "_pending_review": {}
         },
         "restricted": {
           "title": "你无法查看此{kind}",
-          "body": "其隐私设置不允许你查看。"
-        }
-      }
+          "body": "其隐私设置不允许你查看。",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

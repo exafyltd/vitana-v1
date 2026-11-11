@@ -3,12 +3,16 @@
     "article": {
       "unavailableTitle": "Artículo no disponible",
       "unavailableBody": "Este artículo no se puede abrir aquí. Vuelve al feed para abrirlo de nuevo.",
-      "backToFeed": "Volver al feed"
+      "backToFeed": "Volver al feed",
+      "_pending_review": {}
     },
     "post": {
       "video": "Vídeo",
       "likes": "{count} me gusta",
-      "comments": "{count} comentarios"
-    }
-  }
+      "comments": "{count} comentarios",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
