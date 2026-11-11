@@ -1,7 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom";
 import { NewMemberCard } from "./NewMemberCard";
+
+// The composer is covered by its own suite; here we only care that the card
+// opens it (and sends nothing itself), so stub it to a marker element.
+vi.mock("@/components/home/NewMemberGreetingComposer", () => ({
+  NewMemberGreetingComposer: ({ userId }: { userId: string }) => (
+    <div data-testid="composer-stub">{userId}</div>
+  ),
+}));
 
 function Where() {
   const loc = useLocation();
@@ -30,17 +38,27 @@ function renderCard() {
   );
 }
 
-describe("NewMemberCard (VTID-04574)", () => {
-  it("Say hello opens the direct conversation with the new member", () => {
+describe("NewMemberCard (VTID-04574, VTID-05207)", () => {
+  // The card chrome (its tappable root) also has role="button"; the two action
+  // controls are the real <button> elements, in order: Say hello, View profile.
+  function actionButtons(): HTMLButtonElement[] {
+    return screen
+      .getAllByRole("button")
+      .filter((b) => b.tagName === "BUTTON") as HTMLButtonElement[];
+  }
+
+  it("Say hello opens the inline greeting composer and navigates nowhere", () => {
     renderCard();
-    fireEvent.click(screen.getAllByRole("button").find((b) => b.tagName === "BUTTON")!);
-    expect(screen.getByTestId("where").textContent).toBe("/inbox/u/user-123");
+    expect(screen.queryByTestId("composer-stub")).toBeNull();
+    fireEvent.click(actionButtons()[0]);
+    // Composer appears; the router stayed on /home (nothing was sent/opened).
+    expect(screen.getByTestId("composer-stub").textContent).toBe("user-123");
+    expect(screen.queryByTestId("where")).toBeNull();
   });
 
   it("View profile opens the member's profile", () => {
     renderCard();
-    const buttons = screen.getAllByRole("button").filter((b) => b.tagName === "BUTTON");
-    fireEvent.click(buttons[1]);
+    fireEvent.click(actionButtons()[1]);
     expect(screen.getByTestId("where").textContent).toBe("/u/user-123");
   });
 

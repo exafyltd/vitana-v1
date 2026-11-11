@@ -1,0 +1,796 @@
+
+> vite_react_shadcn_ts@0.0.0 prebuild
+> node scripts/nav/build-nav-registry.mjs && node scripts/nav/build-reserved-tenant-slugs.mjs && node scripts/whats-new/build-whats-new.mjs
+
+[nav-registry] 184 screens → public/nav-registry.json
+[reserved-tenant-slugs] 81 slugs → src/generated/reserved-tenant-slugs.json, public/reserved-tenant-slugs.json
+[whats-new] 10 entries → public/whats-new.json
+
+> vite_react_shadcn_ts@0.0.0 build
+> vite build
+
+vite v5.4.19 building for production...
+transforming...
+Browserslist: browsers data (caniuse-lite) is 16 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+warn - The class `duration-[1000ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;1000ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[400ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;400ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[800ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;800ms&rsqb;` to silence this warning.
+
+warn - The class `ease-[cubic-bezier(0.34,1.56,0.64,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.34,1.56,0.64,1)&rsqb;` to silence this warning.
+✓ 7228 modules transformed.
+rendering chunks...
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) /projects/sandbox/vitana-v1/src/lib/diary-index-sync.ts is dynamically imported by /projects/sandbox/vitana-v1/src/components/diary/TextDiaryEditor.tsx but also statically imported by /projects/sandbox/vitana-v1/src/components/diary/PhotoDiaryUploader.tsx, /projects/sandbox/vitana-v1/src/components/memory/VoiceDiaryRecorder.tsx, dynamic import will not move module into another chunk.
+
+warnings when minifying css:
+▲ [WARNING] Expected identifier but found whitespace [css-syntax-error]
+
+    <stdin>:1035:28:
+      1035 │ --appilix-bottom-nav-height: 72px;
+           ╵                             ^
+
+
+▲ [WARNING] Unexpected "72px" [css-syntax-error]
+
+    <stdin>:1035:29:
+      1035 │ --appilix-bottom-nav-height: 72px;
+           ╵                              ~~~~
+
+
+▲ [WARNING] Expected identifier but found whitespace [css-syntax-error]
+
+    <stdin>:5862:21:
+      5862 │   --tw-gradient-from: ${tier.color} var(--tw-gradient-from-posit...
+           ╵                      ^
+
+
+▲ [WARNING] Unexpected "$" [css-syntax-error]
+
+    <stdin>:5862:22:
+      5862 │   --tw-gradient-from: ${tier.color} var(--tw-gradient-from-posit...
+           ╵                       ^
+
+
+▲ [WARNING] Expected ":" [css-syntax-error]
+
+    <stdin>:5862:28:
+      5862 │   --tw-gradient-from: ${tier.color} var(--tw-gradient-from-posit...
+           │                             ^
+           ╵                             :
+
+
+▲ [WARNING] Expected identifier but found "var(" [css-syntax-error]
+
+    <stdin>:5862:36:
+      5862 │ ...w-gradient-from: ${tier.color} var(--tw-gradient-from-position);
+           ╵                                   ~~~~
+
+
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) /projects/sandbox/vitana-v1/src/integrations/supabase/client.ts is dynamically imported by /projects/sandbox/vitana-v1/src/lib/celebrate.ts but also statically imported by /projects/sandbox/vitana-v1/src/App.tsx, /projects/sandbox/vitana-v1/src/components/AuthGuard.tsx, /projects/sandbox/vitana-v1/src/components/CreateContentPopup.tsx, /projects/sandbox/vitana-v1/src/components/CreateEventPopup.tsx, /projects/sandbox/vitana-v1/src/components/CreateGroupPopup.tsx, /projects/sandbox/vitana-v1/src/components/CreateMeetupPopup.tsx, /projects/sandbox/vitana-v1/src/components/EditMeetupPopup.tsx, /projects/sandbox/vitana-v1/src/components/GoLivePopup.tsx, /projects/sandbox/vitana-v1/src/components/NewConversationPopup.tsx, /projects/sandbox/vitana-v1/src/components/PushDiagnostics.tsx, /projects/sandbox/vitana-v1/src/components/admin/AdminActivityFeed.tsx, /projects/sandbox/vitana-v1/src/components/auth/ResendConfirmationButton.tsx, /projects/sandbox/vitana-v1/src/components/business/OperationsPanel.tsx, /projects/sandbox/vitana-v1/src/components/business/OrganizerEventSalesSheet.tsx, /projects/sandbox/vitana-v1/src/components/capture/UnifiedCaptureCard.tsx, /projects/sandbox/vitana-v1/src/components/commerce/ProductImageField.tsx, /projects/sandbox/vitana-v1/src/components/community/EditShortVideoModal.tsx, /projects/sandbox/vitana-v1/src/components/community/GroupMembersDialog.tsx, /projects/sandbox/vitana-v1/src/components/contacts/AddContactDialog.tsx, /projects/sandbox/vitana-v1/src/components/contacts/VerifyPhoneDialog.tsx, /projects/sandbox/vitana-v1/src/components/diary/DiaryEntryList.tsx, /projects/sandbox/vitana-v1/src/components/diary/PhotoDiaryUploader.tsx, /projects/sandbox/vitana-v1/src/components/events/EventKebabMenu.tsx, /projects/sandbox/vitana-v1/src/components/feedback/FeedbackRecorder.tsx, /projects/sandbox/vitana-v1/src/components/health/VitanaBaselineSurveyModal.tsx, /projects/sandbox/vitana-v1/src/components/health/VitanaLogDataDialog.tsx, /projects/sandbox/vitana-v1/src/components/health/VitanaPillarAgentsPanel.tsx, /projects/sandbox/vitana-v1/src/components/health/mobile/HealthReportUploadSheet.tsx, /projects/sandbox/vitana-v1/src/components/health/mobile/MobileHealthMedicalTab.tsx, /projects/sandbox/vitana-v1/src/components/home/NewMemberGreetingComposer.tsx, /projects/sandbox/vitana-v1/src/components/home/NewsPostModerationMenu.tsx, /projects/sandbox/vitana-v1/src/components/intents/CoverPhotoPicker.tsx, /projects/sandbox/vitana-v1/src/components/intents/IntentComposer.tsx, /projects/sandbox/vitana-v1/src/components/liverooms/EditSessionDialog.tsx, /projects/sandbox/vitana-v1/src/components/meetups/MeetupDetailsDrawer.tsx, /projects/sandbox/vitana-v1/src/components/memory/AddMemoryDialog.tsx, /projects/sandbox/vitana-v1/src/components/memory/WhatVitanaKnows.tsx, /projects/sandbox/vitana-v1/src/components/messages/ConversationView.tsx, /projects/sandbox/vitana-v1/src/components/messages/CreateGroupPopup.tsx, /projects/sandbox/vitana-v1/src/components/messages/GroupMembersModal.tsx, /projects/sandbox/vitana-v1/src/components/messages/SharedContentCard.tsx, /projects/sandbox/vitana-v1/src/components/mobile/SideDrawerNav.tsx, /projects/sandbox/vitana-v1/src/components/notifications/TurnOnNotificationsCard.tsx, /projects/sandbox/vitana-v1/src/components/onboarding/OnboardingNameForm.tsx, /projects/sandbox/vitana-v1/src/components/payment/BookingPaymentFlow.tsx, /projects/sandbox/vitana-v1/src/components/payment/GlobalPaymentRequest.tsx, /projects/sandbox/vitana-v1/src/components/payment/GlobalSendFunds.tsx, /projects/sandbox/vitana-v1/src/components/portal/TenantAuthCard.tsx, /projects/sandbox/vitana-v1/src/components/profile/AutopilotProfilePopup.tsx, /projects/sandbox/vitana-v1/src/components/profile/FollowListDialog.tsx, /projects/sandbox/vitana-v1/src/components/profile/InterestsPicker.tsx, /projects/sandbox/vitana-v1/src/components/profile/ProfilePreviewDialog.tsx, /projects/sandbox/vitana-v1/src/components/profile/dialogs/SocialMediaImportDialog.tsx, /projects/sandbox/vitana-v1/src/components/profile/drawers/AboutDrawer.tsx, /projects/sandbox/vitana-v1/src/components/profile/drawers/CoverLibraryDrawer.tsx, /projects/sandbox/vitana-v1/src/components/profile/drawers/DancePreferencesDrawer.tsx, /projects/sandbox/vitana-v1/src/components/profile/drawers/IdentityDrawer.tsx, /projects/sandbox/vitana-v1/src/components/profile/editor/AboutForm.tsx, /projects/sandbox/vitana-v1/src/components/profile/editor/AvatarUploadField.tsx, /projects/sandbox/vitana-v1/src/components/profile/editor/IdentityForm.tsx, /projects/sandbox/vitana-v1/src/components/profile/gallery/MusicGallery.tsx, /projects/sandbox/vitana-v1/src/components/profile/gallery/VideoGallery.tsx, /projects/sandbox/vitana-v1/src/components/profile/mobile/MobileCreatePostSheet.tsx, /projects/sandbox/vitana-v1/src/components/profile/sections/DancePublicSection.tsx, /projects/sandbox/vitana-v1/src/components/profile/shared/tabs/ProfileEventsTab.tsx, /projects/sandbox/vitana-v1/src/components/reseller/ResellerAvailableEventsTab.tsx, /projects/sandbox/vitana-v1/src/components/reseller/ResellerCampaignsTab.tsx, /projects/sandbox/vitana-v1/src/components/settings/PhoneDiscoverabilityToggle.tsx, /projects/sandbox/vitana-v1/src/components/settings/SessionExpiredBanner.tsx, /projects/sandbox/vitana-v1/src/components/settings/SpotlightConsentToggle.tsx, /projects/sandbox/vitana-v1/src/components/sharing/AutomationRuleDialog.tsx, /projects/sandbox/vitana-v1/src/components/sharing/BlastCenter.tsx, /projects/sandbox/vitana-v1/src/components/sharing/CampaignDialog.tsx, /projects/sandbox/vitana-v1/src/components/sharing/ChannelConnector.tsx, /projects/sandbox/vitana-v1/src/components/sharing/CreatePackageDialog.tsx, /projects/sandbox/vitana-v1/src/components/sharing/CreatePostDialog.tsx, /projects/sandbox/vitana-v1/src/components/sharing/EditPackageDialog.tsx, /projects/sandbox/vitana-v1/src/components/sharing/InlineChannelConnector.tsx, /projects/sandbox/vitana-v1/src/components/sharing/TemplateDialog.tsx, /projects/sandbox/vitana-v1/src/components/sharing/UniversalShareDialog.tsx, /projects/sandbox/vitana-v1/src/components/tickets/EventSalesDashboard.tsx, /projects/sandbox/vitana-v1/src/components/tickets/EventTicketSelector.tsx, /projects/sandbox/vitana-v1/src/context/AuthProvider.tsx, /projects/sandbox/vitana-v1/src/context/ProfileProvider.tsx, /projects/sandbox/vitana-v1/src/context/VitanalandNavigationContext.tsx, /projects/sandbox/vitana-v1/src/hooks/use-autopilot.ts, /projects/sandbox/vitana-v1/src/hooks/useAIAssistants.ts, /projects/sandbox/vitana-v1/src/hooks/useActivateReseller.ts, /projects/sandbox/vitana-v1/src/hooks/useActivityLogger.ts, /projects/sandbox/vitana-v1/src/hooks/useAdminNavigator.ts, /projects/sandbox/vitana-v1/src/hooks/useAdminNotificationCategories.ts, /projects/sandbox/vitana-v1/src/hooks/useAdminNotifications.ts, /projects/sandbox/vitana-v1/src/hooks/useAdminUsers.ts, /projects/sandbox/vitana-v1/src/hooks/useAllNewsFeed.ts, /projects/sandbox/vitana-v1/src/hooks/useAppointmentNotifications.ts, /projects/sandbox/vitana-v1/src/hooks/useAutoShortMetadata.ts, /projects/sandbox/vitana-v1/src/hooks/useAutomationRules.ts, /projects/sandbox/vitana-v1/src/hooks/useBackOfficeCommands.ts, /projects/sandbox/vitana-v1/src/hooks/useBackOfficeDecisions.ts, /projects/sandbox/vitana-v1/src/hooks/useBookmarks.ts, /projects/sandbox/vitana-v1/src/hooks/useBulkVideoUpload.ts, /projects/sandbox/vitana-v1/src/hooks/useBusinessPackages.ts, /projects/sandbox/vitana-v1/src/hooks/useCalendarEvents.ts, /projects/sandbox/vitana-v1/src/hooks/useCallState.ts, /projects/sandbox/vitana-v1/src/hooks/useCampaignActions.ts, /projects/sandbox/vitana-v1/src/hooks/useCampaignAnalytics.ts, /projects/sandbox/vitana-v1/src/hooks/useCampaigns.ts, /projects/sandbox/vitana-v1/src/hooks/useChannels.ts, /projects/sandbox/vitana-v1/src/hooks/useChatApi.ts, /projects/sandbox/vitana-v1/src/hooks/useChatViewingPresence.ts, /projects/sandbox/vitana-v1/src/hooks/useCommunityEvents.ts, /projects/sandbox/vitana-v1/src/hooks/useCommunityMembers.ts, /projects/sandbox/vitana-v1/src/hooks/useCompanionPreferences.ts, /projects/sandbox/vitana-v1/src/hooks/useContactSync.ts, /projects/sandbox/vitana-v1/src/hooks/useContacts.ts, /projects/sandbox/vitana-v1/src/hooks/useCreator.ts, /projects/sandbox/vitana-v1/src/hooks/useDidYouKnowTip.ts, /projects/sandbox/vitana-v1/src/hooks/useDiscountCode.ts, /projects/sandbox/vitana-v1/src/hooks/useDistributionPosts.ts, /projects/sandbox/vitana-v1/src/hooks/useEnrichmentCards.ts, /projects/sandbox/vitana-v1/src/hooks/useEventGame.ts, /projects/sandbox/vitana-v1/src/hooks/useEventParticipation.ts, /projects/sandbox/vitana-v1/src/hooks/useEventRecommendations.ts, /projects/sandbox/vitana-v1/src/hooks/useEventSales.ts, /projects/sandbox/vitana-v1/src/hooks/useEventTickets.ts, /projects/sandbox/vitana-v1/src/hooks/useFeedPostInteractions.ts, /projects/sandbox/vitana-v1/src/hooks/useFollow.ts, /projects/sandbox/vitana-v1/src/hooks/useFollowingFeed.ts, /projects/sandbox/vitana-v1/src/hooks/useGlobalMessages.ts, /projects/sandbox/vitana-v1/src/hooks/useGoogleConnect.ts, /projects/sandbox/vitana-v1/src/hooks/useGroupDirectory.ts, /projects/sandbox/vitana-v1/src/hooks/useGroupMembership.ts, /projects/sandbox/vitana-v1/src/hooks/useGroupPosts.ts, /projects/sandbox/vitana-v1/src/hooks/useHealthPlans.ts, /projects/sandbox/vitana-v1/src/hooks/useIndexBoost.ts, /projects/sandbox/vitana-v1/src/hooks/useIndexStanding.ts, /projects/sandbox/vitana-v1/src/hooks/useIntelligentGreeting.ts, /projects/sandbox/vitana-v1/src/hooks/useLifeCompass.ts, /projects/sandbox/vitana-v1/src/hooks/useLiveStreams.ts, /projects/sandbox/vitana-v1/src/hooks/useMarkMatchesViewed.ts, /projects/sandbox/vitana-v1/src/hooks/useMarketplace.ts, /projects/sandbox/vitana-v1/src/hooks/useMediaUpload.ts, /projects/sandbox/vitana-v1/src/hooks/useMemberships.ts, /projects/sandbox/vitana-v1/src/hooks/useMentionCandidates.ts, /projects/sandbox/vitana-v1/src/hooks/useMessageReactions.ts, /projects/sandbox/vitana-v1/src/hooks/useMessageSearch.ts, /projects/sandbox/vitana-v1/src/hooks/useMessages.ts, /projects/sandbox/vitana-v1/src/hooks/useNewsFeed.ts, /projects/sandbox/vitana-v1/src/hooks/useNotificationCategoryPreferences.ts, /projects/sandbox/vitana-v1/src/hooks/useNotifications.ts, /projects/sandbox/vitana-v1/src/hooks/useOnboardingStatus.ts, /projects/sandbox/vitana-v1/src/hooks/useOrbVoiceWidget.ts, /projects/sandbox/vitana-v1/src/hooks/useOrderManagement.ts, /projects/sandbox/vitana-v1/src/hooks/useOrganizerEvents.ts, /projects/sandbox/vitana-v1/src/hooks/usePatientAccess.ts, /projects/sandbox/vitana-v1/src/hooks/usePersonalizedMedia.ts, /projects/sandbox/vitana-v1/src/hooks/usePodcastFavorite.ts, /projects/sandbox/vitana-v1/src/hooks/usePodcastShowSubscription.ts, /projects/sandbox/vitana-v1/src/hooks/usePopularPodcastShows.ts, /projects/sandbox/vitana-v1/src/hooks/usePostAnalytics.ts, /projects/sandbox/vitana-v1/src/hooks/usePostInteractions.ts, /projects/sandbox/vitana-v1/src/hooks/usePostLikers.ts, /projects/sandbox/vitana-v1/src/hooks/useProfileGallery.ts, /projects/sandbox/vitana-v1/src/hooks/useProfileHealthSummary.ts, /projects/sandbox/vitana-v1/src/hooks/useProfileMilestones.ts, /projects/sandbox/vitana-v1/src/hooks/useProfilePosts.ts, /projects/sandbox/vitana-v1/src/hooks/useProfileStatsCount.ts, /projects/sandbox/vitana-v1/src/hooks/useProfileTheme.ts, /projects/sandbox/vitana-v1/src/hooks/useProfiles.ts, /projects/sandbox/vitana-v1/src/hooks/useRealMatches.ts, /projects/sandbox/vitana-v1/src/hooks/useRedeemVoucher.ts, /projects/sandbox/vitana-v1/src/hooks/useResellerProfile.ts, /projects/sandbox/vitana-v1/src/hooks/useResellerSales.ts, /projects/sandbox/vitana-v1/src/hooks/useRole.tsx, /projects/sandbox/vitana-v1/src/hooks/useRouteTracker.ts, /projects/sandbox/vitana-v1/src/hooks/useScheduledPosts.ts, /projects/sandbox/vitana-v1/src/hooks/useShortComments.ts, /projects/sandbox/vitana-v1/src/hooks/useShorts.ts, /projects/sandbox/vitana-v1/src/hooks/useSignupFunnel.ts, /projects/sandbox/vitana-v1/src/hooks/useStreamRecording.ts, /projects/sandbox/vitana-v1/src/hooks/useStreamSubscribers.ts, /projects/sandbox/vitana-v1/src/hooks/useStreamSubscription.ts, /projects/sandbox/vitana-v1/src/hooks/useSupabaseOAuthSignIn.ts, /projects/sandbox/vitana-v1/src/hooks/useTemplates.ts, /projects/sandbox/vitana-v1/src/hooks/useTenant.tsx, /projects/sandbox/vitana-v1/src/hooks/useTenantFeatureFlag.ts, /projects/sandbox/vitana-v1/src/hooks/useTenantMessages.ts, /projects/sandbox/vitana-v1/src/hooks/useTypingIndicators.ts, /projects/sandbox/vitana-v1/src/hooks/useUnifiedEarnings.ts, /projects/sandbox/vitana-v1/src/hooks/useUserGroups.ts, /projects/sandbox/vitana-v1/src/hooks/useUserPreferences.ts, /projects/sandbox/vitana-v1/src/hooks/useUserPresence.ts, /projects/sandbox/vitana-v1/src/hooks/useUserSupplements.ts, /projects/sandbox/vitana-v1/src/hooks/useVaea.ts, /projects/sandbox/vitana-v1/src/hooks/useVideoUpload.ts, /projects/sandbox/vitana-v1/src/hooks/useVitanaIndex.ts, /projects/sandbox/vitana-v1/src/hooks/useVitanaIndexConfig.ts, /projects/sandbox/vitana-v1/src/hooks/useVitanaIndexForUser.ts, /projects/sandbox/vitana-v1/src/hooks/useVitanaIndexHistory.ts, /projects/sandbox/vitana-v1/src/hooks/useVouchers.ts, /projects/sandbox/vitana-v1/src/hooks/useWallet.ts, /projects/sandbox/vitana-v1/src/hooks/useWearableProviders.ts, /projects/sandbox/vitana-v1/src/integrations/supabase/realtime.ts, /projects/sandbox/vitana-v1/src/lib/admin-api.ts, /projects/sandbox/vitana-v1/src/lib/ai-connections.ts, /projects/sandbox/vitana-v1/src/lib/billingApi.ts, /projects/sandbox/vitana-v1/src/lib/cached-access-token.ts, /projects/sandbox/vitana-v1/src/lib/catalogue-import.ts, /projects/sandbox/vitana-v1/src/lib/coach-chat-api.ts, /projects/sandbox/vitana-v1/src/lib/commerce-mcp.ts, /projects/sandbox/vitana-v1/src/lib/community-intro.ts, /projects/sandbox/vitana-v1/src/lib/contact-invite-links.ts, /projects/sandbox/vitana-v1/src/lib/coverImageTo16x9.ts, /projects/sandbox/vitana-v1/src/lib/fileUpload.ts, /projects/sandbox/vitana-v1/src/lib/gateway-tts.ts, /projects/sandbox/vitana-v1/src/lib/messageStatus.ts, /projects/sandbox/vitana-v1/src/lib/new-member-greeted.ts, /projects/sandbox/vitana-v1/src/lib/notifications/device-timezone.ts, /projects/sandbox/vitana-v1/src/lib/post-attachment.ts, /projects/sandbox/vitana-v1/src/lib/prefetch-registry.ts, /projects/sandbox/vitana-v1/src/lib/pushNotifications.ts, /projects/sandbox/vitana-v1/src/lib/shopping-agent-client.ts, /projects/sandbox/vitana-v1/src/lib/tenant-registry.ts, /projects/sandbox/vitana-v1/src/lib/universal-cart-client.ts, /projects/sandbox/vitana-v1/src/pages/Apply.tsx, /projects/sandbox/vitana-v1/src/pages/Calendar.tsx, /projects/sandbox/vitana-v1/src/pages/CommerceJoin.tsx, /projects/sandbox/vitana-v1/src/pages/Community.tsx, /projects/sandbox/vitana-v1/src/pages/EditProfilePage.tsx, /projects/sandbox/vitana-v1/src/pages/MobileSupport.tsx, /projects/sandbox/vitana-v1/src/pages/OAuthConsent.tsx, /projects/sandbox/vitana-v1/src/pages/PackagePurchaseSuccess.tsx, /projects/sandbox/vitana-v1/src/pages/PostDetail.tsx, /projects/sandbox/vitana-v1/src/pages/PublicCampaignLanding.tsx, /projects/sandbox/vitana-v1/src/pages/PublicEventLanding.tsx, /projects/sandbox/vitana-v1/src/pages/PublicProfilePage.tsx, /projects/sandbox/vitana-v1/src/pages/TicketPurchaseSuccess.tsx, /projects/sandbox/vitana-v1/src/pages/admin/Bootstrap.tsx, /projects/sandbox/vitana-v1/src/pages/admin/Dashboard.tsx, /projects/sandbox/vitana-v1/src/pages/admin/MediaManagement.tsx, /projects/sandbox/vitana-v1/src/pages/admin/audit/Events.tsx, /projects/sandbox/vitana-v1/src/pages/admin/audit/Security.tsx, /projects/sandbox/vitana-v1/src/pages/admin/audit/UserActivity.tsx, /projects/sandbox/vitana-v1/src/pages/admin/community/EventGameAdmin.tsx, /projects/sandbox/vitana-v1/src/pages/admin/community/Events.tsx, /projects/sandbox/vitana-v1/src/pages/admin/community/Groups.tsx, /projects/sandbox/vitana-v1/src/pages/admin/community/ReportedContent.tsx, /projects/sandbox/vitana-v1/src/pages/admin/community/ReportedContentNew.tsx, /projects/sandbox/vitana-v1/src/pages/admin/dashboard/ActivityFeed.tsx, /projects/sandbox/vitana-v1/src/pages/admin/intelligence/Embeddings.tsx, /projects/sandbox/vitana-v1/src/pages/admin/intelligence/Memory.tsx, /projects/sandbox/vitana-v1/src/pages/admin/intelligence/Relationships.tsx, /projects/sandbox/vitana-v1/src/pages/admin/intelligence/Signals.tsx, /projects/sandbox/vitana-v1/src/pages/admin/live/Attendance.tsx, /projects/sandbox/vitana-v1/src/pages/admin/live/Sessions.tsx, /projects/sandbox/vitana-v1/src/pages/admin/marketplace/Overview.tsx, /projects/sandbox/vitana-v1/src/pages/admin/marketplace/PartnerHealthOrders.tsx, /projects/sandbox/vitana-v1/src/pages/admin/marketplace/Products.tsx, /projects/sandbox/vitana-v1/src/pages/admin/media/Music.tsx, /projects/sandbox/vitana-v1/src/pages/admin/media/Podcasts.tsx, /projects/sandbox/vitana-v1/src/pages/admin/media/Videos.tsx, /projects/sandbox/vitana-v1/src/pages/admin/system/Configuration.tsx, /projects/sandbox/vitana-v1/src/pages/admin/system/Creators.tsx, /projects/sandbox/vitana-v1/src/pages/auth/OAuthComplete.tsx, /projects/sandbox/vitana-v1/src/pages/auth/ResetPassword.tsx, /projects/sandbox/vitana-v1/src/pages/community/GroupDetail.tsx, /projects/sandbox/vitana-v1/src/pages/community/LiveRoomViewer.tsx, /projects/sandbox/vitana-v1/src/pages/community/LiveRooms.tsx, /projects/sandbox/vitana-v1/src/pages/community/MediaHub.tsx, /projects/sandbox/vitana-v1/src/pages/dev/DevLogin.tsx, /projects/sandbox/vitana-v1/src/pages/discover/DoctorsCoaches.tsx, /projects/sandbox/vitana-v1/src/pages/discover/Orders.tsx, /projects/sandbox/vitana-v1/src/pages/discover/ProviderProfile.tsx, /projects/sandbox/vitana-v1/src/pages/health/MyBiology.tsx, /projects/sandbox/vitana-v1/src/pages/health/VitanaIndexDetail.tsx, /projects/sandbox/vitana-v1/src/pages/legal/DeleteAccount.tsx, /projects/sandbox/vitana-v1/src/pages/memory/Diary.tsx, /projects/sandbox/vitana-v1/src/pages/portals/CommercePortalLogin.tsx, /projects/sandbox/vitana-v1/src/pages/portals/ExafyAdminPortal.tsx, /projects/sandbox/vitana-v1/src/pages/portals/MaxinaPortal.tsx, /projects/sandbox/vitana-v1/src/pages/portals/TenantPortal.tsx, /projects/sandbox/vitana-v1/src/pages/settings/Limitations.tsx, /projects/sandbox/vitana-v1/src/services/liveRoomService.ts, /projects/sandbox/vitana-v1/src/utils/diaryAudioRecorder.ts, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/assets/worker-DYSz7Krg.js                                2.51 kB
+dist/assets/pt-DSO0vicF.png                                   4.85 kB
+dist/assets/rs-CL3ttW_e.png                                   6.20 kB
+dist/index.html                                               8.17 kB │ gzip:   3.01 kB
+dist/assets/morning-yoga-flow-RuhIsDw2.jpg                   57.86 kB
+dist/assets/friends-meetup-selfie-b4D-ORK5.jpg               62.01 kB
+dist/assets/shorts-healthy-breakfast-DchT1Wgn.jpg            63.07 kB
+dist/assets/shorts-breathing-exercise-BVZH0ZlO.jpg           68.03 kB
+dist/assets/shorts-morning-stretch-D0Vud9fa.jpg              71.29 kB
+dist/assets/community-dance-group-BixN-HUC.jpg               79.13 kB
+dist/assets/ffmpeg-core-CI9Irx9p.js                         111.80 kB
+dist/assets/wellness-yoga-nature-BouldKrs.jpg               113.68 kB
+dist/assets/happy-coffee-group-B1ZzhjSQ.jpg                 127.83 kB
+dist/assets/ffmpeg-core-CgUfceKH.wasm                    32,232.42 kB
+dist/assets/index-Civjpqao.css                              408.46 kB │ gzip:  53.01 kB
+dist/assets/dev-config-pMvWFy2P.js                            0.05 kB │ gzip:   0.07 kB
+dist/assets/isPast-D6v3UzCI.js                                0.09 kB │ gzip:   0.11 kB
+dist/assets/shorts-breathing-exercise-DBkrpcvS.js             0.13 kB │ gzip:   0.13 kB
+dist/assets/isSameYear-CS7ZBBsw.js                            0.13 kB │ gzip:   0.13 kB
+dist/assets/addDays-C02vhjWV.js                               0.15 kB │ gzip:   0.15 kB
+dist/assets/differenceInHours--jS55uDK.js                     0.15 kB │ gzip:   0.15 kB
+dist/assets/Patients-CIKQlAZS.js                              0.16 kB │ gzip:   0.15 kB
+dist/assets/isYesterday-BcgyXpck.js                           0.18 kB │ gzip:   0.15 kB
+dist/assets/subDays-BriFEiYt.js                               0.18 kB │ gzip:   0.16 kB
+dist/assets/AdminGuard-BhbvsqnB.js                            0.18 kB │ gzip:   0.17 kB
+dist/assets/useIsReseller-b3CM1BBY.js                         0.19 kB │ gzip:   0.16 kB
+dist/assets/VitanaIndexValue-D_97l1fc.js                      0.19 kB │ gzip:   0.17 kB
+dist/assets/CommerceConnectionRedirect-DDm4bLoM.js            0.20 kB │ gzip:   0.18 kB
+dist/assets/InviteLanding-BHUS3J6j.js                         0.21 kB │ gzip:   0.19 kB
+dist/assets/backoffice-format-CrLdQVeG.js                     0.23 kB │ gzip:   0.21 kB
+dist/assets/useUrlTab-xOR3fYBf.js                             0.24 kB │ gzip:   0.22 kB
+dist/assets/format-money-DrR1Atjg.js                          0.26 kB │ gzip:   0.20 kB
+dist/assets/escape-G50LZoEZ.js                                0.26 kB │ gzip:   0.19 kB
+dist/assets/useMediaQuery-CO1u3NA-.js                         0.27 kB │ gzip:   0.21 kB
+dist/assets/virtualLink-BfrK5bBp.js                           0.28 kB │ gzip:   0.21 kB
+dist/assets/PublicMain-0brfBHOE.js                            0.29 kB │ gzip:   0.19 kB
+dist/assets/store-links-HSZs7omw.js                           0.30 kB │ gzip:   0.19 kB
+dist/assets/square-CpCaEeDS.js                                0.32 kB │ gzip:   0.25 kB
+dist/assets/BarChart-BYmx72oz.js                              0.32 kB │ gzip:   0.23 kB
+dist/assets/AdminTabs-BJUTDhuB.js                             0.33 kB │ gzip:   0.24 kB
+dist/assets/filter-CYMd0reb.js                                0.33 kB │ gzip:   0.26 kB
+dist/assets/arrow-up-C9JX9tuL.js                              0.33 kB │ gzip:   0.26 kB
+dist/assets/bookmark-KnN-0A-S.js                              0.33 kB │ gzip:   0.27 kB
+dist/assets/arrow-down-C9yaNTqU.js                            0.33 kB │ gzip:   0.26 kB
+dist/assets/ban-CQUl6CbW.js                                   0.34 kB │ gzip:   0.27 kB
+dist/assets/gauge-CtfYs2eM.js                                 0.35 kB │ gzip:   0.27 kB
+dist/assets/BackOfficeTabs-BRn7v1yR.js                        0.35 kB │ gzip:   0.26 kB
+dist/assets/circle-check-Dya4Yx-0.js                          0.35 kB │ gzip:   0.27 kB
+dist/assets/code-CEzMXEsx.js                                  0.35 kB │ gzip:   0.27 kB
+dist/assets/circle-play-lA8nZUBW.js                           0.36 kB │ gzip:   0.28 kB
+dist/assets/smartphone-CiB2NJvx.js                            0.37 kB │ gzip:   0.29 kB
+dist/assets/circle-stop-B16mnXqb.js                           0.37 kB │ gzip:   0.28 kB
+dist/assets/startOfMonth-mLeoHW2W.js                          0.37 kB │ gzip:   0.25 kB
+dist/assets/rotate-ccw-DNGeaLDy.js                            0.37 kB │ gzip:   0.29 kB
+dist/assets/rotate-cw-Ca8uFJ92.js                             0.37 kB │ gzip:   0.29 kB
+dist/assets/toggle-left-D_TH8qh_.js                           0.37 kB │ gzip:   0.29 kB
+dist/assets/circle-x-CX5uYDN-.js                              0.38 kB │ gzip:   0.28 kB
+dist/assets/undo-2-Cqy1PYJ9.js                                0.38 kB │ gzip:   0.28 kB
+dist/assets/droplet-CFa9dCaq.js                               0.38 kB │ gzip:   0.30 kB
+dist/assets/pill-CIkRNH1J.js                                  0.38 kB │ gzip:   0.28 kB
+dist/assets/flag-CD7J9nPy.js                                  0.39 kB │ gzip:   0.31 kB
+dist/assets/square-check-big-DvLp8_ss.js                      0.39 kB │ gzip:   0.29 kB
+dist/assets/paperclip-DMOXl4es.js                             0.39 kB │ gzip:   0.30 kB
+dist/assets/ellipsis-q-LuI0mJ.js                              0.40 kB │ gzip:   0.27 kB
+dist/assets/DetailList-D3jfh8HR.js                            0.40 kB │ gzip:   0.29 kB
+dist/assets/library-Lyga03Nh.js                               0.40 kB │ gzip:   0.29 kB
+dist/assets/cardButtonProps-BjMm5L4T.js                       0.40 kB │ gzip:   0.28 kB
+dist/assets/history-BfrIt0tx.js                               0.41 kB │ gzip:   0.30 kB
+dist/assets/timer-DPiU_H7Z.js                                 0.41 kB │ gzip:   0.29 kB
+dist/assets/link-2-CR2pXS6L.js                                0.41 kB │ gzip:   0.31 kB
+dist/assets/globe-dxYJ0f9S.js                                 0.41 kB │ gzip:   0.29 kB
+dist/assets/useShareOrCopy-Cs9maQzH.js                        0.41 kB │ gzip:   0.30 kB
+dist/assets/percent-D32ivZcX.js                               0.41 kB │ gzip:   0.29 kB
+dist/assets/type-CoHv3zAM.js                                  0.41 kB │ gzip:   0.30 kB
+dist/assets/arrow-right-left-jHn0JSu7.js                      0.42 kB │ gzip:   0.30 kB
+dist/assets/archive-Dq-PJOo2.js                               0.42 kB │ gzip:   0.31 kB
+dist/assets/route-DXlHFBBI.js                                 0.42 kB │ gzip:   0.31 kB
+dist/assets/message-square-text-BlVDQ286.js                   0.42 kB │ gzip:   0.30 kB
+dist/assets/user-minus-DunZgevf.js                            0.42 kB │ gzip:   0.32 kB
+dist/assets/link-C6jOkW9B.js                                  0.43 kB │ gzip:   0.30 kB
+dist/assets/share-DAKLMjwo.js                                 0.43 kB │ gzip:   0.31 kB
+dist/assets/upload-Bfrj3nAQ.js                                0.43 kB │ gzip:   0.32 kB
+dist/assets/map-pin-D3mPEd01.js                               0.43 kB │ gzip:   0.33 kB
+dist/assets/monitor-Bc-lI9Au.js                               0.43 kB │ gzip:   0.31 kB
+dist/assets/XIcon-DMNbz423.js                                 0.43 kB │ gzip:   0.35 kB
+dist/assets/test-tube-diagonal-B3RTqX7X.js                    0.43 kB │ gzip:   0.31 kB
+dist/assets/utensils-Dx3P3D05.js                              0.43 kB │ gzip:   0.31 kB
+dist/assets/key-BobR-4Y3.js                                   0.43 kB │ gzip:   0.32 kB
+dist/assets/file-check-CAXdp6Ph.js                            0.43 kB │ gzip:   0.30 kB
+dist/assets/leaf-ADko3Dgl.js                                  0.43 kB │ gzip:   0.33 kB
+dist/assets/chart-no-axes-column-increasing-B2n5Jbqq.js       0.44 kB │ gzip:   0.30 kB
+dist/assets/image-BImsclGO.js                                 0.44 kB │ gzip:   0.32 kB
+dist/assets/chart-pie-DOQq8BTb.js                             0.44 kB │ gzip:   0.33 kB
+dist/assets/repeat-DNF3qXc5.js                                0.44 kB │ gzip:   0.30 kB
+dist/assets/award-C-eQuvjZ.js                                 0.44 kB │ gzip:   0.33 kB
+dist/assets/AdminEmptyState-BSiZkTx8.js                       0.44 kB │ gzip:   0.29 kB
+dist/assets/pencil-DcaKWZzA.js                                0.45 kB │ gzip:   0.33 kB
+dist/assets/pen-line-ZVqq9U7y.js                              0.45 kB │ gzip:   0.33 kB
+dist/assets/list-checks-sLMD8Ask.js                           0.45 kB │ gzip:   0.29 kB
+dist/assets/flame-CaDfSBXa.js                                 0.45 kB │ gzip:   0.33 kB
+dist/assets/git-branch-B6mVR3i_.js                            0.45 kB │ gzip:   0.32 kB
+dist/assets/wifi-CMOO85Ie.js                                  0.45 kB │ gzip:   0.31 kB
+dist/assets/mail-check-D28NQ0IS.js                            0.45 kB │ gzip:   0.32 kB
+dist/assets/lightbulb-Cd8pdnr-.js                             0.46 kB │ gzip:   0.33 kB
+dist/assets/house-DuczwBIl.js                                 0.46 kB │ gzip:   0.32 kB
+dist/assets/receipt-Bs5oJwaj.js                               0.46 kB │ gzip:   0.31 kB
+dist/assets/smile-CigpVk32.js                                 0.46 kB │ gzip:   0.32 kB
+dist/assets/grid-3x3-By5nCFRz.js                              0.46 kB │ gzip:   0.31 kB
+dist/assets/differenceInDays-DiC7hsJm.js                      0.47 kB │ gzip:   0.27 kB
+dist/assets/maximize-2-Th1M1-jB.js                            0.47 kB │ gzip:   0.31 kB
+dist/assets/file-up-51zw3-Ui.js                               0.47 kB │ gzip:   0.32 kB
+dist/assets/thumbs-up-Dd2af1kS.js                             0.47 kB │ gzip:   0.34 kB
+dist/assets/podcast-CFms4PQK.js                               0.48 kB │ gzip:   0.34 kB
+dist/assets/partner-portal-Qfs0HZQ8.js                        0.48 kB │ gzip:   0.27 kB
+dist/assets/user-plus-DjXBeJF7.js                             0.48 kB │ gzip:   0.34 kB
+dist/assets/group-CUiMOwHM.js                                 0.48 kB │ gzip:   0.34 kB
+dist/assets/badge-check-D52f7Ccc.js                           0.48 kB │ gzip:   0.32 kB
+dist/assets/languages-DQnnx9t7.js                             0.49 kB │ gzip:   0.32 kB
+dist/assets/square-pen-DStJ6T3_.js                            0.49 kB │ gzip:   0.34 kB
+dist/assets/apple-Xiy4kmfW.js                                 0.49 kB │ gzip:   0.35 kB
+dist/assets/ticket-DMoHEFWh.js                                0.49 kB │ gzip:   0.32 kB
+dist/assets/tag-D9kQ_kQ8.js                                   0.50 kB │ gzip:   0.35 kB
+dist/assets/save-UAy0Z8C5.js                                  0.50 kB │ gzip:   0.33 kB
+dist/assets/bot-B5DR5GI2.js                                   0.50 kB │ gzip:   0.33 kB
+dist/assets/calendar-x-D2vT7hNT.js                            0.51 kB │ gzip:   0.33 kB
+dist/assets/server-BaXBe4UT.js                                0.51 kB │ gzip:   0.32 kB
+dist/assets/FeedItemErrorBoundary-CYBJXfU2.js                 0.51 kB │ gzip:   0.36 kB
+dist/assets/accessibility-b2szDmHt.js                         0.51 kB │ gzip:   0.35 kB
+dist/assets/webhook-BBi34u8X.js                               0.52 kB │ gzip:   0.37 kB
+dist/assets/shield-alert-C4wBdgBs.js                          0.52 kB │ gzip:   0.36 kB
+dist/assets/useNativeShare-CxxGepqA.js                        0.52 kB │ gzip:   0.35 kB
+dist/assets/calendar-plus-m4NVPefU.js                         0.52 kB │ gzip:   0.33 kB
+dist/assets/image-plus-Ba0nzer0.js                            0.53 kB │ gzip:   0.36 kB
+dist/assets/layers-enfuA8cy.js                                0.53 kB │ gzip:   0.34 kB
+dist/assets/file-pen-DLXHDbqi.js                              0.54 kB │ gzip:   0.36 kB
+dist/assets/droplets-DdYHpuKA.js                              0.54 kB │ gzip:   0.39 kB
+dist/assets/watch-Bxrfbqz1.js                                 0.54 kB │ gzip:   0.36 kB
+dist/assets/AffiliateDisclosure-DkrFWp2C.js                   0.55 kB │ gzip:   0.33 kB
+dist/assets/introVideo-8TuLg3QW.js                            0.55 kB │ gzip:   0.38 kB
+dist/assets/member-link-QV4bH0GS.js                           0.55 kB │ gzip:   0.36 kB
+dist/assets/microscope-wS2yIB7u.js                            0.55 kB │ gzip:   0.35 kB
+dist/assets/package-CV7e5WSm.js                               0.56 kB │ gzip:   0.36 kB
+dist/assets/quote-Cn1qVMQH.js                                 0.56 kB │ gzip:   0.30 kB
+dist/assets/phone-Bul6dEdy.js                                 0.56 kB │ gzip:   0.36 kB
+dist/assets/shield-off-yhWnbokl.js                            0.57 kB │ gzip:   0.39 kB
+dist/assets/DevEmptyState-C0hv_L9u.js                         0.58 kB │ gzip:   0.34 kB
+dist/assets/mouse-pointer-click-D6ve57mw.js                   0.58 kB │ gzip:   0.39 kB
+dist/assets/useResellerProfile-DdnqOdaW.js                    0.59 kB │ gzip:   0.38 kB
+dist/assets/useAdminSettings-YZVD8ygW.js                      0.60 kB │ gzip:   0.38 kB
+dist/assets/eye-off-kZ6QgjIp.js                               0.60 kB │ gzip:   0.38 kB
+dist/assets/useMarkMatchesViewed-UhncnXd2.js                  0.60 kB │ gzip:   0.41 kB
+dist/assets/building-2-vE_MRPQ_.js                            0.61 kB │ gzip:   0.35 kB
+dist/assets/useEmailConfirmation-BItp9mnO.js                  0.61 kB │ gzip:   0.39 kB
+dist/assets/useAdminAudit-DcCD_58t.js                         0.62 kB │ gzip:   0.36 kB
+dist/assets/liveRoom--cGHCCfR.js                              0.62 kB │ gzip:   0.43 kB
+dist/assets/AdminStatusBadge-CFbpe51i.js                      0.62 kB │ gzip:   0.33 kB
+dist/assets/useVitanaIndexHistory-CRhq28Dc.js                 0.62 kB │ gzip:   0.43 kB
+dist/assets/split-screen-C9xxhlzl.js                          0.63 kB │ gzip:   0.36 kB
+dist/assets/rocket-DBuchb-d.js                                0.63 kB │ gzip:   0.42 kB
+dist/assets/DiscoverChips-DpcwgiFE.js                         0.63 kB │ gzip:   0.38 kB
+dist/assets/trophy-B5t-1EW6.js                                0.63 kB │ gzip:   0.39 kB
+dist/assets/star-DEE1-2Hc.js                                  0.64 kB │ gzip:   0.40 kB
+dist/assets/sun-Bsv3FFV4.js                                   0.64 kB │ gzip:   0.36 kB
+dist/assets/calendar-days-B6_EDGNv.js                         0.66 kB │ gzip:   0.37 kB
+dist/assets/cpu-BHFBB3np.js                                   0.67 kB │ gzip:   0.36 kB
+dist/assets/webview-Cw1VQXjZ.js                               0.68 kB │ gzip:   0.37 kB
+dist/assets/SoftWarningBanner-Bpf88Z4U.js                     0.69 kB │ gzip:   0.39 kB
+dist/assets/SpotlightSection-BvIdN6cj.js                      0.69 kB │ gzip:   0.41 kB
+dist/assets/arrow-up-from-line-D7Ko5yqM.js                    0.70 kB │ gzip:   0.34 kB
+dist/assets/useDiscountCode-BvlCFzPT.js                       0.70 kB │ gzip:   0.44 kB
+dist/assets/FullRowGrid-Drdxdrn9.js                           0.71 kB │ gzip:   0.40 kB
+dist/assets/building-CpOzpZud.js                              0.71 kB │ gzip:   0.37 kB
+dist/assets/DiscoverUtility-DBvBcKP1.js                       0.71 kB │ gzip:   0.40 kB
+dist/assets/dumbbell-C4JEhrkQ.js                              0.73 kB │ gzip:   0.40 kB
+dist/assets/groupCardTransformers-B1lPi2ZG.js                 0.73 kB │ gzip:   0.34 kB
+dist/assets/useAdminUsers-CZ74hKq9.js                         0.73 kB │ gzip:   0.44 kB
+dist/assets/dropdown-menu-kebab-CIyzx_sG.js                   0.74 kB │ gzip:   0.47 kB
+dist/assets/popover-HZs1_VWu.js                               0.74 kB │ gzip:   0.40 kB
+dist/assets/Reports-CIhllj25.js                               0.75 kB │ gzip:   0.43 kB
+dist/assets/DocStatusBadge-ULb3m_vp.js                        0.75 kB │ gzip:   0.48 kB
+dist/assets/user-cog-BEOEL4QI.js                              0.75 kB │ gzip:   0.42 kB
+dist/assets/sliders-horizontal-mpgsmS0h.js                    0.75 kB │ gzip:   0.37 kB
+dist/assets/palette-Ce7Kxqlw.js                               0.78 kB │ gzip:   0.45 kB
+dist/assets/dna-CUb8uVvK.js                                   0.80 kB │ gzip:   0.44 kB
+dist/assets/AutopilotImpact-r_ASPMH1.js                       0.80 kB │ gzip:   0.47 kB
+dist/assets/backoffice-finance-Cp1k3ptj.js                    0.82 kB │ gzip:   0.45 kB
+dist/assets/qr-code-doPfEOyo.js                               0.82 kB │ gzip:   0.41 kB
+dist/assets/v4-DvF23Exx.js                                    0.82 kB │ gzip:   0.45 kB
+dist/assets/useSupabaseOAuthSignIn-Cxhla3l1.js                0.83 kB │ gzip:   0.53 kB
+dist/assets/twitter-DiMV3PR3.js                               0.83 kB │ gzip:   0.45 kB
+dist/assets/bug-CuF_Gcjj.js                                   0.84 kB │ gzip:   0.47 kB
+dist/assets/Domains-DE3aqyAD.js                               0.87 kB │ gzip:   0.49 kB
+dist/assets/Integrations-CzyHZoCn.js                          0.88 kB │ gzip:   0.51 kB
+dist/assets/Policies-CGGsaH_V.js                              0.89 kB │ gzip:   0.51 kB
+dist/assets/DataRights-zbCsAABf.js                            0.90 kB │ gzip:   0.52 kB
+dist/assets/useAdminOverview-D0K6BiOQ.js                      0.90 kB │ gzip:   0.35 kB
+dist/assets/BookmarkButton-DcZ938Rz.js                        0.90 kB │ gzip:   0.56 kB
+dist/assets/Audit-BRfKtrsA.js                                 0.90 kB │ gzip:   0.52 kB
+dist/assets/clickable-avatar-DHU3Wljr.js                      0.92 kB │ gzip:   0.60 kB
+dist/assets/Governance-CWnarC6_.js                            0.97 kB │ gzip:   0.58 kB
+dist/assets/useAdminContent-xD8KhjOW.js                       0.98 kB │ gzip:   0.49 kB
+dist/assets/Reminders-gfAWaGNC.js                             0.99 kB │ gzip:   0.50 kB
+dist/assets/CommandBadges-C1-86mY6.js                         1.00 kB │ gzip:   0.44 kB
+dist/assets/AdminHeader-B-SKGfVx.js                           1.01 kB │ gzip:   0.51 kB
+dist/assets/index.esm-BZQKcghr.js                             1.03 kB │ gzip:   0.62 kB
+dist/assets/UniversalShareButton-DOwYl3XI.js                  1.04 kB │ gzip:   0.62 kB
+dist/assets/withCardId-CUgl9WDQ.js                            1.05 kB │ gzip:   0.60 kB
+dist/assets/focusCardUtils-CDl3YkaZ.js                        1.05 kB │ gzip:   0.59 kB
+dist/assets/tabs-CO4ljCyy.js                                  1.07 kB │ gzip:   0.44 kB
+dist/assets/oauthErrors-DBZBepJV.js                           1.09 kB │ gzip:   0.53 kB
+dist/assets/useAutopilotComplete-ClSvoBn7.js                  1.11 kB │ gzip:   0.69 kB
+dist/assets/ReceiptDetail-Db1muDv4.js                         1.12 kB │ gzip:   0.59 kB
+dist/assets/AdminFilterBar-GSKeckrE.js                        1.13 kB │ gzip:   0.61 kB
+dist/assets/useRewardShop-B2j6hA9A.js                         1.14 kB │ gzip:   0.54 kB
+dist/assets/ImageWithFallback-DhKolBYV.js                     1.15 kB │ gzip:   0.64 kB
+dist/assets/iosAudioUnlock-DBUkkv9Z.js                        1.15 kB │ gzip:   0.55 kB
+dist/assets/AdminStatsCard-CMoX6WO-.js                        1.17 kB │ gzip:   0.59 kB
+dist/assets/useAdminAssistant-BMT9XR3p.js                     1.18 kB │ gzip:   0.44 kB
+dist/assets/resizeImage-Drvm0Swc.js                           1.18 kB │ gzip:   0.66 kB
+dist/assets/backoffice-reports-3slomq_p.js                    1.18 kB │ gzip:   0.57 kB
+dist/assets/youtube-BEqk8fSA.js                               1.21 kB │ gzip:   0.51 kB
+dist/assets/reward-dot-C7RIfej0.js                            1.23 kB │ gzip:   0.62 kB
+dist/assets/StandardCard-WzzMielB.js                          1.23 kB │ gzip:   0.67 kB
+dist/assets/useEurUsdRate-CAQf4bLo.js                         1.23 kB │ gzip:   0.69 kB
+dist/assets/useSessionAutosave-CUiqn6jP.js                    1.25 kB │ gzip:   0.60 kB
+dist/assets/useMyRoom-BO4mz3pd.js                             1.26 kB │ gzip:   0.56 kB
+dist/assets/Logout-CqO_xRny.js                                1.27 kB │ gzip:   0.66 kB
+dist/assets/Inbox-DmAxM4Er.js                                 1.28 kB │ gzip:   0.70 kB
+dist/assets/Receipts-DYbQbhfw.js                              1.32 kB │ gzip:   0.74 kB
+dist/assets/useGoalPlan-D28ggq-5.js                           1.32 kB │ gzip:   0.55 kB
+dist/assets/ResendConfirmationButton-DOUeK_Vy.js              1.34 kB │ gzip:   0.80 kB
+dist/assets/DocumentItemsTable-Bt0XZ44_.js                    1.36 kB │ gzip:   0.52 kB
+dist/assets/shareUrl-Cz8ukNvu.js                              1.41 kB │ gzip:   0.49 kB
+dist/assets/useAdminCommunity-ZRFpJAGk.js                     1.42 kB │ gzip:   0.44 kB
+dist/assets/MobileActionChips-DKFLsMt7.js                     1.46 kB │ gzip:   0.71 kB
+dist/assets/SpotlightLoading-BeHiR2E2.js                      1.46 kB │ gzip:   0.68 kB
+dist/assets/MyRequests-CMVBAmbQ.js                            1.46 kB │ gzip:   0.69 kB
+dist/assets/table-C6uG2Udo.js                                 1.49 kB │ gzip:   0.51 kB
+dist/assets/use-scoped-t-BRsuiuIY.js                          1.55 kB │ gzip:   0.79 kB
+dist/assets/ArchetypeSkeleton-C9sZt1Wa.js                     1.55 kB │ gzip:   0.50 kB
+dist/assets/useFocusedCard-DIIDwgiq.js                        1.57 kB │ gzip:   0.86 kB
+dist/assets/usePartnerHealthOrders-CN_cyyj4.js                1.60 kB │ gzip:   0.70 kB
+dist/assets/GroupsNew-DXqf34UF.js                             1.61 kB │ gzip:   0.82 kB
+dist/assets/LiveRooms-BiqqVczl.js                             1.61 kB │ gzip:   0.83 kB
+dist/assets/Creators-CUseKtFR.js                              1.62 kB │ gzip:   0.82 kB
+dist/assets/Activity-Baf-zYlt.js                              1.63 kB │ gzip:   0.86 kB
+dist/assets/TierBKit-BWoVsDKb.js                              1.68 kB │ gzip:   0.71 kB
+dist/assets/ProfileIdSegmentedControl-Bs4ge0Xp.js             1.70 kB │ gzip:   0.91 kB
+dist/assets/useDistributionPosts-B6CygZwT.js                  1.70 kB │ gzip:   0.58 kB
+dist/assets/Topics-yGs8H_lE.js                                1.71 kB │ gzip:   0.84 kB
+dist/assets/Segments-mCdM52d5.js                              1.72 kB │ gzip:   0.81 kB
+dist/assets/CommerceTeam-C3FqK0ld.js                          1.73 kB │ gzip:   0.69 kB
+dist/assets/usePopupCoordination-BqioKNhR.js                  1.76 kB │ gzip:   0.79 kB
+dist/assets/useUserGroups-s8NOhV5U.js                         1.77 kB │ gzip:   0.80 kB
+dist/assets/DiscoverShopActionPopup-TrT6z5yi.js               1.78 kB │ gzip:   0.82 kB
+dist/assets/CommandsTable-CXW-kFXT.js                         1.79 kB │ gzip:   0.66 kB
+dist/assets/DiscoverBookActionPopup-BXCiMPBN.js               1.79 kB │ gzip:   0.83 kB
+dist/assets/Access-CvrKul3S.js                                1.88 kB │ gzip:   0.82 kB
+dist/assets/CommerceShell-H0zbS7kG.js                         1.89 kB │ gzip:   0.87 kB
+dist/assets/useProfileHealthSummary-C7q_pDyy.js               1.90 kB │ gzip:   0.95 kB
+dist/assets/useCreator-COyM44nE.js                            1.90 kB │ gzip:   0.81 kB
+dist/assets/screen-id-DjTcC_H_.js                             1.93 kB │ gzip:   0.83 kB
+dist/assets/useBookmarks-ButvFX7Q.js                          1.96 kB │ gzip:   0.85 kB
+dist/assets/backoffice-sales-CQfMcMvG.js                      1.97 kB │ gzip:   0.90 kB
+dist/assets/useTimeline-EtKSy0iP.js                           1.98 kB │ gzip:   0.95 kB
+dist/assets/Health-CT3VIUhH.js                                1.98 kB │ gzip:   0.94 kB
+dist/assets/backoffice-accounting-6ROByIeP.js                 2.04 kB │ gzip:   1.01 kB
+dist/assets/memory-api-D8j0mWlF.js                            2.07 kB │ gzip:   0.90 kB
+dist/assets/Activity-BOAQjIs5.js                              2.07 kB │ gzip:   0.92 kB
+dist/assets/Costs-BE5m_-1P.js                                 2.08 kB │ gzip:   0.97 kB
+dist/assets/Alerts-BAfcBfdH.js                                2.08 kB │ gzip:   0.92 kB
+dist/assets/OasisEvents-DMucORl-.js                           2.09 kB │ gzip:   0.94 kB
+dist/assets/Search-6g9YRZKh.js                                2.09 kB │ gzip:   0.97 kB
+dist/assets/Tests-qDDqS_kI.js                                 2.10 kB │ gzip:   0.96 kB
+dist/assets/Policies-Bo8m5FHH.js                              2.10 kB │ gzip:   0.98 kB
+dist/assets/Alerts-qbncxZtf.js                                2.10 kB │ gzip:   0.96 kB
+dist/assets/Issue-CBWDZ6I6.js                                 2.11 kB │ gzip:   0.97 kB
+dist/assets/Canary-DxyJkoWw.js                                2.12 kB │ gzip:   0.97 kB
+dist/assets/AIFeed-C2duLPnM.js                                2.12 kB │ gzip:   0.98 kB
+dist/assets/State-BqRC4Cwq.js                                 2.13 kB │ gzip:   0.96 kB
+dist/assets/useAdminMembers-kudMUWzG.js                       2.13 kB │ gzip:   0.69 kB
+dist/assets/Auth-AcdRRVRa.js                                  2.14 kB │ gzip:   0.95 kB
+dist/assets/Flags-DhldQ5-c.js                                 2.14 kB │ gzip:   1.00 kB
+dist/assets/Requests-qBkyKMFe.js                              2.14 kB │ gzip:   0.98 kB
+dist/assets/useSocialPlatforms-Dp2A1_LF.js                    2.14 kB │ gzip:   0.77 kB
+dist/assets/Runs-o2jwh6_o.js                                  2.14 kB │ gzip:   0.99 kB
+dist/assets/SocialStates-Dnr-2r-Q.js                          2.14 kB │ gzip:   0.91 kB
+dist/assets/useWalletGateway-CvMdSOhE.js                      2.14 kB │ gzip:   1.11 kB
+dist/assets/Traces-CdqB-8D5.js                                2.14 kB │ gzip:   0.99 kB
+dist/assets/Tenants-CGX6E4fs.js                               2.14 kB │ gzip:   1.00 kB
+dist/assets/Worker-Dd9g_77n.js                                2.14 kB │ gzip:   0.98 kB
+dist/assets/unsplashFallback-DcRLNyfn.js                      2.15 kB │ gzip:   0.51 kB
+dist/assets/SystemHealth-BFHs-HCo.js                          2.15 kB │ gzip:   0.97 kB
+dist/assets/Analytics-BIzS9E9t.js                             2.15 kB │ gzip:   0.99 kB
+dist/assets/CrewTemplate-DoUxLJOA.js                          2.16 kB │ gzip:   0.97 kB
+dist/assets/Validator-DXR-L7FF.js                             2.16 kB │ gzip:   0.98 kB
+dist/assets/Webhooks-jky5cSDc.js                              2.17 kB │ gzip:   1.01 kB
+dist/assets/Billing-BQladRDG.js                               2.17 kB │ gzip:   0.83 kB
+dist/assets/QATest-CT5ebeeE.js                                2.18 kB │ gzip:   1.02 kB
+dist/assets/Artifacts-DlkYwTNa.js                             2.18 kB │ gzip:   0.97 kB
+dist/assets/Metrics-_nh9O96e.js                               2.20 kB │ gzip:   1.00 kB
+dist/assets/AnalyticsShared-D0pNqxWy.js                       2.22 kB │ gzip:   0.94 kB
+dist/assets/MobileLinks-DOqYnE_a.js                           2.24 kB │ gzip:   1.03 kB
+dist/assets/useMemoryLearning-D2dNZjEt.js                     2.25 kB │ gzip:   0.89 kB
+dist/assets/Matrix-LPpJgSMc.js                                2.25 kB │ gzip:   0.99 kB
+dist/assets/useAdminKnowledge-BxuRBCbv.js                     2.28 kB │ gzip:   0.69 kB
+dist/assets/index-hzV6tw7F.js                                 2.32 kB │ gzip:   0.97 kB
+dist/assets/ConditionsRisks-Dv2c4n4Y.js                       2.35 kB │ gzip:   0.98 kB
+dist/assets/Configuration-DV8u_sGc.js                         2.36 kB │ gzip:   1.05 kB
+dist/assets/ErpLog-7mi8SUS0.js                                2.37 kB │ gzip:   1.01 kB
+dist/assets/MobileSubscriptions-uD9tsxn0.js                   2.37 kB │ gzip:   1.02 kB
+dist/assets/ContentAnalytics-DfCxI6Ap.js                      2.37 kB │ gzip:   0.86 kB
+dist/assets/Approvals-PLy5X9iK.js                             2.37 kB │ gzip:   1.08 kB
+dist/assets/Sessions-CWOibDSH.js                              2.38 kB │ gzip:   1.06 kB
+dist/assets/useSignupFunnel-ByCt3nN2.js                       2.40 kB │ gzip:   0.90 kB
+dist/assets/DevVTID-jDfYvHJE.js                               2.40 kB │ gzip:   1.14 kB
+dist/assets/Tools-D1GrSAWF.js                                 2.40 kB │ gzip:   1.07 kB
+dist/assets/useProfiles-CBx06V_j.js                           2.41 kB │ gzip:   1.37 kB
+dist/assets/DisputeModal-Des14JeL.js                          2.41 kB │ gzip:   1.11 kB
+dist/assets/FeatureFlags-D80b-Q1l.js                          2.41 kB │ gzip:   1.14 kB
+dist/assets/Routing-SeAMEI_f.js                               2.43 kB │ gzip:   1.01 kB
+dist/assets/Compose-bGs5eHXR.js                               2.44 kB │ gzip:   1.14 kB
+dist/assets/EmailConfirmed-W4OlRDh0.js                        2.45 kB │ gzip:   0.99 kB
+dist/assets/DevOasis-rOowgnKV.js                              2.45 kB │ gzip:   1.17 kB
+dist/assets/AdminPlaceholder-GyO9qqHj.js                      2.48 kB │ gzip:   0.94 kB
+dist/assets/Actions-_KjcH8DV.js                               2.49 kB │ gzip:   1.08 kB
+dist/assets/Rollbacks-CDtb_zhE.js                             2.49 kB │ gzip:   1.18 kB
+dist/assets/Playground-BtJ7j_Rj.js                            2.49 kB │ gzip:   1.21 kB
+dist/assets/CommerceAcceptInvite-DIIAti6O.js                  2.50 kB │ gzip:   1.10 kB
+dist/assets/SearchTest-DjEtx9Eg.js                            2.50 kB │ gzip:   1.13 kB
+dist/assets/MotivationalBanner-BtVi4yyq.js                    2.52 kB │ gzip:   1.14 kB
+dist/assets/useEventTickets-CQ1PVUzy.js                       2.54 kB │ gzip:   1.04 kB
+dist/assets/analytics-DVaUOKyg.js                             2.55 kB │ gzip:   0.96 kB
+dist/assets/InstagramIcon-Dg7P8Q5s.js                         2.56 kB │ gzip:   0.89 kB
+dist/assets/DevGateway-BzaBtSeh.js                            2.57 kB │ gzip:   1.19 kB
+dist/assets/Attendance-B39ApA0o.js                            2.58 kB │ gzip:   1.18 kB
+dist/assets/DevCICD-BtfxJEfW.js                               2.60 kB │ gzip:   1.22 kB
+dist/assets/Overview-C_SQA8ey.js                              2.62 kB │ gzip:   1.00 kB
+dist/assets/switch-NHrLNX2d.js                                2.62 kB │ gzip:   1.30 kB
+dist/assets/connected-apps-client-BmqRgTVh.js                 2.64 kB │ gzip:   1.24 kB
+dist/assets/useAdminAutopilot-DxIUR54G.js                     2.65 kB │ gzip:   0.70 kB
+dist/assets/Engagement-o9Kd2mOe.js                            2.67 kB │ gzip:   1.02 kB
+dist/assets/StreamRecordingPlayer-DO4xFMj0.js                 2.67 kB │ gzip:   1.05 kB
+dist/assets/parseISO-BHTJikbD.js                              2.68 kB │ gzip:   1.19 kB
+dist/assets/Sessions-ByHDwaKE.js                              2.69 kB │ gzip:   1.23 kB
+dist/assets/Indexing-Bpc1NqXw.js                              2.70 kB │ gzip:   1.18 kB
+dist/assets/DevObservability-CGuTCJRa.js                      2.70 kB │ gzip:   1.27 kB
+dist/assets/UserActivity-DiwMtCq0.js                          2.71 kB │ gzip:   1.23 kB
+dist/assets/AlkalmaConfirmed-tMWdBO-V.js                      2.74 kB │ gzip:   1.21 kB
+dist/assets/CreateSelectionDialog-myn8ViGQ.js                 2.75 kB │ gzip:   0.89 kB
+dist/assets/AdminTable-J4dEX5lz.js                            2.75 kB │ gzip:   1.26 kB
+dist/assets/Music-YAthYMzm.js                                 2.75 kB │ gzip:   1.18 kB
+dist/assets/Security-CO9f7d9u.js                              2.75 kB │ gzip:   1.26 kB
+dist/assets/Videos-C1LB8chc.js                                2.75 kB │ gzip:   1.18 kB
+dist/assets/SubscriptionStateCard-DMJ62eH9.js                 2.76 kB │ gzip:   0.88 kB
+dist/assets/Subscriptions-BgjGz4KX.js                         2.77 kB │ gzip:   1.02 kB
+dist/assets/CreditNotes-CkQx2_4i.js                           2.77 kB │ gzip:   1.15 kB
+dist/assets/Podcasts-Bvbl3tKi.js                              2.77 kB │ gzip:   1.18 kB
+dist/assets/DevPipelines-Op8xPzMZ.js                          2.78 kB │ gzip:   1.32 kB
+dist/assets/Billing-DKkl24Pw.js                               2.80 kB │ gzip:   1.08 kB
+dist/assets/responsive-confirm-dialog-d-JCQdSA.js             2.80 kB │ gzip:   0.99 kB
+dist/assets/ApprovalsTable-eEAPTQQu.js                        2.82 kB │ gzip:   0.88 kB
+dist/assets/useGroupMembership-Dur8b0f5.js                    2.83 kB │ gzip:   1.19 kB
+dist/assets/Ledger-CGTDJrx3.js                                2.89 kB │ gzip:   1.29 kB
+dist/assets/DevAgents-ChPo484o.js                             2.92 kB │ gzip:   1.34 kB
+dist/assets/Growth-lYYgvfnZ.js                                2.96 kB │ gzip:   1.18 kB
+dist/assets/Profile-DHYO9m5U.js                               3.00 kB │ gzip:   1.15 kB
+dist/assets/Runs-CxTz60Bg.js                                  3.02 kB │ gzip:   1.29 kB
+dist/assets/Branding-Bw4Lqgre.js                              3.03 kB │ gzip:   1.16 kB
+dist/assets/ai-connections-BN73AKJ8.js                        3.03 kB │ gzip:   1.11 kB
+dist/assets/Trail-BWO_i7Ei.js                                 3.04 kB │ gzip:   1.28 kB
+dist/assets/CommerceConnectPrivacy-lVj2y53P.js                3.09 kB │ gzip:   1.09 kB
+dist/assets/BackOfficePlaceholder-CpyqnJzY.js                 3.16 kB │ gzip:   1.13 kB
+dist/assets/Events-86TxQxqD.js                                3.19 kB │ gzip:   1.41 kB
+dist/assets/useBackOfficeDecisions-6EKHNzUs.js                3.20 kB │ gzip:   1.47 kB
+dist/assets/Journeys-BZLirJg4.js                              3.20 kB │ gzip:   1.23 kB
+dist/assets/Voice-Cqakpr5A.js                                 3.21 kB │ gzip:   1.38 kB
+dist/assets/PersonalShareButtons-BdiExmPC.js                  3.22 kB │ gzip:   1.19 kB
+dist/assets/Invitations-DkbiJAlE.js                           3.22 kB │ gzip:   1.42 kB
+dist/assets/useMediaUpload-B1ugg4Sl.js                        3.25 kB │ gzip:   1.44 kB
+dist/assets/Events-DFjrIlPm.js                                3.25 kB │ gzip:   1.38 kB
+dist/assets/useVaea-DzjUDF2r.js                               3.27 kB │ gzip:   0.99 kB
+dist/assets/Creators-CCvZIIoB.js                              3.28 kB │ gzip:   1.32 kB
+dist/assets/Signals-CZ-iz3sc.js                               3.30 kB │ gzip:   1.36 kB
+dist/assets/commerce-mcp-D3D4d9qV.js                          3.30 kB │ gzip:   1.58 kB
+dist/assets/MobileModePill-C-CLUMek.js                        3.30 kB │ gzip:   1.09 kB
+dist/assets/useEventGame-CBzzjn5o.js                          3.30 kB │ gzip:   1.40 kB
+dist/assets/BusinessOpportunities-CswmFjhe.js                 3.30 kB │ gzip:   1.19 kB
+dist/assets/eventsCtaUtils-CihfLBU3.js                        3.40 kB │ gzip:   1.21 kB
+dist/assets/InviteFriends-Cwf43ZNv.js                         3.41 kB │ gzip:   1.51 kB
+dist/assets/ApiMonitor-Cj5FGLuJ.js                            3.41 kB │ gzip:   1.28 kB
+dist/assets/Directory-BtW-BWm_.js                             3.42 kB │ gzip:   1.42 kB
+dist/assets/Interests-BZFzDmG3.js                             3.55 kB │ gzip:   1.41 kB
+dist/assets/ScheduleDialog-BHKUMzHu.js                        3.56 kB │ gzip:   1.31 kB
+dist/assets/MaxinaConfirmed-BrFFU46g.js                       3.57 kB │ gzip:   1.31 kB
+dist/assets/coverImageTo16x9-CTNYvxE1.js                      3.58 kB │ gzip:   1.55 kB
+dist/assets/SystemHealth-BKXFkaxj.js                          3.60 kB │ gzip:   1.33 kB
+dist/assets/SendInMessageSheet-Cqlj0fPC.js                    3.62 kB │ gzip:   1.64 kB
+dist/assets/CommercePortalLogin-DX1e9O1F.js                   3.63 kB │ gzip:   1.40 kB
+dist/assets/Features-D7vykYWI.js                              3.66 kB │ gzip:   1.44 kB
+dist/assets/MaxinaAppRedirect-B_216WSN.js                     3.67 kB │ gzip:   1.48 kB
+dist/assets/ActivityFeed-B2f1l7k_.js                          3.67 kB │ gzip:   1.45 kB
+dist/assets/PostDetail-CGyBYZNI.js                            3.69 kB │ gzip:   1.63 kB
+dist/assets/OAuthComplete-DR9fhajx.js                         3.73 kB │ gzip:   1.58 kB
+dist/assets/EventGamePublicLanding-a4HD-NnX.js                3.78 kB │ gzip:   1.43 kB
+dist/assets/Uploads-PwaNRsig.js                               3.87 kB │ gzip:   1.55 kB
+dist/assets/expandable-search-button-pXWr_l7u.js              3.89 kB │ gzip:   1.60 kB
+dist/assets/BusinessListings-CacipFHa.js                      3.90 kB │ gzip:   1.39 kB
+dist/assets/PillarsOfHealth-CgxC2Hti.js                       3.94 kB │ gzip:   1.33 kB
+dist/assets/radio-group-DBM1MZ7P.js                           3.96 kB │ gzip:   1.79 kB
+dist/assets/OAuthConsent-C3Nn2vTB.js                          3.97 kB │ gzip:   1.80 kB
+dist/assets/useDebouncedValue-K8srb1XQ.js                     3.98 kB │ gzip:   1.62 kB
+dist/assets/SmartSuggestions-CVYVd5eB.js                      4.03 kB │ gzip:   1.31 kB
+dist/assets/DailySummary-ylfZp63Z.js                          4.08 kB │ gzip:   1.47 kB
+dist/assets/TicketDemo-DQ32cK8o.js                            4.16 kB │ gzip:   1.59 kB
+dist/assets/RestoreSessionModal-C2SOaA9g.js                   4.19 kB │ gzip:   1.75 kB
+dist/assets/voice-recorder-D_OdYYEn.js                        4.19 kB │ gzip:   1.49 kB
+dist/assets/useCommunityLogger-Ch4WPnXt.js                    4.19 kB │ gzip:   0.91 kB
+dist/assets/Embeddings-oArE75PY.js                            4.22 kB │ gzip:   1.39 kB
+dist/assets/Memory-4Fr__Isc.js                                4.23 kB │ gzip:   1.58 kB
+dist/assets/VTIDSnapshotPanel-DOCruQj1.js                     4.24 kB │ gzip:   1.59 kB
+dist/assets/Appointments-DU5bUCqh.js                          4.26 kB │ gzip:   0.84 kB
+dist/assets/MatchesPage-vPQX2w4c.js                           4.30 kB │ gzip:   1.53 kB
+dist/assets/collapsible-DJ6dD_vy.js                           4.33 kB │ gzip:   1.76 kB
+dist/assets/LifestylePlanCard-Dri9xIl0.js                     4.33 kB │ gzip:   1.42 kB
+dist/assets/DevSettings-DiX8a8Xs.js                           4.33 kB │ gzip:   1.57 kB
+dist/assets/RolesAccess-ymjEbTys.js                           4.34 kB │ gzip:   1.76 kB
+dist/assets/PartnerConnections-CuNm-kxD.js                    4.42 kB │ gzip:   1.47 kB
+dist/assets/IntentMatchDetail-CtU_Z2ru.js                     4.43 kB │ gzip:   1.49 kB
+dist/assets/DevLogin-D002g3iL.js                              4.44 kB │ gzip:   2.02 kB
+dist/assets/Health-8AOr-2rW.js                                4.47 kB │ gzip:   0.94 kB
+dist/assets/Recommendations-CT7gBTvv.js                       4.48 kB │ gzip:   1.61 kB
+dist/assets/Dashboard-B6FDXNaU.js                             4.49 kB │ gzip:   0.91 kB
+dist/assets/ProfitAndLoss-DXxPpSL2.js                         4.51 kB │ gzip:   1.59 kB
+dist/assets/Relationships-Ddutm16V.js                         4.52 kB │ gzip:   1.75 kB
+dist/assets/Quotations-BhCiBgUi.js                            4.54 kB │ gzip:   1.65 kB
+dist/assets/NewsArticleDetail-_dUYeNkV.js                     4.58 kB │ gzip:   1.75 kB
+dist/assets/RolesAccess-BxzkbiNP.js                           4.62 kB │ gzip:   1.68 kB
+dist/assets/CommunityIntroToggle-Dipi-PAF.js                  4.64 kB │ gzip:   1.52 kB
+dist/assets/matchReason-BC1v4I1G.js                           4.66 kB │ gzip:   1.56 kB
+dist/assets/Aging-C_O7wr0p.js                                 4.66 kB │ gzip:   1.59 kB
+dist/assets/Automations-CKDlnHSI.js                           4.66 kB │ gzip:   1.92 kB
+dist/assets/Dashboard-BiSSG92W.js                             4.71 kB │ gzip:   0.92 kB
+dist/assets/TicketTypeForm-B2sY1zoo.js                        4.74 kB │ gzip:   1.53 kB
+dist/assets/CommunityRoomsAdmin-CB9hf6Wm.js                   4.80 kB │ gzip:   1.09 kB
+dist/assets/Opportunities-B_i9ha7q.js                         4.83 kB │ gzip:   1.69 kB
+dist/assets/Growth-DFIzRIIZ.js                                4.92 kB │ gzip:   1.67 kB
+dist/assets/CommunitySupervision-B0B9f5w9.js                  4.93 kB │ gzip:   1.07 kB
+dist/assets/Events-BdY1bnma.js                                5.00 kB │ gzip:   1.80 kB
+dist/assets/AI-DifiXyZd.js                                    5.02 kB │ gzip:   1.65 kB
+dist/assets/Speeches-_WrMaDKU.js                              5.03 kB │ gzip:   1.95 kB
+dist/assets/Invitations-DVz8RnKU.js                           5.05 kB │ gzip:   1.99 kB
+dist/assets/Access-tLlxhuRt.js                                5.07 kB │ gzip:   1.87 kB
+dist/assets/Telemetry-BHp7kS9X.js                             5.07 kB │ gzip:   1.73 kB
+dist/assets/ActivateCampaignDialog-DWcK8azb.js                5.12 kB │ gzip:   1.64 kB
+dist/assets/useFollow-CjXBoWCJ.js                             5.16 kB │ gzip:   1.49 kB
+dist/assets/IntentMatchCard-C7tx7H4a.js                       5.16 kB │ gzip:   2.02 kB
+dist/assets/DevicePreview-Dw-9f5CJ.js                         5.19 kB │ gzip:   1.87 kB
+dist/assets/VitanaIndexHeroCard-CfmVyTp0.js                   5.20 kB │ gzip:   2.04 kB
+dist/assets/CheckoutSuccess-nxG9dZe2.js                       5.26 kB │ gzip:   1.67 kB
+dist/assets/Music-WWLfamOp.js                                 5.31 kB │ gzip:   1.80 kB
+dist/assets/CommerceConnectDocs-BrwYdNZx.js                   5.37 kB │ gzip:   1.54 kB
+dist/assets/ReportedContent-6kV8PMf8.js                       5.38 kB │ gzip:   1.98 kB
+dist/assets/Podcasts-DH_UeTFU.js                              5.40 kB │ gzip:   1.85 kB
+dist/assets/Groups-BYpr-EHR.js                                5.45 kB │ gzip:   1.91 kB
+dist/assets/discover-reason-CnzGm00l.js                       5.46 kB │ gzip:   1.93 kB
+dist/assets/Overview-BiEkjSop.js                              5.46 kB │ gzip:   2.13 kB
+dist/assets/horizontal-card-list-DDCpVfxN.js                  5.52 kB │ gzip:   2.18 kB
+dist/assets/VitanaMessagesSettings-D1cJZZ9K.js                5.56 kB │ gzip:   1.93 kB
+dist/assets/MyIntents-D_vKxZ0W.js                             5.59 kB │ gzip:   1.95 kB
+dist/assets/AddToCartButton-D232rs6i.js                       5.61 kB │ gzip:   2.50 kB
+dist/assets/FollowUps-B0UP3TWj.js                             5.68 kB │ gzip:   1.91 kB
+dist/assets/useGoogleConnect-Io3VFUsP.js                      5.70 kB │ gzip:   2.31 kB
+dist/assets/AssistantUsage-BB_W_pjq.js                        5.71 kB │ gzip:   1.64 kB
+dist/assets/TicketPurchaseSuccess-Bk66p_PR.js                 5.75 kB │ gzip:   1.76 kB
+dist/assets/Leads-DXbv_XI7.js                                 5.76 kB │ gzip:   2.01 kB
+dist/assets/Videos-BhfWwj8M.js                                5.77 kB │ gzip:   2.02 kB
+dist/assets/BankReconciliation-Bg05uwy8.js                    5.86 kB │ gzip:   1.80 kB
+dist/assets/diaryAudioRecorder-Cm1y7hi5.js                    5.90 kB │ gzip:   2.31 kB
+dist/assets/TalkToVitana-DJM3EnBa.js                          5.90 kB │ gzip:   1.93 kB
+dist/assets/Guardrails-DE8H_WvV.js                            5.91 kB │ gzip:   1.77 kB
+dist/assets/useContacts-MkXndXaC.js                           5.96 kB │ gzip:   2.13 kB
+dist/assets/CreatorPaymentsSection-D7iWY9RU.js                5.97 kB │ gzip:   1.41 kB
+dist/assets/Dashboard-DyF3UINQ.js                             5.97 kB │ gzip:   2.10 kB
+dist/assets/Dashboard-D5bPF6Ly.js                             5.98 kB │ gzip:   1.33 kB
+dist/assets/Planning-BKqqkVRU.js                              5.99 kB │ gzip:   1.98 kB
+dist/assets/MaxinaSupport-Df3lA8ne.js                         5.99 kB │ gzip:   1.99 kB
+dist/assets/Marketplace-CtWr3GCB.js                           6.08 kB │ gzip:   2.39 kB
+dist/assets/navigation-Bx8diRLk.js                            6.10 kB │ gzip:   1.61 kB
+dist/assets/index-CgrHaNoX.js                                 6.11 kB │ gzip:   2.82 kB
+dist/assets/Meetups-Bj3f_uQE.js                               6.14 kB │ gzip:   2.25 kB
+dist/assets/VerifyPhoneDialog-DTKOpEf7.js                     6.15 kB │ gzip:   2.42 kB
+dist/assets/SupplementCard-B7n0dey2.js                        6.16 kB │ gzip:   1.81 kB
+dist/assets/ExafyAdminPortal-CdIfSgEE.js                      6.16 kB │ gzip:   2.54 kB
+dist/assets/PartnerConnectionDetail-C69umZNf.js               6.16 kB │ gzip:   1.91 kB
+dist/assets/LiveStreamOverview-DQQYpKom.js                    6.25 kB │ gzip:   1.45 kB
+dist/assets/MyTicketsList-XFBf0-3C.js                         6.29 kB │ gzip:   2.45 kB
+dist/assets/Queue-Bh1zBPsV.js                                 6.31 kB │ gzip:   1.12 kB
+dist/assets/DiscoverSectionPanes-GDU7TJuT.js                  6.34 kB │ gzip:   2.09 kB
+dist/assets/Insights-DcBKZ5Z_.js                              6.37 kB │ gzip:   1.84 kB
+dist/assets/SignupFunnel-MdDIMhu9.js                          6.42 kB │ gzip:   2.49 kB
+dist/assets/IntentBoard-COmjDHrm.js                           6.43 kB │ gzip:   2.13 kB
+dist/assets/DiscoverStates-DtsLt-4x.js                        6.47 kB │ gzip:   2.20 kB
+dist/assets/accordion-lyr_AmR3.js                             6.58 kB │ gzip:   2.44 kB
+dist/assets/DownloadFlyer-ChN9Ebcr.js                         6.59 kB │ gzip:   2.03 kB
+dist/assets/Permissions-BMBzCvpt.js                           6.61 kB │ gzip:   2.30 kB
+dist/assets/useGroupDirectory-wrM20JqH.js                     6.61 kB │ gzip:   2.25 kB
+dist/assets/Health-8BEzU40h.js                                6.62 kB │ gzip:   1.84 kB
+dist/assets/Company-B4ZnJLIX.js                               6.69 kB │ gzip:   1.85 kB
+dist/assets/HealthReportUploadSheet-DTNPuyjO.js               6.70 kB │ gzip:   2.70 kB
+dist/assets/PackagePurchaseSuccess-Bmmj8yt7.js                6.72 kB │ gzip:   1.86 kB
+dist/assets/EventGameAdmin-Di2rz372.js                        6.80 kB │ gzip:   2.02 kB
+dist/assets/visual-horizontal-card-Bq6g9dVK.js                6.80 kB │ gzip:   2.84 kB
+dist/assets/Dashboard-L1UwkbGZ.js                             6.81 kB │ gzip:   1.85 kB
+dist/assets/ResetPassword-DtrTwlDG.js                         6.83 kB │ gzip:   1.90 kB
+dist/assets/SocialMediaImportDialog-CksVdHqd.js               6.84 kB │ gzip:   2.62 kB
+dist/assets/Contacts-BwL379f0.js                              7.00 kB │ gzip:   1.88 kB
+dist/assets/Periods-CGoG_99m.js                               7.02 kB │ gzip:   2.30 kB
+dist/assets/UniversalShareDialog-tz1lSwoo.js                  7.04 kB │ gzip:   2.77 kB
+dist/assets/MentionInput-BV5s_3yM.js                          7.12 kB │ gzip:   3.00 kB
+dist/assets/Invoices-JIyk5Aru.js                              7.19 kB │ gzip:   2.40 kB
+dist/assets/index-Cdg8VbxQ.js                                 7.23 kB │ gzip:   2.96 kB
+dist/assets/PartnerOrgRoster-DZZn8phB.js                      7.26 kB │ gzip:   2.06 kB
+dist/assets/Results-_aKkkD8X.js                               7.35 kB │ gzip:   2.42 kB
+dist/assets/timeline-meta-EXFLx36n.js                         7.38 kB │ gzip:   2.93 kB
+dist/assets/PrivacySettings-p-MfOQzX.js                       7.39 kB │ gzip:   2.72 kB
+dist/assets/MediaManagement-CAROUa2V.js                       7.49 kB │ gzip:   1.85 kB
+dist/assets/Dashboard-DMp8VKKT.js                             7.54 kB │ gzip:   2.67 kB
+dist/assets/QueryState-D9XDxJFD.js                            7.56 kB │ gzip:   2.78 kB
+dist/assets/videoCompression-D0DDj04m.js                      7.63 kB │ gzip:   3.18 kB
+dist/assets/CategoryProducts-DjEddWwQ.js                      7.77 kB │ gzip:   2.72 kB
+dist/assets/CommerceConnectAuthorize-wWEMDwtJ.js              7.79 kB │ gzip:   2.27 kB
+dist/assets/ChartOfAccounts-UHD_h1rr.js                       7.83 kB │ gzip:   2.54 kB
+dist/assets/Products-DTKV1Mzu.js                              7.84 kB │ gzip:   2.77 kB
+dist/assets/Members-tYb9vnei.js                               7.89 kB │ gzip:   2.60 kB
+dist/assets/DeleteAccount-BwP1zodX.js                         7.89 kB │ gzip:   2.24 kB
+dist/assets/SettingsNotifications-DTYD3hlj.js                 8.06 kB │ gzip:   1.92 kB
+dist/assets/CreatorOnboarded-Cf0cJ8t8.js                      8.07 kB │ gzip:   1.92 kB
+dist/assets/OpenAsks-DNBXTfuU.js                              8.09 kB │ gzip:   2.48 kB
+dist/assets/MyTickets-aJolxnyD.js                             8.12 kB │ gzip:   2.57 kB
+dist/assets/index-m2BwAYHF.js                                 8.18 kB │ gzip:   1.99 kB
+dist/assets/Archived-D6ooEwzW.js                              8.23 kB │ gzip:   2.21 kB
+dist/assets/Queue-AkwwURNU.js                                 8.30 kB │ gzip:   2.65 kB
+dist/assets/Personality-iD-605ml.js                           8.32 kB │ gzip:   3.11 kB
+dist/assets/Groups-B4ISHR7U.js                                8.33 kB │ gzip:   2.77 kB
+dist/assets/Bootstrap-BRm8twvh.js                             8.34 kB │ gzip:   2.67 kB
+dist/assets/Inspiration-CL-IQ3dk.js                           8.49 kB │ gzip:   2.26 kB
+dist/assets/AllUsers-DhCqwzjd.js                              8.68 kB │ gzip:   3.16 kB
+dist/assets/TermsOfUse-D4QMverk.js                            8.69 kB │ gzip:   2.18 kB
+dist/assets/DevDashboard-MjL5CKKm.js                          8.69 kB │ gzip:   3.04 kB
+dist/assets/standard-horizontal-card-CG2H9nIi.js              8.96 kB │ gzip:   3.52 kB
+dist/assets/IntentComposer-Bsx84KNM.js                        9.01 kB │ gzip:   3.03 kB
+dist/assets/Journals-C6xqMH1A.js                              9.08 kB │ gzip:   2.83 kB
+dist/assets/EventGameLeaderboardView-DmKztZuF.js              9.09 kB │ gzip:   2.74 kB
+dist/assets/TenantRole-BTckIOit.js                            9.12 kB │ gzip:   2.49 kB
+dist/assets/Policies-B6JXAkw3.js                              9.17 kB │ gzip:   2.41 kB
+dist/assets/ReportedContentNew-khd372hC.js                    9.22 kB │ gzip:   2.54 kB
+dist/assets/Support-D3hs86j7.js                               9.37 kB │ gzip:   2.68 kB
+dist/assets/PartnerHealthOrders-CEl2orYK.js                   9.39 kB │ gzip:   2.89 kB
+dist/assets/BookingPaymentFlow-D5uZNfKW.js                    9.46 kB │ gzip:   3.00 kB
+dist/assets/CommerceJoin-CbF8JyvJ.js                          9.59 kB │ gzip:   3.58 kB
+dist/assets/TenantPortal-Di4BcDHG.js                          9.64 kB │ gzip:   3.12 kB
+dist/assets/index-BaRQbN7n.js                                 9.76 kB │ gzip:   3.10 kB
+dist/assets/ProfileStats-Dc9Ev6WD.js                          9.87 kB │ gzip:   2.84 kB
+dist/assets/AIPicksPage-WGf3yUMu.js                           9.88 kB │ gzip:   3.55 kB
+dist/assets/Payments-D8s-pnGo.js                              9.93 kB │ gzip:   2.82 kB
+dist/assets/ProductDetailsDrawer-D0usI9VR.js                 10.02 kB │ gzip:   2.91 kB
+dist/assets/TenantManagement-H488ZHRx.js                     10.04 kB │ gzip:   2.60 kB
+dist/assets/ai-UnbyFhSU.js                                   10.69 kB │ gzip:   4.43 kB
+dist/assets/EventTicketSelector-BfaKW__o.js                  10.83 kB │ gzip:   3.61 kB
+dist/assets/CommerceHealthOrders-DWB7sHEC.js                 11.01 kB │ gzip:   2.90 kB
+dist/assets/ProviderProfile-Dro_jwSi.js                      11.33 kB │ gzip:   3.47 kB
+dist/assets/EducationResources-DoIaHr5l.js                   11.43 kB │ gzip:   2.87 kB
+dist/assets/MailCalendarContactsPanel-Di08cJ2o.js            11.66 kB │ gzip:   3.81 kB
+dist/assets/IntroExperience-CLxsueLh.js                      11.72 kB │ gzip:   4.03 kB
+dist/assets/NewsCard-Ba0xmVKW.js                             11.98 kB │ gzip:   4.38 kB
+dist/assets/DataConsent-ID0NDCoK.js                          12.17 kB │ gzip:   2.78 kB
+dist/assets/IntentCard-B2sf7oY5.js                           12.29 kB │ gzip:   4.61 kB
+dist/assets/DevLayout-DX4benmi.js                            12.45 kB │ gzip:   4.67 kB
+dist/assets/Limitations-Dfi33pbu.js                          12.62 kB │ gzip:   3.82 kB
+dist/assets/Compose-DAcDe7UE.js                              12.67 kB │ gzip:   3.75 kB
+dist/assets/PrivacyPolicy-CpxJImKA.js                        12.72 kB │ gzip:   2.62 kB
+dist/assets/PublicEventLanding-DK76vLQR.js                   12.73 kB │ gzip:   4.02 kB
+dist/assets/news-images-ejcrM87B.js                          12.73 kB │ gzip:   3.96 kB
+dist/assets/Recall-B_FGkk5h.js                               12.74 kB │ gzip:   3.69 kB
+dist/assets/Search-DivNHoWA.js                               12.78 kB │ gzip:   3.44 kB
+dist/assets/PublicCampaignLanding-DgNm586n.js                12.92 kB │ gzip:   4.03 kB
+dist/assets/RemindersPanel-BBHoQQv1.js                       13.26 kB │ gzip:   3.84 kB
+dist/assets/dev-navigation-Bp2CaPgi.js                       13.39 kB │ gzip:   4.26 kB
+dist/assets/OnboardingWelcome-COlIHV0u.js                    13.55 kB │ gzip:   4.28 kB
+dist/assets/CreateMeetupPopup-BxgNL3GF.js                    13.88 kB │ gzip:   4.27 kB
+dist/assets/Supplements-B-AKwtuf.js                          15.19 kB │ gzip:   4.40 kB
+dist/assets/Documents-DpG3fndv.js                            15.32 kB │ gzip:   4.53 kB
+dist/assets/CampaignDetail-CNWKwOlq.js                       15.66 kB │ gzip:   4.46 kB
+dist/assets/post-backgrounds-C_Lc5QXL.js                     15.77 kB │ gzip:   5.64 kB
+dist/assets/EventGamePage-CEAaiihj.js                        15.78 kB │ gzip:   3.92 kB
+dist/assets/Apply-b16i1xKg.js                                15.80 kB │ gzip:   4.34 kB
+dist/assets/GoLivePopup-CWIH2gpQ.js                          15.88 kB │ gzip:   5.38 kB
+dist/assets/CreatePackageDialog-D0QS-XLC.js                  15.92 kB │ gzip:   4.69 kB
+dist/assets/EventTicket-BNGrHAUj.js                          16.12 kB │ gzip:   4.61 kB
+dist/assets/GroupDetail-r4d8d2LN.js                          16.27 kB │ gzip:   5.10 kB
+dist/assets/AIRecommendations-CfqIhYAL.js                    16.57 kB │ gzip:   4.14 kB
+dist/assets/index-C3efK8ke.js                                16.68 kB │ gzip:   6.28 kB
+dist/assets/ShopFeed-Dt6Qd75W.js                             17.16 kB │ gzip:   5.87 kB
+dist/assets/useHybridMessages-CM0g4Wez.js                    17.17 kB │ gzip:   5.46 kB
+dist/assets/index-D7-ckYaT.js                                17.32 kB │ gzip:   3.92 kB
+dist/assets/InviteToChatSheet-BqLads4B.js                    17.67 kB │ gzip:   6.64 kB
+dist/assets/AnalyticsCharts-BAQb1LNa.js                      17.85 kB │ gzip:   6.34 kB
+dist/assets/Timeline-CEJ7m8sT.js                             17.92 kB │ gzip:   5.82 kB
+dist/assets/MobileDailyDiary-DVx_8P1q.js                     18.23 kB │ gzip:   6.24 kB
+dist/assets/History-DTTbfoPA.js                              18.39 kB │ gzip:   5.03 kB
+dist/assets/GroupChat-BjZZfh1n.js                            18.43 kB │ gzip:   6.86 kB
+dist/assets/RedeemVoucher-DiaBXXOA.js                        18.50 kB │ gzip:   4.06 kB
+dist/assets/MobileSupport-Cegp8Qde.js                        18.84 kB │ gzip:   5.68 kB
+dist/assets/EditMeetupPopup-XUz3R82d.js                      19.31 kB │ gzip:   5.67 kB
+dist/assets/FeedbackReportList-DWNUfqnr.js                   19.45 kB │ gzip:   6.56 kB
+dist/assets/SharedContentCard-DWniWJ-A.js                    19.52 kB │ gzip:   6.98 kB
+dist/assets/embla-carousel-react.esm-Mh_Jd2IZ.js             19.78 kB │ gzip:   8.11 kB
+dist/assets/ProductDetail-CuhRsR6O.js                        19.98 kB │ gzip:   5.37 kB
+dist/assets/CreateEventPopup-BBcuEX92.js                     20.54 kB │ gzip:   5.37 kB
+dist/assets/InitEvents-Bx7Ykjma.js                           20.96 kB │ gzip:   4.12 kB
+dist/assets/LaunchGrantBanner-ZNq2Wi3W.js                    20.96 kB │ gzip:   5.33 kB
+dist/assets/Rewards-Oojp4inv.js                              21.10 kB │ gzip:   5.95 kB
+dist/assets/DevDocs-zQgv8BNp.js                              21.16 kB │ gzip:   4.62 kB
+dist/assets/Preferences-rpaJFaWp.js                          21.81 kB │ gzip:   3.92 kB
+dist/assets/WellnessServices-BOfbSkbM.js                     22.14 kB │ gzip:   5.56 kB
+dist/assets/DealsOffers-CgRu2RHm.js                          22.47 kB │ gzip:   6.21 kB
+dist/assets/Profile-_zYo3hz-.js                              22.53 kB │ gzip:   5.81 kB
+dist/assets/Companion-Bjd0Q8nB.js                            23.53 kB │ gzip:   6.20 kB
+dist/assets/DynamicRewardOpportunityCard-pP8GHUL4.js         24.96 kB │ gzip:   6.37 kB
+dist/assets/MaxinaPortal-6ek0oio8.js                         25.43 kB │ gzip:   7.28 kB
+dist/assets/WellnessServices-BPXnQkv-.js                     25.88 kB │ gzip:   7.04 kB
+dist/assets/PieChart-vS-U8tzC.js                             26.02 kB │ gzip:   7.04 kB
+dist/assets/UniversalCart-InEu_MVM.js                        26.12 kB │ gzip:   7.28 kB
+dist/assets/AIAssistant-B7agaR8_.js                          27.01 kB │ gzip:   6.98 kB
+dist/assets/NotificationsAdmin-BNRFTbn4.js                   27.05 kB │ gzip:   6.84 kB
+dist/assets/DoctorsCoaches-XaraC1Pz.js                       27.78 kB │ gzip:   6.68 kB
+dist/assets/resizable-DVYxjwCT.js                            28.06 kB │ gzip:   9.90 kB
+dist/assets/PublicProfilePage-DSM0svbr.js                    28.67 kB │ gzip:   8.59 kB
+dist/assets/index-CgWf_VMC.js                                28.80 kB │ gzip:   9.22 kB
+dist/assets/FocusStageCard-B1qxVs04.js                       28.84 kB │ gzip:   8.54 kB
+dist/assets/VitanaIndexDetail-sND8aSQp.js                    29.41 kB │ gzip:   8.74 kB
+dist/assets/index-DjWjhjGC.js                                29.83 kB │ gzip:   8.83 kB
+dist/assets/Privacy-tHnj2Cfp.js                              30.28 kB │ gzip:   5.28 kB
+dist/assets/Sharing-DXBor6L_.js                              30.29 kB │ gzip:   8.48 kB
+dist/assets/MobileSettings-BzLjlwW4.js                       31.13 kB │ gzip:   7.34 kB
+dist/assets/index-Btexww64.js                                31.45 kB │ gzip:   5.98 kB
+dist/assets/Diary-BrCRROIa.js                                32.49 kB │ gzip:   9.71 kB
+dist/assets/Distribution-DnzChL2J.js                         32.69 kB │ gzip:   6.32 kB
+dist/assets/Balance-dC6rB-07.js                              33.07 kB │ gzip:   7.28 kB
+dist/assets/liveRoomFormat-C_QkJrzV.js                       33.44 kB │ gzip:   9.63 kB
+dist/assets/Orders-BV4IJ0-v.js                               33.67 kB │ gzip:   9.20 kB
+dist/assets/calendar-X5KKRBWa.js                             34.21 kB │ gzip:  10.88 kB
+dist/assets/DraftCommandDialog-C7xW9qEQ.js                   34.82 kB │ gzip:   9.32 kB
+dist/assets/FindPartner-BE8m68NZ.js                          35.28 kB │ gzip:  10.41 kB
+dist/assets/index.esm-DI_X9gDa.js                            35.58 kB │ gzip:   8.46 kB
+dist/assets/Campaigns-HE3Q0CKn.js                            36.96 kB │ gzip:   9.57 kB
+dist/assets/index-BRxwY6Kx.js                                37.65 kB │ gzip:  13.90 kB
+dist/assets/RewardsShop-Dgtjshy9.js                          39.93 kB │ gzip:  10.59 kB
+dist/assets/Health-IoWCyDNX.js                               40.84 kB │ gzip:  11.22 kB
+dist/assets/Discover-nCYWUGtX.js                             41.32 kB │ gzip:  11.38 kB
+dist/assets/useProfileTheme-FUYCym0e.js                      42.98 kB │ gzip:  11.38 kB
+dist/assets/index.esm-DO8Uds7H.js                            43.56 kB │ gzip:   7.29 kB
+dist/assets/ContactsTabContent-CoqN31Ty.js                   44.56 kB │ gzip:  12.89 kB
+dist/assets/Home-DE1nvvE1.js                                 46.85 kB │ gzip:  13.98 kB
+dist/assets/index-D1NoipwO.js                                47.14 kB │ gzip:  18.52 kB
+dist/assets/LiveRooms-B6u_N1Hf.js                            47.57 kB │ gzip:  13.04 kB
+dist/assets/MeetupDetailsDrawer-DZu8yg-J.js                  47.88 kB │ gzip:  13.50 kB
+dist/assets/index-CXAmjmWl.js                                49.00 kB │ gzip:  16.65 kB
+dist/assets/CreateContentPopup-knWUXGKw.js                   51.22 kB │ gzip:  14.61 kB
+dist/assets/MyBiology-Dg9kBvjE.js                            52.79 kB │ gzip:  17.52 kB
+dist/assets/EventsAndMeetups-DIbP7kG6.js                     56.06 kB │ gzip:  16.66 kB
+dist/assets/Feedback-GIs6S6Va.js                             57.63 kB │ gzip:  13.28 kB
+dist/assets/Memory-LEIlnARl.js                               63.58 kB │ gzip:  18.39 kB
+dist/assets/CampaignDialog-D8K4NaXP.js                       64.24 kB │ gzip:  15.57 kB
+dist/assets/index-C9_RV0OS.js                                69.16 kB │ gzip:  19.80 kB
+dist/assets/index-vzH8Hj7r.js                                69.92 kB │ gzip:  22.60 kB
+dist/assets/Wallet-C4vqxcqf.js                               73.01 kB │ gzip:  17.10 kB
+dist/assets/index-DHs48JSh.js                                73.61 kB │ gzip:  25.52 kB
+dist/assets/Calendar-BubITLIL.js                             75.47 kB │ gzip:  20.74 kB
+dist/assets/DevCommand-EnL9FL_6.js                           79.95 kB │ gzip:  20.55 kB
+dist/assets/Community-CidRKv-G.js                            81.56 kB │ gzip:  19.85 kB
+dist/assets/EditProfilePage-BH1SbNPA.js                      84.86 kB │ gzip:  20.86 kB
+dist/assets/ConnectedApps-DMbDmutS.js                        97.51 kB │ gzip:  22.63 kB
+dist/assets/index-F2B1VKP6.js                                98.93 kB │ gzip:  32.71 kB
+dist/assets/AutopilotDashboard-BUYqXzwq.js                  118.23 kB │ gzip:  31.32 kB
+dist/assets/Messages-ChNVjG9T.js                            132.65 kB │ gzip:  36.06 kB
+dist/assets/CommercePortal-Bzm6GE06.js                      135.22 kB │ gzip:  32.66 kB
+dist/assets/MessageSearchPanel-CAN-iOZi.js                  136.20 kB │ gzip:  39.02 kB
+dist/assets/BusinessHub-CqFy-6FT.js                         141.38 kB │ gzip:  34.26 kB
+dist/assets/index-8og_3h8k.js                               143.94 kB │ gzip:  46.78 kB
+dist/assets/Plans-52oqcHqN.js                               155.25 kB │ gzip:  30.53 kB
+dist/assets/MediaHub-DiiolFJo.js                            162.19 kB │ gzip:  43.34 kB
+dist/assets/html2canvas.esm-BfYXEYrK.js                     201.42 kB │ gzip:  48.03 kB
+dist/assets/ProfileSpotlightRail-C974YYZ-.js                204.84 kB │ gzip:  48.61 kB
+dist/assets/LiveRoomViewer-CGJFvFPD.js                      255.54 kB │ gzip:  71.36 kB
+dist/assets/generateCategoricalChart-CCDxSAJ2.js            374.27 kB │ gzip: 103.22 kB
+dist/assets/locale-zh-DdbFm1kh.js                           615.41 kB │ gzip: 321.16 kB
+dist/assets/locale-ar-DoSR3JjB.js                           808.48 kB │ gzip: 338.92 kB
+dist/assets/locale-en-C861N9Hx.js                           834.05 kB │ gzip: 283.61 kB
+dist/assets/locale-tr-BrSu7pH2.js                           877.61 kB │ gzip: 319.03 kB
+dist/assets/locale-sr-BVrWFgxy.js                           880.10 kB │ gzip: 318.30 kB
+dist/assets/locale-ru-DF4FrvIc.js                           912.42 kB │ gzip: 374.02 kB
+dist/assets/locale-pl-CMQfX8Ff.js                           914.77 kB │ gzip: 331.53 kB
+dist/assets/locale-es-Bl6_1DN2.js                           915.53 kB │ gzip: 316.22 kB
+dist/assets/locale-pt-rMOXXU9V.js                           922.17 kB │ gzip: 321.18 kB
+dist/assets/locale-fr-Dy9-c1QJ.js                           949.65 kB │ gzip: 324.19 kB
+dist/assets/index-B-mlmJLu.js                             2,860.04 kB │ gzip: 868.45 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 30.25s
+exit 0
