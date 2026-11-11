@@ -13,18 +13,21 @@
     "subnav": {
       "overview": "Overview",
       "inspiration": "Inspiration",
-      "archived": "Archived"
+      "archived": "Archived",
+      "_pending_review": {}
     },
     "archiveCategory": {
       "all": "All",
       "healthcare": "Healthcare",
       "fitness": "Fitness",
       "nutrition": "Nutrition",
-      "activities": "Activities"
+      "activities": "Activities",
+      "_pending_review": {}
     },
     "archiveType": {
       "group": "Group",
-      "direct": "Direct"
+      "direct": "Direct",
+      "_pending_review": {}
     },
     "archiveSample": {
       "johnsonName": "Dr. Johnson",
@@ -36,16 +39,21 @@
       "warriorsName": "Weekend Warriors",
       "warriorsMessage": "Next hike scheduled for...",
       "kimName": "Dr. Kim",
-      "kimMessage": "Follow up in 2 weeks"
+      "kimMessage": "Follow up in 2 weeks",
+      "_pending_review": {}
     },
     "presence": {
       "online": "Active",
       "away": "Away",
-      "offline": "Offline"
+      "offline": "Offline",
+      "_pending_review": {}
     },
     "datePlaceholder": "YYYY-MM-DD",
     "permissions": {
-      "contactsUsage": "Vitana reads your contacts only when you tap “Import contacts from my phone”, so you can see which of your friends are already on Vitanaland."
-    }
-  }
+      "contactsUsage": "Vitana reads your contacts only when you tap “Import contacts from my phone”, so you can see which of your friends are already on Vitanaland.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

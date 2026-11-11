@@ -4,7 +4,8 @@
       "marketplace": {
         "couldNotLoad": "Could not load.",
         "mineEmptyBody": "Post a buy or sell request — the matchmaker will surface buyers/sellers.",
-        "newListing": "New listing"
+        "newListing": "New listing",
+        "_pending_review": {}
       },
       "intentCard": {
         "kind": {
@@ -15,10 +16,12 @@
           "social_seek": "Social / mentorship",
           "mutual_aid": "Mutual aid",
           "learning_seek": "Looking to learn",
-          "mentor_seek": "Offering to teach"
+          "mentor_seek": "Offering to teach",
+          "_pending_review": {}
         },
         "age": "age {min}–{max}",
-        "within": "within {km}km"
+        "within": "within {km}km",
+        "_pending_review": {}
       },
       "share": {
         "tooManyTitle": "Too many recipients ({count})",
@@ -36,7 +39,8 @@
         "theyWillSee": "They'll see your post in their chat.",
         "defaultTitle": "A Vitana post",
         "defaultText": "Check this out on Vitana",
-        "fromVitana": "From Vitana"
+        "fromVitana": "From Vitana",
+        "_pending_review": {}
       },
       "orders": {
         "eventTicket": "Event Ticket",
@@ -48,7 +52,8 @@
           "test": "Test Voucher",
           "experience": "Experience Voucher",
           "exclusive": "Exclusive Voucher",
-          "gift": "Gift Voucher"
+          "gift": "Gift Voucher",
+          "_pending_review": {}
         },
         "mock": {
           "vipAccess": "VIP Access",
@@ -56,7 +61,8 @@
           "earlyBird": "Early Bird",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "Morning Yoga Flow",
-          "retreatTitle": "New Year Meditation Retreat"
+          "retreatTitle": "New Year Meditation Retreat",
+          "_pending_review": {}
         },
         "status": {
           "upcoming": "Upcoming",
@@ -71,22 +77,27 @@
           "pending": "Pending",
           "processing": "Processing",
           "paid": "Active",
-          "active": "Active"
+          "active": "Active",
+          "_pending_review": {}
         },
         "type": {
           "ticket": "Ticket",
           "voucher": "Voucher",
           "product": "Product",
-          "service": "Service"
-        }
+          "service": "Service",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "tickets": {
         "event": "Event",
         "dateTba": "Date TBA",
-        "general": "General"
+        "general": "General",
+        "_pending_review": {}
       },
       "ticket": {
-        "tba": "TBA"
+        "tba": "TBA",
+        "_pending_review": {}
       },
       "ticketShare": {
         "goingTo": "🎟 I'm going to {title}!",
@@ -98,14 +109,16 @@
         "openingWhatsapp": "Opening WhatsApp…",
         "openingViber": "Opening Viber…",
         "openingEmail": "Opening email…",
-        "openingMessages": "Opening messages…"
+        "openingMessages": "Opening messages…",
+        "_pending_review": {}
       },
       "booking": {
         "sessionTitle": "{title} Session",
         "sessionDescription": "Book a session with {name}",
         "pickDate": "Pick a date",
         "previousMonth": "Previous month",
-        "nextMonth": "Next month"
+        "nextMonth": "Next month",
+        "_pending_review": {}
       },
       "subnav": {
         "overview": "Overview",
@@ -113,11 +126,13 @@
         "wellness-services": "Wellness Services",
         "doctors-coaches": "Doctors/Coaches",
         "deals-offers": "Deals & Offers",
-        "orders": "Orders"
+        "orders": "Orders",
+        "_pending_review": {}
       },
       "bookmark": {
         "add": "Add bookmark",
-        "remove": "Remove bookmark"
+        "remove": "Remove bookmark",
+        "_pending_review": {}
       },
       "bookActions": {
         "bookAppointment": "Book Appointment",
@@ -127,29 +142,36 @@
         "viewMyBookings": "View My Bookings",
         "setReminders": "Set Reminders",
         "leaveReview": "Leave Review",
-        "paymentHistory": "Payment History"
+        "paymentHistory": "Payment History",
+        "_pending_review": {}
       },
       "visit": {
         "hideNotes": "Hide Notes",
-        "viewNotes": "View Notes"
+        "viewNotes": "View Notes",
+        "_pending_review": {}
       },
       "utility": {
         "openIndex": "Open Vitana Index",
         "openIndexStreak": "Open Vitana Index — {days}-day streak",
-        "upcomingEvents": "{count} upcoming events"
-      }
+        "upcomingEvents": "{count} upcoming events",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "searchShort": "Search...",
     "indexPill": "Vitana Index {value} — open Health",
     "calendar": {
-      "upcomingCount": "{count} upcoming events"
+      "upcomingCount": "{count} upcoming events",
+      "_pending_review": {}
     },
     "bookmark": {
       "add": "Add bookmark",
-      "remove": "Remove bookmark"
+      "remove": "Remove bookmark",
+      "_pending_review": {}
     },
     "product": {
-      "outOfStock": "Out of Stock"
+      "outOfStock": "Out of Stock",
+      "_pending_review": {}
     },
     "hidden": {
       "product": "product",
@@ -162,7 +184,8 @@
       "sensitivities": "contain an ingredient you're sensitive to",
       "geo": "don't ship to your region",
       "excluded_region": "are regionally restricted",
-      "past_purchases": "you recently purchased"
+      "past_purchases": "you recently purchased",
+      "_pending_review": {}
     },
     "quickShop": {
       "viewCart": "View Cart",
@@ -172,7 +195,8 @@
       "trackOrders": "Track Orders",
       "setPriceAlert": "Set Price Alert",
       "viewSavedItems": "View Saved Items",
-      "applyCoupon": "Apply Coupon"
+      "applyCoupon": "Apply Coupon",
+      "_pending_review": {}
     },
     "quickBook": {
       "bookAppointment": "Book Appointment",
@@ -182,7 +206,8 @@
       "viewMyBookings": "View My Bookings",
       "setReminders": "Set Reminders",
       "leaveReview": "Leave Review",
-      "paymentHistory": "Payment History"
+      "paymentHistory": "Payment History",
+      "_pending_review": {}
     },
     "supplementCategories": {
       "all": "All",
@@ -200,7 +225,10 @@
       "beauty": "Beauty",
       "gutHealth": "Gut Health",
       "herbs": "Herbs",
-      "heartHealth": "Heart Health"
-    }
-  }
+      "heartHealth": "Heart Health",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

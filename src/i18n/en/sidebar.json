@@ -4,7 +4,8 @@
       "start": "Start",
       "connect": "Connect",
       "grow": "Grow",
-      "account": "Account"
+      "account": "Account",
+      "_pending_review": {}
     },
     "roles": {
       "exafyAdmin": "Exafy Admin",
@@ -13,7 +14,8 @@
       "staff": "Staff",
       "professional": "Professional",
       "patient": "Patient",
-      "community": "Community Member"
+      "community": "Community Member",
+      "_pending_review": {}
     },
     "home": "Home",
     "news": "News",
@@ -75,7 +77,10 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings"
-    }
-  }
+      "settings": "Settings",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -21,10 +21,7 @@
     },
     "compose": {
       "cancel": "Cancel",
-      "charCount": "{count}/{max}",
-      "_pending_review": {
-        "charCount": true
-      }
+      "charCount": "{count}/{max}"
     },
     "comments": {
       "title": "Comments",

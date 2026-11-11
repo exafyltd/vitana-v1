@@ -3,21 +3,26 @@
     "typing": {
       "one": "{name} is typing…",
       "two": "{first} and {second} are typing…",
-      "many": "Several people are typing…"
+      "many": "Several people are typing…",
+      "_pending_review": {}
     },
     "conversation": {
-      "fallbackTitle": "Conversation"
+      "fallbackTitle": "Conversation",
+      "_pending_review": {}
     },
     "reply": {
       "yourself": "yourself",
-      "contentUnavailable": "Message content not available"
+      "contentUnavailable": "Message content not available",
+      "_pending_review": {}
     },
     "reactions": {
       "reactWith": "React with {emoji}",
-      "count": "{count} {emoji} reactions"
+      "count": "{count} {emoji} reactions",
+      "_pending_review": {}
     },
     "bubble": {
-      "longPressHint": "Long-press for reactions and actions"
+      "longPressHint": "Long-press for reactions and actions",
+      "_pending_review": {}
     },
     "emoji": {
       "open": "Choose an emoji",
@@ -28,42 +33,53 @@
       "food": "Food",
       "activity": "Activity",
       "travel": "Travel",
-      "objects": "Objects"
+      "objects": "Objects",
+      "_pending_review": {}
     },
     "voice": {
       "discard": "Delete recording",
       "play": "Play",
       "pause": "Pause",
-      "stop": "Stop recording"
+      "stop": "Stop recording",
+      "_pending_review": {}
     },
     "composer": {
       "removeFile": "Remove {name}",
-      "pickerDone": "Done"
+      "pickerDone": "Done",
+      "_pending_review": {}
     },
     "payment": {
       "status": {
         "pending": "Pending",
         "completed": "Completed",
-        "declined": "Declined"
+        "declined": "Declined",
+        "_pending_review": {}
       },
       "accept": "Accept",
       "decline": "Decline",
       "pay": "Pay now",
-      "refreshBalance": "Refresh balance"
+      "refreshBalance": "Refresh balance",
+      "_pending_review": {}
     },
     "invite": {
-      "untitled": "Event invitation"
+      "untitled": "Event invitation",
+      "_pending_review": {}
     },
     "booking": {
-      "untitled": "Service request"
+      "untitled": "Service request",
+      "_pending_review": {}
     },
     "companion": {
-      "indexScore": "Your Index: {score}"
+      "indexScore": "Your Index: {score}",
+      "_pending_review": {}
     },
     "attach": {
       "library": "Photo library",
       "camera": "Camera",
-      "files": "Files"
-    }
-  }
+      "files": "Files",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
