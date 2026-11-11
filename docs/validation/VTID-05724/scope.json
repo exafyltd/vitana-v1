@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05724",
+  "lane": "native-followups-20261111/i18n-rtl-deterministic",
+  "kind": "fix",
+  "paths": [
+    "apps/mobile/tests/settings/i18n-rtl.test.tsx",
+    "docs/validation/VTID-05724/**"
+  ],
+  "not_touched": [
+    "apps/mobile/src/** (no app code change)",
+    "src/i18n/** (catalog data is out of this lane; see PR body)",
+    "apps/mobile/parity/ledger.json and packages/core/** (no page or core change)",
+    "every other test file, including the catalog and physical left/right tests in i18n-rtl.test.tsx"
+  ],
+  "sparring_record": "docs/validation/VTID-05724/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
