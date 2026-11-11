@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05732",
+  "kind": "fix",
+  "paths": [
+    "src/components/messages/MessageBubble.tsx",
+    "src/components/messages/MessageBubble.direct-thread.vtid-05732.test.tsx",
+    "apps/mobile/src/screens/chat/MessageBubble.tsx",
+    "apps/mobile/tests/inbox-chat/conversation-chat/bubble.test.tsx",
+    "docs/validation/VTID-05732/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05732/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
