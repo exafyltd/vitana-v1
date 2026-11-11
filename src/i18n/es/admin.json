@@ -30,13 +30,13 @@
       }
     },
     "rewardsShop": {
-      "title": "Gestionar la tienda de recompensas",
+      "title": "Gestionar tienda de recompensas",
       "description": "Artículos, gastos de envío y pedidos de la tienda de recompensas.",
       "openLink": "Tienda de recompensas",
-      "loading": "Cargando …",
+      "loading": "Cargando…",
       "retry": "Reintentar",
       "refresh": "Actualizar",
-      "forbiddenTitle": "Solo para administradores de Exafy",
+      "forbiddenTitle": "Solo administradores de Exafy",
       "forbiddenBody": "Solo los administradores de Exafy pueden gestionar la tienda de recompensas. Tu cuenta no tiene este permiso.",
       "sectionLabel": "Sección",
       "sections": {
@@ -324,14 +324,6 @@
         }
       },
       "_pending_review": {
-        "title": true,
-        "description": true,
-        "openLink": true,
-        "loading": true,
-        "retry": true,
-        "refresh": true,
-        "forbiddenTitle": true,
-        "forbiddenBody": true,
         "sectionLabel": true
       }
     }

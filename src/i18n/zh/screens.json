@@ -862,7 +862,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3617,7 +3618,10 @@
       "goalWeightLoss": "减肥",
       "goalMentalWellness": "心理健康",
       "goalValues": "价值观一致",
-      "ourAnswer": "我们的答复"
+      "ourAnswer": "我们的答复",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "添加联系人",
@@ -5258,7 +5262,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9751,7 +9756,10 @@
       "weeklyActivity": "每周活动",
       "mentalWellness": "心理健康",
       "mindfulness": "正念",
-      "vitanaIndexOverview": "Vitana 指数概览"
+      "vitanaIndexOverview": "Vitana 指数概览",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "综合健康与幸福平台",

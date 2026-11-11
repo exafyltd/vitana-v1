@@ -57,7 +57,8 @@
       "personal": "Personal",
       "_pending_review": {
         "vitana": true,
-        "personal": true
+        "personal": true,
+        "mental": true
       }
     },
     "source": {

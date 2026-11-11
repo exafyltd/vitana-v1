@@ -2,7 +2,10 @@
   "professionalNative": {
     "comingSoon": {
       "title": "Próximamente",
-      "body": "Todavía estamos construyendo esta pantalla. Vuelve pronto."
-    }
-  }
+      "body": "Todavía estamos construyendo esta pantalla. Vuelve pronto.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

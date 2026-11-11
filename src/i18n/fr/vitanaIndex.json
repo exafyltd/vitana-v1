@@ -21,8 +21,7 @@
       "building": "En progression",
       "strong": "Fort",
       "reallyGood": "Très bon",
-      "elite": "Élite",
-      "_pending_review": {}
+      "elite": "Élite"
     },
     "framings": {
       "starting": "Tu commences juste",
@@ -30,10 +29,10 @@
       "building": "Habitudes en formation",
       "strong": "Jalon de 90 jours",
       "reallyGood": "Prospère",
-      "elite": "Élite",
-      "_pending_review": {}
+      "elite": "Élite"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mental": true
+    }
+  }
 }

@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Toda la sección",
@@ -46,7 +54,10 @@
         "postsCommercial": "Publicaciones del marketplace",
         "postsPartnerSeek": "Publicaciones de búsqueda de pareja"
       },
-      "partnerSeekNote": "Siempre privado. El protocolo de revelación mutua protege estas publicaciones, sin importar el ajuste."
+      "partnerSeekNote": "Siempre privado. El protocolo de revelación mutua protege estas publicaciones, sin importar el ajuste.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Permite el acceso a tus fotos en Ajustes para elegir una imagen.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "Subiendo {current} de {total}...",
       "deleteTitle": "¿Estás seguro?",
       "deleteDescription": "Esta foto se eliminará de forma permanente. Esta acción no se puede deshacer."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

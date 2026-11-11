@@ -47,7 +47,10 @@
       "profile": "Perfil",
       "liveRooms": "Salas en directo",
       "notifications": "Notificaciones",
-      "other": "Otro"
+      "other": "Otro",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }

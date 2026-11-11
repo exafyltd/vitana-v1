@@ -37,7 +37,10 @@
       "leave": "Gruptan ayrıl",
       "notFoundTitle": "Grup bulunamadı",
       "notFoundDesc": "Bu grup kaldırılmış ya da mevcut olmayabilir.",
-      "browse": "Gruplara göz at"
+      "browse": "Gruplara göz at",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "Topluluk üyeleri",
@@ -59,13 +62,24 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Balo salonu",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       },
       "handle": "@{handle}",
       "fallbackName": "Üye",
       "empty": "Henüz üye yok.",
       "emptyDance": "Bu dansı henüz kimse tercih olarak belirtmedi — ilk kişi sen ol!",
-      "viewProfile": "Profili gör"
+      "viewProfile": "Profili gör",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "Açık istekler",
@@ -87,7 +101,10 @@
         "social_seek": "Sosyal",
         "mutual_aid": "Karşılıklı yardım",
         "learning_seek": "Öğrenme",
-        "mentor_seek": "Mentorluk"
+        "mentor_seek": "Mentorluk",
+        "_pending_review": {
+          "partner_seek": true
+        }
       },
       "time": {
         "justNow": "Az önce",
@@ -97,7 +114,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "Bu görünümde açık istek yok.",
-      "emptyDance": "Henüz açık dans isteği yok — kendininkini paylaş ve ilk kişi ol!"
+      "emptyDance": "Henüz açık dans isteği yok — kendininkini paylaş ve ilk kişi ol!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Partner bul",
@@ -148,7 +168,10 @@
         "social_seek": "Sosyal",
         "mutual_aid": "Karşılıklı yardım",
         "learning_seek": "Öğrenme",
-        "mentor_seek": "Mentorluk"
+        "mentor_seek": "Mentorluk",
+        "_pending_review": {
+          "partner_seek": true
+        }
       },
       "viewMine": "Niyetlerimi gör",
       "emptyBoard": "Bu görünümde açık niyet yok. İlk kişi sen ol.",
@@ -164,7 +187,15 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Balo dansı",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       }
     },
     "intentMatch": {
@@ -198,7 +229,10 @@
         "mental-health": "Ruh sağlığı",
         "support": "Destek",
         "learning": "Öğrenme",
-        "social": "Sosyal"
+        "social": "Sosyal",
+        "_pending_review": {
+          "fitness": true
+        }
       },
       "privacyLabel": "Görünürlük",
       "privacy": {
@@ -220,7 +254,10 @@
         "activity_seek": "Etkinlik",
         "social_seek": "Sosyal",
         "mutual_aid": "Karşılıklı yardım",
-        "partner_seek": "Partner"
+        "partner_seek": "Partner",
+        "_pending_review": {
+          "partner_seek": true
+        }
       },
       "titlePlaceholder": "Kısa başlık",
       "titleLabel": "Başlık",

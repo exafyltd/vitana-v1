@@ -862,7 +862,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3618,7 +3619,10 @@
       "autopilotSuggestionsTitle": "Sugestie Autopilota",
       "autopilotSuggestionsBody": "Nie opublikowałeś jeszcze życzenia. W międzyczasie Autopilot sugeruje osoby ze społeczności, które mogłyby pasować. Opublikuj życzenie, aby AI mogła znaleźć dla ciebie prawdziwe dopasowania.",
       "autopilotSuggestionBadge": "Autopilot",
-      "ourAnswer": "Nasza odpowiedź"
+      "ourAnswer": "Nasza odpowiedź",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -5259,7 +5263,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9755,7 +9760,10 @@
       "weeklyActivity": "Tygodniowa Aktywność",
       "mentalWellness": "Wellness Mentalny",
       "mindfulness": "Uważność",
-      "vitanaIndexOverview": "Przegląd Vitana Indeksu"
+      "vitanaIndexOverview": "Przegląd Vitana Indeksu",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Kompleksowa platforma zdrowia i dobrego samopoczucia",

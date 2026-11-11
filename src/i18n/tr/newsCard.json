@@ -1,7 +1,6 @@
 {
   "newsCard": {
     "menu": {
-      "_pending_review": {},
       "share": "Paylaş",
       "save": "Kaydet",
       "saved": "Kaydedildi",
@@ -22,7 +21,6 @@
       "unmute": "Sesi Aç"
     },
     "detail": {
-      "_pending_review": {},
       "back": "Geri",
       "continueReading": "Şurada okumaya devam et",
       "openInBrowser": "Tarayıcıda aç",
@@ -30,7 +28,9 @@
       "readOn": "Devamını oku"
     },
     "pillars": {
-      "_pending_review": {},
+      "_pending_review": {
+        "mental": true
+      },
       "all": "Tümü",
       "nutrition": "Beslenme",
       "hydration": "Su Tüketimi",
@@ -38,16 +38,13 @@
       "exercise": "Egzersiz",
       "mental": "Ruh sağlığı"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "Hoş geldin, {name}!",
       "joinedSummary": "{name} az önce MAXINA uzun yaşam topluluğuna katıldı.",
       "newMember": "Yeni üye",
       "sayHello": "Merhaba de",
       "viewProfile": "Profili görüntüle",
-      "eyebrow": "Toplulukta yeni",
-      "_pending_review": {}
+      "eyebrow": "Toplulukta yeni"
     }
-  },
-  "_pending_review": {}
+  }
 }

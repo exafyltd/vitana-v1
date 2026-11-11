@@ -4,7 +4,10 @@
       "chat": "Chat",
       "calendar": "Calendario",
       "community": "Comunidad",
-      "updateFailed": "No se pudo actualizar la preferencia"
+      "updateFailed": "No se pudo actualizar la preferencia",
+      "_pending_review": {
+        "chat": true
+      }
     },
     "consent": {
       "title": "Aviso sobre el uso compartido de datos con IA",
@@ -29,7 +32,12 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA"
+      "sessionLocation": "San Francisco, CA",
+      "_pending_review": {
+        "sessionPhone": true,
+        "sessionLaptop": true,
+        "sessionLocation": true
+      }
     },
     "creator": {
       "creatorShare": "90 %",
@@ -61,7 +69,14 @@
         "nutFree": "sin frutos secos",
         "soyFree": "sin soja",
         "sugarFree": "sin azúcar",
-        "organic": "ecológico"
+        "organic": "ecológico",
+        "_pending_review": {
+          "halal": true,
+          "kosher": true
+        }
+      },
+      "_pending_review": {
+        "tag": true
       }
     },
     "tenantRole": {
@@ -78,7 +93,10 @@
         "professional": "Profesional",
         "staff": "Personal",
         "backoffice": "Back Office",
-        "admin": "Administrador"
+        "admin": "Administrador",
+        "_pending_review": {
+          "backoffice": true
+        }
       },
       "roleDescriptions": {
         "community": "Acceso a las funciones de la comunidad y a las conexiones sociales",

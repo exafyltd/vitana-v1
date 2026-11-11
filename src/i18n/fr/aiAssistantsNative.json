@@ -9,7 +9,10 @@
       "previewPhrase": "Bonjour, voici un aperçu des réglages vocaux que tu as choisis.",
       "previewUnavailable": "L'aperçu n'est pas disponible pour cette langue sur cet appareil.",
       "speedValue": "{value}x",
-      "volumeValue": "{value} %"
+      "volumeValue": "{value} %",
+      "_pending_review": {
+        "speedValue": true
+      }
     },
     "proactive": {
       "playSample": "Écouter un exemple d'accueil",

@@ -333,7 +333,10 @@
         "improve": "仍有提升空间"
       },
       "litersOf": "{current} 升 / {target} 升",
-      "liters": "{value} 升"
+      "liters": "{value} 升",
+      "_pending_review": {
+        "ai": true
+      }
     }
   }
 }

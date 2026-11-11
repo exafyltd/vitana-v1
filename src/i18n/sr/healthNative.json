@@ -204,6 +204,9 @@
           "title": "Trendovi preventivne medicine",
           "series": "Zdravlje budućnosti"
         }
+      },
+      "_pending_review": {
+        "episode": true
       }
     },
     "educationActions": {
@@ -333,7 +336,10 @@
         "improve": "Ima prostora za napredak"
       },
       "litersOf": "{current} l / {target} l",
-      "liters": "{value} l"
+      "liters": "{value} l",
+      "_pending_review": {
+        "ai": true
+      }
     }
   }
 }

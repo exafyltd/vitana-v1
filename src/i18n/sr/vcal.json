@@ -56,7 +56,8 @@
       "vitana": "Vitana",
       "personal": "Lično",
       "_pending_review": {
-        "vitana": true
+        "vitana": true,
+        "mental": true
       }
     },
     "source": {

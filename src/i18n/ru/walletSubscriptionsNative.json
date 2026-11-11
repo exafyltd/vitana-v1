@@ -7,10 +7,14 @@
       "overview": "Обзор",
       "balance": "Баланс и преимущества",
       "subscriptions": "Подписки",
-      "rewards": "Награды и комиссии"
+      "rewards": "Награды и комиссии",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "40 мин/мес · 1 сессия"
-    }
-  }
+      "freeLiveRooms": "40 мин/мес · 1 сессия",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

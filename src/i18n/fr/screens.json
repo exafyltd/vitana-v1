@@ -862,7 +862,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3617,7 +3618,10 @@
       "autopilotSuggestionsTitle": "Suggestions Autopilot",
       "autopilotSuggestionsBody": "Tu n'as pas encore publié de souhait. En attendant, Autopilot te suggère des personnes de la communauté qui pourraient te correspondre. Publie un souhait pour que l'IA puisse te trouver de vraies correspondances.",
       "autopilotSuggestionBadge": "Autopilot",
-      "ourAnswer": "Notre réponse"
+      "ourAnswer": "Notre réponse",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Ajouter un contact",
@@ -5258,7 +5262,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9754,7 +9759,10 @@
       "weeklyActivity": "Activité Hebdomadaire",
       "mentalWellness": "Bien-être Mental",
       "mindfulness": "Pleine Conscience",
-      "vitanaIndexOverview": "Aperçu de l'Index Vitana"
+      "vitanaIndexOverview": "Aperçu de l'Index Vitana",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Plateforme complète de santé et de bien-être",

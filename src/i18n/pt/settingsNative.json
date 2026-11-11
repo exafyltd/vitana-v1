@@ -4,7 +4,10 @@
       "chat": "Chat",
       "calendar": "Calendário",
       "community": "Comunidade",
-      "updateFailed": "Não foi possível atualizar a preferência"
+      "updateFailed": "Não foi possível atualizar a preferência",
+      "_pending_review": {
+        "chat": true
+      }
     },
     "consent": {
       "title": "Aviso sobre compartilhamento de dados com IA",
@@ -29,7 +32,12 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA"
+      "sessionLocation": "San Francisco, CA",
+      "_pending_review": {
+        "sessionPhone": true,
+        "sessionLaptop": true,
+        "sessionLocation": true
+      }
     },
     "creator": {
       "creatorShare": "90%",
@@ -38,7 +46,11 @@
       "completeSetup": "Concluir configuração",
       "enablePayments": "Ativar pagamentos",
       "opening": "Abrindo…",
-      "viewDashboard": "Ver painel"
+      "viewDashboard": "Ver painel",
+      "_pending_review": {
+        "creatorShare": true,
+        "platformShare": true
+      }
     },
     "limitations": {
       "description": "Estas são as regras inegociáveis que aplicamos a cada recomendação de produto. Alergias, contraindicações médicas e interações medicamentosas nunca podem ser ignoradas.",
@@ -61,7 +73,14 @@
         "nutFree": "sem nozes",
         "soyFree": "sem soja",
         "sugarFree": "sem açúcar",
-        "organic": "orgânico"
+        "organic": "orgânico",
+        "_pending_review": {
+          "halal": true,
+          "kosher": true
+        }
+      },
+      "_pending_review": {
+        "tag": true
       }
     },
     "tenantRole": {
@@ -78,7 +97,10 @@
         "professional": "Profissional",
         "staff": "Equipe",
         "backoffice": "Back Office",
-        "admin": "Administrador"
+        "admin": "Administrador",
+        "_pending_review": {
+          "backoffice": true
+        }
       },
       "roleDescriptions": {
         "community": "Acesso aos recursos da comunidade e às conexões sociais",
