@@ -1,13 +1,11 @@
 {
   "inbox": {
-    "_pending_review": {},
     "title": "Gelen Kutusu",
     "subtitle": "Topluluğunla bağlantıda kal!",
     "description": "Sohbetlerin, güncellemelerin ve bildirimlerin",
     "desktopTitle": "Mesajlar",
     "desktopDescription": "Topluluğunla ve ağınla bağlantı kur",
     "tabs": {
-      "_pending_review": {},
       "all": "Tümü",
       "groups": "Gruplar",
       "direct": "Doğrudan",
@@ -16,12 +14,10 @@
       "archived": "Arşivlenen"
     },
     "contextTabs": {
-      "_pending_review": {},
       "community": "Topluluk",
       "network": "Ağ"
     },
     "actions": {
-      "_pending_review": {},
       "new": "Yeni",
       "newMessage": "Yeni Mesaj",
       "createGroup": "Grup Oluştur",
@@ -29,7 +25,6 @@
       "menu": "Daha Fazla"
     },
     "composer": {
-      "_pending_review": {},
       "placeholder": "Mesajını yaz...",
       "send": "Gönder",
       "attachments": "Ekler",
@@ -37,13 +32,11 @@
       "add": "Ekle"
     },
     "states": {
-      "_pending_review": {},
       "empty": "Henüz mesaj yok",
       "loading": "Mesajlar yükleniyor...",
       "error": "Mesajlar yüklenemedi"
     },
     "newConversation": {
-      "_pending_review": {},
       "title": "Yeni Sohbet Başlat",
       "titleGroup": "Grup Sohbeti Oluştur",
       "groupName": "Grup Adı",
@@ -64,7 +57,6 @@
       "creating": "Oluşturuluyor..."
     },
     "createGroup": {
-      "_pending_review": {},
       "title": "Grup Oluştur",
       "avatarSoon": "Avatar yükleme yakında kullanılabilir olacak.",
       "groupName": "Grup Adı",
@@ -82,7 +74,6 @@
       "failedDesc": "Lütfen tekrar dene."
     },
     "toast": {
-      "_pending_review": {},
       "success": "Başarılı",
       "error": "Hata",
       "conversationStarted": "Sohbet başlatıldı!",
@@ -111,7 +102,6 @@
     "noMessagesDesc": "Başlamak için bir sohbet başlat.",
     "startConversation": "Sohbet Başlat",
     "emptyState": {
-      "_pending_review": {},
       "title": "Gelen kutun hâlâ boş.",
       "globalDescription": "Başkalarıyla bağlantı kurmak için bir sohbet başlat veya bir topluluğa katıl.",
       "tenantDescription": "Mesleki ağındaki meslektaşlarınla ve ekip üyeleriyle bağlantı kur.",
@@ -119,7 +109,6 @@
       "discoverPeople": "Kişileri keşfet"
     },
     "group": {
-      "_pending_review": {},
       "loading": "Grup yükleniyor…",
       "cantOpen": "Grup açılamadı",
       "backToInbox": "Gelen Kutusuna Dön",
@@ -139,15 +128,13 @@
       "read": "Okundu",
       "failed": "Gönderilemedi",
       "retry": "Tekrar dene",
-      "retryLabel": "Bu mesajı tekrar gönder",
-      "_pending_review": {}
+      "retryLabel": "Bu mesajı tekrar gönder"
     },
     "newMessages": {
       "none": "En yeniye git",
       "one": "1 yeni mesaj",
       "other": "{count} yeni mesaj",
-      "unread": "Okunmamış mesajlar",
-      "_pending_review": {}
+      "unread": "Okunmamış mesajlar"
     },
     "reply": {
       "unavailable": "Orijinal mesaj kullanılamıyor",
@@ -155,8 +142,7 @@
       "jumpToOriginal": "Orijinal mesaja git",
       "jumpTo": "Orijinal mesaja git: {name}",
       "unknownSender": "Üye",
-      "noText": "Ek",
-      "_pending_review": {}
+      "noText": "Ek"
     },
     "media": {
       "uploadFailed": "Yükleme başarısız",
@@ -166,7 +152,9 @@
       "moreItems": "{count} tane daha",
       "openImage": "{name} resmini aç",
       "openVideo": "{name} videosunu oynat",
-      "_pending_review": {}
+      "_pending_review": {
+        "video": true
+      }
     },
     "search": {
       "title": "Mesajlarda ara",
@@ -221,6 +209,5 @@
         }
       }
     }
-  },
-  "_pending_review": {}
+  }
 }
