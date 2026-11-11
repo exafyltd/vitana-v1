@@ -150,8 +150,9 @@ export const NATIVE_ROUTES: readonly string[] = [
  * Dynamic native route files (`app/**\/[param].tsx`) a lane resolves as native, so
  * the ORB and deep links treat them like the concrete routes above (the
  * catch-all would otherwise call them unported). VTID-05511: the provider profile.
+ * VTID-05725: the group detail, `/comm/my-groups/:id`.
  */
-export const NATIVE_PATTERNS: readonly string[] = ['/discover/provider/:id'];
+export const NATIVE_PATTERNS: readonly string[] = ['/discover/provider/:id', '/comm/my-groups/:id'];
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 
