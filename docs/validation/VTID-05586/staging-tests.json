@@ -1,0 +1,9 @@
+{
+  "vtid": "VTID-05586",
+  "service": "community-app",
+  "tests": [
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build with the lighter own-bubble token is served; the colour itself is checked by the owner on the PR preview" }
+  ]
+}
