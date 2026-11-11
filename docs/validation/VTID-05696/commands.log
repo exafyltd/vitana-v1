@@ -1,0 +1,6 @@
+$ npx vitest run src/lib/claude-md-session-handover.test.ts
+ Test Files 1 passed (1); Tests 2 passed (2)
+$ git diff --numstat origin/main -- CLAUDE.md
+18	0	CLAUDE.md
+$ npm test
+ Test Files 498 passed (498); Tests 3987 passed (3987)

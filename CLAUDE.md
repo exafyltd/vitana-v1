@@ -109,6 +109,24 @@ exceptions; `executor: claude` lanes go to the exceptions seat while it is unava
 in the conversation (§7c: a full publish, or only one session's changes) and never writes a live system from session
 tools. See `.claude/rules/collaboration.md` §7–§8b.
 
+## 📦 SESSION HANDOVER: STRAIGHT TO GITLAB (STANDING RULE, owner decision 2026-11-11)
+A session's sandbox is temporary: the next session, even in the same account, starts in a fresh sandbox and cannot read
+the old one's files, worktrees, bundles or chat. On 2026-11-11 two strategy commits and a handover lived only in a
+sandbox and were nearly lost. So **a handover exists only once it is pushed to GitLab**:
+1. **Push the work first.** Every commit the next session needs is pushed to its branch on the GitLab project of its
+   repo (`vitana/vitanaland-strategy`, `vitana/vitana-platform`, `vitana/vitana-v1`), never only committed locally,
+   bundled or kept in a worktree. While the GitHub to GitLab cutover is open, a platform/v1 branch is also pushed where
+   its PR or MR lives.
+2. **Write the handover as a file in GitLab:** `19-EXECUTION-PROGRAMME/SESSION-HANDOVER.md` on the working branch of
+   `vitana/vitanaland-strategy` (one place every session can fetch). It holds: what the owner asked for, branches and
+   exact SHAs, PR/MR links, plan slugs and VTIDs, lane states, blockers with the owner decision each needs, and the next
+   steps in order. Paths under the sandbox (`/projects/sandbox/...`, worktrees, `.agents/`) are never the only copy of
+   anything it names. A plan's own state stays in `.kiro/specs/<slug>/handoff.md` and lane files as before.
+3. **Verify before ending:** `git ls-remote origin <branch>` shows the pushed SHA for every branch named in the
+   handover. If a push fails (for example a 403 from the Kiro gateway), the session tells the owner at once and does not
+   report the handover as done.
+4. **A new session starts there:** `git fetch` the strategy branch and read `SESSION-HANDOVER.md` before any other work.
+
 ## Overview
 
 VITANA community app (branded "MAXINA - Longevity Community"). React/Vite SPA with 551+ screens spanning community, health, AI, messaging, wallet, and admin features.

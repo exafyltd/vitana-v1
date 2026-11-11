@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05696",
+  "paths": [
+    "CLAUDE.md",
+    "src/lib/claude-md-session-handover.test.ts",
+    "docs/validation/VTID-05696/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05696/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
