@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05728",
+  "lane": "native-followups-20261111/translations",
+  "kind": "fix",
+  "paths": [
+    "src/i18n/tr/screens.json",
+    "src/i18n/tr-screens-no-empty-values.test.ts",
+    "docs/validation/VTID-05728/**"
+  ],
+  "not_touched": [
+    "src/i18n/de/** (German 'Sie' string held back: owner decision 2026-10-06, pinned by two tests)",
+    "src/lib/commerce-terms.vtid-04895.test.ts and src/components/commerce/PartnerTermsSheet.vtid-04909.test.tsx"
+  ],
+  "sparring_record": "docs/validation/VTID-05728/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
