@@ -11,35 +11,30 @@
       "direct": "Direct",
       "contacts": "Contacts",
       "notifications": "Notifications",
-      "archived": "Archived",
-      "_pending_review": {}
+      "archived": "Archived"
     },
     "contextTabs": {
       "community": "Community",
-      "network": "Network",
-      "_pending_review": {}
+      "network": "Network"
     },
     "actions": {
       "new": "New",
       "newMessage": "New Message",
       "createGroup": "Create Group",
       "markAllRead": "Mark all as read",
-      "menu": "More",
-      "_pending_review": {}
+      "menu": "More"
     },
     "composer": {
       "placeholder": "Type your message...",
       "send": "Send",
       "attachments": "Attachments",
       "recipients": "To:",
-      "add": "Add",
-      "_pending_review": {}
+      "add": "Add"
     },
     "states": {
       "empty": "No messages yet",
       "loading": "Loading messages...",
-      "error": "Failed to load messages",
-      "_pending_review": {}
+      "error": "Failed to load messages"
     },
     "newConversation": {
       "title": "Start New Conversation",
@@ -59,8 +54,7 @@
       "cancel": "Cancel",
       "startChat": "Start Chat",
       "createGroup": "Create Group",
-      "creating": "Creating...",
-      "_pending_review": {}
+      "creating": "Creating..."
     },
     "createGroup": {
       "title": "Create Group",
@@ -77,8 +71,7 @@
       "created": "Group created",
       "createdDesc": "\"{name}\" has been created successfully.",
       "failed": "Failed to create group",
-      "failedDesc": "Please try again.",
-      "_pending_review": {}
+      "failedDesc": "Please try again."
     },
     "toast": {
       "success": "Success",
@@ -95,8 +88,7 @@
       "groupCreated": "Group \"{name}\" created successfully!",
       "groupFailed": "Failed to create group",
       "allMarkedRead": "All messages marked as read",
-      "markAllReadFailed": "Couldn't mark all as read. Please try again.",
-      "_pending_review": {}
+      "markAllReadFailed": "Couldn't mark all as read. Please try again."
     },
     "createGroupAction": "Create New Group",
     "newConversationAction": "New Conversation",
@@ -114,8 +106,7 @@
       "globalDescription": "Start a conversation or join a community to connect with others.",
       "tenantDescription": "Connect with colleagues and team members in your professional network.",
       "startConversation": "Start a conversation",
-      "discoverPeople": "Discover people",
-      "_pending_review": {}
+      "discoverPeople": "Discover people"
     },
     "group": {
       "loading": "Loading group…",
@@ -127,11 +118,9 @@
       "officialBadge": "official group",
       "empty": "No messages yet.",
       "composerPlaceholder": "Message…",
-      "_pending_review": {},
       "today": "Today",
       "yesterday": "Yesterday"
     },
-    "_pending_review": {},
     "messageStatus": {
       "sending": "Sending",
       "sent": "Sent",
@@ -139,15 +128,13 @@
       "read": "Read",
       "failed": "Not sent",
       "retry": "Retry",
-      "retryLabel": "Send this message again",
-      "_pending_review": {}
+      "retryLabel": "Send this message again"
     },
     "newMessages": {
       "none": "Jump to latest",
       "one": "1 new message",
       "other": "{count} new messages",
-      "unread": "Unread messages",
-      "_pending_review": {}
+      "unread": "Unread messages"
     },
     "reply": {
       "unavailable": "Original message not available",
@@ -155,8 +142,7 @@
       "jumpToOriginal": "Go to the original message",
       "jumpTo": "Go to the original message from {name}",
       "unknownSender": "Member",
-      "noText": "Attachment",
-      "_pending_review": {}
+      "noText": "Attachment"
     },
     "media": {
       "uploadFailed": "Upload failed",
@@ -165,8 +151,7 @@
       "video": "Video",
       "moreItems": "{count} more",
       "openImage": "Open picture {name}",
-      "openVideo": "Play video {name}",
-      "_pending_review": {}
+      "openVideo": "Play video {name}"
     },
     "search": {
       "title": "Search messages",
@@ -221,6 +206,5 @@
         }
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

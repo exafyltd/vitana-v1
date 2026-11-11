@@ -3,12 +3,16 @@
     "article": {
       "unavailableTitle": "المقالة غير متاحة",
       "unavailableBody": "لا يمكن فتح هذه المقالة هنا. ارجع إلى الموجز لفتحها من جديد.",
-      "backToFeed": "العودة إلى الموجز"
+      "backToFeed": "العودة إلى الموجز",
+      "_pending_review": {}
     },
     "post": {
       "video": "فيديو",
       "likes": "{count} إعجاب",
-      "comments": "{count} تعليق"
-    }
-  }
+      "comments": "{count} تعليق",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

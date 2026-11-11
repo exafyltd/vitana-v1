@@ -18,16 +18,14 @@
       "showLessToast": "Mostraremos menos como este",
       "mutedToast": "Fuente silenciada",
       "undo": "Deshacer",
-      "unmute": "Activar sonido",
-      "_pending_review": {}
+      "unmute": "Activar sonido"
     },
     "detail": {
       "back": "Atrás",
       "continueReading": "Seguir leyendo en",
       "openInBrowser": "Abrir en navegador",
       "couldNotLoad": "Este artículo no se puede mostrar aquí",
-      "readOn": "Leer más",
-      "_pending_review": {}
+      "readOn": "Leer más"
     },
     "pillars": {
       "all": "Todo",
@@ -35,19 +33,31 @@
       "hydration": "Hidratación",
       "sleep": "Sueño",
       "exercise": "Ejercicio",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "¡Bienvenido/a, {name}!",
       "joinedSummary": "{name} acaba de unirse a la comunidad de longevidad MAXINA.",
       "newMember": "Nuevo miembro",
       "sayHello": "Saludar",
       "viewProfile": "Ver perfil",
-      "eyebrow": "Nuevo en la comunidad",
-      "_pending_review": {}
+      "eyebrow": "Nuevo en la comunidad"
+    },
+    "greeting": {
+      "fieldLabel": "Tu saludo",
+      "placeholder": "Escribe un saludo corto y amigable…",
+      "inLanguage": "en {language}",
+      "send": "Enviar",
+      "sending": "Enviando…",
+      "tryAnother": "Prueba otra",
+      "cancel": "Cancelar",
+      "loadingSuggestion": "Cargando una sugerencia…",
+      "sentToast": "Saludo enviado",
+      "sentToastDesc": "Tu saludo está en camino.",
+      "suggestionFailed": "No se pudo cargar una sugerencia. Prueba de nuevo en un momento.",
+      "sendFailed": "No se pudo enviar tu saludo. Prueba de nuevo en un momento.",
+      "notAllowed": "Este saludo no se puede enviar ahora mismo.",
+      "emptyGreeting": "Escribe un saludo corto primero."
     }
-  },
-  "_pending_review": {}
+  }
 }
