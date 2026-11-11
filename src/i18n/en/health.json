@@ -26,21 +26,21 @@
     "trend": {
       "improving": "Improving",
       "declining": "Worsening",
-      "stable": "Stable",
-      "_pending_review": {}
+      "stable": "Stable"
     },
     "suggestions": {
       "uploadBloodTestResults": "Upload blood test results",
-      "startFitnessChallenge": "Start 30-Day Fitness Challenge",
-      "_pending_review": {}
+      "startFitnessChallenge": "Start 30-Day Fitness Challenge"
     },
     "pillars": {
       "sleep": "Sleep",
       "exercise": "Exercise",
       "nutrition": "Nutrition",
       "hydration": "Hydration",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental Health",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "emptyStates": {
       "noSleepPlan": "No Sleep Plan Yet",
@@ -54,8 +54,7 @@
       "noMentalPlan": "No Mental Plan Yet",
       "noMentalPlanDesc": "Generate your personalized mental wellness plan, to track stress, focus, and emotional balance with AI support.",
       "generatePlan": "Generate Plan",
-      "generating": "Generating...",
-      "_pending_review": {}
+      "generating": "Generating..."
     },
     "noSupplements": "No supplements yet",
     "noSupplementsDesc": "Track your daily vitamins, minerals, and supplements. Add your first supplement to get started.",
@@ -69,8 +68,6 @@
     "uploadFirstReport": "Upload First Report",
     "reportsLoadFailed": "Couldn't load your reports",
     "reportsLoadFailedDesc": "There was a problem loading your health reports. Please try again.",
-    "reportsLoadFailedRetry": "Try again",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "reportsLoadFailedRetry": "Try again"
+  }
 }

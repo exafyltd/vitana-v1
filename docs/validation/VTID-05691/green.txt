@@ -1,0 +1,11 @@
+12:31:19 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 /projects/sandbox/wt-sew1-mental-health-label
+
+ ✓ src/i18n/pillar-mental-health-label.test.ts (14 tests) 88ms
+
+ Test Files  1 passed (1)
+      Tests  14 passed (14)
+   Start at  00:31:19
+   Duration  766ms (transform 35ms, setup 92ms, import 20ms, tests 88ms, environment 462ms)
+

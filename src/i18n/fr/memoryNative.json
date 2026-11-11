@@ -32,7 +32,10 @@
           "content": "Les oméga-3, les antioxydants et les vitamines B agissent directement sur la santé de ton cerveau. Des aliments comme les poissons gras, les baies et les légumes à feuilles soutiennent la production de neurotransmetteurs et réduisent l'inflammation. Manger à heures régulières stabilise aussi la glycémie et évite les coups de fatigue.",
           "factor1": "Horaires des repas",
           "factor2": "Hydratation",
-          "factor3": "Équilibre en micronutriments"
+          "factor3": "Équilibre en micronutriments",
+          "_pending_review": {
+            "category": true
+          }
         },
         "exercise": {
           "category": "Exercice",
@@ -48,7 +51,10 @@
           "content": "Le stress chronique augmente le cortisol, ce qui nuit à la mémoire et à la prise de décision. Ta réaction au stress dépend du sommeil, de l'alimentation et des liens sociaux. Pratiquer la pleine conscience 10 minutes par jour peut réduire le cortisol de 23 %.",
           "factor1": "Qualité du sommeil",
           "factor2": "Soutien social",
-          "factor3": "Respiration"
+          "factor3": "Respiration",
+          "_pending_review": {
+            "category": true
+          }
         },
         "hydration": {
           "category": "Hydratation",

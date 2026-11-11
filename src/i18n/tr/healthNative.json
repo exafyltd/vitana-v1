@@ -168,7 +168,10 @@
         },
         "v4": {
           "title": "HIIT antrenmanının bilimi",
-          "category": "Fitness"
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v5": {
           "title": "Stres yönetimi stratejileri",
@@ -289,7 +292,7 @@
         "exercise": "Egzersiz",
         "hydration": "Hidrasyon",
         "sleep": "Uyku",
-        "mental": "Zihinsel",
+        "mental": "Ruh sağlığı",
         "supplement": "Takviye"
       },
       "refreshed": "{planName} yenilendi! 🔄",

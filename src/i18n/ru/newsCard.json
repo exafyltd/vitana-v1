@@ -18,16 +18,14 @@
       "showLessToast": "Будем показывать меньше такого",
       "mutedToast": "Источник отключен",
       "undo": "Отменить",
-      "unmute": "Включить",
-      "_pending_review": {}
+      "unmute": "Включить"
     },
     "detail": {
       "back": "Назад",
       "continueReading": "Продолжить чтение на",
       "openInBrowser": "Открыть в браузере",
       "couldNotLoad": "Эту статью нельзя отобразить здесь",
-      "readOn": "Подробнее",
-      "_pending_review": {}
+      "readOn": "Подробнее"
     },
     "pillars": {
       "all": "Все",
@@ -36,18 +34,17 @@
       "sleep": "Сон",
       "exercise": "Упражнения",
       "mental": "Ментальное здоровье",
-      "_pending_review": {}
+      "_pending_review": {
+        "mental": true
+      }
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "Добро пожаловать, {name}!",
       "joinedSummary": "{name} только что присоединился(ась) к сообществу долголетия MAXINA.",
       "newMember": "Новый участник",
       "sayHello": "Поздороваться",
       "viewProfile": "Открыть профиль",
-      "eyebrow": "Новичок в сообществе",
-      "_pending_review": {}
+      "eyebrow": "Новичок в сообществе"
     }
-  },
-  "_pending_review": {}
+  }
 }

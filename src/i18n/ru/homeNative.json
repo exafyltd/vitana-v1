@@ -21,7 +21,10 @@
     },
     "compose": {
       "cancel": "Отмена",
-      "charCount": "{count}/{max}"
+      "charCount": "{count}/{max}",
+      "_pending_review": {
+        "charCount": true
+      }
     },
     "comments": {
       "title": "Комментарии",

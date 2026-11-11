@@ -204,6 +204,9 @@
           "title": "Trendovi preventivne medicine",
           "series": "Zdravlje budućnosti"
         }
+      },
+      "_pending_review": {
+        "episode": true
       }
     },
     "educationActions": {
@@ -289,7 +292,7 @@
         "exercise": "Vežbanje",
         "hydration": "Hidratacija",
         "sleep": "San",
-        "mental": "Mentalno",
+        "mental": "Mentalno zdravlje",
         "supplement": "Suplementi"
       },
       "refreshed": "{planName} je osvežen! 🔄",
@@ -333,7 +336,10 @@
         "improve": "Ima prostora za napredak"
       },
       "litersOf": "{current} l / {target} l",
-      "liters": "{value} l"
+      "liters": "{value} l",
+      "_pending_review": {
+        "ai": true
+      }
     }
   }
 }

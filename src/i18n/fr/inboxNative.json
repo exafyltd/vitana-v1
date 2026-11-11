@@ -13,18 +13,28 @@
     "subnav": {
       "overview": "Aperçu",
       "inspiration": "Inspiration",
-      "archived": "Archivés"
+      "archived": "Archivés",
+      "_pending_review": {
+        "inspiration": true
+      }
     },
     "archiveCategory": {
       "all": "Tous",
       "healthcare": "Santé",
       "fitness": "Fitness",
       "nutrition": "Nutrition",
-      "activities": "Activités"
+      "activities": "Activités",
+      "_pending_review": {
+        "fitness": true,
+        "nutrition": true
+      }
     },
     "archiveType": {
       "group": "Groupe",
-      "direct": "Direct"
+      "direct": "Direct",
+      "_pending_review": {
+        "direct": true
+      }
     },
     "archiveSample": {
       "johnsonName": "Dr Johnson",
@@ -36,7 +46,10 @@
       "warriorsName": "Guerriers du week-end",
       "warriorsMessage": "La prochaine randonnée est prévue pour...",
       "kimName": "Dr Kim",
-      "kimMessage": "Contrôle dans 2 semaines"
+      "kimMessage": "Contrôle dans 2 semaines",
+      "_pending_review": {
+        "martinezName": true
+      }
     },
     "presence": {
       "online": "Actif",
@@ -46,6 +59,9 @@
     "datePlaceholder": "AAAA-MM-JJ",
     "permissions": {
       "contactsUsage": "Vitana lit tes contacts uniquement quand tu touches « Importer les contacts du téléphone », pour que tu voies lesquels de tes amis sont déjà sur Vitanaland."
+    },
+    "_pending_review": {
+      "conversation": true
     }
   }
 }

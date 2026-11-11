@@ -49,12 +49,15 @@
       "hydration": "Hydration",
       "exercise": "Exercise",
       "sleep": "Sleep",
-      "mental": "Mental",
+      "mental": "Mental Health",
       "community": "Community",
       "lab": "Lab",
       "work": "Work",
       "vitana": "Vitana",
-      "personal": "Personal"
+      "personal": "Personal",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "source": {
       "lab": "From your lab order",

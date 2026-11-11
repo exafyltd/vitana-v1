@@ -1,0 +1,269 @@
+12:30:49 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 /projects/sandbox/wt-sew1-mental-health-label
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts (14 tests | 13 failed) 90ms
+     × de: every pillar-name key reads the new label exactly 5ms
+     × en: every pillar-name key reads the new label exactly 1ms
+     × de: every pillar-name key exists, is non-empty and names mental health 2ms
+     × en: every pillar-name key exists, is non-empty and names mental health 1ms
+     × es: every pillar-name key exists, is non-empty and names mental health 1ms
+     × sr: every pillar-name key exists, is non-empty and names mental health 1ms
+     × fr: every pillar-name key exists, is non-empty and names mental health 1ms
+     × pl: every pillar-name key exists, is non-empty and names mental health 0ms
+     × pt: every pillar-name key exists, is non-empty and names mental health 1ms
+     × ru: every pillar-name key exists, is non-empty and names mental health 1ms
+     × tr: every pillar-name key exists, is non-empty and names mental health 1ms
+     × zh: every pillar-name key exists, is non-empty and names mental health 0ms
+     × ar: every pillar-name key exists, is non-empty and names mental health 0ms
+     ✓ the pillar-name objects still hold the other pillars as siblings (keys unchanged) 74ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > de: every pillar-name key reads the new label exactly
+AssertionError: de/health.json health.pillars.mental: expected 'Mental' to be 'Mentale Gesundheit' // Object.is equality
+
+Expected: "Mentale Gesundheit"
+Received: "Mental"
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:82:72
+     80|   it.each(['de', 'en'] as const)('%s: every pillar-name key reads the …
+     81|     for (const [file, path, emoji] of PILLAR_NAME_KEYS) {
+     82|       expect(valueAt(locale, file, path), `${locale}/${file} ${path}`)…
+       |                                                                        ^
+     83|     }
+     84|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > en: every pillar-name key reads the new label exactly
+AssertionError: en/health.json health.pillars.mental: expected 'Mental' to be 'Mental Health' // Object.is equality
+
+Expected: "Mental Health"
+Received: "Mental"
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:82:72
+     80|   it.each(['de', 'en'] as const)('%s: every pillar-name key reads the …
+     81|     for (const [file, path, emoji] of PILLAR_NAME_KEYS) {
+     82|       expect(valueAt(locale, file, path), `${locale}/${file} ${path}`)…
+       |                                                                        ^
+     83|     }
+     84|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > de: every pillar-name key exists, is non-empty and names mental health
+AssertionError: de/health.json health.pillars.mental is still the bare "Mental": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > en: every pillar-name key exists, is non-empty and names mental health
+AssertionError: en/health.json health.pillars.mental is still the bare "Mental": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > es: every pillar-name key exists, is non-empty and names mental health
+AssertionError: es/health.json health.pillars.mental is still the bare "Mental": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > sr: every pillar-name key exists, is non-empty and names mental health
+AssertionError: sr/health.json health.pillars.mental is still the bare "Mentalno": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > fr: every pillar-name key exists, is non-empty and names mental health
+AssertionError: fr/health.json health.pillars.mental is still the bare "Mental": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > pl: every pillar-name key exists, is non-empty and names mental health
+AssertionError: pl/health.json health.pillars.mental is still the bare "Samopoczucie": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > pt: every pillar-name key exists, is non-empty and names mental health
+AssertionError: pt/health.json health.pillars.mental is still the bare "Mental": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > ru: every pillar-name key exists, is non-empty and names mental health
+AssertionError: ru/health.json health.pillars.mental is still the bare "Ментальное": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > tr: every pillar-name key exists, is non-empty and names mental health
+AssertionError: tr/health.json health.pillars.mental is still the bare "Zihinsel": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > zh: every pillar-name key exists, is non-empty and names mental health
+AssertionError: zh/health.json health.pillars.mental is still the bare "心理": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  src/i18n/pillar-mental-health-label.test.ts > fifth pillar is named "Mental Health" (VTID-05691) > ar: every pillar-name key exists, is non-empty and names mental health
+AssertionError: ar/health.json health.pillars.mental is still the bare "نفسي": expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/i18n/pillar-mental-health-label.test.ts:93:94
+     91|       expect(s.length, `${locale}/${file} ${path} is empty`).toBeGreat…
+     92|       const bare = s.replace(/^🧠\s*/, '');
+     93|       expect(BARE_MENTAL.has(bare), `${locale}/${file} ${path} is stil…
+       |                                                                                              ^
+     94|       expect(v, `${locale}/${file} ${path}`).toBe(expected(locale, pat…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  13 failed | 1 passed (14)
+   Start at  00:30:49
+   Duration  830ms (transform 44ms, setup 107ms, import 22ms, tests 90ms, environment 481ms)
+

@@ -49,14 +49,15 @@
       "hydration": "Вода",
       "exercise": "Движение",
       "sleep": "Сон",
-      "mental": "Психика",
+      "mental": "Психическое здоровье",
       "community": "Сообщество",
       "lab": "Анализы",
       "work": "Работа",
       "vitana": "Vitana",
       "personal": "Личное",
       "_pending_review": {
-        "vitana": true
+        "vitana": true,
+        "mental": true
       }
     },
     "source": {

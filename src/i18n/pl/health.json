@@ -26,21 +26,21 @@
     "trend": {
       "improving": "Poprawia się",
       "declining": "Pogorszenie",
-      "stable": "Stabilnie",
-      "_pending_review": {}
+      "stable": "Stabilnie"
     },
     "suggestions": {
       "uploadBloodTestResults": "Prześlij wyniki badań krwi",
-      "startFitnessChallenge": "Rozpocznij 30-dniowe Wyzwanie Fitness",
-      "_pending_review": {}
+      "startFitnessChallenge": "Rozpocznij 30-dniowe Wyzwanie Fitness"
     },
     "pillars": {
       "sleep": "Sen",
       "exercise": "Ćwiczenia",
       "nutrition": "Odżywianie",
       "hydration": "Nawodnienie",
-      "mental": "Samopoczucie",
-      "_pending_review": {}
+      "mental": "Zdrowie psychiczne",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "emptyStates": {
       "noSleepPlan": "Brak Planu Snu",
@@ -54,8 +54,7 @@
       "noMentalPlan": "Brak Planu Samopoczucia",
       "noMentalPlanDesc": "Wygeneruj swój spersonalizowany plan dobrego samopoczucia psychicznego, aby śledzić stres, skupienie i równowagę emocjonalną ze wsparciem AI.",
       "generatePlan": "Wygeneruj Plan",
-      "generating": "Generowanie...",
-      "_pending_review": {}
+      "generating": "Generowanie..."
     },
     "noSupplements": "Jeszcze brak suplementów",
     "noSupplementsDesc": "Śledź swoje codzienne witaminy, minerały i suplementy. Dodaj swój pierwszy suplement, aby zacząć.",
@@ -69,8 +68,6 @@
     "uploadFirstReport": "Prześlij Pierwszy Raport",
     "reportsLoadFailed": "Nie udało się załadować twoich raportów",
     "reportsLoadFailedDesc": "Wystąpił problem z załadowaniem twoich raportów zdrowotnych. Spróbuj ponownie.",
-    "reportsLoadFailedRetry": "Spróbuj ponownie",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "reportsLoadFailedRetry": "Spróbuj ponownie"
+  }
 }

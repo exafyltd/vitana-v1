@@ -42,7 +42,10 @@
       "exercise": "Egzersiz",
       "nutrition": "Beslenme",
       "hydration": "Su Tüketimi",
-      "mental": "Zihinsel"
+      "mental": "Ruh sağlığı",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "emptyStates": {
       "noSleepPlan": "Henüz Uyku Planı Yok",

@@ -168,7 +168,10 @@
         },
         "v4": {
           "title": "Nauka o treningu HIIT",
-          "category": "Fitness"
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v5": {
           "title": "Strategie radzenia sobie ze stresem",
@@ -289,7 +292,7 @@
         "exercise": "Ruch",
         "hydration": "Nawodnienie",
         "sleep": "Sen",
-        "mental": "Psychika",
+        "mental": "Zdrowie psychiczne",
         "supplement": "Suplementy"
       },
       "refreshed": "{planName} odświeżony! 🔄",
@@ -333,7 +336,10 @@
         "improve": "Jest co poprawić"
       },
       "litersOf": "{current} l / {target} l",
-      "liters": "{value} l"
+      "liters": "{value} l",
+      "_pending_review": {
+        "ai": true
+      }
     }
   }
 }

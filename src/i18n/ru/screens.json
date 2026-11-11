@@ -854,7 +854,7 @@
       "hydration": "Гидратация",
       "exercise": "Упражнения",
       "sleep": "Сон",
-      "mental": "Ментальное",
+      "mental": "Психическое здоровье",
       "next3": "Следующие 3 дня",
       "month": "30 дней",
       "future": "Будущее",
@@ -862,7 +862,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3429,7 +3430,7 @@
       "exercise": "Упражнения",
       "nutrition": "Питание",
       "hydration": "Гидратация",
-      "mental": "Ментальное",
+      "mental": "Психическое здоровье",
       "letAiAnalyzeYourWellnessGoals": "Позволь ИИ проанализировать твои цели в велнесе и предложить идеальные события для тебя",
       "generateAiRecommendations": "Сгенерировать рекомендации ИИ",
       "aiPowered": "На базе ИИ",
@@ -3620,7 +3621,10 @@
       "autopilotSuggestionsTitle": "Предложения Автопилота",
       "autopilotSuggestionsBody": "Ты ещё не опубликовал желание. Тем временем Автопилот предлагает людей из сообщества, которые могли бы подойти. Опубликуй желание, чтобы ИИ мог найти для тебя настоящие совпадения.",
       "autopilotSuggestionBadge": "Автопилот",
-      "ourAnswer": "Наш ответ"
+      "ourAnswer": "Наш ответ",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Добавить контакт",
@@ -5261,7 +5265,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9742,7 +9747,7 @@
       "nutrition": "Питание",
       "sleep": "Сон",
       "exercise": "Упражнения",
-      "mental": "Ментальное",
+      "mental": "Психическое здоровье",
       "vitanaIndex": "Индекс Vitana",
       "dailyNutrition": "Ежедневное питание",
       "calories": "Калории",
@@ -9754,7 +9759,10 @@
       "weeklyActivity": "Еженедельная активность",
       "mentalWellness": "Ментальное благополучие",
       "mindfulness": "Осознанность",
-      "vitanaIndexOverview": "Обзор Индекса Vitana"
+      "vitanaIndexOverview": "Обзор Индекса Vitana",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Комплексная платформа для здоровья и благополучия",

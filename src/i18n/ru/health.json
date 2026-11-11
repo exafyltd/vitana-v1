@@ -37,7 +37,10 @@
       "exercise": "Упражнения",
       "nutrition": "Питание",
       "hydration": "Гидратация",
-      "mental": "Ментальное"
+      "mental": "Психическое здоровье",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "emptyStates": {
       "noSleepPlan": "Пока нет плана сна",

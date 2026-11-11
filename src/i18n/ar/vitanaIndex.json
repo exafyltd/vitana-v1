@@ -21,8 +21,7 @@
       "building": "يتطور",
       "strong": "قوي",
       "reallyGood": "جيد جداً",
-      "elite": "نخبة",
-      "_pending_review": {}
+      "elite": "نخبة"
     },
     "framings": {
       "starting": "بدأت للتو",
@@ -30,10 +29,10 @@
       "building": "العادات تتشكل",
       "strong": "معلم 90 يوماً",
       "reallyGood": "مزدهر",
-      "elite": "نخبة",
-      "_pending_review": {}
+      "elite": "نخبة"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mental": true
+    }
+  }
 }

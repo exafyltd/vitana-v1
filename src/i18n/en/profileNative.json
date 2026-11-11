@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Whole section",
@@ -46,7 +54,10 @@
         "postsCommercial": "Marketplace posts",
         "postsPartnerSeek": "Partner-search posts"
       },
-      "partnerSeekNote": "Always private. Mutual-reveal protocol gates these regardless of toggle."
+      "partnerSeekNote": "Always private. Mutual-reveal protocol gates these regardless of toggle.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Allow access to your photos in Settings to choose an image.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "Uploading {current} of {total}...",
       "deleteTitle": "Are you sure?",
       "deleteDescription": "This photo will be permanently deleted. This action cannot be undone."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

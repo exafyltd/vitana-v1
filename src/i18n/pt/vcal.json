@@ -49,14 +49,15 @@
       "hydration": "Hidratação",
       "exercise": "Exercício",
       "sleep": "Sono",
-      "mental": "Mente",
+      "mental": "Saúde mental",
       "community": "Comunidade",
       "lab": "Laboratório",
       "work": "Trabalho",
       "vitana": "Vitana",
       "personal": "Pessoal",
       "_pending_review": {
-        "vitana": true
+        "vitana": true,
+        "mental": true
       }
     },
     "source": {

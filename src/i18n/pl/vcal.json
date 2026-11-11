@@ -49,14 +49,15 @@
       "hydration": "Nawodnienie",
       "exercise": "Ruch",
       "sleep": "Sen",
-      "mental": "Umysł",
+      "mental": "Zdrowie psychiczne",
       "community": "Społeczność",
       "lab": "Laboratorium",
       "work": "Praca",
       "vitana": "Vitana",
       "personal": "Osobiste",
       "_pending_review": {
-        "vitana": true
+        "vitana": true,
+        "mental": true
       }
     },
     "source": {

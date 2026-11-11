@@ -88,7 +88,12 @@
       "cancer": "Cancer",
       "hormones": "Hormones",
       "imaging": "Imagerie",
-      "other": "Autre"
+      "other": "Autre",
+      "_pending_review": {
+        "microbiome": true,
+        "cancer": true,
+        "hormones": true
+      }
     },
     "sheet": {
       "keepGoing": {
@@ -160,7 +165,10 @@
         },
         "v2": {
           "title": "Préparer ses repas pour une santé optimale",
-          "category": "Nutrition"
+          "category": "Nutrition",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v3": {
           "title": "Techniques pour mieux dormir",
@@ -168,7 +176,10 @@
         },
         "v4": {
           "title": "La science du HIIT",
-          "category": "Fitness"
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
         },
         "v5": {
           "title": "Stratégies de gestion du stress",
@@ -238,7 +249,10 @@
     },
     "services": {
       "description": "Réserve des rendez-vous, des dépistages et des programmes bien-être adaptés à tes besoins.",
-      "impactPoints": "+{points} points"
+      "impactPoints": "+{points} points",
+      "_pending_review": {
+        "impactPoints": true
+      }
     },
     "serviceActions": {
       "bookPhysical": {
@@ -289,8 +303,11 @@
         "exercise": "Exercice",
         "hydration": "Hydratation",
         "sleep": "Sommeil",
-        "mental": "Mental",
-        "supplement": "Compléments"
+        "mental": "Santé mentale",
+        "supplement": "Compléments",
+        "_pending_review": {
+          "nutrition": true
+        }
       },
       "refreshed": "{planName} actualisé ! 🔄",
       "justNow": "À l’instant",

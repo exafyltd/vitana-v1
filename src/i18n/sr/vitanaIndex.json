@@ -12,7 +12,7 @@
     "exercise": "Vežbanje",
     "nutrition": "Ishrana",
     "hydration": "Hidratacija",
-    "mental": "Mentalno",
+    "mental": "Mentalno zdravlje",
     "viewFullReport": "Pogledaj ceo izveštaj",
     "trackToday": "Prati danas",
     "tiers": {
@@ -21,8 +21,7 @@
       "building": "U napretku",
       "strong": "Snažno",
       "reallyGood": "Zaista dobro",
-      "elite": "Elitno",
-      "_pending_review": {}
+      "elite": "Elitno"
     },
     "framings": {
       "starting": "Tek počinješ",
@@ -30,10 +29,10 @@
       "building": "Navike se formiraju",
       "strong": "90-dnevna prekretnica",
       "reallyGood": "Napreduješ",
-      "elite": "Elita",
-      "_pending_review": {}
+      "elite": "Elita"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mental": true
+    }
+  }
 }

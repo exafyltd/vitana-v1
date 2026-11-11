@@ -12,7 +12,7 @@
     "exercise": "Ćwiczenia",
     "nutrition": "Odżywianie",
     "hydration": "Nawodnienie",
-    "mental": "Mentalny",
+    "mental": "Zdrowie psychiczne",
     "viewFullReport": "Zobacz pełny raport",
     "trackToday": "Śledź dzisiaj",
     "tiers": {
@@ -21,8 +21,7 @@
       "building": "Rozwijający się",
       "strong": "Silny",
       "reallyGood": "Naprawdę dobrze",
-      "elite": "Elita",
-      "_pending_review": {}
+      "elite": "Elita"
     },
     "framings": {
       "starting": "Dopiero zaczynasz",
@@ -30,10 +29,10 @@
       "building": "Nawyki się kształtują",
       "strong": "90-dniowy kamień milowy",
       "reallyGood": "Rozkwitasz",
-      "elite": "Elita",
-      "_pending_review": {}
+      "elite": "Elita"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mental": true
+    }
+  }
 }

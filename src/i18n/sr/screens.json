@@ -850,7 +850,7 @@
       "hydration": "Hidratacija",
       "exercise": "Vežbanje",
       "sleep": "Spavanje",
-      "mental": "Mentalno",
+      "mental": "Mentalno zdravlje",
       "next3": "Sledeća 3 dana",
       "month": "30 dana",
       "future": "Budućnost",
@@ -858,7 +858,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3617,7 +3618,10 @@
       "autopilotSuggestionsTitle": "Autopilot predlozi",
       "autopilotSuggestionsBody": "Još nisi objavio želju. U međuvremenu, Autopilot ti predlaže ljude iz zajednice koji bi ti mogli odgovarati. Objavi želju kako bi AI mogao da ti pronađe prave podudarnosti.",
       "autopilotSuggestionBadge": "Autopilot",
-      "ourAnswer": "Naš odgovor"
+      "ourAnswer": "Naš odgovor",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -4827,7 +4831,7 @@
       "exercise": "🏃 Vežbanje",
       "hydration": "💧 Hidratacija",
       "sleep": "😴 Spavanje",
-      "mental": "🧠 Mentalno",
+      "mental": "🧠 Mentalno zdravlje",
       "personalizedHealthPlansVitana": "Personalizovani zdravstveni planovi | Vitana",
       "yourPersonalizedHealthPlans": "Tvoji personalizovani zdravstveni planovi",
       "searchPlans": "Pretraži planove...",
@@ -5258,7 +5262,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9675,7 +9680,7 @@
       "nutrition": "Ishrana",
       "sleep": "Spavanje",
       "exercise": "Vežbanje",
-      "mental": "Mentalno",
+      "mental": "Mentalno zdravlje",
       "vitanaIndex": "Vitana indeks",
       "dailyNutrition": "Dnevna ishrana",
       "calories": "Kalorije",
@@ -9687,7 +9692,10 @@
       "weeklyActivity": "Nedeljna aktivnost",
       "mentalWellness": "Mentalno blagostanje",
       "mindfulness": "Svesnost",
-      "vitanaIndexOverview": "Vitana indeks pregled"
+      "vitanaIndexOverview": "Vitana indeks pregled",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Sveobuhvatna zdravstvena i wellness platforma",

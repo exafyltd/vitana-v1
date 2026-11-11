@@ -32,7 +32,10 @@
           "content": "Omega-3 fatty acids, antioxidants, and B vitamins directly influence brain health. Foods like fatty fish, berries, and leafy greens support neurotransmitter production and reduce inflammation. Consistent nutrition timing also stabilizes blood sugar, preventing energy crashes.",
           "factor1": "Meal timing",
           "factor2": "Hydration",
-          "factor3": "Micronutrient balance"
+          "factor3": "Micronutrient balance",
+          "_pending_review": {
+            "factor2": true
+          }
         },
         "exercise": {
           "category": "Exercise",
@@ -48,7 +51,10 @@
           "content": "Chronic stress elevates cortisol, which impairs memory and decision-making. Your body's stress response is influenced by sleep, nutrition, and social connections. Practicing mindfulness for 10 minutes daily can reduce cortisol by 23%.",
           "factor1": "Sleep quality",
           "factor2": "Social support",
-          "factor3": "Breathing patterns"
+          "factor3": "Breathing patterns",
+          "_pending_review": {
+            "category": true
+          }
         },
         "hydration": {
           "category": "Hydration",
@@ -56,7 +62,10 @@
           "content": "Even mild dehydration (2% body weight) reduces cognitive performance by 10–20%. Water is essential for nutrient transport and waste removal in brain cells. Consistent hydration throughout the day is more effective than large amounts at once.",
           "factor1": "Activity level",
           "factor2": "Climate",
-          "factor3": "Diet sodium"
+          "factor3": "Diet sodium",
+          "_pending_review": {
+            "category": true
+          }
         },
         "lifestyle": {
           "category": "Lifestyle",

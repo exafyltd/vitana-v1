@@ -23,6 +23,10 @@
         "benefit3": "90 günlük Vitana+ aboneliği",
         "benefit4": "Öncelikli rezervasyon + VIP ayrıcalıkları"
       }
+    },
+    "_pending_review": {
+      "brand": true,
+      "wellnessFallback": true
     }
   }
 }

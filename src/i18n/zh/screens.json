@@ -854,7 +854,7 @@
       "hydration": "补水",
       "exercise": "运动",
       "sleep": "睡眠",
-      "mental": "心理",
+      "mental": "心理健康",
       "next3": "未来3天",
       "month": "30天",
       "future": "未来",
@@ -862,7 +862,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3428,7 +3429,7 @@
       "exercise": "运动",
       "nutrition": "营养",
       "hydration": "补水",
-      "mental": "心理",
+      "mental": "心理健康",
       "letAiAnalyzeYourWellnessGoals": "让 AI 分析你的健康目标，并为你推荐完美的活动",
       "generateAiRecommendations": "生成 AI 推荐",
       "aiPowered": "AI 驱动",
@@ -3617,7 +3618,10 @@
       "goalWeightLoss": "减肥",
       "goalMentalWellness": "心理健康",
       "goalValues": "价值观一致",
-      "ourAnswer": "我们的答复"
+      "ourAnswer": "我们的答复",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "添加联系人",
@@ -4915,7 +4919,7 @@
       "exercise": "🏃 运动",
       "hydration": "💧 补水",
       "sleep": "😴 睡眠",
-      "mental": "🧠 心理",
+      "mental": "🧠 心理健康",
       "personalizedHealthPlansVitana": "个性化健康计划 | Vitana",
       "yourPersonalizedHealthPlans": "你的个性化健康计划",
       "searchPlans": "搜索计划...",
@@ -5258,7 +5262,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9739,7 +9744,7 @@
       "nutrition": "营养",
       "sleep": "睡眠",
       "exercise": "运动",
-      "mental": "心理",
+      "mental": "心理健康",
       "vitanaIndex": "Vitana 指数",
       "dailyNutrition": "每日营养",
       "calories": "卡路里",
@@ -9751,7 +9756,10 @@
       "weeklyActivity": "每周活动",
       "mentalWellness": "心理健康",
       "mindfulness": "正念",
-      "vitanaIndexOverview": "Vitana 指数概览"
+      "vitanaIndexOverview": "Vitana 指数概览",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "综合健康与幸福平台",

@@ -858,10 +858,13 @@
       "hydration": "Hydration",
       "exercise": "Exercise",
       "sleep": "Sleep",
-      "mental": "Mental",
+      "mental": "Mental Health",
       "next3": "Next 3 days",
       "month": "30 days",
-      "future": "Future"
+      "future": "Future",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "admin": {
       "usingDefaults": "Using defaults",
@@ -3398,7 +3401,7 @@
       "exercise": "Exercise",
       "nutrition": "Nutrition",
       "hydration": "Hydration",
-      "mental": "Mental",
+      "mental": "Mental Health",
       "letAiAnalyzeYourWellnessGoals": "Let AI analyze your wellness goals and suggest the perfect events for you",
       "generateAiRecommendations": "Generate AI Recommendations",
       "aiPowered": "AI Powered",
@@ -3587,7 +3590,10 @@
       "goalWeightLoss": "Weight loss",
       "goalMentalWellness": "Mental wellness",
       "goalValues": "Values aligned",
-      "ourAnswer": "Our answer"
+      "ourAnswer": "Our answer",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Add Contact",
@@ -4885,7 +4891,7 @@
       "exercise": "🏃 Exercise",
       "hydration": "💧 Hydration",
       "sleep": "😴 Sleep",
-      "mental": "🧠 Mental",
+      "mental": "🧠 Mental Health",
       "personalizedHealthPlansVitana": "Personalized Health Plans | Vitana",
       "yourPersonalizedHealthPlans": "Your Personalized Health Plans",
       "searchPlans": "Search plans...",
@@ -5224,7 +5230,10 @@
         },
         "contractLink": "View the Ultimate Goal contract"
       },
-      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
+      "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment.",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "home": {
       "priorityOfTheDay": "Priority of the Day:",
@@ -6165,7 +6174,10 @@
       "forwardShareOther": "Share via other apps",
       "forwardShareLinkHint": "If your device can't share the picture directly, a link that works for {days} days is shared instead.",
       "forwardLinkCopied": "Link copied — paste it into any app. It works for {days} days.",
-      "forwardTextCopied": "Text copied — paste it into any app."
+      "forwardTextCopied": "Text copied — paste it into any app.",
+      "_pending_review": {
+        "forwardInMaxina": true
+      }
     },
     "mobile": {
       "searching": "Searching…",
@@ -9582,7 +9594,7 @@
       "nutrition": "Nutrition",
       "sleep": "Sleep",
       "exercise": "Exercise",
-      "mental": "Mental",
+      "mental": "Mental Health",
       "vitanaIndex": "Vitana Index",
       "dailyNutrition": "Daily Nutrition",
       "calories": "Calories",
@@ -9594,7 +9606,10 @@
       "weeklyActivity": "Weekly Activity",
       "mentalWellness": "Mental Wellness",
       "mindfulness": "Mindfulness",
-      "vitanaIndexOverview": "Vitana Index Overview"
+      "vitanaIndexOverview": "Vitana Index Overview",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Comprehensive health & wellness platform",

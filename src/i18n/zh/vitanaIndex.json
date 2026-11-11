@@ -12,7 +12,7 @@
     "exercise": "运动",
     "nutrition": "营养",
     "hydration": "水分",
-    "mental": "心理",
+    "mental": "心理健康",
     "viewFullReport": "查看完整报告",
     "trackToday": "记录今天",
     "tiers": {
@@ -21,8 +21,7 @@
       "building": "逐步提升",
       "strong": "强",
       "reallyGood": "非常棒",
-      "elite": "顶尖",
-      "_pending_review": {}
+      "elite": "顶尖"
     },
     "framings": {
       "starting": "刚刚起步",
@@ -30,10 +29,10 @@
       "building": "习惯养成中",
       "strong": "90天里程碑",
       "reallyGood": "状态极佳",
-      "elite": "顶尖",
-      "_pending_review": {}
+      "elite": "顶尖"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "mental": true
+    }
+  }
 }

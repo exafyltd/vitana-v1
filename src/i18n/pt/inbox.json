@@ -11,35 +11,30 @@
       "direct": "Diretas",
       "contacts": "Contactos",
       "notifications": "Notificações",
-      "archived": "Arquivadas",
-      "_pending_review": {}
+      "archived": "Arquivadas"
     },
     "contextTabs": {
       "community": "Comunidade",
-      "network": "Rede",
-      "_pending_review": {}
+      "network": "Rede"
     },
     "actions": {
       "new": "Novo",
       "newMessage": "Nova Mensagem",
       "createGroup": "Criar Grupo",
       "markAllRead": "Marcar tudo como lido",
-      "menu": "Mais",
-      "_pending_review": {}
+      "menu": "Mais"
     },
     "composer": {
       "placeholder": "Digite sua mensagem...",
       "send": "Enviar",
       "attachments": "Anexos",
       "recipients": "Para:",
-      "add": "Adicionar",
-      "_pending_review": {}
+      "add": "Adicionar"
     },
     "states": {
       "empty": "Nenhuma mensagem ainda",
       "loading": "Carregando mensagens...",
-      "error": "Falha ao carregar mensagens",
-      "_pending_review": {}
+      "error": "Falha ao carregar mensagens"
     },
     "newConversation": {
       "title": "Iniciar Nova Conversa",
@@ -59,8 +54,7 @@
       "cancel": "Cancelar",
       "startChat": "Iniciar Chat",
       "createGroup": "Criar Grupo",
-      "creating": "A criar...",
-      "_pending_review": {}
+      "creating": "A criar..."
     },
     "createGroup": {
       "title": "Criar Grupo",
@@ -77,8 +71,7 @@
       "created": "Grupo criado",
       "createdDesc": "\"{name}\" foi criado com sucesso.",
       "failed": "Falha ao criar grupo",
-      "failedDesc": "Por favor, tenta novamente.",
-      "_pending_review": {}
+      "failedDesc": "Por favor, tenta novamente."
     },
     "toast": {
       "success": "Sucesso",
@@ -95,8 +88,7 @@
       "groupCreated": "Grupo \"{name}\" criado com sucesso!",
       "groupFailed": "Falha ao criar grupo",
       "allMarkedRead": "Todas as mensagens marcadas como lidas",
-      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente.",
-      "_pending_review": {}
+      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente."
     },
     "createGroupAction": "Criar Novo Grupo",
     "newConversationAction": "Nova Conversa",
@@ -114,8 +106,7 @@
       "globalDescription": "Inicie uma conversa ou junte-se a uma comunidade para se conectar com outras pessoas.",
       "tenantDescription": "Conecte-se com colegas e membros da equipe em sua rede profissional.",
       "startConversation": "Iniciar uma conversa",
-      "discoverPeople": "Descobrir pessoas",
-      "_pending_review": {}
+      "discoverPeople": "Descobrir pessoas"
     },
     "group": {
       "loading": "A carregar grupo…",
@@ -127,11 +118,9 @@
       "officialBadge": "grupo oficial",
       "empty": "Ainda não há mensagens.",
       "composerPlaceholder": "Mensagem…",
-      "_pending_review": {},
       "today": "Hoje",
       "yesterday": "Ontem"
     },
-    "_pending_review": {},
     "messageStatus": {
       "sending": "Enviando",
       "sent": "Enviada",
@@ -139,15 +128,13 @@
       "read": "Lida",
       "failed": "Não enviada",
       "retry": "Tentar de novo",
-      "retryLabel": "Enviar esta mensagem de novo",
-      "_pending_review": {}
+      "retryLabel": "Enviar esta mensagem de novo"
     },
     "newMessages": {
       "none": "Ir para a mais recente",
       "one": "1 nova mensagem",
       "other": "{count} novas mensagens",
-      "unread": "Mensagens não lidas",
-      "_pending_review": {}
+      "unread": "Mensagens não lidas"
     },
     "reply": {
       "unavailable": "Mensagem original indisponível",
@@ -155,8 +142,7 @@
       "jumpToOriginal": "Ir para a mensagem original",
       "jumpTo": "Ir para a mensagem original de {name}",
       "unknownSender": "Membro",
-      "noText": "Anexo",
-      "_pending_review": {}
+      "noText": "Anexo"
     },
     "media": {
       "uploadFailed": "Falha no envio",
@@ -165,8 +151,7 @@
       "video": "Vídeo",
       "moreItems": "Mais {count}",
       "openImage": "Abrir imagem {name}",
-      "openVideo": "Reproduzir vídeo {name}",
-      "_pending_review": {}
+      "openVideo": "Reproduzir vídeo {name}"
     },
     "search": {
       "title": "Pesquisar mensagens",
@@ -184,7 +169,10 @@
         "video": "Vídeos",
         "file": "Arquivos",
         "voice": "Mensagens de voz",
-        "link": "Links"
+        "link": "Links",
+        "_pending_review": {
+          "link": true
+        }
       },
       "searching": "Pesquisando…",
       "error": "A pesquisa falhou. Tente novamente.",
@@ -221,6 +209,5 @@
         }
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

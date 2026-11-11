@@ -289,7 +289,7 @@
         "exercise": "运动",
         "hydration": "补水",
         "sleep": "睡眠",
-        "mental": "心理",
+        "mental": "心理健康",
         "supplement": "补充剂"
       },
       "refreshed": "{planName}已刷新！🔄",
@@ -333,7 +333,10 @@
         "improve": "仍有提升空间"
       },
       "litersOf": "{current} 升 / {target} 升",
-      "liters": "{value} 升"
+      "liters": "{value} 升",
+      "_pending_review": {
+        "ai": true
+      }
     }
   }
 }

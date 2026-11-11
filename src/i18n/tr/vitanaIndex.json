@@ -1,7 +1,8 @@
 {
-  "_pending_review": {},
   "vitanaIndex": {
-    "_pending_review": {},
+    "_pending_review": {
+      "mental": true
+    },
     "title": "Vitana Sağlık Endeksi",
     "subtitle": "Tüm sağlık sütunlarında genel wellness dengesi",
     "veryPoor": "Çok Kötü",
@@ -14,11 +15,10 @@
     "exercise": "Egzersiz",
     "nutrition": "Beslenme",
     "hydration": "Sıvı Alımı",
-    "mental": "Zihinsel",
+    "mental": "Ruh sağlığı",
     "viewFullReport": "Tam Raporu Görüntüle",
     "trackToday": "Bugünü Kaydet",
     "tiers": {
-      "_pending_review": {},
       "starting": "Başlangıç",
       "early": "Erken",
       "building": "Gelişiyor",
@@ -27,7 +27,6 @@
       "elite": "Elit"
     },
     "framings": {
-      "_pending_review": {},
       "starting": "Yeni başlıyor",
       "early": "Başlangıç noktası belirlendi",
       "building": "Alışkanlıklar oluşuyor",

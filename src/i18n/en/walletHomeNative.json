@@ -17,7 +17,10 @@
       "creditsStatusDescription": "Your credits are active and ready to use",
       "tokensDescription": "Vitana Network tokens for governance and rewards",
       "usdDescription": "US dollar holdings and fiat operations",
-      "membershipDescription": "75% coverage + exclusive health benefits"
+      "membershipDescription": "75% coverage + exclusive health benefits",
+      "_pending_review": {
+        "tierPremium": true
+      }
     }
   }
 }

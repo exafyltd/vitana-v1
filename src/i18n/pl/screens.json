@@ -854,7 +854,7 @@
       "hydration": "Nawodnienie",
       "exercise": "Ćwiczenia",
       "sleep": "Sen",
-      "mental": "Mentalne",
+      "mental": "Zdrowie psychiczne",
       "next3": "Następne 3 dni",
       "month": "30 dni",
       "future": "Przyszłość",
@@ -862,7 +862,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3427,7 +3428,7 @@
       "exercise": "Ćwiczenia",
       "nutrition": "Odżywianie",
       "hydration": "Nawodnienie",
-      "mental": "Mentalne",
+      "mental": "Zdrowie psychiczne",
       "letAiAnalyzeYourWellnessGoals": "Pozwól AI przeanalizować Twoje cele wellness i zasugerować idealne wydarzenia dla Ciebie",
       "generateAiRecommendations": "Wygeneruj rekomendacje AI",
       "aiPowered": "Wspierane przez AI",
@@ -3618,7 +3619,10 @@
       "autopilotSuggestionsTitle": "Sugestie Autopilota",
       "autopilotSuggestionsBody": "Nie opublikowałeś jeszcze życzenia. W międzyczasie Autopilot sugeruje osoby ze społeczności, które mogłyby pasować. Opublikuj życzenie, aby AI mogła znaleźć dla ciebie prawdziwe dopasowania.",
       "autopilotSuggestionBadge": "Autopilot",
-      "ourAnswer": "Nasza odpowiedź"
+      "ourAnswer": "Nasza odpowiedź",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -5259,7 +5263,8 @@
         "reportsLoadFailed": true,
         "reportsLoadFailedDesc": true,
         "reportsLoadFailedRetry": true,
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "reportsLoadFailed": "Couldn't load your reports",
       "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
@@ -9743,7 +9748,7 @@
       "nutrition": "Odżywianie",
       "sleep": "Sen",
       "exercise": "Ćwiczenia",
-      "mental": "Mentalne",
+      "mental": "Zdrowie psychiczne",
       "vitanaIndex": "Vitana Indeks",
       "dailyNutrition": "Codzienne Odżywianie",
       "calories": "Kalorie",
@@ -9755,7 +9760,10 @@
       "weeklyActivity": "Tygodniowa Aktywność",
       "mentalWellness": "Wellness Mentalny",
       "mindfulness": "Uważność",
-      "vitanaIndexOverview": "Przegląd Vitana Indeksu"
+      "vitanaIndexOverview": "Przegląd Vitana Indeksu",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Kompleksowa platforma zdrowia i dobrego samopoczucia",

@@ -850,7 +850,7 @@
       "hydration": "Hidratación",
       "exercise": "Ejercicio",
       "sleep": "Sueño",
-      "mental": "Mental",
+      "mental": "Salud mental",
       "next3": "Próximos 3 días",
       "month": "30 días",
       "future": "Futuro",
@@ -858,7 +858,8 @@
         "appUpdatedTitle": true,
         "appUpdatedBody": true,
         "somethingWentWrongTitle": true,
-        "somethingWentWrongBody": true
+        "somethingWentWrongBody": true,
+        "mental": true
       },
       "appUpdatedTitle": "App updated — please reload",
       "appUpdatedBody": "A new version was deployed. Reload to get the latest.",
@@ -3376,7 +3377,7 @@
       "exercise": "Ejercicio",
       "nutrition": "Nutrición",
       "hydration": "Hidratación",
-      "mental": "Mental",
+      "mental": "Salud mental",
       "letAiAnalyzeYourWellnessGoals": "Deja que la IA analice tus objetivos de bienestar y te sugiera los eventos perfectos para ti",
       "generateAiRecommendations": "Generar recomendaciones de IA",
       "aiPowered": "Impulsado por IA",
@@ -3589,7 +3590,10 @@
       "autopilotSuggestionsTitle": "Sugerencias de Piloto Automático",
       "autopilotSuggestionsBody": "Aún no has publicado un deseo. Mientras tanto, Piloto Automático sugiere personas de la comunidad que podrían encajar bien. Publica un deseo para que la IA pueda encontrarte coincidencias reales.",
       "autopilotSuggestionBadge": "Piloto Automático",
-      "ourAnswer": "Nuestra respuesta"
+      "ourAnswer": "Nuestra respuesta",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "contacts": {
       "addContact": "Agregar contacto",
@@ -4799,7 +4803,7 @@
       "exercise": "🏃 Ejercicio",
       "hydration": "💧 Hidratación",
       "sleep": "😴 Sueño",
-      "mental": "🧠 Mental",
+      "mental": "🧠 Salud mental",
       "personalizedHealthPlansVitana": "Planes de Salud Personalizados | Vitana",
       "yourPersonalizedHealthPlans": "Tus Planes de Salud Personalizados",
       "searchPlans": "Buscar planes...",
@@ -5230,7 +5234,8 @@
       "reportsLoadFailedDesc": "Hubo un problema al cargar tus informes de laboratorio. Por favor, inténtalo de nuevo.",
       "reportsLoadFailedRetry": "Inténtalo de nuevo",
       "_pending_review": {
-        "coachReplyFailed": true
+        "coachReplyFailed": true,
+        "mental": true
       },
       "coachReplyFailed": "The coach couldn't answer just now. Please try again in a moment."
     },
@@ -9630,7 +9635,7 @@
       "nutrition": "Nutrición",
       "sleep": "Sueño",
       "exercise": "Ejercicio",
-      "mental": "Mental",
+      "mental": "Salud mental",
       "vitanaIndex": "Índice Vitana",
       "dailyNutrition": "Nutrición Diaria",
       "calories": "Calorías",
@@ -9642,7 +9647,10 @@
       "weeklyActivity": "Actividad Semanal",
       "mentalWellness": "Bienestar Mental",
       "mindfulness": "Atención Plena",
-      "vitanaIndexOverview": "Resumen del Índice Vitana"
+      "vitanaIndexOverview": "Resumen del Índice Vitana",
+      "_pending_review": {
+        "mental": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Plataforma integral de salud y bienestar",
