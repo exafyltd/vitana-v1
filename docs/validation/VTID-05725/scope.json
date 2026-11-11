@@ -1,7 +1,8 @@
 {
   "vtid": "VTID-05725",
   "lane": "native-followups-20261111/my-groups-deeplink",
-  "kind": "fix",
+  "kind": "feature",
+  "sparring_record": "docs/validation/VTID-05725/plan-sparring.md",
   "paths": [
     "apps/mobile/src/navigation/resolve.ts",
     "apps/mobile/tests/discover-commerce/routes.test.tsx",
