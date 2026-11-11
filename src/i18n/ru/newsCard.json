@@ -18,16 +18,14 @@
       "showLessToast": "Будем показывать меньше такого",
       "mutedToast": "Источник отключен",
       "undo": "Отменить",
-      "unmute": "Включить",
-      "_pending_review": {}
+      "unmute": "Включить"
     },
     "detail": {
       "back": "Назад",
       "continueReading": "Продолжить чтение на",
       "openInBrowser": "Открыть в браузере",
       "couldNotLoad": "Эту статью нельзя отобразить здесь",
-      "readOn": "Подробнее",
-      "_pending_review": {}
+      "readOn": "Подробнее"
     },
     "pillars": {
       "all": "Все",
@@ -35,19 +33,47 @@
       "hydration": "Гидратация",
       "sleep": "Сон",
       "exercise": "Упражнения",
-      "mental": "Ментальное здоровье",
-      "_pending_review": {}
+      "mental": "Ментальное здоровье"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "Добро пожаловать, {name}!",
       "joinedSummary": "{name} только что присоединился(ась) к сообществу долголетия MAXINA.",
       "newMember": "Новый участник",
       "sayHello": "Поздороваться",
       "viewProfile": "Открыть профиль",
-      "eyebrow": "Новичок в сообществе",
-      "_pending_review": {}
+      "eyebrow": "Новичок в сообществе"
+    },
+    "greeting": {
+      "_pending_review": {
+        "fieldLabel": true,
+        "placeholder": true,
+        "inLanguage": true,
+        "send": true,
+        "sending": true,
+        "tryAnother": true,
+        "cancel": true,
+        "loadingSuggestion": true,
+        "sentToast": true,
+        "sentToastDesc": true,
+        "suggestionFailed": true,
+        "sendFailed": true,
+        "notAllowed": true,
+        "emptyGreeting": true
+      },
+      "fieldLabel": "Your greeting",
+      "placeholder": "Write a short, friendly hello …",
+      "inLanguage": "in {language}",
+      "send": "Send",
+      "sending": "Sending …",
+      "tryAnother": "Try another",
+      "cancel": "Cancel",
+      "loadingSuggestion": "Loading a suggestion …",
+      "sentToast": "Greeting sent",
+      "sentToastDesc": "Your greeting is on its way.",
+      "suggestionFailed": "Couldn't load a suggestion. Try again in a moment.",
+      "sendFailed": "Couldn't send your greeting. Try again in a moment.",
+      "notAllowed": "This greeting can't be sent right now.",
+      "emptyGreeting": "Write a short hello first."
     }
-  },
-  "_pending_review": {}
+  }
 }
