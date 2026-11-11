@@ -334,6 +334,63 @@
       },
       "litersOf": "{current} l / {target} l",
       "liters": "{value} l"
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Daten erfassen",
+        "example": "z. B. {value}",
+        "units": {
+          "count": "Anzahl",
+          "hours": "Stunden",
+          "min": "Min."
+        },
+        "features": {
+          "biomarker_glucose": "Nüchternblutzucker",
+          "meal_log": "Erfasste Mahlzeiten",
+          "macro_balance": "Makro-Balance-Wert",
+          "water_intake": "Wasseraufnahme",
+          "hydration_log": "Trink-Check-ins",
+          "wearable_steps": "Schritte",
+          "wearable_heart_rate": "Durchschnittlicher Puls",
+          "wearable_workout": "Trainingsminuten",
+          "vo2_max": "VO₂max-Schätzung",
+          "wearable_sleep_duration": "Schlafdauer",
+          "wearable_sleep_efficiency": "Schlafeffizienz",
+          "wearable_hrv": "HRV (Nachtdurchschnitt)",
+          "meditation_minutes": "Meditationsminuten",
+          "mood_entry": "Stimmungswert",
+          "wearable_stress": "Stress (Wearable)",
+          "journal_entry": "Tagebucheinträge heute"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Fettsäuren",
+      "noSupplementsYet": "Noch keine Supplements hinzugefügt. Tippe auf „Supplement hinzufügen“, um loszulegen.",
+      "noSupplementsInCategory": "Keine Supplements in der Kategorie {category}.",
+      "dialog": {
+        "addTitle": "Supplement hinzufügen",
+        "editTitle": "Supplement bearbeiten",
+        "addDescription": "Füge deiner Routine ein neues Supplement hinzu",
+        "editDescription": "Aktualisiere die Angaben zu deinem Supplement",
+        "addSubmit": "Supplement hinzufügen",
+        "updateSubmit": "Supplement aktualisieren",
+        "datePlaceholder": "JJJJ-MM-TT"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Neuen Labortest bestellen",
+          "description": "Plane einen umfassenden Gesundheitscheck"
+        },
+        "downloadResults": {
+          "title": "Alle Ergebnisse herunterladen",
+          "description": "Exportiere deine komplette Laborhistorie"
+        },
+        "trackTrends": {
+          "title": "Trends verfolgen",
+          "description": "Sieh dir deine Biomarker-Trends im Zeitverlauf an"
+        }
+      }
     }
   }
 }

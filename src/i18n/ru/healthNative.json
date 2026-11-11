@@ -334,6 +334,63 @@
       },
       "litersOf": "{current} л / {target} л",
       "liters": "{value} л"
+    },
+    "indexDetail": {
+      "logData": {
+        "submit": "Записать данные",
+        "example": "напр. {value}",
+        "units": {
+          "count": "кол-во",
+          "hours": "часы",
+          "min": "мин"
+        },
+        "features": {
+          "biomarker_glucose": "Глюкоза натощак",
+          "meal_log": "Записанные приёмы пищи",
+          "macro_balance": "Баланс макронутриентов",
+          "water_intake": "Потребление воды",
+          "hydration_log": "Отметки гидратации",
+          "wearable_steps": "Шаги",
+          "wearable_heart_rate": "Средний пульс",
+          "wearable_workout": "Минуты тренировки",
+          "vo2_max": "Оценка VO₂ max",
+          "wearable_sleep_duration": "Продолжительность сна",
+          "wearable_sleep_efficiency": "Эффективность сна",
+          "wearable_hrv": "ВСР (среднее за ночь)",
+          "meditation_minutes": "Минуты медитации",
+          "mood_entry": "Оценка настроения",
+          "wearable_stress": "Стресс (трекер)",
+          "journal_entry": "Записи в дневнике сегодня"
+        }
+      }
+    },
+    "biology": {
+      "fattyAcids": "Жирные кислоты",
+      "noSupplementsYet": "Пока нет добавок. Нажми «Добавить добавку», чтобы начать.",
+      "noSupplementsInCategory": "В категории {category} нет добавок.",
+      "dialog": {
+        "addTitle": "Добавить добавку",
+        "editTitle": "Изменить добавку",
+        "addDescription": "Добавь новую добавку в свой режим",
+        "editDescription": "Обнови информацию о добавке",
+        "addSubmit": "Добавить добавку",
+        "updateSubmit": "Обновить добавку",
+        "datePlaceholder": "ГГГГ-ММ-ДД"
+      },
+      "biomarkerActions": {
+        "orderLabTest": {
+          "title": "Заказать новый анализ",
+          "description": "Запланируй комплексное обследование"
+        },
+        "downloadResults": {
+          "title": "Скачать все результаты",
+          "description": "Экспортируй всю историю анализов"
+        },
+        "trackTrends": {
+          "title": "Отслеживать тренды",
+          "description": "Смотри, как меняются твои биомаркеры"
+        }
+      }
     }
   }
 }
