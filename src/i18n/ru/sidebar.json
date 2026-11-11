@@ -58,9 +58,9 @@
       "operations": "Operations",
       "legal": "Legal & Compliance",
       "reports": "Reports",
-      "approvals": "Approvals",
-      "audit": "Audit",
-      "settings": "Settings",
+      "approvals": "Одобрения",
+      "audit": "Аудит",
+      "settings": "Настройки",
       "_pending_review": {
         "back": true,
         "overview": true,
@@ -71,10 +71,7 @@
         "hr": true,
         "operations": true,
         "legal": true,
-        "reports": true,
-        "approvals": true,
-        "audit": true,
-        "settings": true
+        "reports": true
       }
     }
   }
