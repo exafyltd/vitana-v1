@@ -27,7 +27,7 @@
  */
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
-import { BottomSheet, Button, Text, useUITheme } from '../../ports/ui';
+import { Avatar, BottomSheet, Button, Text, useUITheme } from '../../ports/ui';
 import { ChatIcon, describeGroupNotice, parseChatMarkdown, splitMentionSegments, Textarea, type GroupPosition, type MdInline, type Mention } from '../../ports/chat';
 import { getChatDevice } from '../../ports/chat-device';
 import { navigateToWebPath } from '../../navigation/navigate';
@@ -462,6 +462,7 @@ export function MessageBubble({
   return (
     <View testID={`bubble-${message.id}`}>
       <View style={[styles.row, { justifyContent: isOwn ? 'flex-end' : 'flex-start' }]} testID={isOwn ? 'bubble-row-own' : 'bubble-row-other'}>
+        {!isOwn ? <View style={styles.avatarCol}>{showSender ? <Avatar uri={isBot ? null : message.sender?.avatar_url} fallback={(senderName[0] || 'U').toUpperCase()} size={32} /> : null}</View> : null}
         <View style={[styles.column, { alignItems: isOwn ? 'flex-end' : 'flex-start' }]}>
           {!isOwn && showSender ? (
             <Text muted style={[styles.small, styles.senderName]} onPress={isBot ? undefined : () => navigateToWebPath(`/u/${message.sender_id}`)}>
@@ -623,6 +624,7 @@ export function MessageBubble({
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 6, width: '100%' },
+  avatarCol: { width: 32, alignItems: 'center' },
   column: { flexShrink: 1, maxWidth: '85%' },
   senderName: { marginBottom: 2, marginStart: 12 },
   bubble: { paddingHorizontal: 12, paddingVertical: 6 },
