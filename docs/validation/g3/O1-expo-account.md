@@ -1,7 +1,7 @@
 # O1: Expo account, EXPO_TOKEN and EAS budget
 
 - **Item:** O1
-- **Status:** **open** (recorded 2026-11-08; the owner has provided nothing yet)
+- **Status:** **open** (recorded 2026-11-11; the owner has provided nothing yet)
 - **Plan:** `native-eas-builds-r2` (VTID-05669, lane `store-owner-gate`), plan.md "Owner-gated inputs"
 - **Gate and order:** G3. Needed before the first build; the owner confirms that this belongs to G3. Order G1 (O4), G2 (not an O item), then G3 where relevant; O1 does not depend on G1.
 

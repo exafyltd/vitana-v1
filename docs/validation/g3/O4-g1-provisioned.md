@@ -1,7 +1,7 @@
 # O4: G1 isolated test environment provisioned
 
 - **Item:** O4
-- **Status:** **open** (recorded 2026-11-08; the owner has provided nothing yet)
+- **Status:** **open** (recorded 2026-11-11; the owner has provided nothing yet)
 - **Plan:** `native-eas-builds-r2` (VTID-05669, lane `store-owner-gate`), plan.md "Owner-gated inputs"
 - **Gate and order:** G1 (`NATIVE-APP-PLAN.md:100`). Order: G1 comes first, before G2 and G3 uploads that are meant to sign in.
 

@@ -1,7 +1,7 @@
 # O3: Google Play Console, Android package name and upload key
 
 - **Item:** O3
-- **Status:** **open** (recorded 2026-11-08; the owner has provided nothing yet)
+- **Status:** **open** (recorded 2026-11-11; the owner has provided nothing yet)
 - **Plan:** `native-eas-builds-r2` (VTID-05669, lane `store-owner-gate`), plan.md "Owner-gated inputs"
 - **Gate and order:** G3 (`NATIVE-APP-PLAN.md:118`). Order: after O1; independent of G1. Internal Android builds do not wait for O3; only the Play submit does.
 

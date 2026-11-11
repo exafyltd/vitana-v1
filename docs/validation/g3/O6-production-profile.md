@@ -1,7 +1,7 @@
 # O6: Production profile decision
 
 - **Item:** O6
-- **Status:** **open** (recorded 2026-11-08; the owner has provided nothing yet)
+- **Status:** **open** (recorded 2026-11-11; the owner has provided nothing yet)
 - **Plan:** `native-eas-builds-r2` (VTID-05669, lane `store-owner-gate`), plan.md "Owner-gated inputs"
 - **Gate and order:** G3 plus an owner decision (`NATIVE-APP-PLAN.md` §8). Order: last, after G3.
 
