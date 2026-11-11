@@ -26,7 +26,10 @@
       "emptyDiscoverDesc": "Sois la première personne à créer un groupe de la communauté.",
       "create": "Créer",
       "searchPlaceholder": "Rechercher des groupes",
-      "searchLabel": "Rechercher des groupes"
+      "searchLabel": "Rechercher des groupes",
+      "_pending_review": {
+        "public": true
+      }
     },
     "groupDetail": {
       "title": "Groupe",
@@ -37,7 +40,10 @@
       "leave": "Quitter le groupe",
       "notFoundTitle": "Groupe introuvable",
       "notFoundDesc": "Ce groupe a peut-être été supprimé ou n'existe pas.",
-      "browse": "Parcourir les groupes"
+      "browse": "Parcourir les groupes",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "Membres de la communauté",
@@ -59,13 +65,24 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "De salon",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       },
       "handle": "@{handle}",
       "fallbackName": "Membre",
       "empty": "Pas encore de membres.",
       "emptyDance": "Personne n'a encore indiqué cette danse comme préférence : sois la première personne !",
-      "viewProfile": "Voir le profil"
+      "viewProfile": "Voir le profil",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "Demandes ouvertes",
@@ -87,7 +104,10 @@
         "social_seek": "Social",
         "mutual_aid": "Entraide",
         "learning_seek": "Apprendre",
-        "mentor_seek": "Mentorat"
+        "mentor_seek": "Mentorat",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "time": {
         "justNow": "À l'instant",
@@ -97,7 +117,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "Aucune demande ouverte dans cette vue.",
-      "emptyDance": "Pas encore de demandes de danse ouvertes : publie la tienne et sois la première personne !"
+      "emptyDance": "Pas encore de demandes de danse ouvertes : publie la tienne et sois la première personne !",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Trouver un·e partenaire",
@@ -148,7 +171,10 @@
         "social_seek": "Social",
         "mutual_aid": "Entraide",
         "learning_seek": "Apprentissage",
-        "mentor_seek": "Mentorat"
+        "mentor_seek": "Mentorat",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "viewMine": "Voir mes intentions",
       "emptyBoard": "Aucune intention ouverte dans cette vue. Sois la première personne.",
@@ -164,7 +190,18 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Danses de salon",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
+      },
+      "_pending_review": {
+        "styleLabel": true
       }
     },
     "intentMatch": {
@@ -198,18 +235,29 @@
         "mental-health": "Santé mentale",
         "support": "Soutien",
         "learning": "Apprentissage",
-        "social": "Social"
+        "social": "Social",
+        "_pending_review": {
+          "fitness": true,
+          "nutrition": true,
+          "social": true
+        }
       },
       "privacyLabel": "Visibilité",
       "privacy": {
         "public": "Public",
-        "private": "Privé"
+        "private": "Privé",
+        "_pending_review": {
+          "public": true
+        }
       },
       "cancel": "Annuler",
       "submit": "Créer le groupe",
       "creating": "Création …",
       "created": "Groupe créé.",
-      "nameRequired": "Saisis un nom de groupe."
+      "nameRequired": "Saisis un nom de groupe.",
+      "_pending_review": {
+        "descriptionLabel": true
+      }
     },
     "composer": {
       "title": "Publier dans la communauté",
@@ -220,7 +268,10 @@
         "activity_seek": "Activité",
         "social_seek": "Social",
         "mutual_aid": "Entraide",
-        "partner_seek": "Partenaire"
+        "partner_seek": "Partenaire",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "titlePlaceholder": "Titre court",
       "titleLabel": "Titre",
@@ -233,7 +284,12 @@
       "posting": "Publication …",
       "posted": "Publié dans la communauté.",
       "titleRequired": "Saisis un titre d’au moins 3 caractères.",
-      "scopeTooShort": "Décris-le en au moins 20 caractères."
+      "scopeTooShort": "Décris-le en au moins 20 caractères.",
+      "_pending_review": {
+        "scopeLabel": true,
+        "budgetMin": true,
+        "budgetMax": true
+      }
     }
   }
 }

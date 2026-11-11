@@ -151,10 +151,7 @@
       "video": "Video",
       "moreItems": "{count} more",
       "openImage": "Open picture {name}",
-      "openVideo": "Play video {name}",
-      "_pending_review": {
-        "video": true
-      }
+      "openVideo": "Play video {name}"
     },
     "search": {
       "title": "Search messages",
@@ -172,11 +169,7 @@
         "video": "Videos",
         "file": "Files",
         "voice": "Voice messages",
-        "link": "Links",
-        "_pending_review": {
-          "video": true,
-          "link": true
-        }
+        "link": "Links"
       },
       "searching": "Searching…",
       "error": "Search failed. Please try again.",

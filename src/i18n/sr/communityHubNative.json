@@ -37,7 +37,10 @@
       "leave": "Napusti grupu",
       "notFoundTitle": "Grupa nije pronađena",
       "notFoundDesc": "Ova grupa je možda uklonjena ili ne postoji.",
-      "browse": "Pregledaj grupe"
+      "browse": "Pregledaj grupe",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "Članovi zajednice",
@@ -59,13 +62,23 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Društveni",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       },
       "handle": "@{handle}",
       "fallbackName": "Član",
       "empty": "Još nema članova.",
       "emptyDance": "Niko još nije postavio ovaj ples kao preferenciju — budi prva osoba!",
-      "viewProfile": "Pogledaj profil"
+      "viewProfile": "Pogledaj profil",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "Otvoreni zahtevi",
@@ -87,7 +100,10 @@
         "social_seek": "Druženje",
         "mutual_aid": "Uzajamna pomoć",
         "learning_seek": "Učenje",
-        "mentor_seek": "Mentorstvo"
+        "mentor_seek": "Mentorstvo",
+        "_pending_review": {
+          "partner_seek": true
+        }
       },
       "time": {
         "justNow": "Upravo sada",
@@ -97,7 +113,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "Nema otvorenih zahteva u ovom prikazu.",
-      "emptyDance": "Još nema otvorenih plesnih zahteva — objavi svoj i budi prva osoba!"
+      "emptyDance": "Još nema otvorenih plesnih zahteva — objavi svoj i budi prva osoba!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Pronađi partnera",
@@ -122,7 +141,12 @@
       "filterTitle": "Filtriraj podudaranja",
       "filterMinScore": "Minimalni rezultat",
       "filterClear": "Resetuj",
-      "filterShowResults": "Prikaži {count} podudaranja"
+      "filterShowResults": "Prikaži {count} podudaranja",
+      "_pending_review": {
+        "scorePercent": true,
+        "filter": true,
+        "filterActive": true
+      }
     },
     "matches": {
       "title": "Ljudi koji ti odgovaraju",
@@ -130,7 +154,10 @@
       "empty": "Još nema poklapanja. Navrati uskoro.",
       "fallbackName": "Član zajednice",
       "reasonDefault": "Zajednička interesovanja",
-      "score": "{score}%"
+      "score": "{score}%",
+      "_pending_review": {
+        "score": true
+      }
     },
     "intents": {
       "boardTitle": "Tabla zajednice",
@@ -148,7 +175,10 @@
         "social_seek": "Druženje",
         "mutual_aid": "Uzajamna pomoć",
         "learning_seek": "Učenje",
-        "mentor_seek": "Mentorstvo"
+        "mentor_seek": "Mentorstvo",
+        "_pending_review": {
+          "partner_seek": true
+        }
       },
       "viewMine": "Pogledaj moje namere",
       "emptyBoard": "Nema otvorenih namera u ovom prikazu. Budi prva osoba.",
@@ -164,7 +194,14 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Standardni plesovi",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       }
     },
     "intentMatch": {
@@ -220,7 +257,10 @@
         "activity_seek": "Aktivnost",
         "social_seek": "Društveno",
         "mutual_aid": "Uzajamna pomoć",
-        "partner_seek": "Partner"
+        "partner_seek": "Partner",
+        "_pending_review": {
+          "partner_seek": true
+        }
       },
       "titlePlaceholder": "Kratak naslov",
       "titleLabel": "Naslov",
