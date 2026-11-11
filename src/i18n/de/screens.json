@@ -2781,6 +2781,8 @@
       "send": "Senden",
       "exitAudioMode": "Audiomodus beenden",
       "soundscapeValue0": "Klanglandschaft {value0}",
+      "soundscapeMuted": "Klanglandschaft stummgeschaltet",
+      "soundscapeUnmuted": "Klanglandschaft wieder an",
       "vitanaAudioMode": "VITANA Audio-Modus",
       "typeYourMessage": "Gib deine Nachricht ein...",
       "returnVoice": "Zurück zur Sprache"

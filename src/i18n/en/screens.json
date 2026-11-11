@@ -2781,6 +2781,8 @@
       "send": "Send",
       "exitAudioMode": "Exit audio mode",
       "soundscapeValue0": "Soundscape {value0}",
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted",
       "vitanaAudioMode": "VITANA Audio Mode",
       "typeYourMessage": "Type your message...",
       "returnVoice": "Return to voice"

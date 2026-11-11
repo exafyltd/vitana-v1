@@ -1,5 +1,6 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { Fragment } from "react";
+import { SidebarProvider, Sidebar,SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
@@ -114,6 +115,21 @@ function AppSidebar({
   const sidebarCategories = getEffectiveNavigation()
     .filter(cat => !(isIAPRestricted() && cat.path === '/wallet'));
 
+  // VTID-05719: community items in group order; other roles keep their flat list.
+  const isCommunityNav = !NON_COMMUNITY_PREFIXES.some(
+    p => location.pathname === p || location.pathname.startsWith(p + "/"),
+  );
+  const navItems = isCommunityNav
+    ? [
+        ...COMMUNITY_NAV_GROUPS.flatMap(g => g.paths)
+          .map(p => sidebarCategories.find(c => c.path === p))
+          .filter((c): c is (typeof sidebarCategories)[number] => Boolean(c)),
+        ...sidebarCategories.filter(c => !COMMUNITY_NAV_GROUPS.some(g => g.paths.includes(c.path))),
+      ]
+    : sidebarCategories;
+  const groupStartingAt = (path: string) =>
+    isCommunityNav ? COMMUNITY_NAV_GROUPS.find(g => g.paths[0] === path) : undefined;
+
   // Check if current path matches category (including subpages)
   // But exclude parent paths if a more specific sibling path matches
   const isActivePath = (categoryPath: string) => {
@@ -178,7 +194,7 @@ function AppSidebar({
             >
               <div className="flex flex-col">
                 <span className="text-lg font-bold tracking-wide">
-                  {open ? "VITANA" : "V"}
+                  {open ? "Vitanaland" : "V"}
                 </span>
                 {open && (
                   <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1 flex items-center gap-1">
@@ -296,10 +312,10 @@ function AppSidebar({
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {sidebarCategories.map((cat) => {
+                {navItems.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
-                    <SidebarMenuItem key={cat.title}>
+                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-3 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
                       <SidebarMenuButton asChild>
                         <Link 
                           to={cat.path} 
@@ -331,7 +347,7 @@ function AppSidebar({
                           )}
                         </Link>
                       </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    </SidebarMenuItem></Fragment>
                   );
                 })}
               </SidebarMenu>
@@ -355,13 +371,13 @@ function AppSidebar({
                   <div className="leading-tight flex-1 text-left">
                     <div className="text-sm font-medium">{profile.displayName}</div>
                     <div className="text-xs text-sidebar-foreground/50 capitalize">
-                      {isExafyAdmin ? 'Exafy Admin' :
-                       currentRole === 'admin' ? 'Administrator' : 
-                       currentRole === 'backoffice' ? 'Back Office' :
-                       currentRole === 'staff' ? 'Staff' :
-                       currentRole === 'professional' ? 'Professional' :
-                       currentRole === 'patient' ? 'Patient' :
-                       'Community Member'}
+                      {isExafyAdmin ? translate('sidebar.roles.exafyAdmin', 'Exafy Admin') :
+                       currentRole === 'admin' ? translate('sidebar.roles.administrator', 'Administrator') : 
+                       currentRole === 'backoffice' ? translate('sidebar.roles.backOffice', 'Back Office') :
+                       currentRole === 'staff' ? translate('sidebar.roles.staff', 'Staff') :
+                       currentRole === 'professional' ? translate('sidebar.roles.professional', 'Professional') :
+                       currentRole === 'patient' ? translate('sidebar.roles.patient', 'Patient') :
+                       translate('sidebar.roles.community', 'Community Member')}
                     </div>
                   </div>
                 </button>
@@ -383,12 +399,12 @@ function AppSidebar({
           )}
           
           {/* Soundscape Control */}
-          <SoundscapeControl />
+          <div className="rounded-xl bg-sidebar-accent/30 p-1 space-y-1"><SoundscapeControl />
 
           {/* Language Control */}
-          <LanguageSidebarControl />
+          <LanguageSidebarControl /></div>
 
-          {!isMobile && <div aria-hidden="true" className={open ? "h-28" : "h-16"} />}
+          {!isMobile && <div aria-hidden="true" className={open ? ORB_CLEARANCE_EXPANDED : ORB_CLEARANCE_COLLAPSED} />}
           
         </div>
       </SidebarFooter>
@@ -403,6 +419,19 @@ function AppSidebar({
  * storefront shell instead. Auth-gated routes never reach this branch because
  * their AuthGuard redirects first — only routes mounted with `allowGuest` do.
  */
+// VTID-05719: community nav grouped into quiet sections (owner-approved plan).
+// Paths only; every community item appears in exactly one group.
+const COMMUNITY_NAV_GROUPS: { key: string; fallback: string; paths: string[] }[] = [
+  { key: "start", fallback: "Start", paths: ["/home", "/autopilot", "/inbox"] },
+  { key: "connect", fallback: "Connect", paths: ["/comm", "/discover", "/sharing", "/connectors"] },
+  { key: "grow", fallback: "Grow", paths: ["/health", "/memory", "/assistant", "/wallet", "/business"] },
+  { key: "account", fallback: "Account", paths: ["/settings", "/support"] },
+];
+const NON_COMMUNITY_PREFIXES = ["/admin", "/backoffice", "/staff", "/professional", "/patient"];
+// VTID-05719: named clearance for the fixed-position ORB (values unchanged; re-measured on staging).
+const ORB_CLEARANCE_EXPANDED = "h-28";
+const ORB_CLEARANCE_COLLAPSED = "h-16";
+
 export default function AppLayout({ children }: AppLayoutProps) {
   const { user, loading } = useAuth();
   if (!loading && !user) {
