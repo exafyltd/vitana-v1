@@ -1,5 +1,20 @@
 {
   "sidebar": {
+    "groups": {
+      "start": "Start",
+      "connect": "Connect",
+      "grow": "Grow",
+      "account": "Account"
+    },
+    "roles": {
+      "exafyAdmin": "Exafy Admin",
+      "administrator": "Administrator",
+      "backOffice": "Back Office",
+      "staff": "Staff",
+      "professional": "Professional",
+      "patient": "Patient",
+      "community": "Community Member"
+    },
     "home": "Home",
     "news": "News",
     "myJourney": "My Journey",
@@ -60,10 +75,7 @@
       "reports": "Reports",
       "approvals": "Approvals",
       "audit": "Audit",
-      "settings": "Settings",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "settings": "Settings"
+    }
+  }
 }

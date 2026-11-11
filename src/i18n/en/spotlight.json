@@ -27,24 +27,29 @@
         "askVitana": "Ask Vitana",
         "biology": "My Biology",
         "trend": "7-day trend",
-        "todayPlan": "Today's plan"
+        "todayPlan": "Today's plan",
+        "_pending_review": {}
       },
       "discover": {
         "section": "Recommended for you",
-        "browseCategories": "Browse categories"
+        "browseCategories": "Browse categories",
+        "_pending_review": {}
       },
       "events": {
         "featured": "Featured",
         "thisWeek": "This week",
         "upcoming": "Upcoming",
-        "join": "Join"
+        "join": "Join",
+        "_pending_review": {}
       },
       "match": {
         "topMatch": "Your top match",
         "sayHello": "Say hello",
         "viewProfile": "View profile",
-        "morePeople": "More people for you"
-      }
+        "morePeople": "More people for you",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     }
   },
   "_pending_review": {}

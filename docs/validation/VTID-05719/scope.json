@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05719",
+  "kind": "feature",
+  "change_class": "standard",
+  "paths": [
+    "src/components/AppLayout.tsx",
+    "src/components/AppLayout.sidebar-groups.test.ts",
+    "src/components/AppLayout.colours.test.ts",
+    "src/components/audio/SoundscapeControl.tsx",
+    "src/i18n/de/screens.json",
+    "src/i18n/en/screens.json",
+    "src/i18n/de/sidebar.json",
+    "src/i18n/en/sidebar.json",
+    "tests/e2e/staging/vtid-05719-sidebar.staging.spec.ts",
+    "docs/validation/VTID-05719/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

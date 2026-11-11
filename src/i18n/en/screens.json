@@ -2781,6 +2781,8 @@
       "send": "Send",
       "exitAudioMode": "Exit audio mode",
       "soundscapeValue0": "Soundscape {value0}",
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted",
       "vitanaAudioMode": "VITANA Audio Mode",
       "typeYourMessage": "Type your message...",
       "returnVoice": "Return to voice"
@@ -7570,9 +7572,6 @@
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
         "loadError": "Your settings for Vitana's messages could not be loaded.",
-        "_pending_review": {
-          "community": true
-        },
         "testCard": {
           "title": "Test card (admins only)",
           "desc": "Vitana sends you a message with the Vitana Index card in your chat with Vitana now, the way members get it in the morning. Only you receive it.",
