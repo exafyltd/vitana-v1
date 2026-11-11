@@ -1,0 +1,65 @@
+FAIL tests/followups/my-groups/my-groups-deeplink.test.tsx (100.198 s)
+  resolveWebPath /comm/my-groups/:id
+    ✕ a group id is native (6 ms)
+    ✕ keeps the query (17 ms)
+    ✓ without an id it is not native (1 ms)
+    ✓ with an extra segment it is not native (1 ms)
+  cold start
+    ✓ /comm/my-groups/g-1 reaches the route, not the resolver (1522 ms)
+
+  ● resolveWebPath /comm/my-groups/:id › a group id is native
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 2
+
+      Object {
+        "href": "/comm/my-groups/g-1",
+    -   "kind": "native",
+    +   "key": "/comm/my-groups/:id",
+    +   "kind": "unported",
+        "path": "/comm/my-groups/g-1",
+        "query": "",
+      }
+
+      12 | describe('resolveWebPath /comm/my-groups/:id', () => {
+      13 |   it('a group id is native', () => {
+    > 14 |     expect(resolveWebPath('/comm/my-groups/g-1')).toEqual({
+         |                                                   ^
+      15 |       kind: 'native',
+      16 |       href: '/comm/my-groups/g-1',
+      17 |       path: '/comm/my-groups/g-1',
+
+      at Object.toEqual (tests/followups/my-groups/my-groups-deeplink.test.tsx:14:51)
+
+  ● resolveWebPath /comm/my-groups/:id › keeps the query
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "href": "/comm/my-groups/g-1?x=1",
+    -   "kind": "native",
+    +   "kind": "unported",
+        "path": "/comm/my-groups/g-1",
+        "query": "x=1",
+      }
+
+      21 |
+      22 |   it('keeps the query', () => {
+    > 23 |     expect(resolveWebPath('/comm/my-groups/g-1?x=1')).toMatchObject({
+         |                                                       ^
+      24 |       kind: 'native',
+      25 |       href: '/comm/my-groups/g-1?x=1',
+      26 |       path: '/comm/my-groups/g-1',
+
+      at Object.toMatchObject (tests/followups/my-groups/my-groups-deeplink.test.tsx:23:55)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 3 passed, 5 total
+Snapshots:   0 total
+Time:        100.645 s
+Ran all test suites matching /tests\/followups\/my-groups/i.
