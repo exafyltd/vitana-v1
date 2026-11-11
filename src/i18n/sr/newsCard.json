@@ -18,16 +18,14 @@
       "showLessToast": "Prikazivaćemo manje ovakvih",
       "mutedToast": "Izvor utišan",
       "undo": "Poništi",
-      "unmute": "Uključi zvuk",
-      "_pending_review": {}
+      "unmute": "Uključi zvuk"
     },
     "detail": {
       "back": "Nazad",
       "continueReading": "Nastavi čitanje na",
       "openInBrowser": "Otvori u pregledaču",
       "couldNotLoad": "Ovaj članak se ne može prikazati u okviru",
-      "readOn": "Pročitaj više",
-      "_pending_review": {}
+      "readOn": "Pročitaj više"
     },
     "pillars": {
       "all": "Sve",
@@ -35,19 +33,47 @@
       "hydration": "Hidratacija",
       "sleep": "San",
       "exercise": "Vežbanje",
-      "mental": "Mentalno",
-      "_pending_review": {}
+      "mental": "Mentalno"
     },
-    "_pending_review": {},
     "member": {
       "welcomeTitle": "Dobro došao/la, {name}!",
       "joinedSummary": "{name} se upravo pridružio/la MAXINA zajednici za dugovečnost.",
       "newMember": "Novi član",
       "sayHello": "Pozdravi",
       "viewProfile": "Pogledaj profil",
-      "eyebrow": "Novo u zajednici",
-      "_pending_review": {}
+      "eyebrow": "Novo u zajednici"
+    },
+    "greeting": {
+      "_pending_review": {
+        "fieldLabel": true,
+        "placeholder": true,
+        "inLanguage": true,
+        "send": true,
+        "sending": true,
+        "tryAnother": true,
+        "cancel": true,
+        "loadingSuggestion": true,
+        "sentToast": true,
+        "sentToastDesc": true,
+        "suggestionFailed": true,
+        "sendFailed": true,
+        "notAllowed": true,
+        "emptyGreeting": true
+      },
+      "fieldLabel": "Your greeting",
+      "placeholder": "Write a short, friendly hello …",
+      "inLanguage": "in {language}",
+      "send": "Send",
+      "sending": "Sending …",
+      "tryAnother": "Try another",
+      "cancel": "Cancel",
+      "loadingSuggestion": "Loading a suggestion …",
+      "sentToast": "Greeting sent",
+      "sentToastDesc": "Your greeting is on its way.",
+      "suggestionFailed": "Couldn't load a suggestion. Try again in a moment.",
+      "sendFailed": "Couldn't send your greeting. Try again in a moment.",
+      "notAllowed": "This greeting can't be sent right now.",
+      "emptyGreeting": "Write a short hello first."
     }
-  },
-  "_pending_review": {}
+  }
 }
