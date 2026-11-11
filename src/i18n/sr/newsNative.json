@@ -8,7 +8,10 @@
     "post": {
       "video": "Video",
       "likes": "Sviđanja: {count}",
-      "comments": "Komentari: {count}"
+      "comments": "Komentari: {count}",
+      "_pending_review": {
+        "video": true
+      }
     }
   }
 }
