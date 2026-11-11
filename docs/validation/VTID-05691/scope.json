@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05691",
+  "kind": "fix",
+  "paths": [
+    "src/i18n/*/health.json",
+    "src/i18n/*/vitanaIndex.json",
+    "src/i18n/*/newsCard.json",
+    "src/i18n/*/healthNative.json",
+    "src/i18n/*/screens.json",
+    "src/i18n/*/vcal.json",
+    "src/i18n/pillar-mental-health-label.test.ts",
+    "tests/e2e/staging/mental-health-label.staging.spec.ts",
+    "docs/SCREEN_INVENTORY.md",
+    "docs/validation/VTID-05691/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05691/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

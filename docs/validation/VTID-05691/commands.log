@@ -1,0 +1,93 @@
+# VTID-05691 commands log — lane strategy-execution-wave1/mental-health-label (vitana-v1)
+# Worktree /projects/sandbox/wt-sew1-mental-health-label, base origin/main e31bf4627ff3c705c20f8e6b718ce4dd03353b7f
+# (re-fetched: unchanged). vitana-platform origin/main 6dc6e1ba0c18252ec2f3fbf5651d245e200f9835 (= plan pin).
+# Nothing in this log contacted a live host: no gateway, no Supabase, no staging or production URL.
+
+## 0. setup
+$ npm ci --no-audit --no-fund
+added 872 packages in 10s                                   (exit 0)
+
+## 1. find the fifth-pillar name keys
+$ node paths.mjs en health.json vitanaIndex.json newsCard.json healthNative.json screens.json vcal.json
+  (walks each shard, prints every key containing "mental" or whose value is (🧠 )Mental)
+→ pillar-name keys (siblings nutrition/hydration/exercise/sleep confirmed by reading the objects):
+  health.pillars.mental (en:42), vitanaIndex.mental (:15), newsCard.pillars.mental (:38),
+  healthNative.plans.pillarName.mental (:292), screens.common.mental (:861), screens.community.mental (:3401),
+  screens.health.mental (:4888, "🧠 Mental"), screens.healthtracker.mental (:9585), vcal.kinds.mental (:52)
+→ not pillar names / already "mental health", left alone: healthNative.plans.planName.mental (:284 "Mental Plan"),
+  healthNative.plans.aiSummary.mental (:321 sentence), screens.health.missionAlignment.pillars.mental (:5217 "Mental Health"),
+  screens.common.mentalHealth, timeline.json.
+$ node vals.mjs   (prints the 9 keys × 11 locales; base values recorded in acceptance.md table)
+
+## 2. test first, red on base
+$ npx vitest run src/i18n/pillar-mental-health-label.test.ts > docs/validation/VTID-05691/red-on-base.txt
+ Test Files  1 failed (1)
+      Tests  13 failed | 1 passed (14)                      (exit 1)  full output: red-on-base.txt
+
+## 3. change values (de first in the apply order, then en, es, fr, pl, pt, ru, sr, tr, zh, ar)
+$ node apply.mjs
+  line-based edit of exactly the listed JSON paths; after each shard it JSON-parses before/after, deep-diffs,
+  and throws if any path other than the listed keys changed → no throw.
+  90 values changed; 9 left unchanged (already mental health): pl screens.health.mental, sr screens.community.mental,
+  ar healthNative.plans.pillarName.mental, ar screens.healthtracker.mental, ar vcal.kinds.mental (already the target);
+  ru newsCard.pillars.mental, ru screens.health.mental, ar vitanaIndex.mental, ar screens.common.mental (synonym, skipped).
+$ git diff --stat | tail -1
+ 62 files changed, 90 insertions(+), 90 deletions(-)
+$ git diff -U0 | grep '^[-+] ' | grep -v '"mental"'      → (empty: every changed line is a "mental" key)
+
+## 4. green + full suite
+$ npx vitest run src/i18n/pillar-mental-health-label.test.ts > docs/validation/VTID-05691/green.txt
+ Test Files  1 passed (1)
+      Tests  14 passed (14)                                 (exit 0)  full output: green.txt
+$ npm test
+ FAIL  src/components/calendar/__regression__/calendar-screen.golden.test.tsx > views > month (6-week grid, at most 3 dots,
+       neighbour months); a tapped day opens in place (VTID-04956)
+ AssertionError: expected [ '#vcal-month', … ] to deeply equal [ '#vcal-month', … ]
+ -   "     18:00 – 19:00 · Mentales",
+ +   "     18:00 – 19:00 · Mentale Gesundheit",
+  ❯ Module.expectGolden src/components/calendar/__regression__/golden.ts:49:18
+ Test Files  1 failed | 497 passed (498)
+      Tests  1 failed | 3998 passed (3999)                  (exit 1)
+  cause: golden file src/components/calendar/__regression__/__golden__/calendar-screen.json:694 records the old de
+  vcal.kinds.mental. That file is outside the lane paths → not edited (see acceptance.md "Open").
+$ git stash push -- src/i18n/de/vcal.json && npx vitest run src/components/calendar/__regression__/calendar-screen.golden.test.tsx; git stash pop
+ Test Files  1 passed (1)
+      Tests  25 passed (25)                                 → the failure is caused only by the de vcal.kinds.mental change
+
+## 5. lint + inventory
+$ npx eslint src/i18n/pillar-mental-health-label.test.ts tests/e2e/staging/mental-health-label.staging.spec.ts
+  (no output)                                               (exit 0)
+$ npm run lint      (eslint ., 25 s)
+✖ 1622 problems (1321 errors, 301 warnings)                 (exit 1)
+  none in this lane's files (grep of the report for src/i18n/*.json, the test and the spec: only the pre-existing
+  src/i18n/leak-detector.tsx warnings)
+$ git stash push -u -- src/i18n && npx eslint .; git stash pop     (base)
+✖ 1622 problems (1321 errors, 301 warnings)                 (exit 1) → identical on base; pre-existing, PR-GATE ratchets per file
+$ npm run i18n:inventory
+[generate-screen-inventory] Wrote docs/SCREEN_INVENTORY.md
+  pages: 398, keys: 4703, namespaces: 47, suspects: 66
+  → docs/SCREEN_INVENTORY.md differs from the committed copy (300+/267-), but regenerating with this lane's i18n changes
+    stashed gives a byte-identical file (diff empty): the drift pre-exists on main and is not caused by this lane.
+$ git checkout -- docs/SCREEN_INVENTORY.md                  → not part of the lane
+
+## 6. staging spec + local bundle shape (no host contacted)
+$ npx eslint tests/e2e/staging/mental-health-label.staging.spec.ts   (exit 0)
+  Spec NOT run: it targets the staging base URL and signs in; STAGING-VERIFY runs it (staging-tests.json).
+$ npx vite build --outDir <scratch dir outside the worktree>        (exit 0, 31 s)
+  entry assets/index-BXiOHfrj.js (from dist/index.html): 'mental:"Mentale Gesundheit"' × 10; references locale-en-Csqwpcuw.js
+  locale-en chunk: 'mental:"Mental Health"' × 9, 'mental:"Mental"' × 0
+  entry also holds 'mental:"Mental"' × 2 from hard-coded component maps (PillarDeltaBadges / celebrate etc., proposed
+  follow-ups), so the spec makes only the positive check on the entry bundle.
+
+## 7. screenshots — SKIPPED
+$ ls ~/.cache/ms-playwright   → No such file or directory (Playwright 1.51.0 installed, no browsers)
+  /health, /health/plans and /health/vitana-index are behind <AuthGuard> (src/App.tsx:1127-1130, :1157-1160). A
+  signed-in screen needs a session from the one (production) Supabase project, which this lane may not use, and no
+  local Supabase exists. Screenshots desktop 1400×900, mobile 390×844 and RTL (ar) are therefore left to the
+  staging spec (it asserts the tab is visible and no horizontal scroll in LTR/RTL at 1400 and 390).
+
+## 8. evidence checks
+$ node -e "validateScope(scope.json,'VTID-05691'); evaluateSparringRecord(plan-sparring.md)"   (scripts/ci/pr-gate/lib.mjs)
+scope []  sparring []
+$ node -e "evaluateScope({vtids:['VTID-05691'], changed: git diff + untracked})"
+{"ok":true,"outside":[],"missing":[]}

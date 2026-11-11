@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05691",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the fifth pillar is named Mental Health (deployed en/de catalogues, /health/plans tab)",
+      "spec": "tests/e2e/staging/mental-health-label.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}
