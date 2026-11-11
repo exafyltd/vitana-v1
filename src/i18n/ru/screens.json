@@ -2816,7 +2816,13 @@
       "soundscapeValue0": "Звуковой ландшафт {value0}",
       "vitanaAudioMode": "Аудиорежим VITANA",
       "typeYourMessage": "Введи сообщение...",
-      "returnVoice": "Вернуться к голосу"
+      "returnVoice": "Вернуться к голосу",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "ПАКЕТ:",

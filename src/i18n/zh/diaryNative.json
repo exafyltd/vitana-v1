@@ -47,7 +47,10 @@
       "profile": "个人资料",
       "liveRooms": "直播间",
       "notifications": "通知",
-      "other": "其他"
+      "other": "其他",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }

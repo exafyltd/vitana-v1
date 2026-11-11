@@ -17,7 +17,10 @@
       "creditsStatusDescription": "Kredilerin aktif ve kullanıma hazır",
       "tokensDescription": "Yönetişim ve ödüller için Vitana Network tokenları",
       "usdDescription": "ABD doları bakiyesi ve fiat işlemleri",
-      "membershipDescription": "%75 kapsam + özel sağlık avantajları"
+      "membershipDescription": "%75 kapsam + özel sağlık avantajları",
+      "_pending_review": {
+        "tierPremium": true
+      }
     }
   }
 }

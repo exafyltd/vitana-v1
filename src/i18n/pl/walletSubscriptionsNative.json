@@ -7,10 +7,14 @@
       "overview": "Przegląd",
       "balance": "Saldo i korzyści",
       "subscriptions": "Subskrypcje",
-      "rewards": "Nagrody i prowizje"
+      "rewards": "Nagrody i prowizje",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "40 min/mies. · 1 sesja"
-    }
-  }
+      "freeLiveRooms": "40 min/mies. · 1 sesja",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

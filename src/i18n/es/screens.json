@@ -2785,7 +2785,13 @@
       "soundscapeValue0": "Paisaje sonoro {value0}",
       "vitanaAudioMode": "Modo de Audio VITANA",
       "typeYourMessage": "Escribe tu mensaje...",
-      "returnVoice": "Volver a voz"
+      "returnVoice": "Volver a voz",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAQUETE:",

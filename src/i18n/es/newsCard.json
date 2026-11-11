@@ -18,14 +18,16 @@
       "showLessToast": "Mostraremos menos como este",
       "mutedToast": "Fuente silenciada",
       "undo": "Deshacer",
-      "unmute": "Activar sonido"
+      "unmute": "Activar sonido",
+      "_pending_review": {}
     },
     "detail": {
       "back": "Atrás",
       "continueReading": "Seguir leyendo en",
       "openInBrowser": "Abrir en navegador",
       "couldNotLoad": "Este artículo no se puede mostrar aquí",
-      "readOn": "Leer más"
+      "readOn": "Leer más",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "Todo",
@@ -33,7 +35,8 @@
       "hydration": "Hidratación",
       "sleep": "Sueño",
       "exercise": "Ejercicio",
-      "mental": "Mental"
+      "mental": "Mental",
+      "_pending_review": {}
     },
     "member": {
       "welcomeTitle": "¡Bienvenido/a, {name}!",
@@ -41,7 +44,8 @@
       "newMember": "Nuevo miembro",
       "sayHello": "Saludar",
       "viewProfile": "Ver perfil",
-      "eyebrow": "Nuevo en la comunidad"
+      "eyebrow": "Nuevo en la comunidad",
+      "_pending_review": {}
     },
     "greeting": {
       "fieldLabel": "Tu saludo",
@@ -57,7 +61,10 @@
       "suggestionFailed": "No se pudo cargar una sugerencia. Prueba de nuevo en un momento.",
       "sendFailed": "No se pudo enviar tu saludo. Prueba de nuevo en un momento.",
       "notAllowed": "Este saludo no se puede enviar ahora mismo.",
-      "emptyGreeting": "Escribe un saludo corto primero."
-    }
-  }
+      "emptyGreeting": "Escribe un saludo corto primero.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -5,7 +5,8 @@
       "bankTransfer": "Банковский перевод",
       "bankTransferTime": "1–3 рабочих дня",
       "debitCard": "Дебетовая карта",
-      "debitCardTime": "Мгновенно"
+      "debitCardTime": "Мгновенно",
+      "_pending_review": {}
     },
     "balance": {
       "tabsLabel": "Разделы счёта",
@@ -17,7 +18,10 @@
       "creditsStatusDescription": "Твои кредиты активны и готовы к использованию",
       "tokensDescription": "Токены Vitana Network для участия в решениях и наград",
       "usdDescription": "Средства в долларах США и фиатные операции",
-      "membershipDescription": "75 % покрытия + эксклюзивные преимущества для здоровья"
-    }
-  }
+      "membershipDescription": "75 % покрытия + эксклюзивные преимущества для здоровья",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -55,7 +55,11 @@
       "account": "Cuenta",
       "wallet": "Billetera",
       "admin": "Admin",
-      "other": "Aún no ordenado"
+      "other": "Aún no ordenado",
+      "_pending_review": {
+        "chat": true,
+        "orb": true
+      }
     },
     "readiness": {
       "ready": "En el idioma del miembro",
@@ -135,7 +139,10 @@
       "read": "Leídas",
       "blockedAdmin": "Retenidas por el interruptor",
       "blockedMember": "Desactivadas por el miembro",
-      "empty": "No se envió nada en este período."
+      "empty": "No se envió nada en este período.",
+      "_pending_review": {
+        "total": true
+      }
     },
     "member": {
       "pushHint": "La notificación push solo decide si tu teléfono suena. Lo que recibes se configura en las categorías de abajo.",

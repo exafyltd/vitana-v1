@@ -2,7 +2,10 @@
   "staffNative": {
     "comingSoon": {
       "title": "即将推出",
-      "body": "我们仍在打造这个页面，请稍后再来看看。"
-    }
-  }
+      "body": "我们仍在打造这个页面，请稍后再来看看。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

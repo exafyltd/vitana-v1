@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "Ambiance sonore {value0}",
       "vitanaAudioMode": "Mode audio VITANA",
       "typeYourMessage": "Tape ton message...",
-      "returnVoice": "Retourner à la voix"
+      "returnVoice": "Retourner à la voix",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "BUNDLE :",

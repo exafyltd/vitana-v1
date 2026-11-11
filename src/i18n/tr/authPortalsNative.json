@@ -5,8 +5,10 @@
         "cancelledOrExpired": "E-posta onayı iptal edildi veya bağlantının süresi doldu.",
         "linkExpired": "Onay bağlantısının süresi doldu. Lütfen yeni bir bağlantı iste.",
         "generic": "E-posta onayı sırasında bir hata oluştu.",
-        "signInToContinue": "Devam etmek için lütfen giriş yap."
-      }
+        "signInToContinue": "Devam etmek için lütfen giriş yap.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalmaConfirmed": {
       "title": "AlKalma'ya hoş geldin!",
@@ -14,15 +16,20 @@
       "journey": "Arapça sağlık yolculuğun şimdi başlıyor",
       "redirecting": "Birkaç saniye içinde panonuna yönlendirileceksin...",
       "continue": "Panoya devam et",
-      "footer": "Arapça kapsamlı bir sağlık platformu"
+      "footer": "Arapça kapsamlı bir sağlık platformu",
+      "_pending_review": {}
     },
     "reset": {
       "updatePassword": "Şifreyi güncelle",
       "showPassword": "Şifreyi göster",
-      "hidePassword": "Şifreyi gizle"
+      "hidePassword": "Şifreyi gizle",
+      "_pending_review": {}
     },
     "resend": {
-      "prompt": "E-postayı almadın mı? Tekrar gönder"
-    }
-  }
+      "prompt": "E-postayı almadın mı? Tekrar gönder",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

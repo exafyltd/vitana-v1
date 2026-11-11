@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Cela sekcija",
@@ -46,7 +54,10 @@
         "postsCommercial": "Objave na marketplace-u",
         "postsPartnerSeek": "Objave za traženje partnera"
       },
-      "partnerSeekNote": "Uvek privatno. Protokol uzajamnog otkrivanja štiti ove objave, bez obzira na podešavanje."
+      "partnerSeekNote": "Uvek privatno. Protokol uzajamnog otkrivanja štiti ove objave, bez obzira na podešavanje.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Dozvoli pristup fotografijama u Podešavanjima da izabereš sliku.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "Otpremanje {current} od {total}...",
       "deleteTitle": "Da li si siguran?",
       "deleteDescription": "Ova fotografija će biti trajno obrisana. Ova radnja se ne može poništiti."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

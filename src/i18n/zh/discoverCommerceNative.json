@@ -36,7 +36,10 @@
         "theyWillSee": "他们会在聊天中看到你的帖子。",
         "defaultTitle": "一条 Vitana 帖子",
         "defaultText": "来 Vitana 看看这个",
-        "fromVitana": "来自 Vitana"
+        "fromVitana": "来自 Vitana",
+        "_pending_review": {
+          "errorBody": true
+        }
       },
       "orders": {
         "eventTicket": "活动门票",
@@ -56,7 +59,10 @@
           "earlyBird": "早鸟票",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "晨间瑜伽流",
-          "retreatTitle": "新年冥想静修"
+          "retreatTitle": "新年冥想静修",
+          "_pending_review": {
+            "summitTitle": true
+          }
         },
         "status": {
           "upcoming": "即将开始",
@@ -200,7 +206,10 @@
       "beauty": "美容",
       "gutHealth": "肠道健康",
       "herbs": "草本",
-      "heartHealth": "心脏健康"
+      "heartHealth": "心脏健康",
+      "_pending_review": {
+        "omega3": true
+      }
     }
   }
 }
