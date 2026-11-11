@@ -38,18 +38,11 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "Wellness",
-      "_pending_review": {
-        "provider": true,
-        "categoryWellness": true
-      }
+      "categoryWellness": "Wellness"
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "Markeri krvi",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryBloodMarkers": "Markeri krvi"
     },
     "chat": {
       "voice": "Započni glasovni poziv",
@@ -68,11 +61,7 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · +{n} VTNA",
-      "total": ". Indeks sada {n}",
-      "_pending_review": {
-        "title": true,
-        "detail": true
-      }
+      "total": ". Indeks sada {n}"
     }
   }
 }

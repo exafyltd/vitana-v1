@@ -1,10 +1,7 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}",
-      "_pending_review": {
-        "errorDetail": true
-      }
+      "errorDetail": "{message}"
     },
     "voice": {
       "preview": "Preslušaj glas",
@@ -12,11 +9,7 @@
       "previewPhrase": "Zdravo, ovo je pregled podešavanja glasa koja si izabrao.",
       "previewUnavailable": "Pregled nije dostupan za ovaj jezik na ovom uređaju.",
       "speedValue": "{value}x",
-      "volumeValue": "{value}%",
-      "_pending_review": {
-        "speedValue": true,
-        "volumeValue": true
-      }
+      "volumeValue": "{value}%"
     },
     "proactive": {
       "playSample": "Pusti primer pozdrava",
