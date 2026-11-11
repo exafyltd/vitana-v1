@@ -44,13 +44,13 @@ describe("VTID-05719 › wordmark and footer", () => {
   });
 
   it("keeps the ORB clearance as named constants (expanded and collapsed)", () => {
-    expect(src).toContain('const ORB_CLEARANCE_EXPANDED = "h-28";');
+    expect(src).toContain('const ORB_CLEARANCE_EXPANDED = "h-24";');
     expect(src).toContain('const ORB_CLEARANCE_COLLAPSED = "h-16";');
     expect(src).toContain("className={open ? ORB_CLEARANCE_EXPANDED : ORB_CLEARANCE_COLLAPSED}");
   });
 
-  it("wraps the sound and language controls in one dock card", () => {
-    expect(src).toContain('<div className="rounded-xl bg-sidebar-accent/30 p-1 space-y-1"><SoundscapeControl />');
+  it("puts profile, sound and language in one dock card on desktop only", () => {
+    expect(src).toContain('className={open && !isMobile ? "rounded-xl bg-sidebar-accent/30 p-1 space-y-1" : undefined}');
     expect(src).toContain("<LanguageSidebarControl /></div>");
   });
 

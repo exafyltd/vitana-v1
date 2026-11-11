@@ -49,7 +49,7 @@ export function LanguageSidebarControl() {
         <ResponsivePopoverTrigger asChild>
           <button
             type="button"
-            className="w-full flex items-center gap-2 rounded-lg bg-accent/10 hover:bg-accent/15 transition-colors p-2"
+            className="w-full flex items-center gap-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors p-2"
           >
             <img src={current.flag} alt="" className="h-4 w-6 rounded-sm object-cover shrink-0" />
             <span className="flex-1 text-sm text-foreground text-start">{current.endonym}</span>

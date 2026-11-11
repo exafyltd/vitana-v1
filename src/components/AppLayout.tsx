@@ -357,6 +357,8 @@ function AppSidebar({
       </SidebarContent>
       <SidebarFooter className="sticky bottom-0 bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
+          {/* VTID-05719 fix: one dock card for profile, sound and language (desktop, expanded only) */}
+          <div className={open && !isMobile ? "rounded-xl bg-sidebar-accent/30 p-1 space-y-1" : undefined}>
           {/* User Profile */}
           {open ? (
             <ProfileDrawer
@@ -399,7 +401,7 @@ function AppSidebar({
           )}
           
           {/* Soundscape Control */}
-          <div className="rounded-xl bg-sidebar-accent/30 p-1 space-y-1"><SoundscapeControl />
+          <SoundscapeControl />
 
           {/* Language Control */}
           <LanguageSidebarControl /></div>
@@ -429,7 +431,7 @@ const COMMUNITY_NAV_GROUPS: { key: string; fallback: string; paths: string[] }[]
 ];
 const NON_COMMUNITY_PREFIXES = ["/admin", "/backoffice", "/staff", "/professional", "/patient"];
 // VTID-05719: named clearance for the fixed-position ORB (values unchanged; re-measured on staging).
-const ORB_CLEARANCE_EXPANDED = "h-28";
+const ORB_CLEARANCE_EXPANDED = "h-24";
 const ORB_CLEARANCE_COLLAPSED = "h-16";
 
 export default function AppLayout({ children }: AppLayoutProps) {

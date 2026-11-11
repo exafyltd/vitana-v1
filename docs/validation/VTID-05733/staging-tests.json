@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05733",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "desktop sidebar shows the Vitanaland wordmark, all 14 community routes and the four quiet groups",
+      "spec": "tests/e2e/staging/vtid-05719-sidebar.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}
