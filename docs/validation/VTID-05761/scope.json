@@ -1,0 +1,20 @@
+{
+  "vtid": "VTID-05761",
+  "lane": "native-catalog-de-keys/de-keys",
+  "kind": "catalog",
+  "plan": "exafyltd/vitana-platform#4994 (plan(native-catalog-de-keys)), converged round 2",
+  "paths": [
+    "src/i18n/*/settingsNative.json",
+    "src/i18n/*/aiAssistantsNative.json",
+    "src/i18n/*/aiCoachNative.json",
+    "docs/validation/VTID-05761/**"
+  ],
+  "not_touched": [
+    "src/i18n/de/** (no German value or key changed: the keys already exist)",
+    "apps/mobile/tests/** (no test edited; the exact-key tests are the verification)",
+    "scripts/**, .github/**, .kiro/**, CLAUDE.md (no rule or tool changed)",
+    "all other src/i18n namespaces (the ~1,500 other shards carrying _pending_review are out of scope)"
+  ],
+  "expected_changed_files": 28,
+  "expected_flag_leaves_removed": 113
+}
