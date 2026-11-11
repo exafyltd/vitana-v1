@@ -9,6 +9,13 @@
     "fullStop": ".",
     "listNumber": "{n}.",
     "bullet": "•",
-    "copyright": "© 2026 {text}"
+    "copyright": "© 2026 {text}",
+    "_pending_review": {
+      "maxinaInitial": true,
+      "localeDe": true,
+      "localeEn": true,
+      "fullStop": true,
+      "listNumber": true
+    }
   }
 }

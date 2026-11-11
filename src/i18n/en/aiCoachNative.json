@@ -60,7 +60,7 @@
     "lift": {
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
-      "vtna": " · +{n} VTNA",
+      "vtna": "· +{n} VTNA",
       "total": ". Index now {n}"
     }
   }

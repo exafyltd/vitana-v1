@@ -7,10 +7,14 @@
       "overview": "Overview",
       "balance": "Balance & Benefits",
       "subscriptions": "Subscriptions",
-      "rewards": "Rewards & Commissions"
+      "rewards": "Rewards & Commissions",
+      "_pending_review": {}
     },
     "plans": {
-      "freeLiveRooms": "40 min/mo · 1 session"
-    }
-  }
+      "freeLiveRooms": "40 min/mo · 1 session",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
