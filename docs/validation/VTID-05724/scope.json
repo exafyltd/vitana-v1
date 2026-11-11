@@ -14,5 +14,10 @@
   ],
   "sparring_record": "docs/validation/VTID-05724/plan-sparring.md",
   "weakens_tests": [],
-  "red_green_exempt": []
+  "red_green_exempt": [
+    {
+      "file": "apps/mobile/tests/settings/i18n-rtl.test.tsx",
+      "reason": "Jest test in apps/mobile; the PR-GATE red-green rule matches only Vitest files under src/. Red on base (2 of 3 loaded runs fail with the CI error) is recorded in docs/validation/VTID-05724/red-on-base.txt and commands.log."
+    }
+  ]
 }
