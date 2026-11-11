@@ -59,6 +59,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/comm/members',
   '/comm/open-asks',
   '/comm/talk-to-vitana',
+  // VTID-05512: the post-checkout / wallet top-up return (exclusion row).
+  '/checkout/success',
   '/connectors',
   '/delete-account',
   '/daily-diary',
@@ -102,6 +104,8 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/native-ui-catalogue',
   '/oauth/complete',
   '/oauth/consent',
+  // VTID-05512: the Stripe package / ticket returns (exclusion rows).
+  '/packages/success',
   '/patient/appointments',
   '/patient/care-team',
   '/patient/dashboard',
@@ -140,6 +144,9 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/staff/tools',
   '/support',
   '/terms',
+  '/tickets/success',
+  // VTID-05512: DISCOVER.CART (the legacy `/cart` redirects here, REDIRECTS below).
+  '/universal-cart',
   '/wallet',
   '/wallet/balance',
   '/wallet/rewards',
@@ -152,6 +159,15 @@ export const NATIVE_ROUTES: readonly string[] = [
  * catch-all would otherwise call them unported). VTID-05511: the provider profile.
  */
 export const NATIVE_PATTERNS: readonly string[] = ['/discover/provider/:id'];
+
+/**
+ * Web `<Navigate replace>` routes (src/App.tsx) a deep link may still carry.
+ * VTID-05512: `/cart` → `/universal-cart` (App.tsx:1087, Phase 0: the
+ * Universal Cart is the one cart), query kept.
+ */
+export const REDIRECTS: Readonly<Record<string, string>> = {
+  '/cart': '/universal-cart',
+};
 
 const ROWS: readonly Row[] = (ledger.rows as Row[]).filter((r) => r.scope !== 'pending');
 
@@ -198,6 +214,9 @@ export function resolveWebPath(url: string, depth = 0): Resolution {
 
   if (NATIVE_ROUTES.includes(path)) return { kind: 'native', href: href(path, query), path, query };
   if (NATIVE_PATTERNS.some((p) => matchPattern(p, path))) return { kind: 'native', href: href(path, query), path, query };
+
+  const redirect = REDIRECTS[path];
+  if (redirect && depth < 3) return resolveWebPath(href(redirect, query), depth + 1);
 
   // A web route the phone shows elsewhere: follow the alias (most specific query first).
   const alias = ALIASES.filter((a) => matchPattern(a.route, path) && queryMatches(split(a.route).query, query)).sort(
