@@ -2,15 +2,21 @@
  * VTID-04574 — news-feed card for a member who just joined.
  *
  * The card exists to prompt the community to greet the newcomer, so the
- * greeting is one tap away on the card itself: "Say hello" opens the direct
- * conversation (/inbox/u/:userId), tapping the card opens their profile.
+ * greeting is one tap away on the card itself. "Say hello" opens an inline
+ * greeting composer (VTID-05207); tapping the card or "View profile" opens
+ * their profile (/u/:userId), from where the DM thread is still reachable.
+ *
+ * Pressing "Say hello" sends nothing on its own — only the composer's explicit
+ * Send delivers the private greeting DM.
  */
+import { useState } from "react";
 import { MessageCircle, User, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n-toast";
+import { NewMemberGreetingComposer } from "@/components/home/NewMemberGreetingComposer";
 
 export interface NewMemberCardProps {
   userId: string;
@@ -47,10 +53,17 @@ export function NewMemberCard({
   onOpen,
 }: NewMemberCardProps) {
   const navigate = useNavigate();
+  const [composerOpen, setComposerOpen] = useState(false);
+  const [greeted, setGreeted] = useState(false);
   const openProfile = () => {
     onOpen?.();
     navigate(`/u/${userId}`);
   };
+
+  // In-session hide after a successful Send. On the next load the card is
+  // hidden by fetchGreetedMemberIds (it counts viewer-sent DMs), so this only
+  // handles the immediate collapse.
+  if (greeted) return null;
 
   return (
     <Card
@@ -98,10 +111,11 @@ export function NewMemberCard({
         <div className="flex gap-2 mt-4">
           <Button
             className="flex-1 gap-2 rounded-full bg-category-2/40 text-category-2 hover:bg-category-2/80 font-semibold shadow-sm"
+            aria-expanded={composerOpen}
             onClick={(e) => {
               e.stopPropagation();
               onOpen?.();
-              navigate(`/inbox/u/${userId}`);
+              setComposerOpen(true);
             }}
           >
             <MessageCircle className="h-4 w-4" />
@@ -119,6 +133,17 @@ export function NewMemberCard({
             {t("newsCard.member.viewProfile")}
           </Button>
         </div>
+
+        {composerOpen && (
+          <NewMemberGreetingComposer
+            userId={userId}
+            onSent={() => {
+              setComposerOpen(false);
+              setGreeted(true);
+            }}
+            onCancel={() => setComposerOpen(false)}
+          />
+        )}
       </CardContent>
     </Card>
   );
