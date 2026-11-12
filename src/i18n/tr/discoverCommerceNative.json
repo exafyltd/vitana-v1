@@ -1,0 +1,218 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "Yüklenemedi.",
+        "mineEmptyBody": "Bir alım ya da satım talebi paylaş — eşleştirici sana alıcıları ve satıcıları gösterir.",
+        "newListing": "Yeni ilan"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "Alıyorum",
+          "commercial_sell": "Satıyorum",
+          "activity_seek": "Aktivite partneri",
+          "partner_seek": "Hayat arkadaşı",
+          "social_seek": "Sosyal / mentorluk",
+          "mutual_aid": "Karşılıklı yardım",
+          "learning_seek": "Öğrenmek istiyorum",
+          "mentor_seek": "Ders veriyorum"
+        },
+        "age": "yaş {min}–{max}",
+        "within": "{km} km içinde"
+      },
+      "share": {
+        "tooManyTitle": "Çok fazla alıcı ({count})",
+        "tooManyBody": "Ücretsiz plan en fazla {max} kişiye izin verir. 50 için Pro’ya geç.",
+        "errorBatch": "Çok fazla alıcı",
+        "errorQuota": "Paylaşım sınırına ulaşıldı",
+        "errorPrivate": "Bu gönderi paylaşılamaz",
+        "errorFailed": "Paylaşım başarısız",
+        "errorBody": "{message}",
+        "tryAgain": "Tekrar dene.",
+        "alreadyShared": "Zaten herkesle paylaşıldı",
+        "sharedOne": "{count} arkadaşınla paylaşıldı",
+        "sharedMany": "{count} arkadaşınla paylaşıldı",
+        "skipped": "{skipped} kişinin gelen kutusunda bu gönderi zaten vardı.",
+        "theyWillSee": "Gönderini sohbetlerinde görecekler.",
+        "defaultTitle": "Bir Vitana gönderisi",
+        "defaultText": "Buna Vitana’da bir bak",
+        "fromVitana": "Vitana’dan",
+        "_pending_review": {
+          "errorBody": true
+        }
+      },
+      "orders": {
+        "eventTicket": "Etkinlik bileti",
+        "locationTbd": "Konum belirlenecek",
+        "cjProduct": "CJ ürünü",
+        "general": "Genel",
+        "voucherProvider": "Maxina hediye çeki",
+        "voucherTier": {
+          "test": "Deneme çeki",
+          "experience": "Deneyim çeki",
+          "exclusive": "Özel çek",
+          "gift": "Hediye çeki"
+        },
+        "mock": {
+          "vipAccess": "VIP giriş",
+          "generalAdmission": "Genel giriş",
+          "earlyBird": "Erken kayıt",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Sabah yoga akışı",
+          "retreatTitle": "Yeni Yıl meditasyon inzivası",
+          "_pending_review": {
+            "summitTitle": true
+          }
+        },
+        "status": {
+          "upcoming": "Yaklaşan",
+          "attended": "Katılındı",
+          "expired": "Süresi doldu",
+          "completed": "Tamamlandı",
+          "delivered": "Teslim edildi",
+          "cancelled": "İptal edildi",
+          "refunded": "İade edildi",
+          "shipped": "Yolda",
+          "confirmed": "Onaylandı",
+          "pending": "Beklemede",
+          "processing": "İşleniyor",
+          "paid": "Aktif",
+          "active": "Aktif"
+        },
+        "type": {
+          "ticket": "Bilet",
+          "voucher": "Çek",
+          "product": "Ürün",
+          "service": "Hizmet"
+        }
+      },
+      "tickets": {
+        "event": "Etkinlik",
+        "dateTba": "Tarih açıklanacak",
+        "general": "Genel"
+      },
+      "ticket": {
+        "tba": "Açıklanacak"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 {title} etkinliğine gidiyorum!",
+        "email": "E-posta",
+        "emailSubject": "{title} biletim",
+        "sms": "SMS",
+        "copyLink": "Bağlantıyı kopyala",
+        "copied": "Kopyalandı!",
+        "openingWhatsapp": "WhatsApp açılıyor…",
+        "openingViber": "Viber açılıyor…",
+        "openingEmail": "E-posta açılıyor…",
+        "openingMessages": "Mesajlar açılıyor…",
+        "_pending_review": {
+          "sms": true
+        }
+      },
+      "booking": {
+        "sessionTitle": "{title} seansı",
+        "sessionDescription": "{name} ile bir seans ayırt",
+        "pickDate": "Bir tarih seç",
+        "previousMonth": "Önceki ay",
+        "nextMonth": "Sonraki ay"
+      },
+      "subnav": {
+        "overview": "Genel bakış",
+        "supplements": "Takviyeler",
+        "wellness-services": "Sağlıklı yaşam hizmetleri",
+        "doctors-coaches": "Doktorlar/Koçlar",
+        "deals-offers": "Fırsatlar ve teklifler",
+        "orders": "Siparişler"
+      },
+      "bookmark": {
+        "add": "Yer imi ekle",
+        "remove": "Yer imini kaldır"
+      },
+      "bookActions": {
+        "bookAppointment": "Randevu al",
+        "rebookPrevious": "Tekrar randevu al",
+        "findNearMe": "Yakınımda bul",
+        "messageProvider": "Uzmana mesaj gönder",
+        "viewMyBookings": "Randevularım",
+        "setReminders": "Hatırlatıcı kur",
+        "leaveReview": "Yorum bırak",
+        "paymentHistory": "Ödeme geçmişi"
+      },
+      "visit": {
+        "hideNotes": "Notları gizle",
+        "viewNotes": "Notları göster"
+      },
+      "utility": {
+        "openIndex": "Vitana Index’i aç",
+        "openIndexStreak": "Vitana Index’i aç — {days} günlük seri",
+        "upcomingEvents": "{count} yaklaşan etkinlik"
+      }
+    },
+    "searchShort": "Ara…",
+    "indexPill": "Vitana Index {value} – Sağlık'ı aç",
+    "calendar": {
+      "upcomingCount": "{count} yaklaşan etkinlik"
+    },
+    "bookmark": {
+      "add": "Yer imi ekle",
+      "remove": "Yer imini kaldır"
+    },
+    "product": {
+      "outOfStock": "Stokta yok"
+    },
+    "hidden": {
+      "product": "ürün",
+      "products": "ürün",
+      "allergies": "belirttiğin bir alerjen içeriyor",
+      "contraindications": "belirttiğin bir sağlık durumuyla kontrendike",
+      "medications": "kullandığın bir ilaçla etkileşebilir",
+      "dietary": "beslenme tercihlerine uymuyor",
+      "budget": "ürün başına bütçenin üzerinde",
+      "sensitivities": "hassas olduğun bir içerik barındırıyor",
+      "geo": "bölgene gönderilmiyor",
+      "excluded_region": "bölgesel olarak kısıtlı",
+      "past_purchases": "yakın zamanda satın aldın"
+    },
+    "quickShop": {
+      "viewCart": "Sepeti görüntüle",
+      "quickCheckout": "Hızlı ödeme",
+      "reorderPrevious": "Yeniden sipariş ver",
+      "managePayment": "Ödemeyi yönet",
+      "trackOrders": "Siparişleri takip et",
+      "setPriceAlert": "Fiyat alarmı kur",
+      "viewSavedItems": "Kaydedilenler",
+      "applyCoupon": "Kupon uygula"
+    },
+    "quickBook": {
+      "bookAppointment": "Randevu al",
+      "rebookPrevious": "Yeniden rezervasyon",
+      "findNearMe": "Yakınımda bul",
+      "messageProvider": "Hizmet sağlayıcıya yaz",
+      "viewMyBookings": "Rezervasyonlarım",
+      "setReminders": "Hatırlatıcı kur",
+      "leaveReview": "Değerlendirme yaz",
+      "paymentHistory": "Ödeme geçmişi"
+    },
+    "supplementCategories": {
+      "all": "Tümü",
+      "multivitamins": "Multivitaminler",
+      "vitamins": "Vitaminler",
+      "minerals": "Mineraller",
+      "omega3": "Omega-3",
+      "adaptogens": "Adaptojenler",
+      "nootropics": "Nootropikler",
+      "longevity": "Uzun ömür",
+      "immunity": "Bağışıklık",
+      "antioxidants": "Antioksidanlar",
+      "sleep": "Uyku",
+      "performance": "Performans",
+      "beauty": "Güzellik",
+      "gutHealth": "Bağırsak sağlığı",
+      "herbs": "Bitkiler",
+      "heartHealth": "Kalp sağlığı",
+      "_pending_review": {
+        "omega3": true
+      }
+    }
+  }
+}

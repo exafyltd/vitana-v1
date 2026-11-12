@@ -1,0 +1,85 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} يكتب…",
+      "two": "{first} و{second} يكتبان…",
+      "many": "عدة أشخاص يكتبون…",
+      "_pending_review": {}
+    },
+    "conversation": {
+      "fallbackTitle": "محادثة",
+      "_pending_review": {}
+    },
+    "reply": {
+      "yourself": "نفسك",
+      "contentUnavailable": "محتوى الرسالة غير متاح",
+      "_pending_review": {}
+    },
+    "reactions": {
+      "reactWith": "تفاعل بـ {emoji}",
+      "count": "{count} تفاعلات {emoji}",
+      "_pending_review": {}
+    },
+    "bubble": {
+      "longPressHint": "اضغط مطولاً للتفاعلات والإجراءات",
+      "_pending_review": {}
+    },
+    "emoji": {
+      "open": "اختر رمزًا تعبيريًا",
+      "recent": "الأخيرة",
+      "smileys": "الوجوه",
+      "people": "الأشخاص",
+      "nature": "الطبيعة",
+      "food": "الطعام",
+      "activity": "النشاط",
+      "travel": "السفر",
+      "objects": "الأشياء",
+      "_pending_review": {}
+    },
+    "voice": {
+      "discard": "حذف التسجيل",
+      "play": "تشغيل",
+      "pause": "إيقاف مؤقت",
+      "stop": "إيقاف التسجيل",
+      "_pending_review": {}
+    },
+    "composer": {
+      "removeFile": "إزالة {name}",
+      "pickerDone": "تم",
+      "_pending_review": {}
+    },
+    "payment": {
+      "status": {
+        "pending": "قيد الانتظار",
+        "completed": "مكتمل",
+        "declined": "مرفوض",
+        "_pending_review": {}
+      },
+      "accept": "قبول",
+      "decline": "رفض",
+      "pay": "ادفع الآن",
+      "refreshBalance": "تحديث الرصيد",
+      "_pending_review": {}
+    },
+    "invite": {
+      "untitled": "دعوة",
+      "_pending_review": {}
+    },
+    "booking": {
+      "untitled": "طلب خدمة",
+      "_pending_review": {}
+    },
+    "companion": {
+      "indexScore": "مؤشرك: {score}",
+      "_pending_review": {}
+    },
+    "attach": {
+      "library": "مكتبة الصور",
+      "camera": "الكاميرا",
+      "files": "الملفات",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,23 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Wallet-Ansicht wählen",
+    "flow": {
+      "bankTransfer": "Banküberweisung",
+      "bankTransferTime": "1–3 Werktage",
+      "debitCard": "Debitkarte",
+      "debitCardTime": "Sofort"
+    },
+    "balance": {
+      "tabsLabel": "Kontobereiche",
+      "statusActive": "Aktiv",
+      "statusHealthy": "Gesund",
+      "statusGrowing": "Wachsend",
+      "tierPremium": "Premium",
+      "creditsDescription": "Nutze Credits für Gesundheitsleistungen, Labortests und Premium-Funktionen",
+      "creditsStatusDescription": "Deine Credits sind aktiv und einsatzbereit",
+      "tokensDescription": "Vitana-Network-Token für Mitbestimmung und Belohnungen",
+      "usdDescription": "US-Dollar-Guthaben und Fiat-Vorgänge",
+      "membershipDescription": "75 % Abdeckung + exklusive Gesundheitsvorteile"
+    }
+  }
+}

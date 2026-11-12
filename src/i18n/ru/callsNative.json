@@ -1,0 +1,21 @@
+{
+  "callsNative": {
+    "incomingAudio": "Входящий аудиозвонок…",
+    "incomingVideo": "Входящий видеозвонок…",
+    "accept": "Принять звонок",
+    "reject": "Отклонить звонок",
+    "endCall": "Завершить звонок",
+    "calling": "Вызов",
+    "videoCalling": "Видеовызов",
+    "initializing": "Подготовка…",
+    "connecting": "Подключение…",
+    "connectionFailed": "Не удалось подключиться",
+    "mute": "Выключить микрофон",
+    "unmute": "Включить микрофон",
+    "cameraOff": "Выключить камеру",
+    "cameraOn": "Включить камеру",
+    "unknownUser": "Неизвестный участник",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

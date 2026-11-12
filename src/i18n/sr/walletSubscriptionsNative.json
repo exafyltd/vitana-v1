@@ -1,0 +1,20 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Period naplate",
+    "subnavAria": "Odeljci novčanika",
+    "loading": "Učitavanje pretplata…",
+    "subnav": {
+      "overview": "Pregled",
+      "balance": "Stanje i pogodnosti",
+      "subscriptions": "Pretplate",
+      "rewards": "Nagrade i provizije",
+      "_pending_review": {}
+    },
+    "plans": {
+      "freeLiveRooms": "40 min/mes. · 1 sesija",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

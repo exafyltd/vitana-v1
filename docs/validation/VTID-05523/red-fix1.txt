@@ -1,0 +1,81 @@
+# VTID-05523 fix round 1 — red on 0a726a3293e04fd6c5fe41b1b394583334ffda25: the four new big-lift tests in tests/ai-coach/companion.test.tsx, app code as on 0a726a3 (no confetti, no claimBigLift).
+# cwd apps/mobile: npx jest tests/ai-coach/companion.test.tsx -t 'big-lift'
+# The two 'only the lift toast' tests pass on base by design (absence checks); the two big-lift tests fail: no 'toasts.common.success' toast ever arrives, so waitFor runs its 5 s and the lift toast has already left the store (SONNER_DURATION 4000 ms, src/ui/toast/store.ts:36) — hence 'Received []'.
+FAIL tests/ai-coach/companion.test.tsx (29.982 s)
+  /ai/companion — coach chat
+    ○ skipped renders a fake chat thread and sends the web request body
+    ○ skipped a failed reply shows the web toast and keeps the member turn (send error)
+    ○ skipped an empty message sends nothing; a quick action fills the input
+    ○ skipped without AI consent the sheet opens; "I agree" saves consent and the next send goes out
+    ○ skipped creates the default preferences row when the member has none (web useUserPreferences)
+  /ai/companion — cards
+    ○ skipped renders the sidebar and the card stack (loaded)
+    ○ skipped the Autopilot widget is paused with the enable hint when autopilot is off (empty)
+  /ai/companion — onboarding completion on open
+    ○ skipped completes the open onboarding_maxina recommendation once and toasts the reward
+    ○ skipped formats an Index lift like the web celebrate (pillars, VTNA, predicted Index)
+  /ai/companion — big-lift celebration (web celebrate.ts:287-296, confetti.ts:114-127)
+    ✕ magnitude 12: the lift toast, then the confetti overlay and the extra success toast (5734 ms)
+    ✓ magnitude 5: only the lift toast, no confetti (283 ms)
+    ✓ reduced motion on: no confetti and no extra toast (276 ms)
+    ✕ a second big lift inside 5 minutes is throttled (stored timestamp) (5102 ms)
+
+  ● /ai/companion — big-lift celebration (web celebrate.ts:287-296, confetti.ts:114-127) › magnitude 12: the lift toast, then the confetti overlay and the extra success toast
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 4
+    + Received  + 1
+
+    - Array [
+    -   "aiCoachNative.lift.title",
+    -   "toasts.common.success",
+    - ]
+    + Array []
+
+      190 |   it('magnitude 12: the lift toast, then the confetti overlay and the extra success toast', async () => {
+      191 |     renderCoach(<CompanionScreen />, { gateway: liftGateway({ exercise: 7, sleep: 5 }), supabase: consented(), language: 'en-US' });
+    > 192 |     await waitFor(() => expect(kinds()).toEqual(['aiCoachNative.lift.title', 'toasts.common.success']));
+          |                  ^
+      193 |     expect(__toastsForTests()[1]).toMatchObject({ kind: 'success', titleKey: 'toasts.common.success' });
+      194 |     expect(await screen.findByTestId('ai-coach-confetti', { includeHiddenElements: true })).toBeTruthy();
+      195 |     expect(Number(await AsyncStorage.getItem(BIG_LIFT_STORAGE_KEY))).toBeGreaterThan(0);
+
+      at Object.<anonymous> (tests/ai-coach/companion.test.tsx:192:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+  ● /ai/companion — big-lift celebration (web celebrate.ts:287-296, confetti.ts:114-127) › a second big lift inside 5 minutes is throttled (stored timestamp)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 4
+    + Received  + 1
+
+    - Array [
+    -   "aiCoachNative.lift.title",
+    -   "toasts.common.success",
+    - ]
+    + Array []
+
+      220 |   it('a second big lift inside 5 minutes is throttled (stored timestamp)', async () => {
+      221 |     const first = renderCoach(<CompanionScreen />, { gateway: liftGateway({ exercise: 7, sleep: 5 }), supabase: consented(), language: 'en-US' });
+    > 222 |     await waitFor(() => expect(kinds()).toEqual(['aiCoachNative.lift.title', 'toasts.common.success']));
+          |                  ^
+      223 |     first.unmount();
+      224 |     __resetAutopilotRefsForTests();
+      225 |     __clearToastsForTests();
+
+      at Object.<anonymous> (tests/ai-coach/companion.test.tsx:222:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 9 skipped, 2 passed, 13 total
+Snapshots:   0 total
+Time:        30.365 s
+Ran all test suites matching /tests\/ai-coach\/companion.test.tsx/i with tests matching "big-lift".

@@ -1,0 +1,150 @@
+# VTID-05511 (native-wave2-discover-commerce-r2/marketplace-orders) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-discover-commerce-r2-marketplace-orders
+# base origin/main e1ab28b1f75a24924365cbc474d0a5f8f879b73a (unchanged at the last fetch — no merge needed)
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched; no order, booking or payment made.
+
+## Setup
+$ git worktree add .worktrees/native-wave2-discover-commerce-r2-marketplace-orders -b kiro/native-wave2-discover-commerce-r2/marketplace-orders origin/main
+$ (apps/mobile) npm ci  -> added 941 packages
+$ (repo root) npm ci  -> added 872 packages  (core-closure.mjs and the i18n scripts need typescript)
+
+## Core re-export (task 1)
+$ node scripts/native/core-closure.mjs --write
+core-closure: 23 roots, 33 src files, 11 assets — ok   (closure.generated.json + mobile-ci-paths.generated.json regenerated)
+
+## Red on base (detached worktree at origin/main + the lane's tests copied) — see red-on-base.txt
+$ (apps/mobile) npm ci; npm run gen:i18n; npx jest tests/discover-commerce --ci
+Test Suites: 5 failed, 5 total   (Cannot find module '../../src/screens/marketplace-orders/…' / '../../app/(app)/discover/marketplace')
+
+## apps/mobile — final HEAD c3f5829fb (+ this docs commit)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+(first run on the code: 1 error in a test file — `x.titleKey` possibly undefined; fixed with `?.`)
+
+$ npx jest tests/discover-commerce --ci
+Test Suites: 5 passed, 5 total
+Tests:       118 passed, 118 total
+exit=0
+(first runs: test-side fixes only — jest-expo's Platform.OS is ios, so the Android rail tests pin it; the
+ expo-web-browser mock is extended, not replaced; Dialog testIDs are `<id>-content`; one real product bug
+ found by the cold-start test and fixed: Marketplace wrote `?view=` in a mount effect, which runs before
+ the root navigator mounts on a cold start — now written when the member picks a view)
+
+$ npm test -- --ci
+Test Suites: 91 passed, 91 total
+Tests:       2452 passed, 2452 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<worktree-parent>/expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-2571c8ff880f7bb2a63afadd67a6cb26.hbc (17MB)
+_expo/static/js/android/entry-f9286ccf1d0188781f7ee8599987783d.hbc (18MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox home is read-only for ~/.expo; dist/ removed afterwards)
+
+$ HOME=<…>/expohome APP_PROFILE=development npm run bundle:core-probe
+probe-dist/ios.js: ok (1273011 bytes, 113 sources, no production host, one react, nothing from the root node_modules)
+probe-dist/android.js: ok (1273015 bytes, 113 sources, no production host, one react, nothing from the root node_modules)
+exit=0
+
+$ HOME=<…>/expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 39 native route(s)
+exit=0
+
+## Repo root (NATIVE-CI "Parity ledger, core/tokens generators + native script tests" and lint-rules steps)
+$ node scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)   (no change to the 9 hand-flipped rows)
+$ node scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 39 native route(s)
+$ node scripts/native/core-closure.mjs --check
+core-closure: 23 roots, 33 src files, 11 assets — up to date
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets — up to date
+$ node scripts/native/gen-tokens.mjs --check
+gen-tokens: 166 light / 134 dark overrides, 117 colour classes, 12 excluded — up to date
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+$ node --test scripts/native/__tests__/*.test.mjs
+# tests 68  # pass 68  # fail 0
+$ node --test scripts/native/__tests__/eslint/*.test.mjs
+# tests 22  # pass 22  # fail 0
+$ npx eslint apps/mobile packages
+exit=0 (0 errors; the two lane warnings — a useMemo dependency and an unused disable directive — fixed)
+
+## Repo root — i18n (the i18n-check.yml steps)
+$ node scripts/i18n-audit.mjs --report-only   -> exit 0 (pre-existing errors in other shards; with the full list printed, 0 lines mention discoverCommerceNative)
+$ node scripts/check-i18n-subscriptions.mjs   -> OK — 776 components render catalog strings; every memo'd one subscribes
+$ node scripts/check-locale-registry.mjs      -> OK — picker and supported_locales agree
+$ node scripts/i18n-stamp-source.mjs --check-all -> exit 0
+$ node scripts/i18n-register-check.mjs --all  -> No formal-register violations.
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found.
+$ npm run build && node scripts/check-locale-chunking.mjs
+✓ built in 1m 7s
+[locale-chunks] OK — one chunk per lazy locale, de eager.
+$ npx vitest run src/i18n scripts/native
+Test Files 3 passed (3)   Tests 25 passed (25)
+
+## Preflight
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD \
+    --branch kiro/native-wave2-discover-commerce-r2/marketplace-orders \
+    --title "VTID-05511 (native-wave2-discover-commerce-r2/marketplace-orders): native marketplace and orders port"
+FAIL  Collab handoff — lanes/marketplace-orders.md does not exist here or in vitana-platform (spec on the plan branch, plan PR #4604 not merged: "lane file not found", known non-blocker)
+FAIL  Lane scope — same cause ("lane file not found")
+PASS  gh for plan( PR / vitana-platform lane files
+PASS  PR-GATE scope
+PASS  PR-GATE sparring   (first run failed: no owner-approval line in plan-sparring.md — added)
+PASS  PR-GATE weakening
+PASS  PR-GATE red-green
+PASS  Kiro steering
+SKIP  Not run by preflight (npm test, lint, build — run above)
+
+## After `git merge origin/main` (b74d3bab2, VTID-05432 support-connectors; no conflict) — merge d69196272
+$ (apps/mobile) npm ci  -> ok
+$ npm run typecheck  -> exit=0
+$ npm test -- --ci   (first run)
+Test Suites: 2 failed, 93 passed, 95 total — Tests: 5 failed, 2618 passed
+  (tests/memory/gateway-i18n.test.tsx and tests/support/i18n.test.tsx, both not this lane's: 5000 ms timeouts /
+   a skeleton still visible inside waitFor while the machine ran the full suite; neither file touches this lane)
+$ npx jest tests/memory/gateway-i18n.test.tsx tests/support/i18n.test.tsx --ci  -> 2 suites / 109 passed
+$ npm test -- --ci   (re-run, unchanged code)
+Test Suites: 95 passed, 95 total
+Tests:       2623 passed, 2623 total
+Snapshots:   57 passed, 57 total
+exit=0
+$ npx jest tests/discover-commerce --ci  -> 118 passed
+$ node scripts/native/parity-ledger.mjs --check  -> OK — 435 rows, 42 native route(s)
+$ node scripts/native/core-closure.mjs --check   -> up to date
+
+## Review fix (review 67ba80c: lane tests had no async-timeout config)
+Change (apps/mobile/tests/discover-commerce/ only): timing.ts runs configure({ asyncUtilTimeout: 8000 }),
+imported first by helpers.tsx (which every lane test imports); jest.setTimeout(30000) in i18n-rtl, orders,
+providers and routes (multi-screen / 11-locale suites); removed the one-off { timeout: 8000 } at orders.test.tsx:48.
+No assertion changed, nothing skipped; jest.config.js / jest.setup.ts untouched.
+$ (apps/mobile) npm run typecheck  -> exit=0
+$ npx jest tests/discover-commerce   (default workers, run 1) -> Test Suites: 5 passed — Tests: 118 passed (61.3 s)
+$ npx jest tests/discover-commerce   (default workers, run 2) -> Test Suites: 5 passed — Tests: 118 passed (20.6 s)
+$ npx jest tests/discover-commerce   (default workers, run 3) -> Test Suites: 5 passed — Tests: 118 passed (18.5 s)
+$ npx jest   (full, default workers, once)
+Test Suites: 1 failed, 94 passed, 95 total — Tests: 1 failed, 2622 passed, 2623 total — Snapshots: 57 passed
+  (the failure is tests/memory/gateway-i18n.test.tsx, another lane's file this branch does not touch; the same
+   flake under full-suite load is recorded above after the origin/main merge)
+$ npx jest tests/memory/gateway-i18n.test.tsx  -> 1 suite / 42 passed
+
+## gift voucher after checkout (review discover-c68982e, same modal) — branch ff to origin, origin/main merged (57b2489a7)
+$ (apps/mobile) npx jest tests/discover-commerce/voucher.test.tsx   — on 57b2489a7 product code (red)
+FAIL — 8 failed, 3 passed, 11 total (red-on-base.txt)
+$ (apps/mobile) npm run typecheck   — after the origin/main merge and the fix
+PASS — 0 errors
+$ (apps/mobile) npx eslint <changed files>
+PASS — 0 problems
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 1
+PASS — 6/6 suites, 129/129 tests
+$ (apps/mobile) npx jest tests/discover-commerce   — default workers, run 2
+PASS — 6/6 suites, 129/129 tests

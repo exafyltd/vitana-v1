@@ -12,7 +12,7 @@ interface LanguageContextType {
   isLoading: boolean;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 // `status` controls visibility in the user-facing language picker.
 // Only `ga` languages appear by default; `beta`/`draft` are dev-only

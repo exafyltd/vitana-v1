@@ -2785,7 +2785,13 @@
       "soundscapeValue0": "Paisaje sonoro {value0}",
       "vitanaAudioMode": "Modo de Audio VITANA",
       "typeYourMessage": "Escribe tu mensaje...",
-      "returnVoice": "Volver a voz"
+      "returnVoice": "Volver a voz",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAQUETE:",
@@ -6019,6 +6025,7 @@
       "sendFunds": "Enviar fondos",
       "requestPayment": "Solicitar pago",
       "attachFile": "Adjuntar archivo",
+      "attachPhotos": "Fotos y vídeos",
       "attach": "Adjuntar",
       "loadingMessages": "Cargando mensajes…",
       "noMessagesYet": "Aún no hay mensajes",
@@ -7671,7 +7678,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "Tarjeta de prueba (solo administradores)",
+          "desc": "Vitana te envía ahora un mensaje con la tarjeta del Vitana Index a tu chat con Vitana, tal como lo reciben los miembros por la mañana. Solo tú lo recibes.",
+          "button": "Enviar tarjeta de prueba",
+          "sending": "Enviando …",
+          "sent": "Tarjeta de prueba enviada: abre tu chat con Vitana.",
+          "open": "Abrir el chat con Vitana",
+          "errorTitle": "Tarjeta de prueba no enviada",
+          "unavailable": "Los mensajes de Vitana están desactivados aquí ahora mismo, por ejemplo en staging.",
+          "noIndex": "Todavía no tienes un Vitana Index, así que aún no hay tarjeta del Index.",
+          "rateLimited": "Espera un minuto antes de la próxima tarjeta de prueba.",
+          "failed": "No ha funcionado. Inténtalo de nuevo."
+        }
       },
       "communityIntroTitle": "Presentarme a la comunidad",
       "communityIntroBody": "Durante tu primera semana, otros miembros ven una breve tarjeta de bienvenida sobre ti y pueden saludarte.",

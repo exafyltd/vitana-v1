@@ -1,0 +1,31 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "bienestar",
+    "claimFailed": "No se pudo canjear el vale. Es posible que ya se haya canjeado.",
+    "tiers": {
+      "test": {
+        "name": "Vale de prueba",
+        "benefit1": "Solo para probar el pago",
+        "benefit2": "No es un vale real"
+      },
+      "experience": {
+        "name": "Vale Experiencia",
+        "benefit1": "Acceso a 1 evento premium de la comunidad",
+        "benefit2": "Asesoramiento de bienestar personalizado",
+        "benefit3": "Prueba de Vitana+ de 30 días incluida",
+        "benefit4": "Vale electrónico con un diseño precioso"
+      },
+      "exclusive": {
+        "name": "Vale Exclusivo",
+        "benefit1": "3 eventos premium de la comunidad",
+        "benefit2": "Sesión de coaching individual con un experto",
+        "benefit3": "Suscripción a Vitana+ de 90 días",
+        "benefit4": "Reserva prioritaria + ventajas VIP"
+      }
+    },
+    "_pending_review": {
+      "brand": true
+    }
+  }
+}

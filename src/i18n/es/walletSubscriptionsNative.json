@@ -1,0 +1,20 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "Periodo de facturación",
+    "subnavAria": "Secciones de la billetera",
+    "loading": "Cargando suscripciones…",
+    "subnav": {
+      "overview": "Resumen",
+      "balance": "Saldo y beneficios",
+      "subscriptions": "Suscripciones",
+      "rewards": "Recompensas y comisiones",
+      "_pending_review": {}
+    },
+    "plans": {
+      "freeLiveRooms": "40 min/mes · 1 sesión",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

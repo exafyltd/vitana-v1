@@ -1,0 +1,81 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
+    },
+    "privacy": {
+      "wholeSection": "Section entière",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Préférences de danse",
+          "description": "Styles, niveau, rôle et ce que tu recherches."
+        },
+        "partnerPreferences": {
+          "label": "Préférences de partenaire",
+          "description": "Qui tu recherches. Privé par défaut. Les sous-champs restent privés même si tu ouvres la section."
+        },
+        "serviceOfferings": {
+          "label": "Offres de services",
+          "description": "Ce que tu proposes. Public par défaut : le masquer n'a pas de sens."
+        },
+        "myPosts": {
+          "label": "Mes publications",
+          "description": "Les intentions ouvertes que tu as dictées. Les publications de recherche de partenaire n'apparaissent JAMAIS ici, quel que soit le réglage."
+        },
+        "derivedAgeBand": {
+          "label": "Tranche d'âge",
+          "description": "Affiche seulement ta tranche d'âge (p. ex. 30 ans) au lieu de ton âge exact. Par défaut : contacts uniquement."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Mes styles",
+        "danceLevel": "Mon niveau",
+        "danceLookingFor": "Ce que je recherche",
+        "partnerGender": "Préférence de genre",
+        "partnerAgeRange": "Tranche d'âge souhaitée",
+        "partnerRelationshipIntent": "Intention de relation",
+        "partnerLocationRadius": "Lieu et rayon",
+        "servicePriceRange": "Fourchette de prix",
+        "postsCommercial": "Publications marketplace",
+        "postsPartnerSeek": "Publications de recherche de partenaire"
+      },
+      "partnerSeekNote": "Toujours privé. Le protocole de révélation mutuelle protège ces publications, quel que soit le réglage.",
+      "_pending_review": {
+        "tierChanged": true
+      }
+    },
+    "media": {
+      "photosDenied": "Autorise l'accès à tes photos dans les Réglages pour choisir une image.",
+      "unsupportedFormat": "Format d'image non pris en charge (.{ext}). Utilise JPG, PNG, GIF ou WebP."
+    },
+    "gallery": {
+      "photos": "Photos",
+      "selectMultiple": "Sélectionne plusieurs photos",
+      "tapToAddMore": "Touche pour en ajouter d'autres",
+      "uploadingProgress": "Importation de {current} sur {total}...",
+      "deleteTitle": "Tu es sûr ?",
+      "deleteDescription": "Cette photo sera définitivement supprimée. Cette action est irréversible.",
+      "_pending_review": {
+        "photos": true
+      }
+    },
+    "_pending_review": {
+      "handle": true
+    }
+  }
+}

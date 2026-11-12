@@ -7,7 +7,11 @@
         "ai": "IA",
         "productivity": "Mail et agenda",
         "media": "Musique et vidéo",
-        "agent": "Autopilot"
+        "agent": "Autopilot",
+        "_pending_review": {
+          "shopping": true,
+          "agent": true
+        }
       },
       "sections": {
         "shopping": "Shopping et récompenses",
@@ -80,6 +84,10 @@
           "airQuality": "Capteurs de qualité de l'air",
           "csvImport": "Import CSV",
           "apiAccess": "Accès API"
+        },
+        "_pending_review": {
+          "instagram": true,
+          "myfitnesspal": true
         }
       }
     }

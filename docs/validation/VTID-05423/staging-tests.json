@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05423",
+  "service": "community-app",
+  "_note": "Native Wave 2 wallet-redeem lane. The port is proven offline (jest-expo + RNTL, no network; the Supabase client is a fake that records the built requests; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging web /redeem) is DEFERRED to G1 as next_actor: owner (tasks.md wallet-redeem task 5). No voucher is ever claimed on staging or production. Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/wallet-redeem", "cwd": "apps/mobile",
+      "reason": "redeem unit tests (2 suites / 44 tests): lookup by upper-cased vouchers.code then voucher_orders by voucher_id, legacy 8-char id fallback, failing code query falls back; no code -> Invalid link; unknown code / lookup error -> Voucher not found; already redeemed; expired; loading skeleton; signed-out landing (renders without an authenticated session) with sign-in / register redirectTo=/redeem?voucher=; signed-in confirm + claim (vouchers.update status/redeemed_by_user_id/redeemed_at .eq(id).eq(status, active).select().single()), claiming state, claim error message, invalidation refetch; ungated on iOS and Android, drawer iapRestricted wallet gate both ways; route file in (public); ledger row native; no unresolved key in 11 locales; DE / AR catalogs; key + placeholder parity; RTL-safe styles — fake Supabase / fixtures, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the redeem screen, its class-B data layer and the wallet-redeem port type-check against the shell ports and @vitana/ui" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the (public)/redeem route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "/redeem is native with its route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/wallet-redeem/01-redeem-signed-out.yaml", "target": "/redeem?voucher=<G1 fixture code>", "next_actor": "owner",
+      "reason": "signed out: open the redeem link, landing (gift, voucher card, Sign in to redeem / Create account) and the invalid / not-found / expired states; screenshot parity vs the 390x844 read-only staging web /redeem; needs the isolated G1 environment (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/wallet-redeem/02-redeem-signed-in.yaml", "target": "/redeem?voucher=<G1 fixture code>", "next_actor": "owner",
+      "reason": "signed in: confirm screen and the claim against a G1 fixture voucher only (never staging or production — no voucher claimed on staging); needs G1" }
+  ]
+}

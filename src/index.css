@@ -100,7 +100,7 @@ All colors MUST be HSL.
     /* Messaging & Community (Mental Health family) */
     --domain-messages-accent: 330 75% 45%;
     --domain-messages-tint: 330 85% 95%;
-    --domain-messages-bubble: 203 89% 76%;
+    --domain-messages-bubble: 203 89% 90%;
     --domain-messages-bubble-foreground: 222 47% 11%;
     --domain-community-accent: 330 90% 60%;
     --domain-community-tint: 330 100% 98%;
@@ -1359,9 +1359,11 @@ body.maxina-intro-page [class^="vtorb-fab"] {
     border: 0;
   }
 
-  /* Better scroll behavior for chat */
+  /* Chat scroll: no CSS smooth scrolling. A smooth rule animates every
+     programmatic scrollTop write (opening a chat, history restore, follow-
+     newest). Smooth scrolling stays explicit (scrollTo behavior 'smooth' for
+     the send action). VTID-05585. */
   .chat-scroll {
-    scroll-behavior: smooth;
     overscroll-behavior: contain;
   }
 

@@ -1,5 +1,7 @@
 {
   "deleteAccountNative": {
-    "errorFallback": "حدث خطأ ما. حاول مرة أخرى."
-  }
+    "errorFallback": "حدث خطأ ما. حاول مرة أخرى.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

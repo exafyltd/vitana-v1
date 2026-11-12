@@ -1,0 +1,35 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "A confirmação do e-mail foi cancelada ou o link expirou.",
+        "linkExpired": "O link de confirmação expirou. Solicite um novo.",
+        "generic": "Ocorreu um erro durante a confirmação do e-mail.",
+        "signInToContinue": "Faça login para continuar.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalmaConfirmed": {
+      "title": "Bem-vindo ao AlKalma!",
+      "body": "Seu e-mail foi confirmado com sucesso",
+      "journey": "Sua jornada de saúde em árabe começa agora",
+      "redirecting": "Você será redirecionado para o seu painel em alguns segundos...",
+      "continue": "Continuar para o painel",
+      "footer": "Uma plataforma de saúde completa em árabe",
+      "_pending_review": {}
+    },
+    "reset": {
+      "updatePassword": "Atualizar senha",
+      "showPassword": "Mostrar senha",
+      "hidePassword": "Ocultar senha",
+      "_pending_review": {}
+    },
+    "resend": {
+      "prompt": "Não recebeu o e-mail? Reenviar",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

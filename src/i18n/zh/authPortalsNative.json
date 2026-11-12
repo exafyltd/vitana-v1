@@ -1,0 +1,35 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "邮箱确认已取消或链接已过期。",
+        "linkExpired": "确认链接已过期。请重新申请。",
+        "generic": "邮箱确认过程中出错。",
+        "signInToContinue": "请登录以继续。",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalmaConfirmed": {
+      "title": "欢迎来到 AlKalma！",
+      "body": "你的邮箱已成功确认",
+      "journey": "你的阿拉伯语健康之旅现在开始",
+      "redirecting": "几秒钟后将带你前往控制面板……",
+      "continue": "继续前往控制面板",
+      "footer": "全面的阿拉伯语健康平台",
+      "_pending_review": {}
+    },
+    "reset": {
+      "updatePassword": "更新密码",
+      "showPassword": "显示密码",
+      "hidePassword": "隐藏密码",
+      "_pending_review": {}
+    },
+    "resend": {
+      "prompt": "没有收到邮件？重新发送",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

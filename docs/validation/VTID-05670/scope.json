@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05670",
+  "kind": "fix",
+  "change_class": "frontend-simple",
+  "paths": [
+    "src/pages/messages/**",
+    "src/components/messages/ConversationView.tsx",
+    "src/components/messages/ConversationView.open-at-newest.vtid-05670.test.tsx",
+    "src/components/messages/ConversationView.scroll-anchoring.vtid-05319.test.tsx",
+    "tests/e2e/staging/vtid-05622-group-chat-opens-at-newest.staging.spec.ts",
+    "docs/validation/VTID-05670/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

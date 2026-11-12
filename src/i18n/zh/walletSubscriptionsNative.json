@@ -1,0 +1,20 @@
+{
+  "walletSubscriptionsNative": {
+    "intervalAria": "计费周期",
+    "subnavAria": "钱包分区",
+    "loading": "正在加载订阅…",
+    "subnav": {
+      "overview": "概览",
+      "balance": "余额与权益",
+      "subscriptions": "订阅",
+      "rewards": "奖励与佣金",
+      "_pending_review": {}
+    },
+    "plans": {
+      "freeLiveRooms": "每月 40 分钟 · 1 场",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

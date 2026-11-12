@@ -1,0 +1,26 @@
+{
+  "walletHomeNative": {
+    "selectMode": "Choisis la vue du wallet",
+    "flow": {
+      "bankTransfer": "Virement bancaire",
+      "bankTransferTime": "1 à 3 jours ouvrés",
+      "debitCard": "Carte de débit",
+      "debitCardTime": "Immédiat"
+    },
+    "balance": {
+      "tabsLabel": "Sections du compte",
+      "statusActive": "Actif",
+      "statusHealthy": "Sain",
+      "statusGrowing": "En croissance",
+      "tierPremium": "Premium",
+      "creditsDescription": "Utilise tes crédits pour des services de santé, des analyses et des fonctions premium",
+      "creditsStatusDescription": "Tes crédits sont actifs et prêts à l’emploi",
+      "tokensDescription": "Jetons Vitana Network pour la gouvernance et les récompenses",
+      "usdDescription": "Avoirs en dollars US et opérations en monnaie fiduciaire",
+      "membershipDescription": "75 % de couverture + avantages santé exclusifs",
+      "_pending_review": {
+        "tierPremium": true
+      }
+    }
+  }
+}

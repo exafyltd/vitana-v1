@@ -1,0 +1,52 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}",
+      "_pending_review": {
+        "errorDetail": true
+      }
+    },
+    "voice": {
+      "preview": "Preslušaj glas",
+      "playing": "Reprodukuje se…",
+      "previewPhrase": "Zdravo, ovo je pregled podešavanja glasa koja si izabrao.",
+      "previewUnavailable": "Pregled nije dostupan za ovaj jezik na ovom uređaju.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value}%",
+      "_pending_review": {
+        "speedValue": true,
+        "volumeValue": true
+      }
+    },
+    "proactive": {
+      "playSample": "Pusti primer pozdrava",
+      "speaking": "Govori…",
+      "notSet": "Nije podešeno",
+      "none": "Nema",
+      "quoted": "„{text}“",
+      "messageType": {
+        "time_greeting": "Pozdravi prema dobu dana (Dobro jutro itd.)",
+        "wellness_check": "Provere blagostanja",
+        "motivational": "Motivacione poruke",
+        "reminder": "Podsetnici za akcije"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "Autopilot može da pita druge članove kada postavljaš pitanja.",
+      "giveDescription": "Autopilot može da nudi tvoj katalog drugim članovima. Podrazumevano isključeno – uključi kada budeš spreman.",
+      "moneyDescription": "Prebacuje zaradu sa „predloži i odobri“ na autonomno. Uključi ovo samo kada veruješ svom katalogu i napomeni.",
+      "moneyDisabledHint": "Prvo uključi „Daj preporuke“."
+    },
+    "connect": {
+      "missingKey": "Nalepi svoj API ključ.",
+      "wrongPrefix": "API ključ mora da počinje sa „{prefix}“.",
+      "unauthorized": "Provajder je odbio ovaj ključ (nije autorizovan). Proveri ga na svojoj kontrolnoj tabli.",
+      "network": "Greška mreže pri povezivanju sa provajderom. Pokušaj ponovo.",
+      "verifyFailed": "Verifikacija nije uspela ({status}).",
+      "failed": "Povezivanje nije uspelo ({code}).",
+      "saving": "Čuva se…",
+      "verifying": "Verifikuje se…",
+      "connect": "Poveži"
+    }
+  }
+}

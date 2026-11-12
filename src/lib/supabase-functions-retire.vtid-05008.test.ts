@@ -18,6 +18,7 @@ const RETIRED = [
   'refresh-memory-metadata',
   'extract-user-interests',
   'analyze-visual-context',
+  'linkedin-import',
 ];
 
 function allowlist(): string[] {

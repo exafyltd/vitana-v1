@@ -1,0 +1,32 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "wellness",
+    "claimFailed": "Vaučer nije moguće preuzeti. Možda je već iskorišćen.",
+    "tiers": {
+      "test": {
+        "name": "Test vaučer",
+        "benefit1": "Samo za testiranje plaćanja",
+        "benefit2": "Nije pravi vaučer"
+      },
+      "experience": {
+        "name": "Vaučer Iskustvo",
+        "benefit1": "Pristup za 1 premium događaj zajednice",
+        "benefit2": "Personalizovano savetovanje o dobrobiti",
+        "benefit3": "Uključena 30-dnevna proba Vitana+",
+        "benefit4": "Prelepo dizajniran e-vaučer"
+      },
+      "exclusive": {
+        "name": "Ekskluzivni vaučer",
+        "benefit1": "3 premium događaja zajednice",
+        "benefit2": "Individualni koučing sa stručnjakom",
+        "benefit3": "90-dnevna pretplata na Vitana+",
+        "benefit4": "Prioritetna rezervacija + VIP pogodnosti"
+      }
+    },
+    "_pending_review": {
+      "brand": true,
+      "wellnessFallback": true
+    }
+  }
+}

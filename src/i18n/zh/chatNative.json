@@ -1,0 +1,85 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} 正在输入…",
+      "two": "{first} 和 {second} 正在输入…",
+      "many": "多人正在输入…",
+      "_pending_review": {}
+    },
+    "conversation": {
+      "fallbackTitle": "对话",
+      "_pending_review": {}
+    },
+    "reply": {
+      "yourself": "自己",
+      "contentUnavailable": "消息内容不可用",
+      "_pending_review": {}
+    },
+    "reactions": {
+      "reactWith": "用 {emoji} 回应",
+      "count": "{count} 个 {emoji} 回应",
+      "_pending_review": {}
+    },
+    "bubble": {
+      "longPressHint": "长按以回应或操作",
+      "_pending_review": {}
+    },
+    "emoji": {
+      "open": "选择表情",
+      "recent": "最近",
+      "smileys": "笑脸",
+      "people": "人物",
+      "nature": "自然",
+      "food": "食物",
+      "activity": "活动",
+      "travel": "旅行",
+      "objects": "物品",
+      "_pending_review": {}
+    },
+    "voice": {
+      "discard": "删除录音",
+      "play": "播放",
+      "pause": "暂停",
+      "stop": "停止录音",
+      "_pending_review": {}
+    },
+    "composer": {
+      "removeFile": "移除 {name}",
+      "pickerDone": "完成",
+      "_pending_review": {}
+    },
+    "payment": {
+      "status": {
+        "pending": "待处理",
+        "completed": "已完成",
+        "declined": "已拒绝",
+        "_pending_review": {}
+      },
+      "accept": "接受",
+      "decline": "拒绝",
+      "pay": "立即支付",
+      "refreshBalance": "刷新余额",
+      "_pending_review": {}
+    },
+    "invite": {
+      "untitled": "活动邀请",
+      "_pending_review": {}
+    },
+    "booking": {
+      "untitled": "服务请求",
+      "_pending_review": {}
+    },
+    "companion": {
+      "indexScore": "你的指数：{score}",
+      "_pending_review": {}
+    },
+    "attach": {
+      "library": "照片图库",
+      "camera": "相机",
+      "files": "文件",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

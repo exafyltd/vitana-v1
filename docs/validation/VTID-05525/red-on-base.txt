@@ -1,0 +1,63 @@
+# VTID-05525 red on base: the lane's tests (apps/mobile/tests/patient/**) run on a clean origin/main (6b9137ac575735edf1efbc16cddb9ad52d6b4b50), before the implementation.
+# Command (apps/mobile, detached worktree at origin/main, npm ci + npm run gen:i18n first): npx jest tests/patient --ci
+# Result: 3 suites fail (the patient screens, gate and port modules do not exist on main). On the branch the same 3 suites pass 158/158 (commands.log).
+
+FAIL tests/patient/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/patient/PatientGate' from 'tests/patient/helpers.tsx'
+
+    Require stack:
+      tests/patient/helpers.tsx
+      tests/patient/i18n-rtl.test.tsx
+
+      22 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+      23 | import { createGatewayFetch } from '../../src/ports/core';
+    > 24 | import { __resetPatientGateForTests } from '../../src/screens/patient/PatientGate';
+         | ^
+      25 | import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
+      26 | import type { PatientHealthResult } from '../../src/screens/patient/data/requests';
+      27 |
+
+
+FAIL tests/patient/gate-tabs-routes.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/patient/PatientGate' from 'tests/patient/helpers.tsx'
+
+    Require stack:
+      tests/patient/helpers.tsx
+      tests/patient/gate-tabs-routes.test.tsx
+
+      22 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+      23 | import { createGatewayFetch } from '../../src/ports/core';
+    > 24 | import { __resetPatientGateForTests } from '../../src/screens/patient/PatientGate';
+         | ^
+      25 | import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
+      26 | import type { PatientHealthResult } from '../../src/screens/patient/data/requests';
+      27 |
+
+
+FAIL tests/patient/screens.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/patient/PatientGate' from 'tests/patient/helpers.tsx'
+
+    Require stack:
+      tests/patient/helpers.tsx
+      tests/patient/screens.test.tsx
+
+      22 | import { UIProvider, __clearToastsForTests } from '../../src/ports/ui';
+      23 | import { createGatewayFetch } from '../../src/ports/core';
+    > 24 | import { __resetPatientGateForTests } from '../../src/screens/patient/PatientGate';
+         | ^
+      25 | import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
+      26 | import type { PatientHealthResult } from '../../src/screens/patient/data/requests';
+      27 |
+
+
+Test Suites: 3 failed, 3 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        31.37 s
+Ran all test suites matching /tests\/patient/i.

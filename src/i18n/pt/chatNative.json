@@ -1,0 +1,85 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} está digitando…",
+      "two": "{first} e {second} estão digitando…",
+      "many": "Várias pessoas estão digitando…",
+      "_pending_review": {}
+    },
+    "conversation": {
+      "fallbackTitle": "Conversa",
+      "_pending_review": {}
+    },
+    "reply": {
+      "yourself": "você mesmo",
+      "contentUnavailable": "Conteúdo da mensagem indisponível",
+      "_pending_review": {}
+    },
+    "reactions": {
+      "reactWith": "Reagir com {emoji}",
+      "count": "{count} reações {emoji}",
+      "_pending_review": {}
+    },
+    "bubble": {
+      "longPressHint": "Toque e segure para reações e ações",
+      "_pending_review": {}
+    },
+    "emoji": {
+      "open": "Escolha um emoji",
+      "recent": "Recentes",
+      "smileys": "Carinhas",
+      "people": "Pessoas",
+      "nature": "Natureza",
+      "food": "Comida",
+      "activity": "Atividade",
+      "travel": "Viagens",
+      "objects": "Objetos",
+      "_pending_review": {}
+    },
+    "voice": {
+      "discard": "Excluir gravação",
+      "play": "Reproduzir",
+      "pause": "Pausar",
+      "stop": "Parar gravação",
+      "_pending_review": {}
+    },
+    "composer": {
+      "removeFile": "Remover {name}",
+      "pickerDone": "Concluído",
+      "_pending_review": {}
+    },
+    "payment": {
+      "status": {
+        "pending": "Pendente",
+        "completed": "Concluído",
+        "declined": "Recusado",
+        "_pending_review": {}
+      },
+      "accept": "Aceitar",
+      "decline": "Recusar",
+      "pay": "Pagar agora",
+      "refreshBalance": "Atualizar saldo",
+      "_pending_review": {}
+    },
+    "invite": {
+      "untitled": "Convite",
+      "_pending_review": {}
+    },
+    "booking": {
+      "untitled": "Pedido de serviço",
+      "_pending_review": {}
+    },
+    "companion": {
+      "indexScore": "Seu índice: {score}",
+      "_pending_review": {}
+    },
+    "attach": {
+      "library": "Fototeca",
+      "camera": "Câmera",
+      "files": "Arquivos",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

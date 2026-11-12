@@ -1,0 +1,31 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "健康",
+    "claimFailed": "无法领取礼券。它可能已被兑换。",
+    "tiers": {
+      "test": {
+        "name": "测试礼券",
+        "benefit1": "仅用于支付流程测试",
+        "benefit2": "并非真实礼券"
+      },
+      "experience": {
+        "name": "体验礼券",
+        "benefit1": "1 次高级社区活动入场",
+        "benefit2": "专属健康咨询",
+        "benefit3": "包含 30 天 Vitana+ 试用",
+        "benefit4": "精心设计的电子礼券"
+      },
+      "exclusive": {
+        "name": "尊享礼券",
+        "benefit1": "3 次高级社区活动",
+        "benefit2": "1 对 1 专家指导课程",
+        "benefit3": "90 天 Vitana+ 订阅",
+        "benefit4": "优先预订 + VIP 权益"
+      }
+    },
+    "_pending_review": {
+      "brand": true
+    }
+  }
+}

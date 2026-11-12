@@ -1,0 +1,21 @@
+{
+  "callsNative": {
+    "incomingAudio": "Gelen sesli arama…",
+    "incomingVideo": "Gelen görüntülü arama…",
+    "accept": "Aramayı kabul et",
+    "reject": "Aramayı reddet",
+    "endCall": "Aramayı bitir",
+    "calling": "Aranıyor",
+    "videoCalling": "Görüntülü aranıyor",
+    "initializing": "Hazırlanıyor…",
+    "connecting": "Bağlanıyor…",
+    "connectionFailed": "Bağlantı başarısız",
+    "mute": "Mikrofonu kapat",
+    "unmute": "Mikrofonu aç",
+    "cameraOff": "Kamerayı kapat",
+    "cameraOn": "Kamerayı aç",
+    "unknownUser": "Bilinmeyen üye",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

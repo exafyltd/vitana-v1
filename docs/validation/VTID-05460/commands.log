@@ -1,0 +1,105 @@
+# VTID-05460 (native-wave2-journey-autopilot-r2/autopilot-audiobook) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-journey-autopilot-r2-autopilot-audiobook
+# branch kiro/native-wave2-journey-autopilot-r2/autopilot-audiobook, based on origin/kiro/native-wave2-journey-autopilot-r2/journey
+#   ea78f0835fea3b420d5882d16771dda3828afcbf (PR #1565, accepted, not merged); PR base main 5c75715e1
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched (fake gateway + fake expo-audio player in tests).
+
+## Setup
+$ (apps/mobile) npm ci  -> ok
+$ (repo root) npm ci    -> ok (typescript for scripts/native/parity-ledger.mjs, eslint)
+
+## Red on base (detached worktree at ea78f0835 + copied tests/audiobook and the updated journey route test) — see red-on-base.txt
+$ (apps/mobile) npm ci && npm run gen:i18n && npx jest tests/audiobook --ci --silent
+Test Suites: 3 failed, 3 total (Cannot find module '../../src/ports/audiobook')
+$ npx jest tests/journey/core-i18n-route --ci --silent -t "cold start"
+Tests: 1 failed, 48 skipped, 49 total (resolveWebPath('/autopilot/audiobook').kind — Expected "native", Received "unported")
+(the base worktree .worktrees/ab-red-base was removed afterwards)
+
+## apps/mobile (code = 84e373dd8)
+$ npm run typecheck
+> npm run gen:i18n -> gen-i18n-map: 11 locales, 1452 shards
+> tsc --noEmit
+exit=0
+
+$ npx jest tests/audiobook --ci --silent
+Test Suites: 3 passed, 3 total
+Tests:       57 passed, 57 total
+exit=0
+(first runs: test fixes only — the RNTL query for a11y-hidden icons needs includeHiddenElements, the RTL
+ render needs the shell's UIProvider direction, a harness started the player before the member was known
+ (the provider closes the player while signed out, as the web), the reminder test counted GETs before the
+ first one; no product change)
+
+$ npx jest tests/audiobook tests/journey --ci --silent
+Test Suites: 6 passed, 6 total
+Tests:       154 passed, 154 total   (audiobook 57 + journey 97)
+exit=0
+
+$ npm test -- --ci --silent   (run 1)
+Test Suites: 2 failed, 88 passed, 90 total
+Tests:       2 failed, 2447 passed, 2449 total
+(the 2 failures: tests/journey/fix1.test.tsx (113 s suite) and tests/memory/recall-permissions.test.tsx — async
+ timeouts under full-suite load; neither imports this lane's code. Alone:
+ npx jest tests/journey/fix1 tests/memory/recall-permissions --ci --silent -> Tests: 33 passed, 33 total)
+
+$ npm test -- --ci --silent   (run 2, same code)
+Test Suites: 90 passed, 90 total
+Tests:       2449 passed, 2449 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development npm run bundle
+_expo/static/js/ios/entry-8f2d63d3c806fdd90c5e77ffc84c524f.hbc
+_expo/static/js/android/entry-1e15f761c5167fef0dc98bb67eb86a42.hbc
+Exported: dist
+exit=0
+(HOME override only because the sandbox home is read-only for ~/.expo; dist/ and .expohome removed afterwards)
+
+$ HOME=<worktree>/.expohome APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ node ../../scripts/native/parity-ledger.mjs --sync
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change beyond the hand-flipped /autopilot/audiobook row)
+
+$ npm run parity:check
+parity-ledger --check: OK — 435 rows, 34 native route(s)
+exit=0
+
+$ node ../../scripts/native/core-closure.mjs --check
+core-closure: 27 roots, 37 src files, 11 assets — up to date
+exit=0
+$ node ../../scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 12 files from 19 sources, 35 icons, 11 assets — up to date
+exit=0
+(no core change in this lane; scripts/native/mobile-ci-paths.generated.json is written by core-closure --write and is up to date)
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all          -> [register] No formal-register violations. exit=0
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22 -> No long words found. exit=0
+$ node scripts/check-i18n-subscriptions.mjs           -> OK — 776 components … exit=0
+$ node scripts/check-locale-registry.mjs              -> OK — picker and supported_locales agree. exit=0
+$ node scripts/i18n-stamp-source.mjs --check-all      -> 0 key(s) whose EN source changed … exit=0
+$ node scripts/i18n-audit.mjs --report-only           -> exit=0; errors mentioning journeyAutopilotNative: 0 (all reported errors are pre-existing)
+$ node scripts/i18n-parity-gate.mjs --all             -> exit=1, "[gate] 10 failing check(s)" (review-queue counts per GA locale);
+                                                         identical on the base without this lane's changes (git stash) -> pre-existing, not this lane's
+$ (key scan, tests/audiobook/route-i18n.test.tsx) every t('…') / notify('…') key in the lane files resolves in all 11 locales
+
+## repo root — eslint
+$ npx eslint apps/mobile/src/screens/audiobook apps/mobile/src/ports/audiobook.tsx apps/mobile/src/ports/journey-dashboard.ts "apps/mobile/app/(app)/autopilot/audiobook.tsx" apps/mobile/app/_layout.tsx apps/mobile/tests/audiobook apps/mobile/src/navigation/resolve.ts
+(no output) exit=0
+
+## preflight (vitana-platform scripts/collab/preflight.mjs, title "VTID-05460 (native-wave2-journey-autopilot-r2/autopilot-audiobook): native autopilot popup and audiobook port")
+$ preflight --base origin/main --head HEAD
+FAIL Collab handoff / Lane scope / PR-GATE scope: the stacked journey commits (VTID-05461, PR #1565) are in the
+     diff against main ("commits name 2 lanes", journey files outside this lane). Clears when #1565 merges and
+     main is merged into this branch.
+PASS gh, PR-GATE sparring, weakening, red-green, Kiro steering
+$ preflight --base origin/kiro/native-wave2-journey-autopilot-r2/journey --head HEAD   (this lane's own diff)
+PASS Collab handoff, gh, PR-GATE sparring, weakening, red-green, Kiro steering
+FAIL Lane scope: apps/mobile/app/_layout.tsx and apps/mobile/tests/journey/core-i18n-route.test.tsx are outside the
+     lane paths (deviation, verification.md "Deviations": the app-wide mount needs the root layout; the journey route
+     test asserted the row this lane flips). Needs a lane-paths amendment by the driver.
+PASS PR-GATE scope after both files were declared in docs/validation/VTID-05460/scope.json

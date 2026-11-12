@@ -47,7 +47,10 @@
       "profile": "Profil",
       "liveRooms": "Sobe uživo",
       "notifications": "Obaveštenja",
-      "other": "Ostalo"
+      "other": "Ostalo",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }
