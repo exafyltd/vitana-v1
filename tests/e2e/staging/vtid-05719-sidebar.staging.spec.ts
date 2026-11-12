@@ -74,4 +74,9 @@ test('desktop sidebar shows the wordmark, all 14 community routes and the four g
   await page.waitForTimeout(1500);
   await page.screenshot({ path: 'visual/desktop-page-1400x900.png' });
   await sidebar.screenshot({ path: 'visual/desktop-sidebar-1400x900.png' });
+  // Also print the sidebar PNG into the job log (base64), so it can be read without a download.
+  const sidebarPng = await sidebar.screenshot();
+  console.log('VISUAL_PNG_B64_BEGIN desktop-sidebar-1400x900');
+  console.log(sidebarPng.toString('base64'));
+  console.log('VISUAL_PNG_B64_END');
 });
