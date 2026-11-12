@@ -1,0 +1,11 @@
+# VTID-05237 — commands run (c-vitana-v1, Node 22 locally; CI uses Node 20)
+npx vitest run src/components/commerce/SetupHub            -> baseline on main: 32 passed (outputs/baseline-main.txt)
+npx vitest run (new tests, unchanged code)                 -> 18 failed = red (outputs/red-on-main.txt)
+npx vitest run src/components/commerce/SetupHub            -> 66 passed after implementation (SetupHub.test.ts 29, step-owner 25, vtid-05136 12)
+npm test                                                   -> full suite green at the time of the first run (489 files, 3947 tests); rerun below
+npm run build                                              -> built
+npm run i18n:inventory                                     -> docs/SCREEN_INVENTORY.md regenerated
+npm run i18n:gate / i18n:audit:strict                      -> identical to main apart from the 4 new keys (+4 per locale, 100% filled)
+npx eslint (changed files)                                 -> 0 errors (SetupHub.tsx: 8 react-refresh warnings vs 7 on main, one more exported function; the ratchet counts errors)
+npx playwright test --list (Node 20)                       -> 3 tests in the new spec
+npx tsc --noEmit -p tsconfig.app.json                      -> 176 errors on main and 176 with the change; none in the changed files

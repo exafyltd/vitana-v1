@@ -38,6 +38,7 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { adminFetch } from '@/lib/admin-api';
 import { PARTNER_ONBOARDING_API } from '@/lib/commerce-host';
+import { fetchMcpReady } from '@/lib/commerce-mcp';
 import { countryOptions } from '@/lib/commerce-countries';
 import { isValidWebsite, normalizeWebsite } from '@/lib/commerce-register';
 import { NO_SUGGESTIONS, fetchCompanySuggestions, suggestionSourceKey, type CompanySuggestions } from '@/lib/commerce-suggestions';
@@ -55,7 +56,12 @@ export interface ChecklistStepFact {
   status: string;
   missing: string[];
   detail: Record<string, unknown> | null;
+  /** VTID-05237: who can finish this step, as the gateway says (VTID-05238). Absent from an older gateway. */
+  owner?: StepOwner;
 }
+
+/** Who can finish an open step: the supplier's AI assistant, only the supplier, or Vitanaland itself. */
+export type StepOwner = 'assistant' | 'supplier' | 'vitanaland';
 
 /** VTID-05136: the part of GET /partner-onboarding/:orgId → checklist the hub uses. */
 export interface ChecklistFacts {
@@ -89,9 +95,15 @@ export function parseChecklist(raw: unknown): ChecklistFacts | null {
       status: r.status,
       missing: Array.isArray(r.missing) ? r.missing.filter((m): m is string => typeof m === 'string') : [],
       detail: r.detail && typeof r.detail === 'object' ? (r.detail as Record<string, unknown>) : null,
+      ...(r.owner === undefined || r.owner === null ? {} : { owner: parseOwner(r.owner) }),
     });
   }
   return { steps, submitReady: c.submit_ready === true };
+}
+
+/** VTID-05237: an owner this screen does not know is read as the supplier, so it never promises help that may not exist. */
+function parseOwner(v: unknown): StepOwner {
+  return v === 'assistant' || v === 'vitanaland' ? v : 'supplier';
 }
 
 /** The reviewer's request-changes note on the verification step, if any. */
@@ -104,19 +116,46 @@ export function reviewNote(checklist: ChecklistFacts | null | undefined): string
 }
 
 /** What is still open, in plain words: required steps the server reports as todo or failed. */
-export type OpenItem = { key: string; label: string };
+export type OpenItem = { key: string; label: string; owner?: StepOwner };
 
+/**
+ * VTID-05237: a required step that is not done is open when it is todo or failed. One that is in progress is open
+ * only when the gateway says who it is waiting on; an older gateway sends no owner, and then the list is what it
+ * always was.
+ */
 export function openSteps(checklist: ChecklistFacts | null | undefined): OpenItem[] {
   if (!checklist) return [];
   return checklist.steps
-    .filter((s) => s.required && (s.status === 'todo' || s.status === 'failed'))
+    .filter((s) => s.required && (s.status === 'todo' || s.status === 'failed' || (s.status === 'in_progress' && s.owner !== undefined)))
     .map((s) => {
       const label =
         s.key === 'mapping' && s.missing.includes('complete_offering')
           ? 'screens.commerceportal.setupHub.openCompleteOffering'
           : (OPEN_STEP_LABEL[s.key] ?? 'screens.commerceportal.setupHub.openOther');
-      return { key: s.key, label };
+      return { key: s.key, label, ...(s.owner ? { owner: s.owner } : {}) };
     });
+}
+
+/** VTID-05237: the plain-words heading of each group. */
+const OWNER_TITLE: Record<StepOwner, string> = {
+  supplier: 'screens.commerceportal.setupHub.ownerSupplier',
+  assistant: 'screens.commerceportal.setupHub.ownerAssistant',
+  vitanaland: 'screens.commerceportal.setupHub.ownerVitanaland',
+};
+
+/** The order the groups are shown in: what only the supplier can do comes first, because nothing else unblocks it. */
+const OWNER_ORDER: readonly StepOwner[] = ['supplier', 'assistant', 'vitanaland'];
+
+export type OpenGroup = { owner: StepOwner; items: OpenItem[] };
+
+/**
+ * VTID-05237: the open steps grouped by who can finish them. The gateway decides; this only groups. A step with no
+ * owner is the supplier's. While the assistant cannot be reached its steps join the supplier's group, so the screen
+ * never promises help that cannot arrive. Groups without items are left out; items keep the checklist order.
+ */
+export function groupOpenSteps(items: OpenItem[], assistantReachable: boolean): OpenGroup[] {
+  const ownerOf = (i: OpenItem): StepOwner => (i.owner === 'assistant' && !assistantReachable ? 'supplier' : (i.owner ?? 'supplier'));
+  return OWNER_ORDER.map((owner) => ({ owner, items: items.filter((i) => ownerOf(i) === owner) })).filter((g) => g.items.length > 0);
 }
 
 const OPEN_STEP_LABEL: Record<string, string> = {
@@ -337,6 +376,25 @@ export function SetupHub({
 
   const steps = useMemo(() => (facts ? deriveSetupSteps(facts) : []), [facts]);
   const open = useMemo(() => (facts && facts.lifecycleState !== 'live' ? openSteps(facts.checklist) : []), [facts]);
+  // VTID-05237: "Your AI assistant can do this" is shown only while an assistant can really connect. Asked once per
+  // visit, and only when the gateway names an assistant step; until it answers (or when it fails) the assistant's
+  // steps are listed as the supplier's own, so the screen never promises help that may not arrive.
+  const hasAssistantStep = open.some((o) => o.owner === 'assistant');
+  const [assistantReachable, setAssistantReachable] = useState(false);
+  const mcpAsked = useRef(false);
+  useEffect(() => {
+    if (!hasAssistantStep || mcpAsked.current) return;
+    mcpAsked.current = true;
+    let alive = true;
+    void Promise.resolve()
+      .then(() => fetchMcpReady())
+      .then((ok) => alive && setAssistantReachable(ok === true))
+      .catch(() => alive && setAssistantReachable(false));
+    return () => {
+      alive = false;
+    };
+  }, [hasAssistantStep]);
+  const openGroups = useMemo(() => groupOpenSteps(open, assistantReachable), [open, assistantReachable]);
   const note = facts ? reviewNote(facts.checklist) : null;
   const mode = facts ? submitMode(facts) : null;
   if (!org) return null;
@@ -448,13 +506,21 @@ export function SetupHub({
           {open.length > 0 && (
             <div className="mt-4 rounded-2xl border border-border bg-muted/40 p-3" data-testid="setup-still-needed">
               <p className="text-sm font-semibold text-foreground">{t('screens.commerceportal.setupHub.stillNeeded')}</p>
-              <ul className="mt-1 list-disc space-y-0.5 ps-5 text-sm text-muted-foreground">
-                {open.map((o) => (
-                  <li key={o.key} data-step={o.key}>
-                    {t(o.label)}
-                  </li>
-                ))}
-              </ul>
+              {openGroups.map((g) => (
+                <div key={g.owner} className="mt-2" data-owner={g.owner}>
+                  <p className="text-sm font-medium text-foreground">{t(OWNER_TITLE[g.owner])}</p>
+                  {g.owner === 'assistant' && (
+                    <p className="text-sm text-muted-foreground">{t('screens.commerceportal.setupHub.ownerAssistantHint')}</p>
+                  )}
+                  <ul className="mt-1 list-disc space-y-0.5 ps-5 text-sm text-muted-foreground">
+                    {g.items.map((o) => (
+                      <li key={o.key} data-step={o.key}>
+                        {t(o.label)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           )}
           {submitResult && (
