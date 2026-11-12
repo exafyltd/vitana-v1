@@ -3,7 +3,7 @@
  *
  * Every Supabase read feeding the Community tab's assembled news feed
  * (global_community_events, media_uploads, the new-members
- * global_community_profiles lookup, user_follows, profile_posts, and the
+ * lookup (a gateway call since VTID-05478, no longer a table read), user_follows, profile_posts, and the
  * post-author global_community_profiles lookup) previously destructured
  * only `{ data }` and fed it straight into `if (data) { ...push articles... }`
  * — a real DB error resolved `data` to `undefined`/`null`, which is
@@ -57,22 +57,31 @@ const fromMock = vi.fn((table: string) => {
 });
 
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: { from: (table: string) => fromMock(table) },
+  supabase: {
+    from: (table: string) => fromMock(table),
+    auth: { getSession: async () => ({ data: { session: { access_token: 'tok' } } }) },
+  },
 }));
 
 import { fetchCommunityNews } from '@/hooks/useNewsFeed';
 
 describe('fetchCommunityNews — per-section Supabase error logging', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let fetchSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     tableResults = {};
     tableCallCounts = {};
+    // VTID-05478: the new-members listing is a gateway call; empty by default.
+    fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ ok: true, members: [] }), { status: 200 }),
+    );
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
     consoleErrorSpy.mockRestore();
+    fetchSpy.mockRestore();
   });
 
   it('logs (and degrades gracefully, without throwing) on a global_community_events error', async () => {
@@ -95,14 +104,12 @@ describe('fetchCommunityNews — per-section Supabase error logging', () => {
     expect(articles).toEqual([]);
   });
 
-  it('logs on the new-members global_community_profiles error', async () => {
-    tableResults.global_community_profiles = [{ data: null, error: { message: 'boom' } }];
+  it('logs on a failed new-members gateway call and shows no new-member card (VTID-05478)', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({ ok: false }), { status: 503 }));
     const articles = await fetchCommunityNews(10, null);
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining('new-member'),
-      expect.objectContaining({ message: 'boom' }),
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('new-members request failed'), 503);
     expect(articles).toEqual([]);
+    expect(tableCallCounts.global_community_profiles).toBeUndefined();
   });
 
   it('logs on a user_follows error (viewerId present)', async () => {
@@ -126,7 +133,7 @@ describe('fetchCommunityNews — per-section Supabase error logging', () => {
     expect(articles).toEqual([]);
   });
 
-  it('logs on the post-author global_community_profiles error (second call, posts exist)', async () => {
+  it('logs on the post-author global_community_profiles error (posts exist)', async () => {
     tableResults.user_follows = [{ data: [{ following_id: 'author-1' }], error: null }];
     tableResults.profile_posts = [
       {
@@ -143,11 +150,9 @@ describe('fetchCommunityNews — per-section Supabase error logging', () => {
         error: null,
       },
     ];
-    // First call (new-members) succeeds empty; second call (post-authors) errors.
-    tableResults.global_community_profiles = [
-      { data: [], error: null },
-      { data: null, error: { message: 'boom' } },
-    ];
+    // New-members are read through the gateway (VTID-05478), so the only
+    // global_community_profiles read is the post-author lookup, which errors.
+    tableResults.global_community_profiles = [{ data: null, error: { message: 'boom' } }];
 
     const articles = await fetchCommunityNews(10, 'viewer-1');
     expect(consoleErrorSpy).toHaveBeenCalledWith(

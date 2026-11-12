@@ -1,0 +1,85 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} yazıyor…",
+      "two": "{first} ve {second} yazıyor…",
+      "many": "Birkaç kişi yazıyor…",
+      "_pending_review": {}
+    },
+    "conversation": {
+      "fallbackTitle": "Sohbet",
+      "_pending_review": {}
+    },
+    "reply": {
+      "yourself": "kendin",
+      "contentUnavailable": "Mesaj içeriği kullanılamıyor",
+      "_pending_review": {}
+    },
+    "reactions": {
+      "reactWith": "{emoji} ile tepki ver",
+      "count": "{count} {emoji} tepkisi",
+      "_pending_review": {}
+    },
+    "bubble": {
+      "longPressHint": "Tepkiler ve işlemler için basılı tut",
+      "_pending_review": {}
+    },
+    "emoji": {
+      "open": "Bir emoji seç",
+      "recent": "Son kullanılanlar",
+      "smileys": "Yüzler",
+      "people": "İnsanlar",
+      "nature": "Doğa",
+      "food": "Yiyecek",
+      "activity": "Etkinlik",
+      "travel": "Seyahat",
+      "objects": "Nesneler",
+      "_pending_review": {}
+    },
+    "voice": {
+      "discard": "Kaydı sil",
+      "play": "Oynat",
+      "pause": "Duraklat",
+      "stop": "Kaydı durdur",
+      "_pending_review": {}
+    },
+    "composer": {
+      "removeFile": "{name} kaldır",
+      "pickerDone": "Bitti",
+      "_pending_review": {}
+    },
+    "payment": {
+      "status": {
+        "pending": "Beklemede",
+        "completed": "Tamamlandı",
+        "declined": "Reddedildi",
+        "_pending_review": {}
+      },
+      "accept": "Kabul et",
+      "decline": "Reddet",
+      "pay": "Şimdi öde",
+      "refreshBalance": "Bakiyeyi yenile",
+      "_pending_review": {}
+    },
+    "invite": {
+      "untitled": "Davet",
+      "_pending_review": {}
+    },
+    "booking": {
+      "untitled": "Hizmet talebi",
+      "_pending_review": {}
+    },
+    "companion": {
+      "indexScore": "Endeksin: {score}",
+      "_pending_review": {}
+    },
+    "attach": {
+      "library": "Fotoğraf arşivi",
+      "camera": "Kamera",
+      "files": "Dosyalar",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

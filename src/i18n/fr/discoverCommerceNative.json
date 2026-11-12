@@ -1,0 +1,221 @@
+{
+  "discoverCommerceNative": {
+    "marketplaceOrders": {
+      "marketplace": {
+        "couldNotLoad": "Impossible de charger.",
+        "mineEmptyBody": "Publie une demande d’achat ou de vente : le matchmaker te montrera acheteurs et vendeurs.",
+        "newListing": "Nouvelle annonce"
+      },
+      "intentCard": {
+        "kind": {
+          "commercial_buy": "J'achète",
+          "commercial_sell": "Je vends",
+          "activity_seek": "Partenaire d'activité",
+          "partner_seek": "Partenaire de vie",
+          "social_seek": "Social / mentorat",
+          "mutual_aid": "Entraide",
+          "learning_seek": "Envie d’apprendre",
+          "mentor_seek": "Propose d'enseigner"
+        },
+        "age": "âge {min}–{max}",
+        "within": "dans un rayon de {km} km"
+      },
+      "share": {
+        "tooManyTitle": "Trop de destinataires ({count})",
+        "tooManyBody": "L’offre gratuite permet jusqu’à {max}. Passe à Pro pour 50.",
+        "errorBatch": "Trop de destinataires",
+        "errorQuota": "Limite de partage atteinte",
+        "errorPrivate": "Impossible de partager cette publication",
+        "errorFailed": "Échec du partage",
+        "errorBody": "{message}",
+        "tryAgain": "Réessaie.",
+        "alreadyShared": "Déjà partagé avec tout le monde",
+        "sharedOne": "Partagé avec {count} ami",
+        "sharedMany": "Partagé avec {count} amis",
+        "skipped": "{skipped} avaient déjà cette publication dans leur boîte.",
+        "theyWillSee": "Ils verront ta publication dans leur chat.",
+        "defaultTitle": "Une publication Vitana",
+        "defaultText": "Regarde ça sur Vitana",
+        "fromVitana": "De Vitana",
+        "_pending_review": {
+          "errorBody": true
+        }
+      },
+      "orders": {
+        "eventTicket": "Billet d'événement",
+        "locationTbd": "Lieu à confirmer",
+        "cjProduct": "Produit CJ",
+        "general": "Général",
+        "voucherProvider": "Bon cadeau Maxina",
+        "voucherTier": {
+          "test": "Bon test",
+          "experience": "Bon expérience",
+          "exclusive": "Bon exclusif",
+          "gift": "Bon cadeau"
+        },
+        "mock": {
+          "vipAccess": "Accès VIP",
+          "generalAdmission": "Entrée générale",
+          "earlyBird": "Prévente",
+          "summitTitle": "VITANA Wellness Summit 2025",
+          "yogaTitle": "Yoga du matin",
+          "retreatTitle": "Retraite de méditation du Nouvel An",
+          "_pending_review": {
+            "summitTitle": true
+          }
+        },
+        "status": {
+          "upcoming": "À venir",
+          "attended": "Participé",
+          "expired": "Expiré",
+          "completed": "Terminé",
+          "delivered": "Livré",
+          "cancelled": "Annulé",
+          "refunded": "Remboursé",
+          "shipped": "En route",
+          "confirmed": "Confirmé",
+          "pending": "En attente",
+          "processing": "En cours",
+          "paid": "Actif",
+          "active": "Actif"
+        },
+        "type": {
+          "ticket": "Billet",
+          "voucher": "Bon",
+          "product": "Produit",
+          "service": "Service",
+          "_pending_review": {
+            "service": true
+          }
+        }
+      },
+      "tickets": {
+        "event": "Événement",
+        "dateTba": "Date à venir",
+        "general": "Général"
+      },
+      "ticket": {
+        "tba": "À venir"
+      },
+      "ticketShare": {
+        "goingTo": "🎟 Je vais à {title} !",
+        "email": "E-mail",
+        "emailSubject": "Mon billet pour {title}",
+        "sms": "SMS",
+        "copyLink": "Copier le lien",
+        "copied": "Copié !",
+        "openingWhatsapp": "Ouverture de WhatsApp…",
+        "openingViber": "Ouverture de Viber…",
+        "openingEmail": "Ouverture de l’e-mail…",
+        "openingMessages": "Ouverture des messages…",
+        "_pending_review": {
+          "sms": true
+        }
+      },
+      "booking": {
+        "sessionTitle": "Séance : {title}",
+        "sessionDescription": "Réserve une séance avec {name}",
+        "pickDate": "Choisis une date",
+        "previousMonth": "Mois précédent",
+        "nextMonth": "Mois suivant"
+      },
+      "subnav": {
+        "overview": "Aperçu",
+        "supplements": "Compléments",
+        "wellness-services": "Services bien-être",
+        "doctors-coaches": "Médecins/Coachs",
+        "deals-offers": "Bons plans & offres",
+        "orders": "Commandes"
+      },
+      "bookmark": {
+        "add": "Ajouter un favori",
+        "remove": "Retirer le favori"
+      },
+      "bookActions": {
+        "bookAppointment": "Prendre rendez-vous",
+        "rebookPrevious": "Réserver à nouveau",
+        "findNearMe": "Près de moi",
+        "messageProvider": "Écrire au prestataire",
+        "viewMyBookings": "Mes réservations",
+        "setReminders": "Créer des rappels",
+        "leaveReview": "Laisser un avis",
+        "paymentHistory": "Historique des paiements"
+      },
+      "visit": {
+        "hideNotes": "Masquer les notes",
+        "viewNotes": "Voir les notes"
+      },
+      "utility": {
+        "openIndex": "Ouvrir le Vitana Index",
+        "openIndexStreak": "Ouvrir le Vitana Index — série de {days} jours",
+        "upcomingEvents": "{count} événements à venir"
+      }
+    },
+    "searchShort": "Rechercher…",
+    "indexPill": "Vitana Index {value} : ouvrir Santé",
+    "calendar": {
+      "upcomingCount": "{count} événements à venir"
+    },
+    "bookmark": {
+      "add": "Ajouter un favori",
+      "remove": "Retirer le favori"
+    },
+    "product": {
+      "outOfStock": "En rupture de stock"
+    },
+    "hidden": {
+      "product": "produit",
+      "products": "produits",
+      "allergies": "contiennent un allergène que tu as indiqué",
+      "contraindications": "sont contre-indiqués avec un problème de santé que tu as indiqué",
+      "medications": "peuvent interagir avec un médicament que tu prends",
+      "dietary": "ne correspondent pas à tes préférences alimentaires",
+      "budget": "dépassent ton budget par produit",
+      "sensitivities": "contiennent un ingrédient auquel tu es sensible",
+      "geo": "ne sont pas livrés dans ta région",
+      "excluded_region": "sont soumis à des restrictions régionales",
+      "past_purchases": "que tu as achetés récemment"
+    },
+    "quickShop": {
+      "viewCart": "Voir le panier",
+      "quickCheckout": "Paiement rapide",
+      "reorderPrevious": "Commander à nouveau",
+      "managePayment": "Gérer le paiement",
+      "trackOrders": "Suivre les commandes",
+      "setPriceAlert": "Créer une alerte prix",
+      "viewSavedItems": "Voir les favoris",
+      "applyCoupon": "Appliquer un coupon"
+    },
+    "quickBook": {
+      "bookAppointment": "Prendre rendez-vous",
+      "rebookPrevious": "Réserver à nouveau",
+      "findNearMe": "Trouver près de moi",
+      "messageProvider": "Écrire au prestataire",
+      "viewMyBookings": "Voir mes réservations",
+      "setReminders": "Créer des rappels",
+      "leaveReview": "Laisser un avis",
+      "paymentHistory": "Historique des paiements"
+    },
+    "supplementCategories": {
+      "all": "Tous",
+      "multivitamins": "Multivitamines",
+      "vitamins": "Vitamines",
+      "minerals": "Minéraux",
+      "omega3": "Oméga-3",
+      "adaptogens": "Adaptogènes",
+      "nootropics": "Nootropiques",
+      "longevity": "Longévité",
+      "immunity": "Immunité",
+      "antioxidants": "Antioxydants",
+      "sleep": "Sommeil",
+      "performance": "Performance",
+      "beauty": "Beauté",
+      "gutHealth": "Santé intestinale",
+      "herbs": "Plantes",
+      "heartHealth": "Santé cardiaque",
+      "_pending_review": {
+        "performance": true
+      }
+    }
+  }
+}

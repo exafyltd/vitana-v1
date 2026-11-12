@@ -6,7 +6,8 @@
       "deniedTitle": "Access not allowed",
       "deniedCamera": "Allow camera access in Settings to take a photo.",
       "deniedPhotos": "Allow photo access in Settings to choose a picture.",
-      "deniedMicrophone": "Allow microphone access in Settings to record a voice entry."
+      "deniedMicrophone": "Allow microphone access in Settings to record a voice entry.",
+      "_pending_review": {}
     },
     "selectMode": "Choose a diary section",
     "startRecording": "Start recording",
@@ -17,13 +18,15 @@
     "photoSource": {
       "title": "Add a photo",
       "camera": "Take a photo",
-      "library": "Choose from library"
+      "library": "Choose from library",
+      "_pending_review": {}
     },
     "indexSaved": {
       "title": "Saved · Vitana Index +{n}",
       "breakdown": "{breakdown}. Tap your Index to see the move.",
       "signals": "{count} health signals logged.",
-      "signalsCaption": "{count} health signals logged from your caption."
+      "signalsCaption": "{count} health signals logged from your caption.",
+      "_pending_review": {}
     },
     "screenOption": {
       "home": "Home",
@@ -47,7 +50,10 @@
       "profile": "Profile",
       "liveRooms": "Live Rooms",
       "notifications": "Notifications",
-      "other": "Other"
-    }
-  }
+      "other": "Other",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

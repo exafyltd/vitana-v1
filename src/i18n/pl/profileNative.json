@@ -7,7 +7,15 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
     },
     "privacy": {
       "wholeSection": "Cała sekcja",
@@ -46,7 +54,10 @@
         "postsCommercial": "Posty z marketplace",
         "postsPartnerSeek": "Posty z szukaniem partnera"
       },
-      "partnerSeekNote": "Zawsze prywatne. Protokół wzajemnego ujawnienia chroni te posty, niezależnie od ustawienia."
+      "partnerSeekNote": "Zawsze prywatne. Protokół wzajemnego ujawnienia chroni te posty, niezależnie od ustawienia.",
+      "_pending_review": {
+        "tierChanged": true
+      }
     },
     "media": {
       "photosDenied": "Zezwól na dostęp do zdjęć w Ustawieniach, aby wybrać obraz.",
@@ -59,6 +70,9 @@
       "uploadingProgress": "Przesyłanie {current} z {total}...",
       "deleteTitle": "Czy na pewno?",
       "deleteDescription": "To zdjęcie zostanie trwale usunięte. Tej operacji nie można cofnąć."
+    },
+    "_pending_review": {
+      "handle": true
     }
   }
 }

@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "Ambiance sonore {value0}",
       "vitanaAudioMode": "Mode audio VITANA",
       "typeYourMessage": "Tape ton message...",
-      "returnVoice": "Retourner à la voix"
+      "returnVoice": "Retourner à la voix",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "BUNDLE :",
@@ -6069,6 +6075,7 @@
       "sendFunds": "Envoyer des fonds",
       "requestPayment": "Demander un paiement",
       "attachFile": "Joindre un fichier",
+      "attachPhotos": "Photos et vidéos",
       "attach": "Joindre",
       "loadingMessages": "Chargement des messages…",
       "loadingOlderMessages": "Chargement des messages plus anciens…",
@@ -7731,7 +7738,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "Carte de test (administrateurs uniquement)",
+          "desc": "Vitana t'envoie maintenant un message avec la carte Vitana Index dans ton chat avec Vitana, comme les membres le reçoivent le matin. Toi seul le reçois.",
+          "button": "Envoyer la carte de test",
+          "sending": "Envoi …",
+          "sent": "Carte de test envoyée – ouvre ton chat avec Vitana.",
+          "open": "Ouvrir le chat avec Vitana",
+          "errorTitle": "Carte de test non envoyée",
+          "unavailable": "Les messages de Vitana sont désactivés ici pour le moment, par exemple sur staging.",
+          "noIndex": "Tu n'as pas encore de Vitana Index, il n'y a donc pas encore de carte Index.",
+          "rateLimited": "Attends une minute avant la prochaine carte de test.",
+          "failed": "Ça n'a pas marché. Réessaie."
+        }
       },
       "communityIntroTitle": "Me présenter à la communauté",
       "communityIntroBody": "Pendant ta première semaine, les autres membres voient une courte carte de bienvenue sur toi et peuvent te dire bonjour.",

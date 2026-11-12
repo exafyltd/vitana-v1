@@ -1,0 +1,38 @@
+# VTID-05510 red on base — tests/discover-commerce run on origin/main e1ab28b1f (new tests copied in, no implementation; expo-video installed --no-save so the missing screens, not the missing dependency, are what fails)
+# cwd: apps/mobile   cmd: npx jest tests/discover-commerce --ci
+
+FAIL tests/discover-commerce/ai-picks-cold-start.test.tsx
+    Cannot find module '../../src/screens/discover/DiscoverScreen' from 'tests/discover-commerce/ai-picks-cold-start.test.tsx'
+FAIL tests/discover-commerce/core.test.ts
+    Cannot find module '../../src/ports/discover' from 'tests/discover-commerce/core.test.ts'
+FAIL tests/discover-commerce/i18n-rtl.test.tsx
+    Cannot find module '../../src/screens/discover/DiscoverScreen' from 'tests/discover-commerce/i18n-rtl.test.tsx'
+FAIL tests/discover-commerce/shop.test.tsx
+    Cannot find module '../../src/screens/discover/ShopFeedScreen' from 'tests/discover-commerce/shop.test.tsx'
+FAIL tests/discover-commerce/discover.test.tsx
+    Cannot find module '../../src/screens/discover/DiscoverScreen' from 'tests/discover-commerce/discover.test.tsx'
+FAIL tests/discover-commerce/add-to-cart.test.tsx
+    Cannot find module '../../src/ports/add-to-cart' from 'tests/discover-commerce/add-to-cart.test.tsx'
+FAIL tests/discover-commerce/sub-catalogues.test.tsx
+    Cannot find module '../../src/screens/discover/SupplementsScreen' from 'tests/discover-commerce/sub-catalogues.test.tsx'
+Test Suites: 7 failed, 7 total
+Tests:       0 total
+
+=== voucher post-purchase (review discover-c68982e): tests/discover-commerce/voucher.test.tsx on c68982ec1 (product code unchanged) ===
+    ✓ createVoucherCheckout keeps the order id the function returns (5 ms)
+    ✕ fetchVoucherOrder reads the member's own voucher_orders row (by id, else the newest) (34 ms)
+    ✕ fetchVoucherOrder reads nothing when signed out (2 ms)
+    ✕ waitForPaidVoucherOrder re-reads until the webhook marks the order paid, and gives up after the attempts (1 ms)
+    ✕ downloadVoucherPdf and sendVoucherEmail call the web functions with the web bodies (1 ms)
+    ✕ paid: the success state, the PDF preview from voucher-download-pdf, its download and share (12215 ms)
+    ✕ paid: the e-mail form sends voucher-send-email, toasts voucherSent and closes (8200 ms)
+    ✕ paid: a failed PDF read toasts the error and keeps the success state (8325 ms)
+    ✕ not paid (cancelled or still pending): back to the selection, no voucher calls (118 ms)
+    ✓ checkout failure: toasts checkoutFailed and returns to the selection (86 ms)
+    ✕ Android: the browser opens (resolves at once), the app comes back active → the order is re-read → the success state (108 ms)
+    ✕ the web's return params, if the link reaches the app: voucher_success opens the success state and clears them; voucher_cancelled is cleared (7 ms)
+    TypeError: (0 , _utility.fetchVoucherOrder) is not a function
+    TypeError: (0 , _utility.fetchVoucherOrder) is not a function
+    TypeError: (0 , _utility.waitForPaidVoucherOrder) is not a function
+    TypeError: (0 , _utility.downloadVoucherPdf) is not a function
+Tests:       10 failed, 2 passed, 12 total

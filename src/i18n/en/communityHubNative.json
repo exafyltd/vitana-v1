@@ -5,7 +5,8 @@
       "loading": "Loading …",
       "loadMore": "Load more",
       "retry": "Try again",
-      "errorBody": "We couldn't load that just now. Please try again."
+      "errorBody": "We couldn't load that just now. Please try again.",
+      "_pending_review": {}
     },
     "groups": {
       "title": "Groups",
@@ -26,7 +27,8 @@
       "emptyDiscoverDesc": "Be the first to start a community group.",
       "create": "Create",
       "searchPlaceholder": "Search groups",
-      "searchLabel": "Search groups"
+      "searchLabel": "Search groups",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "Create a new group",
@@ -41,18 +43,21 @@
         "mental-health": "Mental health",
         "support": "Support",
         "learning": "Learning",
-        "social": "Social"
+        "social": "Social",
+        "_pending_review": {}
       },
       "privacyLabel": "Visibility",
       "privacy": {
         "public": "Public",
-        "private": "Private"
+        "private": "Private",
+        "_pending_review": {}
       },
       "cancel": "Cancel",
       "submit": "Create group",
       "creating": "Creating …",
       "created": "Group created.",
-      "nameRequired": "Please enter a group name."
+      "nameRequired": "Please enter a group name.",
+      "_pending_review": {}
     },
     "composer": {
       "title": "Post to the community",
@@ -63,7 +68,8 @@
         "activity_seek": "Activity",
         "social_seek": "Social",
         "mutual_aid": "Mutual aid",
-        "partner_seek": "Partner"
+        "partner_seek": "Partner",
+        "_pending_review": {}
       },
       "titlePlaceholder": "Short headline",
       "titleLabel": "Title",
@@ -76,7 +82,8 @@
       "posting": "Posting …",
       "posted": "Posted to the community.",
       "titleRequired": "Please enter a title of at least 3 characters.",
-      "scopeTooShort": "Please describe it in at least 20 characters."
+      "scopeTooShort": "Please describe it in at least 20 characters.",
+      "_pending_review": {}
     },
     "groupDetail": {
       "title": "Group",
@@ -87,7 +94,8 @@
       "leave": "Leave group",
       "notFoundTitle": "Group not found",
       "notFoundDesc": "This group may have been removed or doesn't exist.",
-      "browse": "Browse groups"
+      "browse": "Browse groups",
+      "_pending_review": {}
     },
     "members": {
       "title": "Community members",
@@ -98,7 +106,8 @@
       "sort": {
         "newest": "Newest",
         "oldest": "Founders first",
-        "name": "By name"
+        "name": "By name",
+        "_pending_review": {}
       },
       "danceLabel": "Dance",
       "dance": {
@@ -109,13 +118,15 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Ballroom",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {}
       },
       "handle": "@{handle}",
       "fallbackName": "Member",
       "empty": "No members yet.",
       "emptyDance": "Nobody has set this dance as a preference yet — be the first!",
-      "viewProfile": "View profile"
+      "viewProfile": "View profile",
+      "_pending_review": {}
     },
     "openAsks": {
       "title": "Open asks",
@@ -127,7 +138,8 @@
       "topicLabel": "Topic",
       "topic": {
         "everything": "Everything",
-        "dance": "Dance only"
+        "dance": "Dance only",
+        "_pending_review": {}
       },
       "kind": {
         "commercial_buy": "Buying",
@@ -137,17 +149,20 @@
         "social_seek": "Social",
         "mutual_aid": "Mutual aid",
         "learning_seek": "Learning",
-        "mentor_seek": "Mentoring"
+        "mentor_seek": "Mentoring",
+        "_pending_review": {}
       },
       "time": {
         "justNow": "Just now",
         "minutes": "{n}m ago",
         "hours": "{n}h ago",
-        "days": "{n}d ago"
+        "days": "{n}d ago",
+        "_pending_review": {}
       },
       "handle": "@{handle}",
       "emptyFilter": "No open asks in this view.",
-      "emptyDance": "No open dance asks yet — post yours and be the first!"
+      "emptyDance": "No open dance asks yet — post yours and be the first!",
+      "_pending_review": {}
     },
     "findPartner": {
       "title": "Find a partner",
@@ -157,7 +172,8 @@
         "matches": "Matches",
         "board": "Board",
         "posts": "My posts",
-        "members": "Members"
+        "members": "Members",
+        "_pending_review": {}
       },
       "scorePercent": "{score}%",
       "matchFallback": "Match",
@@ -172,7 +188,8 @@
       "filterTitle": "Filter matches",
       "filterMinScore": "Minimum score",
       "filterClear": "Reset",
-      "filterShowResults": "Show {count} matches"
+      "filterShowResults": "Show {count} matches",
+      "_pending_review": {}
     },
     "matches": {
       "title": "People who match you",
@@ -180,7 +197,8 @@
       "empty": "No matches yet. Check back soon.",
       "fallbackName": "Community member",
       "reasonDefault": "Shared interests",
-      "score": "{score}%"
+      "score": "{score}%",
+      "_pending_review": {}
     },
     "intents": {
       "boardTitle": "Community board",
@@ -188,7 +206,8 @@
       "filtersLabel": "Filters",
       "filter": {
         "all": "All",
-        "dance": "Dance"
+        "dance": "Dance",
+        "_pending_review": {}
       },
       "kind": {
         "commercial_buy": "Buying",
@@ -198,7 +217,8 @@
         "social_seek": "Social",
         "mutual_aid": "Mutual aid",
         "learning_seek": "Learning",
-        "mentor_seek": "Mentoring"
+        "mentor_seek": "Mentoring",
+        "_pending_review": {}
       },
       "post": "Post",
       "styleLabel": "Style",
@@ -210,19 +230,22 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Ballroom",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {}
       },
       "viewMine": "View my intents",
       "emptyBoard": "No open intents in this view. Be the first.",
       "emptyDance": "No open dance posts yet — post yours and be the first!",
-      "emptyMine": "No posts in this view."
+      "emptyMine": "No posts in this view.",
+      "_pending_review": {}
     },
     "intentMatch": {
       "title": "Match details",
       "backMine": "Back to my intents",
       "notFound": "Intent not found.",
       "matchesCount": "Matches ({count})",
-      "noMatches": "No matches yet — we'll keep looking for you."
+      "noMatches": "No matches yet — we'll keep looking for you.",
+      "_pending_review": {}
     },
     "search": {
       "title": "Search",
@@ -233,7 +256,10 @@
       "memberMeta": "Community member",
       "fallbackName": "Member",
       "emptyTitle": "No results",
-      "emptyDesc": "Adjust your search term and try again."
-    }
-  }
+      "emptyDesc": "Adjust your search term and try again.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

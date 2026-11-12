@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05732",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "a direct thread has no avatar column: incoming bubbles start at the left edge, own bubbles end at the right edge",
+      "spec": "tests/e2e/staging/vtid-05732-direct-thread-flush-edges.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}

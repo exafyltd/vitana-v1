@@ -37,7 +37,10 @@
       "leave": "Salir del grupo",
       "notFoundTitle": "Grupo no encontrado",
       "notFoundDesc": "Es posible que este grupo se haya eliminado o no exista.",
-      "browse": "Explorar grupos"
+      "browse": "Explorar grupos",
+      "_pending_review": {
+        "plusMore": true
+      }
     },
     "members": {
       "title": "Miembros de la comunidad",
@@ -59,13 +62,24 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "De salón",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       },
       "handle": "@{handle}",
       "fallbackName": "Miembro",
       "empty": "Aún no hay miembros.",
       "emptyDance": "Nadie ha indicado este baile como preferencia todavía: ¡sé la primera persona!",
-      "viewProfile": "Ver perfil"
+      "viewProfile": "Ver perfil",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "openAsks": {
       "title": "Peticiones abiertas",
@@ -87,7 +101,10 @@
         "social_seek": "Social",
         "mutual_aid": "Ayuda mutua",
         "learning_seek": "Aprender",
-        "mentor_seek": "Mentoría"
+        "mentor_seek": "Mentoría",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "time": {
         "justNow": "Ahora mismo",
@@ -97,7 +114,10 @@
       },
       "handle": "@{handle}",
       "emptyFilter": "No hay peticiones abiertas en esta vista.",
-      "emptyDance": "Aún no hay peticiones de baile abiertas: ¡publica la tuya y sé la primera persona!"
+      "emptyDance": "Aún no hay peticiones de baile abiertas: ¡publica la tuya y sé la primera persona!",
+      "_pending_review": {
+        "handle": true
+      }
     },
     "findPartner": {
       "title": "Encontrar pareja",
@@ -148,7 +168,10 @@
         "social_seek": "Social",
         "mutual_aid": "Ayuda mutua",
         "learning_seek": "Aprendizaje",
-        "mentor_seek": "Mentoría"
+        "mentor_seek": "Mentoría",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "viewMine": "Ver mis intenciones",
       "emptyBoard": "No hay intenciones abiertas en esta vista. Sé la primera persona.",
@@ -164,7 +187,15 @@
         "kizomba": "Kizomba",
         "swing": "Swing",
         "ballroom": "Baile de salón",
-        "hiphop": "Hip-hop"
+        "hiphop": "Hip-hop",
+        "_pending_review": {
+          "salsa": true,
+          "tango": true,
+          "bachata": true,
+          "kizomba": true,
+          "swing": true,
+          "hiphop": true
+        }
       }
     },
     "intentMatch": {
@@ -198,7 +229,11 @@
         "mental-health": "Salud mental",
         "support": "Apoyo",
         "learning": "Aprendizaje",
-        "social": "Social"
+        "social": "Social",
+        "_pending_review": {
+          "fitness": true,
+          "social": true
+        }
       },
       "privacyLabel": "Visibilidad",
       "privacy": {
@@ -220,7 +255,10 @@
         "activity_seek": "Actividad",
         "social_seek": "Social",
         "mutual_aid": "Ayuda mutua",
-        "partner_seek": "Pareja"
+        "partner_seek": "Pareja",
+        "_pending_review": {
+          "social_seek": true
+        }
       },
       "titlePlaceholder": "Título breve",
       "titleLabel": "Título",

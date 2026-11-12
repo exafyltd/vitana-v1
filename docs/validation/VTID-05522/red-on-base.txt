@@ -1,0 +1,119 @@
+# VTID-05522 red on base: the lane's new tests (apps/mobile/tests/ai-chat/**) run on origin/main 6b9137ac575735edf1efbc16cddb9ad52d6b4b50
+# (git archive of origin/main + this lane's tests copied in; apps/mobile node_modules hard-linked from the worktree).
+# Command (apps/mobile): npm run gen:i18n && npx jest tests/ai-chat --ci
+# Result: 4 suites failed. routes.test.ts fails for the reason the lane fixes (COMM.TALK_TO_VITANA not_started,
+# /comm/talk-to-vitana resolves to 'unported', the route file is missing). The talk-to-vitana / card-strip / i18n suites
+# fail because src/screens/ai-chat/** does not exist on main yet.
+
+FAIL tests/ai-chat/card-strip.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/ai-chat/VitanaCardStrip' from 'tests/ai-chat/card-strip.test.tsx'
+
+      13 | import { __setSupabaseForTests } from '../../src/auth/client';
+      14 | import { overlayBus } from '../../src/navigation/overlay-bus';
+    > 15 | import { VitanaCardStrip } from '../../src/screens/ai-chat/VitanaCardStrip';
+         | ^
+      16 | import { __resetFeatureCardDismissMemory } from '../../src/screens/ai-chat/data/feature-dismiss';
+      17 | import { deriveTrend, weeklyChangePct } from '../../src/screens/ai-chat/data/vitana-index';
+      18 | import { summarizeJourney } from '../../src/screens/ai-chat/data/journey';
+
+
+FAIL tests/ai-chat/routes.test.ts (14.494 s)
+  ● ai-chat row is native › COMM.TALK_TO_VITANA is native in the ledger
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "not_started"
+
+      19 |     expect(row?.web_path).toBe('/comm/talk-to-vitana');
+      20 |     expect(row?.lane).toBe('ai');
+    > 21 |     expect(row?.status).toBe('native');
+         |                         ^
+      22 |   });
+      23 |
+      24 |   it.each(['/comm/talk-to-vitana', '/comm/talk-to-vitana?ticket=FB-0042'])('%s resolves to the native route, query kept', (path) => {
+
+
+  ● ai-chat row is native › /comm/talk-to-vitana resolves to the native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      24 |   it.each(['/comm/talk-to-vitana', '/comm/talk-to-vitana?ticket=FB-0042'])('%s resolves to the native route, query kept', (path) => {
+      25 |     const r = resolveWebPath(path);
+    > 26 |     expect(r.kind).toBe('native');
+         |                    ^
+      27 |     expect(r.href).toBe(path);
+      28 |   });
+      29 |
+
+
+  ● ai-chat row is native › /comm/talk-to-vitana?ticket=FB-0042 resolves to the native route, query kept
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "native"
+    Received: "unported"
+
+      24 |   it.each(['/comm/talk-to-vitana', '/comm/talk-to-vitana?ticket=FB-0042'])('%s resolves to the native route, query kept', (path) => {
+      25 |     const r = resolveWebPath(path);
+    > 26 |     expect(r.kind).toBe('native');
+         |                    ^
+      27 |     expect(r.href).toBe(path);
+      28 |   });
+      29 |
+
+
+  ● ai-chat row is native › the route file exists and is listed as a native route
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      29 |
+      30 |   it('the route file exists and is listed as a native route', () => {
+    > 31 |     expect(existsSync(join(APP, '(app)/comm/talk-to-vitana.tsx'))).toBe(true);
+         |                                                                    ^
+      32 |     expect(NATIVE_ROUTES).toContain('/comm/talk-to-vitana');
+      33 |   });
+      34 | });
+
+
+FAIL tests/ai-chat/i18n.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/ai-chat/TalkToVitanaScreen' from 'tests/ai-chat/i18n.test.tsx'
+
+      19 | import { LOCALES } from '../../src/i18n';
+      20 | import { languageFromLocale, useI18n } from '../../src/i18n/I18nProvider';
+    > 21 | import { TalkToVitanaScreen } from '../../src/screens/ai-chat/TalkToVitanaScreen';
+         | ^
+      22 | import { daysAgo, indexSupabase, makeWrapper } from './helpers';
+      23 |
+      24 | jest.setTimeout(30000);
+
+
+FAIL tests/ai-chat/talk-to-vitana.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/ai-chat/TalkToVitanaScreen' from 'tests/ai-chat/talk-to-vitana.test.tsx'
+
+      14 | import { __setSupabaseForTests } from '../../src/auth/client';
+      15 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 16 | import { TalkToVitanaScreen } from '../../src/screens/ai-chat/TalkToVitanaScreen';
+         | ^
+      17 | import { buildTalkTicketBody, TICKET_KINDS } from '../../src/screens/ai-chat/data/tickets';
+      18 | import TalkToVitanaRoute from '../../app/(app)/comm/talk-to-vitana';
+      19 | import { makeWrapper, status } from './helpers';
+
+
+Test Suites: 4 failed, 4 total
+Tests:       4 failed, 4 total
+Snapshots:   0 total
+Time:        20.016 s
+Ran all test suites matching /tests\/ai-chat/i.

@@ -1,0 +1,45 @@
+# VTID-05475 — commands run (lane explicit-intro-choice, vitana-v1)
+
+# Claim the lane (idempotent)
+node /projects/sandbox/wt-tools/scripts/collab/queue.mjs claim welcome-finish-r2/explicit-intro-choice \
+  --session kiro-jtadic-202610291040-a0e6 --repo /projects/sandbox/vitana-platform
+#  -> {"ok":true,"sha":"7d4e140e6ff8aca0b28bbf7036bf2967bdbe3130"}
+
+# Worktree: already at vitana-v1 origin/main on branch kiro/welcome-finish-r2/explicit-intro-choice (0 ahead, 0 behind).
+git -C /projects/sandbox/wt-wf2-explicit-intro-choice fetch origin
+
+# Migration lint (PR-GATE helper) on the new migration file -> []
+node -e "import('./scripts/ci/pr-gate/lib.mjs').then(m=>console.log(m.lintMigration(require('fs').readFileSync('supabase/migrations/20261103120000_vtid_05475_community_intro_explicit_choice.sql','utf8'))))"
+
+# Red-on-base: stash source (keep new/updated tests), run the new tests against base source -> 11 failed (outputs/red-on-base.txt)
+git stash push -- src/lib/community-intro.ts src/components/onboarding/OnboardingNameForm.tsx src/components/settings/CommunityIntroToggle.tsx src/integrations/supabase/types.ts
+npx vitest run src/lib/community-intro.explicit-choice.test.ts \
+  src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx \
+  src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx
+git stash pop
+
+# Green vitest on all changed files -> 41 passed (outputs/vitest-green.txt)
+npx vitest run src/lib/community-intro.explicit-choice.test.ts src/lib/community-intro.vtid-05206.test.ts \
+  src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx \
+  src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx \
+  src/pages/settings/__tests__/privacy-community-intro.vtid-05206.test.tsx \
+  src/pages/__tests__/mobile-settings-privacy-phone.vtid-05096.test.tsx
+
+# PGlite migration check (run from the shared pglite package so ESM resolves @electric-sql/pglite) -> ALL CHECKS PASSED (22)
+#   outputs/pglite-community-intro-choice-check.txt
+cp docs/validation/VTID-05475/pglite-community-intro-choice-check.mjs /projects/sandbox/.agents/pglite/_tmp.mjs
+( cd /projects/sandbox/.agents/pglite && node _tmp.mjs \
+    /projects/sandbox/wt-wf2-explicit-intro-choice/supabase/migrations/20261103120000_vtid_05475_community_intro_explicit_choice.sql )
+rm -f /projects/sandbox/.agents/pglite/_tmp.mjs
+
+# tsc -> 0 errors (outputs/tsc.txt)
+npx tsc --noEmit
+
+# eslint on touched source -> only the pre-existing @typescript-eslint/no-explicit-any in OnboardingNameForm (outputs/eslint.txt)
+npx eslint src/components/onboarding/OnboardingNameForm.tsx src/components/settings/CommunityIntroToggle.tsx src/lib/community-intro.ts
+
+# production build -> built (outputs/build.txt)
+npm run build
+
+# i18n stamp check -> green (new keys "never stamped", VTID-05206 precedent) (outputs/i18n-stale.txt)
+npm run i18n:stale

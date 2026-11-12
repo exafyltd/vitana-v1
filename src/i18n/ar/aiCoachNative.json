@@ -1,0 +1,77 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "أقسام الذكاء الاصطناعي",
+      "overview": "نظرة عامة",
+      "insights": "رؤى",
+      "recommendations": "توصيات",
+      "dailySummary": "الملخص اليومي",
+      "companion": "رفيق الذكاء الاصطناعي"
+    },
+    "priority": {
+      "high": "عالية",
+      "medium": "متوسطة",
+      "low": "منخفضة"
+    },
+    "suggestions": {
+      "title": "رؤى واقتراحات الذكاء الاصطناعي"
+    },
+    "reward": {
+      "suggestions": "نفّذ اقتراحات الذكاء الاصطناعي واحصل على مكافآت صحية",
+      "index": "حسّن نتيجتك الصحية لتحصل على رصيد أكثر"
+    },
+    "index": {
+      "computing": "جارٍ الحساب…"
+    },
+    "streak": {
+      "meditation": "التأمل"
+    },
+    "companion": {
+      "suggestionDescription": "اقتراح عافية من إنشاء الذكاء الاصطناعي",
+      "recall": "استرجاع",
+      "autopilotMeditation": "جدولة استراحة للتأمل",
+      "autopilotHydration": "تذكير بشرب الماء بعد 15 دقيقة"
+    },
+    "motivation": {
+      "defaultQuote": "كل خطوة صغيرة نحو العافية انتصار يستحق الاحتفال.",
+      "defaultAuthor": "إلهام اليوم"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "العافية",
+      "_pending_review": {
+        "provider": true
+      }
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "مؤشرات الدم",
+      "_pending_review": {
+        "provider": true
+      }
+    },
+    "chat": {
+      "voice": "بدء مكالمة صوتية",
+      "video": "بدء مكالمة فيديو",
+      "send": "إرسال الرسالة"
+    },
+    "autopilot": {
+      "settings": "إعدادات الطيار الآلي",
+      "toggle": "تشغيل الطيار الآلي أو إيقافه"
+    },
+    "autopilotDone": {
+      "reward": "ربحت ‎+{reward} VTNA!",
+      "task": "اكتملت المهمة: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · ‎+{n} VTNA",
+      "total": ". المؤشر الآن {n}",
+      "_pending_review": {
+        "title": true,
+        "detail": true
+      }
+    }
+  }
+}

@@ -492,7 +492,7 @@ describe('i18n + RTL', () => {
 
   it('every walletRewardsNative key exists in all 11 locales (DE first)', () => {
     const flat = (o: Record<string, unknown>, p = ''): string[] =>
-      Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' ? flat(v as Record<string, unknown>, `${p}${k}.`) : [`${p}${k}`]));
+      Object.entries(o).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) => (v && typeof v === 'object' ? flat(v as Record<string, unknown>, `${p}${k}.`) : [`${p}${k}`]));
     const de = flat(JSON.parse(readFileSync(join(APP, '../../src/i18n/de/walletRewardsNative.json'), 'utf8')));
     expect(de.length).toBeGreaterThan(0);
     for (const locale of LOCALES) {

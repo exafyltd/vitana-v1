@@ -1,0 +1,9 @@
+{
+  "vtid": "VTID-05476",
+  "service": "community-app",
+  "note": "Read-only. Generated-file check only; no behaviour change and nothing deploys.",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/lib/feed-compose.test.ts", "cwd": ".",
+      "reason": "the web feed-compose source that the generated native copy mirrors still passes" }
+  ]
+}

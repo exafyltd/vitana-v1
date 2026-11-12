@@ -1,0 +1,59 @@
+{
+  "inboxNative": {
+    "selectContext": "Выбрать ящик",
+    "searchClose": "Закрыть поиск",
+    "unreadCount": "Непрочитанных: {count}",
+    "unknown": "Неизвестно",
+    "conversation": "Беседа",
+    "vitanaWelcome": "Привет! Я Vitana. Напиши мне сообщение, чтобы начать.",
+    "removeRecipient": "Убрать: {name}",
+    "moreOptions": "Другие действия",
+    "archivedDescription": "Просмотр архивных бесед и сообщений",
+    "inspirationDescription": "Готовые сообщения и шаблоны, чтобы вдохновлять твоё wellness-сообщество",
+    "subnav": {
+      "overview": "Обзор",
+      "inspiration": "Вдохновение",
+      "archived": "Архив",
+      "_pending_review": {}
+    },
+    "archiveCategory": {
+      "all": "Все",
+      "healthcare": "Здоровье",
+      "fitness": "Фитнес",
+      "nutrition": "Питание",
+      "activities": "Активности",
+      "_pending_review": {}
+    },
+    "archiveType": {
+      "group": "Группа",
+      "direct": "Личная",
+      "_pending_review": {}
+    },
+    "archiveSample": {
+      "johnsonName": "Д-р Джонсон",
+      "johnsonMessage": "Спасибо за консультацию!",
+      "yogaName": "Йога для начинающих",
+      "yogaMessage": "Отличное занятие, всем спасибо!",
+      "martinezName": "Сара Мартинес",
+      "martinezMessage": "Рецепт был потрясающий!",
+      "warriorsName": "Воины выходного дня",
+      "warriorsMessage": "Следующий поход запланирован на...",
+      "kimName": "Д-р Ким",
+      "kimMessage": "Повторный приём через 2 недели",
+      "_pending_review": {}
+    },
+    "presence": {
+      "online": "В сети",
+      "away": "Отошёл",
+      "offline": "Не в сети",
+      "_pending_review": {}
+    },
+    "datePlaceholder": "ГГГГ-ММ-ДД",
+    "permissions": {
+      "contactsUsage": "Vitana читает твои контакты, только когда ты нажимаешь «Перенести контакты с телефона», чтобы показать, кто из твоих друзей уже есть в Vitanaland.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

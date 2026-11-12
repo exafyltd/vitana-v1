@@ -1,0 +1,52 @@
+{
+  "aiAssistantsNative": {
+    "toast": {
+      "errorDetail": "{message}",
+      "_pending_review": {
+        "errorDetail": true
+      }
+    },
+    "voice": {
+      "preview": "Odsłuchaj głos",
+      "playing": "Odtwarzanie…",
+      "previewPhrase": "Cześć, to podgląd wybranych przez Ciebie ustawień głosu.",
+      "previewUnavailable": "Podgląd nie jest dostępny dla tego języka na tym urządzeniu.",
+      "speedValue": "{value}x",
+      "volumeValue": "{value}%",
+      "_pending_review": {
+        "speedValue": true,
+        "volumeValue": true
+      }
+    },
+    "proactive": {
+      "playSample": "Odtwórz przykładowe powitanie",
+      "speaking": "Mówi…",
+      "notSet": "Nie ustawiono",
+      "none": "Brak",
+      "quoted": "„{text}”",
+      "messageType": {
+        "time_greeting": "Powitania zależne od pory dnia (Dzień dobry itp.)",
+        "wellness_check": "Sprawdzanie samopoczucia",
+        "motivational": "Wiadomości motywujące",
+        "reminder": "Przypomnienia o działaniach"
+      }
+    },
+    "referrals": {
+      "receiveDescription": "Autopilot może pytać innych członków, gdy zadajesz pytania.",
+      "giveDescription": "Autopilot może oferować Twój katalog innym członkom. Domyślnie wyłączone – włącz, gdy będziesz gotowy.",
+      "moneyDescription": "Zmienia zarabianie z „zaproponuj i zatwierdź” na autonomiczne. Włącz to tylko, gdy ufasz swojemu katalogowi i informacji.",
+      "moneyDisabledHint": "Najpierw włącz „Dawaj rekomendacje”."
+    },
+    "connect": {
+      "missingKey": "Wklej swój klucz API.",
+      "wrongPrefix": "Klucz API musi zaczynać się od „{prefix}”.",
+      "unauthorized": "Dostawca odrzucił ten klucz (brak autoryzacji). Sprawdź go w swoim panelu.",
+      "network": "Błąd sieci podczas łączenia z dostawcą. Spróbuj ponownie.",
+      "verifyFailed": "Weryfikacja nie powiodła się ({status}).",
+      "failed": "Połączenie nie powiodło się ({code}).",
+      "saving": "Zapisywanie…",
+      "verifying": "Weryfikacja…",
+      "connect": "Połącz"
+    }
+  }
+}

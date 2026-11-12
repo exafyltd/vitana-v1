@@ -1,0 +1,85 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} pisze…",
+      "two": "{first} i {second} piszą…",
+      "many": "Kilka osób pisze…",
+      "_pending_review": {}
+    },
+    "conversation": {
+      "fallbackTitle": "Rozmowa",
+      "_pending_review": {}
+    },
+    "reply": {
+      "yourself": "siebie",
+      "contentUnavailable": "Treść wiadomości niedostępna",
+      "_pending_review": {}
+    },
+    "reactions": {
+      "reactWith": "Zareaguj: {emoji}",
+      "count": "Reakcje {emoji}: {count}",
+      "_pending_review": {}
+    },
+    "bubble": {
+      "longPressHint": "Przytrzymaj, aby zobaczyć reakcje i działania",
+      "_pending_review": {}
+    },
+    "emoji": {
+      "open": "Wybierz emoji",
+      "recent": "Ostatnie",
+      "smileys": "Buźki",
+      "people": "Ludzie",
+      "nature": "Natura",
+      "food": "Jedzenie",
+      "activity": "Aktywność",
+      "travel": "Podróże",
+      "objects": "Przedmioty",
+      "_pending_review": {}
+    },
+    "voice": {
+      "discard": "Usuń nagranie",
+      "play": "Odtwórz",
+      "pause": "Wstrzymaj",
+      "stop": "Zatrzymaj nagrywanie",
+      "_pending_review": {}
+    },
+    "composer": {
+      "removeFile": "Usuń {name}",
+      "pickerDone": "Gotowe",
+      "_pending_review": {}
+    },
+    "payment": {
+      "status": {
+        "pending": "Oczekuje",
+        "completed": "Zakończono",
+        "declined": "Odrzucono",
+        "_pending_review": {}
+      },
+      "accept": "Akceptuj",
+      "decline": "Odrzuć",
+      "pay": "Zapłać teraz",
+      "refreshBalance": "Odśwież saldo",
+      "_pending_review": {}
+    },
+    "invite": {
+      "untitled": "Zaproszenie",
+      "_pending_review": {}
+    },
+    "booking": {
+      "untitled": "Prośba o usługę",
+      "_pending_review": {}
+    },
+    "companion": {
+      "indexScore": "Twój indeks: {score}",
+      "_pending_review": {}
+    },
+    "attach": {
+      "library": "Biblioteka zdjęć",
+      "camera": "Aparat",
+      "files": "Pliki",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

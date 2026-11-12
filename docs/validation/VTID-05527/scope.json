@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05527",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/staff/**",
+    "apps/mobile/src/screens/staff/**",
+    "apps/mobile/src/ports/staff-ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/staff/**",
+    "apps/mobile/maestro/staff/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/staffNative.json",
+    "docs/validation/VTID-05527/**"
+  ],
+  "_note": "No @vitana/core change (plan decision 3: this lane adds no core entry), so packages/core/** and scripts/native/mobile-ci-paths.generated.json are untouched. ledger.json: only the 8 /staff/* rows changed (status native, owner kiro, last_parity_check).",
+  "sparring_record": "docs/validation/VTID-05527/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

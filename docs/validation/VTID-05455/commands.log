@@ -1,0 +1,192 @@
+# VTID-05455 (native-wave2-health-biology-r3/health-hub) — commands run, with results
+# Linux; worktree /projects/sandbox/vitana-v1/.worktrees/native-wave2-health-biology-r3-health-hub; base origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e
+# Session kiro-exafyltd-202611011658-9f52. All offline; no live system touched (recording Supabase double + fake gateway; no network in tests).
+
+## Setup
+$ git -C vitana-v1 worktree add .worktrees/native-wave2-health-biology-r3-health-hub -b kiro/native-wave2-health-biology-r3/health-hub origin/main
+$ (apps/mobile) npm ci  -> added 941 packages
+$ (repo root) npm ci  -> added 872 packages (typescript for the scripts/native generators, web build, i18n scripts)
+
+## Red on base (detached worktree at origin/main e530abd0d + copied tests/health; apps/mobile npm ci) — see red-on-base.txt
+$ npx jest tests/health --ci
+Test Suites: 5 failed, 5 total   (Cannot find module ../../src/screens/health/HealthScreen, ../../src/ports/health-sync)
+Tests:       0 total
+exit=1
+
+## Core extraction (repo root)
+$ (apps/mobile) npm run gen:core
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets (unchanged)
+core-closure: 24 roots, 34 src files, 11 assets — ok
+$ node scripts/native/core-closure.mjs --check
+core-closure: 24 roots, 34 src files, 11 assets — up to date
+exit=0
+$ node scripts/native/gen-core-extract.mjs --check
+gen-core-extract: 11 files from 15 sources, 35 icons, 11 assets — up to date
+exit=0
+
+## apps/mobile (code = head 82d20e6bb)
+$ npm run typecheck
+> tsc --noEmit
+exit=0
+(first run: 1 error in tests/health/consent-no-write.test.tsx fixture typing (null score_mental); typed the fixture as VitanaIndexScoreRow[], rerun clean)
+
+$ npx jest tests/health --ci
+Test Suites: 5 passed, 5 total
+Tests:       105 passed, 105 total
+exit=0
+(earlier runs while writing the tests: overlay assertions pointed at the kit's `<testID>-content` node; the health-module request
+ assertions now filter out the shell providers' own reads (user_preferences select, list_public_tenants GET rpc) — those are still
+ asserted to be selects / GETs; the 11-locale render test and the sheet-dismiss test got longer waitFor / test timeouts for a loaded
+ worker. No assertion was removed or loosened on the health module.)
+
+$ npm test -- --ci
+Test Suites: 89 passed, 89 total
+Tests:       2379 passed, 2379 total
+Snapshots:   57 passed, 57 total
+exit=0
+
+$ HOME=<tmp> APP_PROFILE=development npm run bundle
+_expo/static/js/android/entry-6c0824bf08b0c0d993063e736fc38a93.hbc (17MB)
+_expo/static/js/ios/entry-591f67c3f96ec01dd4a62e2d1230ecab.hbc (17MB)
+Exported: dist
+exit=0
+(HOME override only because the sandbox's /root is read-only for ~/.expo)
+
+$ HOME=<tmp> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check
+Dependency validation is unreliable in offline-mode
+Dependencies are up to date
+exit=0
+
+$ HOME=<tmp> APP_PROFILE=development npm run bundle:core-probe
+probe-dist/ios.js: ok (1273011 bytes, 113 sources, no production host, one react, nothing from the root node_modules)
+probe-dist/android.js: ok (1273015 bytes, 113 sources, no production host, one react, nothing from the root node_modules)
+exit=0
+
+$ npm run parity:check
+> node ../../scripts/native/parity-ledger.mjs --check
+parity-ledger --check: OK — 435 rows, 33 native route(s)
+exit=0
+
+$ node scripts/native/parity-ledger.mjs --sync   (repo root)
+parity-ledger --sync: 435 rows (added 0, updated 0, removed 0, stale kept 0)
+exit=0 (no change to the 4 hand-flipped rows)
+
+## repo root — the other NATIVE-CI script gates
+$ node scripts/native/gen-tokens.mjs --check
+gen-tokens: 166 light / 134 dark overrides, 117 colour classes, 12 excluded — up to date
+exit=0
+$ node scripts/native/check-shell-pins.mjs
+check-shell-pins: OK — every mirrored web shell rule matches its pin; guest paths match App.tsx
+exit=0
+$ node --test scripts/native/__tests__/*.test.mjs
+# tests 68 / # pass 68 / # fail 0
+exit=0
+$ node --test scripts/native/__tests__/eslint/*.test.mjs
+# pass 22 / # fail 0
+exit=0
+$ npx eslint apps/mobile packages
+(no output) exit=0
+
+## repo root — i18n (the checks .github/workflows/i18n-check.yml runs)
+$ node scripts/i18n-register-check.mjs --all
+[register] No formal-register violations.
+exit=0
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+No long words found.
+exit=0
+(two German compounds were shortened before the first run: "Gesundheitssynchronisierung", "Nahrungsmittelunverträglichkeiten")
+$ node scripts/check-i18n-subscriptions.mjs
+[i18n-subscriptions] OK — 776 components render catalog strings; every memo'd one subscribes to the locale.
+exit=0
+$ node scripts/i18n-stamp-source.mjs --check-all
+[stamp] 0 key(s) whose EN source changed since translation (0.0%) — 9 locales reporting
+exit=0
+$ node scripts/check-locale-registry.mjs
+[locale-registry] OK — picker and supported_locales agree.
+exit=0
+$ node scripts/i18n-audit.mjs --report-only
+[i18n-audit] --report-only: exiting 0 despite errors.
+exit=0
+errors mentioning healthNative: 0 (all reported errors are pre-existing _pending_review keys)
+$ node scripts/check-locale-chunking.mjs
+[locale-chunks] dist/assets not found — run `npm run build` first.   (run before the build; informational)
+
+## repo root — web build + i18n vitest (the new shards are web catalog files)
+$ npm run build
+✓ built in 1m 25s
+exit=0
+$ npx vitest run src/i18n scripts/native
+Test Files  3 passed (3)
+Tests  25 passed (25)
+exit=0
+
+## Preflight (head 82d20e6bb)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-health-biology-r3/health-hub --title "VTID-05455 (native-wave2-health-biology-r3/health-hub): native health dashboard, Vitana Index overlay and Health Sync UI port"
+FAIL  Collab handoff   — ".kiro/specs/native-wave2-health-biology-r3/lanes/health-hub.md does not exist here or in vitana-platform"
+FAIL  Lane scope [required] — "…/lanes/health-hub.md not found in this repo, an open plan( PR or vitana-platform"
+PASS  gh for plan( PR / vitana-platform lane files [required]
+PASS  PR-GATE scope
+PASS  PR-GATE sparring
+PASS  PR-GATE weakening
+PASS  PR-GATE red-green
+PASS  Kiro steering
+SKIP  Not run by preflight (npm test / lint / build: run above)
+exit=1
+Both FAILs are the known "lane file not found" non-blocker: the spec is on the plan branch
+kiro/native-wave2-health-biology-r3/plan, not on vitana-platform main yet (brief "Known non-blockers"). Every other check passes.
+
+## CI fix 1 — PR #1562 "change-suite" red on 4d8976ee9 (real, inside the lane)
+$ node <vitana-platform main>/scripts/ci/staging-verify/run.mjs check-pr --service community-app --repo-root . --base origin/main --head HEAD --title "<PR title>"
+::error::staging-tests.json invalid:
+  VTID-05455: tests[1]: kind must be http, playwright or existing
+exit=1
+fix: tests[1] (npx jest tests/health) kind "new" -> "existing"
+$ (same command)
+[staging-verify] ✓ change suite present and valid for VTID-05455
+exit=0
+
+## CI on 4d8976ee9 — other reds
+- "ORB parity — duplex gate, widget literals, protocol (vitana-platform main)": orb-parity --fetch got HTTP 403 fetching
+  exafyltd/vitana-platform:services/gateway/src/orb/live/duplex/full-duplex-gate.ts@main — GitHub rate limit / token, infra (not this lane).
+- "Lane scope": the known lane-file-not-found red (spec on the plan branch, not on vitana-platform main).
+
+## Fix 1 — reviewer `changes` on 3afeca5 (R1.1 utility bar + VitanaBaselineSurveyModal)
+$ git fetch origin && git merge --ff-only origin/kiro/native-wave2-health-biology-r3/health-hub  -> already up to date
+$ git merge origin/main  -> already up to date (origin/main e530abd0d is in the branch)
+$ (apps/mobile) npm ci  -> added 941 packages
+## Red (head 3afeca5 + the new test file only) — see red-fix1.txt
+$ npx jest tests/health/utility-bar.test.tsx --ci  -> 11 failed / 11
+## Green (fix 1 code)
+$ npm run typecheck  -> tsc --noEmit, 0 errors
+$ npx jest tests/health --ci  -> 6 suites / 119 tests passed
+$ npm test -- --ci  -> 90 suites / 2396 tests passed, 57 snapshots
+$ HOME=<tmp> APP_PROFILE=development npm run bundle  -> Exported: dist
+$ HOME=<tmp> APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check  -> Dependencies are up to date
+$ npm run parity:check  -> OK — 435 rows, 33 native route(s)
+$ node scripts/native/core-closure.mjs --check  -> up to date (24 roots, 34 src files)
+$ node scripts/native/gen-core-extract.mjs --check  -> up to date
+$ node scripts/native/gen-tokens.mjs --check  -> up to date
+$ node scripts/native/check-shell-pins.mjs  -> OK
+$ node --test scripts/native/__tests__/*.test.mjs  -> 68 / 0
+$ node --test scripts/native/__tests__/eslint/*.test.mjs  -> 22 / 0
+$ npx eslint apps/mobile packages  -> clean
+$ node scripts/i18n-register-check.mjs --all  -> no violations
+$ node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22  -> 0
+$ node scripts/check-i18n-subscriptions.mjs  -> OK
+$ node scripts/i18n-stamp-source.mjs --check-all  -> OK
+$ node scripts/check-locale-registry.mjs  -> OK
+$ node scripts/check-locale-chunking.mjs  -> OK
+$ node scripts/i18n-audit.mjs --report-only  -> 0 healthNative findings
+$ npx vitest run src/i18n scripts/native  -> 3 files / 25 tests passed
+## Preflight + change suite (fix 1 code, head 026435d39)
+$ node /projects/sandbox/vitana-platform/scripts/collab/preflight.mjs --repo <worktree> --base origin/main --head HEAD --branch kiro/native-wave2-health-biology-r3/health-hub --title "<PR title>"
+FAIL  Collab handoff / FAIL  Lane scope — the same known "lanes/health-hub.md not found" non-blocker (spec on the plan branch)
+PASS  gh for plan( PR / PR-GATE scope / sparring / weakening / red-green / Kiro steering
+$ node <vitana-platform>/scripts/ci/staging-verify/run.mjs check-pr --service community-app --repo-root . --base origin/main --head HEAD --title "<PR title>"
+[staging-verify] ✓ change suite present and valid for VTID-05455
+
+## test hardening: async-wait timeouts (2026-11-02)
+# on cda3e39f0 (origin head) + this commit; edits: tests/health/dashboard.test.tsx, tests/health/helpers.tsx, tests/health/i18n-routes.test.tsx, tests/health/utility-bar.test.tsx
+# configure({ asyncUtilTimeout: 5000 }) in the lane helper every lane test imports; jest.setTimeout(30_000) in the locale-loop / multi-screen test files
+$ npx jest tests/health  (default workers, run 1 of 2)        -> 6 suites, 119/119 pass (81s, 2026-11-02T21:36Z)
+$ npx jest tests/health  (default workers, run 2 of 2)        -> 6 suites, 119/119 pass (31s, 2026-11-02T21:36Z)

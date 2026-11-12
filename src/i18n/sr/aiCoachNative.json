@@ -1,0 +1,78 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "AI odeljci",
+      "overview": "Pregled",
+      "insights": "Uvidi",
+      "recommendations": "Preporuke",
+      "dailySummary": "Dnevni rezime",
+      "companion": "AI pratilac"
+    },
+    "priority": {
+      "high": "Visok",
+      "medium": "Srednji",
+      "low": "Nizak"
+    },
+    "suggestions": {
+      "title": "AI uvidi i predlozi"
+    },
+    "reward": {
+      "suggestions": "Prati AI predloge i osvoji zdravstvene nagrade",
+      "index": "Poboljšaj svoj zdravstveni rezultat za više kredita"
+    },
+    "index": {
+      "computing": "računa se…"
+    },
+    "streak": {
+      "meditation": "Meditacija"
+    },
+    "companion": {
+      "suggestionDescription": "Wellness predlog koji je generisala AI",
+      "recall": "Prisetiti se",
+      "autopilotMeditation": "Zakaži pauzu za meditaciju",
+      "autopilotHydration": "Podsetnik za vodu za 15 min"
+    },
+    "motivation": {
+      "defaultQuote": "Svaki mali korak ka blagostanju je pobeda vredna slavlja.",
+      "defaultAuthor": "Inspiracija dana"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Wellness",
+      "_pending_review": {
+        "provider": true,
+        "categoryWellness": true
+      }
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Markeri krvi",
+      "_pending_review": {
+        "provider": true
+      }
+    },
+    "chat": {
+      "voice": "Započni glasovni poziv",
+      "video": "Započni video poziv",
+      "send": "Pošalji poruku"
+    },
+    "autopilot": {
+      "settings": "Podešavanja autopilota",
+      "toggle": "Uključi ili isključi autopilot"
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA osvojeno!",
+      "task": "Zadatak završen: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Indeks sada {n}",
+      "_pending_review": {
+        "title": true,
+        "detail": true
+      }
+    }
+  }
+}

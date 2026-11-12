@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05476",
+  "kind": "docs",
+  "lane": "welcome-finish-r2/native-extract-regen",
+  "repo": "exafyltd/vitana-v1",
+  "sparring_record": "docs/validation/VTID-05476/plan-sparring.md",
+  "paths": ["docs/validation/VTID-05476/**"],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

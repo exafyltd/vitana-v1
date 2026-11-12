@@ -1,0 +1,345 @@
+{
+  "healthNative": {
+    "subtitle": "Śledź swoją drogę do zdrowia i zarządzaj nią",
+    "upload": "Prześlij",
+    "selectMode": "Wybierz sekcję",
+    "loading": "Ładowanie…",
+    "indexAria": "Vitana Index {score} z 999",
+    "indexLoadingAria": "Ładowanie Vitana Index",
+    "chip": {
+      "openIndex": "Otwórz Vitana Index"
+    },
+    "agents": {
+      "noOutputYet": "brak wyników"
+    },
+    "medical": {
+      "untitledReport": "Raport zdrowotny",
+      "status": {
+        "uploaded": "Przesłano",
+        "processing": "Przetwarzanie",
+        "processed": "Przetworzono",
+        "error": "Błąd"
+      }
+    },
+    "supplements": {
+      "edit": "Edytuj suplement",
+      "delete": "Usuń suplement",
+      "filters": {
+        "all": "Wszystkie",
+        "vitamins": "Witaminy",
+        "minerals": "Minerały",
+        "aminoAcids": "Aminokwasy",
+        "adaptogens": "Adaptogeny",
+        "probiotics": "Probiotyki",
+        "antioxidants": "Przeciwutleniacze",
+        "other": "Inne"
+      }
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "Prześlij wyniki badań",
+        "description": "Dodaj swoje najnowsze wyniki i biomarkery"
+      },
+      "orderBloodTest": {
+        "title": "Zamów badanie krwi",
+        "description": "Umów badania u certyfikowanych dostawców"
+      },
+      "bookScreening": {
+        "title": "Zarezerwuj badanie profilaktyczne",
+        "description": "Zaplanuj coroczny przegląd zdrowia"
+      },
+      "joinWellnessGroup": {
+        "title": "Dołącz do grupy wellness",
+        "description": "Połącz się ze społecznością dbającą o zdrowie"
+      },
+      "trackToday": {
+        "title": "Zapisz dzisiejsze zdrowie",
+        "description": "Zapisuj codzienne wskaźniki dobrostanu"
+      },
+      "healthEducation": {
+        "title": "Edukacja zdrowotna",
+        "description": "Dowiedz się o odżywianiu i dobrostanie"
+      }
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "Pełny panel krwi",
+        "description": "Morfologia, panel metaboliczny, lipidy, witaminy i minerały"
+      },
+      "metabolicPanel": {
+        "name": "Panel zdrowia metabolicznego",
+        "description": "Glukoza, insulina, HbA1c, funkcja wątroby i nerek"
+      },
+      "hormonesPanel": {
+        "name": "Panel hormonalny",
+        "description": "Testosteron, estrogen, kortyzol, hormony tarczycy"
+      },
+      "allergyPanel": {
+        "name": "Panel alergiczny",
+        "description": "Poziom IgE, nadwrażliwości pokarmowe, alergeny środowiskowe"
+      }
+    },
+    "reportCategories": {
+      "blood_panel": "Panel krwi",
+      "genomics": "Genomika",
+      "metabolomics": "Metabolomika",
+      "microbiome": "Mikrobiom",
+      "allergy": "Alergia",
+      "cancer": "Nowotwory",
+      "hormones": "Hormony",
+      "imaging": "Obrazowanie",
+      "other": "Inne"
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "Świetny tydzień – Twój Index wzrósł o {delta}. Tak trzymaj!",
+        "roll": "Idzie Ci świetnie – Index wzrósł w tym tygodniu o {delta}.",
+        "streakWeek": "Seria {streak} dni i Index +{delta}. Masz prawdziwy rozpęd.",
+        "streakDays": "{streak} dni z rzędu, Index +{delta}. Pięknie – zbieraj kolejne sukcesy.",
+        "up": "Index +{delta} w tym tygodniu. Każde działanie się liczy – tak trzymaj!",
+        "habits": "Seria {streak} dni. Nawyki się kształtują – tak trzymaj!",
+        "streak": "{streak} dni z rzędu. Seria jest prawdziwa – tak trzymaj!"
+      },
+      "daily": {
+        "0": "Nowy dzień, nowa szansa – podnieśmy razem Twój Index.",
+        "1": "Jesteś tutaj – to pierwszy krok. Podnieśmy dziś trochę Twój Index.",
+        "2": "Jedno małe działanie i Twój Index zaczyna rosnąć. Do dzieła.",
+        "3": "Dziś jest świetny dzień, by się poprawić. Jestem z Tobą – podnieśmy go.",
+        "4": "Niech ten dzień się liczy. Wybierz jedną rzecz i patrz, jak rośnie Twój Index."
+      },
+      "horizonAria": "Prognoza Vitana Index na 30 dni – przewidywane {score}.",
+      "compassGoal": "Kompas: {goal} →",
+      "compassSet": "Ustaw swój kompas życia →"
+    },
+    "sync": {
+      "notEnabledHint": "Synchronizacja zdrowia nie jest jeszcze włączona."
+    },
+    "searchPlaceholder": "Szukaj raportów, suplementów...",
+    "utility": {
+      "closeSearch": "Zamknij wyszukiwanie",
+      "upcomingEvent": "{count} nadchodzące wydarzenie",
+      "upcomingEvents": "Nadchodzące wydarzenia: {count}"
+    },
+    "baselineSurvey": {
+      "next": "Dalej",
+      "finish": "Zakończ",
+      "rating": "Ocena {n}",
+      "questions": {
+        "nutrition": {
+          "title": "Jak się odżywiasz",
+          "prompt": "Jak dobrze się ostatnio odżywiasz? (1 = słabo, 5 = pożywnie i zbilansowanie)"
+        },
+        "hydration": {
+          "title": "Twoje nawodnienie",
+          "prompt": "Ile wody i płynów pijesz? (1 = bardzo mało, 5 = regularnie przez cały dzień)"
+        },
+        "exercise": {
+          "title": "Twój ruch",
+          "prompt": "Jak aktywne było Twoje ciało w tym tygodniu? (1 = siedzący tryb, 5 = silne i aktywne)"
+        },
+        "sleep": {
+          "title": "Twój sen",
+          "prompt": "Jak wypoczęty czujesz się po przebudzeniu? (1 = wyczerpany, 5 = w pełni wypoczęty)"
+        },
+        "mental": {
+          "title": "Twój umysł teraz",
+          "prompt": "Jak jasny i spokojny jest dziś Twój umysł? (1 = bardzo zestresowany, 5 = jasny i spokojny)"
+        }
+      }
+    },
+    "conditions": {
+      "description": "Oceń swoje ryzyko zdrowotne i twórz plany profilaktyczne, aby utrzymać dobre samopoczucie."
+    },
+    "education": {
+      "description": "Korzystaj z wybranych materiałów edukacyjnych o zdrowiu, dopasowanych do twoich zainteresowań i profilu.",
+      "episode": "Odc. {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index od podszewki",
+          "category": "Wskaźniki zdrowia"
+        },
+        "v2": {
+          "title": "Przygotowanie posiłków dla zdrowia",
+          "category": "Odżywianie"
+        },
+        "v3": {
+          "title": "Techniki poprawy snu",
+          "category": "Zdrowy sen"
+        },
+        "v4": {
+          "title": "Nauka o treningu HIIT",
+          "category": "Fitness",
+          "_pending_review": {
+            "category": true
+          }
+        },
+        "v5": {
+          "title": "Strategie radzenia sobie ze stresem",
+          "category": "Zdrowie psychiczne"
+        },
+        "v6": {
+          "title": "Jak czytać wyniki badań",
+          "category": "Medycyna"
+        }
+      },
+      "podcasts": {
+        "p1": {
+          "title": "Nauka o długowieczności",
+          "series": "Zdrowie od podszewki"
+        },
+        "p2": {
+          "title": "Obalamy mity żywieniowe",
+          "series": "Nauka o żywności"
+        },
+        "p3": {
+          "title": "Sen i wydajność",
+          "series": "Szczyt formy"
+        },
+        "p4": {
+          "title": "Ruch a zdrowie mózgu",
+          "series": "Ciało i umysł"
+        },
+        "p5": {
+          "title": "Trening odporności psychicznej",
+          "series": "Psychologia dziś"
+        },
+        "p6": {
+          "title": "Trendy w medycynie prewencyjnej",
+          "series": "Zdrowie przyszłości"
+        }
+      }
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Przeglądaj artykuły",
+        "description": "Odkrywaj wybrane artykuły o zdrowiu i dobrym samopoczuciu"
+      },
+      "watchVideos": {
+        "title": "Oglądaj filmy",
+        "description": "Edukacyjne filmy i dokumenty o zdrowiu"
+      },
+      "listenPodcasts": {
+        "title": "Słuchaj podcastów",
+        "description": "Odcinki podcastów o zdrowiu i dobrym samopoczuciu"
+      },
+      "searchContent": {
+        "title": "Szukaj treści",
+        "description": "Znajdź konkretne tematy i informacje o zdrowiu"
+      },
+      "myBookmarks": {
+        "title": "Moje zakładki",
+        "description": "Otwórz zapisane artykuły i materiały"
+      },
+      "downloadOffline": {
+        "title": "Pobierz offline",
+        "description": "Zapisz treści, by przeczytać lub obejrzeć je później"
+      },
+      "healthCourses": {
+        "title": "Kursy zdrowotne",
+        "description": "Zapisz się na uporządkowane programy edukacji o zdrowiu"
+      }
+    },
+    "services": {
+      "description": "Rezerwuj wizyty, badania przesiewowe i programy wellness dopasowane do twoich potrzeb.",
+      "impactPoints": "+{points} pkt"
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Umów badanie",
+        "description": "Zaplanuj coroczne kompleksowe badanie zdrowia"
+      },
+      "orderLabTests": {
+        "title": "Zamów badania",
+        "description": "Zamów analizę biomarkerów i testy diagnostyczne"
+      },
+      "myAppointments": {
+        "title": "Moje wizyty",
+        "description": "Przeglądaj nadchodzące wizyty lekarskie i zarządzaj nimi"
+      },
+      "findSpecialists": {
+        "title": "Znajdź specjalistów",
+        "description": "Połącz się ze specjalistami w twojej okolicy"
+      },
+      "wellnessPrograms": {
+        "title": "Programy wellness",
+        "description": "Dołącz do wyzwań i programów zdrowotnych społeczności"
+      },
+      "telemedicine": {
+        "title": "Telemedycyna",
+        "description": "Umawiaj wirtualne konsultacje ze specjalistami"
+      },
+      "healthRecords": {
+        "title": "Dokumentacja medyczna",
+        "description": "Uzyskaj dostęp do pełnej historii leczenia i dokumentów"
+      },
+      "insuranceSupport": {
+        "title": "Pomoc ubezpieczeniowa",
+        "description": "Uzyskaj pomoc w roszczeniach i weryfikacji ubezpieczenia"
+      }
+    },
+    "plans": {
+      "description": "Plany oparte na AI, dopasowane do twojego profilu zdrowia i celów",
+      "planName": {
+        "nutrition": "Plan: Odżywianie",
+        "exercise": "Plan: Ruch",
+        "hydration": "Plan: Nawodnienie",
+        "sleep": "Plan: Sen",
+        "mental": "Plan: Psychika",
+        "supplement": "Plan: Suplementy"
+      },
+      "pillarName": {
+        "nutrition": "Odżywianie",
+        "exercise": "Ruch",
+        "hydration": "Nawodnienie",
+        "sleep": "Sen",
+        "mental": "Psychika",
+        "supplement": "Suplementy"
+      },
+      "refreshed": "{planName} odświeżony! 🔄",
+      "justNow": "Przed chwilą",
+      "hoursAgo": "{hours} godz. temu",
+      "daysAgo": "{days} dni temu",
+      "never": "Nigdy",
+      "toasts": {
+        "recalibrateDescription": "Analizujemy wszystkie plany i synergie między filarami. To może chwilę potrwać...",
+        "viewProgress": "Zobacz postęp",
+        "reportDescription": "Przygotowujemy twój szczegółowy raport zdrowia. Zajrzyj za kilka minut!",
+        "gotIt": "Rozumiem",
+        "optimizing": "✨ Optymalizacja: {pillar}",
+        "optimizeDescription": "AI Autopilot analizuje twój najsłabszy filar i przygotowuje konkretne usprawnienia.",
+        "viewPlan": "Zobacz plan"
+      },
+      "proteinShort": "{protein} B",
+      "nutritionDefaults": {
+        "goalFocus": "Zbilansowane odżywianie",
+        "schedule": "3 posiłki + 2 przekąski",
+        "calTarget": "Cel: {calories} kcal",
+        "daily": "Codziennie",
+        "insight": "Twój plan żywieniowy jest dopasowany do obecnej aktywności i twoich celów."
+      },
+      "aiSummary": {
+        "exercise": "Świetna regularność! Nawodnienie i sen poprawiają twoją regenerację.",
+        "hydration": "Twoje nawodnienie poprawiło się w tym tygodniu o 12% — świetny postęp! AI zaleca elektrolity po intensywnym treningu, by szybciej się regenerować.",
+        "sleep": "Regularność snu poprawiła się w tym tygodniu o 10% — świetna regeneracja. AI wykryło, że najlepsza pora snu dla głębokiego snu to 22:30-23:00.",
+        "mental": "Wskaźniki stresu poprawiły się o 12% od wprowadzenia porannych ćwiczeń oddechowych. Twoja koncentracja jest stabilniejsza — świetny postęp w tym tygodniu."
+      },
+      "ai": "AI",
+      "hydrationStatus": {
+        "goalMet": "Cel osiągnięty",
+        "catchUp": "Trzeba nadrobić",
+        "belowTarget": "Poniżej celu",
+        "onTrack": "Zgodnie z planem"
+      },
+      "sleepStatus": {
+        "excellent": "Jakość snu doskonała",
+        "good": "Jakość snu dobra",
+        "improve": "Jest co poprawić"
+      },
+      "litersOf": "{current} l / {target} l",
+      "liters": "{value} l",
+      "_pending_review": {
+        "ai": true
+      }
+    }
+  }
+}

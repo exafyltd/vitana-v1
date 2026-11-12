@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "مشهد صوتي {value0}",
       "vitanaAudioMode": "وضع صوت VITANA",
       "typeYourMessage": "اكتب رسالتك...",
-      "returnVoice": "العودة إلى الصوت"
+      "returnVoice": "العودة إلى الصوت",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "حزمة:",
@@ -6069,6 +6075,7 @@
       "sendFunds": "إرسال أموال",
       "requestPayment": "طلب دفع",
       "attachFile": "إرفاق ملف",
+      "attachPhotos": "الصور ومقاطع الفيديو",
       "attach": "إرفاق",
       "loadingMessages": "جارٍ تحميل الرسائل…",
       "loadingOlderMessages": "جارٍ تحميل الرسائل الأقدم…",
@@ -7731,7 +7738,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "بطاقة تجريبية (للمسؤولين فقط)",
+          "desc": "ترسل لك Vitana الآن رسالة تحتوي على بطاقة Vitana Index في محادثتك مع Vitana، كما يتلقاها الأعضاء في الصباح. أنت وحدك من يتلقاها.",
+          "button": "إرسال بطاقة تجريبية",
+          "sending": "جارٍ الإرسال …",
+          "sent": "تم إرسال البطاقة التجريبية – افتح محادثتك مع Vitana.",
+          "open": "فتح المحادثة مع Vitana",
+          "errorTitle": "لم يتم إرسال البطاقة التجريبية",
+          "unavailable": "رسائل Vitana متوقفة هنا حاليًا، على سبيل المثال في بيئة staging.",
+          "noIndex": "ليس لديك Vitana Index بعد، لذلك لا توجد بطاقة Index بعد.",
+          "rateLimited": "يرجى الانتظار دقيقة قبل البطاقة التجريبية التالية.",
+          "failed": "لم ينجح ذلك. يرجى المحاولة مرة أخرى."
+        }
       },
       "communityIntroTitle": "عرّفني على المجتمع",
       "communityIntroBody": "خلال أسبوعك الأول، يرى الأعضاء الآخرون بطاقة ترحيب قصيرة عنك ويمكنهم إلقاء التحية عليك.",

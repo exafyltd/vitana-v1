@@ -58,9 +58,9 @@
       "operations": "Operations",
       "legal": "Legal & Compliance",
       "reports": "Reports",
-      "approvals": "Approvals",
-      "audit": "Audit",
-      "settings": "Settings",
+      "approvals": "Одобрения",
+      "audit": "Аудит",
+      "settings": "Настройки",
       "_pending_review": {
         "back": true,
         "overview": true,
@@ -71,11 +71,38 @@
         "hr": true,
         "operations": true,
         "legal": true,
-        "reports": true,
-        "approvals": true,
-        "audit": true,
-        "settings": true
+        "reports": true
       }
+    },
+    "groups": {
+      "_pending_review": {
+        "start": true,
+        "connect": true,
+        "grow": true,
+        "account": true
+      },
+      "start": "Start",
+      "connect": "Connect",
+      "grow": "Grow",
+      "account": "Account"
+    },
+    "roles": {
+      "_pending_review": {
+        "exafyAdmin": true,
+        "administrator": true,
+        "backOffice": true,
+        "staff": true,
+        "professional": true,
+        "patient": true,
+        "community": true
+      },
+      "exafyAdmin": "Exafy Admin",
+      "administrator": "Administrator",
+      "backOffice": "Back Office",
+      "staff": "Staff",
+      "professional": "Professional",
+      "patient": "Patient",
+      "community": "Community Member"
     }
   }
 }

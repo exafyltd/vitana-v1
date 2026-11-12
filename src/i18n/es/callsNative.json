@@ -1,0 +1,21 @@
+{
+  "callsNative": {
+    "incomingAudio": "Llamada de audio entrante…",
+    "incomingVideo": "Videollamada entrante…",
+    "accept": "Aceptar llamada",
+    "reject": "Rechazar llamada",
+    "endCall": "Finalizar llamada",
+    "calling": "Llamando",
+    "videoCalling": "Videollamando",
+    "initializing": "Preparando…",
+    "connecting": "Conectando…",
+    "connectionFailed": "Error de conexión",
+    "mute": "Silenciar micrófono",
+    "unmute": "Activar micrófono",
+    "cameraOff": "Apagar cámara",
+    "cameraOn": "Encender cámara",
+    "unknownUser": "Miembro desconocido",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

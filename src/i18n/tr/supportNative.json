@@ -7,7 +7,10 @@
         "ai": "Yapay zekâ",
         "productivity": "E-posta ve takvim",
         "media": "Müzik ve video",
-        "agent": "Autopilot"
+        "agent": "Autopilot",
+        "_pending_review": {
+          "agent": true
+        }
       },
       "sections": {
         "shopping": "Alışveriş ve ödüller",

@@ -1,0 +1,83 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "AI sections",
+      "overview": "Overview",
+      "insights": "Insights",
+      "recommendations": "Recommendations",
+      "dailySummary": "Daily Summary",
+      "companion": "AI Companion",
+      "_pending_review": {}
+    },
+    "priority": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "_pending_review": {}
+    },
+    "suggestions": {
+      "title": "AI Insights & Suggestions",
+      "_pending_review": {}
+    },
+    "reward": {
+      "suggestions": "Act on AI suggestions for health rewards",
+      "index": "Improve your health score for more credits",
+      "_pending_review": {}
+    },
+    "index": {
+      "computing": "computing…",
+      "_pending_review": {}
+    },
+    "streak": {
+      "meditation": "Meditation",
+      "_pending_review": {}
+    },
+    "companion": {
+      "suggestionDescription": "AI-generated wellness suggestion",
+      "recall": "Recall",
+      "autopilotMeditation": "Schedule meditation break",
+      "autopilotHydration": "Hydration reminder in 15 min",
+      "_pending_review": {}
+    },
+    "motivation": {
+      "defaultQuote": "Every small step towards wellness is a victory worth celebrating.",
+      "defaultAuthor": "Today's Inspiration",
+      "_pending_review": {}
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Wellness",
+      "_pending_review": {}
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Blood Markers",
+      "_pending_review": {}
+    },
+    "chat": {
+      "voice": "Start voice call",
+      "video": "Start video call",
+      "send": "Send message",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "settings": "Autopilot settings",
+      "toggle": "Turn Autopilot on or off",
+      "_pending_review": {}
+    },
+    "autopilotDone": {
+      "reward": "+{reward} VTNA earned!",
+      "task": "Task completed: {title}",
+      "_pending_review": {}
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": "· +{n} VTNA",
+      "total": ". Index now {n}",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

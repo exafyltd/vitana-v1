@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "Ses Manzarası {value0}",
       "vitanaAudioMode": "VITANA Ses Modu",
       "typeYourMessage": "Mesajını yaz...",
-      "returnVoice": "Sese dön"
+      "returnVoice": "Sese dön",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAKET:",
@@ -6069,6 +6075,7 @@
       "sendFunds": "Para Gönder",
       "requestPayment": "Ödeme Talep Et",
       "attachFile": "Dosya Ekle",
+      "attachPhotos": "Fotoğraflar ve videolar",
       "attach": "Ekle",
       "loadingMessages": "Mesajlar yükleniyor…",
       "loadingOlderMessages": "Eski mesajlar yükleniyor…",
@@ -7731,7 +7738,20 @@
         "communityDesc": "People, groups and events that suit you.",
         "business": "Business & income",
         "businessDesc": "Optional: ideas for earning money with your knowledge in Vitanaland. Off by default – only if you turn it on.",
-        "loadError": "Your settings for Vitana's messages could not be loaded."
+        "loadError": "Your settings for Vitana's messages could not be loaded.",
+        "testCard": {
+          "title": "Test kartı (yalnızca yöneticiler)",
+          "desc": "Vitana şimdi sana Vitana ile sohbetine Vitana Index kartını içeren bir mesaj gönderir; üyelerin sabah aldığı gibi. Yalnızca sen alırsın.",
+          "button": "Test kartı gönder",
+          "sending": "Gönderiliyor …",
+          "sent": "Test kartı gönderildi – Vitana ile sohbetini aç.",
+          "open": "Vitana ile sohbeti aç",
+          "errorTitle": "Test kartı gönderilmedi",
+          "unavailable": "Vitana'nın mesajları burada şu an kapalı, örneğin staging'de.",
+          "noIndex": "Henüz bir Vitana Index'in yok, bu yüzden henüz Index kartı yok.",
+          "rateLimited": "Bir sonraki test kartından önce lütfen bir dakika bekle.",
+          "failed": "Olmadı. Lütfen tekrar dene."
+        }
       },
       "communityIntroTitle": "Beni topluluğa tanıt",
       "communityIntroBody": "İlk haftanda diğer üyeler seninle ilgili kısa bir karşılama kartı görür ve sana merhaba diyebilir.",

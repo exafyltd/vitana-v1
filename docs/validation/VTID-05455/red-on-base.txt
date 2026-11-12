@@ -1,0 +1,78 @@
+# VTID-05455 red on base: tests/health/** (this PR's new tests) run on a detached worktree at origin/main e530abd0d82314092f4c4569e3582383bc1c7c8e
+# (apps/mobile npm ci; node ../../scripts/native/gen-i18n-map.mjs; npx jest tests/health --ci). Every suite fails: the health screens, the data module and the health-sync port do not exist on main.
+
+FAIL tests/health/consent-no-write.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/health/HealthScreen' from 'tests/health/consent-no-write.test.tsx'
+
+      14 | import { __setSupabaseForTests } from '../../src/auth/client';
+      15 | import { __setGatewayForTests } from '../../src/auth/gateway';
+    > 16 | import { HealthScreen } from '../../src/screens/health/HealthScreen';
+         | ^
+      17 | import { fetchVitanaIndex, INDEX_SELECT_COLUMNS, toVitanaIndexState, windowStart } from '../../src/screens/health/data/vitana-index';
+      18 | import { normalizeHealthSummary } from '../../src/screens/health/data/records';
+      19 | import { TOKEN, USER_ID, healthWrapper, indexRows, recordingSupabase } from './helpers';
+
+
+FAIL tests/health/dashboard.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/health/HealthScreen' from 'tests/health/dashboard.test.tsx'
+
+      13 | import { __setGatewayForTests } from '../../src/auth/gateway';
+      14 | import { overlayBus } from '../../src/navigation/overlay-bus';
+    > 15 | import { HealthScreen, normalizeHealthMode } from '../../src/screens/health/HealthScreen';
+         | ^
+      16 | import { filterSupplements } from '../../src/screens/health/MobileHealthSupplementsTab';
+      17 | import { healthWrapper, supplements, FAIL } from './helpers';
+      18 |
+
+
+FAIL tests/health/health-sync-contract.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/ports/health-sync' from 'tests/health/health-sync-contract.test.tsx'
+
+      20 | import { __setSupabaseForTests } from '../../src/auth/client';
+      21 | import { __setGatewayForTests } from '../../src/auth/gateway';
+    > 22 | import {
+         | ^
+      23 |   HEALTH_SYNC_CATEGORIES,
+      24 |   HEALTH_SYNC_ENTRY_KEYS,
+      25 |   HEALTH_SYNC_INGEST_ENABLED,
+
+
+FAIL tests/health/overlay.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/health/HealthScreen' from 'tests/health/overlay.test.tsx'
+
+      14 | import { __setGatewayForTests } from '../../src/auth/gateway';
+      15 | import { overlayBus } from '../../src/navigation/overlay-bus';
+    > 16 | import { HealthScreen } from '../../src/screens/health/HealthScreen';
+         | ^
+      17 | import { GROWTH_CONFETTI_DAY_KEY, keepGoingMessage, sevenDayDelta, sumVectors, todayKey } from '../../src/screens/health/VitanaIndexSheet';
+      18 | import { healthWrapper, indexRows } from './helpers';
+      19 |
+
+
+FAIL tests/health/i18n-routes.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/health/HealthScreen' from 'tests/health/i18n-routes.test.tsx'
+
+      19 | import { languageFromLocale } from '../../src/i18n/I18nProvider';
+      20 | import { NATIVE_ROUTES, resolveWebPath } from '../../src/navigation/resolve';
+    > 21 | import { HealthScreen } from '../../src/screens/health/HealthScreen';
+         | ^
+      22 | import { healthWrapper } from './helpers';
+      23 |
+      24 | const APP = join(__dirname, '../..');
+
+
+Test Suites: 5 failed, 5 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        32.242 s
+Ran all test suites matching /tests\/health/i.

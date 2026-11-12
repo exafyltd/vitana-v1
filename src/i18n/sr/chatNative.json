@@ -1,0 +1,85 @@
+{
+  "chatNative": {
+    "typing": {
+      "one": "{name} kuca…",
+      "two": "{first} i {second} kucaju…",
+      "many": "Nekoliko osoba kuca…",
+      "_pending_review": {}
+    },
+    "conversation": {
+      "fallbackTitle": "Razgovor",
+      "_pending_review": {}
+    },
+    "reply": {
+      "yourself": "sebe",
+      "contentUnavailable": "Sadržaj poruke nije dostupan",
+      "_pending_review": {}
+    },
+    "reactions": {
+      "reactWith": "Reaguj sa {emoji}",
+      "count": "Reakcije {emoji}: {count}",
+      "_pending_review": {}
+    },
+    "bubble": {
+      "longPressHint": "Dugo pritisni za reakcije i radnje",
+      "_pending_review": {}
+    },
+    "emoji": {
+      "open": "Izaberi emodži",
+      "recent": "Nedavno",
+      "smileys": "Smajliji",
+      "people": "Ljudi",
+      "nature": "Priroda",
+      "food": "Hrana",
+      "activity": "Aktivnost",
+      "travel": "Putovanja",
+      "objects": "Predmeti",
+      "_pending_review": {}
+    },
+    "voice": {
+      "discard": "Obriši snimak",
+      "play": "Pusti",
+      "pause": "Pauziraj",
+      "stop": "Zaustavi snimanje",
+      "_pending_review": {}
+    },
+    "composer": {
+      "removeFile": "Ukloni {name}",
+      "pickerDone": "Gotovo",
+      "_pending_review": {}
+    },
+    "payment": {
+      "status": {
+        "pending": "Na čekanju",
+        "completed": "Završeno",
+        "declined": "Odbijeno",
+        "_pending_review": {}
+      },
+      "accept": "Prihvati",
+      "decline": "Odbij",
+      "pay": "Plati sada",
+      "refreshBalance": "Osveži stanje",
+      "_pending_review": {}
+    },
+    "invite": {
+      "untitled": "Pozivnica",
+      "_pending_review": {}
+    },
+    "booking": {
+      "untitled": "Zahtev za uslugu",
+      "_pending_review": {}
+    },
+    "companion": {
+      "indexScore": "Tvoj indeks: {score}",
+      "_pending_review": {}
+    },
+    "attach": {
+      "library": "Biblioteka fotografija",
+      "camera": "Kamera",
+      "files": "Datoteke",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

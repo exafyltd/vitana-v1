@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "Zvučni ambijent {value0}",
       "vitanaAudioMode": "VITANA audio režim",
       "typeYourMessage": "Ukucaj svoju poruku...",
-      "returnVoice": "Povratak na glas"
+      "returnVoice": "Povratak na glas",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAKET:",
@@ -6053,6 +6059,7 @@
       "sendFunds": "Pošalji sredstva",
       "requestPayment": "Zahtevaj uplatu",
       "attachFile": "Priloži datoteku",
+      "attachPhotos": "Fotografije i video",
       "attach": "Priloži",
       "loadingMessages": "Učitavanje poruka…",
       "noMessagesYet": "Još uvek nema poruka",
@@ -7716,7 +7723,20 @@
         "communityDesc": "Ljudi, grupe i događaji koji ti odgovaraju.",
         "business": "Posao i prihod",
         "businessDesc": "Opciono: ideje kako da zaradiš od svog znanja u Vitanalandu. Podrazumevano isključeno – samo ako ga uključiš.",
-        "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke."
+        "loadError": "Nije moguće učitati tvoja podešavanja za Vitanine poruke.",
+        "testCard": {
+          "title": "Test kartica (samo za administratore)",
+          "desc": "Vitana ti sada šalje poruku sa karticom Vitana Index u tvoj čet sa Vitanom – onako kako je članovi dobijaju ujutru. Dobijaš je samo ti.",
+          "button": "Pošalji test karticu",
+          "sending": "Slanje …",
+          "sent": "Test kartica je poslata – otvori svoj čet sa Vitanom.",
+          "open": "Otvori čet sa Vitanom",
+          "errorTitle": "Test kartica nije poslata",
+          "unavailable": "Vitanine poruke su ovde trenutno isključene, na primer na stagingu.",
+          "noIndex": "Još nemaš Vitana Index, pa još nema Index kartice.",
+          "rateLimited": "Sačekaj minut do sledeće test kartice.",
+          "failed": "Nije uspelo. Pokušaj ponovo."
+        }
       },
       "communityIntroTitle": "Predstavi me zajednici",
       "communityIntroBody": "Tokom tvoje prve nedelje drugi članovi vide kratku karticu dobrodošlice o tebi i mogu da te pozdrave.",

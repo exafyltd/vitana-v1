@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05608",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/messages/MessageInput.group-one-row.test.tsx", "cwd": ".",
+      "reason": "a group composer stays one row (40px box) and a direct composer keeps its 6-row limit" },
+    { "kind": "existing", "ref": "npx vitest run src/components/messages/MessageInput.enter-newline.vtid-04966.test.tsx src/components/messages/MessageInput.paste-enter.vtid-05229.test.tsx src/components/messages/MessageInput.mentions.vtid-04926.test.tsx src/components/messages/MessageInput.media-upload.vtid-05316.test.tsx", "cwd": ".",
+      "reason": "the rest of the composer's behaviour (Enter, paste, mentions, uploads) is unchanged" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the composer change is served" }
+  ]
+}
