@@ -311,7 +311,7 @@ function AppSidebar({
         <div className="flex-1 px-2 pb-32">
           <SidebarGroup>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
+              <SidebarMenu className="space-y-0.5">
                 {navItems.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
@@ -325,7 +325,7 @@ function AppSidebar({
                               onSidebarOpenChange(true);
                             }
                           }}
-                          className={`relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group ${
+                          className={`relative flex items-center gap-3 rounded-xl px-3 py-1.5 transition-all duration-200 group ${
                             isActive 
                               ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
                               : "hover:bg-sidebar-accent/50 text-sidebar-foreground hover:text-foreground"
@@ -401,10 +401,10 @@ function AppSidebar({
           )}
           
           {/* Soundscape Control */}
-          <SoundscapeControl />
+          <div className="grid grid-cols-2 gap-1.5"><SoundscapeControl />
 
           {/* Language Control */}
-          <LanguageSidebarControl /></div>
+          <LanguageSidebarControl /></div></div>
 
           {!isMobile && <div aria-hidden="true" className={open ? ORB_CLEARANCE_EXPANDED : ORB_CLEARANCE_COLLAPSED} />}
           
