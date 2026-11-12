@@ -1,0 +1,24 @@
+PASS migration applies over existing rows
+PASS explicit YES row stays true (recorded choice preserved)
+PASS explicit YES row keeps its marker
+PASS explicit NO row stays false (recorded choice preserved)
+PASS explicit NO row keeps its marker
+PASS pre-migration-window true row (no marker) is backfilled to false
+PASS window row still has no marker after backfill
+PASS pre-rollout false row A unchanged (false)
+PASS pre-rollout false row B unchanged (false)
+PASS community_intro_opt_in is NOT NULL DEFAULT false — {"is_nullable":"NO","column_default":"false","data_type":"boolean"}
+PASS community_intro_choice_at is timestamptz NULL — {"is_nullable":"YES","data_type":"timestamp with time zone"}
+PASS no unmarked row is still introduced (backfill complete) — leftover=0
+PASS exactly the two explicit-choice rows carry a marker — recorded=2
+PASS second run is a no-op (every row identical)
+PASS a new signup defaults to false (not introduced until they choose Yes)
+PASS REPLICA IDENTITY stays FULL
+PASS table stays in the supabase_realtime publication
+PASS both RLS policies unchanged — ["Authenticated users can view minimal global profiles","Users can manage their own global profile"]
+PASS a member can record their own choice
+PASS a member cannot change another member's row
+PASS self-check rejects a table that is not REPLICA IDENTITY FULL — VTID-05475 self-check: global_community_profiles is no longer REPLICA IDENTITY FULL
+PASS a failed self-check rolls the whole migration back
+
+ALL CHECKS PASSED

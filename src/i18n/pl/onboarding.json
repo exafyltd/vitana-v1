@@ -26,6 +26,9 @@
       "submit": "Zaczynajmy!",
       "_pending_review": {},
       "communityIntroLabel": "Przedstaw mnie społeczności",
+      "communityIntroQuestion": "Czy możemy przedstawić Cię społeczności?",
+      "communityIntroYes": "Tak, przedstaw mnie 👋",
+      "communityIntroNo": "Nie teraz",
       "communityIntroHint": "W pierwszym tygodniu inni członkowie widzą krótką kartę powitalną o Tobie i mogą się przywitać. Możesz to zmienić w dowolnym momencie w Ustawieniach."
     },
     "_pending_review": {}

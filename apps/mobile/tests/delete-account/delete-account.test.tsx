@@ -309,8 +309,9 @@ describe.each([...LOCALES])('%s', (locale) => {
   it('has every deleteAccountNative key (DE-first shard mirrored)', () => {
     const de = JSON.parse(readFileSync(join(REPO, 'src/i18n/de/deleteAccountNative.json'), 'utf8')).deleteAccountNative;
     const shard = JSON.parse(readFileSync(join(REPO, `src/i18n/${locale}/deleteAccountNative.json`), 'utf8')).deleteAccountNative;
-    expect(Object.keys(shard).sort()).toEqual(Object.keys(de).sort());
-    for (const v of Object.values(shard)) expect(typeof v === 'string' && v.length > 0).toBe(true);
+    const dataEntries = (x: Record<string, unknown>) => Object.entries(x).filter(([k]) => !k.startsWith('_'));
+    expect(dataEntries(shard).map(([k]) => k).sort()).toEqual(dataEntries(de).map(([k]) => k).sort());
+    for (const [, v] of dataEntries(shard)) expect(typeof v === 'string' && v.length > 0).toBe(true);
   });
 });
 

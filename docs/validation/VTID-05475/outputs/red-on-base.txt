@@ -1,0 +1,770 @@
+12:35:21 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/projects/sandbox/wt-wf2-explicit-intro-choice[39m
+
+ [31m❯[39m src/lib/community-intro.explicit-choice.test.ts [2m([22m[2m7 tests[22m[2m | [22m[31m5 failed[39m[2m)[22m[32m 16[2mms[22m[39m
+[31m     [31m×[31m writes both community_intro_opt_in and community_intro_choice_at when the column exists[39m[32m 7[2mms[22m[39m
+[31m     [31m×[31m writes false + marker for an explicit 'Not now'[39m[32m 1[2mms[22m[39m
+[31m     [31m×[31m retries once with only community_intro_opt_in on a PGRST204 unknown-column error[39m[32m 0[2mms[22m[39m
+[31m     [31m×[31m retries once with only community_intro_opt_in on a 42703 unknown-column error[39m[32m 0[2mms[22m[39m
+[31m     [31m×[31m throws if the retry itself errors[39m[32m 4[2mms[22m[39m
+     [32m✓[39m throws and does NOT retry on any other error code[32m 0[2mms[22m[39m
+     [32m✓[39m throws and does NOT retry on a PGRST204 that does not name the marker column[32m 0[2mms[22m[39m
+[90mstderr[2m | src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx[2m > [22m[2mCommunityIntroToggle (VTID-05206)[2m > [22m[2mhides itself when the setting cannot be read
+[22m[39mWarning: An update to CommunityIntroToggle inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CommunityIntroToggle (/projects/sandbox/wt-wf2-explicit-intro-choice/src/components/settings/CommunityIntroToggle.tsx:23:65)
+    at QueryClientProvider (file:///projects/sandbox/vitana-v1/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:20:3)
+
+ [31m❯[39m src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx [2m([22m[2m6 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 190[2mms[22m[39m
+     [32m✓[39m reads the member's own row and shows the switch on[32m 54[2mms[22m[39m
+     [32m✓[39m shows off for a member who is not introduced, and for a missing row[32m 18[2mms[22m[39m
+[31m     [31m×[31m switching off records false + the choice marker on the member's own row (VTID-05475)[39m[32m 18[2mms[22m[39m
+[31m     [31m×[31m switching on again records true + the choice marker (VTID-05475)[39m[32m 12[2mms[22m[39m
+     [32m✓[39m a failed save tells the member and keeps the old state[32m 61[2mms[22m[39m
+     [32m✓[39m hides itself when the setting cannot be read[32m 25[2mms[22m[39m
+ [31m❯[39m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 206[2mms[22m[39m
+[31m     [31m×[31m shows a radiogroup with two options, NEITHER pre-selected[39m[32m 154[2mms[22m[39m
+[31m     [31m×[31m choosing Yes writes opt-in true (with marker written by the lib) and completes registration[39m[32m 9[2mms[22m[39m
+[31m     [31m×[31m choosing Not now writes opt-in false and completes registration[39m[32m 7[2mms[22m[39m
+     [32m✓[39m submitting with NO choice writes nothing and still completes registration[32m 27[2mms[22m[39m
+[31m     [31m×[31m a failed choice write never blocks finishing the step[39m[32m 8[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 11 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/lib/community-intro.explicit-choice.test.ts[2m > [22msetCommunityIntroOptIn (VTID-05475)[2m > [22mwrites both community_intro_opt_in and community_intro_choice_at when the column exists
+[31m[1mAssertionError[22m: expected 'undefined' to be 'string' // Object.is equality[39m
+
+Expected: [32m"string"[39m
+Received: [31m"undefined"[39m
+
+[36m [2m❯[22m src/lib/community-intro.explicit-choice.test.ts:[2m50:57[22m[39m
+    [90m 48|[39m     [34mexpect[39m(updates)[33m.[39m[34mtoHaveLength[39m([34m1[39m)[33m;[39m
+    [90m 49|[39m     [34mexpect[39m(updates[[34m0[39m][33m.[39mcommunity_intro_opt_in)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m 50|[39m     [34mexpect[39m([35mtypeof[39m updates[[34m0[39m][33m.[39mcommunity_intro_choice_at)[33m.[39m[34mtoBe[39m([32m"string"[39m)[33m;[39m
+    [90m   |[39m                                                         [31m^[39m
+    [90m 51|[39m     [90m// a valid ISO timestamp[39m
+    [90m 52|[39m     expect(Number.isNaN(Date.parse(updates[0].community_intro_choice_a…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/lib/community-intro.explicit-choice.test.ts[2m > [22msetCommunityIntroOptIn (VTID-05475)[2m > [22mwrites false + marker for an explicit 'Not now'
+[31m[1mAssertionError[22m: expected 'undefined' to be 'string' // Object.is equality[39m
+
+Expected: [32m"string"[39m
+Received: [31m"undefined"[39m
+
+[36m [2m❯[22m src/lib/community-intro.explicit-choice.test.ts:[2m60:57[22m[39m
+    [90m 58|[39m     [34mexpect[39m(updates)[33m.[39m[34mtoHaveLength[39m([34m1[39m)[33m;[39m
+    [90m 59|[39m     [34mexpect[39m(updates[[34m0[39m][33m.[39mcommunity_intro_opt_in)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m 60|[39m     [34mexpect[39m([35mtypeof[39m updates[[34m0[39m][33m.[39mcommunity_intro_choice_at)[33m.[39m[34mtoBe[39m([32m"string"[39m)[33m;[39m
+    [90m   |[39m                                                         [31m^[39m
+    [90m 61|[39m   })[33m;[39m
+    [90m 62|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/lib/community-intro.explicit-choice.test.ts[2m > [22msetCommunityIntroOptIn (VTID-05475)[2m > [22mretries once with only community_intro_opt_in on a PGRST204 unknown-column error
+[31m[1mUnknown Error[22m: Could not find the 'community_intro_choice_at' column of 'global_community_profiles' in the schema cache[39m
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/lib/community-intro.explicit-choice.test.ts[2m > [22msetCommunityIntroOptIn (VTID-05475)[2m > [22mretries once with only community_intro_opt_in on a 42703 unknown-column error
+[31m[1mUnknown Error[22m: column "community_intro_choice_at" does not exist[39m
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/lib/community-intro.explicit-choice.test.ts[2m > [22msetCommunityIntroOptIn (VTID-05475)[2m > [22mthrows if the retry itself errors
+[31m[1mAssertionError[22m: expected { code: '42703', …(1) } to match object { code: '500' }
+(1 matching property omitted from actual)[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "code": "500",[39m
+[31m+   "code": "42703",[39m
+[2m  }[22m
+
+[36m [2m❯[22m src/lib/community-intro.explicit-choice.test.ts:[2m90:47[22m[39m
+    [90m 88|[39m       { error[33m:[39m { code[33m:[39m [32m"500"[39m[33m,[39m message[33m:[39m [32m"server exploded"[39m } }[33m,[39m
+    [90m 89|[39m     ][33m;[39m
+    [90m 90|[39m     await expect(setCommunityIntroOptIn("me", true)).rejects.toMatchOb…
+    [90m   |[39m                                               [31m^[39m
+    [90m 91|[39m     [34mexpect[39m(updates)[33m.[39m[34mtoHaveLength[39m([34m2[39m)[33m;[39m
+    [90m 92|[39m   })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx[2m > [22mOnboardingNameForm — community introductions are an explicit choice (VTID-05475)[2m > [22mshows a radiogroup with two options, NEITHER pre-selected
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an accessible element with the role "radiogroup"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Let's get to know you":
+  [36m<h2[39m
+    [33mclass[39m=[32m"text-xl font-semibold text-foreground"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"text-xs text-gray-500"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "What should I call you?":
+  [36m<input[39m
+    [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+    [33mid[39m=[32m"onb-display-name"[39m
+    [33mmaxlength[39m=[32m"100"[39m
+    [33mplaceholder[39m=[32m"Your name"[39m
+    [33mvalue[39m=[32m"Anna Neu"[39m
+  [36m/>[39m
+
+  Name "Choose your Vitanaland username":
+  [36m<input[39m
+    [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+    [33mid[39m=[32m"onb-handle"[39m
+    [33mmaxlength[39m=[32m"30"[39m
+    [33mplaceholder[39m=[32m"your_username"[39m
+    [33mvalue[39m=[32m"anna_neu"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  switch:
+
+  Name "Introduce me to the community":
+  [36m<button[39m
+    [33maria-checked[39m=[32m"true"[39m
+    [33mclass[39m=[32m"peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"[39m
+    [33mdata-state[39m=[32m"checked"[39m
+    [33mdata-testid[39m=[32m"onb-community-intro-switch"[39m
+    [33mid[39m=[32m"onb-community-intro"[39m
+    [33mrole[39m=[32m"switch"[39m
+    [33mtype[39m=[32m"button"[39m
+    [33mvalue[39m=[32m"on"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Let's get started!":
+  [36m<button[39m
+    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 px-4 w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"w-full max-w-md mx-auto px-4"[39m
+      [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"bg-card/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"text-center space-y-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-primary-foreground text-lg font-bold"[39m
+            [36m>[39m
+              [0mV[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-xl font-semibold text-foreground"[39m
+          [36m>[39m
+            [0mLet's get to know you[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+          [36m>[39m
+            [0mThis is how others will see you in the community[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-display-name"[39m
+          [36m>[39m
+            [0mWhat should I call you?[0m
+          [36m</label>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+            [33mid[39m=[32m"onb-display-name"[39m
+            [33mmaxlength[39m=[32m"100"[39m
+            [33mplaceholder[39m=[32m"Your name"[39m
+            [33mvalue[39m=[32m"Anna Neu"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-handle"[39m
+          [36m>[39m
+            [0mChoose your Vitanaland username[0m
+          [36m</label>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm"[39m
+            [36m>[39m
+              [0m@[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+              [33mid[39m=[32m"onb-handle"[39m
+              [33mmaxlength[39m=[32m"30"[39m
+              [33mplaceholder[39m=[32m"your_username"[39m
+              [33mvalue[39m=[32m"anna_neu"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"absolute end-3 top-1/2 -translate-y-1/2"[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3"[39m
+          [33mdata-testid[39m=[32m"onb-community-intro"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-1"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-gray-700"[39m
+              [33mfor[39m=[32m"onb-community-intro"[39m
+            [36m>[39m
+              [0mIntroduce me to the community[0m
+            [36m</label>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-xs text-gray-500"[39m
+            [36m>[39m
+              [0mDuring your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-checked[39m=[32m"true"[39m
+            [33mclass[39m=[32m"peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"[39m
+            [33mdata-state[39m=[32m"checked"[39m
+            [33mdata-testid[39m=[32m"onb-community-intro-switch"[39m
+            [33mid[39m=[32m"onb-community-intro"[39m
+            [33mrole[39m=[32m"switch"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"on"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 rtl:data-[state=checked]:-translate-x-5"[39m
+              [33mdata-state[39m=[32m"checked"[39m
+            [36m/>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 px-4 w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"[39m
+        [36m>[39m
+          [0mLet's get started![0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError ../vitana-v1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m getByRole ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx:[2m44:26[22m[39m
+    [90m 42|[39m   it("shows a radiogroup with two options, NEITHER pre-selected", () =…
+    [90m 43|[39m     [34mrender[39m([33m<[39m[33mOnboardingNameForm[39m [33monComplete[39m[33m=[39m[33m{[39mvi[33m.[39m[34mfn[39m()[33m}[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m 44|[39m     [35mconst[39m group [33m=[39m screen[33m.[39m[34mgetByRole[39m([32m"radiogroup"[39m)[33m;[39m
+    [90m   |[39m                          [31m^[39m
+    [90m 45|[39m     [34mexpect[39m(group)[33m.[39m[34mtoBeTruthy[39m()[33m;[39m
+    [90m 46|[39m     [35mconst[39m yes [33m=[39m screen[33m.[39m[34mgetByTestId[39m([32m"onb-community-intro-yes"[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx[2m > [22mOnboardingNameForm — community introductions are an explicit choice (VTID-05475)[2m > [22mchoosing Yes writes opt-in true (with marker written by the lib) and completes registration
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="onb-community-intro-yes"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"w-full max-w-md mx-auto px-4"[39m
+      [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"bg-card/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"text-center space-y-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-primary-foreground text-lg font-bold"[39m
+            [36m>[39m
+              [0mV[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-xl font-semibold text-foreground"[39m
+          [36m>[39m
+            [0mLet's get to know you[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+          [36m>[39m
+            [0mThis is how others will see you in the community[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-display-name"[39m
+          [36m>[39m
+            [0mWhat should I call you?[0m
+          [36m</label>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+            [33mid[39m=[32m"onb-display-name"[39m
+            [33mmaxlength[39m=[32m"100"[39m
+            [33mplaceholder[39m=[32m"Your name"[39m
+            [33mvalue[39m=[32m"Anna Neu"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-handle"[39m
+          [36m>[39m
+            [0mChoose your Vitanaland username[0m
+          [36m</label>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm"[39m
+            [36m>[39m
+              [0m@[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+              [33mid[39m=[32m"onb-handle"[39m
+              [33mmaxlength[39m=[32m"30"[39m
+              [33mplaceholder[39m=[32m"your_username"[39m
+              [33mvalue[39m=[32m"anna_neu"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"absolute end-3 top-1/2 -translate-y-1/2"[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3"[39m
+          [33mdata-testid[39m=[32m"onb-community-intro"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-1"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-gray-700"[39m
+              [33mfor[39m=[32m"onb-community-intro"[39m
+            [36m>[39m
+              [0mIntroduce me to the community[0m
+            [36m</label>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-xs text-gray-500"[39m
+            [36m>[39m
+              [0mDuring your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-checked[39m=[32m"true"[39m
+            [33mclass[39m=[32m"peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"[39m
+            [33mdata-state[39m=[32m"checked"[39m
+            [33mdata-testid[39m=[32m"onb-community-intro-switch"[39m
+            [33mid[39m=[32m"onb-community-intro"[39m
+            [33mrole[39m=[32m"switch"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"on"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 rtl:data-[state=checked]:-translate-x-5"[39m
+              [33mdata-state[39m=[32m"checked"[39m
+            [36m/>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 px-4 w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"[39m
+        [36m>[39m
+          [0mLet's get started![0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError ../vitana-v1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m getByTestId ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx:[2m59:28[22m[39m
+    [90m 57|[39m     [35mconst[39m onComplete [33m=[39m vi[33m.[39m[34mfn[39m()[33m;[39m
+    [90m 58|[39m     [34mrender[39m([33m<[39m[33mOnboardingNameForm[39m [33monComplete[39m[33m=[39m[33m{[39monComplete[33m}[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m 59|[39m     fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByTestId[39m([32m"onb-community-intro-yes"[39m))[33m;[39m
+    [90m   |[39m                            [31m^[39m
+    [90m 60|[39m     expect(screen.getByTestId("onb-community-intro-yes").getAttribute(…
+    [90m 61|[39m     expect(screen.getByTestId("onb-community-intro-no").getAttribute("…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx[2m > [22mOnboardingNameForm — community introductions are an explicit choice (VTID-05475)[2m > [22mchoosing Not now writes opt-in false and completes registration
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="onb-community-intro-no"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"w-full max-w-md mx-auto px-4"[39m
+      [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"bg-card/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"text-center space-y-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-primary-foreground text-lg font-bold"[39m
+            [36m>[39m
+              [0mV[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-xl font-semibold text-foreground"[39m
+          [36m>[39m
+            [0mLet's get to know you[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+          [36m>[39m
+            [0mThis is how others will see you in the community[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-display-name"[39m
+          [36m>[39m
+            [0mWhat should I call you?[0m
+          [36m</label>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+            [33mid[39m=[32m"onb-display-name"[39m
+            [33mmaxlength[39m=[32m"100"[39m
+            [33mplaceholder[39m=[32m"Your name"[39m
+            [33mvalue[39m=[32m"Anna Neu"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-handle"[39m
+          [36m>[39m
+            [0mChoose your Vitanaland username[0m
+          [36m</label>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm"[39m
+            [36m>[39m
+              [0m@[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+              [33mid[39m=[32m"onb-handle"[39m
+              [33mmaxlength[39m=[32m"30"[39m
+              [33mplaceholder[39m=[32m"your_username"[39m
+              [33mvalue[39m=[32m"anna_neu"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"absolute end-3 top-1/2 -translate-y-1/2"[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3"[39m
+          [33mdata-testid[39m=[32m"onb-community-intro"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-1"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-gray-700"[39m
+              [33mfor[39m=[32m"onb-community-intro"[39m
+            [36m>[39m
+              [0mIntroduce me to the community[0m
+            [36m</label>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-xs text-gray-500"[39m
+            [36m>[39m
+              [0mDuring your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-checked[39m=[32m"true"[39m
+            [33mclass[39m=[32m"peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"[39m
+            [33mdata-state[39m=[32m"checked"[39m
+            [33mdata-testid[39m=[32m"onb-community-intro-switch"[39m
+            [33mid[39m=[32m"onb-community-intro"[39m
+            [33mrole[39m=[32m"switch"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"on"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 rtl:data-[state=checked]:-translate-x-5"[39m
+              [33mdata-state[39m=[32m"checked"[39m
+            [36m/>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 px-4 w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"[39m
+        [36m>[39m
+          [0mLet's get started![0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError ../vitana-v1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m getByTestId ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx:[2m71:28[22m[39m
+    [90m 69|[39m     [35mconst[39m onComplete [33m=[39m vi[33m.[39m[34mfn[39m()[33m;[39m
+    [90m 70|[39m     [34mrender[39m([33m<[39m[33mOnboardingNameForm[39m [33monComplete[39m[33m=[39m[33m{[39monComplete[33m}[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m 71|[39m     fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByTestId[39m([32m"onb-community-intro-no"[39m))[33m;[39m
+    [90m   |[39m                            [31m^[39m
+    [90m 72|[39m     expect(screen.getByTestId("onb-community-intro-no").getAttribute("…
+    [90m 73|[39m     fireEvent.click(screen.getByRole("button", { name: "Let's get star…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx[2m > [22mOnboardingNameForm — community introductions are an explicit choice (VTID-05475)[2m > [22ma failed choice write never blocks finishing the step
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="onb-community-intro-yes"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"w-full max-w-md mx-auto px-4"[39m
+      [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"bg-card/95 backdrop-blur-sm rounded-3xl p-6 shadow-lg space-y-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"text-center space-y-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-category-4 to-category-2 flex items-center justify-center shadow-md"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-primary-foreground text-lg font-bold"[39m
+            [36m>[39m
+              [0mV[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-xl font-semibold text-foreground"[39m
+          [36m>[39m
+            [0mLet's get to know you[0m
+          [36m</h2>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+          [36m>[39m
+            [0mThis is how others will see you in the community[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-display-name"[39m
+          [36m>[39m
+            [0mWhat should I call you?[0m
+          [36m</label>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+            [33mid[39m=[32m"onb-display-name"[39m
+            [33mmaxlength[39m=[32m"100"[39m
+            [33mplaceholder[39m=[32m"Your name"[39m
+            [33mvalue[39m=[32m"Anna Neu"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-muted-foreground"[39m
+            [33mfor[39m=[32m"onb-handle"[39m
+          [36m>[39m
+            [0mChoose your Vitanaland username[0m
+          [36m</label>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm"[39m
+            [36m>[39m
+              [0m@[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ps-8 rounded-xl border-border focus:border-category-4 focus:ring-category-4/20"[39m
+              [33mid[39m=[32m"onb-handle"[39m
+              [33mmaxlength[39m=[32m"30"[39m
+              [33mplaceholder[39m=[32m"your_username"[39m
+              [33mvalue[39m=[32m"anna_neu"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"absolute end-3 top-1/2 -translate-y-1/2"[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-3 rounded-xl border border-gray-200 p-3"[39m
+          [33mdata-testid[39m=[32m"onb-community-intro"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-1"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium text-gray-700"[39m
+              [33mfor[39m=[32m"onb-community-intro"[39m
+            [36m>[39m
+              [0mIntroduce me to the community[0m
+            [36m</label>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-xs text-gray-500"[39m
+            [36m>[39m
+              [0mDuring your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-checked[39m=[32m"true"[39m
+            [33mclass[39m=[32m"peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"[39m
+            [33mdata-state[39m=[32m"checked"[39m
+            [33mdata-testid[39m=[32m"onb-community-intro-switch"[39m
+            [33mid[39m=[32m"onb-community-intro"[39m
+            [33mrole[39m=[32m"switch"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"on"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 rtl:data-[state=checked]:-translate-x-5"[39m
+              [33mdata-state[39m=[32m"checked"[39m
+            [36m/>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 px-4 w-full rounded-xl bg-gradient-to-r from-category-4 to-category-4/80 hover:from-category-4/90 hover:to-category-4/70 text-primary-foreground font-medium py-3 h-auto transition-all duration-200"[39m
+        [36m>[39m
+          [0mLet's get started![0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError ../vitana-v1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m getByTestId ../vitana-v1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/components/onboarding/OnboardingNameForm.community-intro.vtid-05206.test.tsx:[2m93:28[22m[39m
+    [90m 91|[39m     [35mconst[39m onComplete [33m=[39m vi[33m.[39m[34mfn[39m()[33m;[39m
+    [90m 92|[39m     [34mrender[39m([33m<[39m[33mOnboardingNameForm[39m [33monComplete[39m[33m=[39m[33m{[39monComplete[33m}[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m 93|[39m     fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByTestId[39m([32m"onb-community-intro-yes"[39m))[33m;[39m
+    [90m   |[39m                            [31m^[39m
+    [90m 94|[39m     fireEvent.click(screen.getByRole("button", { name: "Let's get star…
+    [90m 95|[39m     [35mawait[39m [34mwaitFor[39m(() [33m=>[39m [34mexpect[39m(onComplete)[33m.[39m[34mtoHaveBeenCalled[39m())[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx[2m > [22mCommunityIntroToggle (VTID-05206)[2m > [22mswitching off records false + the choice marker on the member's own row (VTID-05475)
+[31m[1mAssertionError[22m: expected 'undefined' to be 'string' // Object.is equality[39m
+
+Expected: [32m"string"[39m
+Received: [31m"undefined"[39m
+
+[36m [2m❯[22m src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx:[2m77:54[22m[39m
+    [90m 75|[39m     // VTID-05475: a withdrawal is an explicit false + marker, not an …
+    [90m 76|[39m     [34mexpect[39m(payload[33m.[39mcommunity_intro_opt_in)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m 77|[39m     [34mexpect[39m([35mtypeof[39m payload[33m.[39mcommunity_intro_choice_at)[33m.[39m[34mtoBe[39m([32m"string"[39m)[33m;[39m
+    [90m   |[39m                                                      [31m^[39m
+    [90m 78|[39m     [35mconst[39m eqs [33m=[39m calls[33m.[39m[34mfilter[39m((c) [33m=>[39m c[33m.[39mop [33m===[39m [32m"eq"[39m)[33m.[39m[34mmap[39m((c) [33m=>[39m c[33m.[39margs)[33m;[39m
+    [90m 79|[39m     expect(eqs.every(([col, val]) => col === "user_id" && val === "me"…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx[2m > [22mCommunityIntroToggle (VTID-05206)[2m > [22mswitching on again records true + the choice marker (VTID-05475)
+[31m[1mAssertionError[22m: expected 'undefined' to be 'string' // Object.is equality[39m
+
+Expected: [32m"string"[39m
+Received: [31m"undefined"[39m
+
+[36m [2m❯[22m src/components/settings/CommunityIntroToggle.vtid-05206.test.tsx:[2m89:54[22m[39m
+    [90m 87|[39m     const payload = calls.find((c) => c.op === "update")?.args[0] as R…
+    [90m 88|[39m     [34mexpect[39m(payload[33m.[39mcommunity_intro_opt_in)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m 89|[39m     [34mexpect[39m([35mtypeof[39m payload[33m.[39mcommunity_intro_choice_at)[33m.[39m[34mtoBe[39m([32m"string"[39m)[33m;[39m
+    [90m   |[39m                                                      [31m^[39m
+    [90m 90|[39m   })[33m;[39m
+    [90m 91|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[31m11 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (18)[39m
+[2m   Start at [22m 12:35:21
+[2m   Duration [22m 1.25s[2m (transform 193ms, setup 332ms, import 428ms, tests 412ms, environment 1.54s)[22m
+

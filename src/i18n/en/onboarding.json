@@ -26,6 +26,9 @@
       "submit": "Let's get started!",
       "_pending_review": {},
       "communityIntroLabel": "Introduce me to the community",
+      "communityIntroQuestion": "May we introduce you to the community?",
+      "communityIntroYes": "Yes, introduce me 👋",
+      "communityIntroNo": "Not now",
       "communityIntroHint": "During your first week, other members see a short welcome card about you and can say hello. You can change this any time in Settings."
     },
     "_pending_review": {}

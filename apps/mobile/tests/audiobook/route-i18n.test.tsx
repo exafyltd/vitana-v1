@@ -192,7 +192,8 @@ describe('i18n: all 11 locales', () => {
     const shard = (l: string) => JSON.parse(readFileSync(join(REPO, 'src/i18n', l, 'journeyAutopilotNative.json'), 'utf8')).journeyAutopilotNative.audiobook as Record<string, string>;
     const de = shard('de');
     expect(Object.keys(de).sort()).toEqual(['rateValue', 'sleepShort']);
-    for (const l of LOCALES) expect({ l, keys: Object.keys(shard(l)).sort() }).toEqual({ l, keys: Object.keys(de).sort() });
+    const dataKeys = (x: Record<string, string>) => Object.keys(x).filter((k) => !k.startsWith('_')).sort();
+    for (const l of LOCALES) expect({ l, keys: dataKeys(shard(l)) }).toEqual({ l, keys: dataKeys(de) });
   });
 });
 

@@ -27,6 +27,9 @@
       "saving": "Hazırlanıyor...",
       "submit": "Hadi başlayalım!",
       "communityIntroLabel": "Beni topluluğa tanıt",
+      "communityIntroQuestion": "Seni topluluğa tanıtabilir miyiz?",
+      "communityIntroYes": "Evet, beni tanıt 👋",
+      "communityIntroNo": "Şimdi değil",
       "communityIntroHint": "İlk haftanda diğer üyeler seninle ilgili kısa bir karşılama kartı görür ve sana merhaba diyebilir. Bunu istediğin zaman Ayarlar'dan değiştirebilirsin."
     }
   },
