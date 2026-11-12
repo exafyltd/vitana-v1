@@ -2813,7 +2813,17 @@
       "soundscapeValue0": "Zvučni ambijent {value0}",
       "vitanaAudioMode": "VITANA audio režim",
       "typeYourMessage": "Ukucaj svoju poruku...",
-      "returnVoice": "Povratak na glas"
+      "returnVoice": "Povratak na glas",
+      "_pending_review": {
+        "soundOn": true,
+        "soundOff": true,
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundOn": "Sound on",
+      "soundOff": "Sound off",
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAKET:",

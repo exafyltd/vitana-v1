@@ -38,11 +38,18 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "Wellness"
+      "categoryWellness": "Wellness",
+      "_pending_review": {
+        "provider": true,
+        "categoryWellness": true
+      }
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "Markery krwi"
+      "categoryBloodMarkers": "Markery krwi",
+      "_pending_review": {
+        "provider": true
+      }
     },
     "chat": {
       "voice": "Rozpocznij połączenie głosowe",

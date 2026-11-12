@@ -8,7 +8,7 @@
       "playing": "جارٍ التشغيل…",
       "previewPhrase": "مرحبًا، هذه معاينة لإعدادات الصوت التي اخترتها.",
       "previewUnavailable": "المعاينة غير متاحة لهذه اللغة على هذا الجهاز.",
-      "speedValue": "{value}x",
+      "speedValue": "{value} مرة",
       "volumeValue": "{value}٪"
     },
     "proactive": {

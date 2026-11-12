@@ -8,7 +8,7 @@
       "playing": "Odtwarzanie…",
       "previewPhrase": "Cześć, to podgląd wybranych przez Ciebie ustawień głosu.",
       "previewUnavailable": "Podgląd nie jest dostępny dla tego języka na tym urządzeniu.",
-      "speedValue": "{value}x",
+      "speedValue": "{value} razy",
       "volumeValue": "{value}%"
     },
     "proactive": {

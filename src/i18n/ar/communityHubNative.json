@@ -68,10 +68,7 @@
       "fallbackName": "عضو",
       "empty": "لا يوجد أعضاء بعد.",
       "emptyDance": "لم يحدد أحد هذا الرقص كتفضيل بعد — كن أول من يفعل!",
-      "viewProfile": "عرض الملف الشخصي",
-      "_pending_review": {
-        "handle": true
-      }
+      "viewProfile": "عرض الملف الشخصي"
     },
     "openAsks": {
       "title": "الطلبات المفتوحة",

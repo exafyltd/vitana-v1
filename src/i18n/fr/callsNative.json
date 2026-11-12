@@ -14,6 +14,8 @@
     "unmute": "Activer le micro",
     "cameraOff": "Désactiver la caméra",
     "cameraOn": "Activer la caméra",
-    "unknownUser": "Membre inconnu"
-  }
+    "unknownUser": "Membre inconnu",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

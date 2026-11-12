@@ -47,7 +47,10 @@
       "profile": "Profil",
       "liveRooms": "Canlı odalar",
       "notifications": "Bildirimler",
-      "other": "Diğer"
+      "other": "Diğer",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }

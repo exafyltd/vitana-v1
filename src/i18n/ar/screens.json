@@ -2813,7 +2813,17 @@
       "soundscapeValue0": "مشهد صوتي {value0}",
       "vitanaAudioMode": "وضع صوت VITANA",
       "typeYourMessage": "اكتب رسالتك...",
-      "returnVoice": "العودة إلى الصوت"
+      "returnVoice": "العودة إلى الصوت",
+      "_pending_review": {
+        "soundOn": true,
+        "soundOff": true,
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundOn": "Sound on",
+      "soundOff": "Sound off",
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "حزمة:",

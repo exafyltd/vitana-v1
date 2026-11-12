@@ -23,6 +23,9 @@
         "benefit3": "Abonnement Vitana+ de 90 jours",
         "benefit4": "Réservation prioritaire + avantages VIP"
       }
+    },
+    "_pending_review": {
+      "brand": true
     }
   }
 }
