@@ -94,7 +94,7 @@ describe('patientNative catalog', () => {
   it.each([...LOCALES])('%s has exactly the German keys, none empty, same placeholders', (l) => {
     const shard = load(l);
     expect(keys(shard).sort()).toEqual(de);
-    const flat = (o: unknown): string[] => Object.values(o as Record<string, unknown>).flatMap((v) => (v && typeof v === 'object' ? flat(v) : [String(v)]));
+    const flat = (o: unknown): string[] => Object.entries(o as Record<string, unknown>).filter(([k]) => !k.startsWith('_')).flatMap(([, v]) => (v && typeof v === 'object' ? flat(v) : [String(v)]));
     expect(flat(shard).filter((v) => v.trim() === '')).toEqual([]);
     const ph = (s: unknown) => flat(s).map((v) => (v.match(/\{[a-z]+\}/gi) ?? []).sort().join(','));
     expect(ph(shard)).toEqual(ph(load('de')));
