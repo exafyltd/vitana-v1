@@ -2781,6 +2781,8 @@
       "send": "Senden",
       "exitAudioMode": "Audiomodus beenden",
       "soundscapeValue0": "Klanglandschaft {value0}",
+      "soundscapeMuted": "Klanglandschaft stummgeschaltet",
+      "soundscapeUnmuted": "Klanglandschaft wieder an",
       "vitanaAudioMode": "VITANA Audio-Modus",
       "typeYourMessage": "Gib deine Nachricht ein...",
       "returnVoice": "Zurück zur Sprache"
@@ -5959,6 +5961,7 @@
       "sendFunds": "Geld senden",
       "requestPayment": "Zahlung anfordern",
       "attachFile": "Datei anhängen",
+      "attachPhotos": "Fotos & Videos",
       "attach": "Anhängen",
       "loadingMessages": "Nachrichten werden geladen...",
       "loadingOlderMessages": "Ältere Nachrichten werden geladen...",
@@ -7568,7 +7571,20 @@
         "communityDesc": "Menschen, Gruppen und Events, die zu dir passen.",
         "business": "Business & Einkommen",
         "businessDesc": "Optional: Ideen, wie du mit deinem Wissen in Vitanaland Geld verdienen kannst. Standardmäßig aus – nur wenn du es einschaltest.",
-        "loadError": "Deine Einstellungen für Vitanas Nachrichten konnten nicht geladen werden."
+        "loadError": "Deine Einstellungen für Vitanas Nachrichten konnten nicht geladen werden.",
+        "testCard": {
+          "title": "Testkarte (nur für Admins)",
+          "desc": "Vitana schickt dir jetzt eine Nachricht mit der Vitana-Index-Karte in deinen Chat mit Vitana – so, wie Mitglieder sie morgens bekommen. Nur du bekommst sie.",
+          "button": "Testkarte senden",
+          "sending": "Wird gesendet …",
+          "sent": "Testkarte gesendet – öffne deinen Chat mit Vitana.",
+          "open": "Chat mit Vitana öffnen",
+          "errorTitle": "Testkarte nicht gesendet",
+          "unavailable": "Vitanas Nachrichten sind hier gerade ausgeschaltet, zum Beispiel auf Staging.",
+          "noIndex": "Du hast noch keinen Vitana Index, darum gibt es noch keine Index-Karte.",
+          "rateLimited": "Bitte warte eine Minute bis zur nächsten Testkarte.",
+          "failed": "Das hat nicht geklappt. Bitte versuche es noch einmal."
+        }
       },
       "communityIntroTitle": "Mich der Community vorstellen",
       "communityIntroBody": "In deiner ersten Woche sehen andere Mitglieder eine kurze Willkommenskarte über dich und können dir Hallo sagen.",

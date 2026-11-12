@@ -78,6 +78,9 @@ export function validateScope(obj, vtid) {
       errors.push(`${k} must be [{file, reason (>=10 chars)}]`);
     }
   }
+  if (obj.change_class !== undefined && obj.change_class !== FRONTEND_SIMPLE) {
+    errors.push(`change_class must be "${FRONTEND_SIMPLE}" when set (other changes need a sparring record)`);
+  }
   if (obj.non_transactional !== undefined && (!Array.isArray(obj.non_transactional) || obj.non_transactional.some((f) => typeof f !== 'string'))) {
     errors.push('non_transactional must be an array of file paths');
   }
@@ -203,8 +206,49 @@ export function evaluateSparringRecord(text) {
   const t = String(text || '');
   const problems = [];
   if (!/\b(CONVERGED|ESCALATED)\b/.test(t)) problems.push('no verdict (CONVERGED / ESCALATED)');
-  if (!/owner approval/i.test(t)) problems.push('no owner-approval line');
+  // Approval: an owner-approval line, or policy `converged-auto-v1` (VTID-05214), which counts only with a CONVERGED verdict.
+  const ownerApproved = /owner approval/i.test(t);
+  const policyApproved = /approved by policy `converged-auto-v1`/i.test(t) && /\bCONVERGED\b/.test(t);
+  if (!ownerApproved && !policyApproved) problems.push('no approval: need an owner-approval line, or "approved by policy `converged-auto-v1`" with a CONVERGED verdict');
   if (!/plan hash/i.test(t)) problems.push('no plan hash');
+  return problems;
+}
+
+// ── Change class: frontend-simple (owner rule, 2026-11-07) ───────────────
+// A small front-end change needs a VTID (from the ledger) but NO plan-sparring
+// session. Sparring stays mandatory for everything else (back-end, schema,
+// routes, auth, CI, governance). This class is valid only when the diff itself
+// proves it: every changed file is inside FRONTEND_SIMPLE_ALLOW, none inside
+// FRONTEND_SIMPLE_DENY, and the change stays small. Anything else → sparring.
+export const FRONTEND_SIMPLE = 'frontend-simple';
+export const FRONTEND_SIMPLE_MAX_FILES = 15;
+// VTID-05623: read-only staging specs ship with a simple change ("no suite, no merge").
+// Top-level *.staging.spec.ts only: fixtures and other tests/ paths stay outside the class.
+export const FRONTEND_SIMPLE_ALLOW = ['src/**', 'public/**', 'tests/e2e/staging/*.staging.spec.ts'];
+export const FRONTEND_SIMPLE_DENY = [
+  'src/App.tsx',                 // new routes / screens are features, not simple changes
+  'src/navigation/**',           // screen registry (voice navigation)
+  'src/design/**',               // screen manifest + design tokens
+  'src/integrations/**',         // Supabase client, generated types, realtime helper
+  'src/routes/guards/**',        // route guards / role gates
+  'src/context/AuthProvider*',   // auth
+  'src/contexts/AuthProvider*',  // auth
+  'src/generated/**',            // generated code
+];
+
+/**
+ * Files in `changed` that break the frontend-simple class. Empty = the diff
+ * qualifies. `docs/validation/**` (the VTID's own evidence) never counts.
+ * `botOnly` files (bot-authored commits) are exempt, as in evaluateScope.
+ */
+export function frontendSimpleViolations(changed, botOnly = []) {
+  const bot = new Set(botOnly);
+  const real = changed.filter((f) => !bot.has(f) && !matchesAny(f, ['docs/validation/**']));
+  const outside = real.filter((f) => !matchesAny(f, FRONTEND_SIMPLE_ALLOW) || matchesAny(f, FRONTEND_SIMPLE_DENY));
+  const problems = outside.map((f) => `\`${f}\` is not a plain front-end file`);
+  if (real.length > FRONTEND_SIMPLE_MAX_FILES) {
+    problems.push(`${real.length} files changed (max ${FRONTEND_SIMPLE_MAX_FILES} for ${FRONTEND_SIMPLE})`);
+  }
   return problems;
 }
 

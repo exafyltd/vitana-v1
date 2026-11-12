@@ -11,7 +11,7 @@ const opt = (n) => {
   return i >= 0 ? rest[i + 1] : undefined;
 };
 if (cmd !== 'init' || !/^VTID-\d{4,5}$/.test(vtid || '')) {
-  console.error('usage: vtid-scope.mjs init <VTID> --kind <fix|feature|refactor|infra|docs> --paths "<glob>,<glob>" [--sparring-record <path>]');
+  console.error('usage: vtid-scope.mjs init <VTID> --kind <fix|feature|refactor|infra|docs> --paths "<glob>,<glob>" [--sparring-record <path>] [--change-class frontend-simple]');
   process.exit(2);
 }
 const scope = {
@@ -19,6 +19,7 @@ const scope = {
   kind: opt('kind'),
   paths: String(opt('paths') || '').split(',').map((s) => s.trim()).filter(Boolean),
   ...(opt('sparring-record') ? { sparring_record: opt('sparring-record') } : {}),
+  ...(opt('change-class') ? { change_class: opt('change-class') } : {}),
   weakens_tests: [],
   red_green_exempt: [],
 };

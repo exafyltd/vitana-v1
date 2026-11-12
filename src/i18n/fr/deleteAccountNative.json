@@ -1,5 +1,7 @@
 {
   "deleteAccountNative": {
-    "errorFallback": "Une erreur est survenue. Réessaie, s’il te plaît."
-  }
+    "errorFallback": "Une erreur est survenue. Réessaie, s’il te plaît.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

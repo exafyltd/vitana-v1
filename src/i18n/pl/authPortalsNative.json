@@ -1,0 +1,35 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "Potwierdzenie e-maila zostało anulowane lub link wygasł.",
+        "linkExpired": "Link potwierdzający wygasł. Poproś o nowy.",
+        "generic": "Podczas potwierdzania e-maila wystąpił błąd.",
+        "signInToContinue": "Zaloguj się, aby kontynuować.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalmaConfirmed": {
+      "title": "Witaj w AlKalma!",
+      "body": "Twój adres e-mail został pomyślnie potwierdzony",
+      "journey": "Twoja droga do zdrowia po arabsku zaczyna się teraz",
+      "redirecting": "Za kilka sekund przekierujemy Cię do panelu...",
+      "continue": "Przejdź do panelu",
+      "footer": "Kompleksowa platforma zdrowotna po arabsku",
+      "_pending_review": {}
+    },
+    "reset": {
+      "updatePassword": "Zaktualizuj hasło",
+      "showPassword": "Pokaż hasło",
+      "hidePassword": "Ukryj hasło",
+      "_pending_review": {}
+    },
+    "resend": {
+      "prompt": "Nie dotarł e-mail? Wyślij ponownie",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

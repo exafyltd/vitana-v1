@@ -1,0 +1,94 @@
+# VTID-05511 red on base — the lane's tests (apps/mobile/tests/discover-commerce/*) copied onto a detached worktree at origin/main e1ab28b1f75a24924365cbc474d0a5f8f879b73a (no lane code), run with: npm ci; npm run gen:i18n; npx jest tests/discover-commerce --ci
+# Result: Test Suites: 5 failed, 5 total — every suite fails to load the lane's screens / route files (Cannot find module).
+
+FAIL tests/discover-commerce/providers.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/marketplace-orders/DoctorsCoachesScreen' from 'tests/discover-commerce/providers.test.tsx'
+
+      15 | import { __setGatewayForTests } from '../../src/auth/gateway';
+      16 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+    > 17 | import { DoctorsCoachesScreen } from '../../src/screens/marketplace-orders/DoctorsCoachesScreen';
+         | ^
+      18 | import { ProviderProfileScreen } from '../../src/screens/marketplace-orders/ProviderProfileScreen';
+      19 | import { requiredAmount, timeSlots } from '../../src/screens/marketplace-orders/BookingPaymentFlow';
+      20 | import { USER, appointmentRow, commerceWrapper, setOS } from './helpers';
+
+
+FAIL tests/discover-commerce/i18n-rtl.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/marketplace-orders/MarketplaceScreen' from 'tests/discover-commerce/i18n-rtl.test.tsx'
+
+      18 | import { LOCALES } from '../../src/i18n';
+      19 | import { languageFromLocale } from '../../src/i18n/I18nProvider';
+    > 20 | import { MarketplaceScreen } from '../../src/screens/marketplace-orders/MarketplaceScreen';
+         | ^
+      21 | import { DoctorsCoachesScreen } from '../../src/screens/marketplace-orders/DoctorsCoachesScreen';
+      22 | import { ProviderProfileScreen } from '../../src/screens/marketplace-orders/ProviderProfileScreen';
+      23 | import { OrdersScreen } from '../../src/screens/marketplace-orders/OrdersScreen';
+
+
+FAIL tests/discover-commerce/marketplace.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/marketplace-orders/MarketplaceScreen' from 'tests/discover-commerce/marketplace.test.tsx'
+
+      14 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+      15 | import { overlayBus } from '../../src/navigation/overlay-bus';
+    > 16 | import { MarketplaceScreen } from '../../src/screens/marketplace-orders/MarketplaceScreen';
+         | ^
+      17 | import { kindChips } from '../../src/screens/marketplace-orders/IntentCard';
+      18 | import { parseRecipients } from '../../src/screens/marketplace-orders/IntentShareSheet';
+      19 | import { FAIL, TOKEN, commerceWrapper, intent, setOS } from './helpers';
+
+
+FAIL tests/discover-commerce/orders.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/marketplace-orders/OrdersScreen' from 'tests/discover-commerce/orders.test.tsx'
+
+      16 | import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
+      17 | import { overlayBus } from '../../src/navigation/overlay-bus';
+    > 18 | import { OrdersScreen } from '../../src/screens/marketplace-orders/OrdersScreen';
+         | ^
+      19 | import { MyTicketsScreen } from '../../src/screens/marketplace-orders/MyTicketsScreen';
+      20 | import { buildOrders, mockTickets, statusLabel } from '../../src/screens/marketplace-orders/data/orders';
+      21 | import { qrMatrix, qrPath } from '../../src/screens/marketplace-orders/ticket/QrCode';
+
+
+FAIL tests/discover-commerce/routes.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../app/(app)/discover/marketplace' from 'tests/discover-commerce/routes.test.tsx'
+
+      19 | import { __setGatewayForTests } from '../../src/auth/gateway';
+      20 | import { resolveWebPath, NATIVE_PATTERNS } from '../../src/navigation/resolve';
+    > 21 | import MarketplaceRoute from '../../app/(app)/discover/marketplace';
+         | ^
+      22 | import DoctorsCoachesRoute from '../../app/(app)/discover/doctors-coaches';
+      23 | import ProviderRoute from '../../app/(app)/discover/provider/[id]';
+      24 | import OrdersRoute from '../../app/(app)/discover/orders';
+
+
+Test Suites: 5 failed, 5 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        48.149 s
+Ran all test suites matching /tests\/discover-commerce/i.
+
+=== voucher post-purchase (review discover-c68982e): tests/discover-commerce/voucher.test.tsx on 57b2489a7 (product code unchanged) ===
+    ✕ Android: the browser opens (resolves at once), the app comes back active → the order is re-read → the success state (1044 ms)
+    ✓ checkout failure: toasts checkoutFailed and returns to the selection (6739 ms)
+    ✓ createVoucherCheckout keeps the order id the function returns (33 ms)
+    ✓ downloadVoucherPdf and sendVoucherEmail call the web functions with the web bodies (2 ms)
+    ✕ fetchVoucherOrder reads the member's own voucher_orders row (by id, else the newest) (185 ms)
+    ✕ not paid (cancelled or still pending): back to the selection, no voucher calls (1398 ms)
+    ✕ paid: a failed PDF read toasts the error and keeps the success state (8856 ms)
+    ✕ paid: the e-mail form sends voucher-send-email, toasts voucherSent and closes (8215 ms)
+    ✕ paid: the success state, the PDF preview from voucher-download-pdf, its download and share (15967 ms)
+Tests:       8 failed, 3 passed, 11 total
+    ✕ the web's return params, if the link reaches the app: voucher_success opens the success state and clears them; voucher_cancelled is cleared (9 ms)
+    TypeError: (0 , _chrome.fetchVoucherOrder) is not a function
+    TypeError: (0 , _chrome.waitForPaidVoucherOrder) is not a function
+    ✕ waitForPaidVoucherOrder re-reads until the webhook marks the order paid, and gives up after the attempts (2 ms)

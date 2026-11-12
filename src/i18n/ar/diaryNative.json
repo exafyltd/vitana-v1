@@ -47,7 +47,10 @@
       "profile": "الملف الشخصي",
       "liveRooms": "الغرف المباشرة",
       "notifications": "الإشعارات",
-      "other": "أخرى"
+      "other": "أخرى",
+      "_pending_review": {
+        "businessHub": true
+      }
     }
   }
 }

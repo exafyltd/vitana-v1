@@ -2,24 +2,16 @@
   "spotlightSocial": {
     "common": {
       "_pending_review": {
-        "seeAll": true,
-        "details": true,
-        "member": true,
-        "membersCount": true,
-        "live": true,
-        "back": true,
-        "errorTitle": true,
-        "errorDesc": true,
         "retry": true
       },
-      "seeAll": "See all",
-      "details": "Details",
-      "member": "Community member",
-      "membersCount": "{count} members",
-      "live": "Live",
-      "back": "Back",
-      "errorTitle": "That didn't work just now",
-      "errorDesc": "Reload the page or try again in a moment.",
+      "seeAll": "Ver tudo",
+      "details": "Detalhes",
+      "member": "Membro da comunidade",
+      "membersCount": "{count} membros",
+      "live": "Ao vivo",
+      "back": "Voltar",
+      "errorTitle": "Isso não funcionou agora",
+      "errorDesc": "Recarregue a página ou tente novamente em um momento.",
       "retry": "Try again"
     },
     "community": {

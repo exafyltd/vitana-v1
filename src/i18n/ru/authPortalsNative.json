@@ -1,0 +1,35 @@
+{
+  "authPortalsNative": {
+    "confirm": {
+      "errors": {
+        "cancelledOrExpired": "Подтверждение почты отменено или срок действия ссылки истёк.",
+        "linkExpired": "Срок действия ссылки для подтверждения истёк. Запроси новую.",
+        "generic": "При подтверждении почты произошла ошибка.",
+        "signInToContinue": "Войди, чтобы продолжить.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalmaConfirmed": {
+      "title": "Добро пожаловать в AlKalma!",
+      "body": "Твой адрес электронной почты успешно подтверждён",
+      "journey": "Твой путь к здоровью на арабском начинается сейчас",
+      "redirecting": "Через несколько секунд ты перейдёшь в свою панель...",
+      "continue": "Перейти в панель",
+      "footer": "Полноценная платформа здоровья на арабском",
+      "_pending_review": {}
+    },
+    "reset": {
+      "updatePassword": "Обновить пароль",
+      "showPassword": "Показать пароль",
+      "hidePassword": "Скрыть пароль",
+      "_pending_review": {}
+    },
+    "resend": {
+      "prompt": "Не получил письмо? Отправить снова",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

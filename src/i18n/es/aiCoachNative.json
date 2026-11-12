@@ -1,0 +1,77 @@
+{
+  "aiCoachNative": {
+    "nav": {
+      "label": "Secciones de IA",
+      "overview": "Resumen",
+      "insights": "Perspectivas",
+      "recommendations": "Recomendaciones",
+      "dailySummary": "Resumen diario",
+      "companion": "Compañero IA"
+    },
+    "priority": {
+      "high": "Alta",
+      "medium": "Media",
+      "low": "Baja"
+    },
+    "suggestions": {
+      "title": "Perspectivas y sugerencias de IA"
+    },
+    "reward": {
+      "suggestions": "Sigue las sugerencias de la IA y gana recompensas de salud",
+      "index": "Mejora tu puntuación de salud para ganar más créditos"
+    },
+    "index": {
+      "computing": "calculando…"
+    },
+    "streak": {
+      "meditation": "Meditación"
+    },
+    "companion": {
+      "suggestionDescription": "Sugerencia de bienestar generada por IA",
+      "recall": "Recordar",
+      "autopilotMeditation": "Programar una pausa de meditación",
+      "autopilotHydration": "Recordatorio de hidratación en 15 min"
+    },
+    "motivation": {
+      "defaultQuote": "Cada pequeño paso hacia el bienestar es una victoria que merece celebrarse.",
+      "defaultAuthor": "Inspiración del día"
+    },
+    "offer": {
+      "provider": "VITANA Partners",
+      "categoryWellness": "Bienestar",
+      "_pending_review": {
+        "provider": true
+      }
+    },
+    "lab": {
+      "provider": "LabCorp",
+      "categoryBloodMarkers": "Marcadores sanguíneos",
+      "_pending_review": {
+        "provider": true
+      }
+    },
+    "chat": {
+      "voice": "Iniciar llamada de voz",
+      "video": "Iniciar videollamada",
+      "send": "Enviar mensaje"
+    },
+    "autopilot": {
+      "settings": "Ajustes del Autopiloto",
+      "toggle": "Activar o desactivar el Autopiloto"
+    },
+    "autopilotDone": {
+      "reward": "¡+{reward} VTNA ganados!",
+      "task": "Tarea completada: {title}"
+    },
+    "lift": {
+      "title": "{lead}{vtna}{total} ✨",
+      "detail": "{detail}",
+      "vtna": " · +{n} VTNA",
+      "total": ". Índice ahora {n}",
+      "_pending_review": {
+        "title": true,
+        "detail": true
+      }
+    }
+  }
+}

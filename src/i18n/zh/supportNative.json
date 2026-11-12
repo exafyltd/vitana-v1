@@ -7,7 +7,11 @@
         "ai": "AI",
         "productivity": "邮件和日历",
         "media": "音乐和视频",
-        "agent": "Autopilot"
+        "agent": "Autopilot",
+        "_pending_review": {
+          "ai": true,
+          "agent": true
+        }
       },
       "sections": {
         "shopping": "购物与奖励",

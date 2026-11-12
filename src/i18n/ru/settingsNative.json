@@ -29,7 +29,12 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA"
+      "sessionLocation": "San Francisco, CA",
+      "_pending_review": {
+        "sessionPhone": true,
+        "sessionLaptop": true,
+        "sessionLocation": true
+      }
     },
     "creator": {
       "creatorShare": "90 %",

@@ -1,0 +1,49 @@
+{
+  "journeyAutopilotNative": {
+    "consent": {
+      "title": "AI 数据共享说明",
+      "subtitle": "使用 AI 功能前，请了解你的数据如何被使用。",
+      "whatIsSent": "可能发送的数据",
+      "voiceData": "语音录音和转写文本",
+      "diaryData": "输入的提示、聊天消息和日记条目",
+      "memoryData": "Memory Garden 条目和健康目标",
+      "profileData": "个人资料信息（姓名、偏好）",
+      "socialData": "社交媒体主页链接和简介文字（使用导入功能时）",
+      "recipientLabel": "接收方：",
+      "recipient": "通过 Lovable AI Gateway 发送至 Google（Gemini AI 模型）。你的数据通过加密连接安全传输。",
+      "purposeLabel": "用途",
+      "purpose": "生成个性化 AI 回复、语音合成、主动问候、健康指导和个人资料完善建议。",
+      "notStored": "AI 服务商不会永久存储这些数据",
+      "revokeAnytime": "你可以随时在“设置 > 隐私”中撤回同意",
+      "gdprCompliant": "符合 GDPR 及隐私法规",
+      "agreementFooter": "点按“我同意”即表示你允许 Exafy LTD 将上述数据发送给所列的 AI 服务商。你可以随时在“设置 > 隐私”中撤回此许可。",
+      "notNow": "暂不",
+      "iAgree": "我同意"
+    },
+    "autopilot": {
+      "vtnaEarned": "+{reward} VTNA 已获得！",
+      "errorStatus": "服务器返回状态 {status}。",
+      "errorServer": "服务器暂时无法提供你的推荐。",
+      "errorNetwork": "没有网络连接。请检查你的网络。"
+    },
+    "demoEvents": {
+      "sunriseYoga": "海边日出瑜伽",
+      "mindfulWalk": "正念散步与交流"
+    },
+    "indexChip": {
+      "open": "打开 Vitana Index",
+      "openWithStreak": "打开 Vitana Index — 连续 {days} 天"
+    },
+    "calendar": {
+      "upcomingCount": "{count} 个即将到来的活动"
+    },
+    "audiobook": {
+      "rateValue": "{rate}×",
+      "sleepShort": "{min}′",
+      "_pending_review": {
+        "rateValue": true,
+        "sleepShort": true
+      }
+    }
+  }
+}

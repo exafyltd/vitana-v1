@@ -1,0 +1,59 @@
+{
+  "inboxNative": {
+    "selectContext": "Gelen kutusunu seç",
+    "searchClose": "Aramayı kapat",
+    "unreadCount": "{count} okunmamış",
+    "unknown": "Bilinmiyor",
+    "conversation": "Sohbet",
+    "vitanaWelcome": "Merhaba! Ben Vitana. Başlamak için bana bir mesaj gönder.",
+    "removeRecipient": "{name} kaldır",
+    "moreOptions": "Diğer seçenekler",
+    "archivedDescription": "Arşivlenmiş sohbetleri ve mesajları görüntüle",
+    "inspirationDescription": "Sağlıklı yaşam topluluğuna ilham verecek hazır mesajlar ve şablonlar",
+    "subnav": {
+      "overview": "Genel bakış",
+      "inspiration": "İlham",
+      "archived": "Arşiv"
+    },
+    "archiveCategory": {
+      "all": "Tümü",
+      "healthcare": "Sağlık",
+      "fitness": "Fitness",
+      "nutrition": "Beslenme",
+      "activities": "Etkinlikler",
+      "_pending_review": {
+        "fitness": true
+      }
+    },
+    "archiveType": {
+      "group": "Grup",
+      "direct": "Doğrudan"
+    },
+    "archiveSample": {
+      "johnsonName": "Dr. Johnson",
+      "johnsonMessage": "Danışmanlık için teşekkürler!",
+      "yogaName": "Yeni başlayanlar için yoga",
+      "yogaMessage": "Harika bir seanstı, herkese teşekkürler!",
+      "martinezName": "Sarah Martinez",
+      "martinezMessage": "Tarif harikaydı!",
+      "warriorsName": "Hafta sonu savaşçıları",
+      "warriorsMessage": "Bir sonraki yürüyüş şu tarihe planlandı...",
+      "kimName": "Dr. Kim",
+      "kimMessage": "2 hafta sonra kontrol",
+      "_pending_review": {
+        "johnsonName": true,
+        "martinezName": true,
+        "kimName": true
+      }
+    },
+    "presence": {
+      "online": "Aktif",
+      "away": "Uzakta",
+      "offline": "Çevrimdışı"
+    },
+    "datePlaceholder": "YYYY-AA-GG",
+    "permissions": {
+      "contactsUsage": "Vitana, kişilerini yalnızca „Telefondaki kişileri aktar“ seçeneğine dokunduğunda okur; böylece arkadaşlarından hangilerinin zaten Vitanaland'de olduğunu görürsün."
+    }
+  }
+}

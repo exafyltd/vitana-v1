@@ -1,0 +1,414 @@
+{
+  "healthNative": {
+    "subtitle": "Track and manage your health journey",
+    "upload": "Upload",
+    "selectMode": "Choose a section",
+    "loading": "Loading…",
+    "indexAria": "Vitana Index {score} of 999",
+    "indexLoadingAria": "Loading Vitana Index",
+    "chip": {
+      "openIndex": "Open Vitana Index",
+      "_pending_review": {}
+    },
+    "agents": {
+      "noOutputYet": "no output yet",
+      "_pending_review": {}
+    },
+    "medical": {
+      "untitledReport": "Health Report",
+      "status": {
+        "uploaded": "Uploaded",
+        "processing": "Processing",
+        "processed": "Processed",
+        "error": "Error",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "supplements": {
+      "edit": "Edit supplement",
+      "delete": "Delete supplement",
+      "filters": {
+        "all": "All",
+        "vitamins": "Vitamins",
+        "minerals": "Minerals",
+        "aminoAcids": "Amino Acids",
+        "adaptogens": "Adaptogens",
+        "probiotics": "Probiotics",
+        "antioxidants": "Antioxidants",
+        "other": "Other",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "actions": {
+      "uploadLabResults": {
+        "title": "Upload Lab Results",
+        "description": "Add your latest test results and biomarkers",
+        "_pending_review": {}
+      },
+      "orderBloodTest": {
+        "title": "Order Blood Test",
+        "description": "Schedule lab tests from certified providers",
+        "_pending_review": {}
+      },
+      "bookScreening": {
+        "title": "Book Health Screening",
+        "description": "Schedule your annual health checkup",
+        "_pending_review": {}
+      },
+      "joinWellnessGroup": {
+        "title": "Join Wellness Group",
+        "description": "Connect with health-focused community",
+        "_pending_review": {}
+      },
+      "trackToday": {
+        "title": "Track Today's Health",
+        "description": "Log your daily wellness metrics",
+        "_pending_review": {}
+      },
+      "healthEducation": {
+        "title": "Health Education",
+        "description": "Learn about nutrition and wellness",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "labTests": {
+      "completeBloodPanel": {
+        "name": "Complete Blood Panel",
+        "description": "CBC, metabolic panel, lipids, vitamins & minerals",
+        "_pending_review": {}
+      },
+      "metabolicPanel": {
+        "name": "Metabolic Health Panel",
+        "description": "Glucose, insulin, HbA1c, liver & kidney function",
+        "_pending_review": {}
+      },
+      "hormonesPanel": {
+        "name": "Hormones Panel",
+        "description": "Testosterone, estrogen, cortisol, thyroid hormones",
+        "_pending_review": {}
+      },
+      "allergyPanel": {
+        "name": "Allergy Panel",
+        "description": "IgE levels, food sensitivities, environmental allergens",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "reportCategories": {
+      "blood_panel": "Blood Panel",
+      "genomics": "Genomics",
+      "metabolomics": "Metabolomics",
+      "microbiome": "Microbiome",
+      "allergy": "Allergy",
+      "cancer": "Cancer",
+      "hormones": "Hormones",
+      "imaging": "Imaging",
+      "other": "Other",
+      "_pending_review": {}
+    },
+    "sheet": {
+      "keepGoing": {
+        "huge": "Huge week — your Index is up {delta}. Keep going!",
+        "roll": "You're on a roll — Index up {delta} this week.",
+        "streakWeek": "{streak}-day streak and Index +{delta}. Momentum is real.",
+        "streakDays": "{streak} days in a row, Index +{delta}. Beautiful — keep stacking wins.",
+        "up": "Index +{delta} this week. Every action counts — keep going!",
+        "habits": "{streak}-day streak. Habits are forming — keep going!",
+        "streak": "{streak} days in a row. The streak is real — keep going!",
+        "_pending_review": {}
+      },
+      "daily": {
+        "0": "Fresh day, fresh chance — let's grow your Index together.",
+        "1": "You're here, that's the first move. Let's nudge your Index up today.",
+        "2": "One small action and your Index starts climbing. Let's go.",
+        "3": "Today is a great day to improve. I've got your back — let's grow it.",
+        "4": "Let's make today count. Pick one thing and watch your Index lift.",
+        "_pending_review": {}
+      },
+      "horizonAria": "30-day Vitana Index projection — projected {score}.",
+      "compassGoal": "Compass: {goal} →",
+      "compassSet": "Set your Life Compass →",
+      "_pending_review": {}
+    },
+    "sync": {
+      "notEnabledHint": "Health sync is not enabled yet.",
+      "_pending_review": {}
+    },
+    "searchPlaceholder": "Search reports, supplements...",
+    "utility": {
+      "closeSearch": "Close search",
+      "upcomingEvent": "{count} upcoming event",
+      "upcomingEvents": "{count} upcoming events",
+      "_pending_review": {}
+    },
+    "baselineSurvey": {
+      "next": "Next",
+      "finish": "Finish",
+      "rating": "Rating {n}",
+      "questions": {
+        "nutrition": {
+          "title": "How you're eating",
+          "prompt": "How well do you feel you're eating these days? (1 = poorly, 5 = nourishing and balanced)",
+          "_pending_review": {}
+        },
+        "hydration": {
+          "title": "Your hydration",
+          "prompt": "How much water and fluids are you getting? (1 = very little, 5 = steady all day)",
+          "_pending_review": {}
+        },
+        "exercise": {
+          "title": "Your movement",
+          "prompt": "How active has your body been this week? (1 = sedentary, 5 = strong and active)",
+          "_pending_review": {}
+        },
+        "sleep": {
+          "title": "Your sleep",
+          "prompt": "How rested do you feel when you wake up? (1 = exhausted, 5 = fully rested)",
+          "_pending_review": {}
+        },
+        "mental": {
+          "title": "Your mind right now",
+          "prompt": "How clear and calm is your mind today? (1 = very stressed, 5 = clear and calm)",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "conditions": {
+      "description": "Assess your health risks and create preventive action plans to maintain optimal wellness.",
+      "_pending_review": {}
+    },
+    "education": {
+      "description": "Access curated health education materials linked to your interests and demographic profile.",
+      "episode": "Ep. {episode}",
+      "videos": {
+        "v1": {
+          "title": "Vitana Index Deep Dive",
+          "category": "Health Metrics",
+          "_pending_review": {}
+        },
+        "v2": {
+          "title": "Meal Prep for Optimal Health",
+          "category": "Nutrition",
+          "_pending_review": {}
+        },
+        "v3": {
+          "title": "Sleep Optimization Techniques",
+          "category": "Sleep Health",
+          "_pending_review": {}
+        },
+        "v4": {
+          "title": "HIIT Workout Science",
+          "category": "Fitness",
+          "_pending_review": {}
+        },
+        "v5": {
+          "title": "Stress Management Strategies",
+          "category": "Mental Health",
+          "_pending_review": {}
+        },
+        "v6": {
+          "title": "Lab Results Interpretation",
+          "category": "Medical",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "podcasts": {
+        "p1": {
+          "title": "The Science of Longevity",
+          "series": "Health Deep Dive",
+          "_pending_review": {}
+        },
+        "p2": {
+          "title": "Nutrition Myths Debunked",
+          "series": "Food Science",
+          "_pending_review": {}
+        },
+        "p3": {
+          "title": "Sleep & Performance",
+          "series": "Peak Health",
+          "_pending_review": {}
+        },
+        "p4": {
+          "title": "Exercise & Brain Health",
+          "series": "Mind & Body",
+          "_pending_review": {}
+        },
+        "p5": {
+          "title": "Mental Resilience Training",
+          "series": "Psychology Today",
+          "_pending_review": {}
+        },
+        "p6": {
+          "title": "Preventive Medicine Trends",
+          "series": "Future Health",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "educationActions": {
+      "browseArticles": {
+        "title": "Browse Articles",
+        "description": "Explore curated health and wellness articles",
+        "_pending_review": {}
+      },
+      "watchVideos": {
+        "title": "Watch Videos",
+        "description": "Educational health videos and documentaries",
+        "_pending_review": {}
+      },
+      "listenPodcasts": {
+        "title": "Listen to Podcasts",
+        "description": "Health and wellness podcast episodes",
+        "_pending_review": {}
+      },
+      "searchContent": {
+        "title": "Search Content",
+        "description": "Find specific health topics and information",
+        "_pending_review": {}
+      },
+      "myBookmarks": {
+        "title": "My Bookmarks",
+        "description": "Access your saved articles and resources",
+        "_pending_review": {}
+      },
+      "downloadOffline": {
+        "title": "Download for Offline",
+        "description": "Save content to read or watch later",
+        "_pending_review": {}
+      },
+      "healthCourses": {
+        "title": "Health Courses",
+        "description": "Enroll in structured wellness education programs",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "services": {
+      "description": "Book appointments, screenings, and wellness programs tailored to your needs.",
+      "impactPoints": "+{points} points",
+      "_pending_review": {}
+    },
+    "serviceActions": {
+      "bookPhysical": {
+        "title": "Book Physical Exam",
+        "description": "Schedule your annual comprehensive health checkup",
+        "_pending_review": {}
+      },
+      "orderLabTests": {
+        "title": "Order Lab Tests",
+        "description": "Request biomarker analysis and diagnostic tests",
+        "_pending_review": {}
+      },
+      "myAppointments": {
+        "title": "My Appointments",
+        "description": "View and manage upcoming medical appointments",
+        "_pending_review": {}
+      },
+      "findSpecialists": {
+        "title": "Find Specialists",
+        "description": "Connect with medical specialists in your area",
+        "_pending_review": {}
+      },
+      "wellnessPrograms": {
+        "title": "Wellness Programs",
+        "description": "Join community health challenges and programs",
+        "_pending_review": {}
+      },
+      "telemedicine": {
+        "title": "Telemedicine",
+        "description": "Schedule virtual consultations with providers",
+        "_pending_review": {}
+      },
+      "healthRecords": {
+        "title": "Health Records",
+        "description": "Access your complete medical history and documents",
+        "_pending_review": {}
+      },
+      "insuranceSupport": {
+        "title": "Insurance Support",
+        "description": "Get help with claims and coverage verification",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "plans": {
+      "description": "AI-powered plans tailored to your unique health profile and goals",
+      "planName": {
+        "nutrition": "Nutrition Plan",
+        "exercise": "Exercise Plan",
+        "hydration": "Hydration Plan",
+        "sleep": "Sleep Plan",
+        "mental": "Mental Plan",
+        "supplement": "Supplement Plan",
+        "_pending_review": {}
+      },
+      "pillarName": {
+        "nutrition": "Nutrition",
+        "exercise": "Exercise",
+        "hydration": "Hydration",
+        "sleep": "Sleep",
+        "mental": "Mental",
+        "supplement": "Supplement",
+        "_pending_review": {}
+      },
+      "refreshed": "{planName} refreshed! 🔄",
+      "justNow": "Just now",
+      "hoursAgo": "{hours}h ago",
+      "daysAgo": "{days}d ago",
+      "never": "Never",
+      "toasts": {
+        "recalibrateDescription": "Analyzing all plans and cross-pillar synergies. This may take a few moments...",
+        "viewProgress": "View Progress",
+        "reportDescription": "Your detailed health analytics report is being prepared. Check back in a few minutes!",
+        "gotIt": "Got it",
+        "optimizing": "✨ Optimizing {pillar}",
+        "optimizeDescription": "AI Autopilot is analyzing your weakest pillar and generating targeted improvements.",
+        "viewPlan": "View Plan",
+        "_pending_review": {}
+      },
+      "proteinShort": "{protein}P",
+      "nutritionDefaults": {
+        "goalFocus": "Balanced Nutrition",
+        "schedule": "3 meals + 2 snacks",
+        "calTarget": "{calories} cal target",
+        "daily": "Daily",
+        "insight": "Your nutrition plan is optimized for your current activity level and goals.",
+        "_pending_review": {}
+      },
+      "aiSummary": {
+        "exercise": "Consistency is excellent! Hydration and sleep scores are enhancing your recovery.",
+        "hydration": "Your hydration consistency improved +12% this week — great progress! AI recommends adding electrolytes after intense workouts for faster recovery.",
+        "sleep": "Sleep consistency improved +10% this week — great recovery trend. AI detected your optimal bedtime window is 22:30-23:00 for maximum deep sleep.",
+        "mental": "Stress indicators improved by +12% since introducing morning breathwork. Your focus variability decreased — excellent progress this week.",
+        "_pending_review": {}
+      },
+      "ai": "AI",
+      "hydrationStatus": {
+        "goalMet": "Goal Met",
+        "catchUp": "Catch-up needed",
+        "belowTarget": "Below target",
+        "onTrack": "On track",
+        "_pending_review": {}
+      },
+      "sleepStatus": {
+        "excellent": "Sleep quality excellent",
+        "good": "Sleep quality good",
+        "improve": "Room for improvement",
+        "_pending_review": {}
+      },
+      "litersOf": "{current}L / {target}L",
+      "liters": "{value}L",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

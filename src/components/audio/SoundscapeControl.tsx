@@ -5,8 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from '@/components/ui/responsive-popover';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useSidebar } from '@/components/ui/sidebar';
-import { toast } from 'sonner';
-import { t } from '@/lib/i18n-toast';
+import { t, notifySuccess } from '@/lib/i18n-toast';
 
 export function SoundscapeControl() {
   const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
@@ -18,9 +17,7 @@ export function SoundscapeControl() {
 
   const handleToggleMute = () => {
     toggleMute();
-    toast.success(isMuted ? 'Soundscape unmuted' : 'Soundscape muted', {
-      duration: 1500
-    });
+    notifySuccess(isMuted ? 'screens.audio.soundscapeUnmuted' : 'screens.audio.soundscapeMuted');
   };
 
   const handleTogglePlay = () => {

@@ -1,0 +1,81 @@
+# VTID-05461 fix round 1 — red on the previous head 7c8eacd47a9e466887d882f0f3b6d608146124f4
+# tests/journey/fix1.test.tsx (+ the helpers.tsx functions.invoke recorder) run against the unchanged lane code
+$ (apps/mobile) npx jest tests/journey/fix1.test.tsx --ci
+
+    ✕ rail order: search, calendar, Life Compass, gift voucher, Vitana Index, Autopilot (Android) (1275 ms)
+    ✕ the gift voucher is hidden on iOS (IAP gate, utility-action-button.tsx:43) (558 ms)
+    ✕ calendar: reads calendar_events for the member, badges upcoming events and the conflict dot, opens /calendar (8074 ms)
+    ✕ Life Compass opens the compass on the overlay bus (298 ms)
+    ✕ Vitana Index chip: 🧬 + the Index total, streak badge from the device streak store at 3+ days, opens the Index sheet (8047 ms)
+    ✕ Vitana Index chip: no streak badge under 3 days (8047 ms)
+    ✕ tier selection → stripe-create-voucher-checkout {tier, returnTo: /autopilot} → the checkout opens in the browser (293 ms)
+    ✕ a failed checkout toasts and returns to the selection (274 ms)
+    ✕ no server cards: F1, F2, F3 (maxCards 3); F9 waits; hiding F3 stores the device-local time and brings F9 (8030 ms)
+    ✕ a hide older than 7 days is ignored; F2 opens the Index sheet; F1 opens My Journey (8040 ms)
+    ✕ server cards come first, then the feature cards, capped at 3 (8239 ms)
+    ✕ no community events: the two demo events, titles from the catalog (8044 ms)
+    ✕ all of today done: milestone modal (🎉, title, body, Continue) + confetti, once per local day, analytics posted (8055 ms)
+    ✕ already celebrated today: no modal, the throttled fire is still reported (8586 ms)
+    ✕ reduced motion: the modal shows without confetti (8097 ms)
+    ✕ Complete with a reward toasts "+N VTNA earned!" from the catalog (AutopilotPopup.tsx:342) (10772 ms)
+    ✕ a reviewed media caption is copied to the clipboard (AutopilotPopup.tsx:263-265) (1799 ms)
+    ✕ the error state names the failure through the catalog (AutopilotPopup.tsx:520), never the raw message (8312 ms)
+    ✕ renders the provided control between how-it-works and the catalog (1 ms)
+    ✓ no control provided: the slot renders nothing (773 ms)
+    ✕ the guided start button pulses its glow (motion allowed) (393 ms)
+    ✓ reduced motion: no glow pulse; the ring is drawn at its final offset at once (416 ms)
+    ✕ reduced motion, Full App: the countdown ring sits at the journey ring percentage (601 ms)
+Test Suites: 1 failed, 1 total
+Tests:       21 failed, 2 passed, 23 total
+
+## failure lines
+  ● utility bar (AutopilotDashboard.tsx:452-475) › rail order: search, calendar, Life Compass, gift voucher, Vitana Index, Autopilot (Android)
+    Unable to find an element with testID: journey-utility-rail
+  ● utility bar (AutopilotDashboard.tsx:452-475) › the gift voucher is hidden on iOS (IAP gate, utility-action-button.tsx:43)
+    Unable to find an element with testID: journey-calendar-button
+  ● utility bar (AutopilotDashboard.tsx:452-475) › calendar: reads calendar_events for the member, badges upcoming events and the conflict dot, opens /calendar
+    Unable to find an element with testID: journey-calendar-count
+  ● utility bar (AutopilotDashboard.tsx:452-475) › Life Compass opens the compass on the overlay bus
+    Unable to find an element with testID: journey-life-compass-button
+  ● utility bar (AutopilotDashboard.tsx:452-475) › Vitana Index chip: 🧬 + the Index total, streak badge from the device streak store at 3+ days, opens the Index sheet
+    Unable to find an element with testID: journey-vitana-index-chip
+  ● utility bar (AutopilotDashboard.tsx:452-475) › Vitana Index chip: no streak badge under 3 days
+    Unable to find an element with testID: journey-vitana-index-chip
+  ● gift voucher checkout (MaxinaVoucherModal.tsx, Android) › tier selection → stripe-create-voucher-checkout {tier, returnTo: /autopilot} → the checkout opens in the browser
+    Unable to find an element with testID: journey-gift-voucher-button
+  ● gift voucher checkout (MaxinaVoucherModal.tsx, Android) › a failed checkout toasts and returns to the selection
+    Unable to find an element with testID: journey-gift-voucher-button
+  ● card strip static feature cards (EnrichmentCardStrip.tsx:70-100, screen=autopilot) › no server cards: F1, F2, F3 (maxCards 3); F9 waits; hiding F3 stores the device-local time and brings F9
+    Unable to find an element with testID: vitana-card-strip-autopilot
+  ● card strip static feature cards (EnrichmentCardStrip.tsx:70-100, screen=autopilot) › a hide older than 7 days is ignored; F2 opens the Index sheet; F1 opens My Journey
+    Unable to find an element with testID: journey-feature-card-F1
+  ● card strip static feature cards (EnrichmentCardStrip.tsx:70-100, screen=autopilot) › server cards come first, then the feature cards, capped at 3
+    Unable to find an element with testID: journey-feature-card-F2
+  ● EventsPreview demo fallback (EventsPreview.tsx:44-52) › no community events: the two demo events, titles from the catalog
+    Unable to find an element with testID: journey-event-demo-group-1
+  ● daily-goal celebration (TodaysGoalCard.tsx:34-36, celebrate.ts:408-432) › all of today done: milestone modal (🎉, title, body, Continue) + confetti, once per local day, analytics posted
+    Unable to find an element with testID: journey-milestone
+  ● daily-goal celebration (TodaysGoalCard.tsx:34-36, celebrate.ts:408-432) › already celebrated today: no modal, the throttled fire is still reported
+    Expected: {"kind": "daily-goal", "source": "my-journey", "throttled": true}
+    Received: undefined
+  ● daily-goal celebration (TodaysGoalCard.tsx:34-36, celebrate.ts:408-432) › reduced motion: the modal shows without confetti
+    Unable to find an element with testID: journey-milestone
+  ● Autopilot popup — toast, caption copy, error line › Complete with a reward toasts "+N VTNA earned!" from the catalog (AutopilotPopup.tsx:342)
+    Expected: {"reward": 5}
+    Received: undefined
+  ● Autopilot popup — toast, caption copy, error line › a reviewed media caption is copied to the clipboard (AutopilotPopup.tsx:263-265)
+    Expected: "Sunrise stretch"
+  ● Autopilot popup — toast, caption copy, error line › the error state names the failure through the catalog (AutopilotPopup.tsx:520), never the raw message
+    Unable to find an element with testID: autopilot-error-detail
+  ● Guided view — AudiobookReminderControl mount slot (AutopilotDashboard.tsx:435; tasks.md:86 → autopilot-audiobook lane) › renders the provided control between how-it-works and the catalog
+    TypeError: Cannot read properties of undefined (reading 'Provider')
+  ● motion (DreamNorthStar.tsx:516-527, :592-603; GoalProgressRing.tsx:140-151) › the guided start button pulses its glow (motion allowed)
+    Unable to find an element with testID: journey-hero-start-glow
+  ● motion (DreamNorthStar.tsx:516-527, :592-603; GoalProgressRing.tsx:140-151) › reduced motion, Full App: the countdown ring sits at the journey ring percentage
+    Expected: NaN
+    Received: 517.7344693115979
+    Expected precision:    3
+    Expected difference: < 0.0005
+    Received difference:   NaN
+
+(the 2 passing tests assert absence — no slot content without a provider, no glow under reduced motion — and stay as guards)

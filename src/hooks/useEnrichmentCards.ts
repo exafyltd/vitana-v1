@@ -18,7 +18,9 @@
  * A failed GET throws, so callers see `isError` and render nothing — never a
  * silently empty list that looks like "everything is done".
  */
+import { useContext } from 'react';
 import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
+import { LanguageContext } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
@@ -97,9 +99,14 @@ export function parseEnrichmentCards(json: unknown): EnrichmentCardsPayload {
   return { cards, profile_completion_pct: pct };
 }
 
-export async function fetchEnrichmentCards(screen: string): Promise<EnrichmentCardsPayload> {
+/**
+ * `locale` is the app's UI language (base code, e.g. "de"). Without it the gateway
+ * falls back to the member's stored language, which can differ from the UI.
+ */
+export async function fetchEnrichmentCards(screen: string, locale?: string): Promise<EnrichmentCardsPayload> {
   const token = await bearer();
-  const res = await fetch(`${GATEWAY_API_URL}/enrichment-cards?screen=${encodeURIComponent(screen)}`, {
+  const localeParam = locale ? `&locale=${encodeURIComponent(locale)}` : '';
+  const res = await fetch(`${GATEWAY_API_URL}/enrichment-cards?screen=${encodeURIComponent(screen)}${localeParam}`, {
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
   });
   if (!res.ok) throw new Error(`enrichment-cards: ${res.status}`);
@@ -173,9 +180,12 @@ export interface UseEnrichmentCardsOptions {
 export function useEnrichmentCards(screen: string | null, { active = true }: UseEnrichmentCardsOptions = {}) {
   const { user } = useAuth();
   const dismiss = useEnrichmentCardDismiss();
+  // The UI language decides the card copy. Read the context directly: some callers render outside a LanguageProvider.
+  const uiLanguage = useContext(LanguageContext)?.selectedLanguage;
+  const locale = uiLanguage ? uiLanguage.split('-')[0].toLowerCase() : undefined;
   const query = useQuery({
-    queryKey: [...enrichmentCardsKey(user?.id), screen],
-    queryFn: () => fetchEnrichmentCards(screen as string),
+    queryKey: [...enrichmentCardsKey(user?.id), screen, locale ?? ''],
+    queryFn: () => fetchEnrichmentCards(screen as string, locale),
     enabled: !!user && !!screen && active,
     staleTime: ENRICHMENT_CARDS_STALE_MS,
     // Overrides the app default (main.tsx: false) — see ENRICHMENT_CARDS_STALE_MS.

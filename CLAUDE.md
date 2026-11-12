@@ -189,52 +189,27 @@ After PUBLISH, production gets the deploy check in "Verifying a frontend
 deploy actually shipped" (`.claude/rules/infrastructure.md`) and nothing
 more — no test suite runs against production.
 
-### Plan Sparring Gate — STANDING RULE (VTID-04868)
+### Plan Sparring Gate — STANDING RULE (VTID-04868, amended 2026-11-07)
 
-Owner decision 2026-10-03. The full rule lives in **`exafyltd/vitana-platform`
-→ `CLAUDE.md` Part 1 rules 51–55**; procedure: skill `plan-sparring`
-(`.claude/skills/plan-sparring/`). For this repo:
+Owner decision 2026-11-07. The full rule lives in **`exafyltd/vitana-platform` → `CLAUDE.md` Part 1 rules 51–55**;
+procedure: skill `plan-sparring` (`.claude/skills/plan-sparring/`). Two tracks, one rule: **every change gets a VTID
+from the `vtid_ledger`; only back-end and complex changes get a sparring first.**
 
-1. **Plan → sparring → owner approval → VTID → code.** Every new plan is
-   sparred by the independent `plan-sparring-partner` agent (read-only,
-   Claude Opus 4.6) before its VTID is allocated. No VTID for the sparring
-   itself.
-2. Every finding gets an answer (accepted / rejected / deferred) and goes back
-   to the same partner; at least two passes; anything still disputed goes to
-   the owner.
-3. The PR carries the record as `docs/validation/<VTID>/plan-sparring.md`.
-4. A PreToolUse hook denies an allocation call that references no sparring
-   record (`p_sparring_id`, or a `-- sparring_record: <path>` comment); the real
-   gate is the `vtid_ledger` trigger in the platform database.
-
-### Scoping a production deploy to what was actually approved
-
-**If a production deploy is approved WITHIN a Claude Code session** (the
-user approves shipping to prod in conversation, carried out via a manual
-`workflow_dispatch` rather than PUBLISH) → that approval scopes to this
-session's own change only, never to whatever else is currently sitting on
-`main`/staging. PUBLISH is a deliberate, human-operated decision to promote
-the *entire* tested staging build; an in-session approval is not that —
-it's consent for the specific fix this session produced. `DEPLOY.yml`'s
-manual dispatch takes a `commit_sha` input that defaults to `github.sha`
-(i.e. whatever `main` HEAD is at dispatch time) — **always pass this
-session's own merge commit SHA explicitly** rather than accepting that
-default, so the deploy can't silently carry along other work that lands on
-`main` AFTER it.
-
-**Pinning a commit SHA is necessary but not sufficient.** `commit_sha` is
-checked out as a full repository snapshot (`ref: ${{ inputs.commit_sha ...
-}}`), not applied as a diff — so a pinned commit still ships every commit
-that is already an ANCESTOR of it, including anything merged to `main`
-before this session's own PR that this conversation never reviewed or
-approved. Before dispatching: diff the pinned commit against the revision
-currently live in production (its build-info/health endpoint reports the
-deployed commit) and confirm every commit in that range is either this
-session's own work or something the user has separately approved for this
-deploy. If that range contains changes this conversation didn't produce or
-the user hasn't approved, and they can't be excluded (the deploy ships a
-full snapshot, never a pinned diff), stop and tell the user exactly what
-else would ship alongside theirs before proceeding.
+1. **Every change gets a VTID.** Bug, feature, doc, UI tweak: all of them. The VTID is allocated from the ledger.
+2. **Simple front-end change → no sparring.** Class `frontend-simple`: the diff is inside `src/**`, `public/**` or `tests/e2e/staging/*.staging.spec.ts` (read-only staging specs, VTID-05623),
+   touches none of the deny-listed files (`src/App.tsx`, `src/navigation/**`, `src/design/**`, `src/integrations/**`,
+   `src/routes/guards/**`, auth contexts, `src/generated/**`), and changes at most 15 files. Declare it in
+   `docs/validation/<VTID>/scope.json` with `"change_class": "frontend-simple"`. The PR gate verifies the diff
+   (`scripts/ci/pr-gate/lib.mjs` → `frontendSimpleViolations`); a diff that does not qualify must be sparred. Execution
+   allocates a fresh VTID and runs straight through implementation, PR and staging verification.
+3. **Everything else → plan → sparring → owner approval → VTID → code.** That is every back-end change (`services/**`,
+   `supabase/**`, migrations, edge functions), routes, auth, CI/`.github`, scripts, governance and LLM-routing changes, and
+   any front-end change that adds a route, screen, navigation entry or auth behaviour. Sparring is adversarial, at least two
+   passes, and its record is `docs/validation/<VTID>/plan-sparring.md`.
+4. **The gate is the database and CI**, not this text: the PreToolUse hook denies an allocation that references neither a
+   sparring record nor `change_class = 'frontend-simple'`; the `vtid_ledger` trigger checks sparred plans; PR-GATE checks the
+   scope and the diff. Changing the class's definition is a plan change: spar it, get owner approval, update the rule, the
+   hook, `lib.mjs` and the tests together.
 
 ## Project Structure
 

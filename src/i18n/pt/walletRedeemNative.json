@@ -1,0 +1,31 @@
+{
+  "walletRedeemNative": {
+    "brand": "MAXINA",
+    "wellnessFallback": "bem-estar",
+    "claimFailed": "Não foi possível resgatar o voucher. Ele pode já ter sido resgatado.",
+    "tiers": {
+      "test": {
+        "name": "Voucher de teste",
+        "benefit1": "Apenas para testar o pagamento",
+        "benefit2": "Não é um voucher real"
+      },
+      "experience": {
+        "name": "Voucher Experiência",
+        "benefit1": "Acesso a 1 evento premium da comunidade",
+        "benefit2": "Consultoria de bem-estar personalizada",
+        "benefit3": "Teste de 30 dias do Vitana+ incluído",
+        "benefit4": "Voucher eletrônico com design caprichado"
+      },
+      "exclusive": {
+        "name": "Voucher Exclusivo",
+        "benefit1": "3 eventos premium da comunidade",
+        "benefit2": "Sessão de coaching individual com um especialista",
+        "benefit3": "Assinatura de 90 dias do Vitana+",
+        "benefit4": "Reserva prioritária + vantagens VIP"
+      }
+    },
+    "_pending_review": {
+      "brand": true
+    }
+  }
+}

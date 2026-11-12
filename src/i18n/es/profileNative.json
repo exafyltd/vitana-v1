@@ -1,0 +1,78 @@
+{
+  "profileNative": {
+    "handle": "@{handle}",
+    "social": {
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "facebook": true,
+        "x": true,
+        "youtube": true,
+        "tiktok": true
+      }
+    },
+    "privacy": {
+      "wholeSection": "Toda la sección",
+      "tierChanged": "{field} → {tier}",
+      "sections": {
+        "dancePreferences": {
+          "label": "Preferencias de baile",
+          "description": "Estilos, nivel, rol y lo que buscas."
+        },
+        "partnerPreferences": {
+          "label": "Preferencias de pareja",
+          "description": "A quién buscas. Privado por defecto. Los subcampos siguen privados aunque abras la sección."
+        },
+        "serviceOfferings": {
+          "label": "Servicios que ofreces",
+          "description": "Lo que ofreces. Público por defecto: ocultarlo no tiene sentido."
+        },
+        "myPosts": {
+          "label": "Mis publicaciones",
+          "description": "Intenciones abiertas que has dictado. Las publicaciones de búsqueda de pareja NUNCA aparecen aquí, sin importar el ajuste."
+        },
+        "derivedAgeBand": {
+          "label": "Franja de edad",
+          "description": "Muestra solo tu franja de edad (p. ej. 30s) en lugar de tu edad exacta. Por defecto: solo contactos."
+        }
+      },
+      "fields": {
+        "danceVarieties": "Mis estilos",
+        "danceLevel": "Mi nivel",
+        "danceLookingFor": "Lo que busco",
+        "partnerGender": "Preferencia de género",
+        "partnerAgeRange": "Rango de edad",
+        "partnerRelationshipIntent": "Intención de relación",
+        "partnerLocationRadius": "Ubicación y radio",
+        "servicePriceRange": "Rango de precio",
+        "postsCommercial": "Publicaciones del marketplace",
+        "postsPartnerSeek": "Publicaciones de búsqueda de pareja"
+      },
+      "partnerSeekNote": "Siempre privado. El protocolo de revelación mutua protege estas publicaciones, sin importar el ajuste.",
+      "_pending_review": {
+        "tierChanged": true
+      }
+    },
+    "media": {
+      "photosDenied": "Permite el acceso a tus fotos en Ajustes para elegir una imagen.",
+      "unsupportedFormat": "Formato de imagen no compatible (.{ext}). Usa JPG, PNG, GIF o WebP."
+    },
+    "gallery": {
+      "photos": "Fotos",
+      "selectMultiple": "Selecciona varias fotos",
+      "tapToAddMore": "Toca para añadir más",
+      "uploadingProgress": "Subiendo {current} de {total}...",
+      "deleteTitle": "¿Estás seguro?",
+      "deleteDescription": "Esta foto se eliminará de forma permanente. Esta acción no se puede deshacer."
+    },
+    "_pending_review": {
+      "handle": true
+    }
+  }
+}
