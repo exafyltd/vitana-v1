@@ -226,8 +226,23 @@ export const FRONTEND_SIMPLE = 'frontend-simple';
 export const FRONTEND_SIMPLE_MAX_FILES = 15;
 // VTID-05623: read-only staging specs ship with a simple change ("no suite, no merge").
 // Top-level *.staging.spec.ts only: fixtures and other tests/ paths stay outside the class.
-export const FRONTEND_SIMPLE_ALLOW = ['src/**', 'public/**', 'tests/e2e/staging/*.staging.spec.ts'];
+// VTID-05767 (plan autonomous-to-staging §3.2, Pipeline B everywhere): the native app's screen code
+// apps/mobile/src/** too. Its routing, shell, auth, config, core ports, parity ledger, app/EAS config and
+// generated files stay denied; NATIVE-CI (parity ledger, shell pins) still runs on every apps/mobile change.
+export const FRONTEND_SIMPLE_ALLOW = ['src/**', 'public/**', 'tests/e2e/staging/*.staging.spec.ts', 'apps/mobile/src/**'];
 export const FRONTEND_SIMPLE_DENY = [
+  'apps/mobile/src/navigation/**', // native navigation (navigate, resolve, guest paths pinned to App.tsx)
+  'apps/mobile/src/linking/**',    // deep-link / push-tap routing
+  'apps/mobile/src/shell/**',      // app shell + AuthGate, mirrored from the web shell (shell pins)
+  'apps/mobile/src/auth/**',       // auth
+  'apps/mobile/src/config/**',     // env, http, remote config, blocked hosts
+  'apps/mobile/src/ports/**',      // the @vitana/core boundary to web code
+  'apps/mobile/src/**/*.generated.*', // generated (e.g. i18n catalog map)
+  'apps/mobile/src/**/.generated/**', // generated at prebuild
+  'apps/mobile/parity/**',         // native parity ledger
+  'apps/mobile/app.json',          // Expo app config
+  'apps/mobile/app.config.ts',     // Expo app config
+  'apps/mobile/eas.json',          // EAS build/submit config
   'src/App.tsx',                 // new routes / screens are features, not simple changes
   'src/navigation/**',           // screen registry (voice navigation)
   'src/design/**',               // screen manifest + design tokens

@@ -10,7 +10,7 @@ test('a plain front-end diff qualifies (no sparring)', () => {
 });
 
 test('back-end, schema, CI and config changes do not qualify', () => {
-  for (const f of ['services/gateway/src/routes/vtid.ts', 'supabase/migrations/2026_x.sql', '.github/workflows/PR-GATE.yml', 'scripts/ci/pr-gate/gate.mjs', 'package.json', 'apps/mobile/src/x.tsx']) {
+  for (const f of ['services/gateway/src/routes/vtid.ts', 'supabase/migrations/2026_x.sql', '.github/workflows/PR-GATE.yml', 'scripts/ci/pr-gate/gate.mjs', 'package.json', 'apps/mobile/app.json']) {
     assert.ok(L.frontendSimpleViolations([f]).length > 0, `${f} must not be frontend-simple`);
   }
 });
