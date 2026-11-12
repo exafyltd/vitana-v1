@@ -278,6 +278,14 @@ jobs:
           npx playwright test $SPECS --config=.pr-gate.playwright.config.mjs 2>&1 | tee "$RUNNER_TEMP/e2e.log"
           exit ${PIPESTATUS[0]}
 
+      - name: Upload visual evidence (screenshots from the staging specs)
+        if: always() && steps.health.outputs.ok == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-visual-${{ github.event.pull_request.number }}
+          path: visual/
+          if-no-files-found: ignore
+
       - name: Verdict
         if: steps.health.outputs.ok == 'true'
         run: |

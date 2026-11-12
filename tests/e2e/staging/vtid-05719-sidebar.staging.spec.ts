@@ -67,6 +67,11 @@ test('desktop sidebar shows the wordmark, all 14 community routes and the four g
     await expect(sidebar.getByText(label).first()).toBeAttached();
   }
 
-  // Evidence for the reviewer: a desktop screenshot of the sidebar.
-  await sidebar.screenshot({ path: test.info().outputPath('sidebar-desktop.png') });
+  // Evidence for the reviewer: screenshots saved to visual/ (uploaded as a CI artifact by PR-GATE).
+  const { mkdirSync } = await import('node:fs');
+  mkdirSync('visual', { recursive: true });
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: 'visual/desktop-page-1400x900.png' });
+  await sidebar.screenshot({ path: 'visual/desktop-sidebar-1400x900.png' });
 });
