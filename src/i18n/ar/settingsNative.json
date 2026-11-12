@@ -29,7 +29,12 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA"
+      "sessionLocation": "San Francisco, CA",
+      "_pending_review": {
+        "sessionPhone": true,
+        "sessionLaptop": true,
+        "sessionLocation": true
+      }
     },
     "creator": {
       "creatorShare": "90%",
@@ -38,7 +43,11 @@
       "completeSetup": "إكمال الإعداد",
       "enablePayments": "تفعيل المدفوعات",
       "opening": "جارٍ الفتح…",
-      "viewDashboard": "عرض لوحة التحكم"
+      "viewDashboard": "عرض لوحة التحكم",
+      "_pending_review": {
+        "creatorShare": true,
+        "platformShare": true
+      }
     },
     "limitations": {
       "description": "هذه قواعد غير قابلة للتفاوض نطبّقها على كل توصية منتج. لا يمكن أبدًا تجاوز الحساسية وموانع الاستعمال الطبية والتداخلات الدوائية.",

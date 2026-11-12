@@ -36,7 +36,10 @@
         "theyWillSee": "سيرون منشورك في محادثتهم.",
         "defaultTitle": "منشور على Vitana",
         "defaultText": "اطّلع على هذا في Vitana",
-        "fromVitana": "من Vitana"
+        "fromVitana": "من Vitana",
+        "_pending_review": {
+          "errorBody": true
+        }
       },
       "orders": {
         "eventTicket": "تذكرة فعالية",
@@ -56,7 +59,10 @@
           "earlyBird": "حجز مبكر",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "يوغا الصباح",
-          "retreatTitle": "خلوة تأمل رأس السنة"
+          "retreatTitle": "خلوة تأمل رأس السنة",
+          "_pending_review": {
+            "summitTitle": true
+          }
         },
         "status": {
           "upcoming": "قادم",

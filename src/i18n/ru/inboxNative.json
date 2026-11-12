@@ -13,18 +13,21 @@
     "subnav": {
       "overview": "Обзор",
       "inspiration": "Вдохновение",
-      "archived": "Архив"
+      "archived": "Архив",
+      "_pending_review": {}
     },
     "archiveCategory": {
       "all": "Все",
       "healthcare": "Здоровье",
       "fitness": "Фитнес",
       "nutrition": "Питание",
-      "activities": "Активности"
+      "activities": "Активности",
+      "_pending_review": {}
     },
     "archiveType": {
       "group": "Группа",
-      "direct": "Личная"
+      "direct": "Личная",
+      "_pending_review": {}
     },
     "archiveSample": {
       "johnsonName": "Д-р Джонсон",
@@ -36,16 +39,21 @@
       "warriorsName": "Воины выходного дня",
       "warriorsMessage": "Следующий поход запланирован на...",
       "kimName": "Д-р Ким",
-      "kimMessage": "Повторный приём через 2 недели"
+      "kimMessage": "Повторный приём через 2 недели",
+      "_pending_review": {}
     },
     "presence": {
       "online": "В сети",
       "away": "Отошёл",
-      "offline": "Не в сети"
+      "offline": "Не в сети",
+      "_pending_review": {}
     },
     "datePlaceholder": "ГГГГ-ММ-ДД",
     "permissions": {
-      "contactsUsage": "Vitana читает твои контакты, только когда ты нажимаешь «Перенести контакты с телефона», чтобы показать, кто из твоих друзей уже есть в Vitanaland."
-    }
-  }
+      "contactsUsage": "Vitana читает твои контакты, только когда ты нажимаешь «Перенести контакты с телефона», чтобы показать, кто из твоих друзей уже есть в Vitanaland.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

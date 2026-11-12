@@ -1,21 +1,26 @@
 {
   "memoryNative": {
     "addMemory": {
-      "save": "Salvar lembrança"
+      "save": "Salvar lembrança",
+      "_pending_review": {}
     },
     "editMemory": {
-      "save": "Salvar alterações"
+      "save": "Salvar alterações",
+      "_pending_review": {}
     },
     "timeline": {
-      "loadMore": "Carregar mais"
+      "loadMore": "Carregar mais",
+      "_pending_review": {}
     },
     "usage": {
-      "shareTitle": "Seus dados de uso da Vitana"
+      "shareTitle": "Seus dados de uso da Vitana",
+      "_pending_review": {}
     },
     "education": {
       "impact": {
         "high": "Impacto alto",
-        "medium": "Impacto médio"
+        "medium": "Impacto médio",
+        "_pending_review": {}
       },
       "items": {
         "sleep": {
@@ -24,7 +29,8 @@
           "content": "O sono profundo (a fase REM) é essencial para consolidar a memória. Nessa fase, seu cérebro processa e armazena as informações do dia. Procure dormir de 7 a 9 horas com qualidade e em horários regulares. Dormir mal pode reduzir a retenção da memória em até 40%.",
           "factor1": "Horário do treino",
           "factor2": "Consumo de cafeína",
-          "factor3": "Tempo de tela"
+          "factor3": "Tempo de tela",
+          "_pending_review": {}
         },
         "nutrition": {
           "category": "Nutrição",
@@ -32,7 +38,8 @@
           "content": "Ácidos graxos ômega-3, antioxidantes e vitaminas do complexo B influenciam diretamente a saúde do seu cérebro. Alimentos como peixes gordurosos, frutas vermelhas e verduras de folha apoiam a produção de neurotransmissores e reduzem a inflamação. Comer em horários regulares também estabiliza o açúcar no sangue e evita quedas de energia.",
           "factor1": "Horário das refeições",
           "factor2": "Hidratação",
-          "factor3": "Equilíbrio de micronutrientes"
+          "factor3": "Equilíbrio de micronutrientes",
+          "_pending_review": {}
         },
         "exercise": {
           "category": "Exercício",
@@ -40,7 +47,8 @@
           "content": "O exercício aumenta o BDNF (fator neurotrófico derivado do cérebro), que favorece o crescimento dos neurônios e a função cognitiva. Apenas 30 minutos de atividade moderada podem melhorar sua concentração por até 2 horas. A longo prazo, a constância importa mais do que a intensidade.",
           "factor1": "Tempo de recuperação",
           "factor2": "Tipo de exercício",
-          "factor3": "Intensidade"
+          "factor3": "Intensidade",
+          "_pending_review": {}
         },
         "stress": {
           "category": "Estresse",
@@ -48,7 +56,8 @@
           "content": "O estresse crônico eleva o cortisol, o que prejudica a memória e a tomada de decisões. Sua resposta ao estresse depende do sono, da alimentação e das relações sociais. Praticar mindfulness por 10 minutos por dia pode reduzir o cortisol em 23%.",
           "factor1": "Qualidade do sono",
           "factor2": "Apoio social",
-          "factor3": "Padrões de respiração"
+          "factor3": "Padrões de respiração",
+          "_pending_review": {}
         },
         "hydration": {
           "category": "Hidratação",
@@ -56,7 +65,8 @@
           "content": "Mesmo uma desidratação leve (2% do peso corporal) reduz o desempenho cognitivo em 10 a 20%. A água é essencial para transportar nutrientes e remover resíduos das células do cérebro. Beber água ao longo do dia funciona melhor do que grandes quantidades de uma vez.",
           "factor1": "Nível de atividade",
           "factor2": "Clima",
-          "factor3": "Sal na dieta"
+          "factor3": "Sal na dieta",
+          "_pending_review": {}
         },
         "lifestyle": {
           "category": "Estilo de vida",
@@ -64,9 +74,14 @@
           "content": "Os fatores de saúde nunca agem isoladamente. A qualidade do sono afeta a recuperação após o exercício, que influencia seu nível de estresse, que por sua vez influencia suas escolhas alimentares. Um único hábito positivo costuma gerar uma cadeia de melhorias em todas as áreas.",
           "factor1": "Todas as categorias",
           "factor2": "Encadear hábitos",
-          "factor3": "Organizar o ambiente"
-        }
-      }
-    }
-  }
+          "factor3": "Organizar o ambiente",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

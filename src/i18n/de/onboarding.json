@@ -25,6 +25,9 @@
       "saving": "Wird eingerichtet...",
       "submit": "Los geht's!",
       "communityIntroLabel": "Mich der Community vorstellen",
+      "communityIntroQuestion": "Dürfen wir dich der Community vorstellen?",
+      "communityIntroYes": "Ja, stell mich vor 👋",
+      "communityIntroNo": "Jetzt nicht",
       "communityIntroHint": "In deiner ersten Woche sehen andere Mitglieder eine kurze Willkommenskarte über dich und können dir Hallo sagen. Du kannst das jederzeit in den Einstellungen ändern."
     }
   }

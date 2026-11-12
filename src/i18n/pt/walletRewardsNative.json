@@ -2,7 +2,10 @@
   "walletRewardsNative": {
     "tabsLabel": "Seções de recompensas",
     "shop": {
-      "birthDatePlaceholder": "AAAA-MM-DD"
-    }
-  }
+      "birthDatePlaceholder": "AAAA-MM-DD",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

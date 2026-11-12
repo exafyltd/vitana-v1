@@ -1,5 +1,7 @@
 {
   "sidebar": {
+    "groups": { "start": "Start", "connect": "Verbinden", "grow": "Wachsen", "account": "Konto" },
+    "roles": { "exafyAdmin": "Exafy Admin", "administrator": "Administrator", "backOffice": "Back Office", "staff": "Mitarbeitende", "professional": "Fachkraft", "patient": "Patient", "community": "Community-Mitglied" },
     "home": "Startseite",
     "news": "News",
     "myJourney": "Meine Reise",

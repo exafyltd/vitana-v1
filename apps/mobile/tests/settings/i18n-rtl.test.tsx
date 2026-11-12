@@ -81,7 +81,7 @@ describe.each([...LOCALES])('%s', (locale) => {
 
 describe('settingsNative catalog', () => {
   const keys = (o: unknown, p = ''): string[] =>
-    Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => (v && typeof v === 'object' ? keys(v, `${p}${k}.`) : [`${p}${k}`]));
+    Object.entries(o as Record<string, unknown>).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) => (v && typeof v === 'object' ? keys(v, `${p}${k}.`) : [`${p}${k}`]));
   const load = (l: string) => JSON.parse(readFileSync(join(REPO, 'src/i18n', l, 'settingsNative.json'), 'utf8'));
   const de = keys(load('de')).sort();
 

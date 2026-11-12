@@ -1,0 +1,6 @@
+{
+  "vtid": "VTID-05586",
+  "change_class": "frontend-simple",
+  "summary": "Light-blue own-message bubble: domain-messages-bubble lightened from 203 89% 76% to 203 89% 90% (generated tokens and the light theme in src/index.css).",
+  "paths": ["src/index.css", "packages/tokens/src/tokens.generated.ts", "docs/validation/VTID-05586/**"]
+}

@@ -36,7 +36,10 @@
         "theyWillSee": "Они увидят твою публикацию в своём чате.",
         "defaultTitle": "Публикация в Vitana",
         "defaultText": "Посмотри это в Vitana",
-        "fromVitana": "Из Vitana"
+        "fromVitana": "Из Vitana",
+        "_pending_review": {
+          "errorBody": true
+        }
       },
       "orders": {
         "eventTicket": "Билет на событие",
@@ -56,7 +59,10 @@
           "earlyBird": "Ранняя продажа",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "Утренняя йога",
-          "retreatTitle": "Новогодний медитационный ретрит"
+          "retreatTitle": "Новогодний медитационный ретрит",
+          "_pending_review": {
+            "summitTitle": true
+          }
         },
         "status": {
           "upcoming": "Скоро",
@@ -98,7 +104,10 @@
         "openingWhatsapp": "Открываем WhatsApp…",
         "openingViber": "Открываем Viber…",
         "openingEmail": "Открываем почту…",
-        "openingMessages": "Открываем сообщения…"
+        "openingMessages": "Открываем сообщения…",
+        "_pending_review": {
+          "sms": true
+        }
       },
       "booking": {
         "sessionTitle": "Сессия: {title}",
