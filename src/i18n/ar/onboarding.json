@@ -26,6 +26,9 @@
       "submit": "هيا نبدأ!",
       "_pending_review": {},
       "communityIntroLabel": "عرّفني على المجتمع",
+      "communityIntroQuestion": "هل يمكننا تعريف المجتمع بك؟",
+      "communityIntroYes": "نعم، عرّفوني 👋",
+      "communityIntroNo": "ليس الآن",
       "communityIntroHint": "خلال أسبوعك الأول، يرى الأعضاء الآخرون بطاقة ترحيب قصيرة عنك ويمكنهم إلقاء التحية عليك. يمكنك تغيير ذلك في أي وقت من الإعدادات."
     },
     "_pending_review": {}

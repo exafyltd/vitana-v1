@@ -36,7 +36,10 @@
         "theyWillSee": "Zobaczą twój wpis na swoim czacie.",
         "defaultTitle": "Wpis z Vitany",
         "defaultText": "Zobacz to na Vitanie",
-        "fromVitana": "Z Vitany"
+        "fromVitana": "Z Vitany",
+        "_pending_review": {
+          "errorBody": true
+        }
       },
       "orders": {
         "eventTicket": "Bilet na wydarzenie",
@@ -56,7 +59,10 @@
           "earlyBird": "Wczesny bilet",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "Poranny flow jogi",
-          "retreatTitle": "Noworoczne odosobnienie medytacyjne"
+          "retreatTitle": "Noworoczne odosobnienie medytacyjne",
+          "_pending_review": {
+            "summitTitle": true
+          }
         },
         "status": {
           "upcoming": "Nadchodzące",
@@ -98,7 +104,10 @@
         "openingWhatsapp": "Otwieranie WhatsApp…",
         "openingViber": "Otwieranie Vibera…",
         "openingEmail": "Otwieranie poczty…",
-        "openingMessages": "Otwieranie wiadomości…"
+        "openingMessages": "Otwieranie wiadomości…",
+        "_pending_review": {
+          "sms": true
+        }
       },
       "booking": {
         "sessionTitle": "Sesja: {title}",
@@ -200,7 +209,10 @@
       "beauty": "Uroda",
       "gutHealth": "Zdrowie jelit",
       "herbs": "Zioła",
-      "heartHealth": "Zdrowie serca"
+      "heartHealth": "Zdrowie serca",
+      "_pending_review": {
+        "omega3": true
+      }
     }
   }
 }

@@ -2814,7 +2814,13 @@
       "soundscapeValue0": "Pejzaż dźwiękowy {value0}",
       "vitanaAudioMode": "Tryb audio VITANA",
       "typeYourMessage": "Wpisz wiadomość...",
-      "returnVoice": "Wróć do głosu"
+      "returnVoice": "Wróć do głosu",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAKIET:",

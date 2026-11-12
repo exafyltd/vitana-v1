@@ -1,5 +1,22 @@
 {
   "sidebar": {
+    "groups": {
+      "start": "Start",
+      "connect": "Connect",
+      "grow": "Grow",
+      "account": "Account",
+      "_pending_review": {}
+    },
+    "roles": {
+      "exafyAdmin": "Exafy Admin",
+      "administrator": "Administrator",
+      "backOffice": "Back Office",
+      "staff": "Staff",
+      "professional": "Professional",
+      "patient": "Patient",
+      "community": "Community Member",
+      "_pending_review": {}
+    },
     "home": "Home",
     "news": "News",
     "myJourney": "My Journey",

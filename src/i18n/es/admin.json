@@ -19,15 +19,18 @@
       "rejected": "Rechazado",
       "flagged": "Marcado",
       "podcastManagement": "Gestión de Podcasts",
-      "podcastManagementDesc": "Revisa y modera las subidas de podcasts"
+      "podcastManagementDesc": "Revisa y modera las subidas de podcasts",
+      "_pending_review": {}
     },
     "notifications": {
       "tabs": {
         "notifications": "Notificaciones",
         "categories": "Categorías",
         "activity": "Actividad",
-        "compose": "Enviar"
-      }
+        "compose": "Enviar",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "rewardsShop": {
       "title": "Gestionar tienda de recompensas",
@@ -42,12 +45,14 @@
       "sections": {
         "items": "Artículos",
         "fees": "Tarifas de envío",
-        "orders": "Pedidos"
+        "orders": "Pedidos",
+        "_pending_review": {}
       },
       "fulfilment": {
         "ship": "Envío",
         "event": "Entrada para evento",
-        "digital": "Digital"
+        "digital": "Digital",
+        "_pending_review": {}
       },
       "items": {
         "count": "{count} artículos",
@@ -63,7 +68,8 @@
         "stock": "Existencias: {count}",
         "stockUnlimited": "Existencias: ilimitadas",
         "reserved": "Reservados: {count}",
-        "noPhoto": "Sin foto"
+        "noPhoto": "Sin foto",
+        "_pending_review": {}
       },
       "form": {
         "createTitle": "Nuevo artículo",
@@ -100,7 +106,8 @@
         "save": "Guardar",
         "saving": "Guardando…",
         "cancel": "Cancelar",
-        "saved": "Artículo guardado"
+        "saved": "Artículo guardado",
+        "_pending_review": {}
       },
       "validation": {
         "titleDe": "Por favor, introduce un título en alemán.",
@@ -111,7 +118,8 @@
         "country": "Por favor, introduce un código de país válido de dos letras.",
         "stock": "El stock debe ser un número entero de 0 o más.",
         "sortOrder": "El orden de clasificación debe ser un número entero.",
-        "fee": "Por favor, introduce una cantidad de 0 o más, con un máximo de dos decimales."
+        "fee": "Por favor, introduce una cantidad de 0 o más, con un máximo de dos decimales.",
+        "_pending_review": {}
       },
       "errors": {
         "INVALID_ITEM": "El servidor rechazó los detalles. Comprueba el identificador, título, precio y tipo.",
@@ -126,7 +134,8 @@
         "ORDER_NOT_FOUND": "No se encontró el pedido.",
         "FORBIDDEN": "Solo administradores de Exafy",
         "generic": "Eso no funcionó. Por favor, inténtalo de nuevo.",
-        "serverMessage": "Servidor: {message}"
+        "serverMessage": "Servidor: {message}",
+        "_pending_review": {}
       },
       "fees": {
         "help": "Una tarifa de envío fija por país y moneda.",
@@ -147,7 +156,8 @@
         "deleted": "Tarifa de envío eliminada",
         "missingTitle": "Faltan tarifas de envío",
         "missingBody": "Los artículos enviados activos van a estos países, pero no tienen tarifa de envío. Los miembros allí no pueden pedir en esta moneda:",
-        "missingEntry": "{country}: {currencies}"
+        "missingEntry": "{country}: {currencies}",
+        "_pending_review": {}
       },
       "orders": {
         "filterLabel": "Estado",
@@ -178,9 +188,14 @@
           "shipped": "Enviado",
           "delivered": "Entregado",
           "cancelled": "Cancelado",
-          "refunded": "Reembolsado"
-        }
-      }
-    }
-  }
+          "refunded": "Reembolsado",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

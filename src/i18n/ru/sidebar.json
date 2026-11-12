@@ -73,6 +73,36 @@
         "legal": true,
         "reports": true
       }
+    },
+    "groups": {
+      "_pending_review": {
+        "start": true,
+        "connect": true,
+        "grow": true,
+        "account": true
+      },
+      "start": "Start",
+      "connect": "Connect",
+      "grow": "Grow",
+      "account": "Account"
+    },
+    "roles": {
+      "_pending_review": {
+        "exafyAdmin": true,
+        "administrator": true,
+        "backOffice": true,
+        "staff": true,
+        "professional": true,
+        "patient": true,
+        "community": true
+      },
+      "exafyAdmin": "Exafy Admin",
+      "administrator": "Administrator",
+      "backOffice": "Back Office",
+      "staff": "Staff",
+      "professional": "Professional",
+      "patient": "Patient",
+      "community": "Community Member"
     }
   }
 }

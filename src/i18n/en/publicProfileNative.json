@@ -4,20 +4,26 @@
       "body": "The profile you're looking for doesn't exist.",
       "loadFailed": "Failed to load profile",
       "unexpected": "An unexpected error occurred",
-      "noIdentifier": "No profile identifier provided"
+      "noIdentifier": "No profile identifier provided",
+      "_pending_review": {}
     },
     "landing": {
       "brand": "VITANA",
       "vitanaIndex": "VITANA {score}",
-      "openSocial": "Open {network}"
+      "openSocial": "Open {network}",
+      "_pending_review": {}
     },
     "member": {
       "noBio": "No bio yet",
-      "sections": "Profile sections"
+      "sections": "Profile sections",
+      "_pending_review": {}
     },
     "post": {
       "likes": "{count} likes",
-      "comments": "{count} comments"
-    }
-  }
+      "comments": "{count} comments",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

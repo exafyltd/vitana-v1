@@ -29,7 +29,12 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA"
+      "sessionLocation": "San Francisco, CA",
+      "_pending_review": {
+        "sessionPhone": true,
+        "sessionLaptop": true,
+        "sessionLocation": true
+      }
     },
     "creator": {
       "creatorShare": "90%",
@@ -38,7 +43,11 @@
       "completeSetup": "Dokończ konfigurację",
       "enablePayments": "Włącz płatności",
       "opening": "Otwieranie…",
-      "viewDashboard": "Zobacz panel"
+      "viewDashboard": "Zobacz panel",
+      "_pending_review": {
+        "creatorShare": true,
+        "platformShare": true
+      }
     },
     "limitations": {
       "description": "To nienegocjowalne zasady, które stosujemy przy każdej rekomendacji produktu. Alergii, przeciwwskazań medycznych i interakcji z lekami nigdy nie można pominąć.",
@@ -61,7 +70,10 @@
         "nutFree": "bez orzechów",
         "soyFree": "bez soi",
         "sugarFree": "bez cukru",
-        "organic": "ekologiczne"
+        "organic": "ekologiczne",
+        "_pending_review": {
+          "halal": true
+        }
       }
     },
     "tenantRole": {
@@ -78,7 +90,11 @@
         "professional": "Specjalista",
         "staff": "Personel",
         "backoffice": "Back Office",
-        "admin": "Administrator"
+        "admin": "Administrator",
+        "_pending_review": {
+          "backoffice": true,
+          "admin": true
+        }
       },
       "roleDescriptions": {
         "community": "Dostęp do funkcji społeczności i kontaktów",

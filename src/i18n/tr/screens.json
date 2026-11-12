@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "Ses Manzarası {value0}",
       "vitanaAudioMode": "VITANA Ses Modu",
       "typeYourMessage": "Mesajını yaz...",
-      "returnVoice": "Sese dön"
+      "returnVoice": "Sese dön",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "PAKET:",

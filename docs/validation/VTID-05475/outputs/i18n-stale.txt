@@ -1,0 +1,14 @@
+
+> vite_react_shadcn_ts@0.0.0 i18n:stale
+> node scripts/i18n-stamp-source.mjs --check-all
+
+[stamp] en: 0 key(s) whose DE source changed since translation (0.0%), 540 never stamped
+[stamp] es: 0 key(s) whose EN source changed since translation (0.0%), 1494 never stamped
+[stamp] sr: 0 key(s) whose EN source changed since translation (0.0%), 1795 never stamped
+[stamp] fr: 0 key(s) whose EN source changed since translation (0.0%), 2523 never stamped
+[stamp] pt: 0 key(s) whose EN source changed since translation (0.0%), 2310 never stamped
+[stamp] ru: 0 key(s) whose EN source changed since translation (0.0%), 2620 never stamped
+[stamp] pl: 0 key(s) whose EN source changed since translation (0.0%), 2491 never stamped
+[stamp] ar: 0 key(s) whose EN source changed since translation (0.0%), 1663 never stamped
+[stamp] zh: 0 key(s) whose EN source changed since translation (0.0%), 2641 never stamped
+[stamp] tr: 0 key(s) whose EN source changed since translation (0.0%), 2638 never stamped

@@ -36,7 +36,10 @@
         "theyWillSee": "Eles vão ver sua publicação no chat.",
         "defaultTitle": "Uma publicação da Vitana",
         "defaultText": "Veja isto na Vitana",
-        "fromVitana": "Da Vitana"
+        "fromVitana": "Da Vitana",
+        "_pending_review": {
+          "errorBody": true
+        }
       },
       "orders": {
         "eventTicket": "Ingresso do evento",
@@ -56,7 +59,10 @@
           "earlyBird": "Lote antecipado",
           "summitTitle": "VITANA Wellness Summit 2025",
           "yogaTitle": "Yoga matinal",
-          "retreatTitle": "Retiro de meditação de Ano-Novo"
+          "retreatTitle": "Retiro de meditação de Ano-Novo",
+          "_pending_review": {
+            "summitTitle": true
+          }
         },
         "status": {
           "upcoming": "Próximo",
@@ -98,7 +104,10 @@
         "openingWhatsapp": "Abrindo o WhatsApp…",
         "openingViber": "Abrindo o Viber…",
         "openingEmail": "Abrindo o e-mail…",
-        "openingMessages": "Abrindo as mensagens…"
+        "openingMessages": "Abrindo as mensagens…",
+        "_pending_review": {
+          "sms": true
+        }
       },
       "booking": {
         "sessionTitle": "Sessão: {title}",

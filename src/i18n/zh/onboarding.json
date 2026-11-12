@@ -26,6 +26,9 @@
       "submit": "让我们开始吧！",
       "_pending_review": {},
       "communityIntroLabel": "向社区介绍我",
+      "communityIntroQuestion": "我们可以把你介绍给社区吗？",
+      "communityIntroYes": "好的，介绍我 👋",
+      "communityIntroNo": "暂时不用",
       "communityIntroHint": "在你加入的第一周，其他成员会看到一张关于你的简短欢迎卡片，并可以向你打招呼。你可以随时在设置中更改。"
     },
     "_pending_review": {}

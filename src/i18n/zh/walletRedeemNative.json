@@ -23,6 +23,9 @@
         "benefit3": "90 天 Vitana+ 订阅",
         "benefit4": "优先预订 + VIP 权益"
       }
+    },
+    "_pending_review": {
+      "brand": true
     }
   }
 }

@@ -41,7 +41,7 @@ function renderBubble(message: ChatViewMessage, extra: Partial<Parameters<typeof
 }
 
 describe('MessageBubble variants', () => {
-  it('text from someone else: start-aligned, avatar + name on the first bubble', () => {
+  it('text from someone else: flush left (no avatar indent), name on the first bubble', () => {
     renderBubble(base({}));
     expect(screen.getByText('Hallo')).toBeTruthy();
     expect(screen.getByText('Petra Peer')).toBeTruthy();

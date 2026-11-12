@@ -7,7 +7,8 @@
       "facebook": "Facebook",
       "x": "X",
       "youtube": "YouTube",
-      "tiktok": "TikTok"
+      "tiktok": "TikTok",
+      "_pending_review": {}
     },
     "privacy": {
       "wholeSection": "Whole section",
@@ -15,24 +16,30 @@
       "sections": {
         "dancePreferences": {
           "label": "Dance preferences",
-          "description": "Styles, level, role, what you're looking for."
+          "description": "Styles, level, role, what you're looking for.",
+          "_pending_review": {}
         },
         "partnerPreferences": {
           "label": "Partner preferences",
-          "description": "Who you're looking for. Private by default. Sub-fields stay private even if the section opens."
+          "description": "Who you're looking for. Private by default. Sub-fields stay private even if the section opens.",
+          "_pending_review": {}
         },
         "serviceOfferings": {
           "label": "Service offerings",
-          "description": "What you offer. Public by default — hiding defeats the purpose."
+          "description": "What you offer. Public by default — hiding defeats the purpose.",
+          "_pending_review": {}
         },
         "myPosts": {
           "label": "My posts",
-          "description": "Open intents you've dictated. Partner-search posts NEVER appear here regardless of toggle."
+          "description": "Open intents you've dictated. Partner-search posts NEVER appear here regardless of toggle.",
+          "_pending_review": {}
         },
         "derivedAgeBand": {
           "label": "Age band",
-          "description": "Show only your age band (e.g. 30s) instead of exact age. Default: connections only."
-        }
+          "description": "Show only your age band (e.g. 30s) instead of exact age. Default: connections only.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "fields": {
         "danceVarieties": "My styles",
@@ -44,13 +51,16 @@
         "partnerLocationRadius": "Location & radius",
         "servicePriceRange": "Price range",
         "postsCommercial": "Marketplace posts",
-        "postsPartnerSeek": "Partner-search posts"
+        "postsPartnerSeek": "Partner-search posts",
+        "_pending_review": {}
       },
-      "partnerSeekNote": "Always private. Mutual-reveal protocol gates these regardless of toggle."
+      "partnerSeekNote": "Always private. Mutual-reveal protocol gates these regardless of toggle.",
+      "_pending_review": {}
     },
     "media": {
       "photosDenied": "Allow access to your photos in Settings to choose an image.",
-      "unsupportedFormat": "Unsupported image format (.{ext}). Please use JPG, PNG, GIF, or WebP."
+      "unsupportedFormat": "Unsupported image format (.{ext}). Please use JPG, PNG, GIF, or WebP.",
+      "_pending_review": {}
     },
     "gallery": {
       "photos": "Photos",
@@ -58,7 +68,10 @@
       "tapToAddMore": "Tap to add more",
       "uploadingProgress": "Uploading {current} of {total}...",
       "deleteTitle": "Are you sure?",
-      "deleteDescription": "This photo will be permanently deleted. This action cannot be undone."
-    }
-  }
+      "deleteDescription": "This photo will be permanently deleted. This action cannot be undone.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

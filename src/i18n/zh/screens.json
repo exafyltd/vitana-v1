@@ -2813,7 +2813,13 @@
       "soundscapeValue0": "音景 {value0}",
       "vitanaAudioMode": "VITANA 音频模式",
       "typeYourMessage": "输入你的消息...",
-      "returnVoice": "返回语音"
+      "returnVoice": "返回语音",
+      "_pending_review": {
+        "soundscapeMuted": true,
+        "soundscapeUnmuted": true
+      },
+      "soundscapeMuted": "Soundscape muted",
+      "soundscapeUnmuted": "Soundscape unmuted"
     },
     "auth": {
       "bundle": "包：",

@@ -1,21 +1,26 @@
 {
   "memoryNative": {
     "addMemory": {
-      "save": "Zapisz wspomnienie"
+      "save": "Zapisz wspomnienie",
+      "_pending_review": {}
     },
     "editMemory": {
-      "save": "Zapisz zmiany"
+      "save": "Zapisz zmiany",
+      "_pending_review": {}
     },
     "timeline": {
-      "loadMore": "Wczytaj więcej"
+      "loadMore": "Wczytaj więcej",
+      "_pending_review": {}
     },
     "usage": {
-      "shareTitle": "Twoje dane o korzystaniu z Vitany"
+      "shareTitle": "Twoje dane o korzystaniu z Vitany",
+      "_pending_review": {}
     },
     "education": {
       "impact": {
         "high": "Duży wpływ",
-        "medium": "Średni wpływ"
+        "medium": "Średni wpływ",
+        "_pending_review": {}
       },
       "items": {
         "sleep": {
@@ -24,7 +29,8 @@
           "content": "Głęboki sen (faza REM) jest kluczowy dla utrwalania pamięci. W tej fazie twój mózg przetwarza i zapisuje informacje z całego dnia. Staraj się spać 7–9 godzin w stałym rytmie. Słaby sen może obniżyć zapamiętywanie nawet o 40%.",
           "factor1": "Pora treningu",
           "factor2": "Spożycie kofeiny",
-          "factor3": "Czas przed ekranem"
+          "factor3": "Czas przed ekranem",
+          "_pending_review": {}
         },
         "nutrition": {
           "category": "Odżywianie",
@@ -32,7 +38,8 @@
           "content": "Kwasy omega-3, przeciwutleniacze i witaminy z grupy B bezpośrednio wpływają na zdrowie twojego mózgu. Tłuste ryby, jagody i zielone warzywa liściaste wspierają produkcję neuroprzekaźników i zmniejszają stany zapalne. Regularne pory posiłków stabilizują też poziom cukru we krwi i zapobiegają spadkom energii.",
           "factor1": "Pory posiłków",
           "factor2": "Nawodnienie",
-          "factor3": "Równowaga mikroelementów"
+          "factor3": "Równowaga mikroelementów",
+          "_pending_review": {}
         },
         "exercise": {
           "category": "Ćwiczenia",
@@ -40,7 +47,8 @@
           "content": "Ruch zwiększa poziom BDNF (neurotroficznego czynnika pochodzenia mózgowego), który wspiera wzrost neuronów i funkcje poznawcze. Już 30 minut umiarkowanej aktywności może poprawić twoją koncentrację nawet na 2 godziny. W dłuższej perspektywie regularność liczy się bardziej niż intensywność.",
           "factor1": "Czas regeneracji",
           "factor2": "Rodzaj ćwiczeń",
-          "factor3": "Intensywność"
+          "factor3": "Intensywność",
+          "_pending_review": {}
         },
         "stress": {
           "category": "Stres",
@@ -48,7 +56,8 @@
           "content": "Przewlekły stres podnosi poziom kortyzolu, co osłabia pamięć i podejmowanie decyzji. Twoja reakcja na stres zależy od snu, odżywiania i relacji z innymi. Już 10 minut uważności dziennie może obniżyć kortyzol o 23%.",
           "factor1": "Jakość snu",
           "factor2": "Wsparcie społeczne",
-          "factor3": "Sposób oddychania"
+          "factor3": "Sposób oddychania",
+          "_pending_review": {}
         },
         "hydration": {
           "category": "Nawodnienie",
@@ -56,7 +65,8 @@
           "content": "Nawet lekkie odwodnienie (2% masy ciała) obniża sprawność umysłową o 10–20%. Woda jest niezbędna do transportu składników odżywczych i usuwania produktów przemiany materii z komórek mózgu. Regularne picie przez cały dzień działa lepiej niż duże ilości naraz.",
           "factor1": "Poziom aktywności",
           "factor2": "Klimat",
-          "factor3": "Sól w diecie"
+          "factor3": "Sól w diecie",
+          "_pending_review": {}
         },
         "lifestyle": {
           "category": "Styl życia",
@@ -64,9 +74,14 @@
           "content": "Czynniki zdrowotne nigdy nie działają w oderwaniu od siebie. Jakość snu wpływa na regenerację po treningu, ta na poziom stresu, a stres na wybory żywieniowe. Jeden dobry nawyk często uruchamia całą serię zmian na lepsze we wszystkich obszarach.",
           "factor1": "Wszystkie kategorie",
           "factor2": "Łączenie nawyków",
-          "factor3": "Kształtowanie otoczenia"
-        }
-      }
-    }
-  }
+          "factor3": "Kształtowanie otoczenia",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
