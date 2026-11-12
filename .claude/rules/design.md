@@ -21,5 +21,5 @@ change a screen. In short:
 - **Enforced at error level** by `eslint-rules/design/*` and the base-branch **Design ratchet** in PR-GATE. New files must
   be clean; migration PRs lower `scripts/ci/pr-gate/baseline/{design,eslint}.json`. The only escape hatch is
   `// design-allow-next-line: <reason>`.
-- **Changing the contract** (an archetype, a card size, a token, a rule) is a plan change: spar it, get owner approval,
+- **Changing the contract** (an archetype, a card size, a token, a rule) is a plan change: spar it, converge it (machine approval),
   then update the contract, the rules, the manifest and the baselines together.

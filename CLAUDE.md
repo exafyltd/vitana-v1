@@ -34,7 +34,7 @@ service or live user-facing endpoint:
 > inserting rows into the live `chat_messages` table and posting junk messages
 > into a real community group that real members could see. Never again.
 
-## ⚙️ AUTONOMY CONTRACT — TWO OWNER GATES (STANDING RULE — VTID-04947)
+## ⚙️ AUTONOMY CONTRACT — MACHINE UNTIL STAGING VERIFIED (BRIDGE PERIOD, 2026-11-12)
 
 Owner decision 2026-10-07: *"Run the processes end to end — only ask after the
 plan comes back from sparring, and after it is verified on staging, to confirm
@@ -43,18 +43,17 @@ The absolute rule against testing on production and every production-safety
 rule still stand; this contract removes the questions in between, not the
 safety.
 
-**The owner is asked exactly two questions per change:**
+**Bridge period (owner instruction 2026-11-12, until the agentic-delivery pipeline on GitLab is live):** every step before STAGING-VERIFY passes is machine to machine: sparring, approval, build, review, merge, staging deploy and verification. No human is asked before Gate 2. Production is never written by the machine. The rules below on production writes, test accounts and migrations stand.
 
-1. **Gate 1 — the sparred plan.** One message: final plan, every sparring
-   round's findings with the planner's answers, the verdict, the files in
-   scope, and the test plan. Nothing else is asked with it.
-2. **Gate 2 — "Staging verified — ready for deployment to production?"**
+**The owner is asked exactly one question per change:**
+
+1. **Gate 2 — "Staging verified — ready for deployment to production?"**
    Built only from machine evidence: STAGING-VERIFY run link, test counts,
    the verified commit, every commit between production and it, migrations
    in the release, and a "Decisions taken" list. A change that deploys
    nothing has no Gate 2; it is done when merged with green checks.
 
-**The owner's "yes" at Gate 1 is the standing instruction for everything up
+**Convergence (the machine approval, bridge period 2026-11-12) is the standing instruction for everything up
 to Gate 2 for that plan's VTIDs.** It is recorded as the approval line in
 `docs/validation/<VTID>/plan-sparring.md` (with the plan hash) and in the
 ledger row's metadata. That record is an audit trail; the protection is the
@@ -76,11 +75,10 @@ reasonable implementations to use inside the approved plan.
   option (smaller change, existing pattern, nothing deleted) and list it under
   "Decisions taken" in Gate 2.
 
-**Stop and ask mid-flight only for:** (a) work outside the approved plan that
+**Automatic halts (no question to the owner before Gate 2):** (a) work outside the approved plan that
 one more sparring round with the same partner does not converge on, (b) a
 production write not covered by the two gates, (c) a security or data-loss
-risk, (d) the same failure surviving 3 fix-forward attempts. Each such stop is
-one message with the evidence and a recommended answer.
+risk, (d) the same failure surviving 3 fix-forward attempts. Each halt is parked with its evidence; the recommended answer goes into Gate 2.
 
 **After merge the session keeps going.** In a cloud session it arms a
 `send_later` self check-in about 8 minutes after merge and re-arms it every 5
@@ -202,13 +200,13 @@ from the `vtid_ledger`; only back-end and complex changes get a sparring first.*
    `docs/validation/<VTID>/scope.json` with `"change_class": "frontend-simple"`. The PR gate verifies the diff
    (`scripts/ci/pr-gate/lib.mjs` → `frontendSimpleViolations`); a diff that does not qualify must be sparred. Execution
    allocates a fresh VTID and runs straight through implementation, PR and staging verification.
-3. **Everything else → plan → sparring → owner approval → VTID → code.** That is every back-end change (`services/**`,
+3. **Everything else → plan → sparring → machine approval on convergence → VTID → code.** That is every back-end change (`services/**`,
    `supabase/**`, migrations, edge functions), routes, auth, CI/`.github`, scripts, governance and LLM-routing changes, and
    any front-end change that adds a route, screen, navigation entry or auth behaviour. Sparring is adversarial, at least two
    passes, and its record is `docs/validation/<VTID>/plan-sparring.md`.
 4. **The gate is the database and CI**, not this text: the PreToolUse hook denies an allocation that references neither a
    sparring record nor `change_class = 'frontend-simple'`; the `vtid_ledger` trigger checks sparred plans; PR-GATE checks the
-   scope and the diff. Changing the class's definition is a plan change: spar it, get owner approval, update the rule, the
+   scope and the diff. Changing the class's definition is a plan change: spar it, converge it (machine approval), update the rule, the
    hook, `lib.mjs` and the tests together.
 
 ## Project Structure
