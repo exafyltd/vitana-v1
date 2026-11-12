@@ -44,7 +44,7 @@ describe("VTID-05719 › wordmark and footer", () => {
   });
 
   it("keeps the ORB clearance as named constants (expanded and collapsed)", () => {
-    expect(src).toContain('const ORB_CLEARANCE_EXPANDED = "h-24";');
+    expect(src).toContain('const ORB_CLEARANCE_EXPANDED = "h-20";');
     expect(src).toContain('const ORB_CLEARANCE_COLLAPSED = "h-16";');
     expect(src).toContain("className={open ? ORB_CLEARANCE_EXPANDED : ORB_CLEARANCE_COLLAPSED}");
   });

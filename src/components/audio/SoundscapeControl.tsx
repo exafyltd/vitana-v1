@@ -51,7 +51,7 @@ export function SoundscapeControl() {
   // Expanded sidebar - full control
   return (
     <div className="w-full px-2">
-      <div className="flex items-center gap-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors p-2">
+      <div className="flex items-center gap-2 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2">
         <Button
           variant="ghost"
           size="icon"

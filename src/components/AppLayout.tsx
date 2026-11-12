@@ -431,7 +431,7 @@ const COMMUNITY_NAV_GROUPS: { key: string; fallback: string; paths: string[] }[]
 ];
 const NON_COMMUNITY_PREFIXES = ["/admin", "/backoffice", "/staff", "/professional", "/patient"];
 // VTID-05719: named clearance for the fixed-position ORB (values unchanged; re-measured on staging).
-const ORB_CLEARANCE_EXPANDED = "h-24";
+const ORB_CLEARANCE_EXPANDED = "h-20";
 const ORB_CLEARANCE_COLLAPSED = "h-16";
 
 export default function AppLayout({ children }: AppLayoutProps) {
