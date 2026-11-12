@@ -4,29 +4,37 @@
     "selectFeed": "Choose feed",
     "newMember": {
       "badge": "New to the community",
-      "fallbackName": "New member"
+      "fallbackName": "New member",
+      "_pending_review": {}
     },
     "card": {
       "dismiss": "Dismiss card",
-      "open": "Open"
+      "open": "Open",
+      "_pending_review": {}
     },
     "feature": {
       "brandNew": "Brand-new feature",
       "didYouKnow": "Did you know?",
-      "tryIt": "Try it now"
+      "tryIt": "Try it now",
+      "_pending_review": {}
     },
     "performer": {
       "badge": "Community spotlight",
-      "improvement": "+{value} on the Vitana Index"
+      "improvement": "+{value} on the Vitana Index",
+      "_pending_review": {}
     },
     "compose": {
       "cancel": "Cancel",
-      "charCount": "{count}/{max}"
+      "charCount": "{count}/{max}",
+      "_pending_review": {}
     },
     "comments": {
       "title": "Comments",
       "open": "Open comments",
-      "openPost": "Open post"
-    }
-  }
+      "openPost": "Open post",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

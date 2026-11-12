@@ -67,6 +67,49 @@ test('desktop sidebar shows the wordmark, all 14 community routes and the four g
     await expect(sidebar.getByText(label).first()).toBeAttached();
   }
 
-  // Evidence for the reviewer: a desktop screenshot of the sidebar.
-  await sidebar.screenshot({ path: test.info().outputPath('sidebar-desktop.png') });
+  // Layout measurements (desktop 1400x900). These fail the run instead of relying on a reviewer's eye.
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.waitForTimeout(500);
+  const box = async (loc: ReturnType<typeof sidebar.locator>) => {
+    const b = await loc.first().boundingBox();
+    expect(b, 'element has a bounding box').not.toBeNull();
+    return b!;
+  };
+  // Search bar bottom -> first group label top: 10px token (allow 4..16px for rounding).
+  const searchInput = sidebar.locator('input').first();
+  const searchBox = await box(searchInput);
+  const startLabel = await box(sidebar.getByText(/^start$/i));
+  const gapSearchToLabel = startLabel.y - (searchBox.y + searchBox.height);
+  expect(gapSearchToLabel, 'gap search bar -> START label').toBeGreaterThanOrEqual(4);
+  expect(gapSearchToLabel, 'gap search bar -> START label').toBeLessThanOrEqual(16);
+  // The chips inside the dock: no text overflows its own chip (scrollWidth must fit clientWidth).
+  const overflowing = await sidebar.evaluate((root) => {
+    const chips = Array.from(root.querySelectorAll<HTMLElement>('button, div.rounded-xl'));
+    return chips
+      .filter((el) => el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1)
+      .map((el) => el.textContent?.trim().slice(0, 40) ?? '');
+  });
+  expect(overflowing, 'text overflowing a footer chip').toEqual([]);
+  // Nothing in the sidebar may extend past the sidebar's right edge.
+  const sidebarBox = await box(sidebar);
+  const outside = await sidebar.evaluate((root, right) => {
+    return Array.from(root.querySelectorAll<HTMLElement>('*'))
+      .filter((el) => el.getBoundingClientRect().right > right + 1 && el.getBoundingClientRect().width > 0)
+      .map((el) => el.textContent?.trim().slice(0, 40) ?? el.tagName)
+      .slice(0, 5);
+  }, sidebarBox.x + sidebarBox.width);
+  expect(outside, 'elements past the sidebar right edge').toEqual([]);
+
+  // Evidence for the reviewer: screenshots saved to visual/ (uploaded as a CI artifact by PR-GATE).
+  const { mkdirSync } = await import('node:fs');
+  mkdirSync('visual', { recursive: true });
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: 'visual/desktop-page-1400x900.png' });
+  await sidebar.screenshot({ path: 'visual/desktop-sidebar-1400x900.png' });
+  // Also print the sidebar PNG into the job log (base64), so it can be read without a download.
+  const sidebarPng = await sidebar.screenshot();
+  console.log('VISUAL_PNG_B64_BEGIN desktop-sidebar-1400x900');
+  console.log(sidebarPng.toString('base64'));
+  console.log('VISUAL_PNG_B64_END');
 });

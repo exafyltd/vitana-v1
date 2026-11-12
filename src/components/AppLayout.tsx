@@ -228,7 +228,7 @@ function AppSidebar({
 
           {/* Row 2: Quick Actions - only show when sidebar is open and NOT on admin routes */}
           {open && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/backoffice') && (
-            <div className="flex items-center justify-end px-2 pb-2 space-x-1">
+            <div className="flex items-center justify-end px-2 pt-3 pb-2.5 space-x-1">
               {/* VITANA Index Chip - opens shared Index Sheet */}
               <DesktopVitanaIndexChip />
 
@@ -303,7 +303,7 @@ function AppSidebar({
           )}
         </div>
         {/* Global Search Bar */}
-        <div className="px-2 pb-2">
+        <div className="px-2 -mb-2">
           <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
@@ -311,11 +311,11 @@ function AppSidebar({
         <div className="flex-1 px-2 pb-32">
           <SidebarGroup>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
+              <SidebarMenu className="space-y-0.5">
                 {navItems.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
-                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-3 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
+                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-1.5 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
                       <SidebarMenuButton asChild>
                         <Link 
                           to={cat.path} 
@@ -325,7 +325,7 @@ function AppSidebar({
                               onSidebarOpenChange(true);
                             }
                           }}
-                          className={`relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group ${
+                          className={`relative flex items-center gap-3 rounded-xl px-3 py-1.5 transition-all duration-200 group ${
                             isActive 
                               ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
                               : "hover:bg-sidebar-accent/50 text-sidebar-foreground hover:text-foreground"
@@ -357,6 +357,8 @@ function AppSidebar({
       </SidebarContent>
       <SidebarFooter className="sticky bottom-0 bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
+          {/* VTID-05719 fix: one dock card for profile, sound and language (desktop, expanded only) */}
+          <div className={open && !isMobile ? "rounded-xl bg-sidebar-accent/30 p-1 space-y-1" : undefined}>
           {/* User Profile */}
           {open ? (
             <ProfileDrawer
@@ -399,10 +401,10 @@ function AppSidebar({
           )}
           
           {/* Soundscape Control */}
-          <div className="rounded-xl bg-sidebar-accent/30 p-1 space-y-1"><SoundscapeControl />
+          <div className="grid grid-cols-2 gap-1.5"><SoundscapeControl />
 
           {/* Language Control */}
-          <LanguageSidebarControl /></div>
+          <LanguageSidebarControl /></div></div>
 
           {!isMobile && <div aria-hidden="true" className={open ? ORB_CLEARANCE_EXPANDED : ORB_CLEARANCE_COLLAPSED} />}
           
@@ -429,7 +431,7 @@ const COMMUNITY_NAV_GROUPS: { key: string; fallback: string; paths: string[] }[]
 ];
 const NON_COMMUNITY_PREFIXES = ["/admin", "/backoffice", "/staff", "/professional", "/patient"];
 // VTID-05719: named clearance for the fixed-position ORB (values unchanged; re-measured on staging).
-const ORB_CLEARANCE_EXPANDED = "h-28";
+const ORB_CLEARANCE_EXPANDED = "h-20";
 const ORB_CLEARANCE_COLLAPSED = "h-16";
 
 export default function AppLayout({ children }: AppLayoutProps) {

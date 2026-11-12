@@ -7,10 +7,7 @@
         "ai": "AI",
         "productivity": "Mail & Calendar",
         "media": "Music & Video",
-        "agent": "Autopilot",
-        "_pending_review": {
-          "agent": true
-        }
+        "agent": "Autopilot"
       },
       "sections": {
         "shopping": "Shopping & Rewards",

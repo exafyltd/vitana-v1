@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05733",
+  "kind": "fix",
+  "change_class": "frontend-simple",
+  "paths": [
+    "src/components/AppLayout.tsx",
+    "src/components/AppLayout.sidebar-groups.test.ts",
+    "src/components/audio/SoundscapeControl.tsx",
+    "src/components/language/LanguageSidebarControl.tsx",
+    "docs/validation/VTID-05733/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -11,30 +11,35 @@
       "direct": "Direct",
       "contacts": "Contacts",
       "notifications": "Notifications",
-      "archived": "Archived"
+      "archived": "Archived",
+      "_pending_review": {}
     },
     "contextTabs": {
       "community": "Community",
-      "network": "Network"
+      "network": "Network",
+      "_pending_review": {}
     },
     "actions": {
       "new": "New",
       "newMessage": "New Message",
       "createGroup": "Create Group",
       "markAllRead": "Mark all as read",
-      "menu": "More"
+      "menu": "More",
+      "_pending_review": {}
     },
     "composer": {
       "placeholder": "Type your message...",
       "send": "Send",
       "attachments": "Attachments",
       "recipients": "To:",
-      "add": "Add"
+      "add": "Add",
+      "_pending_review": {}
     },
     "states": {
       "empty": "No messages yet",
       "loading": "Loading messages...",
-      "error": "Failed to load messages"
+      "error": "Failed to load messages",
+      "_pending_review": {}
     },
     "newConversation": {
       "title": "Start New Conversation",
@@ -54,7 +59,8 @@
       "cancel": "Cancel",
       "startChat": "Start Chat",
       "createGroup": "Create Group",
-      "creating": "Creating..."
+      "creating": "Creating...",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "Create Group",
@@ -71,7 +77,8 @@
       "created": "Group created",
       "createdDesc": "\"{name}\" has been created successfully.",
       "failed": "Failed to create group",
-      "failedDesc": "Please try again."
+      "failedDesc": "Please try again.",
+      "_pending_review": {}
     },
     "toast": {
       "success": "Success",
@@ -88,7 +95,8 @@
       "groupCreated": "Group \"{name}\" created successfully!",
       "groupFailed": "Failed to create group",
       "allMarkedRead": "All messages marked as read",
-      "markAllReadFailed": "Couldn't mark all as read. Please try again."
+      "markAllReadFailed": "Couldn't mark all as read. Please try again.",
+      "_pending_review": {}
     },
     "createGroupAction": "Create New Group",
     "newConversationAction": "New Conversation",
@@ -106,7 +114,8 @@
       "globalDescription": "Start a conversation or join a community to connect with others.",
       "tenantDescription": "Connect with colleagues and team members in your professional network.",
       "startConversation": "Start a conversation",
-      "discoverPeople": "Discover people"
+      "discoverPeople": "Discover people",
+      "_pending_review": {}
     },
     "group": {
       "loading": "Loading group…",
@@ -119,7 +128,8 @@
       "empty": "No messages yet.",
       "composerPlaceholder": "Message…",
       "today": "Today",
-      "yesterday": "Yesterday"
+      "yesterday": "Yesterday",
+      "_pending_review": {}
     },
     "messageStatus": {
       "sending": "Sending",
@@ -128,13 +138,15 @@
       "read": "Read",
       "failed": "Not sent",
       "retry": "Retry",
-      "retryLabel": "Send this message again"
+      "retryLabel": "Send this message again",
+      "_pending_review": {}
     },
     "newMessages": {
       "none": "Jump to latest",
       "one": "1 new message",
       "other": "{count} new messages",
-      "unread": "Unread messages"
+      "unread": "Unread messages",
+      "_pending_review": {}
     },
     "reply": {
       "unavailable": "Original message not available",
@@ -142,7 +154,8 @@
       "jumpToOriginal": "Go to the original message",
       "jumpTo": "Go to the original message from {name}",
       "unknownSender": "Member",
-      "noText": "Attachment"
+      "noText": "Attachment",
+      "_pending_review": {}
     },
     "media": {
       "uploadFailed": "Upload failed",
@@ -151,7 +164,8 @@
       "video": "Video",
       "moreItems": "{count} more",
       "openImage": "Open picture {name}",
-      "openVideo": "Play video {name}"
+      "openVideo": "Play video {name}",
+      "_pending_review": {}
     },
     "search": {
       "title": "Search messages",
@@ -169,7 +183,8 @@
         "video": "Videos",
         "file": "Files",
         "voice": "Voice messages",
-        "link": "Links"
+        "link": "Links",
+        "_pending_review": {}
       },
       "searching": "Searching…",
       "error": "Search failed. Please try again.",
@@ -177,7 +192,8 @@
       "results": "Search results",
       "conversation": "Conversation",
       "more": "Show more",
-      "filters": "Filters"
+      "filters": "Filters",
+      "_pending_review": {}
     },
     "shared": {
       "sendInMessage": "Send in message",
@@ -189,7 +205,8 @@
         "post": "Post",
         "event": "Event",
         "product": "Product",
-        "profile": "Profile"
+        "profile": "Profile",
+        "_pending_review": {}
       },
       "loading": "Loading preview…",
       "loadFailed": "Preview couldn't be loaded",
@@ -198,13 +215,19 @@
       "unavailable": {
         "deleted": {
           "title": "{kind} no longer available",
-          "body": "It was removed."
+          "body": "It was removed.",
+          "_pending_review": {}
         },
         "restricted": {
           "title": "{kind} not visible to you",
-          "body": "Its privacy settings don't let you see it."
-        }
-      }
-    }
-  }
+          "body": "Its privacy settings don't let you see it.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
