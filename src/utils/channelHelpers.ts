@@ -34,7 +34,7 @@ export interface ChannelConfig {
 
 export const CHANNEL_CONFIGS: Record<ChannelType, ChannelConfig> = {
   // Distribution channels
-  email: { icon: Mail, color: "text-gray-600", displayName: "Email" },
+  email: { icon: Mail, color: "text-muted-foreground", displayName: "Email" },
   sms: { icon: Phone, color: "text-green-600", displayName: "SMS" },
   whatsapp: { icon: MessageSquare, color: "text-green-600", displayName: "WhatsApp" },
   slack: { icon: MessageSquare, color: "text-purple-600", displayName: "Slack" },
