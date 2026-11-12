@@ -44,15 +44,15 @@ export function LanguageSidebarControl() {
 
   // Expanded sidebar — full row
   return (
-    <div className="w-full px-2">
+    <div className="w-full min-w-0 px-2">
       <ResponsivePopover open={pickerOpen} onOpenChange={setPickerOpen}>
         <ResponsivePopoverTrigger asChild>
           <button
             type="button"
-            className="w-full flex items-center gap-2 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2"
+            className="w-full min-w-0 flex items-center gap-2 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2"
           >
             <img src={current.flag} alt="" className="h-4 w-6 rounded-sm object-cover shrink-0" />
-            <span className="flex-1 text-sm text-foreground text-start">{current.endonym}</span>
+            <span className="flex-1 min-w-0 truncate text-sm text-foreground text-start">{current.endonym}</span>
             <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
           </button>
         </ResponsivePopoverTrigger>

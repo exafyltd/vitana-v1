@@ -50,8 +50,8 @@ export function SoundscapeControl() {
 
   // Expanded sidebar - full control
   return (
-    <div className="w-full px-2">
-      <div className="flex items-center gap-2 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2">
+    <div className="w-full min-w-0 px-2">
+      <div className="flex items-center gap-2 min-w-0 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2">
         <Button
           variant="ghost"
           size="icon"
@@ -61,8 +61,8 @@ export function SoundscapeControl() {
           <Music2 className={`h-4 w-4 transition-colors ${isPlaying ? 'text-accent' : 'text-muted-foreground'}`} />
         </Button>
         
-        <div className="flex-1 flex items-center gap-2">
-          <span className="text-sm text-foreground">{t('screens.audio.soundscape')}</span>
+        <div className="flex-1 min-w-0 flex items-center gap-2">
+          <span className="text-sm text-foreground truncate min-w-0">{t('screens.audio.soundscape')}</span>
           
           <ResponsivePopover>
             <ResponsivePopoverTrigger asChild>
