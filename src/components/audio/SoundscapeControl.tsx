@@ -62,7 +62,7 @@ export function SoundscapeControl() {
         </Button>
         
         <div className="flex-1 min-w-0 flex items-center gap-2">
-          <span className="text-sm text-foreground truncate min-w-0">{t('screens.audio.soundscape')}</span>
+          <span className="text-xs leading-tight text-foreground min-w-0">{t('screens.audio.soundscape')}</span>
           
           <ResponsivePopover>
             <ResponsivePopoverTrigger asChild>

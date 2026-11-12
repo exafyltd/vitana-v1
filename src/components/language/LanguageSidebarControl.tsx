@@ -52,8 +52,7 @@ export function LanguageSidebarControl() {
             className="w-full min-w-0 flex items-center gap-2 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2"
           >
             <img src={current.flag} alt="" className="h-4 w-6 rounded-sm object-cover shrink-0" />
-            <span className="flex-1 min-w-0 truncate text-sm text-foreground text-start">{current.endonym}</span>
-            <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+            <span className="flex-1 min-w-0 text-xs leading-tight text-foreground text-start">{current.endonym}</span>
           </button>
         </ResponsivePopoverTrigger>
         <ResponsivePopoverContent title={t('screens.settings.language')} side="right" className="w-56 p-2">
