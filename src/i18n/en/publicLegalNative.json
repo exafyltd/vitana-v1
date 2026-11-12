@@ -9,6 +9,8 @@
     "fullStop": ".",
     "listNumber": "{n}.",
     "bullet": "•",
-    "copyright": "© 2026 {text}"
-  }
+    "copyright": "© 2026 {text}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

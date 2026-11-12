@@ -12,7 +12,8 @@
       "last7Days": "last 7 days",
       "logToday": "Log today",
       "refreshAria": "Refresh index",
-      "updated": "Updated {date}"
+      "updated": "Updated {date}",
+      "_pending_review": {}
     },
     "steps": {
       "title": "Let's improve your health",
@@ -33,7 +34,8 @@
       "focusCta": "Log it now",
       "journeyTitle": "Complete today's actions",
       "journeyBody": "Every action you complete on your journey adds points — and staying consistent earns the streak bonus.",
-      "journeyCta": "Open my journey"
+      "journeyCta": "Open my journey",
+      "_pending_review": {}
     },
     "goal": {
       "title": "Your 90-day goal",
@@ -43,20 +45,23 @@
       "elite": "You're elite. Keep the balance and your streaks — you're setting the example.",
       "thrivingExplain": "The thriving zone — within reach in 90 focused days.",
       "eliteExplain": "Elite — sustained excellence across all five pillars, over months.",
-      "compass": "We never push you to the top. Every life has different capacities — the number is a compass, not a verdict."
+      "compass": "We never push you to the top. Every life has different capacities — the number is a compass, not a verdict.",
+      "_pending_review": {}
     },
     "pillars": {
       "title": "Your five pillars",
       "subtitle": "Each pillar adds up to 200 points. Your weakest one is your biggest lever.",
       "biggestLever": "Biggest lever",
       "strongest": "Your strength",
-      "logCta": "Log data"
+      "logCta": "Log data",
+      "_pending_review": {}
     },
     "balance": {
       "even": "Your pillars are well balanced — every point counts in full.",
       "slight": "One pillar is lagging a little. Lift it so your Index counts in full.",
       "uneven": "Your pillars are uneven, and that holds your Index back. Start with your biggest lever.",
-      "veryUneven": "One pillar is far behind and holds your Index back noticeably. That's where every step pays off most."
+      "veryUneven": "One pillar is far behind and holds your Index back noticeably. That's where every step pays off most.",
+      "_pending_review": {}
     },
     "how": {
       "title": "How your Index grows",
@@ -71,7 +76,10 @@
       "streakBody": "Consistency is rewarded — day after day.",
       "balanceTitle": "Balance",
       "balanceBody": "When one pillar is far behind the others, it dampens the total. Balanced counts for more.",
-      "journeyCta": "See your 90-day journey"
-    }
-  }
+      "journeyCta": "See your 90-day journey",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
