@@ -194,7 +194,8 @@ jobs:
   # STAGING-VERIFY; specs navigate to root paths, which the /pr-<n>/ preview
   # prefix would break). Read-only: the canonical staging-guard aborts writes.
   preview-e2e:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest is now 26.04, which Playwright 1.51 cannot install chromium on (the spec never ran).
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     if: github.event.pull_request.head.repo.full_name == github.repository
     env:
