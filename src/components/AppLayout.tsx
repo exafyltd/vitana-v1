@@ -303,7 +303,7 @@ function AppSidebar({
           )}
         </div>
         {/* Global Search Bar */}
-        <div className="px-2">
+        <div className="px-2 -mb-2">
           <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
