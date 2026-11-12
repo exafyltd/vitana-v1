@@ -315,7 +315,7 @@ function AppSidebar({
                 {navItems.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
-                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-2.5 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
+                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-1.5 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
                       <SidebarMenuButton asChild>
                         <Link 
                           to={cat.path} 
