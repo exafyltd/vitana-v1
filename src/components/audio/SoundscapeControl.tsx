@@ -69,7 +69,7 @@ export function SoundscapeControl() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 ms-auto min-h-11 min-w-11"
+                className="h-6 w-6 ms-auto shrink-0"
                 onClick={(e) => e.stopPropagation()}
               >
                 {isMuted ? (
