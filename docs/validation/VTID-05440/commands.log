@@ -1,0 +1,7 @@
+# VTID-05440 commands (vitana-v1 worktree .worktrees/wallet-fx-url, Windows, 2026-11-01)
+# base: origin/main 58c76c956
+npx vitest run src/hooks/useEurUsdRate.test.ts   # on base (hook unchanged) -> exit 1; 1 failed | 2 passed (3); URL assertion: received https://api.frankfurter.app/latest?from=USD&to=EUR
+npx vitest run src/hooks/useEurUsdRate.test.ts   # on head -> exit 0; 3 passed (3)
+npx eslint src/hooks/useEurUsdRate.ts src/hooks/useEurUsdRate.test.ts tests/e2e/staging/vtid-05440-wallet-fx-rate.staging.spec.ts   # exit 0
+npx tsc --noEmit --skipLibCheck --target es2022 --module esnext --moduleResolution bundler --esModuleInterop --types node tests/e2e/staging/vtid-05440-wallet-fx-rate.staging.spec.ts   # with vitana-platform origin/main scripts/ci/staging-verify/staging-guard.ts copied in temporarily -> exit 0
+node <vitana-platform>/scripts/collab/land-guard.mjs evidence --repo . --vtid VTID-05440   # see below
