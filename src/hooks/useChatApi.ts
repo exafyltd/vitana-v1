@@ -334,6 +334,21 @@ export async function markGroupRead(groupId: string): Promise<void> {
   await gatewayGroupFetch(`/${groupId}/read`, { method: "POST" });
 }
 
+/**
+ * Marks a group read on the server, then tells the footer/sidebar unread badge
+ * to recompute. Without the event the badge only catches up on its 60s safety
+ * reconcile, so an opened group kept showing its unread count for up to a minute.
+ * The event is sent only after a successful read; the badge ignores its payload
+ * and refetches the authoritative count.
+ */
+export async function markGroupReadAndNotify(
+  groupId: string,
+  markRead: (id: string) => Promise<void> = markGroupRead,
+): Promise<void> {
+  await markRead(groupId);
+  window.dispatchEvent(new CustomEvent("chat-unread-count-update", { detail: { groupId } }));
+}
+
 /** Edit a group message the caller sent. Returns the updated message. */
 export async function updateGroupMessage(
   groupId: string,
