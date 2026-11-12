@@ -1,0 +1,7 @@
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/hooks/community-intro-feed.vtid-05206.test.ts [ src/hooks/community-intro-feed.vtid-05206.test.ts ]
+ FAIL  src/hooks/useAllNewsFeed.new-members.test.ts > All feed — new members (VTID-04584) > keeps the card when the greeted-lookup fails (fail open)
+ FAIL  src/hooks/useAllNewsFeed.new-members.test.ts > All feed — new members (VTID-04584) > returns recent members as new_member items, excluding the viewer
+ FAIL  src/hooks/useNewMembersFeed.test.ts [ src/hooks/useNewMembersFeed.test.ts ]
+ Test Files  3 failed (3)
+      Tests  2 failed | 2 passed (4)

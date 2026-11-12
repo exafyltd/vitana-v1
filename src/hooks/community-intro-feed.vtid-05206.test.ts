@@ -1,8 +1,9 @@
 /**
- * VTID-05206 — the News Feed shows a "new member" card only for newcomers who
- * agreed to be introduced: both listings (All tab: useAllNewsFeed, Community
- * tab: useNewsFeed) ask the server for community_intro_opt_in = true, and the
- * All tab also skips any row that is not an explicit yes.
+ * VTID-05206 / VTID-05478 — the News Feed shows a "new member" card only for
+ * newcomers who agreed to be introduced. Both listings (All tab: useAllNewsFeed,
+ * Community tab: useNewsFeed) now read GET /community/new-members through the
+ * gateway, which applies the opt-in, visibility and exclusion filters server-side;
+ * they never query global_community_profiles from the browser.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
@@ -26,7 +27,9 @@ function makeBuilder(table: string) {
   return b;
 }
 
-vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: (t: string) => makeBuilder(t) } }));
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: { from: (t: string) => makeBuilder(t), auth: { getSession: async () => ({ data: { session: { access_token: "tok-session" } } }) } },
+}));
 vi.mock("@/lib/i18n-toast", () => ({ t: (k: string) => k }));
 vi.mock("@/lib/query-persist", () => ({ persistQueryCacheNow: vi.fn() }));
 
@@ -38,43 +41,77 @@ const row = (user_id: string, opt: unknown) => ({
   created_at: "2026-10-15T08:00:00Z", community_intro_opt_in: opt,
 });
 
-describe("new-member cards follow the opt-in (VTID-05206)", () => {
+const member = (user_id: string) => ({ user_id, display_name: user_id, avatar_url: null, bio: null, created_at: "2026-10-15T08:00:00Z" });
+const gwUrl = (u: unknown) => String(u).includes("/community/new-members");
+
+describe("new-member cards come from the gateway (VTID-05478)", () => {
   let fetchSpy: ReturnType<typeof vi.spyOn>;
+  let gateway: (url: string, init?: RequestInit) => Promise<Response>;
   beforeEach(() => {
     eqCalls.length = 0;
     for (const k of Object.keys(results)) delete results[k];
-    fetchSpy = vi.spyOn(global, "fetch").mockResolvedValue({ ok: false } as Response);
+    gateway = async () => new Response(JSON.stringify({ ok: true, members: [] }), { status: 200 });
+    fetchSpy = vi.spyOn(global, "fetch").mockImplementation(async (url, init) =>
+      gwUrl(url) ? gateway(String(url), init as RequestInit) : ({ ok: false } as Response));
   });
   afterEach(() => fetchSpy.mockRestore());
 
-  it("All tab: the new-members query asks only for opted-in, visible members", async () => {
-    await fetchNewsFeedCandidates("viewer-1", null);
-    const gcp = eqCalls.filter((c) => c.table === "global_community_profiles");
-    expect(gcp).toContainEqual({ table: "global_community_profiles", col: "community_intro_opt_in", val: true });
-    expect(gcp).toContainEqual({ table: "global_community_profiles", col: "is_visible", val: true });
+  const gatewayCalls = () => fetchSpy.mock.calls.filter(([u]) => gwUrl(u));
+
+  it("All tab: asks the gateway with the member's bearer token and never reads global_community_profiles", async () => {
+    await fetchNewsFeedCandidates("viewer-1", "tok-1");
+    const calls = gatewayCalls();
+    expect(calls).toHaveLength(1);
+    expect(String(calls[0][0])).toMatch(/\/api\/v1\/community\/new-members\?limit=5$/);
+    expect((calls[0][1] as RequestInit).headers).toEqual({ Authorization: "Bearer tok-1" });
+    expect(eqCalls.filter((c) => c.table === "global_community_profiles")).toEqual([]);
   });
 
-  it("All tab: opted-in → card; opted-out or unknown → no card", async () => {
-    results.global_community_profiles = {
-      data: [row("yes", true), row("no", false), row("unknown", undefined), row("nulled", null)],
-      error: null,
-    };
-    const { newMembers } = await fetchNewsFeedCandidates("viewer-1", null);
+  it("Community tab: asks the gateway (token from the session) and never reads global_community_profiles", async () => {
+    await fetchCommunityNews(10, null);
+    const calls = gatewayCalls();
+    expect(calls).toHaveLength(1);
+    expect((calls[0][1] as RequestInit).headers).toEqual({ Authorization: "Bearer tok-session" });
+    expect(eqCalls.filter((c) => c.table === "global_community_profiles")).toEqual([]);
+  });
+
+  it("All tab: members returned by the gateway become cards", async () => {
+    gateway = async () => new Response(JSON.stringify({ ok: true, members: [member("yes"), member("viewer-1")] }), { status: 200 });
+    const { newMembers } = await fetchNewsFeedCandidates("viewer-1", "tok-1");
     expect(newMembers.map((m) => m.user_id)).toEqual(["yes"]);
   });
 
-  it("Community tab: the new-members query asks only for opted-in, visible members", async () => {
-    await fetchCommunityNews(10, null);
-    const gcp = eqCalls.filter((c) => c.table === "global_community_profiles");
-    expect(gcp).toContainEqual({ table: "global_community_profiles", col: "community_intro_opt_in", val: true });
-    expect(gcp).toContainEqual({ table: "global_community_profiles", col: "is_visible", val: true });
+  it("Community tab: members returned by the gateway become cards keyed by user id", async () => {
+    gateway = async () => new Response(JSON.stringify({ ok: true, members: [member("yes")] }), { status: 200 });
+    const articles = await fetchCommunityNews(10, null);
+    const cards = articles.filter((a) => a.category === "member_spotlight");
+    expect(cards.map((c) => [c.id, c.member_user_id])).toEqual([["member-yes", "yes"]]);
   });
 
-  it("a failed new-members read shows no card (never an unfiltered list)", async () => {
-    results.global_community_profiles = { data: null, error: { message: "column community_intro_opt_in does not exist" } };
+  it.each([
+    ["503 exclusion_lookup_failed", async () => new Response(JSON.stringify({ ok: false, error: "exclusion_lookup_failed" }), { status: 503 })],
+    ["401", async () => new Response(JSON.stringify({ ok: false }), { status: 401 })],
+    ["a network error", async () => { throw new TypeError("Failed to fetch"); }],
+    ["a malformed body", async () => new Response("<html>", { status: 200 })],
+  ])("a gateway failure (%s) shows no card and never falls back to the table", async (_n, impl) => {
+    gateway = impl as typeof gateway;
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const { newMembers } = await fetchNewsFeedCandidates("viewer-1", null);
-    expect(newMembers).toEqual([]);
+    const all = await fetchNewsFeedCandidates("viewer-1", "tok-1");
+    const community = await fetchCommunityNews(10, null);
+    expect(all.newMembers).toEqual([]);
+    expect(community.filter((a) => a.category === "member_spotlight")).toEqual([]);
+    expect(eqCalls.filter((c) => c.table === "global_community_profiles")).toEqual([]);
     spy.mockRestore();
+  });
+
+  it("without any token no request is sent and no card is shown", async () => {
+    // Session has no token: simulate by asking the helper directly.
+    const { fetchNewMembers } = await import("@/hooks/useNewMembersFeed");
+    const { supabase } = await import("@/integrations/supabase/client");
+    const orig = supabase.auth.getSession;
+    (supabase.auth as { getSession: unknown }).getSession = async () => ({ data: { session: null } });
+    expect(await fetchNewMembers(null)).toEqual([]);
+    expect(gatewayCalls()).toHaveLength(0);
+    (supabase.auth as { getSession: unknown }).getSession = orig;
   });
 });

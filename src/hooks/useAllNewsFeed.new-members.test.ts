@@ -1,5 +1,5 @@
 /**
- * VTID-04584 — the "All" tab shows members who joined in the last 7 days,
+ * VTID-04584 / VTID-05478 — the "All" tab shows members who joined in the last 7 days,
  * so the community is reminded to greet them (it previously showed them only
  * on the Community tab).
  */
@@ -33,34 +33,34 @@ describe('All feed — new members (VTID-04584)', () => {
   let fetchSpy: ReturnType<typeof vi.spyOn>;
   beforeEach(() => {
     for (const k of Object.keys(resultsByTable)) delete resultsByTable[k];
-    resultsByTable.global_community_profiles = {
-      data: [
-        // Rows as the server returns them after the VTID-05206 opt-in filter.
-        { user_id: 'amy', display_name: 'Amy', avatar_url: null, bio: null, created_at: '2026-09-25T08:37:00Z', community_intro_opt_in: true },
-        { user_id: 'viewer-1', display_name: 'Me', avatar_url: null, bio: null, created_at: '2026-09-24T08:00:00Z', community_intro_opt_in: true },
-      ],
-      error: null,
-    };
-    fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({ ok: false } as Response);
+    // Rows as the gateway returns them (VTID-05477): opt-in, visibility and test/bot exclusion are applied server-side.
+    const members = [
+      { user_id: 'amy', display_name: 'Amy', avatar_url: null, bio: null, created_at: '2026-09-25T08:37:00Z' },
+      { user_id: 'viewer-1', display_name: 'Me', avatar_url: null, bio: null, created_at: '2026-09-24T08:00:00Z' },
+    ];
+    fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(async (url: any) =>
+      String(url).includes('/community/new-members')
+        ? (new Response(JSON.stringify({ ok: true, members }), { status: 200 }) as Response)
+        : ({ ok: false } as Response));
   });
   afterEach(() => fetchSpy.mockRestore());
 
   it('returns recent members as new_member items, excluding the viewer', async () => {
-    const result = await fetchNewsFeedCandidates('viewer-1', null);
+    const result = await fetchNewsFeedCandidates('viewer-1', 'tok-1');
     expect(result.newMembers).toHaveLength(1);
     expect(result.newMembers[0]).toMatchObject({ kind: 'new_member', user_id: 'amy', id: 'new-member-amy' });
   });
 
   it('hides members the viewer has already messaged (VTID-04590)', async () => {
     resultsByTable.chat_messages = { data: [{ receiver_id: 'amy' }], error: null };
-    const result = await fetchNewsFeedCandidates('viewer-1', null);
+    const result = await fetchNewsFeedCandidates('viewer-1', 'tok-1');
     expect(result.newMembers).toHaveLength(0);
   });
 
   it('keeps the card when the greeted-lookup fails (fail open)', async () => {
     resultsByTable.chat_messages = { data: null, error: { message: 'boom' } };
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const result = await fetchNewsFeedCandidates('viewer-1', null);
+    const result = await fetchNewsFeedCandidates('viewer-1', 'tok-1');
     expect(result.newMembers.map((m) => m.user_id)).toEqual(['amy']);
     spy.mockRestore();
   });
