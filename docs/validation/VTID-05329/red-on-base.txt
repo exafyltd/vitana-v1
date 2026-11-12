@@ -1,0 +1,11 @@
+VTID-05329 (ci-ecr-public-auth/v1-ecr-public-login) red on base
+Base: origin/main 5bc8d10cd workflows (lane test file only), 2026-10-28, Windows:
+  npx vitest run src/lib/deploy-workflow.ecr-public-auth.test.ts
+
+  √ checks both frontend build jobs (the splitter and the glob found them)
+  × AWS-PROD-DEPLOY-FRONTEND.yml:build-push-deploy: fail-soft ECR Public login after credentials, before the build
+  × AWS-STAGE-DEPLOY-FRONTEND.yml:build-push-deploy: fail-soft ECR Public login after credentials, before the build
+  each failure: expected { hasLogin: true }, received { hasLogin: false }
+Tests: 2 failed | 1 passed (3)
+
+Lane head: 3 passed (commands.log).
