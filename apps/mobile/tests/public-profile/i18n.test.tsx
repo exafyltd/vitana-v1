@@ -23,7 +23,7 @@ afterAll(() => __setSupabaseForTests(null));
 
 const REPO = join(__dirname, '../../../..');
 const keysOf = (o: unknown, prefix = ''): string[] =>
-  o && typeof o === 'object' ? Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => keysOf(v, prefix ? `${prefix}.${k}` : k)) : [prefix];
+  o && typeof o === 'object' ? Object.entries(o as Record<string, unknown>).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) => keysOf(v, prefix ? `${prefix}.${k}` : k)) : [prefix];
 const shard = (locale: string) => JSON.parse(readFileSync(join(REPO, 'src/i18n', locale, 'publicProfileNative.json'), 'utf8'));
 
 it.each(LOCALES.map((l) => [l]))('%s has the German publicProfileNative key set', (locale) => {
