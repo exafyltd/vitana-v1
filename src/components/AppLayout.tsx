@@ -228,7 +228,7 @@ function AppSidebar({
 
           {/* Row 2: Quick Actions - only show when sidebar is open and NOT on admin routes */}
           {open && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/backoffice') && (
-            <div className="flex items-center justify-end px-2 pb-2.5 space-x-1">
+            <div className="flex items-center justify-end px-2 pt-3 pb-2.5 space-x-1">
               {/* VITANA Index Chip - opens shared Index Sheet */}
               <DesktopVitanaIndexChip />
 

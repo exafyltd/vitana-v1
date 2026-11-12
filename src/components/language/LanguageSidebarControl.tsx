@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from '@/components/ui/responsive-popover';
 import { useSidebar } from '@/components/ui/sidebar';
@@ -49,10 +48,9 @@ export function LanguageSidebarControl() {
         <ResponsivePopoverTrigger asChild>
           <button
             type="button"
-            className="w-full min-w-0 flex items-center gap-2 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2"
+            className="w-full h-9 min-w-0 flex items-center rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors px-2"
           >
-            <img src={current.flag} alt="" className="h-4 w-6 rounded-sm object-cover shrink-0" />
-            <span className="flex-1 min-w-0 text-xs leading-tight text-foreground text-start">{current.endonym}</span>
+            <span className="flex-1 min-w-0 truncate text-xs text-foreground text-start">{`${selectedLanguage.split('-')[0].toUpperCase()} ${current.endonym}`}</span>
           </button>
         </ResponsivePopoverTrigger>
         <ResponsivePopoverContent title={t('screens.settings.language')} side="right" className="w-56 p-2">

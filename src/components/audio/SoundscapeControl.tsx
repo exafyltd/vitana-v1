@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from '@/components/ui/responsive-popover';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useSidebar } from '@/components/ui/sidebar';
-import { t, notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 export function SoundscapeControl() {
   const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
@@ -18,10 +18,6 @@ export function SoundscapeControl() {
   const handleToggleMute = () => {
     toggleMute();
     notifySuccess(isMuted ? 'screens.audio.soundscapeUnmuted' : 'screens.audio.soundscapeMuted');
-  };
-
-  const handleTogglePlay = () => {
-    toggle();
   };
 
   // Collapsed sidebar - icon only
@@ -48,71 +44,59 @@ export function SoundscapeControl() {
     );
   }
 
-  // Expanded sidebar - full control
+  // Expanded sidebar: one chip labelled with the state ("Sound on" / "Sound off"), same size as the language chip.
   return (
     <div className="w-full min-w-0 px-2">
-      <div className="flex items-center gap-2 min-w-0 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors p-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleTogglePlay}
-          className="h-8 w-8 rounded-full shrink-0"
+      <div className="flex h-9 items-center gap-1 min-w-0 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors px-2">
+        <button
+          type="button"
+          onClick={toggle}
+          aria-pressed={isPlaying}
+          className="flex-1 min-w-0 truncate text-start text-xs text-foreground"
         >
-          <Music2 className={`h-4 w-4 transition-colors ${isPlaying ? 'text-accent' : 'text-muted-foreground'}`} />
-        </Button>
-        
-        <div className="flex-1 min-w-0 flex items-center gap-2">
-          <span className="text-xs leading-tight text-foreground min-w-0">{t('screens.audio.soundscape')}</span>
-          
-          <ResponsivePopover>
-            <ResponsivePopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 ms-auto shrink-0"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {isMuted ? (
-                  <VolumeX className="h-3 w-3 text-muted-foreground" />
-                ) : (
-                  <Volume2 className="h-3 w-3 text-muted-foreground" />
-                )}
-              </Button>
-            </ResponsivePopoverTrigger>
-            <ResponsivePopoverContent title={t('screens.audio.volume')} side="right" className="w-48 p-3">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium">{t('screens.audio.volume')}</span>
-                  <span className="text-xs text-muted-foreground">{Math.round(volume * 100)}%</span>
-                </div>
-                <Slider
-                  value={[volume]}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  onValueChange={handleVolumeChange}
-                  className="w-full"
-                />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleToggleMute}
-                  className="w-full min-h-11"
-                >
-                  {isMuted ? 'Unmute' : 'Mute'}
-                </Button>
+          {isPlaying ? t('screens.audio.soundOn') : t('screens.audio.soundOff')}
+        </button>
+
+        <ResponsivePopover>
+          <ResponsivePopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 shrink-0"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {isMuted ? (
+                <VolumeX className="h-3 w-3 text-muted-foreground" />
+              ) : (
+                <Volume2 className="h-3 w-3 text-muted-foreground" />
+              )}
+            </Button>
+          </ResponsivePopoverTrigger>
+          <ResponsivePopoverContent title={t('screens.audio.volume')} side="right" className="w-48 p-3">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium">{t('screens.audio.volume')}</span>
+                <span className="text-xs text-muted-foreground">{Math.round(volume * 100)}%</span>
               </div>
-            </ResponsivePopoverContent>
-          </ResponsivePopover>
-        </div>
-        
-        {isPlaying && (
-          <div className="flex gap-0.5">
-            <div className="w-0.5 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
-            <div className="w-0.5 h-3 bg-accent rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
-            <div className="w-0.5 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
-          </div>
-        )}
+              <Slider
+                value={[volume]}
+                min={0}
+                max={1}
+                step={0.01}
+                onValueChange={handleVolumeChange}
+                className="w-full"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleToggleMute}
+                className="w-full min-h-11"
+              >
+                {isMuted ? 'Unmute' : 'Mute'}
+              </Button>
+            </div>
+          </ResponsivePopoverContent>
+        </ResponsivePopover>
       </div>
     </div>
   );
