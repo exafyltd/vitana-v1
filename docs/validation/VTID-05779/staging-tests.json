@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05779",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "the deployed build carries the group read badge refresh (read-only)",
+      "spec": "tests/e2e/staging/vtid-05779-group-read-badge.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}

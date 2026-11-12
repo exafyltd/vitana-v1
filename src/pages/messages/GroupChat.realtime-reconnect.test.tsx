@@ -38,6 +38,7 @@ vi.mock("@/hooks/useChatApi", () => ({
   fetchGroupMessages: (...a: unknown[]) => fetchGroupMessages(...a),
   sendGroupMessage: vi.fn(),
   markGroupRead: vi.fn(() => Promise.resolve()),
+  markGroupReadAndNotify: vi.fn(() => Promise.resolve()),
   updateGroupMessage: vi.fn(),
   deleteGroupMessage: vi.fn(),
 }));

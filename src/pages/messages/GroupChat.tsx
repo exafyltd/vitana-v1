@@ -35,7 +35,7 @@ import {
   fetchGroup,
   fetchGroupMessages,
   sendGroupMessage,
-  markGroupRead,
+  markGroupReadAndNotify,
   updateGroupMessage,
   deleteGroupMessage,
   type ChatGroup,
@@ -274,7 +274,7 @@ export default function GroupChat() {
 
   useEffect(() => {
     if (!groupId) return;
-    markGroupRead(groupId).catch(() => {});
+    markGroupReadAndNotify(groupId).catch(() => {});
   }, [groupId, messages.length]);
 
   // Realtime: new messages in this group push an immediate reload. Requires
