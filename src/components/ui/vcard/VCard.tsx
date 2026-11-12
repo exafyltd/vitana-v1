@@ -55,6 +55,14 @@ export interface VCardProps extends Omit<React.HTMLAttributes<HTMLElement>, 'tit
   as?: 'article' | 'div' | 'li';
 }
 
+/**
+ * Spotlight identity (SR-31, `spotlightLabel`): teal → blue → amber art from
+ * the category tokens (SR-18, light and dark values in index.css) and an
+ * accent ring in the same teal, on top of the raised elevation of ROOT.spotlight.
+ */
+const SPOTLIGHT_ART = 'bg-gradient-to-br from-category-1 via-category-3 to-category-5';
+const SPOTLIGHT_RING = 'ring-2 ring-category-1/50';
+
 const ROOT: Record<VCardSize, string> = {
   spotlight: 'flex flex-col overflow-hidden rounded-vcard border bg-card text-card-foreground shadow-vcard-raised',
   standard: 'flex flex-col overflow-hidden rounded-vcard border bg-card text-card-foreground shadow-vcard',
@@ -106,31 +114,42 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
   const Root = as as React.ElementType;
   const withIdentity = spotlightLabel && size === 'spotlight';
   const hasMedia = media !== undefined || mediaSlot !== undefined || withIdentity;
+  // A cover that fails to load falls back to the same art as no cover (never the broken-image icon).
+  const [failedSrc, setFailedSrc] = React.useState<string | null>(null);
+  const imgSrc = media?.src && media.src !== failedSrc ? media.src : null;
   const isStacked = size === 'spotlight' || size === 'standard';
 
   const mediaNode = hasMedia ? (
     <div
-      className={cn('relative overflow-hidden bg-muted', mediaBoxClass(size, media?.ratio), dimmed && 'opacity-60 transition-opacity')}
+      className={cn(
+        'relative overflow-hidden',
+        withIdentity ? SPOTLIGHT_ART : 'bg-muted',
+        mediaBoxClass(size, media?.ratio),
+        // SR-31 grid (desktop): no fixed 16:9 height; a token minimum that grows into the tile rows' height.
+        withIdentity && 'md:aspect-auto md:min-h-32 md:flex-1',
+        dimmed && 'opacity-60 transition-opacity',
+      )}
       data-vcard-media=""
     >
-      {mediaSlot ??
-        (media?.src ? (
-          <img
-            src={media.src}
-            alt={media.alt ?? ''}
-            loading={priority ? 'eager' : 'lazy'}
-            decoding="async"
-            className="h-full w-full object-cover"
-          />
-        ) : withIdentity ? (
-          <div
-            className="h-full w-full bg-gradient-to-br from-primary/30 via-accent/20 to-background"
-            data-vcard-spotlight-art=""
-            aria-hidden="true"
-          />
-        ) : (
-          <div className="h-full w-full bg-muted" data-vcard-placeholder="" aria-hidden="true" />
-        ))}
+      {/* Spotlight identity on desktop: the media content is a layer over the box, so it never
+          sizes the box (the box only has its token minimum and grows into the tile rows). */}
+      <div className={cn('h-full w-full', withIdentity && 'md:absolute md:inset-0')} data-vcard-media-layer="">
+        {mediaSlot ??
+          (imgSrc ? (
+            <img
+              src={imgSrc}
+              alt={media?.alt ?? ''}
+              loading={priority ? 'eager' : 'lazy'}
+              decoding="async"
+              className="h-full w-full object-cover"
+              onError={() => setFailedSrc(imgSrc)}
+            />
+          ) : withIdentity ? (
+            <div className={cn('h-full w-full', SPOTLIGHT_ART)} data-vcard-spotlight-art="" aria-hidden="true" />
+          ) : (
+            <div className="h-full w-full bg-muted" data-vcard-placeholder="" aria-hidden="true" />
+          ))}
+      </div>
       {badge && isStacked && <div className="absolute start-3 top-3">{badge}</div>}
     </div>
   ) : null;
@@ -141,11 +160,17 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
       data-vcard-size={size}
       data-focused={focused ? '' : undefined}
       data-dimmed={dimmed ? '' : undefined}
-      className={cn(ROOT[size], withIdentity && 'ring-1 ring-primary', focused && 'ring-2 ring-ring/40', className)}
+      className={cn(ROOT[size], withIdentity && SPOTLIGHT_RING, focused && 'ring-2 ring-ring/40', className)}
       {...rest}
     >
       {mediaNode}
-      <div className={cn('flex min-w-0 flex-1 flex-col', isStacked ? (size === 'spotlight' ? 'gap-2 p-5' : 'gap-1.5 p-4') : 'gap-0.5')}>
+      <div
+        className={cn(
+          'flex min-w-0 flex-1 flex-col',
+          isStacked ? (size === 'spotlight' ? 'gap-2 p-5' : 'gap-1.5 p-4') : 'gap-0.5',
+          withIdentity && 'md:flex-none',
+        )}
+      >
         {withIdentity && (
           <div className="text-xs font-bold uppercase tracking-widest text-primary" data-vcard-spotlight-label="">
             {t('spotlight.grid.label')}
@@ -155,7 +180,8 @@ export const VCard = React.forwardRef<HTMLElement, VCardProps>(function VCard(
         <div className={cn('line-clamp-2', TITLE[size])}>{title}</div>
         {meta && <div className="truncate text-xs text-muted-foreground">{meta}</div>}
         {body && isStacked && <div className="text-sm text-muted-foreground">{body}</div>}
-        {actions && isStacked && <div className="mt-auto flex items-center gap-2 pt-2">{actions}</div>}
+        {/* flex-wrap: a third action moves to the next line instead of being clipped by the card */}
+        {actions && isStacked && <div className="mt-auto flex flex-wrap items-center gap-2 pt-2" data-vcard-actions="">{actions}</div>}
       </div>
       {actions && !isStacked && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
       {badge && !isStacked && <div className="shrink-0">{badge}</div>}

@@ -84,6 +84,30 @@ describe('VTID-05420 SpotlightGrid', () => {
     expect((2 * col + gap) / width).toBeLessThanOrEqual(0.45);
   });
 
+  // Round-2 fix-forward: the spotlight spans exactly the tile rows (top = tile row 1,
+  // bottom = the last tile row). Its slot is a stretching grid cell over those rows and
+  // the card inside it has no fixed media ratio on desktop, only a token minimum that grows
+  // into the rows, so it never makes the rows taller than its text needs.
+  it('desktop: the spotlight is a stretching cell over exactly the tile rows, its media grows into them', () => {
+    const { container } = renderGrid(<SpotlightGrid spotlight={spot} tiles={tiles(6)} row={{ title: 'Up next', items: compacts(5) }} />);
+    const s = slots(container);
+    const cls = s.spotlight.className.split(/\s+/);
+    expect(cls).toContain('grid');
+    expect(cls).toContain('lg:row-span-2');
+    expect(cls).toContain('md:row-span-3');
+    // nothing that would stop the cell (or the card) stretching to the rows' height
+    expect(s.spotlight.className).not.toMatch(/(^|\s)(md:|lg:)?(self-|items-|place-|h-fit|h-auto|h-min|absolute)/);
+    const card = s.spotlight.querySelector(':scope > [data-vcard-size="spotlight"]') as HTMLElement;
+    expect(card).not.toBeNull();
+    expect(card.className).not.toMatch(/(^|\s)(md:|lg:)?(h-|max-h-|self-)/);
+    const media = card.querySelector('[data-vcard-media]') as HTMLElement;
+    expect(media.className).toContain('md:aspect-auto');
+    expect(media.className).toContain('md:min-h-32');
+    expect(media.className).toContain('md:flex-1');
+    // the row stays a separate full-width row below the tile rows
+    expect(s.row!.className).toContain('col-span-full');
+  });
+
   it('never renders more than 6 tiles', () => {
     const { container } = renderGrid(<SpotlightGrid spotlight={spot} tiles={tiles(9)} />);
     expect(slots(container).tiles.querySelectorAll('[data-vcard-size="standard"]').length).toBe(6);
