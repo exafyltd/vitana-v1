@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05779",
+  "kind": "fix",
+  "change_class": "frontend-simple",
+  "paths": [
+    "src/hooks/useChatApi.ts",
+    "src/hooks/useChatApi.group-read-notify.test.ts",
+    "src/pages/messages/GroupChat.tsx",
+    "src/pages/messages/GroupChat.*.test.tsx",
+    "src/components/messages/GroupChat.grouping.vtid-05314.test.tsx",
+    "tests/e2e/staging/vtid-05779-group-read-badge.staging.spec.ts",
+    "docs/validation/VTID-05779/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
