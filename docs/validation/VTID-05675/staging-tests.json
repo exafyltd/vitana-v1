@@ -1,0 +1,13 @@
+{
+  "vtid": "VTID-05675",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/liverooms/LiveRoomDrawer.entry-before-host.vtid-05675.test.tsx", "cwd": ".",
+      "reason": "Join waiting room shows only when the room is due and the host enabled entry before start" },
+    { "kind": "existing", "ref": "npx vitest run src/components/liverooms src/components/events src/components/GoLivePopup", "cwd": ".",
+      "reason": "existing live-room card, drawer and Go Live form behaviour is unchanged" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the change is served" }
+  ]
+}
