@@ -47,7 +47,7 @@ export function SoundscapeControl() {
   // Expanded sidebar: one chip labelled with the state ("Sound on" / "Sound off"), same size as the language chip.
   return (
     <div className="w-full min-w-0 px-2">
-      <div className="flex h-9 items-center gap-1 min-w-0 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors px-2">
+      <div className="flex h-9 items-center gap-0.5 min-w-0 rounded-xl bg-sidebar-accent/50 hover:bg-sidebar-accent/70 transition-colors px-1.5">
         <button
           type="button"
           onClick={toggle}
@@ -62,7 +62,7 @@ export function SoundscapeControl() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 shrink-0"
+              className="h-5 w-5 shrink-0"
               onClick={(e) => e.stopPropagation()}
             >
               {isMuted ? (
