@@ -1,0 +1,8 @@
+{
+  "eventsNative": {
+    "filterTitle": "Filtriraj događaje",
+    "eventUpdated": "Događaj je ažuriran! ✏",
+    "eventCreateFailed": "Događaj nije mogao da se kreira. Pokušaj ponovo.",
+    "requiredField": "Popuni ovo polje."
+  }
+}

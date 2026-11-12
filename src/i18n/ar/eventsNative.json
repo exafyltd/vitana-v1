@@ -1,0 +1,8 @@
+{
+  "eventsNative": {
+    "filterTitle": "تصفية الفعاليات",
+    "eventUpdated": "تم تحديث الفعالية! ✏",
+    "eventCreateFailed": "تعذّر إنشاء الفعالية. حاول مرة أخرى.",
+    "requiredField": "يرجى ملء هذا الحقل."
+  }
+}
