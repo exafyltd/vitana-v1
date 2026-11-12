@@ -74,7 +74,7 @@ test('testStats does not count method calls like foo.it( or .test( on regexes', 
 
 test('sparring record needs verdict, owner approval and plan hash', () => {
   assert.deepEqual(L.evaluateSparringRecord('Plan hash: abc\nverdict **CONVERGED**\n**Owner approval (Gate 1): yes'), []);
-  assert.equal(L.evaluateSparringRecord('CONVERGED').length, 2);
+  assert.equal(L.evaluateSparringRecord('CONVERGED').length, 1);
 });
 
 test('sparring record: CONVERGED + policy approval + plan hash passes', () => {
@@ -86,20 +86,22 @@ test('sparring record: policy approval on an ESCALATED-only verdict is no approv
   assert.ok(p.some((x) => /^no approval/.test(x)), JSON.stringify(p));
 });
 
-test('sparring record: an unknown policy name is no approval', () => {
-  const p = L.evaluateSparringRecord('Verdict: CONVERGED and approved by policy `other-policy-v9`\nPlan hash: abc');
-  assert.ok(p.some((x) => /^no approval/.test(x)), JSON.stringify(p));
+test('sparring record: an unknown policy name does not block a CONVERGED record (machine approval, bridge 2026-11-12)', () => {
+  assert.deepEqual(L.evaluateSparringRecord('Verdict: CONVERGED and approved by policy `other-policy-v9`\nPlan hash: abc'), []);
 });
 
 test('sparring record: CONVERGED + policy approval without plan hash gives exactly no plan hash', () => {
   assert.deepEqual(L.evaluateSparringRecord('Verdict: CONVERGED and approved by policy `converged-auto-v1`'), ['no plan hash']);
 });
 
-test('sparring record: neither approval form names both forms in the problem', () => {
-  const p = L.evaluateSparringRecord('Verdict: CONVERGED\nPlan hash: abc');
+test('sparring record: a CONVERGED verdict with a plan hash passes without an owner line', () => {
+  assert.deepEqual(L.evaluateSparringRecord('Verdict: CONVERGED\nPlan hash: abc'), []);
+});
+
+test('sparring record: no verdict and no approval is still refused, and names the approval forms', () => {
+  const p = L.evaluateSparringRecord('Verdict: ESCALATED\nPlan hash: abc');
   assert.equal(p.length, 1);
-  assert.match(p[0], /owner-approval line/);
-  assert.match(p[0], /approved by policy `converged-auto-v1`/);
+  assert.match(p[0], /^no approval/);
   assert.match(p[0], /CONVERGED/);
 });
 
