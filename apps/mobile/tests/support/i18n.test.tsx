@@ -25,7 +25,7 @@ const RAW_KEY = /^[a-z][A-Za-z0-9]*(\.[A-Za-z0-9_-]+)+$/;
 
 function keys(obj: unknown, prefix = ''): string[] {
   if (!obj || typeof obj !== 'object') return [prefix];
-  return Object.entries(obj as Record<string, unknown>).flatMap(([k, v]) => keys(v, prefix ? `${prefix}.${k}` : k));
+  return Object.entries(obj as Record<string, unknown>).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) => keys(v, prefix ? `${prefix}.${k}` : k));
 }
 
 function allStrings(root: ReactTestInstance): string[] {

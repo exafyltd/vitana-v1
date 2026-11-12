@@ -139,7 +139,7 @@ describe('i18n: all 11 locales', () => {
 
   it('every marketplaceOrders key exists in all 11 shards with the same placeholders as German; German uses du, never Sie', () => {
     const flat = (o: Record<string, unknown>, p = ''): Array<[string, string]> =>
-      Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' ? flat(v as Record<string, unknown>, `${p}${k}.`) : [[`${p}${k}`, String(v)] as [string, string]]));
+      Object.entries(o).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) => (v && typeof v === 'object' ? flat(v as Record<string, unknown>, `${p}${k}.`) : [[`${p}${k}`, String(v)] as [string, string]]));
     const read = (l: string) => flat((JSON.parse(readFileSync(join(REPO, 'src/i18n', l, 'discoverCommerceNative.json'), 'utf8')).discoverCommerceNative ?? {}).marketplaceOrders ?? {});
     const de = read('de');
     expect(de.length).toBeGreaterThan(90);

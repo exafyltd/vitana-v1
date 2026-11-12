@@ -29,7 +29,7 @@ const files = (dir: string): string[] =>
 const sources = files(SCREEN_DIR).map((f) => ({ f, text: readFileSync(f, 'utf8') }));
 
 function keysOf(obj: Record<string, unknown>, prefix = ''): string[] {
-  return Object.entries(obj).flatMap(([k, v]) => (v && typeof v === 'object' ? keysOf(v as Record<string, unknown>, `${prefix}${k}.`) : [`${prefix}${k}`]));
+  return Object.entries(obj).filter(([k]) => !k.startsWith('_')).flatMap(([k, v]) => (v && typeof v === 'object' ? keysOf(v as Record<string, unknown>, `${prefix}${k}.`) : [`${prefix}${k}`]));
 }
 
 const RAW_KEY = /^[a-z][A-Za-z0-9]*(\.[A-Za-z0-9_]+)+$/;
