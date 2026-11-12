@@ -228,7 +228,7 @@ function AppSidebar({
 
           {/* Row 2: Quick Actions - only show when sidebar is open and NOT on admin routes */}
           {open && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/backoffice') && (
-            <div className="flex items-center justify-end px-2 pb-2 space-x-1">
+            <div className="flex items-center justify-end px-2 pb-2.5 space-x-1">
               {/* VITANA Index Chip - opens shared Index Sheet */}
               <DesktopVitanaIndexChip />
 
@@ -303,7 +303,7 @@ function AppSidebar({
           )}
         </div>
         {/* Global Search Bar */}
-        <div className="px-2 pb-2">
+        <div className="px-2">
           <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
@@ -315,7 +315,7 @@ function AppSidebar({
                 {navItems.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
-                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-3 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
+                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-2.5 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
                       <SidebarMenuButton asChild>
                         <Link 
                           to={cat.path} 
