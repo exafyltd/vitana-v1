@@ -102,6 +102,7 @@ export const NATIVE_ROUTES: readonly string[] = [
   '/native-ui-catalogue',
   '/oauth/complete',
   '/oauth/consent',
+  '/onboarding/welcome',
   '/patient/appointments',
   '/patient/care-team',
   '/patient/dashboard',

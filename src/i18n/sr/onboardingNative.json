@@ -1,0 +1,9 @@
+{
+  "onboardingNative": {
+    "avatarInitial": "V",
+    "errors": {
+      "handleTaken": "Ovo korisničko ime je već zauzeto. Izaberi drugo.",
+      "generic": "Nešto nije u redu. Pokušaj ponovo."
+    }
+  }
+}
