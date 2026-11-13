@@ -361,7 +361,7 @@ describe('CommunityPostCard action row layout (VTID-05795)', () => {
     mockComments = [];
   });
 
-  it('puts like and comment on one row, separate from the author name', () => {
+  it('groups like and comment together, outside the author name', () => {
     render(<CommunityPostCard item={item()} />);
 
     const actionRow = likeButton().parentElement;
