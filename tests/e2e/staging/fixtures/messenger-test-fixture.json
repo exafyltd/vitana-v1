@@ -1,0 +1,14 @@
+{
+  "_comment": "Standing test fixture for messenger/group tests on staging. Read-only specs use these IDs; never add real members. The group and the test account are the only ones any messenger test may write to, and only through a Vitest test or a deliberate owner-approved step.",
+  "testGroup": {
+    "name": "TEST GROUP",
+    "globalThreadId": "06e8954e-162a-4da0-b889-ce6092e2733b",
+    "note": "Stored in global_message_threads. Staging reads groups from chat_groups, so the group must also have a chat_groups row before staging specs can see it."
+  },
+  "testUser": {
+    "userId": "af9ce9ea-e317-46ec-9689-6da591ffdbf0",
+    "displayName": "e2e-staging-group",
+    "registeredIn": ["notification_test_actors", "service_bot_accounts"],
+    "note": "Existing e2e account, already a member of TEST GROUP. Chosen instead of creating a new account."
+  }
+}
