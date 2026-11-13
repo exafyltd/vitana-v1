@@ -1,7 +1,8 @@
 // VTID-05732 — in a direct thread the message rows reserve no avatar column, so incoming
 // bubbles sit flush left and own bubbles flush right (avatars are hidden in direct threads,
 // VTID-05584). Read-only: every non-GET request is aborted except the sign-in call.
-import { test, expect, type Page, type APIRequestContext } from '@playwright/test';
+import type { Page, APIRequestContext } from '@playwright/test';
+import { test, expect } from './staging-guard';
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const SIGN_IN = `${SUPABASE}/auth/v1/token?grant_type=password`;
