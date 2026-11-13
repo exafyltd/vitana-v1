@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05682",
+  "kind": "infra",
+  "paths": [
+    "apps/mobile/tests/wave1-readiness/deeplinks-i18n/**",
+    "docs/validation/VTID-05682/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": [],
+  "sparring_record": "docs/validation/VTID-05682/plan-sparring.md"
+}
