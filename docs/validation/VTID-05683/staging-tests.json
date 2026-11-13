@@ -1,0 +1,14 @@
+{
+  "vtid": "VTID-05683",
+  "service": "community-app",
+  "_note": "Native Wave 1 readiness tests (push). Offline mock tests only: nothing is deployed, no member-visible surface changes, no staging call, no write to any live system. Not verified on staging. Readiness evidence only; the Wave 1 exit needs G1.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/wave1-readiness/push", "cwd": "apps/mobile",
+      "reason": "push lifecycle, push timeout, push-open routing and the G1 test provider, against mocks and injected fetch implementations" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "the new test files type-check" }
+  ],
+  "deferred_g1": [
+    { "flow": "token POST recorded by the G1 test backend; badge count from the G1 backend for a real member", "next_actor": "owner", "reason": "needs the isolated test backend G1" },
+    { "flow": "APNs/FCM delivery of a notification to a device and its tap", "next_actor": "owner", "reason": "needs G2 (Firebase push project)" }
+  ]
+}
