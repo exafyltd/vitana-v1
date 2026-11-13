@@ -1,0 +1,80 @@
+    Cannot find module '../../../../src/i18n/ar/businessNative.json' from 'src/i18n/catalog-map.generated.ts'
+
+    Require stack:
+      src/i18n/catalog-map.generated.ts
+      src/i18n/index.ts
+      tests/business/hub.test.tsx
+
+      1735 |     require("../../../../src/i18n/ar/business.json"),
+      1736 |     require("../../../../src/i18n/ar/businessHub.json"),
+    > 1737 |     require("../../../../src/i18n/ar/businessNative.json"),
+           |     ^
+      1738 |     require("../../../../src/i18n/ar/buttons.json"),
+      1739 |     require("../../../../src/i18n/ar/calendar.json"),
+      1740 |     require("../../../../src/i18n/ar/calendarPopup.json"),
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (src/i18n/catalog-map.generated.ts:1737:5)
+      at Object.require (src/i18n/index.ts:13:1)
+      at Object.require (tests/business/hub.test.tsx:10:1)
+
+FAIL tests/business/tabs.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/business/tabs' from 'tests/business/tabs.test.ts'
+
+      3 |  * the mode-pill options (Sales only for resellers), the web `pathToMobileTab` / `resolveMobileTab`.
+      4 |  */
+    > 5 | import { buildBusinessModes, pathToMobileTab, resolveMobileTab, VALID_BUSINESS_TABS } from '../../src/screens/business/tabs';
+        | ^
+      6 |
+      7 | const t = (key: string) => key;
+      8 |
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.<anonymous> (tests/business/tabs.test.ts:5:1)
+
+FAIL tests/business/earnings.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/screens/business/earnings' from 'tests/business/earnings.test.ts'
+
+      4 |  * and the inventory-chip and event-kind rules.
+      5 |  */
+    > 6 | import {
+        | ^
+      7 |   computeUnifiedEarnings,
+      8 |   EMPTY_RESELLER_SALES,
+      9 |   eventKind,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.<anonymous> (tests/business/earnings.test.ts:6:1)
+
+FAIL tests/business/lane-guards.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../../../src/i18n/ar/businessNative.json' from 'src/i18n/catalog-map.generated.ts'
+
+    Require stack:
+      src/i18n/catalog-map.generated.ts
+      src/i18n/index.ts
+      tests/business/lane-guards.test.ts
+
+      1735 |     require("../../../../src/i18n/ar/business.json"),
+      1736 |     require("../../../../src/i18n/ar/businessHub.json"),
+    > 1737 |     require("../../../../src/i18n/ar/businessNative.json"),
+           |     ^
+      1738 |     require("../../../../src/i18n/ar/buttons.json"),
+      1739 |     require("../../../../src/i18n/ar/calendar.json"),
+      1740 |     require("../../../../src/i18n/ar/calendarPopup.json"),
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (src/i18n/catalog-map.generated.ts:1737:5)
+      at Object.require (src/i18n/index.ts:13:1)
+      at Object.require (tests/business/lane-guards.test.ts:11:1)
+
+Test Suites: 6 failed, 6 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        203.546 s
+Ran all test suites matching /tests\/business/i.

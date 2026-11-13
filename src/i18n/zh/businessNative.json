@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "选择栏目",
+    "tabs": {
+      "myServices": "我的服务",
+      "myEvents": "我的活动",
+      "packages": "套餐",
+      "inventory": "库存",
+      "promotions": "推广",
+      "referrals": "推荐",
+      "clients": "客户",
+      "performance": "业绩",
+      "earnings": "收入",
+      "growth": "增长"
+    },
+    "events": {
+      "online": "线上",
+      "sold": "已售 {count}",
+      "checkedIn": "已签到 {count}",
+      "buyers": "{count} 位买家",
+      "viewSales": "查看销售",
+      "loadError": "无法加载活动。"
+    },
+    "packages": {
+      "type": {
+        "bundle": "组合",
+        "subscription": "订阅",
+        "program": "课程"
+      },
+      "status": {
+        "draft": "草稿",
+        "published": "已上线",
+        "archived": "已归档"
+      },
+      "items": "{count} 项",
+      "save": "节省 {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "草稿",
+        "scheduled": "已排期",
+        "active": "进行中",
+        "completed": "已完成"
+      },
+      "noDate": "未设置日期",
+      "starts": "开始于 {date}",
+      "promoting": "推广：{title}",
+      "view": "查看活动推广",
+      "edit": "编辑活动推广"
+    },
+    "inventory": {
+      "filter": {
+        "all": "全部",
+        "highEarnings": "高收益",
+        "endingSoon": "即将结束",
+        "popular": "热门"
+      },
+      "inPerson": "线下",
+      "commission": "{type} · 佣金 {rate}%",
+      "earnPerTicket": "每张票赚 {amount}",
+      "noMatch": "没有符合此筛选的库存。"
+    },
+    "ledger": {
+      "resellerCommission": "分销佣金",
+      "ticketSale": "门票销售",
+      "sourceSellEarn": "销售赚钱",
+      "sourceMyEvent": "我的活动",
+      "viewInWallet": "在钱包中查看"
+    },
+    "opportunities": {
+      "expressInterest": "表达兴趣",
+      "decline": "拒绝",
+      "matchState": "状态：{state}",
+      "matchScore": "匹配度 {score}%"
+    }
+  }
+}

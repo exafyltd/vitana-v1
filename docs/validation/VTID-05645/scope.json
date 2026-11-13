@@ -1,0 +1,24 @@
+{
+  "vtid": "VTID-05645",
+  "lane": "native-wave2-sharing-business-r3/business-hub",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/business/**",
+    "apps/mobile/src/screens/business/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/business/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/businessNative.json",
+    "docs/validation/VTID-05645/**"
+  ],
+  "not_touched": [
+    "packages/core/** (pathToMobileTab and the earnings/growth aggregation are re-implemented in src/screens/business: they are small and the web copies sit beside Supabase-coupled hooks; no class-A extraction in this lane)",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/package.json and package-lock.json",
+    "apps/mobile/maestro/business/** (device journeys are G1)",
+    "apps/mobile/jest.config.js and apps/mobile/jest.setup.ts"
+  ],
+  "sparring_record": "docs/validation/VTID-05645/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

@@ -332,10 +332,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.CLIENTS",
@@ -344,10 +344,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.INSIGHTS_EARNINGS",
@@ -356,10 +356,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.INSIGHTS_GROWTH",
@@ -368,10 +368,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.LISTINGS",
@@ -380,10 +380,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.OPPORTUNITIES",
@@ -392,10 +392,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.OVERVIEW",
@@ -404,10 +404,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.SALES_PROMOTIONS",
@@ -416,10 +416,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.SALES_REFERRALS",
@@ -428,10 +428,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.SELL_EARN",
@@ -440,10 +440,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.SERVICES",
@@ -452,10 +452,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.SERVICES_EVENTS",
@@ -464,10 +464,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "BUSINESS.SERVICES_PACKAGES",
@@ -476,10 +476,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "sharing-business",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-08"
     },
     {
       "key": "CALENDAR.OVERVIEW",

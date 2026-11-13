@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "اختر قسمًا",
+    "tabs": {
+      "myServices": "خدماتي",
+      "myEvents": "فعالياتي",
+      "packages": "الباقات",
+      "inventory": "المخزون",
+      "promotions": "العروض الترويجية",
+      "referrals": "الإحالات",
+      "clients": "العملاء",
+      "performance": "الأداء",
+      "earnings": "الأرباح",
+      "growth": "النمو"
+    },
+    "events": {
+      "online": "عبر الإنترنت",
+      "sold": "تم بيع {count}",
+      "checkedIn": "تم تسجيل وصول {count}",
+      "buyers": "{count} مشترين",
+      "viewSales": "عرض المبيعات",
+      "loadError": "تعذّر تحميل الفعاليات."
+    },
+    "packages": {
+      "type": {
+        "bundle": "حزمة",
+        "subscription": "اشتراك",
+        "program": "برنامج"
+      },
+      "status": {
+        "draft": "مسودة",
+        "published": "منشور",
+        "archived": "مؤرشف"
+      },
+      "items": "{count} عناصر",
+      "save": "توفّر {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "مسودة",
+        "scheduled": "مجدولة",
+        "active": "نشطة",
+        "completed": "مكتملة"
+      },
+      "noDate": "لم يتم تحديد تاريخ",
+      "starts": "تبدأ في {date}",
+      "promoting": "يروّج لـ: {title}",
+      "view": "عرض الحملة",
+      "edit": "تعديل الحملة"
+    },
+    "inventory": {
+      "filter": {
+        "all": "الكل",
+        "highEarnings": "أرباح عالية",
+        "endingSoon": "ينتهي قريبًا",
+        "popular": "رائج الآن"
+      },
+      "inPerson": "حضوري",
+      "commission": "{type} · عمولة {rate}%",
+      "earnPerTicket": "اربح {amount} لكل تذكرة",
+      "noMatch": "لا توجد عناصر تطابق هذا الفلتر."
+    },
+    "ledger": {
+      "resellerCommission": "عمولة الموزّع",
+      "ticketSale": "بيع تذاكر",
+      "sourceSellEarn": "بع واربح",
+      "sourceMyEvent": "فعاليتي",
+      "viewInWallet": "عرض في المحفظة"
+    },
+    "opportunities": {
+      "expressInterest": "أبدِ اهتمامك",
+      "decline": "رفض",
+      "matchState": "الحالة: {state}",
+      "matchScore": "تطابق {score}%"
+    }
+  }
+}
