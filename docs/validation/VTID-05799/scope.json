@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05799",
+  "kind": "chore",
+  "change_class": "frontend-simple",
+  "paths": [
+    "tests/e2e/staging/fixtures/messenger-test-fixture.json",
+    "docs/validation/VTID-05799/**"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": ["tests/e2e/staging/fixtures/messenger-test-fixture.json"]
+}
