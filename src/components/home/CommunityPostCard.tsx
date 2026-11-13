@@ -314,7 +314,9 @@ export function CommunityPostCard({
           ))}
         {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} postId={item.post_id} isOwnPost={!!user?.id && user.id === item.user_id} />}
 
-        <div className="mt-3 flex items-center justify-between">
+        {/* Author row: who posted, plus the moderation menu. Kept apart from the
+            action row so the author reads as a header, not as part of the controls. */}
+        <div className="mt-3 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
             <Avatar className="h-7 w-7 shrink-0">
               {item.author_avatar && <AvatarImage src={item.author_avatar} alt="" />}
@@ -325,56 +327,12 @@ export function CommunityPostCard({
             <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={handleLike}
-              aria-label={t("screens.profile.likePost")}
-              aria-pressed={isLiked}
-              className={cn(
-                "flex items-center gap-1 text-xs transition-colors",
-                isLiked ? "text-category-4" : "text-muted-foreground hover:text-category-4",
-              )}
-            >
-              <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
-              {likeCount}
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                stop(e);
-                setShowComments((s) => !s);
-              }}
-              aria-label={t("screens.profile.comment")}
-              aria-expanded={showComments}
-              className={cn(
-                "flex items-center gap-1 text-xs transition-colors",
-                showComments ? "text-category-3" : "text-muted-foreground hover:text-category-3",
-              )}
-            >
-              <MessageCircle className="h-3.5 w-3.5" />
-              {commentCount}
-            </button>
-            {/* VTID-03468: rendered for BOTH backing sources. This used to be
-                gated on `source === "post"`, which left media_uploads-backed
-                cards with no kebab at all — an author could not delete their
-                own uploaded video from the feed, and no one could report it.
-                The menu targets the right table via the `source` prop. */}
-            {/* VTID-05321: send this post to a chat (profile_posts only — the gateway's "post" kind). */}
-            {item.source === "post" && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  stop(e);
-                  openSendInMessage();
-                }}
-                aria-label={t("inbox.shared.sendInMessage")}
-                className="flex h-11 w-11 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-                data-testid="post-send-in-message"
-              >
-                <Send className="h-3.5 w-3.5" />
-              </button>
-            )}
+          {/* VTID-03468: rendered for BOTH backing sources. This used to be
+              gated on `source === "post"`, which left media_uploads-backed
+              cards with no kebab at all — an author could not delete their
+              own uploaded video from the feed, and no one could report it.
+              The menu targets the right table via the `source` prop. */}
+          <div className="flex items-center shrink-0">
             {sendInMessageSheet}
             <NewsPostModerationMenu
               postId={item.post_id}
@@ -384,6 +342,55 @@ export function CommunityPostCard({
               source={item.source}
             />
           </div>
+        </div>
+
+        {/* Action row: like, comment, send — own line, full-height tap targets,
+            spaced apart so each control is distinct from the author above. */}
+        <div className="-ms-2 mt-1 flex items-center gap-1">
+          <button
+            type="button"
+            onClick={handleLike}
+            aria-label={t("screens.profile.likePost")}
+            aria-pressed={isLiked}
+            className={cn(
+              "flex h-11 items-center gap-1.5 rounded-full px-3 text-xs transition-colors hover:bg-muted/50",
+              isLiked ? "text-category-4" : "text-muted-foreground hover:text-category-4",
+            )}
+          >
+            <Heart className={cn("h-4 w-4", isLiked && "fill-current")} />
+            {likeCount}
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              stop(e);
+              setShowComments((s) => !s);
+            }}
+            aria-label={t("screens.profile.comment")}
+            aria-expanded={showComments}
+            className={cn(
+              "flex h-11 items-center gap-1.5 rounded-full px-3 text-xs transition-colors hover:bg-muted/50",
+              showComments ? "text-category-3" : "text-muted-foreground hover:text-category-3",
+            )}
+          >
+            <MessageCircle className="h-4 w-4" />
+            {commentCount}
+          </button>
+          {/* VTID-05321: send this post to a chat (profile_posts only — the gateway's "post" kind). */}
+          {item.source === "post" && (
+            <button
+              type="button"
+              onClick={(e) => {
+                stop(e);
+                openSendInMessage();
+              }}
+              aria-label={t("inbox.shared.sendInMessage")}
+              className="flex h-11 items-center gap-1.5 rounded-full px-3 text-xs text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              data-testid="post-send-in-message"
+            >
+              <Send className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
         {likeCount > 0 && (
