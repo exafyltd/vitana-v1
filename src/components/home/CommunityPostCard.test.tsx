@@ -354,3 +354,19 @@ describe('CommunityPostCard autoOpenComments (VTID-03744)', () => {
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
   });
 });
+
+describe('CommunityPostCard action row layout (VTID-05795)', () => {
+  beforeEach(() => {
+    toggleLikeMock.mockClear();
+    mockComments = [];
+  });
+
+  it('puts like and comment on one row, separate from the author name', () => {
+    render(<CommunityPostCard item={item()} />);
+
+    const actionRow = likeButton().parentElement;
+    expect(actionRow).not.toBeNull();
+    expect(commentButton().parentElement).toBe(actionRow);
+    expect(actionRow).not.toContainElement(screen.getByText('Autor'));
+  });
+});

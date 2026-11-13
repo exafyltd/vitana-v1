@@ -1,0 +1,6 @@
+{
+  "vtid": "VTID-05795",
+  "change_class": "frontend-simple",
+  "files": ["src/components/home/CommunityPostCard.tsx", "src/components/home/CommunityPostCard.test.tsx"],
+  "summary": "News Feed post card: author row separated from the like / comment / send action row"
+}
