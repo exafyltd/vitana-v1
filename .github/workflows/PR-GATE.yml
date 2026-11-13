@@ -80,12 +80,23 @@ jobs:
       # VTID-05145: Claude Code ↔ Kiro handoff/lane files, state transitions and session/lane trailers.
       # The one copy of the script lives in vitana-platform (scripts/collab/queue.mjs), fetched like
       # staging-guard.ts below. Report-only until 2026-10-20: not in the Verdict OUTCOMES yet.
+      # CI reader token (vitana-ci-reader App). Falls back to PLATFORM_DISPATCH_TOKEN if minting fails.
+      - name: Mint CI reader token
+        id: app
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.VITANA_CI_APP_ID }}
+          private-key: ${{ secrets.VITANA_CI_APP_PRIVATE_KEY }}
+          owner: exafyltd
+          repositories: vitana-platform,vitana-v1
+
       - name: Collab handoff
         id: collab
         continue-on-error: true
         env:
           HEAD_REF: ${{ github.head_ref }}
-          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+          GH_TOKEN: ${{ steps.app.outputs.token || secrets.PLATFORM_DISPATCH_TOKEN }}
         run: |
           if ! gh api -H 'Accept: application/vnd.github.raw' \
               "repos/exafyltd/vitana-platform/contents/scripts/collab/queue.mjs?ref=main" > "$RUNNER_TEMP/queue.mjs"; then
@@ -244,10 +255,22 @@ jobs:
             "$STAGING_GATEWAY" "$STAGING_GATEWAY" "$(git rev-parse --short=12 HEAD)" > .env.production
           npm run build
 
+      # CI reader token (vitana-ci-reader App). Falls back to PLATFORM_DISPATCH_TOKEN if minting fails.
+      - name: Mint CI reader token
+        id: app
+        if: steps.health.outputs.ok == 'true'
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.VITANA_CI_APP_ID }}
+          private-key: ${{ secrets.VITANA_CI_APP_PRIVATE_KEY }}
+          owner: exafyltd
+          repositories: vitana-platform,vitana-v1
+
       - name: Fetch the canonical staging guard
         if: steps.health.outputs.ok == 'true'
         env:
-          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+          GH_TOKEN: ${{ steps.app.outputs.token || secrets.PLATFORM_DISPATCH_TOKEN }}
         run: |
           gh api -H 'Accept: application/vnd.github.raw' \
             "repos/exafyltd/vitana-platform/contents/scripts/ci/staging-verify/staging-guard.ts?ref=main" \
@@ -304,7 +327,6 @@ jobs:
       BASE: ${{ github.event.pull_request.base.sha }}
       HEAD: ${{ github.event.pull_request.head.sha }}
       HEAD_REF: ${{ github.head_ref }}
-      GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -313,8 +335,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      # CI reader token (vitana-ci-reader App). Falls back to PLATFORM_DISPATCH_TOKEN if minting fails.
+      - name: Mint CI reader token
+        id: app
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.VITANA_CI_APP_ID }}
+          private-key: ${{ secrets.VITANA_CI_APP_PRIVATE_KEY }}
+          owner: exafyltd
+          repositories: vitana-platform,vitana-v1
       - name: Lane scope
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token || secrets.PLATFORM_DISPATCH_TOKEN }}
         run: |
+          # Log which token fetched the checker (never the value).
+          if [ "${{ steps.app.outcome }}" = "success" ]; then echo "ci reader token: app"; else echo "ci reader token: PAT fallback"; fi
           # Fail closed: the Project Manager merges on this check, so a checker that cannot be fetched is red, never a
           # silent pass.
           if ! gh api -H 'Accept: application/vnd.github.raw' \
