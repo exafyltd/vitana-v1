@@ -315,7 +315,7 @@ function AppSidebar({
                 {navItems.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
-                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-1.5 pb-1 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
+                    <Fragment key={cat.title}>{open && groupStartingAt(cat.path) && (<li aria-hidden="true" className="px-3 pt-1.5 pb-0.5 text-xs uppercase tracking-wider text-sidebar-foreground opacity-50 select-none">{translate(`sidebar.groups.${groupStartingAt(cat.path)?.key}`, groupStartingAt(cat.path)?.fallback ?? "")}</li>)}<SidebarMenuItem>
                       <SidebarMenuButton asChild>
                         <Link 
                           to={cat.path} 
@@ -325,7 +325,7 @@ function AppSidebar({
                               onSidebarOpenChange(true);
                             }
                           }}
-                          className={`relative flex items-center gap-3 rounded-xl px-3 py-1.5 transition-all duration-200 group ${
+                          className={`relative flex items-center gap-3 rounded-xl px-3 py-1 transition-all duration-200 group ${
                             isActive 
                               ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
                               : "hover:bg-sidebar-accent/50 text-sidebar-foreground hover:text-foreground"
