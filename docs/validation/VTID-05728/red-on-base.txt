@@ -1,0 +1,71 @@
+1:03:14 PM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 /projects/sandbox/wt/f-translations
+
+ ❯ src/i18n/tr-screens-no-empty-values.test.ts (4 tests | 4 failed) 157ms
+     × has no empty string value anywhere 72ms
+     × screens.profile.dancePreferences is non-empty in tr and exists non-empty in de and en 40ms
+     × screens.sharing.stressLevels is non-empty in tr and exists non-empty in de and en 37ms
+     × keeps the dance emoji as in the de and en source 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/i18n/tr-screens-no-empty-values.test.ts > tr screens catalog has no empty values > has no empty string value anywhere
+AssertionError: expected [ …(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "screens.profile.dancePreferences",
++   "screens.sharing.stressLevels",
++ ]
+
+ ❯ src/i18n/tr-screens-no-empty-values.test.ts:37:19
+     35|     walk(tr, '', all);
+     36|     const empty = all.filter(([, v]) => v.trim() === '').map(([p]) => …
+     37|     expect(empty).toEqual([]);
+       |                   ^
+     38|   });
+     39|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/i18n/tr-screens-no-empty-values.test.ts > tr screens catalog has no empty values > screens.profile.dancePreferences is non-empty in tr and exists non-empty in de and en
+ FAIL  src/i18n/tr-screens-no-empty-values.test.ts > tr screens catalog has no empty values > screens.sharing.stressLevels is non-empty in tr and exists non-empty in de and en
+AssertionError: expected 0 to be greater than 0
+ ❯ src/i18n/tr-screens-no-empty-values.test.ts:44:43
+     42|       const v = get(load(loc), key);
+     43|       expect(typeof v).toBe('string');
+     44|       expect((v as string).trim().length).toBeGreaterThan(0);
+       |                                           ^
+     45|     }
+     46|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/i18n/tr-screens-no-empty-values.test.ts > tr screens catalog has no empty values > keeps the dance emoji as in the de and en source
+AssertionError: expected '' to contain '💃'
+
+- Expected
++ Received
+
+- 💃
+
+ ❯ src/i18n/tr-screens-no-empty-values.test.ts:49:57
+     47|
+     48|   it('keeps the dance emoji as in the de and en source', () => {
+     49|     expect(get(tr, 'screens.profile.dancePreferences')).toContain('💃'…
+       |                                                         ^
+     50|   });
+     51| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  13:03:15
+   Duration  4.67s (transform 102ms, setup 672ms, import 42ms, tests 157ms, environment 3.02s)
+
