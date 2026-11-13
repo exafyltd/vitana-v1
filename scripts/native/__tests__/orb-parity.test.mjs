@@ -28,6 +28,7 @@ import {
   widgetHandledTypes,
 } from '../orb-parity.mjs';
 import { tree } from './fixture.mjs';
+import { platformFileRequest } from '../orb-parity.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 const SCRIPT = join(ROOT, 'scripts/native/orb-parity.mjs');
@@ -305,4 +306,13 @@ test('--check without the platform files fails (never skips)', () => {
   const r = spawnSync(process.execPath, [SCRIPT, '--check', '--platform-dir', mkdtempSync(join(tmpdir(), 'orb-empty-'))], { encoding: 'utf8' });
   assert.equal(r.status, 1);
   assert.match(r.stderr, /missing under .* the job never skips/);
+});
+
+test('platform fetch defaults to GitHub; ORB_PARITY_SOURCE=gitlab reads the GitLab project', async () => {
+  const gh = platformFileRequest('a/b.ts', 'main', {});
+  assert.equal(gh.url, 'https://api.github.com/repos/exafyltd/vitana-platform/contents/a/b.ts?ref=main');
+  assert.equal(gh.headers('t').Authorization, 'Bearer t');
+  const gl = platformFileRequest('a/b.ts', 'main', { ORB_PARITY_SOURCE: 'gitlab' });
+  assert.equal(gl.url, 'https://gitlab.vitanaland.com/api/v4/projects/vitana%2Fvitana-platform/repository/files/a%2Fb.ts/raw?ref=main');
+  assert.deepEqual(gl.headers('t'), { 'PRIVATE-TOKEN': 't' });
 });

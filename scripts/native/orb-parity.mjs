@@ -469,13 +469,33 @@ export function scanNativeSources(root = ROOT) {
 
 // ── Fetch ─────────────────────────────────────────────────────────────────
 
-export async function fetchPlatformFiles(dir, { token = process.env.GH_TOKEN || process.env.PLATFORM_DISPATCH_TOKEN, fetchImpl = globalThis.fetch, ref = 'main' } = {}) {
+// Source: GitHub by default. ORB_PARITY_SOURCE=gitlab reads the same files from the GitLab
+// project (GITLAB_PLATFORM_PROJECT, default vitana/vitana-platform on gitlab.vitanaland.com)
+// with GITLAB_TOKEN as a PRIVATE-TOKEN. Both paths fail closed.
+export const GITLAB_PLATFORM_HOST = 'https://gitlab.vitanaland.com';
+export const GITLAB_PLATFORM_PROJECT = 'vitana/vitana-platform';
+
+export function platformFileRequest(path, ref, env = process.env) {
+  if ((env.ORB_PARITY_SOURCE || 'github') === 'gitlab') {
+    const project = encodeURIComponent(env.GITLAB_PLATFORM_PROJECT || GITLAB_PLATFORM_PROJECT);
+    const host = env.GITLAB_PLATFORM_HOST || GITLAB_PLATFORM_HOST;
+    return {
+      url: `${host}/api/v4/projects/${project}/repository/files/${encodeURIComponent(path)}/raw?ref=${encodeURIComponent(ref)}`,
+      headers: (token) => ({ 'PRIVATE-TOKEN': token }),
+    };
+  }
+  return {
+    url: `https://api.github.com/repos/${PLATFORM_REPO}/contents/${path}?ref=${ref}`,
+    headers: (token) => ({ Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.raw', 'X-GitHub-Api-Version': '2022-11-28' }),
+  };
+}
+
+export async function fetchPlatformFiles(dir, { token = process.env.ORB_PARITY_SOURCE === 'gitlab' ? process.env.GITLAB_TOKEN : (process.env.GH_TOKEN || process.env.PLATFORM_DISPATCH_TOKEN), fetchImpl = globalThis.fetch, ref = 'main' } = {}) {
   if (!token) throw new Error(NO_TOKEN_MESSAGE);
   for (const path of Object.values(PLATFORM_FILES)) {
-    const url = `https://api.github.com/repos/${PLATFORM_REPO}/contents/${path}?ref=${ref}`;
-    const res = await fetchImpl(url, {
-      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.raw', 'X-GitHub-Api-Version': '2022-11-28' },
-    });
+    const req = platformFileRequest(path, ref);
+    const url = req.url;
+    const res = await fetchImpl(url, { headers: req.headers(token) });
     if (!res.ok) throw new Error(`orb-parity: fetching ${PLATFORM_REPO}:${path}@${ref} failed with HTTP ${res.status} — the job fails closed, it never skips`);
     const text = await res.text();
     const out = join(dir, path);

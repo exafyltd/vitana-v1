@@ -28,7 +28,7 @@ export function buildRegistry() {
   return {
     version,
     generated_at: new Date().toISOString(),
-    commit: process.env.VITE_APP_VERSION || process.env.GITHUB_SHA || null,
+    commit: process.env.VITE_APP_VERSION || process.env.GITHUB_SHA || process.env.CI_COMMIT_SHA || null,
     screens: screens.map((s) => ({
       ...s,
       i18n: {
