@@ -1,12 +1,17 @@
 /** VTID-05176 — shared helpers for the Vitana Native UI tests. */
 import type { ReactElement } from 'react';
 import { I18nManager } from 'react-native';
-import { render, type RenderResult } from '@testing-library/react-native';
+import { configure, render, type RenderResult } from '@testing-library/react-native';
 import { I18nProvider } from '../../src/i18n/I18nProvider';
 import { catalogs, type Locale } from '../../src/i18n';
 import { VitanaUIProvider } from '../../src/ui';
 import { __resetOverlayStack } from '../../src/ui/overlay/stack';
 import { __resetToasts } from '../../src/ui/toast/store';
+
+// Give findBy and waitFor 5 s instead of RNTL's 1 s default under default-worker load (as tests/settings/helpers.tsx).
+configure({ asyncUtilTimeout: 5000 });
+// Chained 5 s waits must fit inside the test's own budget (Jest default 5 s).
+jest.setTimeout(30000);
 
 export type Mode = 'ltr' | 'rtl' | 'dark';
 

@@ -1,0 +1,13 @@
+VTID-05652 native-wave2-fix-forward-r2/test-timeouts: commands run and results
+Worktree: /projects/sandbox/wt/b-test-timeouts (base origin/main 559ea49b1)
+
+== Task 1: grep before editing (R1-F3), re-run on the clean base
+$ grep -rn "configure(\|jest.setTimeout(" tests/memory tests/diary tests/community tests/ui
+(no output, grep exit 1)
+
+$ npm ci --no-audit --no-fund (apps/mobile): exit 0
+
+== Task 1: red on base (helper edits stashed; tests/test-timeouts only)
+$ npx jest tests/test-timeouts --maxWorkers=2 -> exit 1
+Tests: 8 failed, 8 total (asyncUtilTimeout Received 1000 vs 5000; jest timeout Received undefined vs 30000)
+Saved: docs/validation/VTID-05652/red-on-base.txt

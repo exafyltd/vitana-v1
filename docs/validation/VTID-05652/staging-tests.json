@@ -1,0 +1,9 @@
+{
+  "vtid": "VTID-05652",
+  "service": "community-app",
+  "_note": "Test harness only; no product change and no staging call. Proven offline by jest.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/test-timeouts", "cwd": "apps/mobile",
+      "reason": "each of the memory, diary, community and ui helpers sets asyncUtilTimeout 5000 and the jest test timeout 30000" }
+  ]
+}
