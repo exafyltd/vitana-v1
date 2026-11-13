@@ -1,0 +1,36 @@
+# VTID-05681 commands (worktree /projects/sandbox/wt/b-auth, apps/mobile). Base: origin/main e31bf4627ff3c705c20f8e6b718ce4dd03353b7f
+
+## Task 0: premises re-checked at the base (all held; details in acceptance.md)
+$ git rev-parse origin/main
+e31bf4627ff3c705c20f8e6b718ce4dd03353b7f
+$ grep -rlw "oauthErrorKey|SignInTimeoutError|emailRedirectFor|resetRedirect|resendConfirmation|CONFIRMATION_ERROR_KEYS|gatewayGet|isGuestPath|useCurrentHref" tests
+(no match for any)
+
+## Red on base (new test files absent)
+$ npx jest --maxWorkers=2 tests/wave1-readiness/auth
+No tests found, exiting with code 1
+Pattern: tests/wave1-readiness/auth - 0 matches
+exit 1
+
+## Lane tests
+$ npm run gen:i18n
+gen-i18n-map: 11 locales, 1672 shards → src/i18n/catalog-map.generated.ts
+$ npx jest --maxWorkers=2 tests/wave1-readiness/auth
+Test Suites: 1 skipped, 5 passed, 5 of 6 total
+Tests:       5 skipped, 169 passed, 174 total
+exit 0
+
+## Typecheck
+$ npm run typecheck
+tsc --noEmit  (no errors)
+exit 0
+
+## Full suite
+$ npx jest --maxWorkers=2   (npm test = pretest gen:i18n + jest)
+Test Suites: 1 skipped, 206 passed, 206 of 207 total
+Tests:       5 skipped, 5790 passed, 5795 total
+Snapshots:   57 passed, 57 total
+exit 0
+
+## Scope
+$ git diff --stat origin/main   (see PR; only apps/mobile/tests/wave1-readiness/auth/** and docs/validation/VTID-05681/**)
