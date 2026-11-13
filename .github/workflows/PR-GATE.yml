@@ -194,7 +194,9 @@ jobs:
   # STAGING-VERIFY; specs navigate to root paths, which the /pr-<n>/ preview
   # prefix would break). Read-only: the canonical staging-guard aborts writes.
   preview-e2e:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.51.0 does not support ubuntu-latest (26.04), so the
+    # spec step never ran and the job still passed. 24.04 is supported.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     if: github.event.pull_request.head.repo.full_name == github.repository
     env:
