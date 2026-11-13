@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "Als Vorlage speichern",
+      "createRule": "Regel erstellen"
+    },
+    "campaign": {
+      "stepBasics": "Grundlagen",
+      "stepChannels": "Kanäle",
+      "stepTemplate": "Vorlage",
+      "stepSchedule": "Zeitplan",
+      "editTitle": "Kampagne bearbeiten",
+      "createTitle": "Kampagne erstellen",
+      "stepOf": "Schritt {current} von {total}",
+      "saveDraft": "Als Entwurf speichern",
+      "saveActivate": "Speichern und aktivieren",
+      "update": "Kampagne aktualisieren"
+    },
+    "package": {
+      "bundleLabel": "Bundle",
+      "bundleDescription": "Verkaufe mehrere Angebote zusammen als ein Paket.",
+      "itemService": "Dienstleistung",
+      "itemEvent": "Event",
+      "hintBasics": "Gib deinem Paket einen Namen und beschreibe es.",
+      "hintItems": "Füge die Dienstleistungen oder Events hinzu, die enthalten sind.",
+      "hintPricing": "Lege den Preis fest und prüfe alles."
+    },
+    "consent": {
+      "description": "Lege fest, welche deiner Daten Vitanaland zum Personalisieren des Teilens nutzen darf."
+    },
+    "distribution": {
+      "description": "Plane, terminiere und verfolge deine Beiträge über alle Kanäle."
+    },
+    "queue": {
+      "untitled": "Beitrag ohne Titel",
+      "noDescription": "Keine Beschreibung"
+    },
+    "analytics": {
+      "sent": "Gesendet",
+      "clicked": "Geklickt",
+      "responded": "Geantwortet"
+    },
+    "kpi": {
+      "revenue": "Umsatz"
+    },
+    "public": {
+      "notFoundBody": "Diese Kampagne gibt es nicht oder sie ist nicht mehr verfügbar.",
+      "explore": "Vitanaland entdecken",
+      "joinCommunity": "Der Community beitreten"
+    },
+    "card": {
+      "shareText": "Komm mit zu {title}"
+    },
+    "overview": {
+      "description": "Teile Inhalte, starte Kampagnen und verwalte deine Kanäle."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "E-Mail",
+      "sms": "SMS",
+      "copy": "Link kopieren",
+      "more": "Mehr",
+      "campaignText": "Schau dir die Kampagne {name} an"
+    },
+    "activate": {
+      "description": "Deine Beiträge gehen auf den verbundenen Kanälen live.",
+      "descriptionNoPosts": "Diese Kampagne hat noch keine Beiträge. Füge vor dem Aktivieren Beiträge hinzu.",
+      "instantHint": "Beiträge werden sofort nach dem Aktivieren gesendet.",
+      "instantHintNoPosts": "Es wird nichts gesendet, bis du Beiträge hinzufügst.",
+      "willActivate": "Wird am {when} aktiviert"
+    },
+    "delete": {
+      "title": "Kampagne löschen?",
+      "body": "„{name}“ und die zugehörigen Beiträge werden endgültig gelöscht."
+    }
+  }
+}

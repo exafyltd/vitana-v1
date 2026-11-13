@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "حفظ كقالب",
+      "createRule": "إنشاء قاعدة"
+    },
+    "campaign": {
+      "stepBasics": "الأساسيات",
+      "stepChannels": "القنوات",
+      "stepTemplate": "القالب",
+      "stepSchedule": "الجدولة",
+      "editTitle": "تعديل الحملة",
+      "createTitle": "إنشاء حملة",
+      "stepOf": "الخطوة {current} من {total}",
+      "saveDraft": "حفظ كمسودة",
+      "saveActivate": "حفظ وتفعيل",
+      "update": "تحديث الحملة"
+    },
+    "package": {
+      "bundleLabel": "حزمة مجمّعة",
+      "bundleDescription": "بع عدة عناصر معًا كحزمة واحدة.",
+      "itemService": "خدمة",
+      "itemEvent": "فعالية",
+      "hintBasics": "أعطِ حزمتك اسمًا وصِفها.",
+      "hintItems": "أضف الخدمات أو الفعاليات التي تتضمنها.",
+      "hintPricing": "حدّد السعر وراجع."
+    },
+    "consent": {
+      "description": "اختر البيانات التي يمكن لـ Vitanaland استخدامها لتخصيص المشاركة."
+    },
+    "distribution": {
+      "description": "خطّط لمنشوراتك وجدولها وتتبّعها عبر جميع القنوات."
+    },
+    "queue": {
+      "untitled": "منشور بلا عنوان",
+      "noDescription": "لا يوجد وصف"
+    },
+    "analytics": {
+      "sent": "تم الإرسال",
+      "clicked": "تم النقر",
+      "responded": "تم الرد"
+    },
+    "kpi": {
+      "revenue": "الإيرادات"
+    },
+    "public": {
+      "notFoundBody": "هذه الحملة غير موجودة أو لم تعد متاحة.",
+      "explore": "استكشف Vitanaland",
+      "joinCommunity": "انضم إلى المجتمع"
+    },
+    "card": {
+      "shareText": "انضم إليّ في {title}"
+    },
+    "overview": {
+      "description": "شارك المحتوى وأطلق الحملات وأدر قنواتك."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "البريد الإلكتروني",
+      "sms": "رسالة نصية",
+      "copy": "نسخ الرابط",
+      "more": "المزيد",
+      "campaignText": "اطّلع على الحملة {name}"
+    },
+    "activate": {
+      "description": "ستُنشر منشوراتك على القنوات المتصلة.",
+      "descriptionNoPosts": "لا تحتوي هذه الحملة على منشورات بعد. أضف منشورات قبل التفعيل.",
+      "instantHint": "تُرسل المنشورات فور التفعيل.",
+      "instantHintNoPosts": "لن يُرسل شيء حتى تضيف منشورات.",
+      "willActivate": "سيتم التفعيل في {when}"
+    },
+    "delete": {
+      "title": "حذف الحملة؟",
+      "body": "سيتم حذف \"{name}\" ومنشوراتها نهائيًا."
+    }
+  }
+}

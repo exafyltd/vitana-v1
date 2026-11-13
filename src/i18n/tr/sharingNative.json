@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "Şablon olarak kaydet",
+      "createRule": "Kural oluştur"
+    },
+    "campaign": {
+      "stepBasics": "Temel bilgiler",
+      "stepChannels": "Kanallar",
+      "stepTemplate": "Şablon",
+      "stepSchedule": "Zamanlama",
+      "editTitle": "Kampanyayı düzenle",
+      "createTitle": "Kampanya oluştur",
+      "stepOf": "Adım {current} / {total}",
+      "saveDraft": "Taslak olarak kaydet",
+      "saveActivate": "Kaydet ve etkinleştir",
+      "update": "Kampanyayı güncelle"
+    },
+    "package": {
+      "bundleLabel": "Paket teklif",
+      "bundleDescription": "Birden fazla öğeyi tek paket olarak birlikte sat.",
+      "itemService": "Hizmet",
+      "itemEvent": "Etkinlik",
+      "hintBasics": "Paketine bir ad ver ve açıkla.",
+      "hintItems": "Pakete dahil olan hizmetleri veya etkinlikleri ekle.",
+      "hintPricing": "Fiyatı belirle ve gözden geçir."
+    },
+    "consent": {
+      "description": "Vitanaland’ın paylaşımı kişiselleştirmek için hangi verilerini kullanabileceğini seç."
+    },
+    "distribution": {
+      "description": "Gönderilerini tüm kanallarda planla, zamanla ve takip et."
+    },
+    "queue": {
+      "untitled": "Başlıksız gönderi",
+      "noDescription": "Açıklama yok"
+    },
+    "analytics": {
+      "sent": "Gönderildi",
+      "clicked": "Tıklandı",
+      "responded": "Yanıtladı"
+    },
+    "kpi": {
+      "revenue": "Gelir"
+    },
+    "public": {
+      "notFoundBody": "Bu kampanya mevcut değil veya artık kullanılamıyor.",
+      "explore": "Vitanaland’ı keşfet",
+      "joinCommunity": "Topluluğa katıl"
+    },
+    "card": {
+      "shareText": "{title} etkinliğinde bana katıl"
+    },
+    "overview": {
+      "description": "İçerik paylaş, kampanya yürüt ve kanallarını yönet."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "E-posta",
+      "sms": "SMS",
+      "copy": "Bağlantıyı kopyala",
+      "more": "Daha fazla",
+      "campaignText": "{name} kampanyasına göz at"
+    },
+    "activate": {
+      "description": "Gönderilerin bağlı kanallarda yayına girer.",
+      "descriptionNoPosts": "Bu kampanyada henüz gönderi yok. Etkinleştirmeden önce gönderi ekle.",
+      "instantHint": "Gönderiler etkinleştirdiğin anda gönderilir.",
+      "instantHintNoPosts": "Gönderi ekleyene kadar hiçbir şey gönderilmez.",
+      "willActivate": "Şu tarihte etkinleşecek: {when}"
+    },
+    "delete": {
+      "title": "Kampanya silinsin mi?",
+      "body": "“{name}” ve gönderileri kalıcı olarak silinecek."
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05646",
+  "service": "community-app",
+  "_note": "Native Wave 2 sharing lane. Proven offline (jest-expo + RNTL, fake Supabase and gateway doubles, no network; the native app has no production profile and assertNotProduction() refuses prod and staging hosts). This lane makes no staging call and writes nothing to Supabase or the gateway from a test. Device-runtime parity (Maestro, simulator and emulator screenshots against the 390x844 read-only staging sharing screens) is deferred to G1 as next_actor: owner and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates the i18n catalog map the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/sharing", "cwd": "apps/mobile", "reason": "campaign list/detail load/empty/error, distribution and scheduled posts, share sheet and share-card capture (captureRef), data-consent, invite, creator-onboarded under the AuthGate, public campaign landing with no session, route/ledger/catalog/RTL guards" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "React 19 ReactElement typing across the new screens and ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" }, "reason": "Metro + Hermes bundle for iOS and Android includes the eight new routes" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile", "reason": "the eight sharing-business rows are native with their routes present under apps/mobile/app/" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/sharing/*.yaml (not written in this lane)", "target": "/sharing, /sharing/campaigns, /sharing/distribution, /invite, /pub/campaigns/:id", "next_actor": "owner", "reason": "share-card capture on a device, deep link to the public campaign, screenshot parity against read-only staging at 390x844; needs the isolated G1 environment" }
+  ]
+}
