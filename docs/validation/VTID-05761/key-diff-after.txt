@@ -1,0 +1,34 @@
+settingsNative: de raw keys=77
+  ar: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  en: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  es: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  fr: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pl: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pt: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  ru: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  sr: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  tr: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  zh: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+aiAssistantsNative: de raw keys=29
+  ar: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  en: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  es: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  fr: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pl: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pt: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  ru: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  sr: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  tr: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  zh: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+aiCoachNative: de raw keys=35
+  ar: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  en: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  es: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  fr: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pl: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pt: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  ru: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  sr: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  tr: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  zh: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+TOTAL_MISMATCHES=0

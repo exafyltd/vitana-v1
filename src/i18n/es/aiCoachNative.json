@@ -38,17 +38,11 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "Bienestar",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryWellness": "Bienestar"
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "Marcadores sanguíneos",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryBloodMarkers": "Marcadores sanguíneos"
     },
     "chat": {
       "voice": "Iniciar llamada de voz",
@@ -67,11 +61,7 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · +{n} VTNA",
-      "total": ". Índice ahora {n}",
-      "_pending_review": {
-        "title": true,
-        "detail": true
-      }
+      "total": ". Índice ahora {n}"
     }
   }
 }

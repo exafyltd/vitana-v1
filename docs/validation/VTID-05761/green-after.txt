@@ -1,0 +1,7 @@
+# green: lane worktree after the change (same three files, npx jest --verbose)
+PASS tests/ai-assistants/i18n-rtl.test.tsx (20.657 s)
+PASS tests/settings/i18n-rtl.test.tsx (24.82 s)
+PASS tests/ai-coach/i18n-rtl.test.tsx
+Test Suites: 3 passed, 3 total
+Tests:       260 passed, 260 total
+failing (✕) lines: 0

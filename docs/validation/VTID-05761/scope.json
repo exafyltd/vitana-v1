@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05761",
+  "lane": "native-catalog-de-keys/de-keys",
+  "kind": "fix",
+  "plan": "exafyltd/vitana-platform#4994 (plan(native-catalog-de-keys)), converged round 2",
+  "paths": [
+    "src/i18n/*/settingsNative.json",
+    "src/i18n/*/aiAssistantsNative.json",
+    "src/i18n/*/aiCoachNative.json",
+    "docs/validation/VTID-05761/**"
+  ],
+  "not_touched": [
+    "src/i18n/de/** (no German value or key changed: the keys already exist)",
+    "apps/mobile/tests/** (no test edited; the exact-key tests are the verification)",
+    "scripts/**, .github/**, .kiro/**, CLAUDE.md (no rule or tool changed)",
+    "all other src/i18n namespaces (the ~1,500 other shards carrying _pending_review are out of scope)"
+  ],
+  "red_green_exempt": [
+    {
+      "file": "apps/mobile/tests/settings/i18n-rtl.test.tsx",
+      "reason": "No test file is changed (owner rule). The red proof is the existing exact-key tests in apps/mobile/tests/settings, ai-assistants and ai-coach: 25 failed on base (red-on-base.txt), 260 passed after (green-after.txt)."
+    }
+  ],
+  "expected_changed_files": 28,
+  "expected_flag_leaves_removed": 113
+}
