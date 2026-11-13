@@ -1,0 +1,14 @@
+VTID-05649 native-wave2-fix-forward-r2/orb-guided-topic: commands run and results
+Worktree: /projects/sandbox/wt/b-orb-guided-topic (branch kiro/native-wave2-fix-forward-r2/orb-guided-topic, base origin/main 559ea49b1)
+
+== Red on base (tests first; apps/mobile/src stashed to origin/main)
+- cd apps/mobile && npx jest tests/orb/guided-topic --maxWorkers=2: 2 suites failed, 15 failed / 2 passed (see red-on-base.txt)
+
+== Green
+- cd apps/mobile && npm run typecheck: exit 0
+- npx jest tests/orb --maxWorkers=2: 12 suites, 178 tests passed (existing tests/orb files unchanged)
+- npm test -- --maxWorkers=2: Test Suites 203 passed; Tests 5635 passed
+- APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle: exit 0
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: exit 0 (dependencies up to date)
+- node scripts/native/parity-ledger.mjs --check: OK, 435 rows, 121 native routes
+- node scripts/native/core-closure.mjs --check: 41 roots, 51 src files, 11 assets, up to date
