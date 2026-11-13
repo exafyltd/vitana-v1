@@ -1,0 +1,28 @@
+{
+  "vtid": "VTID-05685",
+  "lane": "native-parity-test-gaps/route-tests",
+  "kind": "docs",
+  "paths": [
+    "apps/mobile/tests/parity-gaps/**",
+    "docs/validation/**"
+  ],
+  "not_touched": [
+    "apps/mobile/app/** and apps/mobile/src/** (no source change)",
+    "apps/mobile/parity/ledger.json (no ledger status change; the evidence supports `native` for both rows)",
+    "apps/mobile/src/navigation/resolve.ts and tests/discover-commerce/routes.test.tsx (resolver gap is reported, not fixed)",
+    "every existing test and helper, including tests/community/mocks.ts and helpers.tsx",
+    "apps/mobile/package.json, package-lock.json, jest.config.js"
+  ],
+  "sparring_record": "docs/validation/VTID-05685/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": [
+    {
+      "file": "apps/mobile/tests/parity-gaps/intents-mine-route.test.tsx",
+      "reason": "tests-only lane: the behaviour already exists, so the tests pass on base by design; red is shown by mutation in a throwaway worktree (commands.log)"
+    },
+    {
+      "file": "apps/mobile/tests/parity-gaps/my-groups-route.test.tsx",
+      "reason": "tests-only lane: the behaviour already exists, so the tests pass on base by design; red is shown by mutation in a throwaway worktree (commands.log)"
+    }
+  ]
+}
