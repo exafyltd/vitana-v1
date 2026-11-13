@@ -1,0 +1,9 @@
+{
+  "vtid": "VTID-05666",
+  "service": "community-app",
+  "_note": "Read-only record. Tooling lane: a node check on apps/mobile/eas.json, run by NATIVE-CI (node --test). Not verified on staging: the native app has no staging deploy and this lane deploys nothing; proven by the node:test suite and the mutation run in commands.log. No network call, no write to any live system.",
+  "tests": [
+    { "kind": "existing", "ref": "node --test scripts/native/__tests__/eas-profile-guard.test.mjs", "cwd": ".",
+      "reason": "current eas.json passes; a production profile, a submit.production block, a secret-like key or key-file value, an APP_PROFILE outside development/test-g1, a submit profile other than test-g1 and a track other than internal each fail" }
+  ]
+}
