@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID-05725",
+  "lane": "native-followups-20261111/my-groups-deeplink",
+  "kind": "feature",
+  "sparring_record": "docs/validation/VTID-05725/plan-sparring.md",
+  "paths": [
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/discover-commerce/routes.test.tsx",
+    "apps/mobile/tests/followups/my-groups/**",
+    "docs/validation/VTID-05725/**"
+  ],
+  "not_touched": ["NATIVE_ROUTES", "apps/mobile/parity/ledger.json", "apps/mobile/app/(app)/comm/my-groups/[id].tsx"],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
