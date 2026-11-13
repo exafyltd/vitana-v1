@@ -100,6 +100,12 @@ test('desktop sidebar shows the wordmark, all 14 community routes and the four g
   }, sidebarBox.x + sidebarBox.width);
   expect(outside, 'elements past the sidebar right edge').toEqual([]);
 
+  // The Account group (Settings, Support) must be visible without scrolling the nav at 1400x900.
+  for (const path of ['/settings', '/support']) {
+    const link = await box(sidebar.locator(`a[href="${path}"]`));
+    expect(link.y + link.height, `${path} bottom edge within the 900px viewport`).toBeLessThanOrEqual(900);
+  }
+
   // Evidence for the reviewer: screenshots saved to visual/ (uploaded as a CI artifact by PR-GATE).
   const { mkdirSync } = await import('node:fs');
   mkdirSync('visual', { recursive: true });
