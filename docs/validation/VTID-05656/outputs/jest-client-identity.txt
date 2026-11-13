@@ -1,0 +1,22 @@
+PASS tests/client-identity.test.ts (14.374 s)
+  buildClientIdentity
+    ✓ builds the value for iOS and Android (2 ms)
+    ✓ sends unknown when no version is available (1 ms)
+    ✓ sends the test platform for anything that is not ios or android
+    ✓ always matches the plan format (1 ms)
+  currentClientIdentity (test profile)
+    ✓ reads Platform.OS and the app version
+    ✓ falls back to unknown without an expo config
+    ✓ exposes the header map (1 ms)
+  gateway calls
+    ✓ send the header, keep caller headers, and still go out with no version (3 ms)
+    ✓ send the header when no init is given
+    ✓ do not let the caller spoof another identity
+  third-party calls
+    ✓ do not carry the header: only the gateway helper adds it (22 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        15.428 s
+Ran all test suites matching /tests\/client-identity/i.

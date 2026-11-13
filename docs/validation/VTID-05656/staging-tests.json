@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05656",
+  "service": "community-app",
+  "_note": "Not verified on staging for this lane alone: the header carries no member data and the native app has no staging or production profile. The gateway lane's read-only probe proves the classification. This lane is proven offline by the unit tests below.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/client-identity", "cwd": "apps/mobile",
+      "reason": "header format for iOS, Android, unknown platform and no version; header on gateway calls through fetchWithTimeout; caller cannot spoof it; absent on third-party calls" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "http.ts and client-identity.ts type-check" }
+  ]
+}
