@@ -314,8 +314,10 @@ export function CommunityPostCard({
           ))}
         {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} postId={item.post_id} isOwnPost={!!user?.id && user.id === item.user_id} />}
 
-        <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 min-w-0">
+        {/* One row: the author on the left; like, comment, send and the menu
+            grouped on the right, right-aligned next to the ⋮ menu. */}
+        <div className="mt-3 flex items-center gap-2">
+          <div className="flex min-w-0 items-center gap-2">
             <Avatar className="h-7 w-7 shrink-0">
               {item.author_avatar && <AvatarImage src={item.author_avatar} alt="" />}
               <AvatarFallback className="text-xs">
@@ -325,14 +327,14 @@ export function CommunityPostCard({
             <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="ms-auto flex shrink-0 items-center gap-0.5">
             <button
               type="button"
               onClick={handleLike}
               aria-label={t("screens.profile.likePost")}
               aria-pressed={isLiked}
               className={cn(
-                "flex items-center gap-1 text-xs transition-colors",
+                "flex h-11 items-center gap-1 rounded-full px-2 text-xs transition-colors hover:bg-muted/50",
                 isLiked ? "text-category-4" : "text-muted-foreground hover:text-category-4",
               )}
             >
@@ -348,18 +350,13 @@ export function CommunityPostCard({
               aria-label={t("screens.profile.comment")}
               aria-expanded={showComments}
               className={cn(
-                "flex items-center gap-1 text-xs transition-colors",
+                "flex h-11 items-center gap-1 rounded-full px-2 text-xs transition-colors hover:bg-muted/50",
                 showComments ? "text-category-3" : "text-muted-foreground hover:text-category-3",
               )}
             >
               <MessageCircle className="h-3.5 w-3.5" />
               {commentCount}
             </button>
-            {/* VTID-03468: rendered for BOTH backing sources. This used to be
-                gated on `source === "post"`, which left media_uploads-backed
-                cards with no kebab at all — an author could not delete their
-                own uploaded video from the feed, and no one could report it.
-                The menu targets the right table via the `source` prop. */}
             {/* VTID-05321: send this post to a chat (profile_posts only — the gateway's "post" kind). */}
             {item.source === "post" && (
               <button
@@ -369,13 +366,15 @@ export function CommunityPostCard({
                   openSendInMessage();
                 }}
                 aria-label={t("inbox.shared.sendInMessage")}
-                className="flex h-11 w-11 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                className="flex h-11 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
                 data-testid="post-send-in-message"
               >
                 <Send className="h-3.5 w-3.5" />
               </button>
             )}
             {sendInMessageSheet}
+            {/* VTID-03468: rendered for BOTH backing sources, so the author can
+                delete their own uploaded video and anyone can report it. */}
             <NewsPostModerationMenu
               postId={item.post_id}
               authorId={item.user_id}

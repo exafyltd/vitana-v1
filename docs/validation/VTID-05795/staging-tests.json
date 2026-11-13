@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05795",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/home/CommunityPostCard.test.tsx", "cwd": ".",
+      "reason": "the like and comment controls share one row, and the author name is outside that row (layout test added with this change)" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the new post card is served" }
+  ]
+}
