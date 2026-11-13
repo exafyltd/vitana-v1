@@ -5,6 +5,8 @@
  * `app/+native-intent.tsx`, which keeps Expo Router from routing them on its
  * own) and push opens both go through `resolveLink`, then
  * - `auth` / `oauth_return` → N3's `onAuthLink`, `invite` → N3's `onInviteLink`;
+ * - an invite also navigates to the public `/i/<code>` route as soon as the
+ *   navigator is attached, with no sign-in hold (VTID-05650; web App.tsx:877);
  * - a route → `router.push` when a session exists and the root layout has
  *   attached the navigator; otherwise it is held (latest wins) and replayed
  *   after N3's auth guard reports a session;
@@ -40,6 +42,16 @@ export interface LinkRouter {
 export function createLinkRouter(deps: LinkRouterDeps): LinkRouter {
   let navigate: Navigate | null = null;
   let held: string | null = null;
+  /** VTID-05650: public routes (invites) never wait for a session; latest wins. */
+  let heldPublic: string | null = null;
+
+  const flushPublic = () => {
+    if (heldPublic !== null && navigate) {
+      const href = heldPublic;
+      heldPublic = null;
+      navigate(href);
+    }
+  };
 
   const flush = () => {
     if (held !== null && navigate && deps.isSignedIn()) {
@@ -62,6 +74,8 @@ export function createLinkRouter(deps: LinkRouterDeps): LinkRouter {
         break;
       case 'invite':
         deliverInviteLink(link);
+        heldPublic = `/i/${encodeURIComponent(link.code)}`;
+        flushPublic();
         break;
       default:
         held = hrefOf(link);
@@ -75,6 +89,7 @@ export function createLinkRouter(deps: LinkRouterDeps): LinkRouter {
     handlePushOpen: (data) => dispatch(resolvePushLink(data, { linkHosts: deps.linkHosts })),
     attachNavigator(nav) {
       navigate = nav;
+      flushPublic();
       flush();
       return () => {
         if (navigate === nav) navigate = null;
