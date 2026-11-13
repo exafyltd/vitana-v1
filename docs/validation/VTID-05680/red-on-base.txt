@@ -1,0 +1,38 @@
+FAIL tests/iap/facade.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/iap' from 'tests/iap/facade.test.ts'
+
+      1 | // VTID-05680 — vendor-neutral purchase seam: no-op default, flag OFF, facade enforcement.
+    > 2 | import {
+        | ^
+      3 |   NoopPurchaseProvider,
+      4 |   getPurchaseProvider,
+      5 |   setPurchaseProvider,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/iap/facade.test.ts:2:1)
+
+FAIL tests/iap/isolation.test.ts (12.541 s)
+  ● isolation › src/iap exists
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      17 | describe('isolation', () => {
+      18 |   it('src/iap exists', () => {
+    > 19 |     expect(fs.existsSync(path.join(IAP_DIR, 'index.ts'))).toBe(true);
+         |                                                           ^
+      20 |   });
+      21 |
+      22 |   it('package.json has no purchase-related dependency', () => {
+
+      at Object.toBe (tests/iap/isolation.test.ts:19:59)
+
+Test Suites: 2 failed, 2 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        13.625 s
+Ran all test suites matching /tests\/iap/i.

@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05680",
+  "service": "community-app",
+  "_note": "Not verified on staging: no screen, shell or route imports src/iap, so no deployed build behaves differently. The covering tests are apps/mobile/tests/iap (offline, no network). The staging smoke suite is unaffected.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/iap", "cwd": "apps/mobile",
+      "reason": "no-op default, flag OFF, facade enforcement, failed mapping, resets, no dependency, no outside import" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "interface and facade type-check" }
+  ]
+}
