@@ -1,0 +1,8 @@
+{
+  "vtid": "VTID-05794",
+  "service": "community-app",
+  "tests": [
+    { "kind": "playwright", "spec": "tests/e2e/staging/staging-test-group.staging.spec.ts",
+      "reason": "the staging-test-group exists by name, is hidden from the public group directory, and its only member is the dedicated test account (read-only GETs)" }
+  ]
+}
