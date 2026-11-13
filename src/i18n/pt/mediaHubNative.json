@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "Escolha a seção de mídia",
+    "communityMember": "Membro da comunidade",
+    "by": "por {name}",
+    "share": {
+      "shortText": "Confira \"{title}\" de {creator} no Vitana",
+      "trackText": "Ouça \"{title}\" de {artist} no Vitana"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 min de alongamento matinal",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "Café da manhã saudável e rápido",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "Exercício de respiração",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "Fitness",
+      "tagYoga": "Yoga",
+      "tagNutrition": "Nutrição",
+      "tagRecipes": "Receitas",
+      "tagMindfulness": "Atenção plena",
+      "tagWellness": "Bem-estar"
+    },
+    "video": {
+      "failed": "Falha ao carregar — toque para tentar de novo",
+      "buffering": "Carregando — toque para tentar de novo"
+    },
+    "a11y": {
+      "calendar": "Abrir calendário",
+      "closeFeed": "Fechar shorts",
+      "comments": "Abrir comentários",
+      "moreActions": "Mais ações",
+      "shortCard": "Short {index} de {total}: {title}",
+      "like": "Curtir",
+      "unlike": "Remover curtida",
+      "mute": "Silenciar",
+      "unmute": "Ativar o som",
+      "pause": "Pausar",
+      "playTrack": "Reproduzir \"{title}\"",
+      "playEpisode": "Reproduzir o episódio \"{title}\"",
+      "addBookmark": "Salvar \"{title}\"",
+      "removeBookmark": "Remover \"{title}\" dos salvos",
+      "shareTrack": "Compartilhar \"{title}\""
+    },
+    "edit": {
+      "add": "Adicionar",
+      "addTag": "Adicionar tag",
+      "removeTag": "Remover a tag \"{tag}\""
+    },
+    "toast": {
+      "permissionDenied": "Acesso não permitido",
+      "permissionDeniedDesc": "Permita o acesso às suas fotos nos Ajustes para escolher um arquivo.",
+      "saveFailed": "Não foi possível salvar"
+    },
+    "upload": {
+      "chooseVideo": "Escolher um vídeo",
+      "chooseAudio": "Escolher um arquivo de áudio",
+      "uploading": "Enviando…",
+      "hint": {
+        "music": "MP3, WAV, FLAC (máx. 50 MB)",
+        "podcast": "MP3, WAV (máx. 100 MB)",
+        "video": "MP4, WebM, OGG (máx. 500 MB, 5 min)"
+      },
+      "invalid": {
+        "type": "Há suporte apenas para vídeos MP4, WebM e OGG",
+        "size": "O arquivo é muito grande",
+        "duration": "O vídeo deve ter 5 minutos ou menos"
+      }
+    }
+  }
+}

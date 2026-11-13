@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "Medya bölümünü seç",
+    "communityMember": "Topluluk üyesi",
+    "by": "{name} tarafından",
+    "share": {
+      "shortText": "Vitana'da {creator} tarafından paylaşılan \"{title}\" videosuna göz at",
+      "trackText": "Vitana'da {artist} tarafından \"{title}\" parçasını dinle"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 dakikalık sabah esnemesi",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "Hızlı ve sağlıklı kahvaltı",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "Nefes egzersizi",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "Fitness",
+      "tagYoga": "Yoga",
+      "tagNutrition": "Beslenme",
+      "tagRecipes": "Tarifler",
+      "tagMindfulness": "Farkındalık",
+      "tagWellness": "Sağlıklı yaşam"
+    },
+    "video": {
+      "failed": "Yüklenemedi — tekrar denemek için dokun",
+      "buffering": "Arabelleğe alınıyor — tekrar denemek için dokun"
+    },
+    "a11y": {
+      "calendar": "Takvimi aç",
+      "closeFeed": "Shorts'u kapat",
+      "comments": "Yorumları aç",
+      "moreActions": "Daha fazla işlem",
+      "shortCard": "Short {index} / {total}: {title}",
+      "like": "Beğen",
+      "unlike": "Beğeniyi kaldır",
+      "mute": "Sesi kapat",
+      "unmute": "Sesi aç",
+      "pause": "Duraklat",
+      "playTrack": "\"{title}\" parçasını çal",
+      "playEpisode": "\"{title}\" bölümünü oynat",
+      "addBookmark": "\"{title}\" parçasını kaydet",
+      "removeBookmark": "\"{title}\" parçasını kayıtlılardan kaldır",
+      "shareTrack": "\"{title}\" parçasını paylaş"
+    },
+    "edit": {
+      "add": "Ekle",
+      "addTag": "Etiket ekle",
+      "removeTag": "\"{tag}\" etiketini kaldır"
+    },
+    "toast": {
+      "permissionDenied": "Erişime izin verilmedi",
+      "permissionDeniedDesc": "Dosya seçmek için Ayarlar'da fotoğraflarına erişime izin ver.",
+      "saveFailed": "Kaydedilemedi"
+    },
+    "upload": {
+      "chooseVideo": "Video seç",
+      "chooseAudio": "Ses dosyası seç",
+      "uploading": "Yükleniyor…",
+      "hint": {
+        "music": "MP3, WAV, FLAC (maks. 50 MB)",
+        "podcast": "MP3, WAV (maks. 100 MB)",
+        "video": "MP4, WebM, OGG (maks. 500 MB, 5 dk)"
+      },
+      "invalid": {
+        "type": "Yalnızca MP4, WebM ve OGG videoları desteklenir",
+        "size": "Dosya çok büyük",
+        "duration": "Video en fazla 5 dakika olmalı"
+      }
+    }
+  }
+}

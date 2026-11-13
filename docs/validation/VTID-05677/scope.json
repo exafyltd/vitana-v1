@@ -1,0 +1,33 @@
+{
+  "vtid": "VTID-05677",
+  "lane": "native-wave2-media-hub-r2/media-hub",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/comm/media-hub.tsx",
+    "apps/mobile/app/(app)/community/media-hub.tsx",
+    "apps/mobile/src/screens/media/**",
+    "apps/mobile/src/ports/media.ts",
+    "apps/mobile/src/ports/media-ui.tsx",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/media/**",
+    "packages/core/manifest.json",
+    "packages/core/extract.json",
+    "packages/core/src/media.ts",
+    "packages/core/src/extracted/media.generated.ts",
+    "packages/core/closure.generated.json",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/mediaHubNative.json",
+    "docs/validation/VTID-05677/**"
+  ],
+  "not_touched": [
+    "apps/mobile/package.json, package-lock.json, app.config.ts, tests/app-config.test.ts (expo-video, expo-audio, expo-image-picker and expo-document-picker plus their plugins are already on main; plan Decision 5)",
+    "apps/mobile/src/screens/home/** (the enrichment hook and card are imported read-only)",
+    "apps/mobile/maestro/media/** (device journeys are G1, next_actor: owner)",
+    "src/App.tsx, src/navigation/registry/**, the screen manifest, any web screen",
+    "backend, gateway, database"
+  ],
+  "sparring_record": "docs/validation/VTID-05677/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

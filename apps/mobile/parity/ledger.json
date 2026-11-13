@@ -17,6 +17,10 @@
     {
       "path": "/native-ui-catalogue",
       "reason": "dev-only UI kit catalogue (N2 VTID-05176); not a member screen"
+    },
+    {
+      "path": "/community/media-hub",
+      "reason": "Legacy path redirect (app/(app)/community/media-hub.tsx, VTID-05677): the web route is a <Navigate> to /comm/media-hub (src/App.tsx:1321), so the native file redirects there with the query kept; the destination is the COMM.MEDIA_HUB row, not a screen of its own."
     }
   ],
   "shell": [
@@ -740,7 +744,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "media",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -752,7 +756,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "media",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -764,7 +768,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "media",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null
@@ -776,7 +780,7 @@
       "source": "registry",
       "scope": "in",
       "lane": "media",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
       "owner": null,
       "last_parity_check": null

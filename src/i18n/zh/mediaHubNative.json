@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "选择媒体栏目",
+    "communityMember": "社区成员",
+    "by": "来自 {name}",
+    "share": {
+      "shortText": "在 Vitana 上看看 {creator} 的“{title}”",
+      "trackText": "在 Vitana 上听听 {artist} 的“{title}”"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5分钟晨间拉伸",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "快速健康早餐",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "呼吸练习",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "健身",
+      "tagYoga": "瑜伽",
+      "tagNutrition": "营养",
+      "tagRecipes": "食谱",
+      "tagMindfulness": "正念",
+      "tagWellness": "健康"
+    },
+    "video": {
+      "failed": "加载失败，点按重试",
+      "buffering": "缓冲中，点按重试"
+    },
+    "a11y": {
+      "calendar": "打开日历",
+      "closeFeed": "关闭短视频",
+      "comments": "打开评论",
+      "moreActions": "更多操作",
+      "shortCard": "第 {index} 个，共 {total} 个短视频：{title}",
+      "like": "点赞",
+      "unlike": "取消点赞",
+      "mute": "静音",
+      "unmute": "取消静音",
+      "pause": "暂停",
+      "playTrack": "播放“{title}”",
+      "playEpisode": "播放节目“{title}”",
+      "addBookmark": "收藏“{title}”",
+      "removeBookmark": "从收藏中移除“{title}”",
+      "shareTrack": "分享“{title}”"
+    },
+    "edit": {
+      "add": "添加",
+      "addTag": "添加标签",
+      "removeTag": "移除标签“{tag}”"
+    },
+    "toast": {
+      "permissionDenied": "未允许访问",
+      "permissionDeniedDesc": "请在“设置”中允许访问你的照片以选择文件。",
+      "saveFailed": "保存失败"
+    },
+    "upload": {
+      "chooseVideo": "选择视频",
+      "chooseAudio": "选择音频文件",
+      "uploading": "正在上传…",
+      "hint": {
+        "music": "MP3、WAV、FLAC（最大 50 MB）",
+        "podcast": "MP3、WAV（最大 100 MB）",
+        "video": "MP4、WebM、OGG（最大 500 MB，5 分钟）"
+      },
+      "invalid": {
+        "type": "仅支持 MP4、WebM 和 OGG 视频",
+        "size": "文件太大",
+        "duration": "视频时长不能超过 5 分钟"
+      }
+    }
+  }
+}

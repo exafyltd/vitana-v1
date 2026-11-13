@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "Izaberi odeljak medija",
+    "communityMember": "Član zajednice",
+    "by": "od {name}",
+    "share": {
+      "shortText": "Pogledaj „{title}“ od {creator} na Vitani",
+      "trackText": "Poslušaj „{title}“ od {artist} na Vitani"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 minuta jutarnjeg istezanja",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "Brz zdrav doručak",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "Vežba disanja",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "Fitnes",
+      "tagYoga": "Joga",
+      "tagNutrition": "Ishrana",
+      "tagRecipes": "Recepti",
+      "tagMindfulness": "Svesnost",
+      "tagWellness": "Dobrobit"
+    },
+    "video": {
+      "failed": "Učitavanje nije uspelo — dodirni da probaš ponovo",
+      "buffering": "Baferovanje — dodirni da probaš ponovo"
+    },
+    "a11y": {
+      "calendar": "Otvori kalendar",
+      "closeFeed": "Zatvori kratke snimke",
+      "comments": "Otvori komentare",
+      "moreActions": "Više radnji",
+      "shortCard": "Kratki snimak {index} od {total}: {title}",
+      "like": "Sviđa mi se",
+      "unlike": "Ukloni sviđanje",
+      "mute": "Isključi zvuk",
+      "unmute": "Uključi zvuk",
+      "pause": "Pauziraj",
+      "playTrack": "Pusti „{title}“",
+      "playEpisode": "Pusti epizodu „{title}“",
+      "addBookmark": "Sačuvaj „{title}“",
+      "removeBookmark": "Ukloni „{title}“ iz sačuvanog",
+      "shareTrack": "Podeli „{title}“"
+    },
+    "edit": {
+      "add": "Dodaj",
+      "addTag": "Dodaj oznaku",
+      "removeTag": "Ukloni oznaku „{tag}“"
+    },
+    "toast": {
+      "permissionDenied": "Pristup nije dozvoljen",
+      "permissionDeniedDesc": "Dozvoli pristup fotografijama u podešavanjima da bi izabrao fajl.",
+      "saveFailed": "Čuvanje nije uspelo"
+    },
+    "upload": {
+      "chooseVideo": "Izaberi video",
+      "chooseAudio": "Izaberi audio fajl",
+      "uploading": "Otpremanje…",
+      "hint": {
+        "music": "MP3, WAV, FLAC (maks. 50 MB)",
+        "podcast": "MP3, WAV (maks. 100 MB)",
+        "video": "MP4, WebM, OGG (maks. 500 MB, 5 min)"
+      },
+      "invalid": {
+        "type": "Podržani su samo MP4, WebM i OGG video snimci",
+        "size": "Fajl je prevelik",
+        "duration": "Video može trajati najviše 5 minuta"
+      }
+    }
+  }
+}

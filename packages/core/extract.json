@@ -179,6 +179,11 @@
       "sources": [
         { "file": "src/pages/discover/CategoryProducts.tsx", "take": [{ "name": "SectionMeta", "as": "CategorySectionMeta" }, "SECTION_META"] }
       ]
+    },
+    "media": {
+      "sources": [
+        { "file": "src/hooks/useShorts.ts", "take": ["Short", "FetchShortsParams", "DeleteShortInput"] }
+      ]
     }
   }
 }

@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05677",
+  "service": "community-app",
+  "_note": "Native Wave 2 media-hub lane. The port is proven offline (jest-expo + RNTL against a fake MediaHubData, a recording Supabase client and a fixture gateway; no network; the native app has no production profile and assertNotProduction() refuses prod and staging hosts). This lane makes no staging call and writes nothing to Supabase, Storage or the gateway from a test: every like, bookmark, comment, edit, delete and upload is asserted on the fake or the recorder only. Device-runtime parity (Maestro journeys, simulator and emulator screenshots, parity against the 390x844 read-only staging web /comm/media-hub, real expo-video / expo-audio playback and the pickers on a device) is deferred to G1 as next_actor: owner. It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not" },
+    { "kind": "existing", "ref": "npx jest tests/media", "cwd": "apps/mobile",
+      "reason": "screen (tab and short params, shorts carousel with the demo fallback, full-screen feed with like / comments / share / owner actions / video states, music and podcast lists, upload, edit and delete sheets, overlay events), data layer (tables, filters, limits, buckets, endpoint), existing-plugin read-only test, thumbnail sha256, route / ledger / catalog / direction guards" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screen, the MediaHubData port and the data layer type-check against the shell ports" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the two new routes" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the four COMM.MEDIA_* rows are native and /community/media-hub is a native_only entry" },
+    { "kind": "existing", "ref": "npm run gen:core", "cwd": "apps/mobile",
+      "reason": "regenerates packages/core/src/extracted/media.generated.ts, closure.generated.json and mobile-ci-paths.generated.json; git diff must stay empty" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/media/*.yaml (not written in this lane)", "target": "/comm/media-hub?tab=shorts|music|podcasts", "next_actor": "owner",
+      "reason": "open each mode, open a short, swipe, play / pause a track and an episode, open and dismiss the upload sheet without submitting; screenshot parity against the read-only staging /comm/media-hub at 390x844 and RTL screenshots; needs the isolated G1 environment (no write against any live system)" }
+  ]
+}
