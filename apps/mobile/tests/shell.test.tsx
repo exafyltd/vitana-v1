@@ -46,7 +46,7 @@ function setup(opts: { role?: string; tenant?: 'maxina' | 'alkalma'; orgs?: unkn
     },
     rpc: { get_role_preference: () => ({ data: [{ role: opts.role ?? 'community' }], error: null }), get_my_permitted_roles: () => ({ data: { ok: true, roles: ['community', 'patient'] }, error: null }) },
   });
-  const wrapper = makeWrapper({ client: d.client, language: 'de-DE', gateway: { '/api/v1/partner-orgs/mine': { organizations: opts.orgs ?? [] } } });
+  const wrapper = makeWrapper({ client: d.client, language: 'de-DE', gateway: { '/partner-orgs/mine': { organizations: opts.orgs ?? [] } } });
   render(
     <MobileAppShell>
       <Text>page</Text>
