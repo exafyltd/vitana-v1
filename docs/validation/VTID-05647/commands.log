@@ -1,0 +1,24 @@
+# VTID-05647 commands
+$ git grep -nE "gatewayGet|gatewayJson|getGateway" -- src app | grep -E "gatewayGet\("
+src/identity/GuidedModeProvider.tsx:71:        const json = await gatewayGet<{ ok?: boolean; state?: JourneyState }>('/journey/state');
+src/identity/useMyPartnerOrgs.ts:23:      const json = await gatewayGet<{ organizations?: MyOrgRow[] }>('/api/v1/partner-orgs/mine');
+src/screens/home/data/feed.ts:109:  return gatewayGet<LongevityNewsResponse>(`/longevity-news/items?${params}`);
+src/screens/home/data/feed.ts:353:    const json = await gatewayGet<{ ok?: boolean; performer?: Record<string, unknown> }>('/news-feed/top-performer');
+src/screens/wallet-rewards/data/rewards.ts:118:  const json = await gatewayGet<T | null>(path);
+$ git grep -nE "[`'\"]/api/v1" -- src app (code lines, not comments)
+src/config/remote-config.ts:30:export const APP_CONFIG_PATH = '/api/v1/app-config';
+src/identity/useMyPartnerOrgs.ts:23:      const json = await gatewayGet<{ organizations?: MyOrgRow[] }>('/api/v1/partner-orgs/mine');
+src/orb/protocol.ts:65:  transport: '/api/v1/orb/live/transport',
+src/orb/protocol.ts:66:  ws: '/api/v1/orb/live/ws',
+src/orb/protocol.ts:67:  sseStart: '/api/v1/orb/live/session/start',
+src/orb/protocol.ts:68:  sseStream: '/api/v1/orb/live/stream',
+src/orb/protocol.ts:69:  sseSend: '/api/v1/orb/live/stream/send',
+src/orb/protocol.ts:70:  sseStop: '/api/v1/orb/live/session/stop',
+src/orb/protocol.ts:72:  authMe: '/api/v1/auth/me',
+src/push/registration.ts:28:export const TOKEN_PATH = '/api/v1/notifications/token';
+src/push/registration.ts:29:export const UNREAD_COUNT_PATH = '/api/v1/notifications/unread-count';
+src/screens/patient/data/requests.ts:14:/** `adminFetch('/api/v1/patient/health-results')` → `{ results }`. */
+result: only useMyPartnerOrgs.ts:23 (blocked) and GuidedModeProvider.tsx:71 (fixed) pass /api/v1 to the shell client; remote-config/push/orb constants are joined to the bare origin by gatewayEndpoint/endpoint, not the shell client
+$ npx jest tests/shell-fixes (base, src stashed) -> 2 failed, 3 passed (red-on-base.txt)
+$ npm run typecheck -> exit 0
+$ npx jest --maxWorkers=2 (full) -> 203 suites, 5626 tests passed

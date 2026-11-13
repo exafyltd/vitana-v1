@@ -1,8 +1,10 @@
 /**
  * VTID-05186 (N3, plan change 14) — the signed-in area's gate:
- *   - signed out → `/maxina?redirectTo=<path>`, except the guest destinations
- *     (App.tsx `<AuthGuard allowGuest>`, GUEST_PATHS), which render in the
- *     public shell;
+ *   - signed out → `/maxina?redirectTo=<path>` (a `/commerce/*` path goes to
+ *     the supplier front door `/commerce/join?redirectTo=<path>` like web
+ *     AuthGuard.tsx:65, once `/commerce/join` is a native route), except the
+ *     guest destinations (App.tsx `<AuthGuard allowGuest>`, GUEST_PATHS),
+ *     which render in the public shell;
  *   - signed in → the role-route guard (useSmartRouting.tsx on mobile).
  */
 import type { ReactNode } from 'react';
@@ -13,7 +15,7 @@ import { useRole } from '../identity/useRole';
 import { useTenant } from '../identity/TenantProvider';
 import { useI18n } from '../i18n/I18nProvider';
 import { GUEST_PATHS } from '../navigation/guest-paths';
-import { matchPattern } from '../navigation/resolve';
+import { matchPattern, NATIVE_ROUTES } from '../navigation/resolve';
 import { routeGuard } from './logic/route-guard';
 
 export function isGuestPath(path: string): boolean {
@@ -43,7 +45,9 @@ export function AuthGate({ member, guest }: { member: ReactNode; guest: ReactNod
   if (loading) return <DelayedLoader accessibilityLabel={t('common.loading')} />;
   if (!user) {
     if (isGuestPath(pathname)) return <>{guest}</>;
-    return <Redirect href={`/maxina?redirectTo=${encodeURIComponent(href)}` as never} />;
+    // Only while `/commerce/join` is a concrete native route: otherwise it would hit the (app) catch-all and loop.
+    const signIn = pathname.startsWith('/commerce/') && NATIVE_ROUTES.includes('/commerce/join') ? '/commerce/join' : '/maxina';
+    return <Redirect href={`${signIn}?redirectTo=${encodeURIComponent(href)}` as never} />;
   }
   if (!roleLoading) {
     const bounce = routeGuard(pathname, dbRole, registry);

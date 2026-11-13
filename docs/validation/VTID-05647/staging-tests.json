@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05647",
+  "service": "community-app",
+  "_note": "Native shell fix. Proven offline (jest-expo + RNTL, a real createGatewayFetch over a recording fake fetch, a mocked router). The native app has no staging deploy; device runtime waits for G1. No staging call, no write.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates src/i18n/catalog-map.generated.ts that the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/shell-fixes", "cwd": "apps/mobile", "reason": "journey-state URL is exactly <origin>/api/v1/journey/state; AuthGate commerce redirect, /maxina default, /commerce guest" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "type-check" }
+  ]
+}
