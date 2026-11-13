@@ -18,7 +18,7 @@ export async function runHorizontalCardsA11yTests(): Promise<boolean> {
   ];
 
   let totalScore = 0;
-  let totalCritical = 0;
+  const totalCritical = 0;
   let passCount = 0;
 
   for (const screen of testScreens) {
