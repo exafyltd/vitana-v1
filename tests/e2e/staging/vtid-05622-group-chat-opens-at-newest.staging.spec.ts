@@ -82,16 +82,23 @@ const PROBE = () => {
 
 test('a group chat is first shown with its newest message fully above the composer, and does not move', async ({ page, request }) => {
   await page.addInitScript(PROBE);
-  const groupAccount = process.env.STAGING_GROUP_TEST_EMAIL
-    ? { email: process.env.STAGING_GROUP_TEST_EMAIL, password: process.env.STAGING_GROUP_TEST_PASSWORD ?? '' }
-    : undefined;
+  // The group pair is both-or-neither (no empty password). When set, the check runs as the staging group admin and
+  // opens only staging-test-group; otherwise it falls back to the shared test user (see the pick below).
+  const groupEmail = process.env.STAGING_GROUP_TEST_EMAIL ?? '';
+  const groupPassword = process.env.STAGING_GROUP_TEST_PASSWORD ?? '';
+  expect(!groupEmail === !groupPassword, 'STAGING_GROUP_TEST_EMAIL and STAGING_GROUP_TEST_PASSWORD must be set together').toBeTruthy();
+  const groupAccount = groupEmail && groupPassword ? { email: groupEmail, password: groupPassword } : undefined;
   const session = await signIn(page, request, groupAccount);
 
   const groups = await request.get(`${GATEWAY}/api/v1/chat/groups/`, { headers: { Authorization: `Bearer ${session.access_token}` } });
   expect(groups.status()).toBe(200);
   const list = ((await groups.json()).data ?? []) as Array<{ id: string; name: string }>;
-  const group = list.find((g) => g.name.startsWith('Alle Beisammen')) ?? list[0];
-  expect(group, 'the test user is in no group, so the opening check cannot run').toBeTruthy();
+  // With the group account, the group is pinned by name: a missing staging-test-group fails here, never silently
+  // falls back to another group.
+  const group = groupAccount
+    ? list.find((g) => g.name === 'staging-test-group')
+    : (list.find((g) => g.name.startsWith('Alle Beisammen')) ?? list[0]);
+  expect(group, groupAccount ? 'staging-test-group is not in the group account\'s list' : 'the test user is in no group, so the opening check cannot run').toBeTruthy();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`/inbox/g/${group!.id}`, { waitUntil: 'domcontentloaded' });
