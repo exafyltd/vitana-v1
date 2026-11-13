@@ -1,5 +1,5 @@
 /**
- * VTID-05461 (native-wave2-journey-autopilot-r2/journey) — the gift voucher
+ * VTID-05461 (native-wave2-journey-autopilot-r2/journey; VTID-05653: against the one shared modal) — the gift voucher
  * after Stripe checkout (review finding discover-c68982e, same modal copy):
  * the request builders behind it (checkout response with its order id, the
  * member's own `voucher_orders` read and paid poll, `voucher-download-pdf`,
@@ -15,8 +15,8 @@ import { AppState, Share, type AppStateStatus } from 'react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
-import { VoucherModal } from '../../src/screens/journey/VoucherModal';
-import { createVoucherCheckout, downloadVoucherPdf, fetchVoucherOrder, sendVoucherEmail, waitForPaidVoucherOrder } from '../../src/screens/journey/data/supabase';
+import { VoucherModal } from '../../src/shell/utility/VoucherModal';
+import { createVoucherCheckout, downloadVoucherPdf, fetchVoucherOrder, sendVoucherEmail, waitForPaidVoucherOrder } from '../../src/shell/utility/data';
 import { journeySupabase, journeyWrapper, type DbCall } from './helpers';
 
 // tests/helpers/mocks.ts stubs expo-web-browser with openAuthSessionAsync only; the voucher checkout uses openBrowserAsync.
@@ -110,7 +110,7 @@ describe('gift voucher — the dialog after checkout', () => {
     const rows = [{ id: 'o-1', buyer_user_id: 'u-1', status }];
     const w = journeyWrapper({}, { tables: { voucher_orders: ownRows(rows) }, functions });
     openBrowser.mockImplementation(async () => ({ type }));
-    render(<VoucherModal open onOpenChange={onOpenChange} />, { wrapper: w.wrapper });
+    render(<VoucherModal open onOpenChange={onOpenChange} returnTo="/autopilot" />, { wrapper: w.wrapper });
     return { ...w, rows, onOpenChange };
   };
   const buy = async () => {
@@ -222,17 +222,17 @@ describe('gift voucher — the dialog after checkout', () => {
     searchParams.current = { voucher_success: 'true', order_id: 'o-9', tier: 'exclusive' };
     const onOpenChange = jest.fn();
     const w = journeyWrapper({}, { functions: FUNCTIONS });
-    const view = render(<VoucherModal open={false} onOpenChange={onOpenChange} />, { wrapper: w.wrapper });
+    const view = render(<VoucherModal open={false} onOpenChange={onOpenChange} returnTo="/autopilot" />, { wrapper: w.wrapper });
     expect(onOpenChange).toHaveBeenCalledWith(true);
     expect(router.setParams).toHaveBeenCalledWith({ voucher_success: undefined, order_id: undefined, tier: undefined });
-    view.rerender(<VoucherModal open onOpenChange={onOpenChange} />);
+    view.rerender(<VoucherModal open onOpenChange={onOpenChange} returnTo="/autopilot" />);
     expect(await screen.findByText('Your Exclusive voucher is ready')).toBeTruthy();
     await act(async () => {
       fireEvent.press(screen.getByTestId('voucher-download'));
     });
     expect(w.db.functionCalls.at(-1)).toEqual({ name: 'voucher-download-pdf', body: { orderId: 'o-9' } });
     searchParams.current = { voucher_cancelled: 'true' };
-    view.rerender(<VoucherModal open onOpenChange={onOpenChange} />);
+    view.rerender(<VoucherModal open onOpenChange={onOpenChange} returnTo="/autopilot" />);
     expect(router.setParams).toHaveBeenLastCalledWith({ voucher_cancelled: undefined });
   });
 });

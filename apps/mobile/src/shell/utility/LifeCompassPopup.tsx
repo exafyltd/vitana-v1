@@ -1,5 +1,5 @@
 /**
- * VTID-05510 — twin of src/components/memory/LifeCompassPopup.tsx, the global
+ * VTID-05510 (moved to the shared shell by VTID-05653) — twin of src/components/memory/LifeCompassPopup.tsx, the global
  * Life Compass dialog the utility rail's Life Compass pill opens: title +
  * description, the "Current Compass" card (the stored goal — re-translated
  * when it is a suggested goal's canonical title — with alignment and
@@ -8,17 +8,16 @@
  * Suggested goals persist their canonical English title, as on the web.
  *
  * The web mounts this popup once, app-wide (LifeCompassPopupProvider,
- * `vitana:open-life-compass`). The native shell has no such host yet, so the
- * Discover rail opens this twin itself; when a host registers the bus event,
- * the rail emits the event instead (UtilityBar.tsx), so the popup is never
- * opened twice.
+ * `vitana:open-life-compass`). Natively `OverlayHost` is that host (VTID-05653):
+ * every bar emits the event and the host opens this one popup. Only the
+ * Discover rail still opens it itself, and only when no host listens.
  */
 import { useMemo, useState, type ReactElement } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useUITheme } from '../../ports/ui';
-import { alpha, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DiscoverIcon, Textarea, toneForGradient, useTonePalette } from '../../ports/discover';
+import { alpha, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DiscoverIcon, Textarea, toneForGradient, useTonePalette } from '../../ports/utility';
 import { useI18n } from '../../i18n/I18nProvider';
-import { useLifeCompass, type LifeCompass } from './data/life-compass';
+import { useLifeCompass, type LifeCompass } from './life-compass';
 
 /** LifeCompassPopup.tsx SUGGESTED_GOALS (canonical titles verbatim: they are the stored value). */
 export const SUGGESTED_GOALS = [

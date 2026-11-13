@@ -12,12 +12,12 @@
  * entry list. Bug Reports: the capture card in bug mode (bug / UX sub-mode)
  * and "My reports".
  *
- * Documented deferrals (same as the home lane): the web utility bar's
- * VitanaIndexChip / AutopilotChip / gift voucher / calendar button belong to
- * other lanes' surfaces and have no native twin yet, and the web
+ * The utility bar (VTID-05653, web `MobileDailyDiary.tsx:86-108`) is the
+ * shared shell bar: Search, the mode pill, Calendar, then Life Compass, Gift
+ * Voucher and the Vitana Index / Autopilot chips. The web
  * ExpandableSearchButton only stores a query nothing reads
- * (`MobileDailyDiary.tsx` `searchQuery` is unused), so the bar here holds the
- * mode pill. React 19: typed with `ReactElement`.
+ * (`MobileDailyDiary.tsx` `searchQuery` is unused), so Search has no
+ * `onSearch` here. React 19: typed with `ReactElement`.
  */
 import { useEffect, useState, type ReactElement } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -25,6 +25,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { Text, useUITheme } from '../../ports/ui';
 import { DiaryIcon } from '../../ports/diary';
 import { MobileModePill, type ModeOption } from '../../shell/components/MobileModePill';
+import { AutopilotChip, CalendarButton, SearchButton, VitanaIndexChip } from '../../shell/utility/buttons';
+import { UtilityBar } from '../../shell/utility/UtilityBar';
 import { CaptureCard } from './CaptureCard';
 import { DiaryEntryList } from './DiaryEntryList';
 import { FeedbackReportList } from './FeedbackReportList';
@@ -76,15 +78,26 @@ export function DailyDiaryScreen(): ReactElement {
         </View>
 
         <View style={styles.bar}>
-          <MobileModePill
-            modes={modes}
-            activeMode={activeTab}
-            title={t('diaryNative.selectMode')}
-            onModeChange={(v) => {
-              setActiveTab(tabFromParam(v));
-              setPlus(null);
-            }}
-          />
+          <UtilityBar
+            afterGiftVoucher={
+              <>
+                <VitanaIndexChip />
+                <AutopilotChip />
+              </>
+            }
+          >
+            <SearchButton placeholder={t('diary.searchPlaceholder')} />
+            <MobileModePill
+              modes={modes}
+              activeMode={activeTab}
+              title={t('diaryNative.selectMode')}
+              onModeChange={(v) => {
+                setActiveTab(tabFromParam(v));
+                setPlus(null);
+              }}
+            />
+            <CalendarButton />
+          </UtilityBar>
         </View>
 
         {activeTab === 'health' ? (
@@ -140,7 +153,7 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   page: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 120, gap: 16 },
   header: { gap: 4 },
-  bar: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  bar: { alignSelf: 'stretch' },
   section: { gap: 16 },
   plusRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 4 },
   plus: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 },

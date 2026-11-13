@@ -1,0 +1,25 @@
+VTID-05653 native-wave2-fix-forward-r2/utility-bar: commands run and results
+Worktree: /projects/sandbox/wt/b-utility-bar (branch kiro/native-wave2-fix-forward-r2/utility-bar, base origin/main 559ea49b1)
+
+== Setup
+- npm ci --no-audit --no-fund (apps/mobile): exit 0
+- npm run gen:i18n (apps/mobile): exit 0 (11 locales, 1672 shards)
+
+== Red on base (tests written before any implementation; the worktree held origin/main only)
+- npx jest tests/utility-bar --ci -> exit 1
+  Test Suites: 3 failed, 3 total   Tests: 9 failed, 9 total
+  bar.test.tsx and hosts.test.tsx: "Cannot find module" src/shell/utility/*; home-diary.test.tsx: the bar is absent from Home and Diary.
+  Saved: docs/validation/VTID-05653/red-on-base.txt
+
+== Green (after implementation)
+- npx jest tests/utility-bar --ci -> exit 0  Test Suites: 3 passed  Tests: 24 passed (bar 6, hosts 9, home-diary 9)
+- npx jest tests/home tests/diary tests/discover-commerce tests/journey tests/health tests/i18n-rtl.test.tsx tests/ports.test.ts --ci
+  -> 1 failed (tests/i18n-rtl.test.tsx "no physical left/right": hitSlop left/right in shell/utility/buttons.tsx); fixed (vertical hit slop only)
+- npx jest --ci (full apps/mobile suite) -> Test Suites: 203 passed, 1 failed; Tests: 5640 passed, 1 failed
+  The one failure: tests/env.test.ts "src/ holds no production or staging URL literal" (the Home invite flyer URL literal); fixed (host from DEFAULT_LINK_HOSTS)
+- npx jest --ci tests/env.test.ts tests/i18n-rtl.test.tsx tests/utility-bar tests/home tests/ports.test.ts -> exit 0, 8 suites, 711 tests passed
+- npm run typecheck (tsc --noEmit -p apps/mobile) -> exit 0
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check -> exit 0 (Dependencies are up to date)
+- APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle -> exit 0 (iOS + Android export)
+- node scripts/native/parity-ledger.mjs --check -> OK (435 rows, 121 native routes); no row flips: the lane adds no route
+- node scripts/native/core-closure.mjs --check -> up to date; node scripts/native/gen-core-extract.mjs --check -> up to date

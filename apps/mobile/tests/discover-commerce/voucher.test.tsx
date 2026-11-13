@@ -15,8 +15,8 @@ import { AppState, type AppStateStatus } from 'react-native';
 import { __setSupabaseForTests } from '../../src/auth/client';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { __clearToastsForTests, __toastsForTests } from '../../src/ports/ui';
-import { VoucherModal } from '../../src/screens/marketplace-orders/VoucherModal';
-import { createVoucherCheckout, fetchVoucherOrder, waitForPaidVoucherOrder } from '../../src/screens/marketplace-orders/data/chrome';
+import { VoucherModal } from '../../src/shell/utility/VoucherModal';
+import { createVoucherCheckout, fetchVoucherOrder, waitForPaidVoucherOrder } from '../../src/shell/utility/data';
 import { downloadVoucherPdf, sendVoucherEmail } from '../../src/screens/marketplace-orders/data/orders';
 import { USER, commerceSupabase, commerceWrapper, voucherRow } from './helpers';
 
@@ -107,9 +107,9 @@ describe('gift voucher — the dialog after checkout', () => {
     return { ...w, rows, onOpenChange, view };
   };
   const buy = async () => {
-    fireEvent.press(await screen.findByTestId('mo-voucher-tier-experience'));
+    fireEvent.press(await screen.findByTestId('voucher-tier-experience'));
     await act(async () => {
-      fireEvent.press(screen.getByTestId('mo-voucher-buy'));
+      fireEvent.press(screen.getByTestId('voucher-buy'));
     });
   };
 
@@ -120,39 +120,39 @@ describe('gift voucher — the dialog after checkout', () => {
     expect(await screen.findByText('Voucher Purchased!')).toBeTruthy();
     expect(screen.getByText('Your Experience voucher is ready')).toBeTruthy();
     await act(async () => {
-      fireEvent.press(screen.getByTestId('mo-voucher-download'));
+      fireEvent.press(screen.getByTestId('voucher-download'));
     });
     expect(fns(log).at(-1)).toEqual({ op: 'function', table: 'voucher-download-pdf', args: { orderId: 'o-1' } });
     expect(titles()).toContain('voucher.toast.generatingVoucher');
-    expect(await screen.findByTestId('mo-voucher-pdf-preview')).toBeTruthy();
+    expect(await screen.findByTestId('voucher-pdf-preview')).toBeTruthy();
     expect(screen.getByText('GIFT-1234')).toBeTruthy();
     expect(screen.getByText('Valid until 2 November 2027')).toBeTruthy();
     expect(screen.getByText('EXPERIENCE VOUCHER')).toBeTruthy();
     await act(async () => {
-      fireEvent.press(screen.getByTestId('mo-voucher-pdf-download'));
+      fireEvent.press(screen.getByTestId('voucher-pdf-download'));
     });
     expect(browser.openBrowserAsync).toHaveBeenLastCalledWith(SIGNED);
     expect(titles()).toContain('voucher.toast.downloadStarted');
     await act(async () => {
-      fireEvent.press(screen.getByTestId('mo-voucher-pdf-share'));
+      fireEvent.press(screen.getByTestId('voucher-pdf-share'));
     });
     expect(share).toHaveBeenCalledWith({ title: 'Gift Voucher', message: `Gift Voucher\n${SIGNED}`, url: SIGNED });
     expect(titles()).toContain('voucher.toast.voucherShared');
-    fireEvent.press(screen.getByTestId('mo-voucher-pdf-close'));
+    fireEvent.press(screen.getByTestId('voucher-pdf-close'));
     expect(await screen.findByText('Voucher Purchased!')).toBeTruthy();
   });
 
   it('paid: the e-mail form sends voucher-send-email, toasts voucherSent and closes', async () => {
     const { log, onOpenChange } = renderModal('paid');
     await buy();
-    fireEvent.press(await screen.findByTestId('mo-voucher-send-email'));
+    fireEvent.press(await screen.findByTestId('voucher-send-email'));
     expect(screen.getByText('Send Voucher by Email')).toBeTruthy();
-    expect(screen.getByTestId('mo-voucher-email-send').props.accessibilityState).toMatchObject({ disabled: true });
-    fireEvent.changeText(screen.getByTestId('mo-voucher-email-recipient'), 'friend@example.org');
-    fireEvent.changeText(screen.getByTestId('mo-voucher-email-name'), 'Jane');
-    fireEvent.changeText(screen.getByTestId('mo-voucher-email-message'), 'Happy Birthday');
+    expect(screen.getByTestId('voucher-email-send').props.accessibilityState).toMatchObject({ disabled: true });
+    fireEvent.changeText(screen.getByTestId('voucher-email-recipient'), 'friend@example.org');
+    fireEvent.changeText(screen.getByTestId('voucher-email-name'), 'Jane');
+    fireEvent.changeText(screen.getByTestId('voucher-email-message'), 'Happy Birthday');
     await act(async () => {
-      fireEvent.press(screen.getByTestId('mo-voucher-email-send'));
+      fireEvent.press(screen.getByTestId('voucher-email-send'));
     });
     expect(fns(log).at(-1)).toEqual({ op: 'function', table: 'voucher-send-email', args: { orderId: 'o-1', recipientEmail: 'friend@example.org', recipientName: 'Jane', message: 'Happy Birthday' } });
     expect(__toastsForTests().find((t) => t.titleKey === 'voucher.toast.voucherSent')?.params).toEqual({ email: 'friend@example.org' });
@@ -164,7 +164,7 @@ describe('gift voucher — the dialog after checkout', () => {
     await buy();
     client.functions.invoke.mockImplementationOnce(async () => ({ data: { success: false }, error: null }));
     await act(async () => {
-      fireEvent.press(await screen.findByTestId('mo-voucher-download'));
+      fireEvent.press(await screen.findByTestId('voucher-download'));
     });
     expect(titles()).toContain('voucher.toast.failedToLoadVoucher');
     expect(screen.getByText('Voucher Purchased!')).toBeTruthy();
@@ -173,7 +173,7 @@ describe('gift voucher — the dialog after checkout', () => {
   it('not paid (cancelled or still pending): back to the selection, no voucher calls', async () => {
     const { log } = renderModal('pending');
     await buy();
-    await waitFor(() => expect(screen.getByTestId('mo-voucher-buy')).toBeTruthy(), { timeout: 8000 });
+    await waitFor(() => expect(screen.getByTestId('voucher-buy')).toBeTruthy(), { timeout: 8000 });
     expect(screen.queryByText('Voucher Purchased!')).toBeNull();
     expect(fns(log).map((o) => o.table)).toEqual(['stripe-create-voucher-checkout']);
     expect(orderReads(log).length).toBe(4);
@@ -184,7 +184,7 @@ describe('gift voucher — the dialog after checkout', () => {
     client.functions.invoke.mockImplementationOnce(async () => ({ data: null, error: { message: 'x' } }));
     await buy();
     expect(titles()).toContain('voucher.toast.checkoutFailed');
-    expect(screen.getByTestId('mo-voucher-buy')).toBeTruthy();
+    expect(screen.getByTestId('voucher-buy')).toBeTruthy();
     expect(browser.openBrowserAsync).not.toHaveBeenCalled();
   });
 
@@ -198,7 +198,7 @@ describe('gift voucher — the dialog after checkout', () => {
     }) as never;
     const { log, rows } = renderModal('pending', 'opened');
     await buy();
-    expect(screen.getByTestId('mo-voucher-loading')).toBeTruthy();
+    expect(screen.getByTestId('voucher-loading')).toBeTruthy();
     expect(orderReads(log)).toEqual([]);
     rows[0].status = 'paid';
     await act(async () => {
@@ -220,7 +220,7 @@ describe('gift voucher — the dialog after checkout', () => {
     view.rerender(<VoucherModal open onOpenChange={onOpenChange} returnTo="/discover/marketplace" />);
     expect(await screen.findByText('Your Exclusive voucher is ready')).toBeTruthy();
     await act(async () => {
-      fireEvent.press(screen.getByTestId('mo-voucher-download'));
+      fireEvent.press(screen.getByTestId('voucher-download'));
     });
     expect(fns(w.log).at(-1)).toEqual({ op: 'function', table: 'voucher-download-pdf', args: { orderId: 'o-9' } });
     searchParams.current = { voucher_cancelled: 'true' };
