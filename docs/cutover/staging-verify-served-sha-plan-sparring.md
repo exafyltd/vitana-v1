@@ -112,3 +112,16 @@ verdict above is withdrawn until the plan is re-sparred from the real failure mo
 Next: pull the run 828 log (GitHub STAGING-VERIFY, vitana-platform; out of this session's GitHub scope, so the
 owner or the Kiro session with access must supply it), then re-plan the non-descendant case and send it back to
 sparring. No implementation until then.
+
+## Correction 2 (2026-11-14): the 60-minute wait cannot fail the job in shadow mode
+
+Read of `scripts/eng/verify/shadow-wait.mjs` and `scripts/ci/staging-verify/run.mjs` (vitana-platform `main`):
+
+- In shadow mode, `runStagingVerify` writes `not_comparable` and **returns 0** whenever staging never serves the
+  commit: a timeout, or a staging stamp that is a non-descendant (`confirmLive` returns `mismatch`). Exit 0 passes.
+- So the wait itself does not fail the job. A failure must come from the verify run after a served match:
+  `run.mjs verify` exits 1 on any failed suite, and it fails closed when the production baseline cannot be read
+  (`productionStamp` null → a static `deploy` row fails). Either is a candidate for run 828. Neither is confirmed.
+
+Consequence: the plan's Change 1 and Change 2 target a path that does not fail. The root cause is not known.
+Next step: the run 828 job log, then a new plan from that failure. No implementation before then.
