@@ -1,6 +1,6 @@
 # Plan sparring record: STAGING-VERIFY per-landing verify checks the served commit
 
-Verdict: **CONVERGED** (round 2, 2026-11-14). Plan hash (sha256 of the text between the plan markers):
+Verdict: **CONVERGED** (round 2, 2026-11-14). **REOPENED: premise check failed, see the correction below.** Plan hash (sha256 of the text between the plan markers):
 `9c9de43c55ac02de64449d788dd0a023bf580eadf65e1f79dc1263efd34d4050`.
 
 Change class: standard. Round cap: 3. Rounds used: 2.
@@ -91,3 +91,24 @@ Revert the template change in `vitana/ci-config`. Shadow mode writes no verifica
 - **F7 (minor) negative test underspecified — ACCEPTED.** Verification now defines the three cases and how case c is set up.
 
 Open for round 2: F4 is deferred to the owner, and F6 to implementation. The partner's verdict on F1–F3, F5 and F7 is requested.
+
+## Correction (2026-11-14, after the verdict): premise check failed
+
+The plan's root-cause premise was not checked against the script before sparring. I have now read
+`scripts/eng/verify/shadow-wait.mjs` in `vitana/vitana-platform` (`main`). It already handles the descendant case:
+
+- `confirmLive` returns `superseded` when staging moves past the commit to a descendant. `shadowWait` then returns
+  `served: false`, `runStagingVerify` writes `not_comparable`, and the job **exits 0**. Nothing is recorded and the job
+  passes. So the plan's Change 2b ("descendant: superseded, pass, no row") is already the shipped behaviour.
+- The 60-minute wait only ends in a failure when staging never serves the commit and never moves to a descendant, for
+  example when it serves a non-descendant commit (rollback, or a history rewrite of the kind the GitHub main
+  force-push last night may have caused). The plan does not describe that case.
+- `--sha-from-staging` on the per-landing job would verify whatever staging serves, which can be a different commit
+  from the landing. That changes what a landing proves. The plan does not justify that.
+
+The cause of the run 828 failure is therefore still unknown. The plan's fix does not follow from it. The sparring
+verdict above is withdrawn until the plan is re-sparred from the real failure mode.
+
+Next: pull the run 828 log (GitHub STAGING-VERIFY, vitana-platform; out of this session's GitHub scope, so the
+owner or the Kiro session with access must supply it), then re-plan the non-descendant case and send it back to
+sparring. No implementation until then.

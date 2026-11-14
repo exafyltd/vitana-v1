@@ -13,13 +13,17 @@ reason, its reversal path, and whether it is complete or still open.
 - **Reversal:** none needed; the mirror is one-way GitHub to GitLab.
 - **Status:** decided. Shadow run is not yet executed.
 
-## D2. Migration approval
+## D2. Migration approval (CORRECTED 2026-11-14)
 
-- **Decision:** staging migrations apply without per-file approval, as the owner stated.
-  Production migrations still require the Gate 2 path. This is a narrowing of the
-  conversation-approval rule in `.claude/rules/collaboration.md` §7d, and the rule text
-  must be amended to match.
-- **Status:** decision recorded. §7d amendment is not yet made (see Open items).
+- **Original decision (withdrawn):** staging migrations apply without per-file approval.
+- **Why withdrawn:** `.claude/rules/collaboration.md` §7d says `RUN-MIGRATION.yml` and every `apply-*.yml` write
+  the production database, because staging shares it. Applying a migration without approval is a production write.
+  I should not loosen that gate on the owner's behalf.
+- **Current rule:** unchanged. A migration is dispatched only after the owner, in the conversation, approves the
+  file(s) and the target database.
+- **Owner to confirm:** whether the owner wants a rule change. If so, it needs an explicit owner instruction naming
+  the change, and a separate PR.
+- **Status:** open, owner decision.
 
 ## D3. `SUPABASE_ACCESS_TOKEN` in `vitana-platform` CI
 
