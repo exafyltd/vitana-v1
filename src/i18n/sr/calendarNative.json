@@ -1,0 +1,10 @@
+{
+  "calendarNative": {
+    "entry": {
+      "notFound": "Nismo pronašli ovaj unos. Možda je uklonjen."
+    },
+    "reminders": {
+      "fireNotFound": "Ovaj podsetnik više ne postoji. Ovde vidiš sve svoje podsetnike."
+    }
+  }
+}

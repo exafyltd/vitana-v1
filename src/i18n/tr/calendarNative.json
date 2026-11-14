@@ -1,0 +1,10 @@
+{
+  "calendarNative": {
+    "entry": {
+      "notFound": "Bu kaydı bulamadık. Kaldırılmış olabilir."
+    },
+    "reminders": {
+      "fireNotFound": "Bu hatırlatıcı artık yok. Tüm hatırlatıcılarını burada görebilirsin."
+    }
+  }
+}

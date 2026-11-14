@@ -1,0 +1,23 @@
+{
+  "vtid": "VTID-05530",
+  "service": "community-app",
+  "_note": "Native Wave 2 calendar-reminders lane. The port is proven offline (jest-expo + RNTL, fixture and fake-gateway tests, no network; the native app has no production profile and assertNotProduction() refuses prod and staging hosts). This lane makes no staging call and writes nothing to Supabase or the gateway from a test. Device-runtime parity (Maestro, simulator and emulator screenshots, parity against the 390x844 read-only staging web screens /calendar and /reminders) is deferred to G1 as next_actor: owner. It is recorded here, not run in CI, and is not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not" },
+    { "kind": "existing", "ref": "npx jest tests/calendar", "cwd": "apps/mobile",
+      "reason": "calendar and reminders unit tests: calendar loaded / empty / error, day / week / month switch and ranges, month day panel, entry screen (mark done, move, edit, remove, source action, ended notice, audiobook), entry deep link and back, add-entry sheet (validation, POST body, find a time, overlap warning), reminders list (groups, filters, loaded / empty / error), mark done / delete / delete all / create, fire deep link and interrupt card (done with Autopilot route, snooze, dismiss, not found), pure rules, locale-format twin, route / catalog / lane guards. The clock is frozen mid-day so the suite does not depend on the time it runs" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the screens type-check against the shell ports and @vitana/ui" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the four new routes (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run deps:check", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "no dependency added or changed (run with EXPO_OFFLINE=1 in CI, the env allowlist of this file only takes APP_PROFILE)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "CALENDAR.OVERVIEW, REMINDERS.OVERVIEW, /calendar/entry/:entryId and /reminders/fire/:fireId are native with their routes present under apps/mobile/app/" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/calendar/*.yaml (not written in this lane)", "target": "/calendar, /calendar/entry/:entryId, /reminders, /reminders/fire/:fireId", "next_actor": "owner",
+      "reason": "view switch, add an entry, open an entry from a reminder push, fire card actions, screenshot parity against the read-only staging /calendar and /reminders at 390x844; needs the isolated G1 environment (and macOS for iOS)" }
+  ]
+}
