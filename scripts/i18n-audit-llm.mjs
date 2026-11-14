@@ -37,6 +37,7 @@
 //
 // Flags:
 //   --locale=de               (required, target locale code)
+//   --provider=bedrock        (VTID-05735: Claude via AWS Bedrock, needs BEDROCK_I18N_MODEL_ID; the platform default)
 //   --provider=deepseek       (gemini | anthropic | deepseek; default deepseek — Gemini key is out of
 //                              quota and the direct Anthropic API has no credit; see VTID-05284)
 //   --shard=screens           (limit to one shard)
@@ -48,6 +49,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -153,7 +155,31 @@ async function callDeepSeek(prompt) {
   return data?.choices?.[0]?.message?.content || '';
 }
 
-const PROVIDERS = { gemini: callGemini, anthropic: callAnthropic, deepseek: callDeepSeek };
+async function callBedrock(prompt) {
+  // VTID-05735: Claude through AWS Bedrock (platform rule ALWAYS 10a). The CI job's OIDC role is picked up by the
+  // AWS CLI itself (AWS_ROLE_ARN + AWS_WEB_IDENTITY_TOKEN_FILE); no key is read here.
+  const model = process.env.BEDROCK_I18N_MODEL_ID;
+  if (!model) throw new Error('BEDROCK_I18N_MODEL_ID is not set (the Bedrock model id the reviewer role may invoke)');
+  const region = process.env.AWS_REGION || 'eu-central-1';
+  const body = JSON.stringify({
+    anthropic_version: 'bedrock-2023-05-31',
+    max_tokens: 8192,
+    temperature: 0.1,
+    messages: [{ role: 'user', content: prompt }],
+  });
+  const outFile = join(ROOT, `.bedrock-out-${process.pid}.json`);
+  try {
+    execFileSync('aws', ['bedrock-runtime', 'invoke-model', '--region', region, '--model-id', model,
+      '--content-type', 'application/json', '--accept', 'application/json',
+      '--cli-binary-format', 'raw-in-base64-out', '--body', body, outFile], { stdio: ['ignore', 'ignore', 'inherit'] });
+    const data = JSON.parse(readFileSync(outFile, 'utf8'));
+    return data?.content?.[0]?.text || '';
+  } finally {
+    try { execFileSync('rm', ['-f', outFile]); } catch { /* best effort */ }
+  }
+}
+
+const PROVIDERS = { gemini: callGemini, anthropic: callAnthropic, deepseek: callDeepSeek, bedrock: callBedrock };
 const callProvider = PROVIDERS[PROVIDER];
 if (!callProvider) {
   console.error(`[audit] unknown provider: ${PROVIDER}`);
