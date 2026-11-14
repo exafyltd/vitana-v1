@@ -339,7 +339,7 @@ export function GuidedJourneyCatalog({
             listenedSessionSet.has(s.session) || (totalCount > 0 && doneCount === totalCount);
           const displayDoneCount = sessionComplete ? totalCount : doneCount;
           return (
-            <div key={s.session} className="space-y-2.5">
+            <div key={s.session} id={`guided-session-${s.session}`} className="space-y-2.5">
               {/* Session header */}
               <button
                 type="button"

@@ -121,13 +121,14 @@ describe('daily reminder control', () => {
 });
 
 describe('entry points', () => {
-  it('Home plays today\'s episode in one tap', () => {
+  it('The journey card opens My Journey on the next episode (not audio in the chat or feed)', () => {
     const src = read('src/components/home/LongevityJourneyCard.tsx');
-    expect(src).toContain('audiobook.start({ episode: nextSession.session })');
-    // VTID-05143: the play button is the shared Unified Card System button,
-    // which stops the tap before it reaches the card (so it plays, not opens).
-    expect(src).toContain('data-testid="home-play-todays-episode"');
+    expect(src).toContain('navigate(`/autopilot#guided-session-${nextSession.session}`)');
+    expect(src).not.toContain('audiobook.start');
+    // The button is the shared Unified Card System button, which stops the tap before it reaches the card.
+    expect(src).toContain('data-testid="home-open-next-episode"');
     expect(read('src/components/vitana/VitanaCardActionButton.tsx')).toContain('e.stopPropagation()');
+    expect(read('src/components/journey/GuidedJourneyCatalog.tsx')).toContain('id={`guided-session-${s.session}`}');
   });
 
   it('the push deep link is a plain path the router and the registry know', () => {

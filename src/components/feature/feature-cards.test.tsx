@@ -138,20 +138,18 @@ describe('restyled existing cards keep their behaviour', () => {
     window.removeEventListener(VITANA_INDEX_OPEN_EVENT, opened);
   });
 
-  it('F1 Guided Journey: without the audiobook the button opens My Journey', () => {
+  it('F1 Guided Journey: the button opens My Journey on the next episode', () => {
     renderCard('F1');
     fireEvent.click(screen.getByRole('button', { name: deId.viewJourney }));
-    expect(screen.getByTestId('where').textContent).toBe('/autopilot');
+    expect(screen.getByTestId('where').textContent).toBe('/autopilot#guided-session-3');
   });
 
-  it('F1 Guided Journey: with the audiobook the shared pill plays today\'s episode and does not open My Journey', () => {
+  it('F1 Guided Journey: the button opens My Journey on the next episode and does not start audio in the chat or feed', () => {
     h.audiobook = { start: vi.fn() };
     renderCard('F1');
-    const play = screen.getByTestId('home-play-todays-episode');
-    expect(play.getAttribute('data-shape')).toBe('pill');
-    fireEvent.click(play);
-    expect(h.audiobook.start).toHaveBeenCalledWith({ episode: 3 });
-    expect(screen.queryByTestId('where')).toBeNull();
+    fireEvent.click(screen.getByTestId('home-open-next-episode'));
+    expect(screen.getByTestId('where').textContent).toBe('/autopilot#guided-session-3');
+    expect(h.audiobook.start).not.toHaveBeenCalled();
   });
 
   it('F1/F2 keep their live numbers in the text and the action button in the widget slot', () => {
