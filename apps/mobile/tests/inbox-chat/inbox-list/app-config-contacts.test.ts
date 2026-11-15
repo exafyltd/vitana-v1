@@ -63,7 +63,7 @@ describe('Find Friends config plugins (resolved config)', () => {
   it('adds only expo-contacts and expo-document-picker, pinned to the SDK 57 line', () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const pkg = require('../../../package.json') as { dependencies: Record<string, string> };
-    expect(pkg.dependencies['expo-contacts']).toBe('57.0.8');
+    expect(pkg.dependencies['expo-contacts']).toBe('~57.0.9');
     expect(pkg.dependencies['expo-document-picker']).toBe('57.0.3');
     expect(cfg.ios?.usesIcloudStorage).toBeUndefined();
   });

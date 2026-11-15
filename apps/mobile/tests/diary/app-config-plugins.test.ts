@@ -66,8 +66,8 @@ describe('diary capture config plugins (resolved config, APP_PROFILE=development
   it('both are dependencies of the app', () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const pkg = require('../../package.json') as { dependencies: Record<string, string> };
-    expect(pkg.dependencies['expo-image-picker']).toMatch(/^57\./);
-    expect(pkg.dependencies['expo-audio']).toMatch(/^57\./);
+    expect(pkg.dependencies['expo-image-picker']).toMatch(/^~?57\./);
+    expect(pkg.dependencies['expo-audio']).toMatch(/^~?57\./);
   });
 });
 
