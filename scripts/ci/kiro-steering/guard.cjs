@@ -66,8 +66,10 @@ function check(root) {
     }
   }
 
-  if (!parsed.some((s) => (s.fm.inclusion ?? 'always') === 'always' && s.links.includes('CLAUDE.md'))) {
-    errors.push('no always-included steering file links CLAUDE.md');
+  // CLAUDE.md was removed from this repository on the owner's request (#1691). Rules reach the session through fileMatch twins; the
+  // always-included standing file is checked by checkOwnerAutonomy below.
+  if (!parsed.some((s) => (s.fm.inclusion ?? 'always') === 'always')) {
+    errors.push('no always-included steering file');
   }
 
   for (const r of rules) {
