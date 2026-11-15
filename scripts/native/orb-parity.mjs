@@ -469,14 +469,29 @@ export function scanNativeSources(root = ROOT) {
 
 // ── Fetch ─────────────────────────────────────────────────────────────────
 
-export async function fetchPlatformFiles(dir, { token = process.env.GH_TOKEN || process.env.PLATFORM_DISPATCH_TOKEN, fetchImpl = globalThis.fetch, ref = 'main' } = {}) {
-  if (!token) throw new Error(NO_TOKEN_MESSAGE);
+// The GitLab job reads the platform files with its own job token, the same way the delivery templates clone vitana-platform
+// (vitana-platform's job-token allowlist names vitana/vitana-v1). Without CI_JOB_TOKEN the legacy GitHub path is used.
+export const GITLAB_PLATFORM_PROJECT = 'vitana/vitana-platform';
+export function platformFileRequest(path, ref, env = process.env) {
+  if (env.CI_JOB_TOKEN) {
+    const api = (env.CI_API_V4_URL || `https://${env.CI_SERVER_HOST}/api/v4`).replace(/\/$/, '');
+    const url = `${api}/projects/${encodeURIComponent(GITLAB_PLATFORM_PROJECT)}/repository/files/${encodeURIComponent(path)}/raw?ref=${encodeURIComponent(ref)}`;
+    return { url, headers: { 'JOB-TOKEN': env.CI_JOB_TOKEN }, label: `gitlab ${GITLAB_PLATFORM_PROJECT}` };
+  }
+  return null;
+}
+
+export async function fetchPlatformFiles(dir, { token = process.env.GH_TOKEN || process.env.PLATFORM_DISPATCH_TOKEN, fetchImpl = globalThis.fetch, ref = 'main', env = process.env } = {}) {
+  const gitlab = !!env.CI_JOB_TOKEN;
+  if (!gitlab && !token) throw new Error(NO_TOKEN_MESSAGE);
   for (const path of Object.values(PLATFORM_FILES)) {
-    const url = `https://api.github.com/repos/${PLATFORM_REPO}/contents/${path}?ref=${ref}`;
-    const res = await fetchImpl(url, {
+    const req = platformFileRequest(path, ref, env) ?? {
+      url: `https://api.github.com/repos/${PLATFORM_REPO}/contents/${path}?ref=${ref}`,
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.raw', 'X-GitHub-Api-Version': '2022-11-28' },
-    });
-    if (!res.ok) throw new Error(`orb-parity: fetching ${PLATFORM_REPO}:${path}@${ref} failed with HTTP ${res.status} — the job fails closed, it never skips`);
+      label: PLATFORM_REPO,
+    };
+    const res = await fetchImpl(req.url, { headers: req.headers });
+    if (!res.ok) throw new Error(`orb-parity: fetching ${req.label}:${path}@${ref} failed with HTTP ${res.status} — the job fails closed, it never skips`);
     const text = await res.text();
     const out = join(dir, path);
     mkdirSync(dirname(out), { recursive: true });

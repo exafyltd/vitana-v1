@@ -1,3 +1,7 @@
+---
+paths:
+  - "**/*"
+---
 # Execution continuity — when a fix is found, the work continues
 
 Owner rule (2026-11-09). Applies to every session that works on a UX or code fix.
