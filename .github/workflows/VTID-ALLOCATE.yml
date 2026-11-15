@@ -1,0 +1,103 @@
+# VTID-ALLOCATE — allocate a fresh VTID with one click: Actions → VTID-ALLOCATE → Run workflow.
+#
+# VTID-05800 (owner decision 2026-11-15): any person, machine or process may allocate a VTID at any time. No sparring
+# record, CI run, admin role or token is needed, and every input below is optional.
+# The job calls POST /api/v1/vtid/allocate on the configured gateway, then on production if that one does not
+# allocate, and prints one log line:
+#   VTID_RESULT=VTID-NNNNN
+# The gateway service token is sent when the secret exists, only so the gateway records who allocated.
+# Gateway: vars.VTID_GATEWAY_URL (default staging). Every run allocates one real VTID in the shared ledger.
+# This is the vitana-v1 copy of vitana-platform .github/workflows/VTID-ALLOCATE.yml (same behaviour; there it also backs
+# scripts/dev/new-vtid.mjs).
+
+name: VTID-ALLOCATE
+run-name: "VTID-ALLOCATE ${{ inputs.request_id || inputs.title || 'new VTID' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Title for the new VTID (optional, e.g. "Gateway: fix the login redirect")'
+        required: false
+        default: ''
+        type: string
+      module:
+        description: 'Module the VTID belongs to (optional)'
+        required: false
+        default: 'community-app'
+        type: string
+      source:
+        description: 'Who or what asks (optional)'
+        required: false
+        default: 'github-actions-v1'
+        type: string
+      request_id:
+        description: 'Optional id a caller uses to find this run'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  allocate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GATEWAY_URL: ${{ vars.VTID_GATEWAY_URL || 'https://preview-aws-gateway.vitanaland.com' }}
+      FALLBACK_GATEWAY_URL: https://gateway.vitanaland.com
+      GATEWAY_SERVICE_TOKEN: ${{ secrets.GATEWAY_SERVICE_TOKEN }}
+      TITLE: ${{ inputs.title }}
+      MODULE: ${{ inputs.module }}
+      SOURCE: ${{ inputs.source }}
+    steps:
+      - name: Allocate VTID
+        shell: bash
+        run: |
+          set -uo pipefail
+          if [ -n "${GATEWAY_SERVICE_TOKEN:-}" ]; then echo "::add-mask::${GATEWAY_SERVICE_TOKEN}"; fi
+          if [ "${SOURCE:-}" = "self-healing" ]; then
+            echo "::error::source 'self-healing' is reserved for the gateway's own self-healing loop; pick any other source" >&2
+            exit 1
+          fi
+
+          body=$(jq -n --arg title "${TITLE:-}" --arg module "${MODULE:-community-app}" --arg source "${SOURCE:-github-actions-v1}" \
+            '{source: $source, layer: "DEV", module: $module} + (if ($title | gsub("\\s"; "")) == "" then {} else {title: $title} end)')
+
+          allocate() {
+            local url="$1"
+            local -a auth=()
+            if [ -n "${GATEWAY_SERVICE_TOKEN:-}" ]; then auth=(-H "Authorization: Bearer ${GATEWAY_SERVICE_TOKEN}"); fi
+            curl -sS -o resp.json -w '%{http_code}' -X POST "${url}/api/v1/vtid/allocate" \
+              "${auth[@]}" -H "Content-Type: application/json" -d "$body"
+          }
+
+          for url in "$GATEWAY_URL" "$FALLBACK_GATEWAY_URL"; do
+            status=$(allocate "$url") || status=000
+            vtid=$(jq -r '.vtid // empty' resp.json 2>/dev/null || true)
+            ok=$(jq -r '.ok // false' resp.json 2>/dev/null || echo false)
+            if [ "$status" = "201" ] && [ "$ok" = "true" ] && [ -n "$vtid" ]; then
+              echo "VTID_RESULT=${vtid}"
+              {
+                echo "### VTID allocated"
+                echo ""
+                echo "- VTID: \`${vtid}\`"
+                echo "- Gateway: ${url}"
+                echo "- Module: \`${MODULE:-community-app}\`"
+                if [ -n "${TITLE// /}" ]; then echo "- Title: ${TITLE}"; fi
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "::warning::${url} did not allocate (HTTP ${status}); trying the next gateway"
+            {
+              echo "### ${url}: HTTP \`${status}\`"
+              echo '```json'
+              head -c 2000 resp.json 2>/dev/null || echo "(no response body)"
+              echo ""
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          echo "::error::no gateway allocated a VTID" >&2
+          exit 1

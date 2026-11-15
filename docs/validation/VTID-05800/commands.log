@@ -1,0 +1,11 @@
+# VTID-05800 (vitana-v1 half) commands run in the Kiro Web sandbox (session kiro-exafy-202611132341-8c70), 2026-11-15.
+# Base: origin/main 78455457. Nothing here touches a live system. The gateway proof is in the vitana-platform PR.
+node --test scripts/ci/pr-gate/__tests__/*.test.mjs     -> 43 pass
+node --test scripts/ci/kiro-steering/guard.test.cjs     -> 32 pass, 1 fail ("this repository passes"); node scripts/ci/kiro-steering/guard.cjs .
+  reports the same 3 lines on clean main 78455457 (no CLAUDE.md / .claude/CLAUDE.md since #1691/#1692, no twin for
+  .claude/rules/execution-continuity.md); this change adds none
+JSON.parse(.claude/settings.json)                       -> ok
+YAML parse of .github/workflows/VTID-ALLOCATE.yml       -> ok; inputs title, module, source, request_id, none required
+git grep for "VTIDs come only", "hand-allocat", "allocate a VTID by hand", "never allocate(s) a VTID",
+  "No VTID before convergence", "BEFORE any VTID is allocated", "sparring before any VTID",
+  "VTID only after its own sparring"                    -> none left outside history (.kiro/specs, docs/validation)
