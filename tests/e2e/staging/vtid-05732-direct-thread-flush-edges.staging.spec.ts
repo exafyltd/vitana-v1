@@ -5,6 +5,7 @@ import type { Page, APIRequestContext } from '@playwright/test';
 import { test, expect } from './staging-guard';
 
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
+const GATEWAY = 'https://preview-aws-gateway.vitanaland.com';
 const SIGN_IN = `${SUPABASE}/auth/v1/token?grant_type=password`;
 
 test.beforeEach(async ({ page }) => {
@@ -47,18 +48,20 @@ async function signIn(page: Page, request: APIRequestContext) {
 }
 
 test('a direct thread has no avatar column: incoming bubbles start at the left edge, own bubbles end at the right edge', async ({ page, request }) => {
-  const { access_token, apikey } = await signIn(page, request);
+  const { access_token } = await signIn(page, request);
 
-  // Read-only: the test user's own direct threads (RLS limits rows to the user).
-  const res = await request.get(`${SUPABASE}/rest/v1/message_threads?select=id,type&type=eq.direct&limit=5`, {
-    headers: { apikey, Authorization: `Bearer ${access_token}` },
+  // Read-only: the test user's own direct conversations, as the inbox lists them. The community
+  // inbox renders direct chats from chat_messages keyed by peer (route /inbox/u/:peerId); the
+  // legacy message_threads rows are not what it shows, so the spec must open a peer conversation.
+  const res = await request.get(`${GATEWAY}/api/v1/chat/conversations?limit=5`, {
+    headers: { Authorization: `Bearer ${access_token}` },
   });
   expect(res.status()).toBe(200);
-  const threads = (await res.json()) as Array<{ id: string }>;
-  test.skip(threads.length === 0, 'the test user has no direct thread to check');
+  const peers = (((await res.json()) as { data?: Array<{ peer_id: string }> }).data ?? []);
+  test.skip(peers.length === 0, 'the test user has no direct conversation to check');
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(`/inbox/t/${threads[0].id}`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`/inbox/u/${peers[0].peer_id}`, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('[id^="msg-"]').first()).toBeVisible({ timeout: 20_000 });
   await page.waitForLoadState('networkidle', { timeout: 20_000 }).catch(() => undefined);
 
