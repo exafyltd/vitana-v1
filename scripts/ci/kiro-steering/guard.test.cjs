@@ -16,30 +16,30 @@ function repo(files) {
   return root;
 }
 const RULE = '---\npaths:\n  - src/**\n  - "**/Dockerfile*"\n---\n# r\n';
-const ALWAYS = '---\ninclusion: always\n---\n#[[file:CLAUDE.md]]\n';
+const ALWAYS = '---\ninclusion: always\n---\n#[[file:AGENTS.md]]\n';
 const TWIN = '---\ninclusion: fileMatch\nfileMatchPattern:\n  - "**/Dockerfile*"\n  - "src/**"\n---\n#[[file:.claude/rules/b.md]]\n';
 
 test('a matching layout passes', () => {
-  assert.deepStrictEqual(check(repo({ 'CLAUDE.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': TWIN })), []);
+  assert.deepStrictEqual(check(repo({ 'AGENTS.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': TWIN })), []);
 });
 test('a rules file without a twin fails', () => {
-  const e = check(repo({ 'CLAUDE.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS }));
+  const e = check(repo({ 'AGENTS.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS }));
   assert.match(e.join('\n'), /has no \.kiro\/steering twin/);
 });
 test('globs that differ from paths fail', () => {
-  const e = check(repo({ 'CLAUDE.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': TWIN.replace('src/**', 'lib/**') }));
+  const e = check(repo({ 'AGENTS.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': TWIN.replace('src/**', 'lib/**') }));
   assert.match(e.join('\n'), /fileMatchPattern/);
 });
 test('a link to a missing file fails', () => {
-  const e = check(repo({ 'CLAUDE.md': 'x', '.kiro/steering/a.md': ALWAYS + '#[[file:gone.md]]\n' }));
+  const e = check(repo({ 'AGENTS.md': 'x', '.kiro/steering/a.md': ALWAYS + '#[[file:gone.md]]\n' }));
   assert.match(e.join('\n'), /gone\.md\]\] does not exist/);
 });
-test('no always file linking CLAUDE.md fails', () => {
-  const e = check(repo({ 'CLAUDE.md': 'x', '.kiro/steering/a.md': '---\ninclusion: manual\n---\n#[[file:CLAUDE.md]]\n' }));
+test('no always file linking AGENTS.md fails', () => {
+  const e = check(repo({ 'AGENTS.md': 'x', '.kiro/steering/a.md': '---\ninclusion: manual\n---\n#[[file:AGENTS.md]]\n' }));
   assert.match(e.join('\n'), /always-included/);
 });
 test('the twin must be fileMatch', () => {
-  const e = check(repo({ 'CLAUDE.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': TWIN.replace('inclusion: fileMatch', 'inclusion: always') }));
+  const e = check(repo({ 'AGENTS.md': 'x', '.claude/rules/b.md': RULE, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': TWIN.replace('inclusion: fileMatch', 'inclusion: always') }));
   assert.match(e.join('\n'), /not fileMatch/);
 });
 test('this repository passes', () => {
@@ -103,10 +103,34 @@ test('steering: the session title is set once and never renamed (vitana-session-
     assert.match(checkOwnerAutonomy(withRule(REAL, '# pipeline\n')).join('\n'), /must point to vitana-owner-autonomy\.md/);
   });
   test('owner-autonomy: a repo without the pipeline steering is not checked (fixtures stay green)', () => {
-    assert.deepStrictEqual(checkOwnerAutonomy(repo({ 'CLAUDE.md': 'x' })), []);
+    assert.deepStrictEqual(checkOwnerAutonomy(repo({ 'AGENTS.md': 'x' })), []);
   });
   test('owner-autonomy: check() runs it', () => {
-    const e = check(repo({ 'CLAUDE.md': 'x', '.kiro/steering/a.md': ALWAYS, '.kiro/steering/vitana-pipeline.md': '# p\n' }));
+    const e = check(repo({ 'AGENTS.md': 'x', '.kiro/steering/a.md': ALWAYS, '.kiro/steering/vitana-pipeline.md': '# p\n' }));
     assert.match(e.join('\n'), /vitana-owner-autonomy\.md missing/);
   });
 }
+
+// Regression: retired governance (CLAUDE.md) cannot silently become authoritative again.
+test('a steering file linking a retired CLAUDE.md fails even when that file exists', () => {
+  const e = check(repo({ 'AGENTS.md': 'x', 'CLAUDE.md': 'x', '.kiro/steering/a.md': ALWAYS + '#[[file:CLAUDE.md]]\n' }));
+  assert.match(e.join('\n'), /retired governance #\[\[file:CLAUDE\.md\]\]/);
+});
+
+test('the always-included link must be AGENTS.md: a CLAUDE.md-only repo fails', () => {
+  const e = check(repo({ 'CLAUDE.md': 'x', '.kiro/steering/a.md': '---\ninclusion: always\n---\n#[[file:CLAUDE.md]]\n' }));
+  assert.match(e.join('\n'), /no always-included steering file links AGENTS\.md/);
+});
+
+test('an unscoped rule (no paths) needs an always-included twin, not a fileMatch one', () => {
+  const unscopedRule = '---\n---\n# unscoped\n';
+  const fileMatchTwin = '---\ninclusion: fileMatch\nfileMatchPattern: []\n---\n#[[file:.claude/rules/b.md]]\n';
+  const e = check(repo({ 'AGENTS.md': 'x', '.claude/rules/b.md': unscopedRule, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': fileMatchTwin }));
+  assert.match(e.join('\n'), /unscoped .*\.claude\/rules\/b\.md.*inclusion is not always/);
+});
+
+test('an unscoped rule with an always-included twin passes', () => {
+  const unscopedRule = '---\n---\n# unscoped\n';
+  const alwaysTwin = '---\ninclusion: always\n---\n#[[file:.claude/rules/b.md]]\n';
+  assert.deepStrictEqual(check(repo({ 'AGENTS.md': 'x', '.claude/rules/b.md': unscopedRule, '.kiro/steering/a.md': ALWAYS, '.kiro/steering/b.md': alwaysTwin })), []);
+});

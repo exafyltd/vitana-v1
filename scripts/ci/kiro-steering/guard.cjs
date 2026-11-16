@@ -2,13 +2,13 @@
 /**
  * VTID-05059 — Kiro steering guard.
  *
- * Kiro IDE reads `.kiro/steering/*.md`; Claude Code reads `CLAUDE.md` and
+ * Kiro IDE reads `.kiro/steering/*.md`; Claude Code reads `AGENTS.md` and
  * `.claude/rules/*.md`. The steering files link to those files instead of
  * copying them. This guard keeps the two in step:
  *   1. every `.claude/rules/<x>.md` has a steering file that links it, with
  *      `inclusion: fileMatch` and `fileMatchPattern` equal to its `paths:`;
  *   2. every `#[[file:…]]` link in a steering file points at a file that exists;
- *   3. an always-included steering file links `CLAUDE.md`.
+ *   3. an always-included steering file links `AGENTS.md` (the current root governance file; CLAUDE.md is retired).
  * Usage: node scripts/ci/kiro-steering/guard.cjs [repoRoot]
  */
 'use strict';
@@ -66,8 +66,15 @@ function check(root) {
     }
   }
 
-  if (!parsed.some((s) => (s.fm.inclusion ?? 'always') === 'always' && s.links.includes('CLAUDE.md'))) {
-    errors.push('no always-included steering file links CLAUDE.md');
+  if (!parsed.some((s) => (s.fm.inclusion ?? 'always') === 'always' && s.links.includes('AGENTS.md'))) {
+    errors.push('no always-included steering file links AGENTS.md');
+  }
+
+  // Retired governance cannot come back through a steering link: CLAUDE.md (root or .claude/) was replaced by AGENTS.md.
+  for (const s of parsed) {
+    for (const link of s.links) {
+      if (/(^|\/)CLAUDE\.md$/.test(link)) errors.push(`.kiro/steering/${s.file}: links retired governance #[[file:${link}]] (use AGENTS.md)`);
+    }
   }
 
   for (const r of rules) {
@@ -76,6 +83,11 @@ function check(root) {
     const twins = parsed.filter((s) => s.links.includes(rel));
     if (twins.length === 0) { errors.push(`${rel} has no .kiro/steering twin linking it`); continue; }
     for (const t of twins) {
+      // An unscoped rule (no `paths`) applies to every session, so its twin must be always-included too.
+      if (paths.length === 0) {
+        if ((t.fm.inclusion ?? 'always') !== 'always') errors.push(`.kiro/steering/${t.file}: links unscoped ${rel} but inclusion is not always`);
+        continue;
+      }
       if (t.fm.inclusion !== 'fileMatch') errors.push(`.kiro/steering/${t.file}: links ${rel} but inclusion is not fileMatch`);
       const globs = asList(t.fm.fileMatchPattern);
       if (JSON.stringify([...globs].sort()) !== JSON.stringify([...paths].sort())) {
