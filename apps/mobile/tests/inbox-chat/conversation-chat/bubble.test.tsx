@@ -118,9 +118,9 @@ describe('MessageBubble variants', () => {
     const d = renderBubble(base({ id: 'x2' }));
     fireEvent(screen.getByTestId('bubble-body-x2'), 'longPress');
     await act(async () => {
-      fireEvent.press(screen.getByTestId('quick-reaction-❤', { includeHiddenElements: true }));
+      fireEvent.press(screen.getByTestId('quick-reaction-❤️', { includeHiddenElements: true }));
     });
-    expect(d.writes.find((w) => w.table === 'message_reactions')?.values).toMatchObject({ message_id: 'x2', user_id: ME, emoji: '❤' });
+    expect(d.writes.find((w) => w.table === 'message_reactions')?.values).toMatchObject({ message_id: 'x2', user_id: ME, emoji: '❤️' });
   });
 
   it('forwarded label', () => {

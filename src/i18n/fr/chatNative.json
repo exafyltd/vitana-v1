@@ -14,7 +14,9 @@
     },
     "reactions": {
       "reactWith": "Réagir avec {emoji}",
-      "count": "{count} réactions {emoji}"
+      "count": "{count} réactions {emoji}",
+      "capReached": "Vous pouvez réagir avec six emojis différents au maximum. Retirez-en un pour en ajouter un autre.",
+      "moreEmojis": "Plus d'emojis"
     },
     "bubble": {
       "longPressHint": "Appuie longuement pour les réactions et les actions"

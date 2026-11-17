@@ -18,7 +18,9 @@
     "reactions": {
       "reactWith": "تفاعل بـ {emoji}",
       "count": "{count} تفاعلات {emoji}",
-      "_pending_review": {}
+      "_pending_review": {},
+      "capReached": "يمكنك التفاعل بستة إيموجي مختلفة كحد أقصى. أزل واحدًا لإضافة غيره.",
+      "moreEmojis": "المزيد من الإيموجي"
     },
     "bubble": {
       "longPressHint": "اضغط مطولاً للتفاعلات والإجراءات",

@@ -13,10 +13,10 @@ import { ChatIcon } from '../../ports/chat';
 import { useI18n } from '../../i18n/I18nProvider';
 import { EMOJI_CATEGORIES, EMOJI_CATEGORY_KEYS, loadRecentEmojis, RECENT_SEED, recordRecentEmoji, type EmojiCategory } from './data/emojiRecents';
 
-export function EmojiPicker({ onSelect, userId, disabled }: { onSelect: (emoji: string) => void; userId?: string | null; disabled?: boolean }) {
+/** The emoji grid in a bottom sheet: recents + the shared categories. Used by the composer button and the reaction drawer's "+". */
+export function EmojiSheet({ open, onClose, onSelect, userId }: { open: boolean; onClose: () => void; onSelect: (emoji: string) => void; userId?: string | null }) {
   const { t } = useI18n();
   const { colors } = useUITheme();
-  const [open, setOpen] = useState(false);
   const [category, setCategory] = useState<EmojiCategory>('recent');
   const [recent, setRecent] = useState<string[]>(RECENT_SEED);
 
@@ -25,6 +25,41 @@ export function EmojiPicker({ onSelect, userId, disabled }: { onSelect: (emoji: 
   }, [open, userId]);
 
   const list: readonly string[] = category === 'recent' ? recent : EMOJI_CATEGORIES[category];
+
+  return (
+    <BottomSheet open={open} onClose={onClose} testID="emoji-picker">
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabs}>
+        {EMOJI_CATEGORY_KEYS.map((c) => (
+          <Button key={c} size="sm" variant={category === c ? 'secondary' : 'ghost'} onPress={() => setCategory(c)} testID={`emoji-tab-${c}`}>
+            {t(`chatNative.emoji.${c}`)}
+          </Button>
+        ))}
+      </ScrollView>
+      <View style={styles.grid} testID={`emoji-grid-${category}`}>
+        {list.map((emoji, i) => (
+          <Pressable
+            key={`${emoji}-${i}`}
+            onPress={() => {
+              void recordRecentEmoji(emoji, userId).then(setRecent);
+              onSelect(emoji);
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={emoji}
+            style={[styles.cell, { borderColor: colors.background }]}
+            testID={`emoji-${emoji}`}
+          >
+            <Text style={styles.emoji}>{emoji}</Text>
+          </Pressable>
+        ))}
+      </View>
+    </BottomSheet>
+  );
+}
+
+/** The composer's smiley button: opens the emoji sheet; a pick is appended to the text. */
+export function EmojiPicker({ onSelect, userId, disabled }: { onSelect: (emoji: string) => void; userId?: string | null; disabled?: boolean }) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -38,32 +73,7 @@ export function EmojiPicker({ onSelect, userId, disabled }: { onSelect: (emoji: 
       >
         <ChatIcon name="Smile" size={16} />
       </Pressable>
-      <BottomSheet open={open} onClose={() => setOpen(false)} testID="emoji-picker">
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabs}>
-          {EMOJI_CATEGORY_KEYS.map((c) => (
-            <Button key={c} size="sm" variant={category === c ? 'secondary' : 'ghost'} onPress={() => setCategory(c)} testID={`emoji-tab-${c}`}>
-              {t(`chatNative.emoji.${c}`)}
-            </Button>
-          ))}
-        </ScrollView>
-        <View style={styles.grid} testID={`emoji-grid-${category}`}>
-          {list.map((emoji, i) => (
-            <Pressable
-              key={`${emoji}-${i}`}
-              onPress={() => {
-                void recordRecentEmoji(emoji, userId).then(setRecent);
-                onSelect(emoji);
-              }}
-              accessibilityRole="button"
-              accessibilityLabel={emoji}
-              style={[styles.cell, { borderColor: colors.background }]}
-              testID={`emoji-${emoji}`}
-            >
-              <Text style={styles.emoji}>{emoji}</Text>
-            </Pressable>
-          ))}
-        </View>
-      </BottomSheet>
+      <EmojiSheet open={open} onClose={() => setOpen(false)} onSelect={onSelect} userId={userId} />
     </>
   );
 }

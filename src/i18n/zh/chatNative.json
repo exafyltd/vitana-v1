@@ -18,7 +18,9 @@
     "reactions": {
       "reactWith": "用 {emoji} 回应",
       "count": "{count} 个 {emoji} 回应",
-      "_pending_review": {}
+      "_pending_review": {},
+      "capReached": "每条消息最多可用六种不同的表情回应。请先移除一个再添加其他表情。",
+      "moreEmojis": "更多表情"
     },
     "bubble": {
       "longPressHint": "长按以回应或操作",
