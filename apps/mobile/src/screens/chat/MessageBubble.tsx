@@ -27,15 +27,17 @@
  */
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
-import { Avatar, BottomSheet, Button, Text, useUITheme } from '../../ports/ui';
+import { Avatar, BottomSheet, Button, notifyError, Text, useUITheme } from '../../ports/ui';
 import { ChatIcon, describeGroupNotice, parseChatMarkdown, splitMentionSegments, Textarea, type GroupPosition, type MdInline, type Mention } from '../../ports/chat';
 import { getChatDevice } from '../../ports/chat-device';
 import { navigateToWebPath } from '../../navigation/navigate';
 import { useChatText } from './text';
 import { ReactionCluster, ReplyQuote } from './components';
 import { QUICK_REACTIONS, useReactions } from './data/useReactions';
+import { REACTION_PICKER_ENABLED } from './data/reactionEmoji';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, type ChatViewMessage } from './data/types';
 import { recordRecentEmoji } from './data/emojiRecents';
+import { EmojiSheet } from './EmojiPicker';
 import { canForwardMessage, type ForwardPayload } from './data/forward';
 import { formatFileSize, getSignedAttachmentUrl } from './data/upload';
 import { isInviteCard } from './data/calendar';
@@ -261,6 +263,7 @@ export function MessageBubble({
   const { t, time } = useChatText();
   const { colors } = useUITheme();
   const { summary, addReaction, removeReaction } = useReactions(message.id, userId);
+  const [moreEmojis, setMoreEmojis] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -336,9 +339,10 @@ export function MessageBubble({
     getChatDevice().copyText(body || '');
   };
 
-  const react = (emoji: string) => {
+  const react = async (emoji: string) => {
     void recordRecentEmoji(emoji, userId ?? null);
-    void addReaction(emoji);
+    const result = await addReaction(emoji);
+    if (result === 'cap') notifyError('chatNative.reactions.capReached');
   };
 
   const text = (value: string | undefined) => (value ? <LinkedText text={value} mentions={mentions} isOwn={isOwn} markdown={isBot} /> : null);
@@ -566,6 +570,20 @@ export function MessageBubble({
               <Text style={styles.emoji}>{emoji}</Text>
             </Pressable>
           ))}
+          {REACTION_PICKER_ENABLED ? (
+          <Pressable
+            onPress={() => {
+              setDrawer(false);
+              setMoreEmojis(true);
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={t('chatNative.reactions.moreEmojis')}
+            style={styles.quick}
+            testID="reaction-more-emojis"
+          >
+            <Text style={styles.moreEmojis}>+</Text>
+          </Pressable>
+          ) : null}
         </View>
         <View style={styles.actions}>
           {onReply
@@ -615,6 +633,17 @@ export function MessageBubble({
           </View>
         ) : null}
       </BottomSheet>
+      {REACTION_PICKER_ENABLED ? (
+      <EmojiSheet
+        open={moreEmojis}
+        onClose={() => setMoreEmojis(false)}
+        userId={userId ?? null}
+        onSelect={(emoji) => {
+          setMoreEmojis(false);
+          void react(emoji);
+        }}
+      />
+      ) : null}
 
       {viewer !== null ? <ChatImageViewer images={viewerImages} initialIndex={viewer} onClose={() => setViewer(null)} onForward={forwardable ? () => setForwardOpen(true) : undefined} /> : null}
       {forwardOpen ? <ForwardMessageSheet open={forwardOpen} onClose={() => setForwardOpen(false)} payload={forwardPayload} userId={userId} /> : null}
@@ -656,6 +685,7 @@ const styles = StyleSheet.create({
   quickRow: { flexDirection: 'row', justifyContent: 'center', gap: 12, paddingVertical: 8 },
   quick: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center' },
   emoji: { fontSize: 24 },
+  moreEmojis: { fontSize: 26, fontWeight: '600' },
   actions: { flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' },
   action: { alignItems: 'center', gap: 6, paddingVertical: 12, width: '25%' },
   confirm: { gap: 12, paddingTop: 12 },

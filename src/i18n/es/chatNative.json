@@ -18,7 +18,9 @@
     "reactions": {
       "reactWith": "Reaccionar con {emoji}",
       "count": "{count} reacciones {emoji}",
-      "_pending_review": {}
+      "_pending_review": {},
+      "capReached": "Puedes reaccionar con hasta seis emojis diferentes. Quita uno para añadir otro.",
+      "moreEmojis": "Más emojis"
     },
     "bubble": {
       "longPressHint": "Mantén pulsado para reacciones y acciones",

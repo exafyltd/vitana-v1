@@ -39,7 +39,7 @@ export type FakeChannel = {
   presenceState: () => Record<string, unknown>;
 };
 
-export function createChatDouble(opts: { userId?: string | null; tables?: Record<string, Row[]>; rpc?: Record<string, (args: any) => Result>; failTables?: string[]; sendResult?: string; failUpload?: boolean } = {}) {
+export function createChatDouble(opts: { userId?: string | null; tables?: Record<string, Row[]>; rpc?: Record<string, (args: any) => Result>; failTables?: string[]; sendResult?: string; failUpload?: boolean; insertError?: { message: string; code?: string } } = {}) {
   const tables = opts.tables ?? {};
   const userId = opts.userId === undefined ? ME : opts.userId;
   const calls: Array<{ fn: string; args: any[] }> = [];
@@ -59,6 +59,7 @@ export function createChatDouble(opts: { userId?: string | null; tables?: Record
       if (mode !== 'select') {
         writes.push({ table, op: mode, values: values ?? undefined, filters: [...filters] });
         calls.push({ fn: `from.${table}.${mode}`, args: [values, filters] });
+        if (mode === 'insert' && opts.insertError) return { data: null, error: opts.insertError };
         return { data: mode === 'insert' ? [{ id: `ins-${writes.length}`, created_at: '2026-11-02T10:00:00.000Z', ...(values ?? {}) }] : null, error: null };
       }
       calls.push({ fn: `from.${table}.select`, args: [filters] });

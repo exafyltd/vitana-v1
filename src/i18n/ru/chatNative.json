@@ -18,7 +18,9 @@
     "reactions": {
       "reactWith": "Реакция {emoji}",
       "count": "Реакции {emoji}: {count}",
-      "_pending_review": {}
+      "_pending_review": {},
+      "capReached": "Можно поставить не более шести разных эмодзи. Уберите один, чтобы добавить другой.",
+      "moreEmojis": "Ещё эмодзи"
     },
     "bubble": {
       "longPressHint": "Нажми и удерживай для реакций и действий",
