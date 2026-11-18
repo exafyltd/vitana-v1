@@ -61,6 +61,8 @@ describe('reactions gate (mobile): no "+" while the flag is off', () => {
     const msg: ChatViewMessage = { id: 'p1', thread_id: PEER, sender_id: PEER, body: 'Hallo', message_type: 'text', created_at: '2026-11-02T09:00:00.000Z', sender: { user_id: PEER, display_name: 'Petra' } };
     render(<MessageBubble message={msg} isOwn={false} userId={ME} showSender showTime parent={null} parentUnavailable={false} />, { wrapper: makeChatWrapper({ client: d.client }) });
     fireEvent(screen.getByTestId('bubble-body-p1'), 'longPress');
+    // Positive control: the drawer rendered, so the missing "+" below is not a broken render.
+    expect(screen.getByTestId('quick-reaction-\u{1F44D}', { includeHiddenElements: true })).toBeTruthy();
     expect(screen.queryByTestId('reaction-more-emojis', { includeHiddenElements: true })).toBeNull();
   });
 });
