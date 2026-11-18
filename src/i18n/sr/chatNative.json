@@ -18,7 +18,9 @@
     "reactions": {
       "reactWith": "Reaguj sa {emoji}",
       "count": "Reakcije {emoji}: {count}",
-      "_pending_review": {}
+      "_pending_review": {},
+      "capReached": "Možete reagovati najviše sa šest različitih emodžija. Uklonite jednu da biste dodali drugu.",
+      "moreEmojis": "Više emodžija"
     },
     "bubble": {
       "longPressHint": "Dugo pritisni za reakcije i radnje",

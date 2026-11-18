@@ -18,7 +18,9 @@
     "reactions": {
       "reactWith": "{emoji} ile tepki ver",
       "count": "{count} {emoji} tepkisi",
-      "_pending_review": {}
+      "_pending_review": {},
+      "capReached": "En fazla altı farklı emoji ile tepki verebilirsiniz. Başka birini eklemek için bir tanesini kaldırın.",
+      "moreEmojis": "Daha fazla emoji"
     },
     "bubble": {
       "longPressHint": "Tepkiler ve işlemler için basılı tut",

@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@/lib/i18n-toast';
+import { QUICK_REACTIONS as QUICK_REACTION_EMOJIS, REACTION_PICKER_ENABLED } from '@/lib/reactions/reactionEmoji';
 
 interface MessageContextMenuProps {
   children: React.ReactNode;
@@ -39,7 +40,7 @@ interface MessageContextMenuProps {
   isPinned?: boolean;
 }
 
-const QUICK_REACTIONS = ['👍', '❤️', '😂', '😮', '🙏'];
+const QUICK_REACTIONS = QUICK_REACTION_EMOJIS;
 
 export function MessageContextMenu({
   children,
@@ -160,6 +161,21 @@ export function MessageContextMenu({
                     {emoji}
                   </ContextMenuItem>
                 ))}
+                {REACTION_PICKER_ENABLED ? (
+                <EmojiPicker
+                  onEmojiSelect={(emoji) => onEmojiSelect(emoji)}
+                  trigger={
+                    <button
+                      type="button"
+                      aria-label={t('chatNative.reactions.moreEmojis')}
+                      data-testid="reaction-more-emojis"
+                      className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  }
+                />
+                ) : null}
               </div>
             </div>
           </>

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
+import { normalizeReactionEmoji, REACTION_CAP_ERROR } from '@/lib/reactions/reactionEmoji';
+import { notifyError } from '@/lib/i18n-toast';
 
 export interface MessageReaction {
   message_id: string;
@@ -20,8 +22,6 @@ export interface ReactionSummary {
   }>;
   hasUserReacted: boolean;
 }
-
-const ALLOWED_EMOJIS = ['👍', '❤️', '😂', '😮', '🙏', '🎉'] as const;
 
 export function useMessageReactions(messageId: string) {
   const { user } = useAuth();
@@ -54,8 +54,9 @@ export function useMessageReactions(messageId: string) {
   }, [messageId]);
 
   // Add reaction (always adds, allows multiple same emojis)
-  const addReaction = useCallback(async (emoji: string) => {
-    if (!user || !ALLOWED_EMOJIS.includes(emoji as any)) return;
+  const addReaction = useCallback(async (input: string) => {
+    const emoji = normalizeReactionEmoji(input);
+    if (!user || !emoji) return;
 
     try {
       // Always add reaction
@@ -75,6 +76,10 @@ export function useMessageReactions(messageId: string) {
       if (error) {
         // Rollback on error
         setReactions(prev => prev.filter(r => r !== newReaction));
+        if (String((error as { message?: string }).message ?? '').includes(REACTION_CAP_ERROR)) {
+          notifyError('chatNative.reactions.capReached');
+          return;
+        }
         throw error;
       }
     } catch (error) {
@@ -83,8 +88,9 @@ export function useMessageReactions(messageId: string) {
   }, [messageId, user, reactions]);
 
   // Remove specific reaction (for right-click or long press)
-  const removeReaction = useCallback(async (emoji: string, reactionId?: string) => {
+  const removeReaction = useCallback(async (input: string, reactionId?: string) => {
     if (!user) return;
+    const emoji = normalizeReactionEmoji(input) ?? input;
 
     try {
       // If no specific reaction ID, remove the most recent one from this user
@@ -120,11 +126,13 @@ export function useMessageReactions(messageId: string) {
 
   // Get reaction summary grouped by emoji
   const getReactionSummary = useCallback((): ReactionSummary[] => {
+    // Legacy bare heart rows group with the canonical heart: one reaction, one count.
     const grouped = reactions.reduce((acc, reaction) => {
-      if (!acc[reaction.emoji]) {
-        acc[reaction.emoji] = [];
+      const key = normalizeReactionEmoji(reaction.emoji) ?? reaction.emoji;
+      if (!acc[key]) {
+        acc[key] = [];
       }
-      acc[reaction.emoji].push(reaction);
+      acc[key].push(reaction);
       return acc;
     }, {} as Record<string, MessageReaction[]>);
 

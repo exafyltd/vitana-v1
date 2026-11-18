@@ -1,16 +1,22 @@
 /**
  * VTID-05458 (native-wave2-inbox-chat-calls-r2/conversation-chat) — message
- * reactions. Native twin of web `src/hooks/useMessageReactions.ts` (class B):
+ * reactions. Native twin of web `src/hooks/useMessageReactions.ts`:
  * reactions come from `rpc('get_message_reactions_text', { message_id_param })`,
- * an add inserts into `message_reactions` (only the six quick emojis), a
- * remove deletes my latest one of that emoji; both are optimistic with
- * rollback. A realtime change on `message_reactions` for the message refetches.
- * Local (unsent) rows have no reactions.
+ * an add inserts into `message_reactions` (any emoji in the shared supported
+ * set, canonical form), a remove deletes my latest one of that emoji; both are
+ * optimistic with rollback. A member can have at most six distinct emojis per
+ * message (enforced in the database); `addReaction` reports `'cap'` so the UI
+ * can say so. Legacy bare heart rows group with the canonical heart. A realtime
+ * change on `message_reactions` for the message refetches. Local (unsent) rows
+ * have no reactions.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getSupabase } from '../../../auth/client';
+import { normalizeReactionEmoji, REACTION_CAP_ERROR } from './reactionEmoji';
 
-export const QUICK_REACTIONS = ['👍', '❤', '😂', '😮', '🙏', '🎉'] as const;
+export { QUICK_REACTIONS } from './reactionEmoji';
+
+export type AddReactionResult = 'added' | 'cap' | 'ignored' | 'error';
 
 interface Reaction {
   message_id: string;
@@ -59,20 +65,24 @@ export function useReactions(messageId: string, userId: string | undefined) {
   }, [enabled, messageId, fetchReactions]);
 
   const addReaction = useCallback(
-    async (emoji: string) => {
-      if (!userId || !enabled || !(QUICK_REACTIONS as readonly string[]).includes(emoji)) return;
+    async (input: string): Promise<AddReactionResult> => {
+      const emoji = normalizeReactionEmoji(input);
+      if (!userId || !enabled || !emoji) return 'ignored';
       const row: Reaction = { message_id: messageId, user_id: userId, emoji, created_at: new Date().toISOString() };
       setReactions((prev) => [...prev, row]);
       const { error } = await getSupabase().from('message_reactions').insert(row as never);
-      if (error) setReactions((prev) => prev.filter((r) => r !== row));
+      if (!error) return 'added';
+      setReactions((prev) => prev.filter((r) => r !== row));
+      return String((error as { message?: string }).message ?? '').includes(REACTION_CAP_ERROR) ? 'cap' : 'error';
     },
     [userId, enabled, messageId],
   );
 
   const removeReaction = useCallback(
-    async (emoji: string) => {
+    async (input: string) => {
       if (!userId) return;
-      const target = reactions.filter((r) => r.user_id === userId && r.emoji === emoji).slice(-1)[0];
+      const emoji = normalizeReactionEmoji(input) ?? input;
+      const target = reactions.filter((r) => r.user_id === userId && (normalizeReactionEmoji(r.emoji) ?? r.emoji) === emoji).slice(-1)[0];
       if (!target) return;
       const before = reactions;
       setReactions(reactions.filter((r) => r !== target));
@@ -90,7 +100,10 @@ export function useReactions(messageId: string, userId: string | undefined) {
 
   const summary = useMemo<ReactionSummary[]>(() => {
     const grouped = new Map<string, Reaction[]>();
-    for (const r of reactions) grouped.set(r.emoji, [...(grouped.get(r.emoji) ?? []), r]);
+    for (const r of reactions) {
+      const key = normalizeReactionEmoji(r.emoji) ?? r.emoji;
+      grouped.set(key, [...(grouped.get(key) ?? []), r]);
+    }
     return [...grouped.entries()].map(([emoji, list]) => ({
       emoji,
       count: list.length,
