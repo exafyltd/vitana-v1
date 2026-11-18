@@ -96,6 +96,13 @@ describe('web reaction pickers', () => {
     expect(addReaction).toHaveBeenCalledWith(APPLE);
   });
 
+  it('desktop context menu: no "+" while the flag is off', () => {
+    flags.picker = false;
+    const { surface } = bubble();
+    fireEvent.contextMenu(surface);
+    expect(screen.queryByTestId('reaction-more-emojis')).toBeNull();
+  });
+
   it('phone drawer: no "+" while the flag is off', () => {
     flags.picker = false;
     const { surface } = bubble();

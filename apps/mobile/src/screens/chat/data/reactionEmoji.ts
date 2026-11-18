@@ -29,3 +29,15 @@ export const REACTION_CAP_ERROR = 'reaction_cap_reached';
  */
 export const REACTION_PICKER_ENABLED = false;
 
+
+const QUICK_CANONICAL: ReadonlySet<string> = new Set(list.quick.map((e) => normalizeReactionEmoji(e) ?? e));
+
+/**
+ * Canonical emoji a member may ADD, or null. While `expandedEnabled` (the picker flag) is off only the six quick
+ * reactions pass. Removals use normalizeReactionEmoji and are never gated.
+ */
+export function allowedReactionEmoji(input: string, expandedEnabled: boolean): string | null {
+  const e = normalizeReactionEmoji(input);
+  if (!e) return null;
+  return expandedEnabled || QUICK_CANONICAL.has(e) ? e : null;
+}

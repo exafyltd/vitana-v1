@@ -36,6 +36,11 @@ const localOnly: typeof fetch = (input, init) => {
 const jwtOf = (u: string) => (u === ALICE ? process.env.ISODB_JWT_ALICE : process.env.ISODB_JWT_BOB) ?? '';
 const dbAs = (u: string) => new PostgrestClient(REST, { headers: { Authorization: `Bearer ${jwtOf(u)}` }, fetch: localOnly });
 
+// The isolated run turns the picker flag on in-process only (the app ships with it off).
+vi.mock('@/lib/reactions/reactionEmoji', async (orig) => ({
+  ...(await orig<typeof import('@/lib/reactions/reactionEmoji')>()),
+  REACTION_PICKER_ENABLED: true,
+}));
 const session = vi.hoisted(() => ({ user: '' }));
 const notifyError = vi.hoisted(() => vi.fn());
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: session.user } }) }));

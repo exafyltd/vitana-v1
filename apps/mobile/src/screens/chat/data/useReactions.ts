@@ -12,7 +12,7 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getSupabase } from '../../../auth/client';
-import { normalizeReactionEmoji, REACTION_CAP_ERROR } from './reactionEmoji';
+import { allowedReactionEmoji, normalizeReactionEmoji, REACTION_CAP_ERROR, REACTION_PICKER_ENABLED } from './reactionEmoji';
 
 export { QUICK_REACTIONS } from './reactionEmoji';
 
@@ -66,7 +66,7 @@ export function useReactions(messageId: string, userId: string | undefined) {
 
   const addReaction = useCallback(
     async (input: string): Promise<AddReactionResult> => {
-      const emoji = normalizeReactionEmoji(input);
+      const emoji = allowedReactionEmoji(input, REACTION_PICKER_ENABLED);
       if (!userId || !enabled || !emoji) return 'ignored';
       const row: Reaction = { message_id: messageId, user_id: userId, emoji, created_at: new Date().toISOString() };
       setReactions((prev) => [...prev, row]);

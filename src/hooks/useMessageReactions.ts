@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { realtimeChannel, removeRealtimeChannel } from '@/integrations/supabase/realtime';
 import { useAuth } from '@/context/AuthProvider';
-import { normalizeReactionEmoji, REACTION_CAP_ERROR } from '@/lib/reactions/reactionEmoji';
+import { allowedReactionEmoji, normalizeReactionEmoji, REACTION_CAP_ERROR, REACTION_PICKER_ENABLED } from '@/lib/reactions/reactionEmoji';
 import { notifyError } from '@/lib/i18n-toast';
 
 export interface MessageReaction {
@@ -55,7 +55,7 @@ export function useMessageReactions(messageId: string) {
 
   // Add reaction (always adds, allows multiple same emojis)
   const addReaction = useCallback(async (input: string) => {
-    const emoji = normalizeReactionEmoji(input);
+    const emoji = allowedReactionEmoji(input, REACTION_PICKER_ENABLED);
     if (!user || !emoji) return;
 
     try {

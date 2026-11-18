@@ -1,0 +1,41 @@
+11:05:51 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/projects/sandbox/.wt/v1-lane[39m
+
+ [32m✓[39m src/lib/reactions/reactionEmoji.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [2m[90m↓[39m[22m src/lib/reactions/reactions-cross-client.isolated.test.tsx [2m([22m[2m3 tests[22m[2m | [22m[33m3 skipped[39m[2m)[22m
+ [32m✓[39m src/hooks/useMessageReactions.legacy-heart.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 180[2mms[22m[39m
+ [32m✓[39m src/hooks/useMessageReactions.gate.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 233[2mms[22m[39m
+[90mstderr[2m | src/components/messages/MessageBubble.reaction-picker.test.tsx[2m > [22m[2mweb reaction pickers[2m > [22m[2mphone drawer: the six shortcuts and, with the flag on, a "+" whose picker offers only supported emojis
+[22m[39mWarning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `MessageBubble`. See https://reactjs.org/link/warning-keys for more information.
+    at span
+    at MessageBubble (/projects/sandbox/.wt/v1-lane/src/components/messages/MessageBubble.tsx:239:26)
+    at Router (/projects/sandbox/.wt/v1-lane/node_modules/react-router/dist/umd/react-router.development.js:1207:17)
+    at MemoryRouter (/projects/sandbox/.wt/v1-lane/node_modules/react-router/dist/umd/react-router.development.js:1101:7)
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+`DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+
+[90mstderr[2m | src/components/messages/MessageBubble.reaction-picker.test.tsx[2m > [22m[2mweb reaction pickers[2m > [22m[2mphone drawer: no "+" while the flag is off
+[22m[39m`DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+
+ [32m✓[39m src/components/messages/MessageBubble.reaction-picker.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 470[2mms[22m[39m
+     [33m[2m✓[22m[39m phone drawer: the six shortcuts and, with the flag on, a "+" whose picker offers only supported emojis [33m 330[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (5)[39m
+[2m      Tests [22m [1m[32m13 passed[39m[22m[2m | [22m[33m3 skipped[39m[90m (16)[39m
+[2m   Start at [22m 11:05:51
+[2m   Duration [22m 3.79s[2m (transform 1.99s, setup 655ms, import 2.79s, tests 890ms, environment 3.53s)[22m
+

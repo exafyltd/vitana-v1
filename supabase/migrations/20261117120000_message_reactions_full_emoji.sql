@@ -5,17 +5,23 @@
 -- Canonical form = fully-qualified (U+FE0F); the list is pinned in
 -- src/lib/reactions/reaction-emojis.json (identical copies in apps/mobile and the gateway).
 --
--- Rollback (manual, owner-approved; run as ONE transaction, see docs/validation/<VTID>/rollback-rehearsal.txt):
+-- Rollback (manual, owner-approved). Member reactions are preserved; a rollback never deletes a reaction.
+-- Step 1, always: disable expanded writes (gateway REACTION_EXPANDED_ENABLED=false; web and mobile
+-- REACTION_PICKER_ENABLED=false). This stops new reactions outside the six and keeps the wider schema in place.
+-- Step 2, only if this precheck returns 0 (no reaction outside the six exists):
+--   SELECT count(*) FROM public.message_reactions WHERE emoji NOT IN ('👍','❤️','😂','😮','🙏','🎉');
 --   BEGIN;
+--   DO $$ BEGIN IF EXISTS (SELECT 1 FROM public.message_reactions
+--     WHERE emoji NOT IN ('👍','❤️','😂','😮','🙏','🎉')) THEN
+--     RAISE EXCEPTION 'rollback refused: reactions outside the six exist'; END IF; END $$;
 --   DROP TRIGGER IF EXISTS message_reactions_cap ON public.message_reactions;
 --   DROP FUNCTION IF EXISTS public.enforce_message_reaction_cap();
 --   ALTER TABLE public.message_reactions DROP CONSTRAINT IF EXISTS message_reactions_emoji_fk;
 --   ALTER TABLE public.message_reactions ADD CONSTRAINT message_reactions_emoji_check
---     CHECK (emoji IN ('👍','❤️','😂','😮','🙏','🎉'));   -- fails while any row holds an emoji outside the six
+--     CHECK (emoji IN ('👍','❤️','😂','😮','🙏','🎉'));
 --   DROP TABLE IF EXISTS public.message_reaction_emojis;
 --   COMMIT;
--- Run without BEGIN/COMMIT, the ADD CONSTRAINT failure leaves the cap and FK removed. A rollback that must
--- succeed while outside-six reactions exist deletes those rows first (after a backup): a member's reaction is lost.
+-- If the precheck is not 0, do not roll back: keep the schema, keep expanded writes disabled.
 
 CREATE TABLE IF NOT EXISTS public.message_reaction_emojis (
   emoji      text PRIMARY KEY,

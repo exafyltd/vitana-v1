@@ -1,46 +1,54 @@
 # Migration approval: 20261117120000_message_reactions_full_emoji
 
-Status: **pending owner approval** (stop 1, collaboration.md §7d). Nothing is applied.
+Status: **pending owner approval** (stop 1, collaboration.md §7d). Nothing is applied to any database.
 
 ## 1. Exact file
 - Path: `supabase/migrations/20261117120000_message_reactions_full_emoji.sql`
-- SHA-256: `d6e0f256ae879e40c74f86a77b19cb353a4907e2f1c8c6b0bfdf2b649933bc8e` (6753 bytes)
-- Git blob: `e386d75cd59a220390a153ba0a3c5a1bc83e8677`
-- Branch: `kiro/chat-reactions-full-emoji/reactions` (replacement of #1697), commit that last changed the file: `9753b758c`.
-- Contents: lookup table `message_reaction_emojis` (181 rows, same order as `reaction-emojis.json`, verified), RLS select-only for `authenticated`, FK `message_reactions_emoji_fk` replacing the six-value CHECK, BEFORE INSERT cap trigger (six distinct emojis per member per message, `reaction_cap_reached`).
+- SHA-256: `392b8e0a5e033f4f7920f02d60779f932e760abc1f6651088f95200c91739be8` (7209 bytes)
+- Git blob: `cf0975d699f8b83947b72f234356a7fd3798aa3e`
+- Branch: `kiro/chat-reactions-full-emoji/reactions` (replacement for vitana-v1 #1697), built on main `bbe90b713`.
+- Contents: lookup table `message_reaction_emojis` (181 rows, same order as `reaction-emojis.json`, checked by script); RLS select-only for `authenticated`; FK `message_reactions_emoji_fk` replacing the six-value CHECK; BEFORE INSERT cap trigger (six distinct emojis per member per message, `reaction_cap_reached`). No existing row is rewritten.
 
 ## 2. Target database
-- Supabase project `VITANA`, ref `inmkhvwdcuyhnxkgfvsb` (eu-north-1, Postgres 17). The only Supabase project.
-- Staging and production both use this database (CLAUDE.md, staging-first rules). Applying it changes live data for all members.
+- Supabase project `VITANA`, ref `inmkhvwdcuyhnxkgfvsb` (eu-north-1). The only Supabase project. Staging and production both use it, so applying the file changes live data for all members.
 
 ## 3. Read-only compatibility check (SELECT only, 2026-11-18)
-- 352 rows; six distinct emojis; 0 rows outside the 181 set; 0 bare-heart rows; no lookup table or cap function yet; migration not in `schema_migrations`.
-- `toggle_message_reaction(uuid,text)` and `_text` write to the table without normalising (no client calls them; a bare heart is refused by the FK as it is by the CHECK today).
-- Policies (insert own, delete own, select for accessible messages), trigger `trg_notify_reaction`, and realtime publication are unchanged.
+- 352 rows; six distinct emojis (👍 113, ❤️ 204, 😂 12, 😮 1, 🙏 15, 🎉 7); 0 rows outside the 181 set; 0 bare hearts.
+- No lookup table, no cap function, migration not recorded in `schema_migrations`.
+- `toggle_message_reaction(uuid,text)` and `_text` write to the table without normalising. No client calls them. A bare heart is refused by the FK, as it is by the CHECK today.
+- Policies (insert own, delete own, select for accessible messages), trigger `trg_notify_reaction` and the realtime publication are unchanged.
 
-## 4. Rollback rehearsal (isolated database, reactions outside the six added first: 4 rows, 🍎 🌻 🔥)
-| Mode | Result |
+## 4. Expanded reactions are gated on all three paths (flags off)
+| Path | Gate | Test (committed) |
+|---|---|---|
+| Web (`useMessageReactions`, context menu, drawer) | `REACTION_PICKER_ENABLED=false`: hook adds only the six; no "+" | `useMessageReactions.gate.test.ts`; `MessageBubble.reaction-picker.test.tsx` (drawer and context menu, flag off) |
+| Mobile (`useReactions`, drawer) | `REACTION_PICKER_ENABLED=false`: hook adds only the six; no "+" | `reactions-expanded-gate.test.tsx` (4 pass) |
+| ORB voice tool (`react_to_message`) | `REACTION_EXPANDED_ENABLED` unset/false: adds only the six | `reaction-expanded-gate.test.ts` (6 pass; 3 fail without the gate) |
+Removals are never gated on any path. Flags are off in the committed code and in the gateway default.
+
+## 5. Rollback procedure (preserves member reactions)
+Principle: a rollback never deletes a reaction.
+1. **Always first:** disable expanded writes. Set `REACTION_EXPANDED_ENABLED=false` on the gateway and keep `REACTION_PICKER_ENABLED=false` on web and mobile. This stops new outside-six reactions. The wider schema stays in place.
+2. **Schema rollback only if the precheck is 0:** `SELECT count(*) FROM public.message_reactions WHERE emoji NOT IN ('👍','❤️','😂','😮','🙏','🎉');` must return 0. Then run the transaction in the migration header (Step 2). It starts with a guard that refuses if any outside-six row exists, and it runs in one transaction so a failure changes nothing.
+3. **If the precheck is not 0:** do not roll back. Keep the schema and expanded writes disabled. Existing outside-six reactions keep showing and can still be removed by their members.
+
+Rehearsal on the isolated database, with the procedure text extracted from the migration file:
+| Case | Result |
 |---|---|
-| Statements run one by one (autocommit) | FAILS at re-adding the six-value CHECK. Cap trigger and FK are already gone; lookup table remains; outside rows remain. **Unsafe; do not use.** |
-| One transaction (`BEGIN … COMMIT`, as in the header) | Aborts, everything rolled back. State identical to before. **Safe.** |
-| Delete outside-six rows after backup, then transaction | Succeeds. 4 member reactions deleted (`message_reactions_outside_six_backup` keeps them). Rows identical: no. **Loses data; owner decision only.** |
-
-Full output: `outputs/rollback-rehearsal.txt`.
-
-## 5. What makes outside-six rows appear
-- Picker flags are off, but the ORB `react_to_message` tool uses the gateway list. Once the migration **and** the gateway change are live, the voice tool can write any of the 181 emojis even with the picker off.
-- Therefore a later rollback can meet outside-six rows. Decide before rollback whether they are kept (rollback then cannot run) or deleted (member data lost).
+| 4 reactions outside the six (🍎 🌻 🔥) present | Precheck 4. Guard refuses. Transaction rolls back. 10 rows identical, schema unchanged. |
+| No reaction outside the six | Precheck 0. Procedure commits. Six-value CHECK restored, cap trigger and lookup table removed, 6 rows identical. |
+First attempt (statements run one by one, not in a transaction) failed partway and left the cap and FK removed. Superseded; kept as `outputs/rollback-rehearsal-first-attempt.txt`.
 
 ## 6. Release sequence (after approval)
 1. Owner approves this file hash and the target database.
-2. Apply the migration through the approved workflow (RUN-MIGRATION / apply-*.yml). Verify read-only: 181 lookup rows, FK present, trigger present, row count unchanged (352).
-3. Merge the vitana-v1 lane PR (flags stay `false`). Staging deploy. STAGING-VERIFY on the merge commit.
-4. Merge the vitana-platform lane PR (gateway tool). Staging gateway deploy. STAGING-VERIFY on the merge commit.
-5. Gate 2 to the owner. Production publish and flag changes are separate owner decisions.
+2. Apply the migration through the approved workflow (RUN-MIGRATION / apply-*.yml). Verify read-only: 181 lookup rows, FK and cap trigger present, row count still 352.
+3. Merge the vitana-v1 lane PR with both flags off. Staging deploy, STAGING-VERIFY on the merge commit.
+4. Merge the vitana-platform lane PR (gateway gate, flag off). Staging gateway deploy, STAGING-VERIFY on the merge commit.
+5. Gate 2 to the owner. Turning on any flag, and production publish, are separate owner decisions.
 
-## 7. Isolated test results (this branch)
-- Cross-client check (mobile add, web sees and removes, legacy heart, cap refusal, mobile reload): 3 web + 2 mobile, all pass (`outputs/cross-client-isolated.txt`).
-- Migration applies to the original table; six existing rows identical before and after.
+## 7. Evidence on the branch
+- Isolated cross-client run (mobile add, web sees and removes, legacy heart, cap, mobile reload): 3 web + 2 mobile pass (`outputs/cross-client-isolated.txt`).
+- Rollback rehearsal (above). Gateway gate: `outputs/gateway-gate-jest.txt`, red without the gate `outputs/gateway-gate-red-without-gate.txt`. Web and mobile gate: `outputs/web-gate-vitest.txt`, `outputs/mobile-gate-jest.txt`.
 
 ## 8. Approval requested
-Approve or refuse applying `20261117120000_message_reactions_full_emoji.sql` (SHA-256 above) to project `inmkhvwdcuyhnxkgfvsb`, and choose the rollback stance in §5.
+Approve or refuse applying the file above (SHA-256 `392b8e0a5e033f4f7920f02d60779f932e760abc1f6651088f95200c91739be8`) to project `inmkhvwdcuyhnxkgfvsb`.
