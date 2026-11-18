@@ -8,7 +8,7 @@
  *   1. every `.claude/rules/<x>.md` has a steering file that links it, with
  *      `inclusion: fileMatch` and `fileMatchPattern` equal to its `paths:`;
  *   2. every `#[[file:…]]` link in a steering file points at a file that exists;
- *   3. an always-included steering file links `CLAUDE.md`.
+ *   3. an always-included steering file exists.
  * Usage: node scripts/ci/kiro-steering/guard.cjs [repoRoot]
  */
 'use strict';
@@ -66,8 +66,9 @@ function check(root) {
     }
   }
 
-  if (!parsed.some((s) => (s.fm.inclusion ?? 'always') === 'always' && s.links.includes('CLAUDE.md'))) {
-    errors.push('no always-included steering file links CLAUDE.md');
+  // CLAUDE.md was removed from this repository (#1691). Rules reach the session through fileMatch twins.
+  if (!parsed.some((s) => (s.fm.inclusion ?? 'always') === 'always')) {
+    errors.push('no always-included steering file');
   }
 
   for (const r of rules) {
