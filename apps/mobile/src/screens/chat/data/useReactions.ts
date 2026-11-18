@@ -91,7 +91,7 @@ export function useReactions(messageId: string, userId: string | undefined) {
         .delete()
         .eq('message_id', messageId)
         .eq('user_id', target.user_id)
-        .eq('emoji', emoji)
+        .eq('emoji', target.emoji) // the row's stored form (a legacy bare heart stays deletable)
         .eq('created_at', target.created_at);
       if (error) setReactions(before);
     },

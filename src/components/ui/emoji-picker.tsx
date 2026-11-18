@@ -9,6 +9,10 @@ interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void;
   trigger?: React.ReactNode;
   className?: string;
+  /** Only these emojis are offered (every tab, recents included); e.g. the supported reaction set. */
+  allowed?: (emoji: string) => boolean;
+  /** Extra classes for the popover, e.g. a z-index above a drawer. */
+  contentClassName?: string;
 }
 
 // How many recents to keep (and show). grid-cols-8 → 16 fills exactly two
@@ -124,7 +128,7 @@ const EMOJI_CATEGORIES = {
 
 type CategoryKey = 'recent' | keyof typeof EMOJI_CATEGORIES;
 
-export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerProps) {
+export function EmojiPicker({ onEmojiSelect, trigger, className, allowed, contentClassName }: EmojiPickerProps) {
   const [activeCategory, setActiveCategory] = React.useState<CategoryKey>('recent');
   // VTID-05315: the signed-in member, if any (no provider = nobody signed in).
   const userId = React.useContext(AuthContext)?.user?.id ?? null;
@@ -136,10 +140,13 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
   // opens — not only after a reload.
   const refreshRecent = () => setRecent(loadRecentEmojis(userId));
 
-  const categories: Record<CategoryKey, string[]> = {
+  const all: Record<CategoryKey, string[]> = {
     recent,
     ...EMOJI_CATEGORIES,
   };
+  const categories = allowed
+    ? (Object.fromEntries(Object.entries(all).map(([k, list]) => [k, list.filter(allowed)])) as Record<CategoryKey, string[]>)
+    : all;
 
   const handleEmojiClick = (emoji: string) => {
     setRecent(recordRecentEmoji(emoji, userId));
@@ -168,7 +175,7 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
         sideOffset={8}
         avoidCollisions={true}
         collisionPadding={8}
-        className="z-[60] w-[min(320px,calc(100vw-2rem))] p-4 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
+        className={cn("z-[60] w-[min(320px,calc(100vw-2rem))] p-4 bg-background/95 backdrop-blur-sm border border-border shadow-lg", contentClassName)}
       >
         <div className="space-y-3">
           {/* Category tabs */}
@@ -188,7 +195,7 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
 
           {/* Emoji grid. grid-cols-8 → the recent tab shows at least two rows
               (16 recents, seeded) and grows to three before trimming. */}
-          <div className="grid grid-cols-8 gap-1 max-h-48 overflow-y-auto">
+          <div className="grid grid-cols-8 gap-1 max-h-48 overflow-y-auto" data-testid="emoji-picker-grid">
             {categories[activeCategory].map((emoji, index) => (
               <Button
                 key={`${emoji}-${index}`}

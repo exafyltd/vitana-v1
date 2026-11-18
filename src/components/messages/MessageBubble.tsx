@@ -38,7 +38,8 @@ import {
   Pause,
   Mic,
   AlertCircle,
-  RotateCw
+  RotateCw,
+  Plus
 } from 'lucide-react';
 import { VitanaMessageActions } from './VitanaMessageActions';
 import { ChatImageViewer, type ChatViewerImage } from './ChatImageViewer';
@@ -55,7 +56,8 @@ import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
 import MediaAlbum, { type AlbumItem, isVideoAttachment } from './MediaAlbum';
-import { recordRecentEmoji } from '@/components/ui/emoji-picker';
+import { EmojiPicker, recordRecentEmoji } from '@/components/ui/emoji-picker';
+import { isSupportedReactionEmoji, QUICK_REACTIONS, REACTION_PICKER_ENABLED } from '@/lib/reactions/reactionEmoji';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
@@ -1603,8 +1605,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </p>
             )}
             {/* Quick reactions row */}
-            <div className="flex justify-center gap-3 py-2">
-              {['👍', '❤️', '😂', '😮', '🙏', '🎉'].map((emoji) => (
+            <div className="flex justify-center gap-3 py-2" data-testid="message-reaction-drawer">
+              {QUICK_REACTIONS.map((emoji) => (
                 <button
                   key={emoji}
                   onClick={() => {
@@ -1621,6 +1623,27 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   {emoji}
                 </button>
               ))}
+              {/* Full emoji reactions: the "+" opens the picker limited to the supported set (flag off until the migration is live). */}
+              {REACTION_PICKER_ENABLED ? (
+                <EmojiPicker
+                  allowed={isSupportedReactionEmoji}
+                  contentClassName="z-[130] pointer-events-auto"
+                  onEmojiSelect={(emoji) => {
+                    handleReactionSelect(emoji);
+                    setShowDoubleTapReactions(false);
+                  }}
+                  trigger={
+                    <button
+                      type="button"
+                      aria-label={t('chatNative.reactions.moreEmojis')}
+                      data-testid="drawer-reaction-more-emojis"
+                      className="flex items-center justify-center w-12 h-12 rounded-full active:bg-accent transition-colors duration-150"
+                    >
+                      <Plus className="h-5 w-5" />
+                    </button>
+                  }
+                />
+              ) : null}
             </div>
 
             {/* Action buttons */}

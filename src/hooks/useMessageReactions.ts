@@ -91,27 +91,28 @@ export function useMessageReactions(messageId: string) {
   const removeReaction = useCallback(async (input: string, reactionId?: string) => {
     if (!user) return;
     const emoji = normalizeReactionEmoji(input) ?? input;
+    // Rows match by canonical form, so a legacy bare heart toggles with the canonical heart.
+    const sameEmoji = (r: MessageReaction) => (normalizeReactionEmoji(r.emoji) ?? r.emoji) === emoji;
 
     try {
       // If no specific reaction ID, remove the most recent one from this user
       const targetReaction = reactionId 
-        ? reactions.find(r => r.message_id === messageId && r.emoji === emoji)
-        : reactions.filter(r => r.user_id === user.id && r.emoji === emoji).slice(-1)[0];
+        ? reactions.find(r => r.message_id === messageId && sameEmoji(r))
+        : reactions.filter(r => r.user_id === user.id && sameEmoji(r)).slice(-1)[0];
 
       if (!targetReaction) return;
 
       // Optimistic removal
-      const optimisticReactions = reactions.filter(
-        r => !(r.user_id === targetReaction.user_id && r.emoji === emoji && r.created_at === targetReaction.created_at)
-      );
+      const optimisticReactions = reactions.filter(r => r !== targetReaction);
       setReactions(optimisticReactions);
 
+      // Delete the row in the form it is stored in.
       const { error } = await supabase
         .from('message_reactions')
         .delete()
         .eq('message_id', messageId)
         .eq('user_id', targetReaction.user_id)
-        .eq('emoji', emoji)
+        .eq('emoji', targetReaction.emoji)
         .eq('created_at', targetReaction.created_at);
 
       if (error) {

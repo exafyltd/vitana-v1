@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@/lib/i18n-toast';
-import { QUICK_REACTIONS as QUICK_REACTION_EMOJIS, REACTION_PICKER_ENABLED } from '@/lib/reactions/reactionEmoji';
+import { isSupportedReactionEmoji, QUICK_REACTIONS as QUICK_REACTION_EMOJIS, REACTION_PICKER_ENABLED } from '@/lib/reactions/reactionEmoji';
 
 interface MessageContextMenuProps {
   children: React.ReactNode;
@@ -163,6 +163,9 @@ export function MessageContextMenu({
                 ))}
                 {REACTION_PICKER_ENABLED ? (
                 <EmojiPicker
+                  allowed={isSupportedReactionEmoji}
+                  // The context menu is modal (body pointer-events: none); the picker opts back in.
+                  contentClassName="pointer-events-auto"
                   onEmojiSelect={(emoji) => onEmojiSelect(emoji)}
                   trigger={
                     <button

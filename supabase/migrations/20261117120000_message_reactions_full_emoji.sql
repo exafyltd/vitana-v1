@@ -4,6 +4,18 @@
 -- emojis, canonical form) is in the seed, so no row can violate the new FK.
 -- Canonical form = fully-qualified (U+FE0F); the list is pinned in
 -- src/lib/reactions/reaction-emojis.json (identical copies in apps/mobile and the gateway).
+--
+-- Rollback (manual, owner-approved; run as ONE transaction, see docs/validation/<VTID>/rollback-rehearsal.txt):
+--   BEGIN;
+--   DROP TRIGGER IF EXISTS message_reactions_cap ON public.message_reactions;
+--   DROP FUNCTION IF EXISTS public.enforce_message_reaction_cap();
+--   ALTER TABLE public.message_reactions DROP CONSTRAINT IF EXISTS message_reactions_emoji_fk;
+--   ALTER TABLE public.message_reactions ADD CONSTRAINT message_reactions_emoji_check
+--     CHECK (emoji IN ('👍','❤️','😂','😮','🙏','🎉'));   -- fails while any row holds an emoji outside the six
+--   DROP TABLE IF EXISTS public.message_reaction_emojis;
+--   COMMIT;
+-- Run without BEGIN/COMMIT, the ADD CONSTRAINT failure leaves the cap and FK removed. A rollback that must
+-- succeed while outside-six reactions exist deletes those rows first (after a backup): a member's reaction is lost.
 
 CREATE TABLE IF NOT EXISTS public.message_reaction_emojis (
   emoji      text PRIMARY KEY,
