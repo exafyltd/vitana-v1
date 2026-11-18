@@ -1,0 +1,71 @@
+applied: 00-supabase-base.sql
+applied: 20250918121049 (original message_reactions)
+applied: 20260522120000 §3 (get_message_reactions_text)
+applied: 20261117120000_message_reactions_full_emoji.sql
+{"existing_rows_before":6,"existing_rows_after":6,"identical":true,"lookup_rows":181,"constraints":["message_reactions_emoji_fk","message_reactions_pkey"]}
+isolated stack up: postgres 127.0.0.1:54329, postgrest http://127.0.0.1:54330
+== step 1: mobile adds an emoji outside the six shortcuts, reload
+  console.log
+    [mobile-add] database row for 🍎 by Alice present; reloaded bubble shows 🍎
+
+      at Object.log (tests/inbox-chat/conversation-chat/reactions-cross-client.isolated.test.tsx:120:13)
+
+PASS tests/inbox-chat/conversation-chat/reactions-cross-client.isolated.test.tsx (16.444 s)
+  cross-client reactions — mobile half (isolated database)
+    ✓ adds 🍎 from the full picker; the database has it; a reload shows it (1280 ms)
+    ○ skipped after the web removal, a reload shows no 🍎 and the existing heart once
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 1 passed, 2 total
+Snapshots:   0 total
+Time:        16.864 s
+Ran all test suites matching /tests\/inbox-chat\/conversation-chat\/reactions-cross-client.isolated.test.tsx/i.
+== step 2: web shows it and removes it; legacy heart; cap
+10:59:14 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/projects/sandbox/.wt/v1-lane[39m
+
+[90mstdout[2m | src/lib/reactions/reactions-cross-client.isolated.test.tsx[2m > [22m[2mcross-client reactions — web half (isolated database)[2m > [22m[2mshows the mobile 🍎 on web and removes it from web
+[22m[39m[web] Bob and Alice saw 🍎; Alice's tap removed the row
+
+ [32m✓[39m src/lib/reactions/reactions-cross-client.isolated.test.tsx[2m > [22mcross-client reactions — web half (isolated database)[2m > [22mshows the mobile 🍎 on web and removes it from web[32m 290[2mms[22m[39m
+[90mstdout[2m | src/lib/reactions/reactions-cross-client.isolated.test.tsx[2m > [22m[2mcross-client reactions — web half (isolated database)[2m > [22m[2ma legacy bare heart is one heart reaction and toggles as one
+[22m[39m[web] bare heart stored canonical, one chip (count 2), Bob toggled only his own heart off
+
+[90mstdout[2m | src/lib/reactions/reactions-cross-client.isolated.test.tsx[2m > [22m[2mcross-client reactions — web half (isolated database)[2m > [22m[2ma seventh distinct emoji is refused by the database with the cap message; removal still works
+[22m[39m[web] seventh distinct emoji refused (reaction_cap_reached -> cap message); removal under the cap works
+
+ [32m✓[39m src/lib/reactions/reactions-cross-client.isolated.test.tsx[2m > [22mcross-client reactions — web half (isolated database)[2m > [22ma legacy bare heart is one heart reaction and toggles as one[32m 186[2mms[22m[39m
+ [32m✓[39m src/lib/reactions/reactions-cross-client.isolated.test.tsx[2m > [22mcross-client reactions — web half (isolated database)[2m > [22ma seventh distinct emoji is refused by the database with the cap message; removal still works[32m 91[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 10:59:14
+[2m   Duration [22m 1.34s[2m (transform 83ms, setup 101ms, import 96ms, tests 570ms, environment 464ms)[22m
+
+== step 3: mobile reload after the web removal
+  console.log
+    [mobile-verify] reloaded bubble: no 🍎; one heart chip
+
+      at Object.log (tests/inbox-chat/conversation-chat/reactions-cross-client.isolated.test.tsx:130:13)
+
+PASS tests/inbox-chat/conversation-chat/reactions-cross-client.isolated.test.tsx
+  cross-client reactions — mobile half (isolated database)
+    ✓ after the web removal, a reload shows no 🍎 and the existing heart once (133 ms)
+    ○ skipped adds 🍎 from the full picker; the database has it; a reload shows it
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 1 passed, 2 total
+Snapshots:   0 total
+Time:        2.342 s, estimated 17 s
+Ran all test suites matching /tests\/inbox-chat\/conversation-chat\/reactions-cross-client.isolated.test.tsx/i.
+== final rows in the isolated database
+[{"user_id":"22222222-2222-4222-8222-222222222222","emoji":"👍"}, 
+ {"user_id":"11111111-1111-4111-8111-111111111111","emoji":"❤️"}, 
+ {"user_id":"22222222-2222-4222-8222-222222222222","emoji":"😂"}, 
+ {"user_id":"11111111-1111-4111-8111-111111111111","emoji":"😮"}, 
+ {"user_id":"22222222-2222-4222-8222-222222222222","emoji":"🙏"}, 
+ {"user_id":"11111111-1111-4111-8111-111111111111","emoji":"🎉"}, 
+ {"user_id":"11111111-1111-4111-8111-111111111111","emoji":"🔥"}, 
+ {"user_id":"11111111-1111-4111-8111-111111111111","emoji":"🌻"}, 
+ {"user_id":"11111111-1111-4111-8111-111111111111","emoji":"⚽"}]
