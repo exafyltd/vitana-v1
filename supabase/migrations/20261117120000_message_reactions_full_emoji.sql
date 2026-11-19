@@ -1,4 +1,5 @@
--- Full emoji reactions (VTID: pending allocation from the ledger): supported reaction set as a lookup table,
+-- Full emoji reactions (plan chat-reactions-full-emoji, lane reactions; the VTID is in the PR title and evidence folder):
+-- supported reaction set as a lookup table,
 -- foreign key instead of the six-value CHECK, and an atomic per-user cap of six
 -- distinct emojis per message. Widening only: every existing row (the six quick
 -- emojis, canonical form) is in the seed, so no row can violate the new FK.
