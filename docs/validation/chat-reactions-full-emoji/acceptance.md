@@ -25,4 +25,4 @@ AC-6. Cross-client on an isolated database: mobile adds 🍎 via "+", reload sho
 TEST: outputs/isolated-db/run-isolated.sh <v1> outputs/isolated-db/cross-client.sh <v1> (opt-in; result outputs/cross-client-isolated.txt)
 
 AC-7. Migration 20261117120000 is widening only, keeps every existing row, re-applies cleanly, and its rollback preserves member reactions (refuses while any reaction outside the six exists).
-TEST: outputs/isolated-db/setup-db.mjs, reapply.mjs, rollback-rehearsal-v2.mjs (results outputs/rollback-rehearsal.txt)
+TEST: outputs/isolated-db/setup-db.mjs, reapply.mjs, rollback-rehearsal-v2.mjs (results outputs/reapply.txt, outputs/rollback-rehearsal.txt)
