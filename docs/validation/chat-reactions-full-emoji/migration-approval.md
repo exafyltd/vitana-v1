@@ -39,6 +39,13 @@ Rehearsal on the isolated database, with the procedure text extracted from the m
 | No reaction outside the six | Precheck 0. Procedure commits. Six-value CHECK restored, cap trigger and lookup table removed, 6 rows identical. |
 First attempt (statements run one by one, not in a transaction) failed partway and left the cap and FK removed. Superseded; kept as `outputs/rollback-rehearsal-first-attempt.txt`.
 
+## 5a. Data planes at release (read only, 2026-11-18; evidence in `data-plane-targets.md`)
+- Web, mobile and ORB read and write `message_reactions` in Supabase VITANA (`inmkhvwdcuyhnxkgfvsb`) in staging and production.
+  Web and mobile builds leave the data API URL empty; the staging gateway `vitana-gateway:1025` reads `vitana/supabase/staging/url`
+  and every staging deploy since 2026-11-02 reports `currently on: supabase`.
+- Aurora staging backs only the isolated `vitana-gateway-preview` and has no `message_reactions` table.
+- Only Supabase VITANA needs this migration for the release. Aurora gets it later, with the cutover.
+
 ## 6. Release sequence (after approval)
 1. Owner approves this file hash and the target database.
 2. Apply the migration through the approved workflow (RUN-MIGRATION / apply-*.yml). Verify read-only: 181 lookup rows, FK and cap trigger present, row count still 352.
