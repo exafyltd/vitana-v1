@@ -199,8 +199,8 @@ existing keys in `src/ui/catalogue-keys.ts`.
 
 ### Web defects found
 
-Found while mirroring the web primitives. Reported to the owner; each gets its own VTID only after its own sparring —
-**not fixed in N2**, which touches no web file.
+Found while mirroring the web primitives. Reported to the owner; each is its own change with its own VTID (and its own
+sparring where its change class needs one) — **not fixed in N2**, which touches no web file.
 
 | Web defect | Where | What the native kit does |
 |---|---|---|
