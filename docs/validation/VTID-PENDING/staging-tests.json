@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-PENDING",
+  "service": "community-app",
+  "tests": [
+    { "kind": "playwright", "spec": "tests/e2e/staging/vtid-pending-news-feed-post-action-row.staging.spec.ts", "cwd": ".",
+      "name": "signed in as the documented test user (read-only, the staging guard aborts every write), /home at 390x844 and /home?spotlight=0 at 1400x900: on the first post card the action row (like, comment, send, Likes link) sits below the author row, holds no author name, every control is at least 44 px high, no horizontal overflow; comments, send sheet, likers dialog and the menu open and close without submitting. Skipped (not failed) when the feed shows no post card." },
+    { "kind": "existing", "ref": "npx vitest run src/components/home/CommunityPostCard.test.tsx", "cwd": ".",
+      "reason": "author row holds the name and no action control; action row holds like, comment, send and the Likes link; author row comes first; heart toggles optimistically and rolls back; comments, likers dialog and auto-open unchanged" }
+  ]
+}

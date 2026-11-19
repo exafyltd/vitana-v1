@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-PENDING",
+  "change_class": "frontend-simple",
+  "kind": "feature",
+  "files": ["src/components/home/CommunityPostCard.tsx", "src/components/home/CommunityPostCard.test.tsx", "tests/e2e/staging/vtid-pending-news-feed-post-action-row.staging.spec.ts"],
+  "paths": [
+    "src/components/home/CommunityPostCard.tsx",
+    "src/components/home/CommunityPostCard.test.tsx",
+    "tests/e2e/staging/vtid-pending-news-feed-post-action-row.staging.spec.ts",
+    "docs/validation/VTID-PENDING/**"
+  ],
+  "summary": "News Feed post card: author row on top (avatar, name, menu); like, comment, send and the likes link on their own row below",
+  "plan": "vitana-platform .kiro/specs/news-feed-post-action-row (plan PR exafyltd/vitana-platform#5120)",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

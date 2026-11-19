@@ -1,0 +1,13 @@
+# news-feed-post-action-row / card-actions — commands (vitana-v1, base bbe90b71373e76b18e3a93e22db17b6953c0a183)
+$ npx vitest run src/components/home/CommunityPostCard.test.tsx        # 22 passed (outputs/test-results.txt)
+$ npx vitest run src/components/home                                   # 5 files, 42 passed
+$ git show origin/main:src/components/home/CommunityPostCard.tsx > src/components/home/CommunityPostCard.tsx && npx vitest run src/components/home/CommunityPostCard.test.tsx
+#   1 failed: Unable to find an element by: [data-testid="post-author-row"]   (red on base; file restored after)
+$ npx eslint src/components/home/CommunityPostCard.tsx src/components/home/CommunityPostCard.test.tsx
+#   1 error, no-explicit-any at test line 19 (present on base); nothing new
+$ npx eslint tests/e2e/staging/vtid-pending-news-feed-post-action-row.staging.spec.ts   # clean
+$ npx tsc --noEmit --strict … <staging spec> (with scripts/ci/staging-verify/staging-guard.ts copied in)   # exit 0
+$ npx playwright test --list <staging spec>                            # 2 tests (phone 390x844, desktop 1400x900)
+$ npm run build                                                         # exit 0
+# Fresh clone: git am card-actions.patch on bbe90b7137 → same tree and commit cad441c174 (outputs/fresh-checkout.txt)
+# Local harness (mocked hooks, every non-localhost request aborted): outputs/harness-interactions.txt
