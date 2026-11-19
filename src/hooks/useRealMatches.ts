@@ -60,7 +60,8 @@ export function useRealMatches(limit = 6, options?: { enabled?: boolean }) {
         return { rows: (data as DailyMatchRow[] | null) ?? [], hadError: !!error };
       };
 
-      let { rows: matches, hadError } = await fetchMatches();
+      const { rows, hadError } = await fetchMatches();
+      let matches = rows;
 
       // No live matches — ask the backend to generate a fresh batch, then re-read.
       // Only do this for a genuine empty result: if the read itself failed,

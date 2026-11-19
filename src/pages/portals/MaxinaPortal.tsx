@@ -82,7 +82,7 @@ const MaxinaPortal = () => {
 
         console.debug('[MaxinaPortal] OAuth callback detected, tokens:', !!access_token, !!refresh_token, 'code:', !!pkceCode);
 
-        let recovered = false;
+        const recovered = false;
 
         // 1. Try PKCE code exchange first
         if (pkceCode && !recovered) {

@@ -23,7 +23,7 @@ function credentialSteps(text: string): string[] {
   return out;
 }
 
-const topPermissions = (text: string) => text.match(/^permissions:\n((?:  .*\n|\s*\n)*?)(?=^\S)/m)?.[1] ?? '';
+const topPermissions = (text: string) => text.match(/^permissions:\n((?: {2}.*\n|\s*\n)*?)(?=^\S)/m)?.[1] ?? '';
 
 describe('vitana-v1 static staging keys sit behind a role variable', () => {
   it('every static-key workflow except the production deploy is covered', () => {

@@ -48,7 +48,7 @@ export interface ChatConversation {
 // ── Helpers ───────────────────────────────────────────────────────────
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
-  let { data } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getSession();
   let token = data?.session?.access_token;
 
   // If no token, try refreshing the session once before giving up

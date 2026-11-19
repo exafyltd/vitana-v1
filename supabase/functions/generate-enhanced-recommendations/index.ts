@@ -45,7 +45,7 @@ serve(async (req) => {
     const contextLines = recommendationContextLines(contextData);
 
     // Fetch candidates based on type
-    let candidates: any[] = [];
+    const candidates: any[] = [];
     if (type === 'events' || type === 'all') {
       const { data: events } = await supabaseClient
         .from('global_community_events')

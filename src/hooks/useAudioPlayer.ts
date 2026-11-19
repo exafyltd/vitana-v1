@@ -52,7 +52,7 @@ export function getMediaAudioElement(): HTMLAudioElement {
 }
 
 // Global state for audio player (singleton pattern)
-export let globalState: {
+export const globalState: {
   currentMedia: AudioMediaData | null;
   isPlaying: boolean;
   currentTime: number;

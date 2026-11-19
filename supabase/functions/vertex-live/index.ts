@@ -60,7 +60,7 @@ serve(async (req) => {
 
     // Shared state across handlers
     let vertexSocket: WebSocket | null = null;
-    let conversationId: string | null = null;
+    const conversationId: string | null = null;
     let isConnected = false;
     let pingInterval: number | undefined;
     let setupAckReceived = false;
