@@ -1,0 +1,1 @@
+Red run on base http.ts (header not sent): Tests: 4 failed, 7 passed, 11 total (third-party/"only importer" check, gateway-call header tests).

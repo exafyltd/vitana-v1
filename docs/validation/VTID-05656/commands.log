@@ -1,0 +1,9 @@
+# VTID-05656 commands (apps/mobile unless noted)
+npx jest tests/client-identity --maxWorkers=2   [base http.ts, new tests] -> RED: 4 failed, 7 passed (header absent on gateway calls; see outputs/jest-red-on-base.txt)
+npx jest tests/client-identity --maxWorkers=2   -> GREEN: 11 passed
+npm run typecheck                               -> ok
+npm test -- --maxWorkers=2                      -> 202 suites, 5633 tests passed
+APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check -> Dependencies are up to date
+APP_PROFILE=development npm run bundle          -> Exported: dist (HOME redirected, sandbox has no ~/.expo)
+APP_PROFILE=test-g1 npm run bundle              -> Exported: dist
+root: node scripts/native/parity-ledger.mjs --check -> OK; node scripts/native/core-closure.mjs --check -> up to date

@@ -1,0 +1,19 @@
+{
+  "vtid": "VTID-05656",
+  "lane": "native-wave3-release-r2/client-identity-app",
+  "sparring_record": "docs/validation/VTID-05656/plan-sparring.md",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/config/client-identity.ts",
+    "apps/mobile/src/config/http.ts",
+    "apps/mobile/tests/client-identity*",
+    "docs/validation/VTID-05656/**"
+  ],
+  "not_touched": [
+    "timeouts, retry and the assertNotProduction guard (http.ts keeps DEFAULT_TIMEOUT_MS and never retries)",
+    "apps/mobile/package.json and package-lock.json (no new dependency)",
+    "apps/mobile/parity/ledger.json (no screen change)"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
