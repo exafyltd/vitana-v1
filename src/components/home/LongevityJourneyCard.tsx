@@ -13,8 +13,8 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Zap } from 'lucide-react';
-import { useAudiobookPlayer } from '@/context/AudiobookPlayerProvider';
+import { Zap } from 'lucide-react';
+import { useGuidedMode } from '@/context/GuidedModeProvider';
 import { useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
 import { t } from '@/lib/i18n-toast';
 import { VitanaRecommendationCard } from '@/components/vitana/VitanaRecommendationCard';
@@ -33,11 +33,18 @@ export function LongevityJourneyCard({ onDismiss }: LongevityJourneyCardProps = 
   const { totalSessions, completedInOrder, nextSession, completedToday, dailyGoal, loading } =
     useGuidedJourneyProgress();
   const [dismissed, setDismissed] = useState(false);
-  const audiobook = useAudiobookPlayer(); // VTID-04763: today's episode, one tap
+  const { setMode } = useGuidedMode();
 
   if (loading || totalSessions === 0 || dismissed) return null;
 
   const goToJourney = () => navigate('/autopilot');
+  // The button opens My Journey on the next episode in the catalog, so the member sees which
+  // episode it is. It does not start audio from inside the chat or the news feed.
+  const goToNextEpisode = () => {
+    if (!nextSession) return goToJourney();
+    void setMode('guided'); // the episode catalog is shown in guided mode
+    navigate(`/autopilot#guided-session-${nextSession.session}`);
+  };
 
   return (
     <VitanaRecommendationCard
@@ -56,28 +63,14 @@ export function LongevityJourneyCard({ onDismiss }: LongevityJourneyCardProps = 
       accentClassName={ACCENT_CLASSES[STYLE.accent].border}
       widgetInteractive
       widget={
-        nextSession && audiobook ? (
-          // VTID-04763: today's episode plays right here — no need to find it
-          // on My Journey first. The rest of the card still opens My Journey
-          // (the shared button stops the click before it reaches the card).
-          <VitanaCardActionButton
-            shape={STYLE.shape}
-            accent={STYLE.accent}
-            icon={Play}
-            iconClassName="rtl:-scale-x-100"
-            label={t('screens.home.playTodaysEpisode', { session: nextSession.session })}
-            onClick={() => void audiobook.start({ episode: nextSession.session })}
-            data-testid="home-play-todays-episode"
-          />
-        ) : (
-          <VitanaCardActionButton
-            shape={STYLE.shape}
-            accent={STYLE.accent}
-            icon={Zap}
-            label={t('screens.vitanaIdentity.viewJourney')}
-            onClick={goToJourney}
-          />
-        )
+        <VitanaCardActionButton
+          shape={STYLE.shape}
+          accent={STYLE.accent}
+          icon={Zap}
+          label={t('screens.vitanaIdentity.viewJourney')}
+          onClick={goToNextEpisode}
+          data-testid="home-open-next-episode"
+        />
       }
     >
       <p className="text-sm font-bold text-foreground leading-tight line-clamp-2">

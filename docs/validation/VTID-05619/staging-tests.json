@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05619",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/components/feature/feature-cards.test.tsx src/components/audiobook/audiobook-daily.test.tsx", "cwd": ".",
+      "reason": "the Guided Journey card opens My Journey on the next episode and does not start audio in the chat or feed" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the journey card change is served" }
+  ]
+}
