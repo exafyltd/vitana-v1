@@ -1,0 +1,30 @@
+FAIL tests/inbox-chat/conversation-chat/reactions-legacy-heart.test.tsx (11.232 s)
+  reactions — legacy heart variants (mobile)
+    ✓ shows a bare and a canonical heart as one reaction with one count (61 ms)
+    ✕ removing the heart deletes my own row in the form it is stored in (54 ms)
+    ✓ a bare-heart add is written in the canonical form (4 ms)
+
+  ● reactions — legacy heart variants (mobile) › removing the heart deletes my own row in the form it is stored in
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: ArrayContaining [["eq", "message_id", "p1"], ["eq", "user_id", "u-me"], ["eq", "emoji", "❤"], ["eq", "created_at", "2026-11-17T10:01:00.000Z"]]
+    Received: [["eq", "message_id", "p1"], ["eq", "user_id", "u-me"], ["eq", "emoji", "❤️"], ["eq", "created_at", "2026-11-17T10:01:00.000Z"]]
+
+      43 |     });
+      44 |     const del = d.writes.find((w) => w.table === 'message_reactions' && w.op === 'delete');
+    > 45 |     expect(del?.filters).toEqual(
+         |                          ^
+      46 |       expect.arrayContaining([['eq', 'message_id', 'p1'], ['eq', 'user_id', ME], ['eq', 'emoji', BARE_HEART], ['eq', 'created_at', '2026-11-17T10:01:00.000Z']]),
+      47 |     );
+      48 |   });
+
+      at Object.toEqual (tests/inbox-chat/conversation-chat/reactions-legacy-heart.test.tsx:45:26)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        11.504 s
+Ran all test suites matching /tests\/inbox-chat\/conversation-chat\/reactions-legacy-heart.test.tsx/i.

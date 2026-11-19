@@ -11,6 +11,12 @@ import { MessageBubble } from '../../../src/screens/chat/MessageBubble';
 import type { ChatViewMessage } from '../../../src/screens/chat/data/types';
 import { createChatDouble, makeChatWrapper, ME, PEER } from './helpers';
 
+const mockNotifyError = jest.fn();
+jest.mock('../../../src/ports/ui', () => ({
+  ...jest.requireActual('../../../src/ports/ui'),
+  notifyError: (...args: unknown[]) => mockNotifyError(...args),
+}));
+
 jest.mock('../../../src/screens/chat/data/reactionEmoji', () => ({
   ...jest.requireActual('../../../src/screens/chat/data/reactionEmoji'),
   REACTION_PICKER_ENABLED: true,
@@ -52,6 +58,7 @@ describe('reaction picker (mobile)', () => {
   });
 
   it('a rejected add (cap reached) writes nothing more and shows the cap message', async () => {
+    mockNotifyError.mockClear();
     const d = renderBubble({ insertError: { message: 'P0001: reaction_cap_reached' } });
     fireEvent(screen.getByTestId('bubble-body-p1'), 'longPress');
     await act(async () => {
@@ -59,5 +66,6 @@ describe('reaction picker (mobile)', () => {
     });
     expect(d.writes.filter((w) => w.table === 'message_reactions')).toHaveLength(1);
     expect(screen.queryByTestId('reaction-cluster')).toBeNull();
+    expect(mockNotifyError).toHaveBeenCalledWith('chatNative.reactions.capReached');
   });
 });

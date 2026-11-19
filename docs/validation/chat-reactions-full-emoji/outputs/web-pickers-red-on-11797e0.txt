@@ -1,0 +1,567 @@
+10:26:34 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/projects/sandbox/.wt/v1-pr[39m
+
+[90mstderr[2m | src/components/messages/MessageBubble.reaction-picker.test.tsx[2m > [22m[2mweb reaction pickers[2m > [22m[2mphone drawer: the six shortcuts and, with the flag on, a "+" whose picker offers only supported emojis
+[22m[39mWarning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `MessageBubble`. See https://reactjs.org/link/warning-keys for more information.
+    at span
+    at MessageBubble (/projects/sandbox/.wt/v1-pr/src/components/messages/MessageBubble.tsx:237:26)
+    at Router (/projects/sandbox/.wt/v1-pr/node_modules/react-router/dist/umd/react-router.development.js:1207:17)
+    at MemoryRouter (/projects/sandbox/.wt/v1-pr/node_modules/react-router/dist/umd/react-router.development.js:1101:7)
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+`DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+
+[90mstderr[2m | src/components/messages/MessageBubble.reaction-picker.test.tsx[2m > [22m[2mweb reaction pickers[2m > [22m[2mphone drawer: no "+" while the flag is off
+[22m[39m`DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+
+ [31m❯[39m src/components/messages/MessageBubble.reaction-picker.test.tsx [2m([22m[2m3 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 1326[2mms[22m[39m
+[31m     [31m×[31m phone drawer: the six shortcuts and, with the flag on, a "+" whose picker offers only supported emojis[39m[32m 169[2mms[22m[39m
+     [32m✓[39m phone drawer: no "+" while the flag is off[32m 40[2mms[22m[39m
+[31m     [31m×[31m desktop context menu: six shortcuts and a "+" limited to the supported set[39m[33m 1116[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/components/messages/MessageBubble.reaction-picker.test.tsx[2m > [22mweb reaction pickers[2m > [22mphone drawer: the six shortcuts and, with the flag on, a "+" whose picker offers only supported emojis
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="message-reaction-drawer"]
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mdata-dialog-open[39m=[32m"true"[39m
+  [33mdata-scroll-locked[39m=[32m"1"[39m
+  [33mstyle[39m=[32m"pointer-events: none;"[39m
+[36m>[39m
+  [36m<span[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-radix-focus-guard[39m=[32m""[39m
+    [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+  [36m<div[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex gap-1.5 w-full relative justify-start"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-8 flex justify-center"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-label[39m=[32m"Peer Name"[39m
+          [33mclass[39m=[32m"relative flex shrink-0 overflow-hidden rounded-full ring-1 ring-border/60 bg-card shadow-[0_2px_10px_rgba(0,0,0,0.06)] cursor-pointer hover:scale-[1.02] transition-transform duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none w-8 h-8 flex-shrink-0 mt-0.5"[39m
+          [33mrole[39m=[32m"button"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"flex h-full w-full items-center justify-center rounded-full bg-muted"[39m
+          [36m>[39m
+            [0mP[0m
+          [36m</span>[39m
+        [36m</span>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex-1 flex flex-col min-w-0 overflow-hidden items-start"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"text-xs text-muted-foreground mb-0.5 ms-3"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"inline cursor-pointer bg-transparent p-0 text-start font-inherit hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"[39m
+            [33mdata-testid[39m=[32m"member-link"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mPeer Name[0m
+          [36m</button>[39m
+        [36m</span>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"relative"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"group/bubble rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 break-words select-none bg-muted"[39m
+            [33mdata-state[39m=[32m"closed"[39m
+            [33mtabindex[39m=[32m"0"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"whitespace-pre-wrap break-words"[39m
+            [36m>[39m
+              [0mhello[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"tabular-nums"[39m
+                [36m>[39m
+                  [0m10:07[0m
+                [36m</span>[39m
+              [36m</span>[39m
+            [36m</p>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute bottom-1.5 end-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none text-muted-foreground"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tabular-nums"[39m
+              [36m>[39m
+                [0m10:07[0m
+              [36m</span>[39m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div />[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mclass[39m=[32m"fixed inset-0 z-50 backdrop-blur-sm bg-black/20 !z-[119]"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-state[39m=[32m"open"[39m
+    [33mdata-vaul-overlay[39m=[32m""[39m
+    [33mdata-vaul-snap-points[39m=[32m"false"[39m
+    [33mdata-vaul-snap-points-overlay[39m=[32m"true"[39m
+    [33mstyle[39m=[32m"pointer-events: auto;"[39m
+  [36m/>[39m
+  [36m<div[39m
+    [33maria-describedby[39m=[32m"radix-:r2:"[39m
+    [33maria-labelledby[39m=[32m"radix-:r1:"[39m
+    [33mclass[39m=[32m"fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background !z-[120] pb-safe"[39m
+    [33mdata-state[39m=[32m"open"[39m
+    [33mdata-vaul-custom-container[39m=[32m"false"[39m
+    [33mdata-vaul-delayed-snap-points[39m=[32m"false"[39m
+    [33mdata-vaul-drawer[39m=[32m""[39m
+    [33mdata-vaul-drawer-direction[39m=[32m"bottom"[39m
+    [33mdata-vaul-snap-points[39m=[32m"false"[39m
+    [33mid[39m=[32m"radix-:r0:"[39m
+    [33mrole[39m=[32m"dialog"[39m
+    [33mstyle[39m=[32m"pointer-events: auto;"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted"[39m
+    [36m/>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"px-4 pt-2 pb-4 space-y-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex justify-center gap-3 py-2"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"React with 👍"[39m
+          [33mclass[39m=[32m"flex items-center justify-center w-12 h-12 rounded-full active:bg-accent duration-150 text-2xl active:scale-110 transform transition-transform"[39m
+        [36m>[39m
+          [0m👍[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"React with ❤️"[39m
+          [33mclass[39m=[32m"flex items-center justify-center w-12 h-12 rounded-full active:bg-accent duration-150 text-2xl active:scale-110 transform transition-transform"[39m
+        [36m>[39m
+          [0m❤️[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"React with 😂"[39m
+          [33mclass[39m=[32m"flex items-center justify-center w-12 h-12 rounded-full active:bg-accent duration-150 text-2xl active:scale-110 transform transition-transform"[39m
+        [36m>[39m
+          [0m😂[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"React with 😮"[39m
+          [33mclass[39m=[32m"flex items-center justify-center w-12 h-12 rounded-full active:bg-accent duration-150 text-2xl active:scale-110 transform transition-transform"[39m
+        [36m>[39m
+          [0m😮[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"React with 🙏"[39m
+          [33mclass[39m=[32m"flex items-center justify-center w-12 h-12 rounded-full active:bg-accent duration-150 text-2xl active:scale-110 transform transition-transform"[39m
+        [36m>[39m
+          [0m🙏[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"React with 🎉"[39m
+          [33mclass[39m=[32m"flex items-center justify-center w-12 h-12 rounded-full active:bg-accent duration-150 text-2xl active:scale-110 transform transition-transform"[39m
+        [36m>[39m
+          [0m🎉[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"grid grid-cols-4 gap-2"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"[39m
+          [33mdata-testid[39m=[32m"message-action-copy"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33mclass[39m=[32m"lucide lucide-copy w-5 h-5 text-foreground"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"24"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-linecap[39m=[32m"round"[39m
+            [33mstroke-linejoin[39m=[32m"round"[39m
+            [33mstroke-width[39m=[32m"2"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"24"[39m
+            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+          [36m>[39m
+            [36m<rect[39m
+              [33mheight[39m=[32m"14"[39m
+              [33mrx[39m=[32m"2"[39m
+              [33mry[39m=[32m"2"[39m
+              [33mwidth[39m=[32m"14"[39m
+              [33mx[39m=[32m"8"[39m
+              [33my[39m=[32m"8"[39m
+            [36m/>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+          [36m>[39m
+            [0mscreens.messages.copy[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"[39m
+          [33mdata-testid[39m=[32m"message-action-forward"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33mclass[39m=[32m"lucide lucide-forward w-5 h-5 text-foreground"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"24"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-linecap[39m=[32m"round"[39m
+            [33mstroke-linejoin[39m=[32m"round"[39m
+            [33mstroke-width[39m=[32m"2"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"24"[39m
+            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+          [36m>[39m
+            [36m<polyline[39m
+              [33mpoints[39m=[32m"15 17 20 12 15 7"[39m
+            [36m/>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M4 18v-2a4 4 0 0 1 4-4h12"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+          [36m>[39m
+            [0mscreens.messages.forward[0m
+          [36m</span>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+  [36m<span[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-radix-focus-guard[39m=[32m""[39m
+    [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m getByTestId node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/components/messages/MessageBubble.reaction-picker.test.tsx:[2m88:27[22m[39m
+    [90m 86|[39m     [35mconst[39m { surface } [33m=[39m [34mbubble[39m()[33m;[39m
+    [90m 87|[39m     [34mopenDrawer[39m(surface)[33m;[39m
+    [90m 88|[39m     [35mconst[39m drawer [33m=[39m screen[33m.[39m[34mgetByTestId[39m([32m'message-reaction-drawer'[39m)[33m;[39m
+    [90m   |[39m                           [31m^[39m
+    [90m 89|[39m     for (const e of QUICK_REACTIONS) expect(within(drawer).getByRole('…
+    [90m 90|[39m     fireEvent.click(within(drawer).getByTestId('drawer-reaction-more-e…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/components/messages/MessageBubble.reaction-picker.test.tsx[2m > [22mweb reaction pickers[2m > [22mdesktop context menu: six shortcuts and a "+" limited to the supported set
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="emoji-picker-grid"]
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mdata-scroll-locked[39m=[32m"1"[39m
+  [33mstyle[39m=[32m"pointer-events: none;"[39m
+[36m>[39m
+  [36m<span[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-radix-focus-guard[39m=[32m""[39m
+    [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+  [36m<div[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex gap-1.5 w-full relative justify-start"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-8 flex justify-center"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-label[39m=[32m"Peer Name"[39m
+          [33mclass[39m=[32m"relative flex shrink-0 overflow-hidden rounded-full ring-1 ring-border/60 bg-card shadow-[0_2px_10px_rgba(0,0,0,0.06)] cursor-pointer hover:scale-[1.02] transition-transform duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none w-8 h-8 flex-shrink-0 mt-0.5"[39m
+          [33mrole[39m=[32m"button"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"flex h-full w-full items-center justify-center rounded-full bg-muted"[39m
+          [36m>[39m
+            [0mP[0m
+          [36m</span>[39m
+        [36m</span>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex-1 flex flex-col min-w-0 overflow-hidden items-start"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"text-xs text-muted-foreground mb-0.5 ms-3"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"inline cursor-pointer bg-transparent p-0 text-start font-inherit hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"[39m
+            [33mdata-testid[39m=[32m"member-link"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mPeer Name[0m
+          [36m</button>[39m
+        [36m</span>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"relative"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"group/bubble rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 break-words select-none bg-muted"[39m
+            [33mdata-state[39m=[32m"open"[39m
+            [33mtabindex[39m=[32m"0"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"whitespace-pre-wrap break-words"[39m
+            [36m>[39m
+              [0mhello[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"tabular-nums"[39m
+                [36m>[39m
+                  [0m10:07[0m
+                [36m</span>[39m
+              [36m</span>[39m
+            [36m</p>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute bottom-1.5 end-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none text-muted-foreground"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tabular-nums"[39m
+              [36m>[39m
+                [0m10:07[0m
+              [36m</span>[39m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div />[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33mdata-radix-popper-content-wrapper[39m=[32m""[39m
+    [33mdir[39m=[32m"ltr"[39m
+    [33mstyle[39m=[32m"position: fixed; left: 0px; top: 0px; transform: translate(2px, 0px); min-width: max-content; z-index: auto; --radix-popper-available-width: -2px; --radix-popper-available-height: 0px; --radix-popper-anchor-width: 0px; --radix-popper-anchor-height: 0px; --radix-popper-transform-origin: 0px 0%;"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33maria-orientation[39m=[32m"vertical"[39m
+      [33mclass[39m=[32m"z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-56 p-1"[39m
+      [33mdata-align[39m=[32m"start"[39m
+      [33mdata-orientation[39m=[32m"vertical"[39m
+      [33mdata-radix-menu-content[39m=[32m""[39m
+      [33mdata-side[39m=[32m"right"[39m
+      [33mdata-state[39m=[32m"open"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mrole[39m=[32m"menu"[39m
+      [33mstyle[39m=[32m"outline: none; --radix-context-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-context-menu-content-available-width: var(--radix-popper-available-width); --radix-context-menu-content-available-height: var(--radix-popper-available-height); --radix-context-menu-trigger-width: var(--radix-popper-anchor-width); --radix-context-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;"[39m
+      [33mtabindex[39m=[32m"-1"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"relative cursor-default select-none rounded-sm text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 flex items-center gap-2 px-3 py-2"[39m
+        [33mdata-orientation[39m=[32m"vertical"[39m
+        [33mdata-radix-collection-item[39m=[32m""[39m
+        [33mrole[39m=[32m"menuitem"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<svg[39m
+          [33mclass[39m=[32m"lucide lucide-copy w-4 h-4"[39m
+          [33mfill[39m=[32m"none"[39m
+          [33mheight[39m=[32m"24"[39m
+          [33mstroke[39m=[32m"currentColor"[39m
+          [33mstroke-linecap[39m=[32m"round"[39m
+          [33mstroke-linejoin[39m=[32m"round"[39m
+          [33mstroke-width[39m=[32m"2"[39m
+          [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [33mwidth[39m=[32m"24"[39m
+          [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+        [36m>[39m
+          [36m<rect[39m
+            [33mheight[39m=[32m"14"[39m
+            [33mrx[39m=[32m"2"[39m
+            [33mr...
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mdata-scroll-locked[39m=[32m"1"[39m
+  [33mstyle[39m=[32m"pointer-events: none;"[39m
+[36m>[39m
+  [36m<span[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+    [33mdata-radix-focus-guard[39m=[32m""[39m
+    [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+  [36m<div[39m
+    [33maria-hidden[39m=[32m"true"[39m
+    [33mdata-aria-hidden[39m=[32m"true"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex gap-1.5 w-full relative justify-start"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-8 flex justify-center"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-label[39m=[32m"Peer Name"[39m
+          [33mclass[39m=[32m"relative flex shrink-0 overflow-hidden rounded-full ring-1 ring-border/60 bg-card shadow-[0_2px_10px_rgba(0,0,0,0.06)] cursor-pointer hover:scale-[1.02] transition-transform duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none w-8 h-8 flex-shrink-0 mt-0.5"[39m
+          [33mrole[39m=[32m"button"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"flex h-full w-full items-center justify-center rounded-full bg-muted"[39m
+          [36m>[39m
+            [0mP[0m
+          [36m</span>[39m
+        [36m</span>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex-1 flex flex-col min-w-0 overflow-hidden items-start"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"text-xs text-muted-foreground mb-0.5 ms-3"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"inline cursor-pointer bg-transparent p-0 text-start font-inherit hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"[39m
+            [33mdata-testid[39m=[32m"member-link"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mPeer Name[0m
+          [36m</button>[39m
+        [36m</span>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"relative"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"group/bubble rounded-2xl px-3 py-1.5 max-w-[min(680px,90vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 break-words select-none bg-muted"[39m
+            [33mdata-state[39m=[32m"open"[39m
+            [33mtabindex[39m=[32m"0"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"whitespace-pre-wrap break-words"[39m
+            [36m>[39m
+              [0mhello[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"inline-flex items-center gap-1 ms-2 text-[10px] leading-none invisible select-none pointer-events-none"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"tabular-nums"[39m
+                [36m>[39m
+                  [0m10:07[0m
+                [36m</span>[39m
+              [36m</span>[39m
+            [36m</p>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"absolute bottom-1.5 end-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none text-muted-foreground"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tabular-nums"[39m
+              [36m>[39m
+                [0m10:07[0m
+              [36m</span>[39m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div />[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33mdata-radix-popper-content-wrapper[39m=[32m""[39m
+    [33mdir[39m=[32m"ltr"[39m
+    [33mstyle[39m=[32m"position: fixed; left: 0px; top: 0px; transform: translate(2px, 0px); min-width: max-content; z-index: auto; --radix-popper-available-width: -2px; --radix-popper-available-height: 0px; --radix-popper-anchor-width: 0px; --radix-popper-anchor-height: 0px; --radix-popper-transform-origin: 0px 0%;"[39m
+  [36m>[39m
+    [36m<div[39m
+      [33maria-orientation[39m=[32m"vertical"[39m
+      [33mclass[39m=[32m"z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-56 p-1"[39m
+      [33mdata-align[39m=[32m"start"[39m
+      [33mdata-orientation[39m=[32m"vertical"[39m
+      [33mdata-radix-menu-content[39m=[32m""[39m
+      [33mdata-side[39m=[32m"right"[39m
+      [33mdata-state[39m=[32m"open"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mrole[39m=[32m"menu"[39m
+      [33mstyle[39m=[32m"outline: none; --radix-context-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-context-menu-content-available-width: var(--radix-popper-available-width); --radix-context-menu-content-available-height: var(--radix-popper-available-height); --radix-context-menu-trigger-width: var(--radix-popper-anchor-width); --radix-context-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;"[39m
+      [33mtabindex[39m=[32m"-1"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"relative cursor-default select-none rounded-sm text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 flex items-center gap-2 px-3 py-2"[39m
+        [33mdata-orientation[39m=[32m"vertical"[39m
+        [33mdata-radix-collection-item[39m=[32m""[39m
+        [33mrole[39m=[32m"menuitem"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<svg[39m
+          [33mclass[39m=[32m"lucide lucide-copy w-4 h-4"[39m
+          [33mfill[39m=[32m"none"[39m
+          [33mheight[39m=[32m"24"[39m
+          [33mstroke[39m=[32m"currentColor"[39m
+          [33mstroke-linecap[39m=[32m"round"[39m
+          [33mstroke-linejoin[39m=[32m"round"[39m
+          [33mstroke-width[39m=[32m"2"[39m
+          [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [33mwidth[39m=[32m"24"[39m
+          [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+        [36m>[39m
+          [36m<rect[39m
+            [33mheight[39m=[32m"14"[39m
+            [33mrx[39m=[32m"2"[39m
+            [33mr...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m findByTestId node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/components/messages/MessageBubble.reaction-picker.test.tsx:[2m111:33[22m[39m
+    [90m109|[39m     for (const e of QUICK_REACTIONS) expect(screen.getAllByText(e).len…
+    [90m110|[39m     fireEvent[33m.[39m[34mclick[39m([35mawait[39m screen[33m.[39m[34mfindByTestId[39m([32m'reaction-more-emojis'[39m))[33m;[39m
+    [90m111|[39m     [35mconst[39m picker [33m=[39m [35mawait[39m screen[33m.[39m[34mfindByTestId[39m([32m'emoji-picker-grid'[39m)[33m;[39m
+    [90m   |[39m                                 [31m^[39m
+    [90m112|[39m     [34mexpect[39m([34mwithin[39m(picker)[33m.[39m[34mqueryByText[39m([32m'\u{1F60E}'[39m))[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m113|[39m     [34mexpect[39m([34mwithin[39m(picker)[33m.[39m[34mgetByText[39m([32m'\u{1F44D}'[39m))[33m.[39m[34mtoBeTruthy[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 10:26:34
+[2m   Duration [22m 4.28s[2m (transform 1.67s, setup 91ms, import 2.29s, tests 1.33s, environment 459ms)[22m
+

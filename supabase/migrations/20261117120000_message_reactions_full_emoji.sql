@@ -220,9 +220,18 @@ GRANT SELECT ON public.message_reaction_emojis TO authenticated;
 
 -- Replace the six-value CHECK with a foreign key. Add the FK first so there is
 -- never a moment without enforcement.
-ALTER TABLE public.message_reactions
-  ADD CONSTRAINT message_reactions_emoji_fk
-  FOREIGN KEY (emoji) REFERENCES public.message_reaction_emojis (emoji);
+DO $fk$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.message_reactions'::regclass AND conname = 'message_reactions_emoji_fk'
+  ) THEN
+    ALTER TABLE public.message_reactions
+      ADD CONSTRAINT message_reactions_emoji_fk
+      FOREIGN KEY (emoji) REFERENCES public.message_reaction_emojis (emoji);
+  END IF;
+END
+$fk$;
 ALTER TABLE public.message_reactions DROP CONSTRAINT IF EXISTS message_reactions_emoji_check;
 
 -- Cap: at most six DISTINCT emojis per user per message. The advisory lock

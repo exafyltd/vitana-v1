@@ -1,0 +1,15 @@
+{
+  "vtid": "VTID_PLACEHOLDER",
+  "kind": "feature",
+  "change_class": "standard",
+  "paths": [
+    "supabase/migrations/20261117120000_message_reactions_full_emoji.sql",
+    "src/lib/reactions/**", "src/hooks/useMessageReactions.ts", "src/hooks/useMessageReactions.*.test.ts",
+    "src/components/messages/MessageContextMenu.tsx", "src/components/messages/MessageBubble.tsx",
+    "src/components/messages/MessageBubble.reaction-picker.test.tsx", "src/components/ui/emoji-picker.tsx",
+    "src/i18n/*/chatNative.json", "apps/mobile/src/screens/chat/**", "apps/mobile/tests/inbox-chat/conversation-chat/**",
+    "docs/validation/VTID_PLACEHOLDER/**"
+  ],
+  "weakens_tests": [],
+  "notes": "bubble.test.tsx expected stored heart changes from bare to canonical (contract change, not loosened)"
+}

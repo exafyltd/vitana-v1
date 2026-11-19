@@ -1,0 +1,16 @@
+# commands.log — chat-reactions-full-emoji/reactions (vitana-v1), session kiro-exafyltd-202611181004-a185
+# base origin/main bbe90b713
+# red on the original head 11797e0d (before the fixes)
+npx vitest run src/hooks/useMessageReactions.legacy-heart.test.ts            # red: outputs/web-legacy-heart-red-on-11797e0.txt
+cd apps/mobile && npx jest tests/inbox-chat/conversation-chat/reactions-legacy-heart.test.tsx   # red: outputs/mobile-legacy-heart-red-on-11797e0.txt
+npx vitest run src/components/messages/MessageBubble.reaction-picker.test.tsx   # red: outputs/web-pickers-red-on-11797e0.txt
+# green on this head
+npx vitest run src/components/messages src/components/ui src/hooks src/lib/reactions   # Tests 784 passed | 3 skipped (787) (outputs/web-suites.txt)
+cd apps/mobile && npx jest tests/inbox-chat/conversation-chat                          # Tests:       2 skipped, 251 passed, 253 total (outputs/mobile-suites.txt)
+cd apps/mobile && npm run typecheck                                                    # exit 0
+npm run build                                                                          # exit 0
+# isolated database (local Postgres 17 + PostgREST 12 on 127.0.0.1, schema from this repo's migrations)
+outputs/isolated-db/run-isolated.sh . outputs/isolated-db/cross-client.sh .            # 5/5 pass (outputs/cross-client-isolated.txt)
+MIGRATION_FILE=... outputs/isolated-db/run-isolated.sh . node outputs/isolated-db/reapply.mjs   # second apply ok, 6 rows kept, 1 FK, 181 lookup rows
+MODE=refuse|clean ... node outputs/isolated-db/rollback-rehearsal-v2.mjs               # refuse: rolled back, rows identical; clean: committed, rows identical
+sha256sum supabase/migrations/20261117120000_message_reactions_full_emoji.sql          # ff7cf7fc6ad3a77f73f835bbc8ce8070c09e0f4bbcc436275deb8fc556c86147

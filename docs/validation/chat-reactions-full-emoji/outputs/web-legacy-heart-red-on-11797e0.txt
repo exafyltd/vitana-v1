@@ -1,0 +1,36 @@
+10:08:23 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/projects/sandbox/.wt/v1-pr[39m
+
+ [31m❯[39m src/hooks/useMessageReactions.legacy-heart.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 178[2mms[22m[39m
+     [32m✓[39m shows a bare and a canonical heart as one reaction with one count[32m 63[2mms[22m[39m
+[31m     [31m×[31m toggling the heart chip off deletes my own row in the form it is stored in[39m[32m 58[2mms[22m[39m
+     [32m✓[39m a bare-heart add is written in the canonical form[32m 55[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/hooks/useMessageReactions.legacy-heart.test.ts[2m > [22museMessageReactions — legacy heart variants[2m > [22mtoggling the heart chip off deletes my own row in the form it is stored in
+[31m[1mAssertionError[22m: expected [] to have a length of 1 but got +0[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 0[39m
+
+[36m [2m❯[22m src/hooks/useMessageReactions.legacy-heart.test.ts:[2m74:27[22m[39m
+    [90m 72|[39m       await result.current.removeReaction(result.current.reactionSumma…
+    [90m 73|[39m     })[33m;[39m
+    [90m 74|[39m     [34mexpect[39m(state[33m.[39mdeletes)[33m.[39m[34mtoHaveLength[39m([34m1[39m)[33m;[39m
+    [90m   |[39m                           [31m^[39m
+    [90m 75|[39m     [34mexpect[39m(state[33m.[39mdeletes[[34m0[39m])[33m.[39m[34mtoEqual[39m(
+    [90m 76|[39m       expect.arrayContaining([['message_id', 'm1'], ['user_id', ME], […
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 10:08:24
+[2m   Duration [22m 904ms[2m (transform 62ms, setup 95ms, import 56ms, tests 178ms, environment 465ms)[22m
+

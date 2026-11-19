@@ -4,8 +4,8 @@ Status: **pending owner approval** (stop 1, collaboration.md §7d). Nothing is a
 
 ## 1. Exact file
 - Path: `supabase/migrations/20261117120000_message_reactions_full_emoji.sql`
-- SHA-256: `392b8e0a5e033f4f7920f02d60779f932e760abc1f6651088f95200c91739be8` (7209 bytes)
-- Git blob: `cf0975d699f8b83947b72f234356a7fd3798aa3e`
+- SHA-256: `ff7cf7fc6ad3a77f73f835bbc8ce8070c09e0f4bbcc436275deb8fc556c86147`
+- Git blob: see `git hash-object` on the branch head
 - Branch: `kiro/chat-reactions-full-emoji/reactions` (replacement for vitana-v1 #1697), built on main `bbe90b713`.
 - Contents: lookup table `message_reaction_emojis` (181 rows, same order as `reaction-emojis.json`, checked by script); RLS select-only for `authenticated`; FK `message_reactions_emoji_fk` replacing the six-value CHECK; BEFORE INSERT cap trigger (six distinct emojis per member per message, `reaction_cap_reached`). No existing row is rewritten.
 
@@ -58,4 +58,4 @@ First attempt (statements run one by one, not in a transaction) failed partway a
 - Rollback rehearsal (above). Gateway gate: `outputs/gateway-gate-jest.txt`, red without the gate `outputs/gateway-gate-red-without-gate.txt`. Web and mobile gate: `outputs/web-gate-vitest.txt`, `outputs/mobile-gate-jest.txt`.
 
 ## 8. Approval requested
-Approve or refuse applying the file above (SHA-256 `392b8e0a5e033f4f7920f02d60779f932e760abc1f6651088f95200c91739be8`) to project `inmkhvwdcuyhnxkgfvsb`.
+Approve or refuse applying the file above (SHA-256 `ff7cf7fc6ad3a77f73f835bbc8ce8070c09e0f4bbcc436275deb8fc556c86147`) to project `inmkhvwdcuyhnxkgfvsb`.

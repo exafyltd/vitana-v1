@@ -11,7 +11,7 @@ const MSG = 'm1';
 const APPLE = '\u{1F34E}';
 const HEART = '\u2764\uFE0F';
 
-const state: { rows: Array<Record<string, string>>; inserts: unknown[]; deletes: number } = { rows: [], inserts: [], deletes: 0 };
+const state: { rows: Array<Record<string, string>>; inserts: unknown[]; deletes: number; insertError?: { message: string } } = { rows: [], inserts: [], deletes: 0 };
 
 vi.mock('@/lib/reactions/reactionEmoji', async (orig) => ({
   ...(await orig<typeof import('@/lib/reactions/reactionEmoji')>()),
@@ -20,7 +20,8 @@ vi.mock('@/lib/reactions/reactionEmoji', async (orig) => ({
   },
 }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: ME } }) }));
-vi.mock('@/lib/i18n-toast', () => ({ notifyError: vi.fn(), t: (k: string) => k }));
+const notifyError = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/i18n-toast', () => ({ notifyError, t: (k: string) => k }));
 vi.mock('@/integrations/supabase/realtime', () => {
   const ch = { on: () => ch, subscribe: () => ch };
   return { realtimeChannel: () => ch, removeRealtimeChannel: vi.fn() };
@@ -42,7 +43,7 @@ vi.mock('@/integrations/supabase/client', () => {
       from: vi.fn(() => ({
         insert: async (row: unknown) => {
           state.inserts.push(row);
-          return { error: null };
+          return state.insertError ? { error: state.insertError } : { error: null };
         },
         delete: () => del([]),
       })),
@@ -57,6 +58,8 @@ beforeEach(() => {
   state.rows = [{ message_id: MSG, user_id: ME, emoji: APPLE, created_at: '2026-11-18T10:00:00.000Z' }];
   state.inserts = [];
   state.deletes = 0;
+  state.insertError = undefined;
+  notifyError.mockClear();
 });
 
 describe('web reactions gate: picker flag off', () => {
@@ -95,5 +98,19 @@ describe('web reactions gate: picker flag on', () => {
       await result.current.addReaction('\u{1F33B}');
     });
     expect(state.inserts).toEqual([expect.objectContaining({ emoji: '\u{1F33B}' })]);
+  });
+});
+
+describe('web reactions: cap refusal from the database', () => {
+  it('shows the cap message and rolls back the optimistic reaction', async () => {
+    state.rows = [];
+    state.insertError = { message: 'P0001: reaction_cap_reached' };
+    const { result } = renderHook(() => useMessageReactions(MSG));
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    await act(async () => {
+      await result.current.addReaction('\u{1F44D}');
+    });
+    expect(notifyError).toHaveBeenCalledWith('chatNative.reactions.capReached');
+    expect(result.current.reactionSummary).toHaveLength(0);
   });
 });

@@ -15,7 +15,7 @@
     "reactions": {
       "reactWith": "Mit {emoji} reagieren",
       "count": "{count} {emoji}-Reaktionen",
-      "capReached": "Du kannst mit höchstens sechs verschiedenen Emojis reagieren. Entferne eine, um eine andere hinzuzufügen.",
+      "capReached": "Du kannst mit höchstens sechs verschiedenen Emojis reagieren. Entferne eins, um ein anderes hinzuzufügen.",
       "moreEmojis": "Weitere Emojis"
     },
     "bubble": {
