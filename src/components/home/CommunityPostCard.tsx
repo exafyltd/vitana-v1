@@ -451,7 +451,7 @@ export function CommunityPostCard({
                   aria-label={t("screens.home.postComment")}
                   className="h-8 w-8 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center text-primary disabled:opacity-40 transition-colors shrink-0"
                 >
-                  <Send className="h-5 w-5" />
+                  <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
             ) : (

@@ -1,6 +1,6 @@
 # news-feed-post-action-row / card-actions — commands (vitana-v1, base bbe90b71373e76b18e3a93e22db17b6953c0a183)
 $ npx vitest run src/components/home/CommunityPostCard.test.tsx        # 22 passed (outputs/test-results.txt)
-$ npx vitest run src/components/home                                   # 5 files, 42 passed
+$ npx vitest run src/components/home                                   # 5 files, 42 passed (re-run after the pre-review fix: 42 passed, build exit 0)
 $ git show origin/main:src/components/home/CommunityPostCard.tsx > src/components/home/CommunityPostCard.tsx && npx vitest run src/components/home/CommunityPostCard.test.tsx
 #   1 failed: Unable to find an element by: [data-testid="post-author-row"]   (red on base; file restored after)
 $ npx eslint src/components/home/CommunityPostCard.tsx src/components/home/CommunityPostCard.test.tsx
@@ -11,3 +11,4 @@ $ npx playwright test --list <staging spec>                            # 2 tests
 $ npm run build                                                         # exit 0
 # Fresh clone: git am card-actions.patch on bbe90b7137 → same tree and commit cad441c174 (outputs/fresh-checkout.txt)
 # Local harness (mocked hooks, every non-localhost request aborted): outputs/harness-interactions.txt
+# Non-binding pre-review on 7c49102dc1 (vitana-lane-reviewer, claude-opus-5.5): changes — composer submit icon outside the plan; fixed in the next commit
