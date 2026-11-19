@@ -12,6 +12,7 @@ import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
 import { getPostBackground } from '@/lib/post-backgrounds';
 import type { PostMention } from '@/lib/news-feed-ranker';
 import { pruneMentions } from '@/lib/mentions';
+import { isHeicFile } from '@/lib/heic-convert';
 import { EnrichmentCardStrip } from '@/components/vitana/EnrichmentCardStrip';
 import { CreatePostLauncherProvider, type CreatePostMode } from '@/components/vitana/create-post-launcher';
 
@@ -86,6 +87,12 @@ export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext, pi
     // Reset input so the same file can be re-selected
     e.target.value = '';
 
+    // HEIC/HEIF photos cannot be previewed by browsers and the media bucket
+    // rejects their MIME type, so refuse them up front with a clear message.
+    if (isHeicFile(file)) {
+      notifyError('toasts.profile.heicheifFormatNotSupportedByBrowsers');
+      return;
+    }
     const isImage = file.type.startsWith('image/');
     const isVideo = file.type.startsWith('video/');
     if (!isImage && !isVideo) {
