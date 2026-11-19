@@ -31,6 +31,6 @@ Not checked: secret values (withheld from sessions, correct); live web bundles (
   the Aurora cutover's work; it is noted as a follow-up, not part of this release.
 
 ## Effect on the migration request
-Unchanged target: apply `20261117120000_message_reactions_full_emoji.sql` (SHA-256 `392b8e0a…`) to Supabase VITANA only.
+Unchanged target: apply `20261117120000_message_reactions_full_emoji.sql` (SHA-256 in `migration-approval.md` §1) to Supabase VITANA only.
 Because staging and production share VITANA, the apply is a production database change at the moment it runs, whichever
 environment the code is in.
