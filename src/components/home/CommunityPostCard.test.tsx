@@ -369,4 +369,25 @@ describe('CommunityPostCard action row layout (VTID-05795)', () => {
     expect(commentButton().parentElement).toBe(actionRow);
     expect(actionRow).not.toContainElement(screen.getByText('Autor'));
   });
+
+  it('puts the author on its own row and like, comment, send and the likes count on a separate row below it', () => {
+    render(<CommunityPostCard item={item({ likes_count: 4 })} />);
+
+    const authorRow = screen.getByTestId('post-author-row');
+    const actionRow = screen.getByTestId('post-action-row');
+
+    expect(authorRow).toContainElement(screen.getByText('Autor'));
+    expect(authorRow).not.toContainElement(likeButton());
+    expect(authorRow).not.toContainElement(commentButton());
+    expect(authorRow).not.toContainElement(screen.getByTestId('post-send-in-message'));
+
+    expect(actionRow).toContainElement(likeButton());
+    expect(actionRow).toContainElement(commentButton());
+    expect(actionRow).toContainElement(screen.getByTestId('post-send-in-message'));
+    expect(actionRow).toContainElement(screen.getByText('screens.home.likesCount'));
+    expect(actionRow).not.toContainElement(screen.getByText('Autor'));
+
+    // The author row comes first, the action row below it.
+    expect(authorRow.compareDocumentPosition(actionRow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
 });

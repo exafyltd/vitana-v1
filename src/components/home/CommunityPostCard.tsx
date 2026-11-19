@@ -314,31 +314,43 @@ export function CommunityPostCard({
           ))}
         {item.attached_ref && <EventAttachmentCard attached={item.attached_ref} postId={item.post_id} isOwnPost={!!user?.id && user.id === item.user_id} />}
 
-        {/* One row: the author on the left; like, comment, send and the menu
-            grouped on the right, right-aligned next to the ⋮ menu. */}
-        <div className="mt-3 flex items-center gap-2">
-          <div className="flex min-w-0 items-center gap-2">
-            <Avatar className="h-7 w-7 shrink-0">
-              {item.author_avatar && <AvatarImage src={item.author_avatar} alt="" />}
-              <AvatarFallback className="text-xs">
-                {(item.author_name || "?").charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
+        {/* VTID-05795 follow-up: two rows, so the actions no longer crowd the
+            author. Row 1: who posted, with the ⋮ menu at the end. Row 2, under a
+            hairline: like, comment and send at the start, "{count} Likes" at the end. */}
+        <div className="mt-3 flex items-center gap-2" data-testid="post-author-row">
+          <Avatar className="h-8 w-8 shrink-0">
+            {item.author_avatar && <AvatarImage src={item.author_avatar} alt="" />}
+            <AvatarFallback className="text-xs">
+              {(item.author_name || "?").charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <span className="min-w-0 truncate text-sm font-medium text-foreground/80" data-testid="post-author-name">{item.author_name}</span>
+          {/* VTID-03468: rendered for BOTH backing sources, so the author can
+              delete their own uploaded video and anyone can report it. */}
+          <div className="ms-auto shrink-0">
+            <NewsPostModerationMenu
+              postId={item.post_id}
+              authorId={item.user_id}
+              authorName={item.author_name}
+              postContent={item.content}
+              source={item.source}
+            />
           </div>
+        </div>
 
-          <div className="ms-auto flex shrink-0 items-center gap-0.5">
+        <div className="mt-2 flex items-center gap-2 border-t border-border/40 pt-1" data-testid="post-action-row">
+          <div className="-ms-3 flex items-center gap-1">
             <button
               type="button"
               onClick={handleLike}
               aria-label={t("screens.profile.likePost")}
               aria-pressed={isLiked}
               className={cn(
-                "flex h-11 items-center gap-1 rounded-full px-2 text-xs transition-colors hover:bg-muted/50",
+                "flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-sm transition-colors hover:bg-muted/50",
                 isLiked ? "text-category-4" : "text-muted-foreground hover:text-category-4",
               )}
             >
-              <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
+              <Heart className={cn("h-5 w-5", isLiked && "fill-current")} />
               {likeCount}
             </button>
             <button
@@ -350,11 +362,11 @@ export function CommunityPostCard({
               aria-label={t("screens.profile.comment")}
               aria-expanded={showComments}
               className={cn(
-                "flex h-11 items-center gap-1 rounded-full px-2 text-xs transition-colors hover:bg-muted/50",
+                "flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-sm transition-colors hover:bg-muted/50",
                 showComments ? "text-category-3" : "text-muted-foreground hover:text-category-3",
               )}
             >
-              <MessageCircle className="h-3.5 w-3.5" />
+              <MessageCircle className="h-5 w-5" />
               {commentCount}
             </button>
             {/* VTID-05321: send this post to a chat (profile_posts only — the gateway's "post" kind). */}
@@ -366,37 +378,28 @@ export function CommunityPostCard({
                   openSendInMessage();
                 }}
                 aria-label={t("inbox.shared.sendInMessage")}
-                className="flex h-11 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
                 data-testid="post-send-in-message"
               >
-                <Send className="h-3.5 w-3.5" />
+                <Send className="h-5 w-5" />
               </button>
             )}
             {sendInMessageSheet}
-            {/* VTID-03468: rendered for BOTH backing sources, so the author can
-                delete their own uploaded video and anyone can report it. */}
-            <NewsPostModerationMenu
-              postId={item.post_id}
-              authorId={item.user_id}
-              authorName={item.author_name}
-              postContent={item.content}
-              source={item.source}
-            />
           </div>
-        </div>
 
-        {likeCount > 0 && (
-          <button
-            type="button"
-            onClick={(e) => {
-              stop(e);
-              setShowLikers(true);
-            }}
-            className="mt-1.5 block py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t("screens.home.likesCount", { count: likeCount })}
-          </button>
-        )}
+          {likeCount > 0 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                stop(e);
+                setShowLikers(true);
+              }}
+              className="ms-auto flex h-11 shrink-0 items-center text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {t("screens.home.likesCount", { count: likeCount })}
+            </button>
+          )}
+        </div>
 
         {showComments && (
           <div className="mt-3 space-y-3 border-t border-border/40 pt-3" onClick={stop}>
@@ -448,7 +451,7 @@ export function CommunityPostCard({
                   aria-label={t("screens.home.postComment")}
                   className="h-8 w-8 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center text-primary disabled:opacity-40 transition-colors shrink-0"
                 >
-                  <Send className="h-3.5 w-3.5" />
+                  <Send className="h-5 w-5" />
                 </button>
               </div>
             ) : (
