@@ -2,7 +2,7 @@
   "vtid": "VTID_PLACEHOLDER",
   "service": "community-app",
   "tests": [
-    { "kind": "existing", "ref": "npx vitest run src/lib/reactions/reactionEmoji.test.ts src/hooks/useMessageReactions.gate.test.ts src/hooks/useMessageReactions.legacy-heart.test.ts src/components/messages/MessageBubble.reaction-picker.test.tsx", "cwd": ".",
+    { "kind": "existing", "ref": "npx vitest run src/lib/reactions/reactionEmoji.test.ts src/hooks/useMessageReactions.gate.test.ts src/hooks/useMessageReactions.legacy-heart.test.ts src/components/messages/MessageBubble.reaction-picker.test.tsx src/components/ui/emoji-picker.composer-vs-reaction.test.tsx", "cwd": ".",
       "reason": "shared list pin, six shortcuts, expanded reactions off, legacy heart, cap message, picker gating (read-only; no reaction is written on staging)" },
     { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
       "expect_status": 200, "expect_body_contains": "id=\"root\"",

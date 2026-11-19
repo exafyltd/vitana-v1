@@ -14,7 +14,8 @@ import { useI18n } from '../../i18n/I18nProvider';
 import { EMOJI_CATEGORIES, EMOJI_CATEGORY_KEYS, loadRecentEmojis, RECENT_SEED, recordRecentEmoji, type EmojiCategory } from './data/emojiRecents';
 
 /** The emoji grid in a bottom sheet: recents + the shared categories. Used by the composer button and the reaction drawer's "+". */
-export function EmojiSheet({ open, onClose, onSelect, userId }: { open: boolean; onClose: () => void; onSelect: (emoji: string) => void; userId?: string | null }) {
+/** `allowed` limits every tab (recents included): the reaction "+" passes the reaction set, the composer passes none. */
+export function EmojiSheet({ open, onClose, onSelect, userId, allowed }: { open: boolean; onClose: () => void; onSelect: (emoji: string) => void; userId?: string | null; allowed?: (emoji: string) => boolean }) {
   const { t } = useI18n();
   const { colors } = useUITheme();
   const [category, setCategory] = useState<EmojiCategory>('recent');
@@ -24,7 +25,8 @@ export function EmojiSheet({ open, onClose, onSelect, userId }: { open: boolean;
     if (open) void loadRecentEmojis(userId).then(setRecent);
   }, [open, userId]);
 
-  const list: readonly string[] = category === 'recent' ? recent : EMOJI_CATEGORIES[category];
+  const all: readonly string[] = category === 'recent' ? recent : EMOJI_CATEGORIES[category];
+  const list: readonly string[] = allowed ? all.filter(allowed) : all;
 
   return (
     <BottomSheet open={open} onClose={onClose} testID="emoji-picker">

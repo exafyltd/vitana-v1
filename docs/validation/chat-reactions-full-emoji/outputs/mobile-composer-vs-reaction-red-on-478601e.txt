@@ -1,0 +1,457 @@
+FAIL tests/inbox-chat/conversation-chat/emoji-composer-vs-reaction.test.tsx (25.995 s)
+  emoji recents: composer keeps every emoji, reactions use only the set
+    ✕ the seed keeps its 16 composer emojis, including the ones outside the reaction set (3 ms)
+    ✕ recording a composer pick outside the reaction set keeps it in the recents (20 ms)
+    ✕ the composer picker shows a stored recent outside the reaction set (6147 ms)
+    ✓ the reaction "+" sheet hides recents outside the reaction set and still offers supported ones (73 ms)
+
+  ● emoji recents: composer keeps every emoji, reactions use only the set › the seed keeps its 16 composer emojis, including the ones outside the reaction set
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 16
+    Received length: 11
+    Received array:  ["😊", "👍", "❤️", "😂", "😮", "🙏", "🎉", "💪", "🔥", "😍", …]
+
+      31 | describe('emoji recents: composer keeps every emoji, reactions use only the set', () => {
+      32 |   it('the seed keeps its 16 composer emojis, including the ones outside the reaction set', () => {
+    > 33 |     expect(RECENT_SEED).toHaveLength(16);
+         |                         ^
+      34 |     for (const e of ['\u{1F60E}', '\u{1F44F}', '\u{1F64C}', '\u{1F4AF}', '\u2728']) expect(RECENT_SEED).toContain(e);
+      35 |   });
+      36 |
+
+      at Object.toHaveLength (tests/inbox-chat/conversation-chat/emoji-composer-vs-reaction.test.tsx:33:25)
+
+  ● emoji recents: composer keeps every emoji, reactions use only the set › recording a composer pick outside the reaction set keeps it in the recents
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "💯"
+    Received: "🍎"
+
+      37 |   it('recording a composer pick outside the reaction set keeps it in the recents', async () => {
+      38 |     const list = await recordRecentEmoji('\u{1F4AF}', ME);
+    > 39 |     expect(list[0]).toBe('\u{1F4AF}');
+         |                     ^
+      40 |     expect(JSON.parse((await AsyncStorage.getItem(recentEmojiKey(ME))) ?? '[]')).toEqual(['\u{1F4AF}', SUNGLASSES, APPLE]);
+      41 |   });
+      42 |
+
+      at Object.toBe (tests/inbox-chat/conversation-chat/emoji-composer-vs-reaction.test.tsx:39:21)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● emoji recents: composer keeps every emoji, reactions use only the set › the composer picker shows a stored recent outside the reaction set
+
+    Unable to find an element with testID: emoji-😎
+
+    [36m<View[39m
+      [33mtestID[39m=[32m"message-input"[39m
+    [36m>[39m
+      [36m<View>[39m
+        [36m<View>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"Choose an emoji"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessible[39m=[32m{true}[39m
+            [33mtestID[39m=[32m"emoji-picker-button"[39m
+          [36m>[39m
+            [36m<View[39m
+              [33maccessibilityElementsHidden[39m=[32m{true}[39m
+              [33mimportantForAccessibility[39m=[32m"no-hide-descendants"[39m
+              [33mtestID[39m=[32m"chat-icon-Smile"[39m
+            [36m>[39m
+              [36m<RNSVGSvgView[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [36m<RNSVGGroup>[39m
+                  [36m<RNSVGPath />[39m
+                  [36m<RNSVGPath />[39m
+                  [36m<RNSVGPath />[39m
+                  [36m<RNSVGCircle />[39m
+                [36m</RNSVGGroup>[39m
+              [36m</RNSVGSvgView>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+          [36m<Modal[39m
+            [33mtestID[39m=[32m"emoji-picker-sheet-modal"[39m
+          [36m>[39m
+            [36m<View[39m
+              [33mtestID[39m=[32m"vitana-ui-overlay-gesture-root"[39m
+            [36m>[39m
+              [36m<View[39m
+                [33maccessibilityElementsHidden[39m=[32m{true}[39m
+                [33mimportantForAccessibility[39m=[32m"no-hide-descendants"[39m
+                [33mstyle[39m=[32m{
+                  {
+                    "opacity": 0,
+                  }
+                }[39m
+                [33mtestID[39m=[32m"emoji-picker-sheet-overlay"[39m
+              [36m>[39m
+                [36m<View[39m
+                  [33maccessible[39m=[32m{false}[39m
+                  [33mtestID[39m=[32m"emoji-picker-sheet-backdrop"[39m
+                [36m/>[39m
+              [36m</View>[39m
+              [36m<View[39m
+                [33mpointerEvents[39m=[32m"box-none"[39m
+              [36m>[39m
+                [36m<View[39m
+                  [33maccessibilityViewIsModal[39m=[32m{true}[39m
+                  [33mtestID[39m=[32m"emoji-picker-sheet-content"[39m
+                [36m>[39m
+                  [36m<View>[39m
+                    [36m<View[39m
+                      [33mtestID[39m=[32m"emoji-picker"[39m
+                    [36m>[39m
+                      [36m<RCTScrollView>[39m
+                        [36m<View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-recent"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mRecent[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-smileys"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mSmileys[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-people"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mPeople[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-nature"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mNature[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-food"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mFood[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-activity"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mActivity[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-travel"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mTravel[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                          [36m<View[39m
+                            [33maccessibilityRole[39m=[32m"button"[39m
+                            [33maccessibilityState[39m=[32m{
+                              {
+                                "disabled": false,
+                              }
+                            }[39m
+                            [33maccessible[39m=[32m{true}[39m
+                            [33mtestID[39m=[32m"emoji-tab-objects"[39m
+                          [36m>[39m
+                            [36m<Text>[39m
+                              [0mObjects[0m
+                            [36m</Text>[39m
+                          [36m</View>[39m
+                        [36m</View>[39m
+                      [36m</RCTScrollView>[39m
+                      [36m<View[39m
+                        [33mtestID[39m=[32m"emoji-grid-recent"[39m
+                      [36m>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"🍎"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-🍎"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m🍎[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"😊"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-😊"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m😊[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"👍"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-👍"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m👍[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"❤️"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-❤️"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m❤️[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"😂"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-😂"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m😂[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"😮"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-😮"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m😮[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"🙏"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-🙏"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m🙏[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"🎉"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-🎉"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m🎉[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"💪"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-💪"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m💪[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"🔥"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-🔥"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m🔥[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"😍"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-😍"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m😍[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                        [36m<View[39m
+                          [33maccessibilityLabel[39m=[32m"🥰"[39m
+                          [33maccessibilityRole[39m=[32m"button"[39m
+                          [33maccessible[39m=[32m{true}[39m
+                          [33mtestID[39m=[32m"emoji-🥰"[39m
+                        [36m>[39m
+                          [36m<Text>[39m
+                            [0m🥰[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                      [36m</View>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                  [36m<View[39m
+                    [33maccessibilityLabel[39m=[32m"Close"[39m
+                    [33maccessibilityRole[39m=[32m"button"[39m
+                    [33maccessible[39m=[32m{true}[39m
+                    [33mtestID[39m=[32m"emoji-picker-sheet-close"[39m
+                  [36m>[39m
+                    [36m<RNSVGSvgView[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                    [36m>[39m
+                      [36m<RNSVGGroup>[39m
+                        [36m<RNSVGPath />[39m
+                        [36m<RNSVGPath />[39m
+                      [36m</RNSVGGroup>[39m
+                    [36m</RNSVGSvgView>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View[39m
+                [33mpointerEvents[39m=[32m"box-none"[39m
+                [33mtestID[39m=[32m"vitana-ui-toast-host"[39m
+              [36m/>[39m
+            [36m</View>[39m
+          [36m</Modal>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"Attach"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "disabled": false,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+            [33mtestID[39m=[32m"attach-paperclip"[39m
+          [36m>[39m
+            [36m<View[39m
+              [33maccessibilityElementsHidden[39m=[32m{true}[39m
+              [33mimportantForAccessibility[39m=[32m"no-hide-descendants"[39m
+              [33mtestID[39m=[32m"chat-icon-Paperclip"[39m
+            [36m>[39m
+              [36m<RNSVGSvgView[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [36m<RNSVGGroup>[39m
+                  [36m<RNSVGPath />[39m
+                [36m</RNSVGGroup>[39m
+              [36m</RNSVGSvgView>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+          [36m<View>[39m
+            [36m<TextInput[39m
+              [33maccessibilityLabel[39m=[32m"Compose message"[39m
+              [33meditable[39m=[32m{true}[39m
+              [33mplaceholder[39m=[32m"Message…"[39m
+              [33mtestID[39m=[32m"message-input-field"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</View>[39m
+        [36m</View>[39m
+        [36m<View[39m
+          [33maccessibilityLabel[39m=[32m"Record voice message"[39m
+          [33maccessibilityRole[39m=[32m"button"[39m
+          [33maccessibilityState[39m=[32m{
+            {
+              "disabled": false,
+            }
+          }[39m
+          [33maccessible[39m=[32m{true}[39m
+          [33mtestID[39m=[32m"message-mic"[39m
+        [36m>[39m
+          [36m<View[39m
+            [33maccessibilityElementsHidden[39m=[32m{true}[39m
+            [33mimportantForAccessibility[39m=[32m"no-hide-descendants"[39m
+            [33mtestID[39m=[32m"chat-icon-Mic"[39m
+          [36m>[39m
+            [36m<RNSVGSvgView[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<RNSVGGroup>[39m
+                [36m<RNSVGPath />[39m
+                [36m<RNSVGPath />[39m
+                [36m<RNSVGRect />[39m
+              [36m</RNSVGGroup>[39m
+            [36m</RNSVGSvgView>[39m
+          [36m</View>[39m
+        [36m</View>[39m
+      [36m</View>[39m
+    [36m</View>[39m
+
+      47 |     });
+      48 |     fireEvent.press(screen.getByTestId('emoji-picker-button'));
+    > 49 |     await waitFor(() => expect(screen.getByTestId(`emoji-${SUNGLASSES}`, { includeHiddenElements: true })).toBeTruthy());
+         |                  ^
+      50 |   });
+      51 |
+      52 |   it('the reaction "+" sheet hides recents outside the reaction set and still offers supported ones', async () => {
+
+      at Object.<anonymous> (tests/inbox-chat/conversation-chat/emoji-composer-vs-reaction.test.tsx:49:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 1 passed, 4 total
+Snapshots:   0 total
+Time:        27.008 s
+Ran all test suites matching /tests\/inbox-chat\/conversation-chat\/emoji-composer-vs-reaction.test.tsx/i.

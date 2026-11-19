@@ -34,7 +34,7 @@ import { navigateToWebPath } from '../../navigation/navigate';
 import { useChatText } from './text';
 import { ReactionCluster, ReplyQuote } from './components';
 import { QUICK_REACTIONS, useReactions } from './data/useReactions';
-import { REACTION_PICKER_ENABLED } from './data/reactionEmoji';
+import { isSupportedReactionEmoji, REACTION_PICKER_ENABLED } from './data/reactionEmoji';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, type ChatViewMessage } from './data/types';
 import { recordRecentEmoji } from './data/emojiRecents';
 import { EmojiSheet } from './EmojiPicker';
@@ -638,6 +638,7 @@ export function MessageBubble({
         open={moreEmojis}
         onClose={() => setMoreEmojis(false)}
         userId={userId ?? null}
+        allowed={isSupportedReactionEmoji}
         onSelect={(emoji) => {
           setMoreEmojis(false);
           void react(emoji);

@@ -26,3 +26,7 @@ TEST: outputs/isolated-db/run-isolated.sh <v1> outputs/isolated-db/cross-client.
 
 AC-7. Migration 20261117120000 is widening only, keeps every existing row, re-applies cleanly, and its rollback preserves member reactions (refuses while any reaction outside the six exists).
 TEST: outputs/isolated-db/setup-db.mjs, reapply.mjs, rollback-rehearsal-v2.mjs (results outputs/reapply.txt, outputs/rollback-rehearsal.txt)
+
+AC-8. The composer's emoji picker keeps its 16-emoji seed and every recent a member used, including emojis outside the reaction set (😎 👏 🙌 💯 ✨); only the reaction "+" picker is limited to the 181-emoji set (web and mobile).
+TEST: cd apps/mobile && npx jest tests/inbox-chat/conversation-chat/emoji-composer-vs-reaction.test.tsx
+TEST: npx vitest run src/components/ui/emoji-picker.composer-vs-reaction.test.tsx

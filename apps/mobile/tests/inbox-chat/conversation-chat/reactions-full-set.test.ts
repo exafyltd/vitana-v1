@@ -30,8 +30,8 @@ describe('reaction emoji set (mobile)', () => {
     expect(normalizeReactionEmoji('nope')).toBeNull();
   });
 
-  it('seeds recents only with supported emoji, so a seeded pick always writes', () => {
-    expect(RECENT_SEED.length).toBeGreaterThanOrEqual(8);
-    for (const e of RECENT_SEED) expect(normalizeReactionEmoji(e)).toBe(e);
+  it('the composer seed is unchanged; its emojis outside the reaction set are filtered only by the reaction sheet', () => {
+    expect(RECENT_SEED).toHaveLength(16);
+    expect(RECENT_SEED.filter((e) => normalizeReactionEmoji(e) === null)).toEqual(['\u{1F60E}', '\u{1F44F}', '\u{1F64C}', '\u{1F4AF}', '\u2728']);
   });
 });

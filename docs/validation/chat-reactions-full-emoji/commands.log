@@ -14,3 +14,8 @@ outputs/isolated-db/run-isolated.sh . outputs/isolated-db/cross-client.sh .     
 MIGRATION_FILE=... outputs/isolated-db/run-isolated.sh . node outputs/isolated-db/reapply.mjs   # second apply ok, 6 rows kept, 1 FK, 181 lookup rows
 MODE=refuse|clean ... node outputs/isolated-db/rollback-rehearsal-v2.mjs               # refuse: rolled back, rows identical; clean: committed, rows identical
 sha256sum supabase/migrations/20261117120000_message_reactions_full_emoji.sql          # d0c1c3c00e52a26bfb3534403d7ed4495f770a50eaff6e82438b5939307c6e71
+# composer recents restored (Kiro 12, kiro-jtadic-202611191357-f5ff)
+cd apps/mobile && npx jest tests/inbox-chat/conversation-chat/emoji-composer-vs-reaction.test.tsx   # red on 478601eb0: 3 failed, 1 passed (outputs/mobile-composer-vs-reaction-red-on-478601e.txt)
+cd apps/mobile && npx jest tests/inbox-chat/conversation-chat                                      # 255 passed, 2 skipped (outputs/mobile-suites.txt)
+npx vitest run src/components/messages src/components/ui src/hooks src/lib/reactions               # 786 passed, 3 skipped (outputs/web-suites.txt)
+npm run build                                                                                      # exit 0

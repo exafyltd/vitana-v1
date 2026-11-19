@@ -9,15 +9,13 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import reactionList from './reaction-emojis.json';
-import { normalizeReactionEmoji } from './reactionEmoji';
 
 export const RECENT_STORAGE_KEY = 'vitana:emoji:recent:v1';
 export const RECENT_MAX = 24;
-const SEED_CANDIDATES = ['😊', '👍', '❤️', '😂', '😮', '🙏', '🎉', '💪', '🔥', '😍', '🥰', '😎', '👏', '🙌', '💯', '✨'];
-/** Seed entries are canonical and always in the supported set (see the parity test). */
-export const RECENT_SEED: string[] = SEED_CANDIDATES.map((e) => normalizeReactionEmoji(e)).filter((e): e is string => e !== null);
+export const RECENT_SEED = ['😊', '👍', '❤', '😂', '😮', '🙏', '🎉', '💪', '🔥', '😍', '🥰', '😎', '👏', '🙌', '💯', '✨'];
 
-/** The picker's categories: the shared supported set (reaction-emojis.json), web order. */
+/** The picker's categories: the shared emoji set (reaction-emojis.json), web order. The composer and the reaction "+" use
+ * the same tabs; only the reaction sheet filters (EmojiSheet `allowed`). */
 export const EMOJI_CATEGORIES = reactionList.categories as Record<CategoryName, readonly string[]>;
 export type CategoryName = 'smileys' | 'people' | 'nature' | 'food' | 'activity' | 'travel' | 'objects';
 
@@ -46,12 +44,7 @@ async function loadOwn(userId?: string | null): Promise<string[]> {
   try {
     const raw = await AsyncStorage.getItem(key);
     const parsed = raw ? (JSON.parse(raw) as unknown) : null;
-    if (!Array.isArray(parsed)) return [];
-    const canon = parsed
-      .filter((e): e is string => typeof e === 'string')
-      .map((e) => normalizeReactionEmoji(e))
-      .filter((e): e is string => e !== null);
-    return [...new Set(canon)];
+    return Array.isArray(parsed) ? parsed.filter((e): e is string => typeof e === 'string') : [];
   } catch {
     return [];
   }
@@ -64,9 +57,7 @@ export async function loadRecentEmojis(userId?: string | null): Promise<string[]
 
 export async function recordRecentEmoji(emoji: string, userId?: string | null): Promise<string[]> {
   const key = recentEmojiKey(userId);
-  const canonical = normalizeReactionEmoji(emoji);
-  if (!canonical) return withSeed(await loadOwn(userId));
-  const own = [canonical, ...(await loadOwn(userId)).filter((e) => e !== canonical)].slice(0, RECENT_MAX);
+  const own = [emoji, ...(await loadOwn(userId)).filter((e) => e !== emoji)].slice(0, RECENT_MAX);
   try {
     await AsyncStorage.setItem(key, JSON.stringify(own));
     memory.delete(key);
