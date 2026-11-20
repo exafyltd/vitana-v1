@@ -1,0 +1,19 @@
+preflight vitana-v1 /projects/sandbox/wt-vtid-05531-events-meetups-lane
+  base fcc1e451b4f2d5177f0c556eba433a38f92634a4  head c5f0efa9f56c6691ae3ab618b65a32f285834028  branch kiro/native-wave2-events-calendar-r3/events-meetups
+
+PASS  Collab handoff [report-only in CI (vitana-v1 Collab handoff step)]
+FAIL  Lane scope [required]
+      ❌ **lane scope** — 1 problem(s) (lane native-wave2-events-calendar-r3/events-meetups):
+      - apps/mobile/tests/orb/nav-directive.test.ts is outside lane native-wave2-events-calendar-r3/events-meetups (paths: apps/mobile/app/(app)/comm/events-meetups/**, apps/mobile/app/(app)/community/event-game.tsx, apps/mobile/app/(app)/e/**, apps/mobile/app/(app)/pub/events/**, apps/mobile/src/screens/events/**, apps/mobile/src/ports/**, apps/mobile/src/navigation/resolve.ts, apps/mobile/maestro/events/**, apps/mobile/tests/events/**, packages/core/manifest.json, packages/core/closure.generated.json, packages/core/src/**, scripts/native/mobile-ci-paths.generated.json, apps/mobile/parity/ledger.json, src/i18n/*/eventsNative.json, docs/validation/**, packages/core/extract.json)
+PASS  gh for plan( PR / vitana-platform lane files [required]
+FAIL  PR-GATE scope [report-only in CI (until config.enforce=true)]
+      ❌ **scope** — 1 file(s) changed outside the declared scope of VTID-05531:
+      - `apps/mobile/tests/orb/nav-directive.test.ts`
+PASS  PR-GATE sparring [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE weakening [report-only in CI (until config.enforce=true)]
+PASS  PR-GATE red-green [report-only in CI (until config.enforce=true)]
+PASS  Kiro steering [report-only in CI (until config.enforce=true)]
+SKIP  Not run by preflight [report-only in CI]
+      vitana-v1 PR-GATE also runs migrations, typecheck / ESLint / design ratchets, regression scripts and the build: run npm test, npm run lint and npm run build (lane-code.md step 7)
+
+preflight: 2 check(s) failed: Lane scope, PR-GATE scope — fix every error above, then push

@@ -500,10 +500,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "COMM.EVENTS_HOT",
@@ -512,10 +512,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "COMM.EVENTS_TODAY",
@@ -524,10 +524,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "COMM.EVENTS_UPCOMING",
@@ -536,10 +536,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "COMM.FEED",
@@ -548,10 +548,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "COMM.FIND_PARTNER",
@@ -812,10 +812,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "COMM.TALK_TO_VITANA",
@@ -1724,10 +1724,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "OVERLAY.MASTER_ACTION",
@@ -1748,10 +1748,10 @@
       "source": "registry",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "OVERLAY.PROFILE_PREVIEW",
@@ -2492,10 +2492,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "/creator/onboarded",
@@ -2552,10 +2552,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "/e/game/:slug",
@@ -2564,10 +2564,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "/earthlinks/*",
@@ -2828,10 +2828,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "events-calendar",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-05"
     },
     {
       "key": "/redeem",
@@ -2912,8 +2912,8 @@
       "source": "role-route",
       "scope": "out:system-browser",
       "lane": null,
-      "status": "not_started",
-      "exception": null,
+      "status": "exception",
+      "exception": "The installed native app does not port the admin activity console; it stays a web page the system browser opens, so it never has a native screen (owner decision 2026-11-08, Decision 2: the ORB unported-screen test example moves to this route).",
       "owner": null,
       "last_parity_check": null
     },

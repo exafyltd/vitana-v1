@@ -1,0 +1,56 @@
+
+> @vitana/mobile@0.0.0 prebundle
+> npm run gen:i18n
+
+
+> @vitana/mobile@0.0.0 gen:i18n
+> node ../../scripts/native/gen-i18n-map.mjs
+
+gen-i18n-map: 11 locales, 1617 shards → src/i18n/catalog-map.generated.ts (unchanged)
+
+> @vitana/mobile@0.0.0 bundle
+> expo export --platform ios --platform android --output-dir dist
+
+Starting Metro Bundler
+
+Android Bundled 129641ms node_modules/expo-router/entry.js (6124 modules)
+iOS Bundled 164248ms node_modules/expo-router/entry.js (6024 modules)
+
+› Assets (45):
+../../src/assets/flags/cn.png (934B)
+../../src/assets/flags/de.png (151B)
+../../src/assets/flags/es.png (3.3KB)
+../../src/assets/flags/fr.png (254B)
+../../src/assets/flags/gb.png (980B)
+../../src/assets/flags/pl.png (119B)
+../../src/assets/flags/pt.png (4.8KB)
+../../src/assets/flags/rs.png (6.2KB)
+../../src/assets/flags/ru.png (153B)
+../../src/assets/flags/sa.png (3KB)
+../../src/assets/flags/tr.png (1.5KB)
+node_modules/@expo-google-fonts/material-symbols/400Regular/MaterialSymbols_400Regular.ttf (971KB)
+node_modules/expo-router/assets/arrow_down.png (9.5KB)
+node_modules/expo-router/assets/arrow_right.xml (307B)
+node_modules/expo-router/assets/checkmark.xml (312B)
+node_modules/expo-router/assets/error.png (469B)
+node_modules/expo-router/assets/file.png (138B)
+node_modules/expo-router/assets/forward.png (188B)
+node_modules/expo-router/assets/pkg.png (364B)
+node_modules/expo-router/assets/react-navigation/elements/back-icon-mask.png (653B)
+node_modules/expo-router/assets/react-navigation/elements/back-icon.png (8 variations | 359B)
+node_modules/expo-router/assets/react-navigation/elements/clear-icon.png (4 variations | 425B)
+node_modules/expo-router/assets/react-navigation/elements/close-icon.png (4 variations | 235B)
+node_modules/expo-router/assets/react-navigation/elements/search-icon.png (7 variations | 592B)
+node_modules/expo-router/assets/sitemap.png (465B)
+node_modules/expo-router/assets/unmatched.png (4.8KB)
+
+› android bundles (1):
+_expo/static/js/android/entry-a66b659934bdcaba48f989d84570958e.hbc (20MB)
+
+› ios bundles (1):
+_expo/static/js/ios/entry-a1714cf37eee3d3acc1eaf7ecb9aaf0e.hbc (20MB)
+
+› Files (1):
+metadata.json (4.8KB)
+
+Exported: dist

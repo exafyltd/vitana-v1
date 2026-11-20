@@ -1,6 +1,34 @@
 {
   "_doc": "VTID-05183 — every web module @vitana/core re-exports, with its reason and consumer lanes. A lane that needs another transitively class-A module adds a line here and a re-export in its own PR; scripts/native/core-closure.mjs --check is the gate (it fails on a re-export missing here, a line nothing re-exports, or a module that is not class A).",
   "reexports": {
+    "src/lib/events/hotEvents.ts": {
+      "entry": "events-hot.ts",
+      "lanes": [
+        "events-meetups"
+      ],
+      "reason": "Hot-events selection for the events hub (selectHotEvents). Imports nothing; pure."
+    },
+    "src/lib/virtualLink.ts": {
+      "entry": "virtual-link.ts",
+      "lanes": [
+        "events-meetups"
+      ],
+      "reason": "Virtual-meeting link helpers for the event and meetup forms (toVirtualLink, isHttpUrl). Imports nothing; pure."
+    },
+    "src/lib/eventCoverImage.ts": {
+      "entry": "event-cover-image.ts",
+      "lanes": [
+        "events-meetups"
+      ],
+      "reason": "Event cover resolution (resolveEventCover, generateCoverUrl) for the event cards and the drawer. Imports nothing; pure."
+    },
+    "src/lib/profile-path.ts": {
+      "entry": "profile-path.ts",
+      "lanes": [
+        "events-meetups"
+      ],
+      "reason": "Member profile path (profilePath) for the hub's creator links. Imports nothing; pure."
+    },
     "src/navigation/registry/index.ts": {
       "entry": "registry.ts",
       "lanes": [

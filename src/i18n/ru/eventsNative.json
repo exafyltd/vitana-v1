@@ -1,0 +1,8 @@
+{
+  "eventsNative": {
+    "filterTitle": "Фильтр событий",
+    "eventUpdated": "Событие обновлено! ✏",
+    "eventCreateFailed": "Не удалось создать событие. Попробуй ещё раз.",
+    "requiredField": "Заполни это поле."
+  }
+}
