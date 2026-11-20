@@ -68,7 +68,7 @@ export function GuidedModeProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       } else setLoading(true);
       try {
-        const json = await gatewayGet<{ ok?: boolean; state?: JourneyState }>('/api/v1/journey/state');
+        const json = await gatewayGet<{ ok?: boolean; state?: JourneyState }>('/journey/state');
         if (cancelled) return;
         if (json?.ok && json.state) {
           const effective = resolveEffectiveMode(json.state, true);

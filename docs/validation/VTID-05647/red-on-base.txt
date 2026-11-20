@@ -1,0 +1,40 @@
+# red on base: src/ stashed (fixes absent), new tests present
+FAIL tests/shell-fixes/gateway-paths.test.tsx (26.347 s)
+  ● shell gateway paths › GuidedModeProvider requests exactly <origin>/api/v1/journey/state and follows the state
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "guided"
+    Received: "full"
+
+      53 |       ),
+      54 |     });
+    > 55 |     await waitFor(() => expect(result.current.mode).toBe('guided'));
+         |                  ^
+      56 |     expect(urls).toEqual(['https://gw.test/api/v1/journey/state']);
+      57 |   });
+      58 | });
+
+
+FAIL tests/shell-fixes/auth-gate.test.tsx (27.979 s)
+  ● AuthGate signed out › /commerce/team → /commerce/join?redirectTo=… when /commerce/join is a native route
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "/commerce/join?redirectTo=%2Fcommerce%2Fteam"
+    Received: "/maxina?redirectTo=%2Fcommerce%2Fteam"
+
+      43 |   it('/commerce/team → /commerce/join?redirectTo=… when /commerce/join is a native route', () => {
+      44 |     (NATIVE_ROUTES as string[]).push('/commerce/join');
+    > 45 |     expect(gate('/commerce/team').getByTestId('redirect').props.children).toBe('/commerce/join?redirectTo=%2Fcommerce%2Fteam');
+         |                                                                           ^
+      46 |   });
+      47 |
+      48 |   it('/commerce/team → /maxina while /commerce/join is not a native route (no loop through the catch-all)', () => {
+
+
+Test Suites: 2 failed, 2 total
+Tests:       2 failed, 3 passed, 5 total
+Snapshots:   0 total
+Time:        28.953 s
+Ran all test suites matching /tests\/shell-fixes/i.
