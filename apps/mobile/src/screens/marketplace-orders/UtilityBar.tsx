@@ -9,8 +9,9 @@
  *  - Life Compass (:102-112): opens the global Life Compass popup through
  *    the overlay bus event `vitana:open-life-compass` (the web context's
  *    `openPopup`, the same event the My Journey port emits);
- *  - Gift Voucher (:115-117, `GiftVoucherButton`) and its `MaxinaVoucherModal`
- *    (VoucherModal.tsx) are hidden where IAP is restricted (:43,
+ *  - Gift Voucher (:115-117, `GiftVoucherButton`) emits `gift-voucher:open`
+ *    for the shared modal (shell/utility/VoucherModal.tsx, VTID-05653) and is
+ *    hidden where IAP is restricted (:43,
  *    `isIAPRestricted()`); natively that is the shell's rule unchanged
  *    (src/shell/logic/drawer.ts:37-38, `Platform.OS === 'ios'`);
  *  - `SearchButton` = `ExpandableSearchButton` (expandable-search-button.tsx):
@@ -39,7 +40,8 @@ import { overlayBus } from '../../navigation/overlay-bus';
 import { useI18n } from '../../i18n/I18nProvider';
 import { Pulse } from './components';
 import { useAutopilotPendingCount, useCalendarEvents, useVitanaIndexTotal, useVitanaStreak } from './data/chrome';
-import { VoucherModal } from './VoucherModal';
+import { VoucherModal } from '../../shell/utility/VoucherModal';
+import { GIFT_VOUCHER_OPEN } from '../../shell/utility/events';
 
 export const LIFE_COMPASS_OPEN = 'vitana:open-life-compass';
 export const INDEX_OPEN = 'vitana:open-index';
@@ -265,6 +267,12 @@ export function UtilityBar({
   const { colors } = useUITheme();
   const [voucherOpen, setVoucherOpen] = useState(false);
   const hideVoucher = isIAPRestricted();
+  // VTID-05653: the host in shell/OverlayHost.tsx opens the one voucher modal; with no host
+  // registered (a screen rendered on its own) the rail opens the shared modal itself.
+  const openVoucher = () => {
+    if (overlayBus.listenerCount(GIFT_VOUCHER_OPEN) > 0) overlayBus.emit(GIFT_VOUCHER_OPEN, { returnTo });
+    else setVoucherOpen(true);
+  };
   return (
     <View style={compact ? styles.compact : styles.regular} testID="mo-utility-bar">
       <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.rail} testID="mo-utility-rail">
@@ -274,7 +282,7 @@ export function UtilityBar({
           <Text size="sm">{t('lifeCompass.title')}</Text>
         </RailPill>
         {!hideVoucher ? (
-          <RailPill testID="mo-gift-voucher" label={t('actionBar.giftVoucher')} onPress={() => setVoucherOpen(true)}>
+          <RailPill testID="mo-gift-voucher" label={t('actionBar.giftVoucher')} onPress={openVoucher}>
             <CommerceIcon name="Gift" size={16} color={colors.mutedForeground} />
             <Text size="sm">{t('actionBar.giftVoucher')}</Text>
           </RailPill>
@@ -282,7 +290,7 @@ export function UtilityBar({
         {afterGiftVoucher}
         {trailing}
       </ScrollView>
-      {!hideVoucher ? <VoucherModal open={voucherOpen} onOpenChange={setVoucherOpen} returnTo={returnTo} /> : null}
+      {!hideVoucher ? <VoucherModal open={voucherOpen} onOpenChange={setVoucherOpen} returnTo={returnTo} testIDPrefix="mo-" /> : null}
     </View>
   );
 }

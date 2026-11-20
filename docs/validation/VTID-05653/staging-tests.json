@@ -1,0 +1,10 @@
+{
+  "vtid": "VTID-05653",
+  "service": "community-app",
+  "_note": "Native Wave 2 fix-forward, utility-bar lane. Proven offline (jest-expo + RNTL, fake gateway and Supabase doubles, no network). The native app has no staging deploy and device runtime waits for G1; this lane makes no staging call and writes nothing to Supabase or the gateway.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/utility-bar tests/home tests/diary tests/discover-commerce tests/journey", "cwd": "apps/mobile", "reason": "shared bar slots and events, global hosts, Home and Diary backfill, and the existing discover / marketplace / journey suites against the one voucher modal" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "React 19 ReactElement typing" }
+  ]
+}

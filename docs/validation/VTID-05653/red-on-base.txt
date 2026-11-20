@@ -1,0 +1,16 @@
+    Cannot find module '../../src/shell/utility/events' from 'tests/utility-bar/hosts.test.tsx'
+    Cannot find module '../../src/shell/utility/UtilityBar' from 'tests/utility-bar/bar.test.tsx'
+  ● Daily Diary utility bar (MobileDailyDiary.tsx:86-108) › renders Search, pill, Calendar, Life Compass, Gift Voucher, Index, Autopilot in the web order
+  ● Daily Diary utility bar (MobileDailyDiary.tsx:86-108) › Search filters nothing (the web query is never read)
+FAIL tests/utility-bar/bar.test.tsx
+FAIL tests/utility-bar/home-diary.test.tsx (59.658 s)
+FAIL tests/utility-bar/hosts.test.tsx
+  ● Home utility bar (Home.tsx:713-746) › Create post pushes /home/compose
+  ● Home utility bar (Home.tsx:713-746) › every new button has an accessibility label
+  ● Home utility bar (Home.tsx:713-746) › filters article cards by title, summary, source name and tags, and leaves other cards alone
+  ● Home utility bar (Home.tsx:713-746) › filters the community articles with the same predicate
+  ● Home utility bar (Home.tsx:713-746) › has no Gift Voucher on iOS
+  ● Home utility bar (Home.tsx:713-746) › Invite shares the flyer URL with the language of the member
+  ● Home utility bar (Home.tsx:713-746) › renders Search, pill, Invite, Calendar, Create post, Life Compass, Gift Voucher, Index, Autopilot in the web order
+Tests:       9 failed, 9 total
+Test Suites: 3 failed, 3 total

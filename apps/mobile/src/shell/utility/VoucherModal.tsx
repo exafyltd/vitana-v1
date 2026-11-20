@@ -1,6 +1,6 @@
 /**
- * VTID-05511 — twin of `src/components/voucher/MaxinaVoucherModal.tsx`, the
- * gift-voucher dialog the utility rail's Gift Voucher pill opens:
+ * VTID-05510 (moved to the shared shell by VTID-05653; the one voucher modal) — twin of src/components/voucher/MaxinaVoucherModal.tsx, the
+ * gift-voucher dialog of the utility rail's Gift Voucher pill:
  *  - selection (:378-475): title + subtitle, the three tiers (test €0.49,
  *    experience €99, exclusive €199) with their catalog name and benefits
  *    (`voucher.tiers.<tier>.benefits`, a string array), the selected check,
@@ -29,33 +29,32 @@
  *    the voucher card, Save / Share (the system share sheet) and Download PDF
  *    (the signed PDF in the in-app browser).
  *
- * Rendered only where IAP is not restricted — UtilityBar `isIAPRestricted()`,
- * unchanged.
+ * iOS IAP gate (R5): a digital-purchase surface. Rendered only where IAP is
+ * not restricted — `isIAPRestricted()` (shell/utility/UtilityBar.tsx) =
+ * `Platform.OS === 'ios'`, today's shell rule (drawer.ts:37-38), unchanged.
  */
 import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
 import { AppState, Pressable, ScrollView, Share, StyleSheet, View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { Button, IconButton, Spinner, Text, TextInput, notify, notifyError, useUITheme } from '../../ports/ui';
-import { alpha, CommerceIcon, Dialog, DialogContent, notifySuccess, Textarea, useCommercePalette } from '../../ports/marketplace-orders';
+import { Button, IconButton, Spinner, Text, useUITheme } from '../../ports/ui';
+import { alpha, Dialog, DialogContent, DiscoverIcon, Input, notify, notifyError, notifySuccess, Textarea, useTonePalette } from '../../ports/utility';
 import { catalogs, FALLBACK_LOCALE, isLocale } from '../../i18n';
 import { useI18n } from '../../i18n/I18nProvider';
 import { navigateToWebPath } from '../../navigation/navigate';
-import { createVoucherCheckout, waitForPaidVoucherOrder, type VoucherTier } from './data/chrome';
-import { downloadVoucherPdf, sendVoucherEmail, type VoucherPdfData } from './data/orders';
+import { createVoucherCheckout, downloadVoucherPdf, sendVoucherEmail, waitForPaidVoucherOrder, type VoucherPdfData } from './data';
 
-type Tier = VoucherTier;
+type Tier = 'test' | 'experience' | 'exclusive';
 type ModalState = 'selection' | 'loading' | 'success' | 'email-form' | 'pdf-preview';
 const isTier = (v: unknown): v is Tier => v === 'test' || v === 'experience' || v === 'exclusive';
-
-const TIERS: Array<{ id: VoucherTier; price: number; icon: string }> = [
+const TIERS: Array<{ id: Tier; price: number; icon: string }> = [
   { id: 'test', price: 0.49, icon: 'Gift' },
   { id: 'experience', price: 99, icon: 'Sparkles' },
   { id: 'exclusive', price: 199, icon: 'Crown' },
 ];
 
-/** `voucher.tiers.<tier>.benefits` — a string array in the catalog (the web reads the object). */
-function benefitsFor(locale: string, tier: VoucherTier): string[] {
+/** `t.voucher.tiers.<tier>.benefits` — a string array in the catalog (the web reads the object, not `translate`). */
+function benefitsFor(locale: string, tier: Tier): string[] {
   const read = (l: string): unknown => {
     const v = (catalogs as Record<string, Record<string, unknown>>)[l]?.voucher as { tiers?: Record<string, { benefits?: unknown }> } | undefined;
     return v?.tiers?.[tier]?.benefits;
@@ -65,11 +64,26 @@ function benefitsFor(locale: string, tier: VoucherTier): string[] {
   return Array.isArray(list) ? list.filter((b): b is string => typeof b === 'string') : [];
 }
 
-export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; onOpenChange: (open: boolean) => void; returnTo: string }): ReactElement {
+/**
+ * `testIDPrefix` namespaces the test ids (`mo-` for the Marketplace rail's
+ * fallback, whose suites predate the shared modal); the app passes none.
+ */
+export function VoucherModal({
+  open,
+  onOpenChange,
+  returnTo,
+  testIDPrefix = '',
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  returnTo: string;
+  testIDPrefix?: string;
+}): ReactElement {
+  const tid = (id: string) => `${testIDPrefix}${id}`;
   const { t, locale } = useI18n();
   const { colors } = useUITheme();
-  const palette = useCommercePalette();
-  const tierTint = [palette.success, palette.category2, palette.warning];
+  const tone = useTonePalette();
+  const tierTint = [colors.statusSuccess, tone('category-2'), colors.statusWarning];
   const [selected, setSelected] = useState<Tier | null>(null);
   const [modalState, setModalState] = useState<ModalState>('selection');
   const [completedOrderId, setCompletedOrderId] = useState<string | null>(null);
@@ -251,19 +265,19 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
   const price = selected ? TIERS.find((x) => x.id === selected)?.price : null;
   return (
     <Dialog open={open} onOpenChange={close}>
-      <DialogContent testID="mo-voucher-modal">
+      <DialogContent testID={tid('voucher-modal')}>
         {modalState === 'loading' ? (
-          <View style={styles.loading} testID="mo-voucher-loading">
+          <View style={styles.loading} testID={tid('voucher-loading')}>
             <Spinner accessibilityLabel={t('voucher.modal.openingCheckout')} />
             <Text size="sm" muted>
               {t('voucher.modal.openingCheckout')}
             </Text>
           </View>
         ) : modalState === 'success' ? (
-          <View style={styles.section} testID="mo-voucher-success">
+          <View style={styles.section} testID={tid('voucher-success')}>
             <View style={styles.successHead}>
               <View style={[styles.successIcon, { backgroundColor: colors.statusSuccessSubtle }]}>
-                <CommerceIcon name="Check" size={32} color={colors.statusSuccess} />
+                <DiscoverIcon name="Check" size={32} color={colors.statusSuccess} />
               </View>
               <Text size="lg" weight="600" accessibilityRole="header">
                 {t('voucher.success.title')}
@@ -272,27 +286,27 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
                 {t('voucher.success.ready', { tier: tierForDisplay ? t(`voucher.tiers.${tierForDisplay}.name`) : '' })}
               </Text>
             </View>
-            <Button testID="mo-voucher-download" variant="outline" disabled={downloading} onPress={() => void downloadPdf()} style={styles.rowButton}>
-              {downloading ? <Spinner /> : <CommerceIcon name="Download" size={16} color={colors.foreground} />}
+            <Button testID={tid('voucher-download')} variant="outline" disabled={downloading} onPress={() => void downloadPdf()} style={styles.rowButton}>
+              {downloading ? <Spinner /> : <DiscoverIcon name="Download" size={16} color={colors.foreground} />}
               {t('voucher.success.download')}
             </Button>
-            <Button testID="mo-voucher-send-email" variant="outline" onPress={() => setModalState('email-form')} style={styles.rowButton}>
-              <CommerceIcon name="Mail" size={16} color={colors.foreground} />
+            <Button testID={tid('voucher-send-email')} variant="outline" onPress={() => setModalState('email-form')} style={styles.rowButton}>
+              <DiscoverIcon name="Mail" size={16} color={colors.foreground} />
               {t('voucher.success.sendEmail')}
             </Button>
-            <Button testID="mo-voucher-view-orders" variant="ghost" onPress={viewOrders} style={styles.rowButton}>
-              <CommerceIcon name="ShoppingBag" size={16} color={colors.mutedForeground} />
+            <Button testID={tid('voucher-view-orders')} variant="ghost" onPress={viewOrders} style={styles.rowButton}>
+              <DiscoverIcon name="ShoppingBag" size={16} color={colors.mutedForeground} />
               {t('voucher.success.viewOrders')}
             </Button>
-            <Button testID="mo-voucher-done" onPress={() => close(false)}>
+            <Button testID={tid('voucher-done')} onPress={() => close(false)}>
               {t('voucher.success.done')}
             </Button>
           </View>
         ) : modalState === 'email-form' ? (
-          <View style={styles.section} testID="mo-voucher-email-form">
+          <View style={styles.section} testID={tid('voucher-email-form')}>
             <View style={styles.header}>
               <View style={styles.titleRow}>
-                <CommerceIcon name="Mail" size={20} color={colors.primary} />
+                <DiscoverIcon name="Mail" size={20} color={colors.primary} />
                 <Text size="lg" weight="600" accessibilityRole="header">
                   {t('voucher.email.title')}
                 </Text>
@@ -305,37 +319,37 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
               <Text size="sm" weight="500">
                 {t('voucher.email.recipientEmail')}
               </Text>
-              <TextInput testID="mo-voucher-email-recipient" value={recipientEmail} onChangeText={setRecipientEmail} keyboardType="email-address" autoCapitalize="none" placeholder={t('screens.voucher.friendExampleCom')} accessibilityLabel={t('voucher.email.recipientEmail')} />
+              <Input testID={tid('voucher-email-recipient')} value={recipientEmail} onChangeText={setRecipientEmail} keyboardType="email-address" autoCapitalize="none" placeholder={t('screens.voucher.friendExampleCom')} accessibilityLabel={t('voucher.email.recipientEmail')} />
             </View>
             <View style={styles.field}>
               <Text size="sm" weight="500">
                 {t('voucher.email.recipientName')}
               </Text>
-              <TextInput testID="mo-voucher-email-name" value={recipientName} onChangeText={setRecipientName} placeholder={t('screens.voucher.jane')} accessibilityLabel={t('voucher.email.recipientName')} />
+              <Input testID={tid('voucher-email-name')} value={recipientName} onChangeText={setRecipientName} placeholder={t('screens.voucher.jane')} accessibilityLabel={t('voucher.email.recipientName')} />
             </View>
             <View style={styles.field}>
               <Text size="sm" weight="500">
                 {t('voucher.email.personalMessage')}
               </Text>
-              <Textarea testID="mo-voucher-email-message" value={personalMessage} onChangeText={setPersonalMessage} placeholder={t('voucher.email.messagePlaceholder')} accessibilityLabel={t('voucher.email.personalMessage')} numberOfLines={3} />
+              <Textarea testID={tid('voucher-email-message')} value={personalMessage} onChangeText={setPersonalMessage} placeholder={t('voucher.email.messagePlaceholder')} accessibilityLabel={t('voucher.email.personalMessage')} numberOfLines={3} />
             </View>
             <View style={styles.buttonRow}>
-              <Button testID="mo-voucher-email-back" variant="outline" onPress={() => setModalState('success')} style={styles.flex}>
+              <Button testID={tid('voucher-email-back')} variant="outline" onPress={() => setModalState('success')} style={styles.flex}>
                 {t('voucher.email.back')}
               </Button>
-              <Button testID="mo-voucher-email-send" disabled={!recipientEmail || sending} onPress={() => void confirmSendEmail()} style={styles.flex}>
-                {sending ? <Spinner /> : <CommerceIcon name="Send" size={16} color={colors.primaryForeground} />}
+              <Button testID={tid('voucher-email-send')} disabled={!recipientEmail || sending} onPress={() => void confirmSendEmail()} style={styles.flex}>
+                {sending ? <Spinner /> : <DiscoverIcon name="Send" size={16} color={colors.primaryForeground} />}
                 {t('voucher.email.send')}
               </Button>
             </View>
           </View>
         ) : modalState === 'pdf-preview' && previewVoucher && signedPdfUrl ? (
-          <View style={styles.section} testID="mo-voucher-pdf-preview">
+          <View style={styles.section} testID={tid('voucher-pdf-preview')}>
             <View style={styles.previewHead}>
               <Text weight="600" accessibilityRole="header">
                 {t('voucher.preview.title')}
               </Text>
-              <IconButton testID="mo-voucher-pdf-close" name="X" size={16} accessibilityLabel={t('voucher.email.back')} onPress={() => {
+              <IconButton testID={tid('voucher-pdf-close')} name="X" size={16} accessibilityLabel={t('voucher.email.back')} onPress={() => {
                 setSignedPdfUrl(null);
                 setModalState('success');
               }} />
@@ -376,7 +390,7 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
                   </Text>
                   {previewVoucher.benefits.map((b, i) => (
                     <View key={i} style={styles.benefit}>
-                      <CommerceIcon name="Check" size={16} color={colors.primary} />
+                      <DiscoverIcon name="Check" size={16} color={colors.primary} />
                       <Text size="sm" style={styles.flex}>
                         {b}
                       </Text>
@@ -385,12 +399,12 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
                 </View>
               ) : null}
             </ScrollView>
-            <Button testID="mo-voucher-pdf-share" onPress={() => void shareUrl()}>
-              <CommerceIcon name="Share2" size={16} color={colors.primaryForeground} />
+            <Button testID={tid('voucher-pdf-share')} onPress={() => void shareUrl()}>
+              <DiscoverIcon name="Share2" size={16} color={colors.primaryForeground} />
               {t('voucher.preview.share')}
             </Button>
-            <Button testID="mo-voucher-pdf-download" variant="outline" onPress={() => void downloadDirect()}>
-              <CommerceIcon name="Download" size={16} color={colors.foreground} />
+            <Button testID={tid('voucher-pdf-download')} variant="outline" onPress={() => void downloadDirect()}>
+              <DiscoverIcon name="Download" size={16} color={colors.foreground} />
               {t('voucher.preview.downloadPdf')}
             </Button>
             <Text size="xs" muted style={styles.center}>
@@ -401,7 +415,7 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
           <>
             <View style={styles.header}>
               <View style={styles.titleRow}>
-                <CommerceIcon name="Gift" size={20} color={colors.primary} />
+                <DiscoverIcon name="Gift" size={20} color={colors.primary} />
                 <Text size="lg" weight="600" accessibilityRole="header">
                   {t('voucher.modal.title')}
                 </Text>
@@ -416,14 +430,14 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
                 return (
                   <Pressable
                     key={tier.id}
-                    testID={`mo-voucher-tier-${tier.id}`}
+                    testID={tid(`voucher-tier-${tier.id}`)}
                     accessibilityRole="radio"
                     accessibilityState={{ selected: isSelected }}
                     onPress={() => setSelected(tier.id)}
                     style={[styles.tier, { borderColor: isSelected ? colors.primary : colors.border, backgroundColor: isSelected ? alpha(colors.primary, 0.05) : colors.background }]}
                   >
                     <View style={[styles.tierIcon, { backgroundColor: tierTint[i] }]}>
-                      <CommerceIcon name={tier.icon} size={20} color={colors.primaryForeground} />
+                      <DiscoverIcon name={tier.icon} size={20} color={colors.primaryForeground} />
                     </View>
                     <View style={styles.flex}>
                       <View style={styles.tierHead}>
@@ -432,7 +446,7 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
                       </View>
                       {benefitsFor(locale, tier.id).map((b, j) => (
                         <View key={j} style={styles.benefit}>
-                          <CommerceIcon name="Check" size={12} color={colors.primary} />
+                          <DiscoverIcon name="Check" size={12} color={colors.primary} />
                           <Text size="xs" muted style={styles.flex}>
                             {b}
                           </Text>
@@ -441,15 +455,15 @@ export function VoucherModal({ open, onOpenChange, returnTo }: { open: boolean; 
                     </View>
                     {isSelected ? (
                       <View style={[styles.check, { backgroundColor: colors.primary }]}>
-                        <CommerceIcon name="Check" size={12} color={colors.primaryForeground} />
+                        <DiscoverIcon name="Check" size={12} color={colors.primaryForeground} />
                       </View>
                     ) : null}
                   </Pressable>
                 );
               })}
             </ScrollView>
-            <Button testID="mo-voucher-buy" disabled={!selected} onPress={() => void buy()}>
-              <CommerceIcon name="Gift" size={16} color={colors.primaryForeground} />
+            <Button testID={tid('voucher-buy')} disabled={!selected} onPress={() => void buy()}>
+              <DiscoverIcon name="Gift" size={16} color={colors.primaryForeground} />
               {price != null ? `${t('voucher.modal.buyVoucher')} · €${price}` : t('voucher.modal.buyVoucher')}
             </Button>
           </>
