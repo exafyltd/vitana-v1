@@ -1,0 +1,12 @@
+{
+  "vtid": "VTID-05440",
+  "service": "community-app",
+  "tests": [
+    {
+      "kind": "playwright",
+      "name": "wallet-fx-rate-url/fx-url on staging: /wallet loads the live EUR/USD rate from api.frankfurter.dev (200, rates.EUR) with no frankfurter/CORS console error or failed request, at 1440 and 390, read-only",
+      "spec": "tests/e2e/staging/vtid-05440-wallet-fx-rate.staging.spec.ts",
+      "cwd": "."
+    }
+  ]
+}

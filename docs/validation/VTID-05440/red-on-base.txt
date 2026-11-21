@@ -1,0 +1,32 @@
+# npx vitest run src/hooks/useEurUsdRate.test.ts on vitana-v1 origin/main 58c76c956 (hook unchanged), 2026-11-01
+15:18:27 [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-swc" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+
+ RUN  v4.1.10 C:/Users/dstev/vitana-v1/.worktrees/wallet-fx-url
+
+ Γ¥» src/hooks/useEurUsdRate.test.ts (3 tests | 1 failed) 2273ms
+     ├ù fetches EUR per 1 USD from api.frankfurter.dev and returns rates.EUR 112ms
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  src/hooks/useEurUsdRate.test.ts > useEurUsdRate > fetches EUR per 1 USD from api.frankfurter.dev and returns rates.EUR
+AssertionError: expected 'https://api.frankfurter.app/latest?frΓÇª' to be 'https://api.frankfurter.dev/v1/latestΓÇª' // Object.is equality
+
+Expected: "https://api.frankfurter.dev/v1/latest?base=USD&symbols=EUR"
+Received: "https://api.frankfurter.app/latest?from=USD&to=EUR"
+
+ Γ¥» src/hooks/useEurUsdRate.test.ts:40:40
+     38|     await waitFor(() => expect(result.current.isLive).toBe(true));
+     39|     expect(fetchMock).toHaveBeenCalledTimes(1);
+     40|     expect(fetchMock.mock.calls[0][0]).toBe(FX_URL);
+       |                                        ^
+     41|     expect(result.current.eurPerUsd).toBe(0.92);
+     42|   });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  15:18:28
+   Duration  36.65s (transform 394ms, setup 3.17s, import 503ms, tests 2.27s, environment 29.54s)
+
