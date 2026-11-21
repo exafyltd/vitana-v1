@@ -1,0 +1,32 @@
+{
+  "vtid": "VTID-05650",
+  "lane": "native-wave2-fix-forward-r2/public-entry",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/index.tsx",
+    "apps/mobile/src/linking/link-router.ts",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/tests/index.test.tsx",
+    "apps/mobile/tests/public-entry/**",
+    "apps/mobile/tests/resolve-link.test.ts",
+    "apps/mobile/tests/public/i18n-routes.test.tsx",
+    "docs/validation/VTID-05650/**"
+  ],
+  "_note": "apps/mobile/tests/resolve-link.test.ts and apps/mobile/tests/public/i18n-routes.test.tsx are NOT in the lane file's paths. They are changed under owner decision 4 (final, 2026-11-08), limited to their landing-page assertions. A lane PR cannot widen its own paths, so Lane scope [required] is red for exactly these two files until the lane-admin plan plan(native-lane-paths-owner-20261108) (vitana-platform) adds them to this lane's paths.",
+  "not_touched": [
+    "apps/mobile/src/screens/** (PublicLandingScreen from VTID-05451 is reused as is)",
+    "src/i18n/** (no new string)",
+    "packages/core/** and scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/tests/g1-smoke/deep-link.test.ts (unchanged and green)",
+    "apps/mobile/package.json and package-lock.json"
+  ],
+  "sparring_record": "docs/validation/VTID-05650/plan-sparring.md",
+  "weakens_tests": [
+    { "file": "apps/mobile/tests/index.test.tsx", "reason": "plan task 3: the signed-out case (redirect to /maxina) is moved to tests/public-entry/landing.test.tsx, which asserts the storefront renders at / signed out; signed in -> /home stays here" }
+  ],
+  "red_green_exempt": [],
+  "owner_decision_test_edits": [
+    { "file": "apps/mobile/tests/resolve-link.test.ts", "scope": "invite-link assertion only" },
+    { "file": "apps/mobile/tests/public/i18n-routes.test.tsx", "scope": "PUBLIC.LANDING ledger assertion only" }
+  ]
+}

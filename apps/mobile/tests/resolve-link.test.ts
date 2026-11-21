@@ -218,7 +218,9 @@ describe('link router', () => {
     r.handleLink('https://vitanaland.com/i/inv1');
     expect(auth.mock.calls.map(([l]) => l.kind)).toEqual(['auth', 'oauth_return']);
     expect(invite).toHaveBeenCalledWith(expect.objectContaining({ kind: 'invite', code: 'inv1' }));
-    expect(nav).not.toHaveBeenCalled();
+    // VTID-05650: an invite also navigates to /i/<code> (no sign-in hold); auth / OAuth links still never navigate.
+    expect(nav).toHaveBeenCalledTimes(1);
+    expect(nav).toHaveBeenCalledWith('/i/inv1');
     expect(r.heldHref()).toBeNull();
   });
 });

@@ -1,6 +1,7 @@
 /**
  * VTID-05157 — not-found renders catalog text only.
- * VTID-05186 — `/` is the landing redirect (signed in → /home, signed out → /maxina).
+ * VTID-05186 — `/` is the landing (signed in → /home).
+ * VTID-05650 — signed out renders the storefront (tests/public-entry/landing.test.tsx), no longer a /maxina redirect.
  */
 import './helpers/no-network';
 import './helpers/mocks';
@@ -18,6 +19,7 @@ jest.mock('expo-router', () => {
   return {
     Redirect: ({ href }: { href: string }) => <Text testID="redirect">{href}</Text>,
     router: { navigate: jest.fn(), replace: jest.fn() },
+    useLocalSearchParams: () => ({}),
     usePathname: () => '/',
   };
 });
@@ -46,17 +48,11 @@ describe.each<Locale>(['de', 'en'])('not-found in %s', (locale) => {
   });
 });
 
-describe('landing redirect', () => {
+describe('landing', () => {
   it('signed in → /home', async () => {
     const d = createSupabaseDouble({ session: fakeSession('u-1') });
     render(<Landing />, { wrapper: makeWrapper({ client: d.client }) });
     expect((await screen.findByTestId('redirect')).props.children).toBe('/home');
-  });
-
-  it('signed out → /maxina', async () => {
-    const d = createSupabaseDouble();
-    render(<Landing />, { wrapper: makeWrapper({ client: d.client }) });
-    expect((await screen.findByTestId('redirect')).props.children).toBe('/maxina');
   });
 });
 

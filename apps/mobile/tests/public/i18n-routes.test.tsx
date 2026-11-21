@@ -126,8 +126,8 @@ describe('parity ledger', () => {
   const ledger = JSON.parse(readFileSync(join(APP, 'parity/ledger.json'), 'utf8')) as { rows: Array<{ key: string; lane: string; status: string; exception: string | null }> };
   const byKey = new Map(ledger.rows.map((r) => [r.key, r]));
 
-  it('PUBLIC.LANDING stays not_started until a cold `/` mounts the storefront (app/index.tsx, plan amendment)', () => {
-    expect(byKey.get('PUBLIC.LANDING')).toMatchObject({ lane: 'public-auth', status: 'not_started' });
+  it('PUBLIC.LANDING is native: a cold `/` mounts the storefront (app/index.tsx, VTID-05650)', () => {
+    expect(byKey.get('PUBLIC.LANDING')).toMatchObject({ lane: 'public-auth', status: 'native' });
   });
 
   it.each(['PUBLIC.PRIVACY', 'PUBLIC.TERMS', '/maxina_support', '/i/:code', '/apply', '/_intro/:tenantSlug'])('%s is native', (key) => {

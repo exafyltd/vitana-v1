@@ -1,0 +1,26 @@
+VTID-05650 native-wave2-fix-forward-r2/public-entry: commands run and results
+Session kiro-exafyltd-202611072144-1c88. Worktree /projects/sandbox/wt/b-public-entry, branch kiro/native-wave2-fix-forward-r2/public-entry.
+
+== Red on base
+- cd apps/mobile && npx jest tests/index.test.tsx tests/public-entry (new tests, base code): 2 suites failed, 4 tests failed, 9 passed. Output: docs/validation/VTID-05650/red-on-base.txt.
+
+== Implementation (commits f35235120, ddb18583f)
+- app/index.tsx storefront, link-router invite navigation, ledger PUBLIC.LANDING native.
+
+== Merge
+- git merge origin/main (no rebase): clean.
+
+== Owner decision 4 (2026-11-08): the 2 landing-page tests
+- Edited only the landing-page assertions of tests/resolve-link.test.ts and tests/public/i18n-routes.test.tsx (old/new list in verification.md).
+- cd apps/mobile && npx jest tests/resolve-link.test.ts tests/public/i18n-routes.test.tsx: 2 suites, 103/103 tests passed.
+
+== Full checks (apps/mobile, after the merge and the test edits)
+- npm run typecheck: exit 0.
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: exit 0.
+- APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle: exit 0 (iOS and Android).
+- npm test -- --maxWorkers=2: 203/203 suites, 5628/5628 tests, 57 snapshots, exit 0, 295 s.
+- node scripts/native/parity-ledger.mjs --check (repo root): see the final line below.
+
+== preflight
+- Lane scope [required] fails only on apps/mobile/tests/resolve-link.test.ts and apps/mobile/tests/public/i18n-routes.test.tsx (outside the lane paths; owner decision 4; lane-admin plan plan(native-lane-paths-owner-20261108)).
+parity-ledger --check: OK — 435 rows, 121 native route(s)
