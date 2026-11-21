@@ -2480,10 +2480,10 @@
       "source": "exclusion",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/community/event-game",
@@ -4340,10 +4340,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/commerce-login",
@@ -4353,7 +4353,7 @@
       "scope": "in",
       "lane": "role-modes",
       "status": "not_started",
-      "exception": null,
+      "exception": "Unmounted: the screen is built in VTID-05524 (src/screens/business/), but its public route file under app/(public)/ moves to the native-shell-fixes lane, outside this lane's paths.",
       "owner": null,
       "last_parity_check": null
     },
@@ -4365,7 +4365,7 @@
       "scope": "in",
       "lane": "role-modes",
       "status": "not_started",
-      "exception": null,
+      "exception": "Unmounted: the screen is built in VTID-05524 (src/screens/business/), but its public route file under app/(public)/ moves to the native-shell-fixes lane, outside this lane's paths.",
       "owner": null,
       "last_parity_check": null
     },
@@ -4377,7 +4377,7 @@
       "scope": "in",
       "lane": "role-modes",
       "status": "not_started",
-      "exception": null,
+      "exception": "Unmounted: the screen is built in VTID-05524 (src/screens/business/), but its public route file under app/(public)/ moves to the native-shell-fixes lane, outside this lane's paths.",
       "owner": null,
       "last_parity_check": null
     },
@@ -4388,10 +4388,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/commerce/health-orders",
@@ -4400,10 +4400,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/commerce/health-orders/inbox",
@@ -4412,10 +4412,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/commerce/invites/:token/accept",
@@ -4424,10 +4424,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/commerce/join",
@@ -4437,7 +4437,7 @@
       "scope": "in",
       "lane": "role-modes",
       "status": "not_started",
-      "exception": null,
+      "exception": "Unmounted: the screen is built in VTID-05524 (src/screens/business/), but its public route file under app/(public)/ moves to the native-shell-fixes lane, outside this lane's paths.",
       "owner": null,
       "last_parity_check": null
     },
@@ -4448,10 +4448,10 @@
       "source": "role-route",
       "scope": "in",
       "lane": "role-modes",
-      "status": "not_started",
+      "status": "native",
       "exception": null,
-      "owner": null,
-      "last_parity_check": null
+      "owner": "kiro",
+      "last_parity_check": "2026-11-03"
     },
     {
       "key": "/dev",
