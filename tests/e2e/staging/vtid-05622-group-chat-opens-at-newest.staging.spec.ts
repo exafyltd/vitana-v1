@@ -21,9 +21,10 @@ test.use({
 const SUPABASE = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
 const GATEWAY = 'https://preview-aws-gateway.vitanaland.com';
 
-async function signIn(page: Page, request: APIRequestContext) {
-  const email = process.env.TEST_USER_EMAIL ?? '';
-  const password = process.env.TEST_USER_PASSWORD ?? '';
+// The group check signs in as the staging group account (an admin of staging-test-group, read-only here) when its
+// secrets are set; otherwise it uses the shared test user, which is in no group and fails the check honestly.
+async function signIn(page: Page, request: APIRequestContext, creds = { email: process.env.TEST_USER_EMAIL ?? '', password: process.env.TEST_USER_PASSWORD ?? '' }) {
+  const { email, password } = creds;
   test.skip(!email || !password, 'TEST_USER_EMAIL / TEST_USER_PASSWORD not provided');
   await page.route(/orb-widget\.js/, (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
   await page.goto('/maxina', { waitUntil: 'domcontentloaded' });
@@ -81,13 +82,23 @@ const PROBE = () => {
 
 test('a group chat is first shown with its newest message fully above the composer, and does not move', async ({ page, request }) => {
   await page.addInitScript(PROBE);
-  const session = await signIn(page, request);
+  // The group pair is both-or-neither (no empty password). When set, the check runs as the staging group admin and
+  // opens only staging-test-group; otherwise it falls back to the shared test user (see the pick below).
+  const groupEmail = process.env.STAGING_GROUP_TEST_EMAIL ?? '';
+  const groupPassword = process.env.STAGING_GROUP_TEST_PASSWORD ?? '';
+  expect(!groupEmail === !groupPassword, 'STAGING_GROUP_TEST_EMAIL and STAGING_GROUP_TEST_PASSWORD must be set together').toBeTruthy();
+  const groupAccount = groupEmail && groupPassword ? { email: groupEmail, password: groupPassword } : undefined;
+  const session = await signIn(page, request, groupAccount);
 
   const groups = await request.get(`${GATEWAY}/api/v1/chat/groups/`, { headers: { Authorization: `Bearer ${session.access_token}` } });
   expect(groups.status()).toBe(200);
   const list = ((await groups.json()).data ?? []) as Array<{ id: string; name: string }>;
-  const group = list.find((g) => g.name.startsWith('Alle Beisammen')) ?? list[0];
-  expect(group, 'the test user is in no group, so the opening check cannot run').toBeTruthy();
+  // With the group account, the group is pinned by name: a missing staging-test-group fails here, never silently
+  // falls back to another group.
+  const group = groupAccount
+    ? list.find((g) => g.name === 'staging-test-group')
+    : (list.find((g) => g.name.startsWith('Alle Beisammen')) ?? list[0]);
+  expect(group, groupAccount ? 'staging-test-group is not in the group account\'s list' : 'the test user is in no group, so the opening check cannot run').toBeTruthy();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`/inbox/g/${group!.id}`, { waitUntil: 'domcontentloaded' });
