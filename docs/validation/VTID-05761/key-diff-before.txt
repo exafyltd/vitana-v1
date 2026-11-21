@@ -1,0 +1,147 @@
+settingsNative: de raw keys=77
+  ar: keys=82 onlyInLocale=5 (flag leaves 5) onlyInDe=0
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.creator._pending_review.creatorShare
+     + settingsNative.creator._pending_review.platformShare
+  en: keys=77 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  es: keys=84 onlyInLocale=7 (flag leaves 7) onlyInDe=0
+     + settingsNative.notifications._pending_review.chat
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.limitations.dietary._pending_review.halal
+     + settingsNative.limitations.dietary._pending_review.kosher
+     + settingsNative.tenantRole.roles._pending_review.backoffice
+  fr: keys=83 onlyInLocale=6 (flag leaves 6) onlyInDe=0
+     + settingsNative.notifications._pending_review.chat
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.limitations.dietary._pending_review.halal
+     + settingsNative.tenantRole.roles._pending_review.patient
+  pl: keys=85 onlyInLocale=8 (flag leaves 8) onlyInDe=0
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.creator._pending_review.creatorShare
+     + settingsNative.creator._pending_review.platformShare
+     + settingsNative.limitations.dietary._pending_review.halal
+     + settingsNative.tenantRole.roles._pending_review.backoffice
+     + settingsNative.tenantRole.roles._pending_review.admin
+  pt: keys=86 onlyInLocale=9 (flag leaves 9) onlyInDe=0
+     + settingsNative.notifications._pending_review.chat
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.creator._pending_review.creatorShare
+     + settingsNative.creator._pending_review.platformShare
+     + settingsNative.limitations.dietary._pending_review.halal
+     + settingsNative.limitations.dietary._pending_review.kosher
+     + settingsNative.tenantRole.roles._pending_review.backoffice
+  ru: keys=80 onlyInLocale=3 (flag leaves 3) onlyInDe=0
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+  sr: keys=85 onlyInLocale=8 (flag leaves 8) onlyInDe=0
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.creator._pending_review.creatorShare
+     + settingsNative.creator._pending_review.platformShare
+     + settingsNative.limitations.dietary._pending_review.halal
+     + settingsNative.tenantRole.roles._pending_review.backoffice
+     + settingsNative.tenantRole.roles._pending_review.admin
+  tr: keys=81 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.limitations.dietary._pending_review.vegan
+  zh: keys=82 onlyInLocale=5 (flag leaves 5) onlyInDe=0
+     + settingsNative.security._pending_review.sessionPhone
+     + settingsNative.security._pending_review.sessionLaptop
+     + settingsNative.security._pending_review.sessionLocation
+     + settingsNative.creator._pending_review.creatorShare
+     + settingsNative.creator._pending_review.platformShare
+aiAssistantsNative: de raw keys=29
+  ar: keys=31 onlyInLocale=2 (flag leaves 2) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+  en: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  es: keys=31 onlyInLocale=2 (flag leaves 2) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+  fr: keys=29 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pl: keys=32 onlyInLocale=3 (flag leaves 3) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+     + aiAssistantsNative.voice._pending_review.volumeValue
+  pt: keys=33 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+     + aiAssistantsNative.voice._pending_review.volumeValue
+     + aiAssistantsNative.proactive._pending_review.quoted
+  ru: keys=32 onlyInLocale=3 (flag leaves 3) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+     + aiAssistantsNative.voice._pending_review.volumeValue
+  sr: keys=32 onlyInLocale=3 (flag leaves 3) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+     + aiAssistantsNative.voice._pending_review.volumeValue
+  tr: keys=32 onlyInLocale=3 (flag leaves 3) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+     + aiAssistantsNative.proactive._pending_review.quoted
+  zh: keys=32 onlyInLocale=3 (flag leaves 3) onlyInDe=0
+     + aiAssistantsNative.toast._pending_review.errorDetail
+     + aiAssistantsNative.voice._pending_review.speedValue
+     + aiAssistantsNative.voice._pending_review.volumeValue
+aiCoachNative: de raw keys=35
+  ar: keys=39 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  en: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  es: keys=39 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  fr: keys=35 onlyInLocale=0 (flag leaves 0) onlyInDe=0
+  pl: keys=40 onlyInLocale=5 (flag leaves 5) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.offer._pending_review.categoryWellness
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  pt: keys=40 onlyInLocale=5 (flag leaves 5) onlyInDe=0
+     + aiCoachNative.nav._pending_review.insights
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  ru: keys=39 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  sr: keys=40 onlyInLocale=5 (flag leaves 5) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.offer._pending_review.categoryWellness
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  tr: keys=39 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+  zh: keys=39 onlyInLocale=4 (flag leaves 4) onlyInDe=0
+     + aiCoachNative.offer._pending_review.provider
+     + aiCoachNative.lab._pending_review.provider
+     + aiCoachNative.lift._pending_review.title
+     + aiCoachNative.lift._pending_review.detail
+TOTAL_MISMATCHES=113

@@ -38,17 +38,11 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "健康养生",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryWellness": "健康养生"
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "血液指标",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryBloodMarkers": "血液指标"
     },
     "chat": {
       "voice": "开始语音通话",
@@ -67,11 +61,7 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · +{n} VTNA",
-      "total": "。指数现为 {n}",
-      "_pending_review": {
-        "title": true,
-        "detail": true
-      }
+      "total": "。指数现为 {n}"
     }
   }
 }

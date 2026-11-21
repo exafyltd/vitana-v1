@@ -6,10 +6,7 @@
       "insights": "Insights",
       "recommendations": "Recomendações",
       "dailySummary": "Resumo diário",
-      "companion": "Companheiro de IA",
-      "_pending_review": {
-        "insights": true
-      }
+      "companion": "Companheiro de IA"
     },
     "priority": {
       "high": "Alta",
@@ -41,17 +38,11 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "Bem-estar",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryWellness": "Bem-estar"
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "Marcadores sanguíneos",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryBloodMarkers": "Marcadores sanguíneos"
     },
     "chat": {
       "voice": "Iniciar chamada de voz",
@@ -70,11 +61,7 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · +{n} VTNA",
-      "total": ". Índice agora {n}",
-      "_pending_review": {
-        "title": true,
-        "detail": true
-      }
+      "total": ". Índice agora {n}"
     }
   }
 }

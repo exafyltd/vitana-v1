@@ -4,10 +4,7 @@
       "chat": "Chat",
       "calendar": "Calendrier",
       "community": "Communauté",
-      "updateFailed": "Impossible de mettre à jour la préférence",
-      "_pending_review": {
-        "chat": true
-      }
+      "updateFailed": "Impossible de mettre à jour la préférence"
     },
     "consent": {
       "title": "Information sur le partage de données avec l’IA",
@@ -32,12 +29,7 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA",
-      "_pending_review": {
-        "sessionPhone": true,
-        "sessionLaptop": true,
-        "sessionLocation": true
-      }
+      "sessionLocation": "San Francisco, CA"
     },
     "creator": {
       "creatorShare": "90 %",
@@ -69,10 +61,7 @@
         "nutFree": "sans fruits à coque",
         "soyFree": "sans soja",
         "sugarFree": "sans sucre",
-        "organic": "bio",
-        "_pending_review": {
-          "halal": true
-        }
+        "organic": "bio"
       }
     },
     "tenantRole": {
@@ -89,10 +78,7 @@
         "professional": "Professionnel",
         "staff": "Équipe",
         "backoffice": "Back-office",
-        "admin": "Administrateur",
-        "_pending_review": {
-          "patient": true
-        }
+        "admin": "Administrateur"
       },
       "roleDescriptions": {
         "community": "Accès aux fonctions de la communauté et aux liens sociaux",

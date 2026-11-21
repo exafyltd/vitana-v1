@@ -1,8 +1,7 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}",
-      "_pending_review": {}
+      "errorDetail": "{message}"
     },
     "voice": {
       "preview": "Preview Voice",
@@ -10,8 +9,7 @@
       "previewPhrase": "Hello, this is a preview of your selected voice settings.",
       "previewUnavailable": "A preview is not available for this language on this device.",
       "speedValue": "{value}x",
-      "volumeValue": "{value}%",
-      "_pending_review": {}
+      "volumeValue": "{value}%"
     },
     "proactive": {
       "playSample": "Play Sample Greeting",
@@ -23,17 +21,14 @@
         "time_greeting": "Time-based greetings (Good morning, etc.)",
         "wellness_check": "Wellness check-ins",
         "motivational": "Motivational messages",
-        "reminder": "Action reminders",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "reminder": "Action reminders"
+      }
     },
     "referrals": {
       "receiveDescription": "Autopilot can query peers when you ask questions.",
       "giveDescription": "Autopilot may offer your catalog to other members. Off by default — opt in when you're ready.",
       "moneyDescription": "Promotes earn from propose-and-approve to autonomous. Only flip this when you trust your catalog and disclosure.",
-      "moneyDisabledHint": "Turn on 'Give recommendations' first.",
-      "_pending_review": {}
+      "moneyDisabledHint": "Turn on 'Give recommendations' first."
     },
     "connect": {
       "missingKey": "Please paste your API key.",
@@ -44,10 +39,7 @@
       "failed": "Connection failed ({code}).",
       "saving": "Saving…",
       "verifying": "Verifying…",
-      "connect": "Connect",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "connect": "Connect"
+    }
+  }
 }

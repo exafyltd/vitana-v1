@@ -1,0 +1,41 @@
+VTID-05761 native-catalog-de-keys/de-keys: commands run and results
+Session: kiro-exafyltd-202611072144-1c88
+Plan: exafyltd/vitana-platform PR #4994 (plan(native-catalog-de-keys)), converged round 2, policy converged-auto-v1, plan hash 521a2ea6.
+Worktree: /projects/sandbox/wt/b-de-keys, branch kiro/native-catalog-de-keys/de-keys, base origin/main 02681143da (vitana-v1).
+Environment note: the sandbox /tmp does not persist between commands, so logs were kept in a session folder; the content below is copied from those runs.
+
+== Red on base (clean checkout /projects/sandbox/wt/clean-main at 02681143da, no change)
+cd apps/mobile && npx jest tests/settings/i18n-rtl.test.tsx tests/ai-assistants/i18n-rtl.test.tsx tests/ai-coach/i18n-rtl.test.tsx --maxWorkers=2 --verbose
+result: Tests 25 failed, 235 passed, 260 total; Suites 3 failed, 3 total. Failures: settings 9 (es sr fr pl pt ru tr zh ar),
+ai-assistants 8 (es sr pl pt ru tr zh ar), ai-coach 8 (es sr pl pt ru tr zh ar). See red-on-base.txt.
+
+== Measurement (before)
+node <session>/keydiff.mjs <lane worktree>   -> TOTAL_MISMATCHES=113, all 113 are _pending_review flag leaves. See key-diff-before.txt.
+
+== Change
+node <session>/strip-flags.mjs <lane worktree>
+result: 107 flag objects removed (113 leaves; 36 of them empty objects, all in en), 28 files changed,
+2 files (fr aiAssistantsNative, fr aiCoachNative) had no flag and did not change. JSON written with the repo's 2-space indent
+and a trailing newline; a round-trip of the untouched shards is byte-identical.
+git diff --numstat: 105 insertions, 396 deletions. The insertions are the trailing commas on the line before a removed flag.
+
+== Value check (every non-flag leaf of the 10 locales, base vs lane)
+node values.mjs: values checked 1410, changed or missing 0. No value of any locale or of de changed.
+
+== Measurement (after)
+node keydiff.mjs <lane worktree>   -> TOTAL_MISMATCHES=0. See key-diff-after.txt.
+
+== Tests (lane worktree, after the change; real npm ci in apps/mobile, 950 packages)
+cd apps/mobile && npm ci --no-audit --no-fund   -> added 950 packages, exit 0
+cd apps/mobile && npx jest tests/settings/i18n-rtl.test.tsx tests/ai-assistants/i18n-rtl.test.tsx tests/ai-coach/i18n-rtl.test.tsx --maxWorkers=2 --verbose
+result: Tests 260 passed, 260 total; Suites 3 passed. See green-after.txt.
+cd apps/mobile && npx jest tests/ai-assistants/panels.test.tsx tests/ai-coach/companion.test.tsx --maxWorkers=2
+result: Suites 2 passed, Tests 37 passed (both files reference the three namespaces).
+cd apps/mobile && npm run typecheck   -> tsc --noEmit, exit 0.
+
+== Not run
+- Full `npm test` in apps/mobile: not run. The change is catalog data only; the three namespaces' test files, the two namespace
+  test files and typecheck cover it.
+- `npm run i18n:inventory` and `scripts/i18n-audit.mjs`: not run in this lane. The audit is report-only in CI; removing the flag
+  clears its GA-locale error for these three namespaces (scripts/i18n-audit.mjs:142-152).
+- No production, Supabase, gateway or live system was touched. No test file was edited. No German value changed.

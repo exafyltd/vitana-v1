@@ -29,12 +29,7 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA",
-      "_pending_review": {
-        "sessionPhone": true,
-        "sessionLaptop": true,
-        "sessionLocation": true
-      }
+      "sessionLocation": "San Francisco, CA"
     },
     "creator": {
       "creatorShare": "90%",
@@ -43,11 +38,7 @@
       "completeSetup": "完成设置",
       "enablePayments": "启用收款",
       "opening": "正在打开…",
-      "viewDashboard": "查看控制台",
-      "_pending_review": {
-        "creatorShare": true,
-        "platformShare": true
-      }
+      "viewDashboard": "查看控制台"
     },
     "limitations": {
       "description": "这些是我们对每条商品推荐都执行的硬性规则。过敏、医学禁忌和药物相互作用绝不会被忽略。",

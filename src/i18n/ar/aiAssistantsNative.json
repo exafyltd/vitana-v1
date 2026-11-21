@@ -1,10 +1,7 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}",
-      "_pending_review": {
-        "errorDetail": true
-      }
+      "errorDetail": "{message}"
     },
     "voice": {
       "preview": "معاينة الصوت",
@@ -12,10 +9,7 @@
       "previewPhrase": "مرحبًا، هذه معاينة لإعدادات الصوت التي اخترتها.",
       "previewUnavailable": "المعاينة غير متاحة لهذه اللغة على هذا الجهاز.",
       "speedValue": "{value}x",
-      "volumeValue": "{value}٪",
-      "_pending_review": {
-        "speedValue": true
-      }
+      "volumeValue": "{value}٪"
     },
     "proactive": {
       "playSample": "تشغيل تحية تجريبية",

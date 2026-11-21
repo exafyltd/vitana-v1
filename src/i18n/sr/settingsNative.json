@@ -29,12 +29,7 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA",
-      "_pending_review": {
-        "sessionPhone": true,
-        "sessionLaptop": true,
-        "sessionLocation": true
-      }
+      "sessionLocation": "San Francisco, CA"
     },
     "creator": {
       "creatorShare": "90%",
@@ -43,11 +38,7 @@
       "completeSetup": "Završi podešavanje",
       "enablePayments": "Uključi plaćanja",
       "opening": "Otvaranje…",
-      "viewDashboard": "Prikaži kontrolnu tablu",
-      "_pending_review": {
-        "creatorShare": true,
-        "platformShare": true
-      }
+      "viewDashboard": "Prikaži kontrolnu tablu"
     },
     "limitations": {
       "description": "Ovo su pravila o kojima se ne pregovara i koja primenjujemo na svaku preporuku proizvoda. Alergije, medicinske kontraindikacije i interakcije sa lekovima nikada se ne mogu zaobići.",
@@ -70,10 +61,7 @@
         "nutFree": "bez orašastih plodova",
         "soyFree": "bez soje",
         "sugarFree": "bez šećera",
-        "organic": "organsko",
-        "_pending_review": {
-          "halal": true
-        }
+        "organic": "organsko"
       }
     },
     "tenantRole": {
@@ -90,11 +78,7 @@
         "professional": "Stručnjak",
         "staff": "Osoblje",
         "backoffice": "Back Office",
-        "admin": "Administrator",
-        "_pending_review": {
-          "backoffice": true,
-          "admin": true
-        }
+        "admin": "Administrator"
       },
       "roleDescriptions": {
         "community": "Pristup funkcijama zajednice i društvenim vezama",

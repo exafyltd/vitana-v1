@@ -29,12 +29,7 @@
     "security": {
       "sessionPhone": "iPhone 15 Pro",
       "sessionLaptop": "MacBook Pro",
-      "sessionLocation": "San Francisco, CA",
-      "_pending_review": {
-        "sessionPhone": true,
-        "sessionLaptop": true,
-        "sessionLocation": true
-      }
+      "sessionLocation": "San Francisco, CA"
     },
     "creator": {
       "creatorShare": "%90",
@@ -66,10 +61,7 @@
         "nutFree": "kuruyemişsiz",
         "soyFree": "soyasız",
         "sugarFree": "şekersiz",
-        "organic": "organik",
-        "_pending_review": {
-          "vegan": true
-        }
+        "organic": "organik"
       }
     },
     "tenantRole": {

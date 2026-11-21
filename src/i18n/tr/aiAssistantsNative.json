@@ -1,10 +1,7 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}",
-      "_pending_review": {
-        "errorDetail": true
-      }
+      "errorDetail": "{message}"
     },
     "voice": {
       "preview": "Sesi dinle",
@@ -12,10 +9,7 @@
       "previewPhrase": "Merhaba, bu seçtiğin ses ayarlarının bir önizlemesi.",
       "previewUnavailable": "Bu dil için bu cihazda önizleme kullanılamıyor.",
       "speedValue": "{value}x",
-      "volumeValue": "%{value}",
-      "_pending_review": {
-        "speedValue": true
-      }
+      "volumeValue": "%{value}"
     },
     "proactive": {
       "playSample": "Örnek karşılamayı oynat",
@@ -28,9 +22,6 @@
         "wellness_check": "Sağlık kontrolleri",
         "motivational": "Motive edici mesajlar",
         "reminder": "Eylem hatırlatıcıları"
-      },
-      "_pending_review": {
-        "quoted": true
       }
     },
     "referrals": {

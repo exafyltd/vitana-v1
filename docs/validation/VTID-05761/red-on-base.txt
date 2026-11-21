@@ -1,0 +1,31 @@
+# red on base: clean checkout of vitana-v1 origin/main 02681143da (worktree /projects/sandbox/wt/clean-main), npx jest --verbose, three files
+FAIL tests/ai-assistants/i18n-rtl.test.tsx (20.644 s)
+    ✕ es has exactly the German keys, none empty, placeholders kept
+    ✕ sr has exactly the German keys, none empty, placeholders kept
+    ✕ pl has exactly the German keys, none empty, placeholders kept
+    ✕ pt has exactly the German keys, none empty, placeholders kept
+    ✕ ru has exactly the German keys, none empty, placeholders kept
+    ✕ tr has exactly the German keys, none empty, placeholders kept
+    ✕ zh has exactly the German keys, none empty, placeholders kept
+    ✕ ar has exactly the German keys, none empty, placeholders kept
+FAIL tests/settings/i18n-rtl.test.tsx (25.091 s)
+    ✕ es has exactly the German keys, none empty
+    ✕ sr has exactly the German keys, none empty
+    ✕ fr has exactly the German keys, none empty
+    ✕ pl has exactly the German keys, none empty
+    ✕ pt has exactly the German keys, none empty
+    ✕ ru has exactly the German keys, none empty
+    ✕ tr has exactly the German keys, none empty
+    ✕ zh has exactly the German keys, none empty
+    ✕ ar has exactly the German keys, none empty
+FAIL tests/ai-coach/i18n-rtl.test.tsx (5.05 s)
+    ✕ es has exactly the German keys, none empty, the same placeholders
+    ✕ sr has exactly the German keys, none empty, the same placeholders
+    ✕ pl has exactly the German keys, none empty, the same placeholders
+    ✕ pt has exactly the German keys, none empty, the same placeholders
+    ✕ ru has exactly the German keys, none empty, the same placeholders
+    ✕ tr has exactly the German keys, none empty, the same placeholders
+    ✕ zh has exactly the German keys, none empty, the same placeholders
+    ✕ ar has exactly the German keys, none empty, the same placeholders
+Test Suites: 3 failed, 3 total
+Tests:       25 failed, 235 passed, 260 total

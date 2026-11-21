@@ -1,10 +1,7 @@
 {
   "aiAssistantsNative": {
     "toast": {
-      "errorDetail": "{message}",
-      "_pending_review": {
-        "errorDetail": true
-      }
+      "errorDetail": "{message}"
     },
     "voice": {
       "preview": "Прослушать голос",
@@ -12,11 +9,7 @@
       "previewPhrase": "Привет, это предпросмотр выбранных тобой настроек голоса.",
       "previewUnavailable": "Предпросмотр для этого языка на этом устройстве недоступен.",
       "speedValue": "{value}x",
-      "volumeValue": "{value}%",
-      "_pending_review": {
-        "speedValue": true,
-        "volumeValue": true
-      }
+      "volumeValue": "{value}%"
     },
     "proactive": {
       "playSample": "Воспроизвести пример приветствия",

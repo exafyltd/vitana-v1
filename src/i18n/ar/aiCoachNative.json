@@ -38,17 +38,11 @@
     },
     "offer": {
       "provider": "VITANA Partners",
-      "categoryWellness": "العافية",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryWellness": "العافية"
     },
     "lab": {
       "provider": "LabCorp",
-      "categoryBloodMarkers": "مؤشرات الدم",
-      "_pending_review": {
-        "provider": true
-      }
+      "categoryBloodMarkers": "مؤشرات الدم"
     },
     "chat": {
       "voice": "بدء مكالمة صوتية",
@@ -67,11 +61,7 @@
       "title": "{lead}{vtna}{total} ✨",
       "detail": "{detail}",
       "vtna": " · ‎+{n} VTNA",
-      "total": ". المؤشر الآن {n}",
-      "_pending_review": {
-        "title": true,
-        "detail": true
-      }
+      "total": ". المؤشر الآن {n}"
     }
   }
 }
