@@ -1,0 +1,21 @@
+{
+  "vtid": "VTID-05649",
+  "lane": "native-wave2-fix-forward-r2/orb-guided-topic",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/orb/protocol.ts",
+    "apps/mobile/src/orb/session.ts",
+    "apps/mobile/src/orb/ui/orb-controller.ts",
+    "apps/mobile/src/orb/ui/OrbProvider.tsx",
+    "apps/mobile/tests/orb/guided-topic/**",
+    "docs/validation/VTID-05649/**"
+  ],
+  "not_touched": [
+    "apps/mobile/tests/orb/nav-directive.test.ts and every other existing tests/orb file",
+    "apps/mobile/parity/ledger.json, resolve.ts, packages/core/* (no route, no class-A helper)",
+    "src/i18n/** (no text)"
+  ],
+  "sparring_record": "docs/validation/VTID-05649/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
