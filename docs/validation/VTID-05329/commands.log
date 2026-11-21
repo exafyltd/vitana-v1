@@ -1,0 +1,19 @@
+# VTID-05329 (ci-ecr-public-auth/v1-ecr-public-login) — commands, 2026-10-28, Windows worktree, base origin/main 5bc8d10cd
+# session kiro-exafyltd-202610281029-dea2
+
+## red on base (workflows at origin/main, new test file only) — red-on-base.txt
+npx vitest run src/lib/deploy-workflow.ecr-public-auth.test.ts
+  -> FAIL: 2 failed | 1 passed (3) (both build jobs: hasLogin false)
+
+## green on lane head
+npx vitest run src/lib/deploy-workflow.ecr-public-auth.test.ts src/lib/deploy-workflow.vtid-04908.test.ts
+  -> Test Files 2 passed (2), Tests 8 passed (8)
+
+## lint
+npx eslint src/lib/deploy-workflow.ecr-public-auth.test.ts -> exit 0
+
+## full suite
+npm test -> run in CI (pr-gate / unit) on the PR head; local full run on Windows not used as evidence.
+
+## no live calls
+No workflow dispatched, nothing deployed, no AWS/IAM call made.
