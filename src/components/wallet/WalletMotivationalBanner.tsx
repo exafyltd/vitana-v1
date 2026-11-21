@@ -9,10 +9,10 @@ interface WalletMotivationalBannerProps {
 
 const bannerVariants = {
   overview: {
-    gradient: "bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10",
-    border: "border-green-500/20",
+    gradient: "bg-status-success-subtle",
+    border: "border-status-success/20",
     icon: TrendingUp,
-    iconColor: "text-green-600"
+    iconColor: "text-status-success"
   },
   balance: {
     gradient: "bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10",
@@ -95,7 +95,7 @@ export function WalletMotivationalBanner({
   const personalizedMessage = getRandomMessage().replace("{name}", firstName);
 
   return (
-    <div className={`${config.gradient} ${config.border} border rounded-2xl p-6 mb-8 ${className}`}>
+    <div className={`${config.gradient} ${config.border} border rounded-2xl p-6 mb-8 ${className ?? ''}`}>
       <div className="flex items-center space-x-4">
         <div className={`${config.iconColor} bg-background/50 rounded-full p-3`}>
           <Icon className="w-6 h-6" />
