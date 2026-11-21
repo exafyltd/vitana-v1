@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05648",
+  "service": "community-app",
+  "_note": "Native analytics client. Proven offline with a fake fetch, fake timers and an AsyncStorage mock; no network, no staging call, no write to Supabase or the gateway. The native app has no staging deploy; device runtime waits for G1.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates catalog-map.generated.ts that the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/analytics tests/shell.test.tsx", "cwd": "apps/mobile", "reason": "event shape, source per platform, tenant hold, consent, batching, outbox, tracker screen_viewed; shell test unchanged" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "client, session, types and tracker type-check" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" }, "reason": "Metro bundle includes the analytics module via ShellRoot" }
+  ]
+}

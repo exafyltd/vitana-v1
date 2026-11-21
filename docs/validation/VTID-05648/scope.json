@@ -1,0 +1,22 @@
+{
+  "vtid": "VTID-05648",
+  "lane": "native-wave2-fix-forward-r2/analytics",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/src/analytics/**",
+    "apps/mobile/src/shell/ShellRoot.tsx",
+    "apps/mobile/tests/analytics/**",
+    "docs/validation/VTID-05648/**"
+  ],
+  "not_touched": [
+    "packages/core/**",
+    "apps/mobile/parity/ledger.json",
+    "apps/mobile/src/navigation/resolve.ts",
+    "src/i18n/** (no user-visible text)",
+    "apps/mobile/jest.config.js and apps/mobile/jest.setup.ts",
+    "services/gateway (the endpoint already accepts source ios/android)"
+  ],
+  "sparring_record": "docs/validation/VTID-05648/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

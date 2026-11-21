@@ -14,6 +14,7 @@ import { useAuth } from '../auth/AuthProvider';
 import { ConfigMissing } from '../screens/ConfigMissing';
 import { OverlayHost } from './OverlayHost';
 import { useAuthLinkBridge } from '../auth/link-bridge';
+import { AnalyticsTracker } from '../analytics/AnalyticsTracker';
 
 export function ShellRoot({ children }: { children: ReactNode }) {
   const { rtl } = useI18n();
@@ -26,6 +27,7 @@ export function ShellRoot({ children }: { children: ReactNode }) {
       <View testID="shell-root" style={[styles.root, { direction, backgroundColor: shellColors(scheme).background }]}>
         {configMissing ? <ConfigMissing keys={configMissing} /> : children}
         <OverlayHost />
+        <AnalyticsTracker />
       </View>
     </UIProvider>
   );

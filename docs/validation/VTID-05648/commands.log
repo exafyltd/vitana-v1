@@ -1,0 +1,15 @@
+VTID-05648 native-wave2-fix-forward-r2/analytics: commands run and results
+Worktree /projects/sandbox/wt/b-analytics, branch kiro/native-wave2-fix-forward-r2/analytics. An earlier interrupted run left
+uncommitted tests, src/analytics and the ShellRoot mount; they were reviewed (client.ts read in full) and reused.
+
+== Red on base
+- npx jest tests/analytics -> exit 1, 2 suites failed: Cannot find module '../../src/analytics/client' (saved: red-on-base.txt)
+
+== Green
+- npx jest tests/analytics tests/shell.test.tsx --maxWorkers=2 -> exit 0, 3 suites, 36 tests passed
+- npm run typecheck (apps/mobile) -> exit 0
+- git merge origin/main (1 commit) -> clean
+- npm test --maxWorkers=2 (full, after merge) -> exit 0, Test Suites: 203 passed, Tests: 5635 passed, Snapshots: 57 passed
+- APP_PROFILE=development EXPO_NO_TELEMETRY=1 npm run bundle -> exit 0
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check -> exit 0 (up to date)
+- CI ESLint flagged no-explicit-any at tests/analytics/client.test.ts:34; fixed with unknown (tsc + tests re-run green, 17 passed)

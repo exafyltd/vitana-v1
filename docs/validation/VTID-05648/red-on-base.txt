@@ -1,0 +1,37 @@
+FAIL tests/analytics/tracker.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../../src/analytics/client' from 'tests/analytics/tracker.test.tsx'
+
+      18 | const mockTrack = jest.fn();
+      19 | const mockNote = jest.fn();
+    > 20 | jest.mock('../../src/analytics/client', () => ({
+         |      ^
+      21 |   setAnalyticsContext: (...a: unknown[]) => mockSetContext(...a),
+      22 |   track: (...a: unknown[]) => mockTrack(...a),
+      23 |   noteRouteChange: (...a: unknown[]) => mockNote(...a),
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.mock (tests/analytics/tracker.test.tsx:20:6)
+
+FAIL tests/analytics/client.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../src/analytics/client' from 'tests/analytics/client.test.ts'
+
+      13 | }));
+      14 |
+    > 15 | import {
+         | ^
+      16 |   __analyticsState,
+      17 |   __resetAnalyticsForTests,
+      18 |   flushAnalytics,
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.require (tests/analytics/client.test.ts:15:1)
+
+Test Suites: 2 failed, 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        19.874 s
+Ran all test suites matching /tests\/analytics/i.
