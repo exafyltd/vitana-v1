@@ -1,0 +1,24 @@
+FAIL tests/followups/partner-orgs/partner-orgs-url.test.tsx (51.819 s)
+  useMyPartnerOrgs gateway path
+    ✕ requests exactly <origin>/api/v1/partner-orgs/mine and returns the organizations (1291 ms)
+  ● useMyPartnerOrgs gateway path › requests exactly <origin>/api/v1/partner-orgs/mine and returns the organizations
+    expect(received).toEqual(expected) // deep equality
+    Expected: [{"display_name": "Lab", "id": "org-1", "role": "org_admin"}]
+    Received: undefined
+      36 |     const urls = install({ 'https://gw.test/api/v1/partner-orgs/mine': { organizations: orgs } });
+      37 |     const { result } = renderHook(() => useMyPartnerOrgs(), { wrapper });
+    > 38 |     await waitFor(() => expect(result.current.data).toEqual(orgs));
+         |                  ^
+      39 |     expect(urls).toEqual(['https://gw.test/api/v1/partner-orgs/mine']);
+      40 |   });
+      41 | });
+      at Object.<anonymous> (tests/followups/partner-orgs/partner-orgs-url.test.tsx:38:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        52.825 s
+Ran all test suites matching /tests\/followups\/partner-orgs/i.

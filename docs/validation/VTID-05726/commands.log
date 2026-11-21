@@ -1,0 +1,5 @@
+# VTID-05726 (native-followups-20261111/partner-orgs-path) — commands.log
+$ gh api repos/exafyltd/vitana-v1/pulls/1645/files  -> GuidedModeProvider.tsx, AuthGate.tsx, tests/shell-fixes/*, docs/validation/VTID-05647/* (state open, merged false); none of the 3 lane files
+$ git log origin/main -- useMyPartnerOrgs.ts tests/identity.test.tsx tests/shell.test.tsx -> only 43b1a199b (VTID-05186); ownership check OK, nothing already fixed
+$ cd apps/mobile && npm ci && npm run gen:i18n
+$ npx jest tests/followups/partner-orgs --maxWorkers=2   (BASE, before the fix) -> 1 failed (red-on-base.txt)

@@ -1,6 +1,6 @@
 /**
  * VTID-05186 (N3, plan change 11) — src/hooks/useOrgMembers.ts useMyPartnerOrgs:
- * `GET /api/v1/partner-orgs/mine` through the gateway port.
+ * `GET /api/v1/partner-orgs/mine` through the gateway port (the gateway client adds the `/api/v1` prefix, so the path passed is `/partner-orgs/mine`).
  */
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../auth/AuthProvider';
@@ -20,7 +20,7 @@ export function useMyPartnerOrgs() {
   return useQuery({
     queryKey: ['partner-orgs-mine'],
     queryFn: async () => {
-      const json = await gatewayGet<{ organizations?: MyOrgRow[] }>('/api/v1/partner-orgs/mine');
+      const json = await gatewayGet<{ organizations?: MyOrgRow[] }>('/partner-orgs/mine');
       return json.organizations ?? [];
     },
     enabled: !!user,

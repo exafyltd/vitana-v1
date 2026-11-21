@@ -146,7 +146,7 @@ describe('role switch', () => {
   it('a business entry switches without any role RPC', async () => {
     const d = double();
     const { result } = renderHook(() => useRoleSwitch(), {
-      wrapper: makeWrapper({ client: d.client, gateway: { '/api/v1/partner-orgs/mine': { organizations: [{ id: 'org-1', display_name: 'Lab', role: 'org_admin' }] } } }),
+      wrapper: makeWrapper({ client: d.client, gateway: { '/partner-orgs/mine': { organizations: [{ id: 'org-1', display_name: 'Lab', role: 'org_admin' }] } } }),
     });
     await waitFor(() => expect(result.current.businessEntries).toEqual([{ orgId: 'org-1', orgName: 'Lab', role: 'org_admin' }]));
     expect(result.current.canSwitch).toBe(true);
