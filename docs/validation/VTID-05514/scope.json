@@ -1,0 +1,16 @@
+{
+  "vtid": "VTID-05514",
+  "kind": "infra",
+  "paths": [
+    ".github/workflows/SQL-CALENDAR-ENTRY-SHARE.yml",
+    ".github/workflows/SQL-EVENT-SHARE-POSTS.yml",
+    ".github/workflows/SQL-GROUP-PARTICIPANTS.yml",
+    ".github/workflows/SQL-THREAD-JOIN-HARDENING.yml",
+    ".github/workflows/STAGING-TESTS-REQUIRED.yml",
+    ".github/workflows/i18n-check.yml",
+    "docs/validation/VTID-05514/**"
+  ],
+  "sparring_record": "docs/validation/VTID-05514/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
