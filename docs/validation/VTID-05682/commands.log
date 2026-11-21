@@ -1,0 +1,30 @@
+# VTID-05682 commands (worktree /projects/sandbox/wt/b-deeplinks-i18n, branch kiro/native-wave1-readiness-tests/deeplinks-i18n)
+
+## Task 0 — premises re-checked against vitana-v1 origin/main e31bf4627ff3c705c20f8e6b718ce4dd03353b7f
+- apps/mobile/jest.config.js: preset jest-expo, roots ['<rootDir>/tests'], testMatch ['**/*.test.ts','**/*.test.tsx'] — OK (plus resolver resolution.js, setupFiles jest.setup.ts)
+- apps/mobile/package.json: "test": "jest", "typecheck": "tsc --noEmit"; pretest/pretypecheck run gen:i18n — OK
+- src/i18n/index.ts:16 LOCALES (11) — OK; :40 isRTL — OK (RTL_LOCALES = {ar}); :68 localeFromDevice — OK; catalogs, translate, FALLBACK_LOCALE exported
+- src/i18n/catalog-map.generated.ts: gitignored, produced by `npm run gen:i18n` (SHARD_FILES, SHARDS) — OK
+- src/linking/link-router.ts:89 configuredLinkHosts, :113 useLinkRouting, createLinkRouter, getLinkRouter, setLinkRouter — OK; :88 comment "none until G1 has a web host" — OK
+- src/linking/auth-port.ts setSession, subscribeSession, resetAuthPort — OK
+- tests/helpers: no-network.ts, mocks.ts, providers.tsx (makeWrapper, fakeGateway), supabase-double.ts (createSupabaseDouble, fakeSession) — OK
+- git grep in apps/mobile/tests: configuredLinkHosts, useLinkRouting, localeFromDevice have no existing test; resolve-link.test.ts:31 covers resolveLink with options only; no whole-catalog parity or du-form test — OK
+- ADJUSTED: I18nProvider sets rtl via isRtlLanguage; I18nManager.forceRTL is in LanguageProvider.tsx:93 (see acceptance.md P1)
+
+## Red on base (no test files yet)
+$ cd apps/mobile && npx jest tests/wave1-readiness/deeplinks-i18n --maxWorkers=2
+Pattern: tests/wave1-readiness/deeplinks-i18n - 0 matches   (exit 1)
+
+## Green with the lane
+$ npx jest tests/wave1-readiness/deeplinks-i18n --maxWorkers=2
+Test Suites: 5 passed, 5 total / Tests: 3 skipped, 129 passed, 132 total
+$ npx tsc --noEmit            -> exit 0
+$ npx jest --maxWorkers=2     -> Test Suites: 206 passed, 206 total / Tests: 3 skipped, 5750 passed, 5753 total
+
+## Preflight (local, head before this entry)
+$ node vitana-platform/scripts/collab/preflight.mjs --repo <wt> --base origin/main --head HEAD --branch kiro/native-wave1-readiness-tests/deeplinks-i18n --title "VTID-05682 (...)"
+PASS PR-GATE scope / sparring / weakening / red-green
+FAIL Lane scope [required] and Collab handoff [report-only]: lane file .kiro/specs/native-wave1-readiness-tests/lanes/deeplinks-i18n.md exists only on the open plan PR #4938 (expected until it merges)
+FAIL Kiro steering [report-only]: ".claude/rules/execution-continuity.md has no .kiro/steering twin" — a file already on origin/main, not touched by this lane
+
+$ git diff --stat origin/main   -> 10 files, only apps/mobile/tests/wave1-readiness/deeplinks-i18n/** and docs/validation/VTID-05682/**
