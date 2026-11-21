@@ -22,6 +22,7 @@
     "src/lib/news-images.ts",
     "src/lib/orb-view-profile.ts",
     "src/lib/permissions.ts",
+    "src/lib/shortsTags.ts",
     "src/lib/vitana-projection.ts",
     "src/lib/vitanaIndex.ts",
     "src/mocks/ai.ts",

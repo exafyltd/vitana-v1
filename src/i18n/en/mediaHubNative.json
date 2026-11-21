@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "Choose media section",
+    "communityMember": "Community Member",
+    "by": "by {name}",
+    "share": {
+      "shortText": "Check out \"{title}\" by {creator} on Vitana",
+      "trackText": "Check out \"{title}\" by {artist} on Vitana"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 Min Morning Stretch",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "Quick Healthy Breakfast",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "Breathing Exercise",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "Fitness",
+      "tagYoga": "Yoga",
+      "tagNutrition": "Nutrition",
+      "tagRecipes": "Recipes",
+      "tagMindfulness": "Mindfulness",
+      "tagWellness": "Wellness"
+    },
+    "video": {
+      "failed": "Failed to load — tap to retry",
+      "buffering": "Buffering — tap to retry"
+    },
+    "a11y": {
+      "calendar": "Open calendar",
+      "closeFeed": "Close shorts",
+      "comments": "Open comments",
+      "moreActions": "More actions",
+      "shortCard": "Short {index} of {total}: {title}",
+      "like": "Like",
+      "unlike": "Remove like",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "pause": "Pause",
+      "playTrack": "Play \"{title}\"",
+      "playEpisode": "Play episode \"{title}\"",
+      "addBookmark": "Bookmark \"{title}\"",
+      "removeBookmark": "Remove \"{title}\" from bookmarks",
+      "shareTrack": "Share \"{title}\""
+    },
+    "edit": {
+      "add": "Add",
+      "addTag": "Add tag",
+      "removeTag": "Remove tag \"{tag}\""
+    },
+    "toast": {
+      "permissionDenied": "Access not allowed",
+      "permissionDeniedDesc": "Allow access to your photos in Settings to choose a file.",
+      "saveFailed": "Could not save"
+    },
+    "upload": {
+      "chooseVideo": "Choose a video",
+      "chooseAudio": "Choose an audio file",
+      "uploading": "Uploading...",
+      "hint": {
+        "music": "MP3, WAV, FLAC (max 50MB)",
+        "podcast": "MP3, WAV (max 100MB)",
+        "video": "MP4, WebM, OGG (max 500MB, 5min)"
+      },
+      "invalid": {
+        "type": "Only MP4, WebM, and OGG videos are supported",
+        "size": "The file is too large",
+        "duration": "Video must be 5 minutes or less"
+      }
+    }
+  }
+}

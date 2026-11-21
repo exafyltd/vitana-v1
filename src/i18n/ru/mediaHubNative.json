@@ -1,0 +1,77 @@
+{
+  "mediaHubNative": {
+    "selectMode": "Выбери раздел медиа",
+    "communityMember": "Участник сообщества",
+    "by": "от {name}",
+    "share": {
+      "shortText": "Посмотри «{title}» от {creator} в Vitana",
+      "trackText": "Послушай «{title}» — {artist} в Vitana"
+    },
+    "demo": {
+      "morningStretch": {
+        "title": "5 минут утренней растяжки",
+        "creator": "FitnessPro"
+      },
+      "healthyBreakfast": {
+        "title": "Быстрый здоровый завтрак",
+        "creator": "NutriChef"
+      },
+      "breathing": {
+        "title": "Дыхательное упражнение",
+        "creator": "MindfulMoments"
+      },
+      "tagFitness": "Фитнес",
+      "tagYoga": "Йога",
+      "tagNutrition": "Питание",
+      "tagRecipes": "Рецепты",
+      "tagMindfulness": "Осознанность",
+      "tagWellness": "Здоровье"
+    },
+    "video": {
+      "failed": "Не удалось загрузить — нажми, чтобы повторить",
+      "buffering": "Буферизация — нажми, чтобы повторить"
+    },
+    "a11y": {
+      "calendar": "Открыть календарь",
+      "closeFeed": "Закрыть шорты",
+      "comments": "Открыть комментарии",
+      "moreActions": "Другие действия",
+      "shortCard": "Шорт {index} из {total}: {title}",
+      "like": "Нравится",
+      "unlike": "Убрать лайк",
+      "mute": "Выключить звук",
+      "unmute": "Включить звук",
+      "pause": "Пауза",
+      "playTrack": "Воспроизвести «{title}»",
+      "playEpisode": "Воспроизвести выпуск «{title}»",
+      "addBookmark": "Сохранить «{title}»",
+      "removeBookmark": "Убрать «{title}» из сохранённого",
+      "shareTrack": "Поделиться «{title}»"
+    },
+    "edit": {
+      "add": "Добавить",
+      "addTag": "Добавить тег",
+      "removeTag": "Убрать тег «{tag}»"
+    },
+    "toast": {
+      "permissionDenied": "Доступ запрещён",
+      "permissionDeniedDesc": "Разреши доступ к фото в настройках, чтобы выбрать файл.",
+      "saveFailed": "Не удалось сохранить"
+    },
+    "upload": {
+      "chooseVideo": "Выбрать видео",
+      "chooseAudio": "Выбрать аудиофайл",
+      "uploading": "Загрузка…",
+      "hint": {
+        "music": "MP3, WAV, FLAC (макс. 50 МБ)",
+        "podcast": "MP3, WAV (макс. 100 МБ)",
+        "video": "MP4, WebM, OGG (макс. 500 МБ, 5 мин)"
+      },
+      "invalid": {
+        "type": "Поддерживаются только видео MP4, WebM и OGG",
+        "size": "Файл слишком большой",
+        "duration": "Видео должно быть не длиннее 5 минут"
+      }
+    }
+  }
+}

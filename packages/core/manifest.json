@@ -362,6 +362,13 @@
         "ai"
       ],
       "reason": "VTID-05523 — the AI coach page data the web renders directly on /ai, /ai/insights, /ai/recommendations and /ai/companion (todayActions, memoryHighlights, inspiration, lifestylePatterns, indexMovement, socialEngagement, correlations, recommendations, chat); imports nothing, pure. The native AI coach twins read the same records, so the cards show the same content."
+    },
+    "src/lib/shortsTags.ts": {
+      "entry": "media.ts",
+      "lanes": [
+        "media"
+      ],
+      "reason": "Shorts tag allow-list (SHORTS_TAG_IDS, ShortsTagId) for the Media Hub upload tag picker; imports nothing, pure."
     }
   }
 }
