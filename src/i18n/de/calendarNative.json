@@ -1,0 +1,10 @@
+{
+  "calendarNative": {
+    "entry": {
+      "notFound": "Diesen Eintrag haben wir nicht gefunden. Vielleicht wurde er entfernt."
+    },
+    "reminders": {
+      "fireNotFound": "Diese Erinnerung gibt es nicht mehr. Hier siehst du alle deine Erinnerungen."
+    }
+  }
+}

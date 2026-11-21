@@ -1,0 +1,26 @@
+{
+  "vtid": "VTID-05530",
+  "lane": "native-wave2-events-calendar-r3/calendar-reminders",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/calendar/**",
+    "apps/mobile/app/(app)/reminders/**",
+    "apps/mobile/src/screens/calendar/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/calendar/**",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/calendarNative.json",
+    "docs/validation/VTID-05530/**"
+  ],
+  "not_touched": [
+    "packages/core/** and scripts/native/mobile-ci-paths.generated.json (the calendar helpers import i18n-toast, class C; see verification.md)",
+    "apps/mobile/src/ports/** (no new port: the lane builds on the existing ui, core and auth doors)",
+    "apps/mobile/package.json and package-lock.json (no new dependency)",
+    "apps/mobile/maestro/calendar/** (device journeys are G1)",
+    "tests/discover-commerce/routes.test.tsx (pins NATIVE_PATTERNS; unchanged, so the entry and fire links are not added to NATIVE_PATTERNS)",
+    "apps/mobile/jest.config.js and apps/mobile/jest.setup.ts"
+  ],
+  "sparring_record": "docs/validation/VTID-05530/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

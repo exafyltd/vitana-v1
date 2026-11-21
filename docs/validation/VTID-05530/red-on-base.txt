@@ -1,0 +1,19 @@
+# VTID-05530 red on base: cd apps/mobile && npx jest tests/calendar (origin/main f837a9927, tests added, no implementation)
+FAIL tests/calendar/rules.test.ts
+    Cannot find module '../../src/screens/calendar/time' from 'tests/calendar/rules.test.ts'
+FAIL tests/calendar/calendar.test.tsx
+    Cannot find module '../../src/screens/calendar/format' from 'tests/calendar/calendar.test.tsx'
+FAIL tests/calendar/lane-guards.test.ts (27.246 s)
+  ● routes › the four route files exist
+  ● routes › /calendar and /reminders are native routes; the entry and fire links are native patterns
+  ● lane code rules › the lane has files to check
+  ● catalog keys the lane renders › every t() / notify() key used by the lane exists in all 11 locales
+  ● catalog keys the lane renders › the calendarNative shard exists for all 11 locales with the same keys, du-form in German
+FAIL tests/calendar/entry.test.tsx
+    Cannot find module '../../src/screens/calendar/format' from 'tests/calendar/entry.test.tsx'
+FAIL tests/calendar/reminders.test.tsx
+    Cannot find module '../../src/screens/calendar/format' from 'tests/calendar/reminders.test.tsx'
+FAIL tests/calendar/addentry.test.tsx
+    Cannot find module '../../src/screens/calendar/format' from 'tests/calendar/addentry.test.tsx'
+Test Suites: 6 failed, 6 total
+Tests:       5 failed, 6 passed, 11 total

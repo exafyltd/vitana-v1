@@ -1,0 +1,10 @@
+{
+  "calendarNative": {
+    "entry": {
+      "notFound": "Nie znaleźliśmy tego wpisu. Mógł zostać usunięty."
+    },
+    "reminders": {
+      "fireNotFound": "Ta przypominajka już nie istnieje. Tutaj widzisz wszystkie swoje przypominajki."
+    }
+  }
+}
