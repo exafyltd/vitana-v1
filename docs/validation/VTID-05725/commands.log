@@ -1,0 +1,8 @@
+VTID-05725 native-followups-20261111/my-groups-deeplink: commands run and results
+Worktree: /projects/sandbox/wt/f-my-groups-deeplink (base origin/main f2d652001)
+- npm ci --no-audit --no-fund (apps/mobile): exit 0
+- Red on base: npx jest tests/followups/my-groups --ci --maxWorkers=2 -> exit 1, 2 failed / 3 passed (kind is 'unported'). Saved: red-on-base.txt
+- After change: npx jest tests/followups tests/navigation.test.tsx tests/discover-commerce tests/community --ci --maxWorkers=2 -> 24 suites, 774 tests passed
+- npm run typecheck (apps/mobile): exit 0
+- npm test -- --ci --maxWorkers=2 (full): exit 0, 202 suites, 5626 tests passed
+- node scripts/native/parity-ledger.mjs --check; node scripts/native/core-closure.mjs --check: both OK (parity-ledger: 435 rows, 121 native; core-closure up to date)

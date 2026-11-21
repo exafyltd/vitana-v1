@@ -114,8 +114,8 @@ describe('resolver + parity ledger', () => {
     expect(resolveWebPath(url)).toMatchObject({ kind: 'native', href: url });
   });
 
-  it('the dynamic native patterns are this lane’s provider route only', () => {
-    expect(NATIVE_PATTERNS).toEqual(['/discover/provider/:id']);
+  it('the dynamic native patterns are the provider route and the group detail route', () => {
+    expect(NATIVE_PATTERNS).toEqual(['/discover/provider/:id', '/comm/my-groups/:id']);
     expect(resolveWebPath('/discover/provider').kind).not.toBe('native');
   });
 

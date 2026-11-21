@@ -1,0 +1,8 @@
+{
+  "vtid": "VTID-05725",
+  "service": "community-app",
+  "_note": "Native app resolver change; no web or staging deploy. Proven offline by jest (no network).",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/followups/my-groups tests/navigation.test.tsx tests/discover-commerce", "cwd": "apps/mobile", "reason": "resolver treats /comm/my-groups/:id as native; pin test updated" }
+  ]
+}
