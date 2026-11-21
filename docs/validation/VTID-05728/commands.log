@@ -1,0 +1,10 @@
+VTID-05728 native-followups-20261111/translations: commands and results
+Worktree /projects/sandbox/wt/f-translations, base origin/main f2d652001
+- npm ci --no-audit --no-fund (root): exit 0
+- Red on base: npx vitest run src/i18n/tr-screens-no-empty-values.test.ts -> 4 failed (see red-on-base.txt)
+- Fix: src/i18n/tr/screens.json two values only (git diff --stat: 2 insertions, 2 deletions)
+- npx vitest run src/i18n/tr-screens-no-empty-values.test.ts src/i18n src/lib/commerce-terms.vtid-04895.test.ts src/components/commerce/PartnerTermsSheet.vtid-04909.test.tsx -> 6 files, 61 tests passed
+- git grep -n "Dans tercihleri|Stres seviyeleri|dancePreferences|stressLevels" -- src apps/mobile/tests tests:
+  no test asserts the old (empty) values; only the catalogs, DancePublicSection.tsx:61, PrivacySettings/profile types use the keys
+- grep -c '": ""' src/i18n/tr/screens.json -> 0 (was 2)
+- npm run i18n:inventory not run: no key added or removed
