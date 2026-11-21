@@ -1,0 +1,33 @@
+VTID-05724 native-followups-20261111/i18n-rtl-deterministic: command log
+Session: kiro-exafyltd-202611072144-1c88
+Base: origin/main 02681143d (worktree fast-forwarded from f2d652001; test file had no upstream change)
+Machine: 8 cores, Linux sandbox. Load = 8 busy-loop shell processes (sh -c 'while :; do :; done') started with timeout 600.
+
+== Reproduction, BEFORE (base test file, apps/mobile/tests/settings/i18n-rtl.test.tsx at 02681143d)
+$ cd apps/mobile && npx jest tests/settings/i18n-rtl.test.tsx -t "Arabic renders"   [with 8 busy loops]
+  run 1: FAIL  "Arabic renders right-to-left with the Arabic catalog"  -> Unable to find node on an unmounted component.
+  run 2: PASS
+  run 3: FAIL  same error
+  Result: 2 of 3 runs fail with the CI error. Error site: base test line 103 (expect(await screen.findByTestId('tenant-role-current-role'))).
+
+$ npx jest tests/settings/i18n-rtl.test.tsx   [no added load, base file]
+  Tests: 9 failed, 103 passed, 112 total
+  The 9 failures are NOT the Arabic case. They are the 9 'settingsNative catalog' rows
+  'es|sr|fr|pl|pt|ru|tr|zh|ar has exactly the German keys, none empty' (line 90): the shards
+  contain keys with a '_pending_review' segment that the German shard does not have. Same 9 on base in every run; de passes.
+  This failure is in the catalog data, outside this lane's paths, and is not fixed here (see PR body).
+
+== Fix applied (only apps/mobile/tests/settings/i18n-rtl.test.tsx; see PR body for the line-level diff)
+
+== Reproduction, AFTER (fixed test file)
+$ npx jest tests/settings/i18n-rtl.test.tsx -t "Arabic renders"   [with 8 busy loops, 5 runs]
+  run 1: PASS   run 2: PASS   run 3: PASS   run 4: PASS   run 5: PASS
+  Result: 5 of 5 pass under load (base: 2 of 3 fail).
+
+$ npx jest tests/settings/i18n-rtl.test.tsx   [no added load, 5 runs]
+  run 1..5: Tests: 9 failed, 103 passed, 112 total  (same 9 catalog rows as base; Arabic and every locale loop pass)
+
+== Count check (test and expect calls must not drop)
+  it( / it.each( rows: unchanged (the diff adds no it and removes none).
+  expect( calls: the Arabic case keeps one expect for the text and one for rtl; the findByTestId line is replaced by waitFor(() => expect(getByTestId...)). Count unchanged.
+  unmount calls: origin/main already had one (after the limitations render). This change adds two: one at the end of the settings ?mode=… it.each row (locale loop), one after the tenant-role render in the limitations/tenant-role case. No assertion added or removed.

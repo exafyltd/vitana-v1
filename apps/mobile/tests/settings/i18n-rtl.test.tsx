@@ -66,6 +66,7 @@ describe.each([...LOCALES])('%s', (locale) => {
     await waitFor(() => expect(screen.queryByTestId('billing-loading')).toBeNull());
     const raw = strings(screen.getByTestId('screen-settings')).filter((s) => RAW_KEY.test(s.trim()));
     expect(raw).toEqual([]);
+    screen.unmount(); // a late update from this locale must not land in the next locale's tree
   });
 
   it('limitations and tenant-role have no raw key', async () => {
@@ -76,6 +77,7 @@ describe.each([...LOCALES])('%s', (locale) => {
     renderSettings(<TenantRoleScreen />, { supabase: createSettingsSupabase({ exafyAdmin: true }), language });
     await screen.findByTestId('tenant-role-permissions');
     expect(strings(screen.getByTestId('screen-tenant-role')).filter((s) => RAW_KEY.test(s.trim()))).toEqual([]);
+    screen.unmount();
   });
 });
 
@@ -100,7 +102,10 @@ it('Arabic renders right-to-left with the Arabic catalog', async () => {
     return <TenantRoleScreen />;
   }
   renderSettings(<Probe />, { supabase: createSettingsSupabase(), language: 'ar-XA', direction: 'rtl' });
-  expect(await screen.findByTestId('tenant-role-current-role')).toHaveTextContent(/عضو في المجتمع/);
+  // Re-query inside waitFor: the element found by an earlier findByTestId can be
+  // replaced by a late query/language update and then throws 'Unable to find node
+  // on an unmounted component' on a slow runner.
+  await waitFor(() => expect(screen.getByTestId('tenant-role-current-role')).toHaveTextContent(/عضو في المجتمع/));
   expect(rtl).toBe(true);
 });
 

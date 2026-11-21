@@ -1,0 +1,13 @@
+VTID-05724 red on base (origin/main 02681143d), apps/mobile/tests/settings/i18n-rtl.test.tsx
+Full reproduction and commands: docs/validation/VTID-05724/commands.log
+
+Arabic case, 8 CPU busy loops running (load), `npx jest tests/settings/i18n-rtl.test.tsx -t "Arabic renders"`:
+  run 1: FAIL  Arabic renders right-to-left with the Arabic catalog
+         Unable to find node on an unmounted component.
+  run 2: PASS
+  run 3: FAIL  same error
+  Failing expectation: base line 103 (expect(await screen.findByTestId('tenant-role-current-role'))).
+
+Same file, no added load: 9 failed, 103 passed. The 9 are the catalog-key rows
+"<locale> has exactly the German keys, none empty" for es, sr, fr, pl, pt, ru, tr, zh, ar.
+They are not the Arabic case and are not fixed by this lane (see PR body).
