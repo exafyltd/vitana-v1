@@ -108,7 +108,7 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
               style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined}
               aria-label={t('screens.mobile.openLiveRooms')}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse shrink-0" />
+              <span className="h-1.5 w-1.5 rounded-full bg-status-error animate-pulse shrink-0" />
               <span className="text-[11px] font-bold uppercase leading-none tracking-wide whitespace-nowrap">
                 {t('mobileNav.live')}
               </span>

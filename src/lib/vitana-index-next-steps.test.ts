@@ -92,7 +92,7 @@ describe("VitanaIndexDetail page (source check)", () => {
   });
 
   it("follows the profile card's design language and stays RTL-safe", () => {
-    expect(src).toContain("rounded-3xl border border-slate-100 bg-white");
+    expect(src).toContain("rounded-3xl border border-border bg-card");
     // VTID-05286: the pale-blue hero now uses the Spotlight surface token instead of the raw hsl().
     expect(src).toContain("hsl(var(--surface-page-from))");
     expect(src).not.toMatch(/\b(ml|mr|pl|pr)-\d/);

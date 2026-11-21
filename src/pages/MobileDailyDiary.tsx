@@ -75,7 +75,7 @@ export default function MobileDailyDiary() {
 
   return (
     <MobileAppShell>
-      <div className="px-4 pt-2 pb-0 h-dvh overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
+      <main className="px-4 pt-2 pb-0 h-dvh overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         {/* Standard header with subtitle */}
         <StandardHeader
           title={translate('diary.title', 'Daily Diary')}
@@ -179,7 +179,7 @@ export default function MobileDailyDiary() {
             </>
           )}
         </div>
-      </div>
+      </main>
 
       <AutopilotPopup
         open={autopilotOpen}
