@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Bölüm seç",
+    "tabs": {
+      "myServices": "Hizmetlerim",
+      "myEvents": "Etkinliklerim",
+      "packages": "Paketler",
+      "inventory": "Envanter",
+      "promotions": "Promosyonlar",
+      "referrals": "Tavsiyeler",
+      "clients": "Müşteriler",
+      "performance": "Performans",
+      "earnings": "Kazançlar",
+      "growth": "Büyüme"
+    },
+    "events": {
+      "online": "Çevrimiçi",
+      "sold": "{count} satıldı",
+      "checkedIn": "{count} giriş yaptı",
+      "buyers": "{count} alıcı",
+      "viewSales": "Satışları gör",
+      "loadError": "Etkinlikler yüklenemedi."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Paket",
+        "subscription": "Abonelik",
+        "program": "Program"
+      },
+      "status": {
+        "draft": "Taslak",
+        "published": "Yayında",
+        "archived": "Arşivlendi"
+      },
+      "items": "{count} öğe",
+      "save": "%{percent} tasarruf edersin"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Taslak",
+        "scheduled": "Planlandı",
+        "active": "Aktif",
+        "completed": "Tamamlandı"
+      },
+      "noDate": "Tarih belirlenmedi",
+      "starts": "Başlangıç: {date}",
+      "promoting": "Tanıtılan: {title}",
+      "view": "Kampanyayı gör",
+      "edit": "Kampanyayı düzenle"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Tümü",
+        "highEarnings": "Yüksek kazanç",
+        "endingSoon": "Yakında bitiyor",
+        "popular": "Popüler"
+      },
+      "inPerson": "Yüz yüze",
+      "commission": "{type} · %{rate} komisyon",
+      "earnPerTicket": "Bilet başına {amount} kazan",
+      "noMatch": "Bu filtreye uyan öğe yok."
+    },
+    "ledger": {
+      "resellerCommission": "Bayi komisyonu",
+      "ticketSale": "Bilet satışı",
+      "sourceSellEarn": "Sat ve kazan",
+      "sourceMyEvent": "Etkinliğim",
+      "viewInWallet": "Cüzdanda gör"
+    },
+    "opportunities": {
+      "expressInterest": "İlgi göster",
+      "decline": "Reddet",
+      "matchState": "Durum: {state}",
+      "matchScore": "%{score} eşleşme"
+    }
+  }
+}

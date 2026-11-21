@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Izaberi odeljak",
+    "tabs": {
+      "myServices": "Moje usluge",
+      "myEvents": "Moji događaji",
+      "packages": "Paketi",
+      "inventory": "Inventar",
+      "promotions": "Promocije",
+      "referrals": "Preporuke",
+      "clients": "Klijenti",
+      "performance": "Učinak",
+      "earnings": "Zarada",
+      "growth": "Rast"
+    },
+    "events": {
+      "online": "Online",
+      "sold": "{count} prodato",
+      "checkedIn": "{count} prijavljeno",
+      "buyers": "{count} kupaca",
+      "viewSales": "Pogledaj prodaju",
+      "loadError": "Događaji se nisu učitali."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Paket",
+        "subscription": "Pretplata",
+        "program": "Program"
+      },
+      "status": {
+        "draft": "Nacrt",
+        "published": "Uživo",
+        "archived": "Arhivirano"
+      },
+      "items": "{count} stavki",
+      "save": "Štediš {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Nacrt",
+        "scheduled": "Zakazano",
+        "active": "Aktivna",
+        "completed": "Završena"
+      },
+      "noDate": "Datum nije postavljen",
+      "starts": "Počinje {date}",
+      "promoting": "Promoviše: {title}",
+      "view": "Pogledaj kampanju",
+      "edit": "Uredi kampanju"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Sve",
+        "highEarnings": "Visoka zarada",
+        "endingSoon": "Uskoro završava",
+        "popular": "Popularno"
+      },
+      "inPerson": "Uživo na licu mesta",
+      "commission": "{type} · {rate}% provizije",
+      "earnPerTicket": "Zaradi {amount} po karti",
+      "noMatch": "Nijedna stavka ne odgovara ovom filteru."
+    },
+    "ledger": {
+      "resellerCommission": "Provizija preprodavca",
+      "ticketSale": "Prodaja karata",
+      "sourceSellEarn": "Prodaj i zaradi",
+      "sourceMyEvent": "Moj događaj",
+      "viewInWallet": "Pogledaj u novčaniku"
+    },
+    "opportunities": {
+      "expressInterest": "Iskaži interesovanje",
+      "decline": "Odbij",
+      "matchState": "Status: {state}",
+      "matchScore": "{score}% podudaranja"
+    }
+  }
+}

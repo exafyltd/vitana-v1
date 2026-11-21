@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Choose a section",
+    "tabs": {
+      "myServices": "My Services",
+      "myEvents": "My Events",
+      "packages": "Packages",
+      "inventory": "Inventory",
+      "promotions": "Promotions",
+      "referrals": "Referrals",
+      "clients": "Clients",
+      "performance": "Performance",
+      "earnings": "Earnings",
+      "growth": "Growth"
+    },
+    "events": {
+      "online": "Online",
+      "sold": "{count} sold",
+      "checkedIn": "{count} checked in",
+      "buyers": "{count} buyers",
+      "viewSales": "View sales",
+      "loadError": "Failed to load events."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Bundle",
+        "subscription": "Subscription",
+        "program": "Program"
+      },
+      "status": {
+        "draft": "Draft",
+        "published": "Live",
+        "archived": "Archived"
+      },
+      "items": "{count} items",
+      "save": "You save {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Draft",
+        "scheduled": "Scheduled",
+        "active": "Active",
+        "completed": "Completed"
+      },
+      "noDate": "No date set",
+      "starts": "Starts {date}",
+      "promoting": "Promoting: {title}",
+      "view": "View campaign",
+      "edit": "Edit campaign"
+    },
+    "inventory": {
+      "filter": {
+        "all": "All",
+        "highEarnings": "High earnings",
+        "endingSoon": "Ending soon",
+        "popular": "Popular now"
+      },
+      "inPerson": "In-person",
+      "commission": "{type} · {rate}% commission",
+      "earnPerTicket": "Earn {amount} / ticket",
+      "noMatch": "No inventory items match this filter."
+    },
+    "ledger": {
+      "resellerCommission": "Reseller commission",
+      "ticketSale": "Ticket sale",
+      "sourceSellEarn": "Sell & Earn",
+      "sourceMyEvent": "My Event",
+      "viewInWallet": "View in wallet"
+    },
+    "opportunities": {
+      "expressInterest": "Express interest",
+      "decline": "Decline",
+      "matchState": "Status: {state}",
+      "matchScore": "{score}% match"
+    }
+  }
+}

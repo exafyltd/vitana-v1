@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Выбрать раздел",
+    "tabs": {
+      "myServices": "Мои услуги",
+      "myEvents": "Мои события",
+      "packages": "Пакеты",
+      "inventory": "Каталог",
+      "promotions": "Акции",
+      "referrals": "Рекомендации",
+      "clients": "Клиенты",
+      "performance": "Результаты",
+      "earnings": "Доход",
+      "growth": "Рост"
+    },
+    "events": {
+      "online": "Онлайн",
+      "sold": "Продано: {count}",
+      "checkedIn": "Отмечено: {count}",
+      "buyers": "Покупателей: {count}",
+      "viewSales": "Посмотреть продажи",
+      "loadError": "Не удалось загрузить события."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Набор",
+        "subscription": "Подписка",
+        "program": "Программа"
+      },
+      "status": {
+        "draft": "Черновик",
+        "published": "Опубликован",
+        "archived": "В архиве"
+      },
+      "items": "Элементов: {count}",
+      "save": "Экономия {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Черновик",
+        "scheduled": "Запланирована",
+        "active": "Активна",
+        "completed": "Завершена"
+      },
+      "noDate": "Дата не задана",
+      "starts": "Начало: {date}",
+      "promoting": "Продвигает: {title}",
+      "view": "Открыть кампанию",
+      "edit": "Изменить кампанию"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Все",
+        "highEarnings": "Высокий доход",
+        "endingSoon": "Скоро закончится",
+        "popular": "Популярное"
+      },
+      "inPerson": "Очно",
+      "commission": "{type} · комиссия {rate}%",
+      "earnPerTicket": "Заработайте {amount} за билет",
+      "noMatch": "Нет позиций по этому фильтру."
+    },
+    "ledger": {
+      "resellerCommission": "Комиссия реселлера",
+      "ticketSale": "Продажа билетов",
+      "sourceSellEarn": "Продавай и зарабатывай",
+      "sourceMyEvent": "Моё событие",
+      "viewInWallet": "Открыть в кошельке"
+    },
+    "opportunities": {
+      "expressInterest": "Выразить интерес",
+      "decline": "Отклонить",
+      "matchState": "Статус: {state}",
+      "matchScore": "Совпадение {score}%"
+    }
+  }
+}

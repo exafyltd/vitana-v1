@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Bereich elegir",
+    "tabs": {
+      "myServices": "Mis servicios",
+      "myEvents": "Mis eventos",
+      "packages": "Paquetes",
+      "inventory": "Inventario",
+      "promotions": "Promociones",
+      "referrals": "Recomendaciones",
+      "clients": "Clientes",
+      "performance": "Rendimiento",
+      "earnings": "Ingresos",
+      "growth": "Crecimiento"
+    },
+    "events": {
+      "online": "En línea",
+      "sold": "{count} vendidas",
+      "checkedIn": "{count} registrados",
+      "buyers": "{count} compradores",
+      "viewSales": "Ver ventas",
+      "loadError": "No se pudieron cargar los eventos."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Paquete combinado",
+        "subscription": "Suscripción",
+        "program": "Programa"
+      },
+      "status": {
+        "draft": "Borrador",
+        "published": "En vivo",
+        "archived": "Archivado"
+      },
+      "items": "{count} elementos",
+      "save": "Ahorras un {percent} %"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Borrador",
+        "scheduled": "Programada",
+        "active": "Activa",
+        "completed": "Completada"
+      },
+      "noDate": "Sin fecha",
+      "starts": "Empieza el {date}",
+      "promoting": "Promociona: {title}",
+      "view": "Ver campaña",
+      "edit": "Editar campaña"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Todos",
+        "highEarnings": "Altos ingresos",
+        "endingSoon": "Termina pronto",
+        "popular": "Popular ahora"
+      },
+      "inPerson": "Presencial",
+      "commission": "{type} · {rate} % de comisión",
+      "earnPerTicket": "Gana {amount} por entrada",
+      "noMatch": "Ningún elemento coincide con este filtro."
+    },
+    "ledger": {
+      "resellerCommission": "Comisión de revendedor",
+      "ticketSale": "Venta de entradas",
+      "sourceSellEarn": "Vender y ganar",
+      "sourceMyEvent": "Mi evento",
+      "viewInWallet": "Ver en el monedero"
+    },
+    "opportunities": {
+      "expressInterest": "Mostrar interés",
+      "decline": "Rechazar",
+      "matchState": "Estado: {state}",
+      "matchScore": "{score} % de coincidencia"
+    }
+  }
+}

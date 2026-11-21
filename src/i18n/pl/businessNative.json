@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Wybierz sekcję",
+    "tabs": {
+      "myServices": "Moje usługi",
+      "myEvents": "Moje wydarzenia",
+      "packages": "Pakiety",
+      "inventory": "Zasoby",
+      "promotions": "Promocje",
+      "referrals": "Polecenia",
+      "clients": "Klienci",
+      "performance": "Wyniki",
+      "earnings": "Zarobki",
+      "growth": "Wzrost"
+    },
+    "events": {
+      "online": "Online",
+      "sold": "{count} sprzedanych",
+      "checkedIn": "{count} zameldowanych",
+      "buyers": "Kupujący: {count}",
+      "viewSales": "Zobacz sprzedaż",
+      "loadError": "Nie udało się wczytać wydarzeń."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Zestaw",
+        "subscription": "Subskrypcja",
+        "program": "Program"
+      },
+      "status": {
+        "draft": "Wersja robocza",
+        "published": "Aktywny",
+        "archived": "Zarchiwizowany"
+      },
+      "items": "Elementy: {count}",
+      "save": "Oszczędzasz {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Wersja robocza",
+        "scheduled": "Zaplanowana",
+        "active": "Aktywna",
+        "completed": "Zakończona"
+      },
+      "noDate": "Brak daty",
+      "starts": "Start: {date}",
+      "promoting": "Promuje: {title}",
+      "view": "Zobacz kampanię",
+      "edit": "Edytuj kampanię"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Wszystkie",
+        "highEarnings": "Wysokie zarobki",
+        "endingSoon": "Wkrótce koniec",
+        "popular": "Popularne"
+      },
+      "inPerson": "Na miejscu",
+      "commission": "{type} · prowizja {rate}%",
+      "earnPerTicket": "Zarób {amount} / bilet",
+      "noMatch": "Żadne zasoby nie pasują do filtra."
+    },
+    "ledger": {
+      "resellerCommission": "Prowizja resellera",
+      "ticketSale": "Sprzedaż biletów",
+      "sourceSellEarn": "Sprzedaj i zarabiaj",
+      "sourceMyEvent": "Moje wydarzenie",
+      "viewInWallet": "Zobacz w portfelu"
+    },
+    "opportunities": {
+      "expressInterest": "Okaż zainteresowanie",
+      "decline": "Odrzuć",
+      "matchState": "Status: {state}",
+      "matchScore": "Dopasowanie {score}%"
+    }
+  }
+}

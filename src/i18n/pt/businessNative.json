@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Escolher uma seção",
+    "tabs": {
+      "myServices": "Meus serviços",
+      "myEvents": "Meus eventos",
+      "packages": "Pacotes",
+      "inventory": "Estoque",
+      "promotions": "Promoções",
+      "referrals": "Indicações",
+      "clients": "Clientes",
+      "performance": "Desempenho",
+      "earnings": "Ganhos",
+      "growth": "Crescimento"
+    },
+    "events": {
+      "online": "Online",
+      "sold": "{count} vendidos",
+      "checkedIn": "{count} com check-in",
+      "buyers": "{count} compradores",
+      "viewSales": "Ver vendas",
+      "loadError": "Não foi possível carregar os eventos."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Pacote combinado",
+        "subscription": "Assinatura",
+        "program": "Programa"
+      },
+      "status": {
+        "draft": "Rascunho",
+        "published": "Ao vivo",
+        "archived": "Arquivado"
+      },
+      "items": "{count} itens",
+      "save": "Você economiza {percent}%"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Rascunho",
+        "scheduled": "Agendada",
+        "active": "Ativa",
+        "completed": "Concluída"
+      },
+      "noDate": "Sem data definida",
+      "starts": "Começa em {date}",
+      "promoting": "Promovendo: {title}",
+      "view": "Ver campanha",
+      "edit": "Editar campanha"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Todos",
+        "highEarnings": "Ganhos altos",
+        "endingSoon": "Termina em breve",
+        "popular": "Popular agora"
+      },
+      "inPerson": "Presencial",
+      "commission": "{type} · {rate}% de comissão",
+      "earnPerTicket": "Ganhe {amount} / ingresso",
+      "noMatch": "Nenhum item corresponde a este filtro."
+    },
+    "ledger": {
+      "resellerCommission": "Comissão de revendedor",
+      "ticketSale": "Venda de ingressos",
+      "sourceSellEarn": "Venda e ganhe",
+      "sourceMyEvent": "Meu evento",
+      "viewInWallet": "Ver na carteira"
+    },
+    "opportunities": {
+      "expressInterest": "Demonstrar interesse",
+      "decline": "Recusar",
+      "matchState": "Status: {state}",
+      "matchScore": "{score}% de compatibilidade"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "businessNative": {
+    "selectMode": "Bereich wählen",
+    "tabs": {
+      "myServices": "Meine Services",
+      "myEvents": "Meine Events",
+      "packages": "Pakete",
+      "inventory": "Inventar",
+      "promotions": "Aktionen",
+      "referrals": "Empfehlungen",
+      "clients": "Kund:innen",
+      "performance": "Leistung",
+      "earnings": "Einnahmen",
+      "growth": "Wachstum"
+    },
+    "events": {
+      "online": "Online",
+      "sold": "{count} verkauft",
+      "checkedIn": "{count} eingecheckt",
+      "buyers": "{count} Käufer:innen",
+      "viewSales": "Verkäufe ansehen",
+      "loadError": "Events konnten nicht geladen werden."
+    },
+    "packages": {
+      "type": {
+        "bundle": "Bundle",
+        "subscription": "Abo",
+        "program": "Programm"
+      },
+      "status": {
+        "draft": "Entwurf",
+        "published": "Live",
+        "archived": "Archiviert"
+      },
+      "items": "{count} Elemente",
+      "save": "Du sparst {percent} %"
+    },
+    "campaigns": {
+      "status": {
+        "draft": "Entwurf",
+        "scheduled": "Geplant",
+        "active": "Aktiv",
+        "completed": "Abgeschlossen"
+      },
+      "noDate": "Kein Datum festgelegt",
+      "starts": "Beginnt am {date}",
+      "promoting": "Bewirbt: {title}",
+      "view": "Kampagne ansehen",
+      "edit": "Kampagne bearbeiten"
+    },
+    "inventory": {
+      "filter": {
+        "all": "Alle",
+        "highEarnings": "Hohe Einnahmen",
+        "endingSoon": "Endet bald",
+        "popular": "Beliebt"
+      },
+      "inPerson": "Vor Ort",
+      "commission": "{type} · {rate} % Provision",
+      "earnPerTicket": "{amount} pro Ticket verdienen",
+      "noMatch": "Kein Inventar passt zu diesem Filter."
+    },
+    "ledger": {
+      "resellerCommission": "Wiederverkäufer-Provision",
+      "ticketSale": "Ticketverkauf",
+      "sourceSellEarn": "Verkaufen & Verdienen",
+      "sourceMyEvent": "Mein Event",
+      "viewInWallet": "Im Wallet ansehen"
+    },
+    "opportunities": {
+      "expressInterest": "Interesse zeigen",
+      "decline": "Ablehnen",
+      "matchState": "Status: {state}",
+      "matchScore": "{score} % Übereinstimmung"
+    }
+  }
+}

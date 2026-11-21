@@ -1,0 +1,17 @@
+VTID-05645 native-wave2-sharing-business-r3/business-hub: commands run and results
+Worktree: /projects/sandbox/wt/b-business-hub (branch kiro/native-wave2-sharing-business-r3/business-hub, base origin/main)
+Environment note: `npm run bundle` needs EXPO_NO_TELEMETRY=1 in this sandbox (Expo writes under a read-only /root/.expo).
+
+== Red on base (tests written before the implementation)
+- npx jest tests/business --ci -> failed: missing screens/tabs modules and the missing businessNative.json shard.
+  Saved: docs/validation/VTID-05645/red-on-base.txt (commit deb1e3d21 holds the tests only)
+
+== Green
+- npm run typecheck (apps/mobile): exit 0
+- npx jest tests/business: 6 suites, 83 tests passed (13 ledger rows asserted native after the flip commit)
+- node scripts/native/parity-ledger.mjs --check: OK, 435 rows, 128 native routes
+- node scripts/native/core-closure.mjs --check: up to date (no core change in this lane)
+- APP_PROFILE=development EXPO_OFFLINE=1 npm run deps:check: dependencies up to date
+- EXPO_NO_TELEMETRY=1 APP_PROFILE=development npm run bundle: exit 0 (ios + android exported)
+- npm test (full, 11 builders sharing the machine): 198/207 suites passed; the 9 failing suites (patient, health, inbox-chat,
+  memory, settings; none touch this lane) timed out under load; re-run alone with --maxWorkers=2: 17 suites, 515 tests passed.
