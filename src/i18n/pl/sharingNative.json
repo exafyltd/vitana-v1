@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "Zapisz jako szablon",
+      "createRule": "Utwórz regułę"
+    },
+    "campaign": {
+      "stepBasics": "Podstawy",
+      "stepChannels": "Kanały",
+      "stepTemplate": "Szablon",
+      "stepSchedule": "Harmonogram",
+      "editTitle": "Edytuj kampanię",
+      "createTitle": "Utwórz kampanię",
+      "stepOf": "Krok {current} z {total}",
+      "saveDraft": "Zapisz jako szkic",
+      "saveActivate": "Zapisz i aktywuj",
+      "update": "Zaktualizuj kampanię"
+    },
+    "package": {
+      "bundleLabel": "Pakiet zbiorczy",
+      "bundleDescription": "Sprzedawaj kilka pozycji razem jako jeden pakiet.",
+      "itemService": "Usługa",
+      "itemEvent": "Wydarzenie",
+      "hintBasics": "Nadaj pakietowi nazwę i opisz go.",
+      "hintItems": "Dodaj usługi lub wydarzenia, które zawiera.",
+      "hintPricing": "Ustaw cenę i sprawdź."
+    },
+    "consent": {
+      "description": "Wybierz, których danych Vitanaland może używać do personalizacji udostępniania."
+    },
+    "distribution": {
+      "description": "Planuj, harmonogramuj i śledź swoje wpisy we wszystkich kanałach."
+    },
+    "queue": {
+      "untitled": "Wpis bez tytułu",
+      "noDescription": "Brak opisu"
+    },
+    "analytics": {
+      "sent": "Wysłane",
+      "clicked": "Kliknięcia",
+      "responded": "Odpowiedzi"
+    },
+    "kpi": {
+      "revenue": "Przychód"
+    },
+    "public": {
+      "notFoundBody": "Ta kampania nie istnieje lub nie jest już dostępna.",
+      "explore": "Odkryj Vitanaland",
+      "joinCommunity": "Dołącz do społeczności"
+    },
+    "card": {
+      "shareText": "Dołącz do mnie: {title}"
+    },
+    "overview": {
+      "description": "Udostępniaj treści, prowadź kampanie i zarządzaj swoimi kanałami."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "E-mail",
+      "sms": "SMS",
+      "copy": "Kopiuj link",
+      "more": "Więcej",
+      "campaignText": "Zobacz kampanię {name}"
+    },
+    "activate": {
+      "description": "Twoje wpisy zostaną opublikowane w połączonych kanałach.",
+      "descriptionNoPosts": "Ta kampania nie ma jeszcze wpisów. Dodaj wpisy przed aktywacją.",
+      "instantHint": "Wpisy są wysyłane zaraz po aktywacji.",
+      "instantHintNoPosts": "Nic nie zostanie wysłane, dopóki nie dodasz wpisów.",
+      "willActivate": "Zostanie aktywowana: {when}"
+    },
+    "delete": {
+      "title": "Usunąć kampanię?",
+      "body": "„{name}” i jej wpisy zostaną trwale usunięte."
+    }
+  }
+}

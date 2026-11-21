@@ -1,0 +1,30 @@
+{
+  "vtid": "VTID-05646",
+  "lane": "native-wave2-sharing-business-r3/sharing",
+  "kind": "feature",
+  "paths": [
+    "apps/mobile/app/(app)/sharing/**",
+    "apps/mobile/app/(app)/invite.tsx",
+    "apps/mobile/app/(app)/creator/**",
+    "apps/mobile/app/(public)/pub/**",
+    "apps/mobile/src/screens/sharing/**",
+    "apps/mobile/src/ports/**",
+    "apps/mobile/src/navigation/resolve.ts",
+    "apps/mobile/tests/sharing/**",
+    "packages/core/manifest.json",
+    "packages/core/closure.generated.json",
+    "packages/core/src/**",
+    "scripts/native/mobile-ci-paths.generated.json",
+    "apps/mobile/parity/ledger.json",
+    "src/i18n/*/sharingNative.json",
+    "docs/validation/VTID-05646/**"
+  ],
+  "not_touched": [
+    "apps/mobile/maestro/sharing/** (device journeys are G1)",
+    "apps/mobile/package.json and package-lock.json",
+    "apps/mobile/jest.config.js and apps/mobile/jest.setup.ts"
+  ],
+  "sparring_record": "docs/validation/VTID-05646/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}

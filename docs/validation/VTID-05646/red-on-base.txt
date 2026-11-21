@@ -1,0 +1,21 @@
+      3     Cannot find module '../../src/ports/share-capture' from 'tests/sharing/helpers.tsx'
+      1   ● catalog keys the lane renders › every t() key used by the lane exists in all 11 locales
+      1   ● catalog keys the lane renders › no du-form violation in the German shard (no Sie/Ihr/Ihnen)
+      1   ● catalog keys the lane renders › the new sharingNative shard has the same keys in every locale, de first
+      1 FAIL tests/sharing/campaigns.test.tsx
+      1 FAIL tests/sharing/lane-guards.test.ts 
+      1 FAIL tests/sharing/overview-distribution.test.tsx
+      1 FAIL tests/sharing/share-invite-public.test.tsx
+      1   ● lane code rules › the lane has files to check
+      1   ● sharing routes › app/(app)/creator/onboarded.tsx exists
+      1   ● sharing routes › app/(app)/invite.tsx exists
+      1   ● sharing routes › app/(app)/sharing/campaigns/[id].tsx exists
+      1   ● sharing routes › app/(app)/sharing/campaigns/index.tsx exists
+      1   ● sharing routes › app/(app)/sharing/data-consent.tsx exists
+      1   ● sharing routes › app/(app)/sharing/distribution.tsx exists
+      1   ● sharing routes › app/(app)/sharing/index.tsx exists
+      1   ● sharing routes › app/(public)/pub/campaigns/[id].tsx exists
+      1   ● sharing routes › the 8 parity rows are native
+      1   ● sharing routes › the concrete routes resolve native and the dynamic ones to their own href
+      1 Tests:       14 failed, 5 passed, 19 total
+      1 Test Suites: 4 failed, 4 total

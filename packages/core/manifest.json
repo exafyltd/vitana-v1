@@ -362,6 +362,13 @@
         "ai"
       ],
       "reason": "VTID-05523 — the AI coach page data the web renders directly on /ai, /ai/insights, /ai/recommendations and /ai/companion (todayActions, memoryHighlights, inspiration, lifestylePatterns, indexMovement, socialEngagement, correlations, recommendations, chat); imports nothing, pure. The native AI coach twins read the same records, so the cards show the same content."
+    },
+    "src/lib/campaign-templates.ts": {
+      "entry": "campaign-templates.ts",
+      "lanes": [
+        "sharing"
+      ],
+      "reason": "VTID-05646 — campaign distribution templates and channel best times (DISTRIBUTION_TEMPLATES, CHANNEL_BEST_TIMES, CHANNEL_INFO). Pure data, no imports. The native campaign sheet offers the same templates and suggested channels as the web dialog."
     }
   }
 }

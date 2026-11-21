@@ -1,0 +1,77 @@
+{
+  "sharingNative": {
+    "assets": {
+      "saveTemplate": "Save as template",
+      "createRule": "Create rule"
+    },
+    "campaign": {
+      "stepBasics": "Basics",
+      "stepChannels": "Channels",
+      "stepTemplate": "Template",
+      "stepSchedule": "Schedule",
+      "editTitle": "Edit campaign",
+      "createTitle": "Create campaign",
+      "stepOf": "Step {current} of {total}",
+      "saveDraft": "Save as draft",
+      "saveActivate": "Save and activate",
+      "update": "Update campaign"
+    },
+    "package": {
+      "bundleLabel": "Bundle",
+      "bundleDescription": "Sell several items together as one package.",
+      "itemService": "Service",
+      "itemEvent": "Event",
+      "hintBasics": "Name your package and describe it.",
+      "hintItems": "Add the services or events it includes.",
+      "hintPricing": "Set the price and review."
+    },
+    "consent": {
+      "description": "Choose which of your data Vitanaland may use to personalise sharing."
+    },
+    "distribution": {
+      "description": "Plan, schedule and track your posts across channels."
+    },
+    "queue": {
+      "untitled": "Untitled post",
+      "noDescription": "No description"
+    },
+    "analytics": {
+      "sent": "Sent",
+      "clicked": "Clicked",
+      "responded": "Responded"
+    },
+    "kpi": {
+      "revenue": "Revenue"
+    },
+    "public": {
+      "notFoundBody": "This campaign doesn’t exist or is no longer available.",
+      "explore": "Explore Vitanaland",
+      "joinCommunity": "Join the community"
+    },
+    "card": {
+      "shareText": "Join me at {title}"
+    },
+    "overview": {
+      "description": "Share content, run campaigns and manage your channels."
+    },
+    "share": {
+      "viber": "Viber",
+      "email": "Email",
+      "sms": "SMS",
+      "copy": "Copy link",
+      "more": "More",
+      "campaignText": "Check out the campaign {name}"
+    },
+    "activate": {
+      "description": "Your posts go live on the connected channels.",
+      "descriptionNoPosts": "This campaign has no posts yet. Add posts before activating.",
+      "instantHint": "Posts are sent as soon as you activate.",
+      "instantHintNoPosts": "Nothing will be sent until you add posts.",
+      "willActivate": "Will activate on {when}"
+    },
+    "delete": {
+      "title": "Delete campaign?",
+      "body": "\"{name}\" and its posts will be permanently deleted."
+    }
+  }
+}

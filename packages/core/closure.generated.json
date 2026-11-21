@@ -10,6 +10,7 @@
     "src/integrations/supabase/data-routing.ts",
     "src/integrations/supabase/types.ts",
     "src/lib/audiobook/queue.ts",
+    "src/lib/campaign-templates.ts",
     "src/lib/chatMarkdown.ts",
     "src/lib/exchangeRates.ts",
     "src/lib/goalPhases.ts",
