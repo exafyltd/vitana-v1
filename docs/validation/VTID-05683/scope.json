@@ -1,0 +1,18 @@
+{
+  "vtid": "VTID-05683",
+  "lane": "native-wave1-readiness-tests/push",
+  "sparring_record": "docs/validation/VTID-05683/plan-sparring.md",
+  "kind": "infra",
+  "paths": [
+    "apps/mobile/tests/wave1-readiness/push/**",
+    "docs/validation/VTID-05683/**"
+  ],
+  "not_touched": [
+    "apps/mobile/src/** (no source change)",
+    "every existing test, helper and mock under apps/mobile/tests/ (no edit)",
+    "apps/mobile/package.json and package-lock.json (no dependency)",
+    "apps/mobile/jest.config.js and apps/mobile/jest.setup.ts"
+  ],
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
