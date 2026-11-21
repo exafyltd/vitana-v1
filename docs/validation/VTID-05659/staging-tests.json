@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05659",
+  "service": "community-app",
+  "_note": "Native Wave 3 crash-port lane. The port makes no network call and has no screen, so there is no staging path to verify before the crash SDK is chosen (lane crash-sdk-owner). It is proven offline by unit tests. Red on base: the test file was committed first (b0a21df25) and failed with 'Cannot find module ../../src/telemetry/crash-port'; green after the port (acd892d5c), 12 tests.",
+  "tests": [
+    { "kind": "existing", "ref": "npx jest tests/telemetry", "cwd": "apps/mobile",
+      "reason": "session start and end, crashed flag, no-op default sends nothing, provider errors (sync and async) swallowed and logged" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "the port type-checks" }
+  ]
+}
