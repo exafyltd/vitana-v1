@@ -1,0 +1,34 @@
+VTID-05685 native-parity-test-gaps/route-tests: commands run and results
+Base: vitana-v1 origin/main e31bf4627ff3c705c20f8e6b718ce4dd03353b7f. Lane worktree: /projects/sandbox/wt/b-route-tests (branch kiro/native-parity-test-gaps/route-tests).
+Throwaway mutation worktree (detached, never committed from): /projects/sandbox/wt/b-route-tests-mut.
+
+== Setup
+- cd apps/mobile && npm ci --ignore-scripts: exit 0 (lane worktree and mutation worktree, each its own node_modules)
+- npm run gen:i18n: exit 0 (11 locales, 1672 shards; the generated map is gitignored)
+- repo root: node_modules -> /projects/sandbox/.agents/tsdeps/node_modules (typescript, for the root ledger script); not staged
+
+== Green
+- npx jest tests/parity-gaps --maxWorkers=2 -> exit 0   Test Suites: 2 passed, 2 total   Tests: 6 passed, 6 total
+  (intents-mine-route 3, my-groups-route 3)
+- npm run typecheck (apps/mobile) -> exit 0
+- npx jest --maxWorkers=2 (full suite) -> exit 0   Test Suites: 203 passed, 203 total   Tests: 5627 passed, 5627 total
+- node scripts/native/parity-ledger.mjs --check (repo root) -> exit 0   "OK - 435 rows, 121 native route(s)" (unchanged)
+
+== Red proof by mutation (tests-only lane: the behaviour exists, so the tests pass on base by design)
+Mutations were made only in the throwaway worktree b-route-tests-mut at origin/main + a copy of tests/parity-gaps, and reverted with
+`git checkout -- app parity` after each run. A first attempt with a symlinked node_modules failed to load jest.setup (semver resolution);
+it proved nothing and was discarded. Results with its own npm ci:
+- baseline (no mutation): PASS intents-mine-route, PASS my-groups-route; Tests: 6 passed, 6 total
+- mutation 1, app/(app)/intents/mine.tsx redirect 'view=posts' -> 'view=all': FAIL intents-mine-route; Tests: 1 failed, 5 passed, 6 total
+- mutation 2, app/(app)/comm/my-groups/[id].tsx renders <GroupDetailScreen id="other" /> instead of the route id: FAIL my-groups-route; Tests: 1 failed, 5 passed, 6 total
+- mutation 3, parity/ledger.json row /comm/my-groups/:id status native -> not_started: FAIL my-groups-route; Tests: 1 failed, 5 passed, 6 total
+- after the runs: git status in the mutation worktree shows only the untracked tests/parity-gaps copy (app and parity restored)
+
+== Resolver probe (throwaway test in the mutation worktree, deleted, not committed)
+- resolveWebPath('/comm/my-groups/g-1') -> {"kind":"unported","key":"/comm/my-groups/:id"}
+- resolveWebPath('/intents/mine') -> {"kind":"native"}
+See findings.md finding 4.
+
+== Scope gates (lane worktree, before the test commit 4f0181615)
+- git diff --cached --exit-code origin/main -- apps/mobile/app apps/mobile/src apps/mobile/parity -> exit 0
+- every file in git diff --cached --name-only matches apps/mobile/tests/parity-gaps/** or docs/validation/** (grep for others -> no lines, exit 1)

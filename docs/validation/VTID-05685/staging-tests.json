@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05685",
+  "service": "community-app",
+  "_note": "Tests-only native lane: it adds Jest files under apps/mobile/tests/parity-gaps and deploys nothing. Not verified on staging: nothing deploys and the native app has no staging build here; the Jest tests are the proof. No call is made to staging or production and nothing is written.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile", "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports" },
+    { "kind": "existing", "ref": "npx jest tests/parity-gaps", "cwd": "apps/mobile", "reason": "the two route tests: /intents/mine redirect target; /comm/my-groups/:id renders the group detail for its id and the not-found state; both ledger rows are native" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile", "reason": "the new test files type-check" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile", "reason": "ledger unchanged: OK, 435 rows, 121 native routes" }
+  ]
+}
