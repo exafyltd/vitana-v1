@@ -1,0 +1,9 @@
+{
+  "onboardingNative": {
+    "avatarInitial": "V",
+    "errors": {
+      "handleTaken": "该用户名已被占用，请选择其他用户名。",
+      "generic": "出了点问题，请重试。"
+    }
+  }
+}

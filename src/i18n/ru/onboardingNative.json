@@ -1,0 +1,9 @@
+{
+  "onboardingNative": {
+    "avatarInitial": "V",
+    "errors": {
+      "handleTaken": "Это имя пользователя уже занято. Выбери другое.",
+      "generic": "Что-то пошло не так. Попробуй ещё раз."
+    }
+  }
+}

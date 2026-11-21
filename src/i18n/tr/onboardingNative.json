@@ -1,0 +1,9 @@
+{
+  "onboardingNative": {
+    "avatarInitial": "V",
+    "errors": {
+      "handleTaken": "Bu kullanıcı adı zaten alınmış. Lütfen başka bir tane seç.",
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar dene."
+    }
+  }
+}

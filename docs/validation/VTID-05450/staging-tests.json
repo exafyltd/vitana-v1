@@ -1,0 +1,25 @@
+{
+  "vtid": "VTID-05450",
+  "service": "community-app",
+  "_note": "Native Wave 2 onboarding lane (/onboarding/welcome). The port is proven offline (jest-expo + RNTL, fake Supabase double, no network; the native app has no production profile — assertNotProduction() refuses prod/staging hosts). No auth write; the form's profile writes run only against the double. Device-runtime parity (Maestro + iOS simulator / Android emulator screenshots vs the 390x844 read-only staging /onboarding/welcome, signed in) is DEFERRED to G1 as next_actor: owner (requirements R5.3, tasks.md onboarding task 5). Recorded here, not run in CI, not a merge blocker.",
+  "tests": [
+    { "kind": "existing", "ref": "npm run gen:i18n", "cwd": "apps/mobile",
+      "reason": "generates src/i18n/catalog-map.generated.ts, which the jest suite imports; npm test runs it as pretest, a direct npx jest does not (staging-verify-runner-fix)" },
+    { "kind": "existing", "ref": "npx jest tests/onboarding", "cwd": "apps/mobile",
+      "reason": "onboarding unit tests: the Maxina welcome + Vitana speech bubbles on the web timings and Skip intro, the already-onboarded redirect (device flag / complete profile -> /home or redirectTo; incomplete profile or query error -> onboarding), the name / handle form (pre-fill, suggestion, cleaning, min lengths, taken / own / available, save -> profiles upsert + app_users mirror, explicit community-intro opt-out only, 23505 -> taken, other error message), after the form redirectTo wins else the audiobook step (Play Episode 1 -> /autopilot?audiobook=play, Later -> /home), safeRedirect, the AuthGuard (signed out -> /maxina?redirectTo=%2Fonboarding%2Fwelcome), the auth-portals postSignInTarget seam resolving to this native route; 11-locale onboardingNative keys, du / tu / ты / você register, RTL start/end, ar render, route file on disk — fake Supabase double, no network" },
+    { "kind": "existing", "ref": "npm run typecheck", "cwd": "apps/mobile",
+      "reason": "React 19 ReactElement typing; the onboarding screens, data module and port type-check against the shell ports, @vitana/ui and @vitana/tokens" },
+    { "kind": "existing", "ref": "npm run bundle", "cwd": "apps/mobile", "env": { "APP_PROFILE": "development" },
+      "reason": "Metro + Hermes bundle for iOS and Android includes the /onboarding/welcome route (run with APP_PROFILE=development)" },
+    { "kind": "existing", "ref": "npm run parity:check", "cwd": "apps/mobile",
+      "reason": "the /onboarding/welcome row is native with its route present under apps/mobile/app/ — parity:check wraps `node ../../scripts/native/parity-ledger.mjs --check`" }
+  ],
+  "deferred_g1": [
+    { "flow": "apps/mobile/maestro/onboarding/01-welcome-speech.yaml", "target": "/onboarding/welcome", "next_actor": "owner",
+      "reason": "sign in on /maxina with a new G1 account -> /onboarding/welcome: welcome header, speech bubbles, Skip intro; screenshot parity vs the 390x844 read-only staging /onboarding/welcome (signed in); needs G1 (iOS simulator + Android emulator)" },
+    { "flow": "apps/mobile/maestro/onboarding/02-name-handle.yaml", "target": "/onboarding/welcome", "next_actor": "owner",
+      "reason": "name / handle form states, community intro switch, save on the G1 project -> audiobook step -> Later -> /home; needs G1 (writes only the G1 test account's own rows, never production)" },
+    { "flow": "apps/mobile/maestro/onboarding/03-redirect.yaml", "target": "/onboarding/welcome", "next_actor": "owner",
+      "reason": "an already-onboarded G1 account goes straight to /home (and to ?redirectTo=); needs G1" }
+  ]
+}
