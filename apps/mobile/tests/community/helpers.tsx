@@ -7,6 +7,7 @@
  * and the kit's safe-area mock are applied by the test files that import this.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { configure } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../../src/auth/AuthProvider';
@@ -15,6 +16,11 @@ import { __setGatewayForTests } from '../../src/auth/gateway';
 import { TenantProvider } from '../../src/identity/TenantProvider';
 import { LanguageProvider } from '../../src/identity/LanguageProvider';
 import { ThemeProvider } from '../../src/theme/ThemeProvider';
+
+// Give findBy and waitFor 5 s instead of RNTL's 1 s default under default-worker load (as tests/settings/helpers.tsx).
+configure({ asyncUtilTimeout: 5000 });
+// Chained 5 s waits must fit inside the test's own budget (Jest default 5 s).
+jest.setTimeout(30000);
 
 type Row = Record<string, any>;
 type Result = { data: any; error: { message: string } | null; count?: number | null };

@@ -7,10 +7,16 @@
  * files import `../helpers/no-network` first.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { configure } from '@testing-library/react-native';
 import { __setGatewayForTests } from '../../src/auth/gateway';
 import { createGatewayFetch } from '../../src/ports/core';
 import { createSupabaseDouble, fakeSession } from '../helpers/supabase-double';
 import { makeWrapper } from '../helpers/providers';
+
+// Give findBy and waitFor 5 s instead of RNTL's 1 s default under default-worker load (as tests/settings/helpers.tsx).
+configure({ asyncUtilTimeout: 5000 });
+// Chained 5 s waits must fit inside the test's own budget (Jest default 5 s).
+jest.setTimeout(30000);
 
 export const ORIGIN = 'https://g1-test.example.org';
 export const TOKEN = 'token-memory-test';

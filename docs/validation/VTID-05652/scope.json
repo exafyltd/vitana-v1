@@ -1,0 +1,17 @@
+{
+  "vtid": "VTID-05652",
+  "lane": "native-wave2-fix-forward-r2/test-timeouts",
+  "kind": "test-infrastructure",
+  "paths": [
+    "apps/mobile/tests/memory/helpers.tsx",
+    "apps/mobile/tests/diary/helpers.tsx",
+    "apps/mobile/tests/community/helpers.tsx",
+    "apps/mobile/tests/ui/helpers.tsx",
+    "apps/mobile/tests/test-timeouts/**",
+    "docs/validation/VTID-05652/**"
+  ],
+  "not_touched": ["apps/mobile/jest.config.js", "apps/mobile/jest.setup.ts", "every existing test file and assertion"],
+  "sparring_record": "docs/validation/VTID-05652/plan-sparring.md",
+  "weakens_tests": [],
+  "red_green_exempt": []
+}
