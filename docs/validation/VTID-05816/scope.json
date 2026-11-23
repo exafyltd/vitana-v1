@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05816",
+  "change_class": "frontend-simple",
+  "summary": "Community members directory (phone layout, /comm/members): add a close (X) button in the header that returns to Events & Meetups → Following, and render the uploaded profile photo or the deterministic DiceBear auto-avatar on every member card instead of initials only.",
+  "files": [
+    "src/pages/community/Members.tsx",
+    "src/pages/community/Members.close-avatar.test.tsx",
+    "docs/validation/VTID-05816/scope.json"
+  ],
+  "deny_listed_files_touched": false
+}
