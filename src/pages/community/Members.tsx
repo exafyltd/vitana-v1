@@ -11,14 +11,15 @@
  */
 
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, MapPin, Users } from "lucide-react";
+import { Loader2, MapPin, Users, X } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 import { GATEWAY_API_URL } from '@/lib/gateway-base';
+import { getDisplayAvatarUrl } from '@/lib/autoAvatar';
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { ScreenFrame } from "@/components/layout/spotlight";
@@ -70,9 +71,20 @@ function initialsFor(name: string | null): string {
     .slice(0, 2) || "?";
 }
 
+// Where the X goes when there is no in-app history to return to (e.g. a deep link).
+const MEMBERS_FALLBACK_BACK_PATH = "/comm/events-meetups?tab=following";
+
 export default function Members() {
   const { session } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // The screen is usually opened from Events & Meetups → Following → Find People,
+  // so the X returns there. location.key === "default" means no in-app history entry.
+  const handleClose = useCallback(() => {
+    if (location.key !== "default") navigate(-1);
+    else navigate(MEMBERS_FALLBACK_BACK_PATH);
+  }, [location.key, navigate]);
 
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -189,7 +201,7 @@ export default function Members() {
                     size="row"
                     mediaSlot={
                       <Avatar className="size-full rounded-md">
-                        {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ""} /> : null}
+                        <AvatarImage src={getDisplayAvatarUrl(m)} alt={m.display_name ?? ""} />
                         <AvatarFallback className="rounded-md">{initialsFor(m.display_name)}</AvatarFallback>
                       </Avatar>
                     }
@@ -235,9 +247,22 @@ export default function Members() {
 
   return (
     <div className="container max-w-3xl mx-auto px-4 py-6 space-y-4">
-      <div className="flex items-center gap-3">
-        <Users className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-semibold">{t('screens.community.communityMembers')}</h1>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <Users className="h-6 w-6 text-primary shrink-0" />
+          <h1 className="text-2xl font-semibold">{t('screens.community.communityMembers')}</h1>
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="shrink-0"
+          onClick={handleClose}
+          aria-label={t('common.close')}
+          title={t('common.close')}
+        >
+          <X className="h-5 w-5" />
+        </Button>
       </div>
 
       <p className="text-sm text-muted-foreground">
@@ -304,7 +329,7 @@ export default function Members() {
             className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-start"
           >
             <Avatar className="h-12 w-12 flex-shrink-0">
-              {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ""} /> : null}
+              <AvatarImage src={getDisplayAvatarUrl(m)} alt={m.display_name ?? ""} />
               <AvatarFallback>{initialsFor(m.display_name)}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
