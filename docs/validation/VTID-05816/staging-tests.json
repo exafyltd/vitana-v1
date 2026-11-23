@@ -1,0 +1,11 @@
+{
+  "vtid": "VTID-05816",
+  "service": "community-app",
+  "tests": [
+    { "kind": "existing", "ref": "npx vitest run src/pages/community/Members.close-avatar.test.tsx", "cwd": ".",
+      "reason": "the members directory (phone layout) renders a close (X) control that returns to Events & Meetups → Following, and every member card shows the uploaded photo or the DiceBear auto-avatar instead of initials only" },
+    { "kind": "http", "target": "frontend", "method": "GET", "path": "/",
+      "expect_status": 200, "expect_body_contains": "id=\"root\"",
+      "reason": "the staging build containing the members directory change is served" }
+  ]
+}
